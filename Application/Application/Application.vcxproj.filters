@@ -13,19 +13,28 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Window">
-      <UniqueIdentifier>{099cc0e8-6ba1-44a4-8339-6441f8faf3d3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Precompiled Header">
       <UniqueIdentifier>{be9ff6f7-27a6-4da6-aa85-011d3227fa05}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Interface">
+      <UniqueIdentifier>{7875eff5-7db0-467f-883b-4e0bd2e83229}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Windows">
+      <UniqueIdentifier>{099cc0e8-6ba1-44a4-8339-6441f8faf3d3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="framework.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>Precompiled Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Interface\Application\IApplication.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowsApplication.h">
+      <Filter>Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="Window.h">
+      <Filter>Windows</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -34,6 +43,12 @@
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Precompiled Header</Filter>
+    </ClCompile>
+    <ClCompile Include="WindowsApplication.cpp">
+      <Filter>Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="Window.cpp">
+      <Filter>Windows</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
