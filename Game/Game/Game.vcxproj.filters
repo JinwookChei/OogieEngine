@@ -33,6 +33,9 @@
     <ClInclude Include="AppManager.h">
       <Filter>Main</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Interface\Renderer\IRenderer.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">

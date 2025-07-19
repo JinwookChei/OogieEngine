@@ -142,6 +142,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Interface\Application\IApplication.h" />
+    <ClInclude Include="..\..\Interface\Renderer\IRenderer.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="WindowsApplication.h" />

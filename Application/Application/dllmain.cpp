@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "WindowsApplication.h"
 
 BOOL APIENTRY DllMain( HMODULE hModule,
                        DWORD  ul_reason_for_call,
@@ -28,10 +29,11 @@ extern "C" __declspec(dllexport) bool __stdcall CreateWindowsApplication(
     void** newApplication,
     HINSTANCE hInstance,
     PWSTR pCmdLine,
-    int nCmdShow)
+    int nCmdShow,
+    const wchar_t* iconPath)
 {
     //NEW -> Release In GameMain.cpp
-    IApplication* newApp = new WindowsApplication(hInstance, pCmdLine, nCmdShow);
+    IApplication* newApp = new WindowsApplication(hInstance, pCmdLine, nCmdShow, iconPath);
 
     if (nullptr == newApp)
     {

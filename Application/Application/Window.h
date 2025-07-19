@@ -8,6 +8,8 @@ public:
 
 	bool Initialize();
 
+	HWND Handle() const;
+
 	void Show() const;
 
 private:

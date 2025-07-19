@@ -6,7 +6,7 @@ class WindowsApplication : public IApplication
 {
 public:
 	WindowsApplication() = delete;
-	WindowsApplication(HINSTANCE hInstance, PWSTR pCmdLine, int nCmdShow);
+	WindowsApplication(HINSTANCE hInstance, PWSTR pCmdLine, int nCmdShow, const wchar_t* iconPath);
 
 	~WindowsApplication();
 
@@ -24,7 +24,11 @@ public:
 
 	void __stdcall SetShowCursor(bool show) override;
 
+	void* __stdcall GetMainWindowHandle() override;
+
 	const HINSTANCE HandleInstance() const;
+
+	Window* MainWindow() const;
 
 	const PWSTR CmdLine() const;
 
@@ -35,6 +39,8 @@ private:
 	PWSTR pCmdLine_;
 
 	int nCmdShow_;
+
+	const wchar_t* iconPath_;
 
 	HICON iCon_;
 

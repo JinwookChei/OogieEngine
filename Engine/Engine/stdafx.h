@@ -14,3 +14,7 @@
 #define ENGINE_API __declspec(dllexport)
 
 #include <windows.h>
+
+#include <Application/IApplication.h>
+#include <Renderer/IRenderer.h>
+

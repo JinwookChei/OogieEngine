@@ -21,6 +21,6 @@
 #include <windows.h>
 
 #include <Application\IApplication.h>
-#include "WindowsApplication.h"
+//#include "WindowsApplication.h"
 
 extern class WindowsApplication* GApplication;

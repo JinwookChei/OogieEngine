@@ -1,7 +1,6 @@
 #include "stdafx.h"
+#include "WindowsApplication.h"
 #include "Window.h"
-
-
 
 Window::Window(const wchar_t* className, const wchar_t* windowText)
 	: className_(className),
@@ -39,6 +38,11 @@ bool Window::Initialize()
 	}
 
 	return true;
+}
+
+HWND Window::Handle() const
+{
+	return hWnd_;
 }
 
 void Window::Show() const

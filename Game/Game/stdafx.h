@@ -31,6 +31,7 @@
 
 #endif // _DEBUG
 
+#define ENGINE_API __declspec(dllimport)
 
 #include <windows.h>
 

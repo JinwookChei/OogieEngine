@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Window.h"
+#include "WindowsApplication.h"
 
 WindowsApplication* GApplication = nullptr;
 
@@ -32,10 +33,12 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 WindowsApplication::WindowsApplication(
 	HINSTANCE hInstance,
 	PWSTR pCmdLine,
-	int nCmdShow)
+	int nCmdShow,
+	const wchar_t* iconPath)
 	: hInstance_(hInstance),
 	pCmdLine_(pCmdLine),
 	nCmdShow_(nCmdShow),
+	iconPath_(iconPath),
 	iCon_(nullptr),
 	mainWindow_(nullptr),
 	refCount_(1),
@@ -79,15 +82,15 @@ bool __stdcall WindowsApplication::InitializeMainWindow(const wchar_t* className
 {
 	// NEW -> WindowsApplication Destructor Delete
 	mainWindow_ = new Window(className, windowText);
-	const wchar_t* iConPath = L"..//..//Resource//Logo//LogoResize.ico";
-
-	if (nullptr == iConPath)
+	//const wchar_t* iConPath = L"..//..//Resource//Logo//LogoResize.ico";
+	
+	if (nullptr == iconPath_)
 	{
 		DEBUG_BREAK();
 		return false;
 	}
 
-	iCon_ = (HICON)LoadImage(NULL, iConPath, IMAGE_ICON, 0, 0, LR_LOADFROMFILE | LR_DEFAULTSIZE | LR_SHARED);
+	iCon_ = (HICON)LoadImage(NULL, iconPath_, IMAGE_ICON, 0, 0, LR_LOADFROMFILE | LR_DEFAULTSIZE | LR_SHARED);
 	if (nullptr == iCon_)
 	{
 		DEBUG_BREAK();
@@ -153,9 +156,19 @@ void __stdcall WindowsApplication::SetShowCursor(bool show)
 	}
 }
 
+void* __stdcall WindowsApplication::GetMainWindowHandle()
+{
+	return mainWindow_->Handle();
+}
+
 const HINSTANCE WindowsApplication::HandleInstance() const
 {
 	return hInstance_;
+}
+
+Window* WindowsApplication::MainWindow() const
+{
+	return mainWindow_;
 }
 
 const PWSTR WindowsApplication::CmdLine() const

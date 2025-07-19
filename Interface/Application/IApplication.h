@@ -11,6 +11,8 @@ struct IApplication : public IUnknown {
 
 	virtual void __stdcall SetShowCursor(bool show) = 0;
 
+	virtual void* __stdcall GetMainWindowHandle() = 0;
+
 	//virtual void __stdcall UpdateMousePosition() = 0;
 
 	//virtual const Vector& __stdcall GetMousePosition() const = 0;
