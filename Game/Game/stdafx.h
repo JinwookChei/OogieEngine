@@ -18,15 +18,15 @@
 #endif 
 #ifdef _DEBUG
 #ifdef _WIN64
-#define APPLICATION_NAME L"Application_x64_Debug"
+#define APPLICATION_DLL L"Application_x64_Debug"
 #else
-#define APPLICATION_NAME L"Application_x86_Debug"
+#define APPLICATION_DLL L"Application_x86_Debug"
 #endif // 
 #else
 #ifdef _WIN64
-#define APPLICATION_NAME L"Application_x64_Release"
+#define APPLICATION_DLL L"Application_x64_Release"
 #else
-#define APPLICATION_NAME L"Application_x86_Release"
+#define APPLICATION_DLL L"Application_x86_Release"
 #endif
 
 #endif // _DEBUG

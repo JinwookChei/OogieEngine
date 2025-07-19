@@ -8,37 +8,35 @@ BOOL APIENTRY DllMain( HMODULE hModule,
     switch (ul_reason_for_call)
     {
     case DLL_PROCESS_ATTACH:
+    {
 #ifdef _DEBUG
         _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
         //_CrtSetBreakAlloc(352);
 #endif  // _DEBUG
+    } break;
     case DLL_THREAD_ATTACH:
     case DLL_THREAD_DETACH:
     case DLL_PROCESS_DETACH:
+    {
 #ifdef _DEBUG
         _ASSERT(_CrtCheckMemory());
 #endif  // _DEBUG
-        break;
+    }
+    break;
     }
     return TRUE;
 }
 
 
-extern "C" __declspec(dllexport) bool __stdcall CreateWindowsApplication(
-    void** newApplication,
-    HINSTANCE hInstance,
-    PWSTR pCmdLine,
-    int nCmdShow)
+extern "C" __declspec(dllexport) bool CreateRenderer(void** pVoid)
 {
-    //NEW -> Release In GameMain.cpp
-    IApplication* newApp = new WindowsApplication(hInstance, pCmdLine, nCmdShow);
-
-    if (nullptr == newApp)
+    IRenderer* pNew = new D3D11Renderer;
+    if (nullptr == pNew)
     {
+        DEBUG_BREAK();
         return false;
     }
 
-    *newApplication = newApp;
-
+    *pVoid = pNew;
     return true;
 }

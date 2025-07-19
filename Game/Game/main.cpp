@@ -9,7 +9,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine
 #endif  // _DEBUG
 
 
-	HMODULE loadApplicationLibrary = LoadLibrary(APPLICATION_NAME);
+	HMODULE loadApplicationLibrary = LoadLibrary(APPLICATION_DLL);
 	const wchar_t* MainWindowClassName = L"MAIN";
 	const wchar_t* MainWindowText = L"WOOGIE ENGINE";
 
