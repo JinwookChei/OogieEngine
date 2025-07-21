@@ -2,7 +2,6 @@
 #include "StartUp.h"
 #include "Engine.h"
 
-
 typedef bool (*DLL_FUNCTION_ARG5)(void**, HINSTANCE, PWSTR, int, const wchar_t*);
 typedef bool (*DLL_FUNCTION_ARG1)(void**);
 
@@ -88,14 +87,16 @@ void Engine::Run()
 
 bool Engine::LoadApplication(HINSTANCE hInstance, PWSTR pCmdLine, int nCmdShow)
 {
-	applicationModule_ = LoadLibrary(L"WindowsApplication_x64_Debug.dll");
-	if (!applicationModule_) {
+	applicationModule_ = LoadLibrary(L"Application_x64_Debug.dll");
+	if (!applicationModule_) 
+	{
 		DEBUG_BREAK();
 		return false;
 	}
 
 	DLL_FUNCTION_ARG5 CreateWindowsApplication = (DLL_FUNCTION_ARG5)GetProcAddress(applicationModule_, "CreateWindowsApplication");
-	if (!CreateWindowsApplication) {
+	if (!CreateWindowsApplication) 
+	{
 		DEBUG_BREAK();
 		return false;
 	}
@@ -105,12 +106,14 @@ bool Engine::LoadApplication(HINSTANCE hInstance, PWSTR pCmdLine, int nCmdShow)
 	const wchar_t* MainWindowText = L"WOOGIE ENGINE";
 
 	CreateWindowsApplication((void**)&application_, hInstance, pCmdLine, nCmdShow, iConPath);
-	if (nullptr == application_) {
+	if (nullptr == application_) 
+	{
 		DEBUG_BREAK();
 		return false;
 	}
 		
-	if (false == application_->InitializeMainWindow(MainWindowClassName, MainWindowText)) {
+	if (false == application_->InitializeMainWindow(MainWindowClassName, MainWindowText)) 
+	{
 		return false;
 	}
 
@@ -120,19 +123,22 @@ bool Engine::LoadApplication(HINSTANCE hInstance, PWSTR pCmdLine, int nCmdShow)
 bool Engine::LoadRenderer()
 {
 	rendererModule_ = LoadLibrary(L"RendererD3D11_x64_Debug.dll");
-	if (!rendererModule_) {
+	if (!rendererModule_) 
+	{
 		DEBUG_BREAK();
 		return false;
 	}
 
 	DLL_FUNCTION_ARG1 CreateRenderer = (DLL_FUNCTION_ARG1)GetProcAddress(rendererModule_, "CreateRenderer");
-	if (!CreateRenderer) {
+	if (!CreateRenderer) 
+	{
 		DEBUG_BREAK();
 		return false;
 	}
 
 	CreateRenderer((void**)&renderer_);
-	if (nullptr == renderer_) {
+	if (nullptr == renderer_) 
+	{
 		DEBUG_BREAK();
 		return false;
 	}
@@ -153,6 +159,7 @@ bool Engine::InitializeStartUp(IStartup* startUp)
 		DEBUG_BREAK();
 		return false;
 	}
+
 	startUp_ = startUp;
 	startUp_->AddRef();
 

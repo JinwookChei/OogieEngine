@@ -13,29 +13,15 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Interface">
-      <UniqueIdentifier>{639dde9a-e4f2-407e-b017-70a7ec640010}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Precompiled Header">
-      <UniqueIdentifier>{2e2d1e1b-03fa-456f-85b4-7d9904420ec9}</UniqueIdentifier>
+      <UniqueIdentifier>{685bfa00-634b-4108-a7ca-d4586244d7d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Interface">
+      <UniqueIdentifier>{86385d27-0590-4756-9799-4a11dad60f78}</UniqueIdentifier>
     </Filter>
     <Filter Include="Main">
-      <UniqueIdentifier>{f5032545-665b-41ad-8445-8f25b9cf3900}</UniqueIdentifier>
+      <UniqueIdentifier>{5ea1ba14-4ef9-47b9-b9a5-75aa77e5d1a6}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\Interface\Application\IApplication.h">
-      <Filter>Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="stdafx.h">
-      <Filter>Precompiled Header</Filter>
-    </ClInclude>
-    <ClInclude Include="AppManager.h">
-      <Filter>Main</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Interface\Renderer\IRenderer.h">
-      <Filter>Interface</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -47,5 +33,19 @@
     <ClCompile Include="AppManager.cpp">
       <Filter>Main</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Precompiled Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Interface\Application\IApplication.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Interface\Renderer\IRenderer.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="AppManager.h">
+      <Filter>Main</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
