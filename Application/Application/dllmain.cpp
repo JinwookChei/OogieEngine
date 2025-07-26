@@ -37,6 +37,7 @@ extern "C" __declspec(dllexport) bool __stdcall CreateWindowsApplication(
 
     if (nullptr == newApp)
     {
+        DEBUG_BREAK();
         return false;
     }
 

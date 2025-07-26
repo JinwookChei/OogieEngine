@@ -10,12 +10,29 @@ public:
 
 	ENGINE_API static void DestroyEngine(Engine* engine);
 
-	ENGINE_API bool Initialize(HINSTANCE hInstance, PWSTR pCmdLine, int nCmdShow, IStartup* startup);
+	ENGINE_API bool Initialize
+	(
+		HINSTANCE hInstance,
+		PWSTR pCmdLine,
+		int nCmdShow,
+		const wchar_t* mainWindowClassName,
+		const wchar_t* mainWindowText,
+		const wchar_t* iConPath,
+		IStartup* startup
+	);
 
 	ENGINE_API void Run();
 
 private:
-	bool LoadApplication(HINSTANCE hInstance, PWSTR pCmdLine, int nCmdShow);
+	bool LoadApplication
+	(
+		HINSTANCE hInstance,
+		PWSTR pCmdLine,
+		int nCmdShow,
+		const wchar_t* mainWindowClassName,
+		const wchar_t* mainWindowText,
+		const wchar_t* iConPath
+	);
 
 	bool LoadRenderer();
 

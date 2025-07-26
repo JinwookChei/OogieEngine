@@ -34,6 +34,7 @@ bool Window::Initialize()
 
 	if (hWnd_ == NULL)
 	{
+		DEBUG_BREAK();
 		return false;
 	}
 

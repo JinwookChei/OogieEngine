@@ -44,7 +44,6 @@ bool RenderTarget::SetTexture(Texture* texture)
 
 	if (nullptr == texture)
 	{
-		DEBUG_BREAK();
 		return false;
 	}
 

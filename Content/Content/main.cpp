@@ -9,6 +9,11 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine
 #endif  // _DEBUG
 
 	AppManager* appManager = new AppManager;
+	if (nullptr == appManager)
+	{
+		DEBUG_BREAK();
+		return 0;
+	}
 
 	if (false == appManager->Initialize(hInstance, pCmdLine, cmdShow))
 	{

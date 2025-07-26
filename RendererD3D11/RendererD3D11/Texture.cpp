@@ -50,8 +50,7 @@ bool Texture::SetTexture(ID3D11Texture2D* texture)
 
 	if (nullptr == texture)
 	{
-		DEBUG_BREAK();
-		return false;
+		return true;
 	}
 
 	texture_ = texture;
@@ -59,7 +58,6 @@ bool Texture::SetTexture(ID3D11Texture2D* texture)
 
 	if (false == CreateRenderTargetView())
 	{
-		DEBUG_BREAK();
 		return false;
 	}
 
@@ -70,7 +68,6 @@ bool Texture::CreateRenderTargetView()
 {
 	if (nullptr == texture_)
 	{
-		DEBUG_BREAK();
 		return false;
 	}
 

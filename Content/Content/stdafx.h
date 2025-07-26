@@ -39,10 +39,5 @@
 #include "Engine.h"
 #include "StartUp.h"
 
-//#include "..\..\Engine\Engine\Engine.h"
-//#include "..\..\Engine\Engine\StartUp.h"
-
-
-
 #include "AppManager.h"
-extern IEngineContainer* EngineContainer;
+extern IEngineContainer* GEngineContainer;

@@ -1,18 +1,18 @@
 #include "stdafx.h"
 #include "AppManager.h"
 
-IEngineContainer* EngineContainer = nullptr;
+IEngineContainer* GEngineContainer = nullptr;
 
 AppManager::AppManager()
 	:refCount_(1),
 	engine_(nullptr)
 {
-	EngineContainer = this;
+	GEngineContainer = this;
 }
 
 AppManager::~AppManager()
 {
-	EngineContainer = nullptr;
+	GEngineContainer = nullptr;
 }
 
 HRESULT __stdcall AppManager::QueryInterface(REFIID riid, void** ppvObject)
@@ -50,7 +50,17 @@ bool AppManager::Initialize(HINSTANCE hInstance, PWSTR pCmdLine, int cmdShow)
 {
 	engine_ = Engine::CreateEngine();
 
-	if (false == engine_->Initialize(hInstance, pCmdLine, cmdShow, this))
+	if (nullptr == engine_)
+	{
+		DEBUG_BREAK();
+		return false;
+	}
+
+	const wchar_t* mainWindowClassName = L"MAIN";
+	const wchar_t* mainWindowText = L"WOOGIE ENGINE";
+	const wchar_t* iConPath = L"..//..//Resource//Logo//LogoResize.ico";
+
+	if (false == engine_->Initialize(hInstance, pCmdLine, cmdShow, mainWindowClassName, mainWindowText, iConPath, this))
 	{
 		Engine::DestroyEngine(engine_);
 		return false;
@@ -63,6 +73,7 @@ void AppManager::EngineLoop()
 {
 	if (nullptr == engine_)
 	{
+		DEBUG_BREAK();
 		return;
 	}
 

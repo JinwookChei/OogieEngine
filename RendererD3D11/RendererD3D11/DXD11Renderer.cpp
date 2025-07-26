@@ -64,7 +64,6 @@ bool __stdcall D3D11Renderer::Initialize(void* hWnd, UINT width, UINT height)
 	IDXGIAdapter* pBestAdapter = GetBestAdapter();
 	if (nullptr == pBestAdapter)
 	{
-		DEBUG_BREAK();
 		return false;
 	}
 
@@ -105,13 +104,11 @@ bool __stdcall D3D11Renderer::Initialize(void* hWnd, UINT width, UINT height)
 
 	if (false == CreateSwapChain(width, height))
 	{
-		DEBUG_BREAK();
 		return false;
 	}
 
 	if (false == CreateRenderTarget())
 	{
-		DEBUG_BREAK();
 		return false;
 	}
 
@@ -142,6 +139,7 @@ IDXGIAdapter* D3D11Renderer::GetBestAdapter()
 	HRESULT hr = CreateDXGIFactory(__uuidof(IDXGIFactory), (void**)&pFactory);
 	if (FAILED(hr))
 	{
+		DEBUG_BREAK();
 		return nullptr;
 	}
 
@@ -273,14 +271,12 @@ bool D3D11Renderer::CreateRenderTarget()
 	if (false == newTexture->SetTexture(backBufferTexture))
 	{
 		newTexture->Release();
-		DEBUG_BREAK();
 		return false;
 	}
 
 	backBuffer_ = new RenderTarget;
 	if (nullptr == backBuffer_)
 	{
-		backBuffer_->Release();
 		DEBUG_BREAK();
 		return false;
 	}

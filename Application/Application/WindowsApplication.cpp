@@ -63,8 +63,7 @@ HRESULT __stdcall WindowsApplication::QueryInterface(REFIID riid, void** ppvObje
 
 ULONG __stdcall WindowsApplication::AddRef(void)
 {
-	++refCount_;
-	return refCount_;
+	return ++refCount_;
 }
 
 ULONG __stdcall WindowsApplication::Release(void)
@@ -80,9 +79,13 @@ ULONG __stdcall WindowsApplication::Release(void)
 
 bool __stdcall WindowsApplication::InitializeMainWindow(const wchar_t* className, const wchar_t* windowText)
 {
-	// NEW -> WindowsApplication Destructor Delete
 	mainWindow_ = new Window(className, windowText);
-	//const wchar_t* iConPath = L"..//..//Resource//Logo//LogoResize.ico";
+	if (nullptr == mainWindow_)
+	{
+		DEBUG_BREAK();
+		return false;
+	}
+
 	
 	if (nullptr == iconPath_)
 	{
@@ -114,7 +117,7 @@ bool __stdcall WindowsApplication::InitializeMainWindow(const wchar_t* className
 
 	if (false == mainWindow_->Initialize())
 	{
-		DEBUG_BREAK();
+		return false;
 	}
 
 	mainWindow_->Show();

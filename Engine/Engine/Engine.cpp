@@ -35,7 +35,16 @@ void Engine::DestroyEngine(Engine* engine)
 	delete engine;
 }
 
-bool Engine::Initialize(HINSTANCE hInstance, PWSTR pCmdLine, int nCmdShow, IStartup* startup)
+bool Engine::Initialize
+(
+	HINSTANCE hInstance,
+	PWSTR pCmdLine,
+	int nCmdShow,
+	const wchar_t* mainWindowClassName,
+	const wchar_t* mainWindowText,
+	const wchar_t* iConPath,
+	IStartup* startup
+)
 {
 	if (nullptr == startup)
 	{
@@ -43,21 +52,18 @@ bool Engine::Initialize(HINSTANCE hInstance, PWSTR pCmdLine, int nCmdShow, IStar
 		return false;
 	}
 
-	if (false == LoadApplication(hInstance, pCmdLine, nCmdShow))
+	if (false == LoadApplication(hInstance, pCmdLine, nCmdShow, mainWindowClassName, mainWindowText, iConPath))
 	{
-		DEBUG_BREAK();
 		return false;
 	}
 
 	if (false == LoadRenderer())
 	{
-		DEBUG_BREAK();
 		return false;
 	}
 
 	if (false == InitializeStartUp(startup))
 	{
-		DEBUG_BREAK();
 		return false;
 	}
 
@@ -85,35 +91,40 @@ void Engine::Run()
 	}
 }
 
-bool Engine::LoadApplication(HINSTANCE hInstance, PWSTR pCmdLine, int nCmdShow)
+bool Engine::LoadApplication
+(
+	HINSTANCE hInstance,
+	PWSTR pCmdLine,
+	int nCmdShow,
+	const wchar_t* mainWindowClassName,
+	const wchar_t* mainWindowText,
+	const wchar_t* iConPath
+)
 {
 	applicationModule_ = LoadLibrary(L"Application_x64_Debug.dll");
-	if (!applicationModule_) 
+	if (!applicationModule_)
 	{
 		DEBUG_BREAK();
 		return false;
 	}
 
 	DLL_FUNCTION_ARG5 CreateWindowsApplication = (DLL_FUNCTION_ARG5)GetProcAddress(applicationModule_, "CreateWindowsApplication");
-	if (!CreateWindowsApplication) 
+	if (!CreateWindowsApplication)
 	{
 		DEBUG_BREAK();
 		return false;
 	}
-
-	const wchar_t* iConPath = L"..//..//Resource//Logo//LogoResize.ico";
-	const wchar_t* MainWindowClassName = L"MAIN";
-	const wchar_t* MainWindowText = L"WOOGIE ENGINE";
 
 	CreateWindowsApplication((void**)&application_, hInstance, pCmdLine, nCmdShow, iConPath);
-	if (nullptr == application_) 
+	if (nullptr == application_)
 	{
 		DEBUG_BREAK();
 		return false;
 	}
-		
-	if (false == application_->InitializeMainWindow(MainWindowClassName, MainWindowText)) 
+
+	if (false == application_->InitializeMainWindow(mainWindowClassName, mainWindowText))
 	{
+		DEBUG_BREAK();
 		return false;
 	}
 
@@ -123,21 +134,21 @@ bool Engine::LoadApplication(HINSTANCE hInstance, PWSTR pCmdLine, int nCmdShow)
 bool Engine::LoadRenderer()
 {
 	rendererModule_ = LoadLibrary(L"RendererD3D11_x64_Debug.dll");
-	if (!rendererModule_) 
+	if (!rendererModule_)
 	{
 		DEBUG_BREAK();
 		return false;
 	}
 
 	DLL_FUNCTION_ARG1 CreateRenderer = (DLL_FUNCTION_ARG1)GetProcAddress(rendererModule_, "CreateRenderer");
-	if (!CreateRenderer) 
+	if (!CreateRenderer)
 	{
 		DEBUG_BREAK();
 		return false;
 	}
 
 	CreateRenderer((void**)&renderer_);
-	if (nullptr == renderer_) 
+	if (nullptr == renderer_)
 	{
 		DEBUG_BREAK();
 		return false;
