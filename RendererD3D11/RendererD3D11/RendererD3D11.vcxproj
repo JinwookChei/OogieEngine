@@ -143,6 +143,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\Interface\Renderer\IRenderer.h" />
     <ClInclude Include="DXD11Renderer.h" />
+    <ClInclude Include="InputLayout.h" />
     <ClInclude Include="PixelShader.h" />
     <ClInclude Include="RenderTarget.h" />
     <ClInclude Include="BaseShader.h" />
@@ -154,6 +155,7 @@
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="DXD11Renderer.cpp" />
+    <ClCompile Include="InputLayout.cpp" />
     <ClCompile Include="PixelShader.cpp" />
     <ClCompile Include="RenderTarget.cpp" />
     <ClCompile Include="BaseShader.cpp" />

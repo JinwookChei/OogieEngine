@@ -66,6 +66,9 @@
     <ClInclude Include="PixelShader.h">
       <Filter>Source Files\Shader</Filter>
     </ClInclude>
+    <ClInclude Include="InputLayout.h">
+      <Filter>Source Files\Layout</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -94,6 +97,9 @@
     </ClCompile>
     <ClCompile Include="PixelShader.cpp">
       <Filter>Source Files\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="InputLayout.cpp">
+      <Filter>Source Files\Layout</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

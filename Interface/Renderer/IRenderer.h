@@ -14,8 +14,8 @@ struct IMaterial : public IUnknown {
 struct IShader : public IUnknown {
 };
 
-struct IInputLayOut : public IUnknown {
-	virtual bool AddInputLayOut(const char* semanticName, uint32_t format, bool isInstanceData, uint32_t inputSlot, uint32_t semanticIndex) = 0;
+struct IInputLayout : public IUnknown {
+	virtual bool AddInputLayout(const char* semanticName, UINT semanticIndex, DXGI_FORMAT format, UINT inputSlot, bool isInstanceData) = 0;
 };
 
 struct IRenderer : public IUnknown {
