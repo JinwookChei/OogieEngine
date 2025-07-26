@@ -9,6 +9,7 @@ VertexShader::VertexShader()
 
 VertexShader::~VertexShader()
 {
+	CleanUp();
 }
 
 bool VertexShader::CreateShader(void* shaderByteCode, size_t byteCodeLength)

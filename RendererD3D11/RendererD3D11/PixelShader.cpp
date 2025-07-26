@@ -9,6 +9,7 @@ PixelShader::PixelShader()
 
 PixelShader::~PixelShader()
 {
+	CleanUp();
 }
 
 bool PixelShader::CreateShader(void* shaderByteCode, size_t byteCodeLength)

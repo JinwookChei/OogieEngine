@@ -8,7 +8,7 @@ public:
 
 	virtual ~BaseShader() = 0
 	{
-		CleanUp();
+		//CleanUp();
 	}
 
 	HRESULT __stdcall QueryInterface(REFIID riid, _COM_Outptr_ void __RPC_FAR* __RPC_FAR* ppvObject) override;
@@ -21,12 +21,8 @@ public:
 
 	virtual void SetShader() = 0;
 
-protected:
 	virtual void CleanUp() = 0;
-
 
 private:
 	UINT refCount_;
 };
-
-

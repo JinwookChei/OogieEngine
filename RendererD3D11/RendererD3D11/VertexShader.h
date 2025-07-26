@@ -12,7 +12,6 @@ public:
 
 	void SetShader() override;
 
-protected:
 	void CleanUp() override;
 
 private:

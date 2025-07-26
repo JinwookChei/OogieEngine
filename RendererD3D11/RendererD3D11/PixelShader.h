@@ -1,6 +1,5 @@
 #pragma once
 
-
 class PixelShader
 	: public BaseShader
 {
@@ -13,7 +12,6 @@ public:
 
 	void SetShader() override;
 
-protected:
 	void CleanUp() override;
 
 private:
