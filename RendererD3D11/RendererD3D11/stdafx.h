@@ -11,12 +11,17 @@
 #define DEBUG_BREAK
 #endif // DEBUG
 
+#define UTILITY_API __declspec(dllimport)
+
 #include <windows.h>
 #include <d3d11.h>
 #include <d3dcompiler.h>
 #include <dxgi.h>
+#include <DirectXMath.h>
+#include <vector>
 
 #include <Renderer/IRenderer.h>
+#include <Utility/Float4.h>
 
 #include "DXD11Renderer.h"
 
