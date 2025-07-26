@@ -6,7 +6,7 @@
 
 
 #ifdef _DEBUG
-#pragma comment (lib, "System_x64_Debug")
+#pragma comment (lib, "Utility_x64_Debug")
 #else
-#pragma comment (lib, "System_x64_Release")
+#pragma comment (lib, "Utility_x64_Release")
 #endif

@@ -7,7 +7,7 @@ class D3D11Renderer final
 public:
 	D3D11Renderer();
 
-	~D3D11Renderer();
+	virtual ~D3D11Renderer();
 
 	HRESULT __stdcall QueryInterface(REFIID riid, _COM_Outptr_ void __RPC_FAR* __RPC_FAR* ppvObject) override;
 

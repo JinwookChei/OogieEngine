@@ -143,21 +143,27 @@
   <ItemGroup>
     <ClInclude Include="..\..\Interface\Renderer\IRenderer.h" />
     <ClInclude Include="DXD11Renderer.h" />
+    <ClInclude Include="PixelShader.h" />
     <ClInclude Include="RenderTarget.h" />
+    <ClInclude Include="BaseShader.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="VertexBuffer.h" />
+    <ClInclude Include="VertexShader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="DXD11Renderer.cpp" />
+    <ClCompile Include="PixelShader.cpp" />
     <ClCompile Include="RenderTarget.cpp" />
+    <ClCompile Include="BaseShader.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="VertexBuffer.cpp" />
+    <ClCompile Include="VertexShader.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

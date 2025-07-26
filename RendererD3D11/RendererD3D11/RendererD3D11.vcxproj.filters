@@ -57,6 +57,15 @@
     <ClInclude Include="VertexBuffer.h">
       <Filter>Source Files\Vertex</Filter>
     </ClInclude>
+    <ClInclude Include="BaseShader.h">
+      <Filter>Source Files\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexShader.h">
+      <Filter>Source Files\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="PixelShader.h">
+      <Filter>Source Files\Shader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -76,6 +85,15 @@
     </ClCompile>
     <ClCompile Include="VertexBuffer.cpp">
       <Filter>Source Files\Vertex</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseShader.cpp">
+      <Filter>Source Files\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexShader.cpp">
+      <Filter>Source Files\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="PixelShader.cpp">
+      <Filter>Source Files\Shader</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

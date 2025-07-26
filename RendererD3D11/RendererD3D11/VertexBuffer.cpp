@@ -10,6 +10,7 @@ VertexBuffer::VertexBuffer()
 
 VertexBuffer::~VertexBuffer()
 {
+	CleanUp();
 }
 
 HRESULT __stdcall VertexBuffer::QueryInterface(REFIID riid, void** ppvObject)
@@ -24,7 +25,13 @@ ULONG __stdcall VertexBuffer::AddRef()
 
 ULONG __stdcall VertexBuffer::Release()
 {
-	return 0;
+	--refCount_;
+	ULONG tmpRefCount = refCount_;
+	if (0 == refCount_) {
+		delete this;
+	}
+
+	return tmpRefCount;
 }
 
 bool VertexBuffer::Initialize(void* vertices, UINT vertexSize, void* indices /*= nullptr*/, UINT indexSize /*= 0*/)
@@ -95,4 +102,20 @@ bool VertexBuffer::Initialize(void* vertices, UINT vertexSize, void* indices /*=
 	}
 
 	return true;
+}
+
+
+void VertexBuffer::CleanUp()
+{
+	if (nullptr != vertexBuffer_)
+	{
+		vertexBuffer_->Release();
+		vertexBuffer_ = nullptr;
+	}
+
+	if (nullptr != indexBuffer_)
+	{
+		indexBuffer_->Release();
+		indexBuffer_ = nullptr;
+	}
 }

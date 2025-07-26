@@ -5,7 +5,7 @@ class Texture final :
 public:
 	Texture();
 
-	~Texture();
+	virtual ~Texture();
 
 	HRESULT __stdcall QueryInterface(REFIID riid, _COM_Outptr_ void __RPC_FAR* __RPC_FAR* ppvObject) override;
 
