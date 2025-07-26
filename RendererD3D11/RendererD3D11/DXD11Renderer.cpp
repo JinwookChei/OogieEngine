@@ -117,10 +117,14 @@ bool __stdcall D3D11Renderer::Initialize(void* hWnd, UINT width, UINT height)
 
 void __stdcall D3D11Renderer::BeginRender()
 {
+	backBuffer_->Clear();
+
+	backBuffer_->Setting();
 }
 
 void __stdcall D3D11Renderer::EndRender()
 {
+	swapChain_->Present(0, 0);
 }
 
 ID3D11Device* D3D11Renderer::Device()
@@ -217,6 +221,11 @@ bool D3D11Renderer::CreateSwapChain(UINT width, UINT height)
 	}
 
 	hr = swapFactory->CreateSwapChain(device_, &sd, &swapChain_);
+	if (FAILED(hr) || nullptr == swapChain_)
+	{
+		DEBUG_BREAK();
+		goto lb_return;
+	}
 
 lb_return:
 	if (nullptr != swapDevice)

@@ -13,25 +13,31 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Engine">
-      <UniqueIdentifier>{563ddc09-4294-4be4-8cc7-208d695d862d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Precompiled Header">
       <UniqueIdentifier>{402b04c6-17c1-452f-bca4-65fe104e4dd8}</UniqueIdentifier>
     </Filter>
     <Filter Include="Interface">
       <UniqueIdentifier>{43a3d1b4-9687-4bd2-a35f-d05fe9e121f9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Engine">
+      <UniqueIdentifier>{563ddc09-4294-4be4-8cc7-208d695d862d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Main">
+      <UniqueIdentifier>{a154f091-de60-45c0-ab4b-4dbbbcb0b917}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Manager">
+      <UniqueIdentifier>{e5ff74fd-18a0-4e03-bc41-989682524065}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
-      <Filter>Engine</Filter>
+      <Filter>Source Files\Engine</Filter>
     </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>Precompiled Header</Filter>
     </ClInclude>
     <ClInclude Include="StartUp.h">
-      <Filter>Engine</Filter>
+      <Filter>Source Files\Engine</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Interface\Application\IApplication.h">
       <Filter>Interface</Filter>
@@ -39,19 +45,22 @@
     <ClInclude Include="..\..\Interface\Renderer\IRenderer.h">
       <Filter>Interface</Filter>
     </ClInclude>
+    <ClInclude Include="InputManager.h">
+      <Filter>Source Files\Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="dllmain.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Engine.cpp">
-      <Filter>Engine</Filter>
+      <Filter>Source Files\Engine</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Precompiled Header</Filter>
     </ClCompile>
-    <ClCompile Include="StartUp.cpp">
-      <Filter>Engine</Filter>
+    <ClCompile Include="dllmain.cpp">
+      <Filter>Source Files\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="InputManager.cpp">
+      <Filter>Source Files\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

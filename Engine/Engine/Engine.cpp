@@ -5,6 +5,8 @@
 typedef bool (*DLL_FUNCTION_ARG5)(void**, HINSTANCE, PWSTR, int, const wchar_t*);
 typedef bool (*DLL_FUNCTION_ARG1)(void**);
 
+InputManager* GInputManager = nullptr;
+
 Engine::Engine()
 	: startUp_(nullptr),
 	application_(nullptr),
@@ -59,6 +61,13 @@ bool Engine::Initialize
 
 	if (false == LoadRenderer())
 	{
+		return false;
+	}
+
+	GInputManager = new InputManager;
+	if (nullptr == GInputManager)
+	{
+		DEBUG_BREAK();
 		return false;
 	}
 
@@ -190,11 +199,19 @@ void Engine::CleanUp()
 		startUp_->Release();
 		startUp_ = nullptr;
 	}
+
+	if (nullptr != GInputManager)
+	{
+		delete GInputManager;
+		GInputManager = nullptr;
+	}
+
 	if (nullptr != renderer_)
 	{
 		renderer_->Release();
 		renderer_ = nullptr;
 	}
+
 	if (nullptr != application_)
 	{
 		application_->Release();

@@ -12,18 +12,19 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		PostQuitMessage(0);
 		return 0;
 
-	case WM_PAINT:
-	{
-		PAINTSTRUCT ps;
-		HDC hdc = BeginPaint(hwnd, &ps);
+	//case WM_PAINT:
+	//{
+	//	PAINTSTRUCT ps;
+	//	HDC hdc = BeginPaint(hwnd, &ps);
 
-		// All painting occurs here, between BeginPaint and EndPaint.
+	//	// All painting occurs here, between BeginPaint and EndPaint.
 
-		FillRect(hdc, &ps.rcPaint, (HBRUSH)(COLOR_WINDOW + 1));
+	//	FillRect(hdc, &ps.rcPaint, (HBRUSH)(COLOR_WINDOW + 1));
 
-		EndPaint(hwnd, &ps);
-	}
-	return 0;
+	//	EndPaint(hwnd, &ps);
+	//}
+	//return 0;
+
 
 	}
 	return DefWindowProc(hwnd, uMsg, wParam, lParam);

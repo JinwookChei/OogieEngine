@@ -1,6 +1,5 @@
 #pragma once
 
-
 class UTILITY_API Float4
 {
 public:

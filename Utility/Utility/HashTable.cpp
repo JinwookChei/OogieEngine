@@ -15,8 +15,6 @@ HashTableIterator& HashTableIterator::operator++() {
 		return *this;
 	}
 
-	// 현재 버킷의 루프를 다돌았음
-	// 다음 버킷의 루프를 돌아야함
 	do {
 		++currentBucketCount_;
 		if (maxBucketCount_ <= currentBucketCount_ || nullptr == bucketDescTable_) {

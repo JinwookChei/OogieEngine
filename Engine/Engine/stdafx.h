@@ -12,9 +12,20 @@
 #endif // DEBUG
 
 #define ENGINE_API __declspec(dllexport)
+#define UTILITY_API __declspec(dllimport)
 
 #include <windows.h>
+#include <DirectXMath.h>
 
 #include <Application/IApplication.h>
 #include <Renderer/IRenderer.h>
+
+#include <Utility/Float4.h>
+#include <Utility/LinkedList.h>
+#include <Utility/HashTable.h>
+
+
+#include "InputManager.h"
+extern InputManager* GInputManager;
+
 
