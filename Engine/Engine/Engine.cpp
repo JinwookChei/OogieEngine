@@ -76,6 +76,12 @@ bool Engine::Initialize
 		return false;
 	}
 
+	//TEMP
+	if (false == renderer_->CreateTriangle())
+	{
+		return false;
+	}
+
 	return true;
 }
 
@@ -88,6 +94,7 @@ void Engine::Run()
 		renderer_->BeginRender();
 
 		// ... render
+		renderer_->Render();
 
 		renderer_->EndRender();
 	}

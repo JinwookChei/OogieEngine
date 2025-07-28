@@ -3,6 +3,7 @@
 class PixelShader
 	: public BaseShader
 {
+	friend D3D11Renderer;
 public:
 	PixelShader();
 

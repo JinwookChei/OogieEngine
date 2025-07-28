@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include "BaseShader.h"
 #include "PixelShader.h"
 
 PixelShader::PixelShader()

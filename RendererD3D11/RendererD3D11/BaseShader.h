@@ -6,10 +6,12 @@ class BaseShader
 public:
 	BaseShader();
 
-	virtual ~BaseShader() = 0
-	{
-		//CleanUp();
-	}
+	virtual ~BaseShader();
+
+	//virtual ~BaseShader() = 0
+	//{
+	//	CleanUp();
+	//}
 
 	HRESULT __stdcall QueryInterface(REFIID riid, _COM_Outptr_ void __RPC_FAR* __RPC_FAR* ppvObject) override;
 

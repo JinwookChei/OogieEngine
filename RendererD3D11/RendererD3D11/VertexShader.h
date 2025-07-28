@@ -1,8 +1,10 @@
 #pragma once
 
+
 class VertexShader
 	: public BaseShader
-{
+{	
+	friend D3D11Renderer;
 public:
 	VertexShader();
 

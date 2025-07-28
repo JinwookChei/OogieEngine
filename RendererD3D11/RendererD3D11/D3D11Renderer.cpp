@@ -1,7 +1,15 @@
 #include "stdafx.h"
 #include "Texture.h"
 #include "RenderTarget.h"
-#include "DXD11Renderer.h"
+
+#include "VertexBuffer.h"
+#include "VertexShader.h"
+#include "PixelShader.h"
+
+
+#include "D3D11Renderer.h"
+
+
 
 D3D11Renderer* GRenderer = nullptr;
 
@@ -12,7 +20,11 @@ D3D11Renderer::D3D11Renderer()
 	device_(nullptr),
 	deviceContext_(nullptr),
 	swapChain_(nullptr),
-	backBuffer_(nullptr)
+	backBuffer_(nullptr),
+	mesh_(nullptr),
+	vertexShader_(nullptr),
+	pixelShader_(nullptr),
+	inputLayout_(nullptr)
 {
 	GRenderer = this;
 }
@@ -45,7 +57,7 @@ ULONG __stdcall D3D11Renderer::Release()
 
 bool __stdcall D3D11Renderer::Initialize(void* hWnd, UINT width, UINT height)
 {
-	if (nullptr == hWnd) 
+	if (nullptr == hWnd)
 	{
 		DEBUG_BREAK();
 		return false;
@@ -125,6 +137,184 @@ void __stdcall D3D11Renderer::BeginRender()
 void __stdcall D3D11Renderer::EndRender()
 {
 	swapChain_->Present(0, 0);
+}
+
+void __stdcall D3D11Renderer::Render()
+{
+	UINT stride = sizeof(SimpleVertex);
+	UINT offset = 0;
+	deviceContext_->IASetVertexBuffers(0, 1, &mesh_->vertexBuffer_, &stride, &offset);
+	deviceContext_->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	deviceContext_->VSSetShader(vertexShader_->shader_, nullptr, 0);
+	deviceContext_->PSSetShader(pixelShader_->shader_, nullptr, 0);
+
+	deviceContext_->Draw(3, 0);
+}
+
+bool D3D11Renderer::CreateTriangle()
+{
+	SimpleVertex vertices[] = {
+{DirectX::XMFLOAT3(0.0f, 0.5f, 0.0f), DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f)},
+{DirectX::XMFLOAT3(0.5f, -0.5f, 0.0f), DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f)},
+{DirectX::XMFLOAT3(-0.5f, -0.5f, 0.0f), DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f)}
+	};
+
+	// Shader 코드
+	const char* g_VS = R"(
+struct VS_INPUT
+{
+    float3 pos : POSITION;
+	float4 color : COLOR;
+};
+
+struct PS_INPUT
+{
+    float4 pos : SV_POSITION;
+	float4 color : COLOR;
+};
+
+PS_INPUT VS(VS_INPUT input)
+{
+    PS_INPUT output = (PS_INPUT)0;
+    output.pos = float4(input.pos, 1.0f);
+	output.color = input.color;
+    return output;
+}
+)";
+
+	const char* g_PS = R"(
+struct PS_INPUT
+{
+	float4 position : SV_POSITION;
+	float4 color : COLOR;
+};
+
+float4 PS(PS_INPUT input) : SV_Target
+{
+	return input.color; // 빨간색으로 출력
+}
+)";
+
+	mesh_ = new VertexBuffer;
+	if (nullptr == mesh_)
+	{
+		return false;
+	}
+	if (false == mesh_->Initialize(vertices, sizeof(SimpleVertex)*_countof(vertices)))
+	{
+		mesh_->Release();
+		mesh_ = nullptr;
+		return false;
+	}
+
+
+	// Vertex Shader
+	ID3DBlob* pVSBlob = nullptr;
+	HRESULT hr = D3DCompile(g_VS, strlen(g_VS), nullptr, nullptr, nullptr, "VS", "vs_4_0", 0, 0, &pVSBlob, nullptr);
+	if (FAILED(hr))
+	{
+		mesh_->Release();
+		mesh_ = nullptr;
+		return false;
+	}
+
+	vertexShader_ = new VertexShader;
+	if (nullptr == vertexShader_)
+	{
+		pVSBlob->Release();
+		mesh_->Release();
+		mesh_ = nullptr;
+		return false;
+	}
+
+	if (false == vertexShader_->CreateShader(pVSBlob->GetBufferPointer(), pVSBlob->GetBufferSize()))
+	{
+		mesh_->Release();
+		mesh_ = nullptr;
+		vertexShader_->Release();
+		vertexShader_ = nullptr;
+		return false;
+	}
+
+	// Layout
+	//mesh_->AddInputLayout("POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, false);
+	//mesh_->AddInputLayout("COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, false);
+	//ID3D11InputLayout* inputLayout = nullptr;
+	//hr = device_->CreateInputLayout(mesh_->LayoutDesc().data(), (UINT)mesh_->LayoutDesc().size(), pVSBlob->GetBufferPointer(), pVSBlob->GetBufferSize(), &inputLayout);
+	//if (FAILED(hr))
+	//{
+	//	mesh_->Release();
+	//	mesh_ = nullptr;
+	//	vertexShader_->Release();
+	//	vertexShader_ = nullptr;
+	//	return false;
+	//}
+
+	D3D11_INPUT_ELEMENT_DESC layout[] = {
+	{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
+	{"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0},
+	};
+
+	hr = device_->CreateInputLayout(layout, ARRAYSIZE(layout), pVSBlob->GetBufferPointer(), pVSBlob->GetBufferSize(), &inputLayout_);
+	pVSBlob->Release();
+	if (FAILED(hr))
+	{
+		mesh_->Release();
+		mesh_ = nullptr;
+		vertexShader_->Release();
+		vertexShader_ = nullptr;
+		return false;
+	}
+
+	// Pixel Shader
+	ID3DBlob* pPSBlob = nullptr;
+	hr = D3DCompile(g_PS, strlen(g_PS), nullptr, nullptr, nullptr, "PS", "ps_4_0", 0, 0, &pPSBlob, nullptr);
+	if (FAILED(hr))
+	{
+		mesh_->Release();
+		mesh_ = nullptr;
+		vertexShader_->Release();
+		vertexShader_ = nullptr;
+		inputLayout_->Release();
+		inputLayout_ = nullptr;
+		return false;
+	}
+
+	pixelShader_ = new PixelShader;
+	if (nullptr == pixelShader_)
+	{
+		pPSBlob->Release();
+		mesh_->Release();
+		mesh_ = nullptr;
+		vertexShader_->Release();
+		vertexShader_ = nullptr;
+		inputLayout_->Release();
+		inputLayout_ = nullptr;
+		return false;
+	}
+	if (false == pixelShader_->CreateShader(pPSBlob->GetBufferPointer(), pPSBlob->GetBufferSize()))
+	{
+		mesh_->Release();
+		mesh_ = nullptr;
+		vertexShader_->Release();
+		vertexShader_ = nullptr;
+		pixelShader_->Release();
+		pixelShader_ = nullptr;
+		inputLayout_->Release();
+		inputLayout_ = nullptr;
+		return false;
+	}
+	pPSBlob->Release();
+
+	deviceContext_->IASetInputLayout(inputLayout_);
+	//UINT stride = sizeof(SimpleVertex);
+	//UINT offset = 0;
+	//deviceContext_->IASetVertexBuffers(0, 1, &mesh_->vertexBuffer_, &stride, &offset);
+	//deviceContext_->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	//deviceContext_->VSSetShader(vertexShader_->shader_, nullptr, 0);
+	//deviceContext_->PSSetShader(pixelShader_->shader_, nullptr, 0);
+
+	return true;
 }
 
 ID3D11Device* D3D11Renderer::Device()
@@ -212,7 +402,7 @@ bool D3D11Renderer::CreateSwapChain(UINT width, UINT height)
 		DEBUG_BREAK();
 		goto lb_return;
 	}
-	
+
 	hr = swapAdapter->GetParent(__uuidof(IDXGIFactory), (void**)&swapFactory);
 	if (FAILED(hr) || nullptr == swapFactory)
 	{
@@ -301,6 +491,28 @@ bool D3D11Renderer::CreateRenderTarget()
 
 void D3D11Renderer::CleanUp()
 {
+	if (nullptr != inputLayout_)
+	{
+		inputLayout_->Release();
+		inputLayout_ = nullptr;
+	}
+
+	if (nullptr != mesh_)
+	{
+		mesh_->Release();
+		mesh_ = nullptr;
+	}
+	if (nullptr != vertexShader_)
+	{
+		vertexShader_->Release();
+		vertexShader_ = nullptr;
+	}
+	if (nullptr != pixelShader_)
+	{
+		pixelShader_->Release();
+		pixelShader_ = nullptr;
+	}
+
 	if (nullptr != deviceContext_)
 	{
 		deviceContext_->ClearState();

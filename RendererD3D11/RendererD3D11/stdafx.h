@@ -23,7 +23,8 @@
 #include <Renderer/IRenderer.h>
 #include <Utility/Float4.h>
 
-#include "DXD11Renderer.h"
+#include "D3D11Renderer.h"
+#include "BaseShader.h"
 
 extern D3D11Renderer* GRenderer;
 

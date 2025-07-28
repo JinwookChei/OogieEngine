@@ -1,6 +1,11 @@
 #pragma once
 
+
 class RenderTarget;
+class VertexBuffer;
+class VertexShader;
+class PixelShader;
+
 class D3D11Renderer final
 	: public IRenderer
 {
@@ -20,6 +25,10 @@ public:
 	void __stdcall BeginRender() override;
 
 	void __stdcall EndRender() override;
+
+	void __stdcall Render() override;
+
+	bool __stdcall CreateTriangle() override;
 
 	ID3D11Device* Device();
 
@@ -47,4 +56,12 @@ private:
 	IDXGISwapChain* swapChain_;
 
 	RenderTarget* backBuffer_;
+
+	VertexBuffer* mesh_;
+
+	VertexShader* vertexShader_;
+
+	PixelShader* pixelShader_;
+
+	ID3D11InputLayout* inputLayout_;
 };

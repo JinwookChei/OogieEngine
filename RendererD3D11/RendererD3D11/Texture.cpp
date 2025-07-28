@@ -60,7 +60,7 @@ bool Texture::SetTexture(ID3D11Texture2D* texture)
 	{
 		return false;
 	}
-
+	
 	return true;
 }
 

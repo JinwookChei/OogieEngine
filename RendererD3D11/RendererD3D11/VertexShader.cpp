@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include "BaseShader.h"
 #include "VertexShader.h"
 
 VertexShader::VertexShader()

@@ -42,7 +42,7 @@
     <ClInclude Include="stdafx.h">
       <Filter>Precompiled Header</Filter>
     </ClInclude>
-    <ClInclude Include="DXD11Renderer.h">
+    <ClInclude Include="D3D11Renderer.h">
       <Filter>Source Files\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="RenderTarget.h">
@@ -74,7 +74,7 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Precompiled Header</Filter>
     </ClCompile>
-    <ClCompile Include="DXD11Renderer.cpp">
+    <ClCompile Include="D3D11Renderer.cpp">
       <Filter>Source Files\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="RenderTarget.cpp">

@@ -6,6 +6,11 @@ BaseShader::BaseShader()
 {
 }
 
+BaseShader::~BaseShader()
+{
+	//CleanUp();
+}
+
 HRESULT __stdcall BaseShader::QueryInterface(REFIID riid, void** ppvObject)
 {
 	return E_NOTIMPL;
