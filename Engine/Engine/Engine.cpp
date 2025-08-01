@@ -76,17 +76,17 @@ bool Engine::Initialize
 		return false;
 	}
 
-	//TEMP
-	if (false == renderer_->CreateTriangle())
-	{
-		return false;
-	}
-
 	return true;
 }
 
 void Engine::Run()
 {
+	//TEMP
+	if (false == renderer_->CreateTriangle())
+	{
+		return;
+	}
+
 	while (false == application_->ApplicationQuit())
 	{
 		application_->WinPumpMessage();
@@ -94,6 +94,7 @@ void Engine::Run()
 		renderer_->BeginRender();
 
 		// ... render
+		// TEMP
 		renderer_->Render();
 
 		renderer_->EndRender();

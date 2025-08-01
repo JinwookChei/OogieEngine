@@ -3,6 +3,8 @@
 
 VertexBuffer::VertexBuffer()
 	: refCount_(1),
+	stride_(0),
+	offset_(0),
 	vertexBuffer_(nullptr),
 	indexBuffer_(nullptr)
 {
@@ -34,7 +36,33 @@ ULONG __stdcall VertexBuffer::Release()
 	return tmpRefCount;
 }
 
-bool VertexBuffer::Initialize(void* vertices, UINT vertexSize, void* indices /*= nullptr*/, UINT indexSize /*= 0*/)
+bool VertexBuffer::AddInputLayout(const char* semanticName, unsigned int semanticIndex, unsigned int format, unsigned int inputSlot, bool isInstanceData)
+{
+	D3D11_INPUT_ELEMENT_DESC desc = { 0 };
+	desc.SemanticName = semanticName;
+	desc.SemanticIndex = semanticIndex;
+	desc.Format = (DXGI_FORMAT)format;
+	desc.InputSlot = inputSlot;
+	desc.AlignedByteOffset = offset_;
+	offset_ += FormatSize(desc.Format);
+	desc.InputSlotClass = isInstanceData ? D3D11_INPUT_PER_INSTANCE_DATA : D3D11_INPUT_PER_VERTEX_DATA;
+	desc.InstanceDataStepRate = isInstanceData ? 0 : 1;
+
+	desc_.push_back(desc);
+	return true;
+}
+
+void __stdcall VertexBuffer::Setting()
+{
+	UINT offset = 0;
+	GRenderer->DeviceContext()->IASetVertexBuffers(0, 1, &vertexBuffer_, &stride_, &offset);
+
+	GRenderer->DeviceContext()->IASetIndexBuffer(indexBuffer_, DXGI_FORMAT_R16_UINT, 0);
+
+	GRenderer->DeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+}
+
+bool VertexBuffer::Initialize(void* vertices, UINT vertexSize, UINT vertexCount, void* indices /*= nullptr*/, UINT indexSize /*= 0*/)
 {
 	if (nullptr == vertices)
 	{
@@ -42,7 +70,7 @@ bool VertexBuffer::Initialize(void* vertices, UINT vertexSize, void* indices /*=
 		return false;
 	}
 
-	if (0 == vertexSize)
+	if (0 == vertexSize || 0 == vertexCount)
 	{
 		DEBUG_BREAK();
 		return false;
@@ -51,14 +79,10 @@ bool VertexBuffer::Initialize(void* vertices, UINT vertexSize, void* indices /*=
 	D3D11_BUFFER_DESC bd;
 	memset(&bd, 0x00, sizeof(D3D11_BUFFER_DESC));
 	bd.Usage = D3D11_USAGE_DEFAULT;
-	bd.ByteWidth = vertexSize;
+	bd.ByteWidth = vertexSize * vertexCount;
 	bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	bd.CPUAccessFlags = 0;
 
-	// D3D11_SUBRESOURCE_DATA 구조체는 Direct3D 11에서 리소스(버퍼, 텍스처 등)를 생성할 때
-	// 해당 리소스에 초기 데이터를 전달하는 데 사용됩니다. 
-	// 즉, GPU에 올릴 자원(예: 정점 버퍼, 인덱스 버퍼, 텍스처 등)에 처음 채워넣을 
-	// 데이터를 지정하는 용도입니다	
 	D3D11_SUBRESOURCE_DATA InitData;
 	memset(&InitData, 0x00, sizeof(D3D11_SUBRESOURCE_DATA));
 	InitData.pSysMem = vertices;								// pSysMem: 리소스 생성 시 GPU로 복사할 시스템 메모리상의 데이터 포인터입니다.
@@ -108,22 +132,6 @@ bool VertexBuffer::Initialize(void* vertices, UINT vertexSize, void* indices /*=
 std::vector<D3D11_INPUT_ELEMENT_DESC> VertexBuffer::LayoutDesc() const
 {
 	return desc_;
-}
-
-bool VertexBuffer::AddInputLayout(const char* semanticName, unsigned int semanticIndex, unsigned int format, unsigned int inputSlot, bool isInstanceData)
-{
-	D3D11_INPUT_ELEMENT_DESC desc = { 0 };
-	desc.SemanticName = semanticName;
-	desc.SemanticIndex = semanticIndex;
-	desc.Format = (DXGI_FORMAT)format;
-	desc.InputSlot = inputSlot;
-	desc.AlignedByteOffset = offset_;
-	offset_ += FormatSize(desc.Format);
-	desc.InputSlotClass = isInstanceData ? D3D11_INPUT_PER_INSTANCE_DATA : D3D11_INPUT_PER_VERTEX_DATA;
-	desc.InstanceDataStepRate = isInstanceData ? 0 : 1;
-
-	desc_.push_back(desc);
-	return true;
 }
 
 UINT VertexBuffer::FormatSize(DXGI_FORMAT format)

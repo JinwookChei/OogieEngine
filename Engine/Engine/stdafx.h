@@ -15,6 +15,8 @@
 #define UTILITY_API __declspec(dllimport)
 
 #include <windows.h>
+#include <vector>
+
 #include <DirectXMath.h>
 
 #include <Application/IApplication.h>

@@ -26,8 +26,14 @@ public:
 
 	void __stdcall EndRender() override;
 
+	// TEMP
 	void __stdcall Render() override;
 
+	IVertex* __stdcall CreateVertex(void* vertices, UINT vertexSize, UINT vertexCount, void* indices = nullptr, UINT indexSize = 0) override;
+	
+	//IInputLayout* __stdcall CreateLayout() override;
+
+	// TEMP
 	bool __stdcall CreateTriangle() override;
 
 	ID3D11Device* Device();

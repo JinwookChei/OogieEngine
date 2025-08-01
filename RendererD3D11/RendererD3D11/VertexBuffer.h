@@ -20,12 +20,14 @@ public:
 
 	ULONG __stdcall Release() override;
 
+	bool __stdcall AddInputLayout(const char* semanticName, unsigned int semanticIndex, unsigned int format, unsigned int inputSlot, bool isInstanceData) override;
+
+	void __stdcall Setting() override;
+
 private:
-	bool Initialize(void* vertices, UINT vertexSize, void* indices = nullptr, UINT indexSize = 0);
+	bool Initialize(void* vertices, UINT vertexSize, UINT vertexCount, void* indices = nullptr, UINT indexSize = 0);
 
 	std::vector<D3D11_INPUT_ELEMENT_DESC> LayoutDesc() const;
-
-	bool AddInputLayout(const char* semanticName, unsigned int semanticIndex, unsigned int format, unsigned int inputSlot, bool isInstanceData) override;
 
 	UINT FormatSize(DXGI_FORMAT format);
 
@@ -34,12 +36,13 @@ private:
 private:
 	ULONG refCount_;
 
+	UINT stride_;
+
+	UINT offset_;
+
 	ID3D11Buffer* vertexBuffer_;
 
 	ID3D11Buffer* indexBuffer_;
-
-	// Layout
-	UINT offset_;
 
 	std::vector<D3D11_INPUT_ELEMENT_DESC> desc_;
 };

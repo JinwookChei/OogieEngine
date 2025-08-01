@@ -146,12 +146,14 @@
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="StartUp.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Test.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="Test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />

@@ -32,6 +32,21 @@ Float4::Float4(float x, float y, float z, float w)
 {
 }
 
+Float4::Float4(const DirectX::XMFLOAT2& other)
+	: X(other.x), Y(other.y), Z(0.0f), W(0.0f)
+{
+}
+
+Float4::Float4(const DirectX::XMFLOAT3& other)
+	: X(other.x), Y(other.y), Z(other.z), W(1.0f)
+{
+}
+
+Float4::Float4(const DirectX::XMFLOAT4& other)
+	: X(other.x), Y(other.y), Z(other.z), W(other.w)
+{
+}
+
 Float4& Float4::operator+=(const Float4& value)
 {
 	X += value.X;

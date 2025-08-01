@@ -145,6 +145,29 @@ void __stdcall D3D11Renderer::Render()
 	deviceContext_->Draw(3, 0);
 }
 
+IVertex* __stdcall D3D11Renderer::CreateVertex(void* vertices, UINT vertexSize, UINT vertexCount, void* indices, UINT indexSize)
+{
+	VertexBuffer* vertexBuffer = new VertexBuffer;
+	if (nullptr == vertexBuffer)
+	{
+		DEBUG_BREAK();
+		return nullptr;
+	}
+
+	if (false == vertexBuffer->Initialize(vertices, vertexSize, vertexCount, indices, indexSize))
+	{
+		vertexBuffer->Release();
+		return nullptr;
+	}
+
+	return vertexBuffer;
+}
+
+//IInputLayout* __stdcall D3D11Renderer::CreateLayout()
+//{
+//	return nullptr;
+//}
+
 bool D3D11Renderer::CreateTriangle()
 {
 	SimpleVertex vertices[] = {
@@ -194,7 +217,7 @@ float4 PS(PS_INPUT input) : SV_Target
 		return false;
 	}
 
-	if (false == mesh_->Initialize(vertices, sizeof(SimpleVertex)*_countof(vertices)))
+	if (false == mesh_->Initialize(vertices, sizeof(SimpleVertex), _countof(vertices)))
 	{
 		mesh_->Release();
 		mesh_ = nullptr;

@@ -37,6 +37,12 @@ public:
 
 	Float4(float x, float y, float z, float w);
 
+	Float4(const DirectX::XMFLOAT2& other);
+
+	Float4(const DirectX::XMFLOAT3& other);
+
+	Float4(const DirectX::XMFLOAT4& other);
+
 	Float4& operator+= (const Float4 & value);
 
 	Float4 operator+ (const Float4& value) const;
