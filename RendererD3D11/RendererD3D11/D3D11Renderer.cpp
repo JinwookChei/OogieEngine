@@ -71,6 +71,7 @@ bool __stdcall D3D11Renderer::Initialize(void* hWnd, UINT width, UINT height)
 		DEBUG_BREAK();
 		return false;
 	}
+
 	coInit_ = true;
 
 	IDXGIAdapter* pBestAdapter = GetBestAdapter();
@@ -141,13 +142,6 @@ void __stdcall D3D11Renderer::EndRender()
 
 void __stdcall D3D11Renderer::Render()
 {
-	UINT stride = sizeof(SimpleVertex);
-	UINT offset = 0;
-	deviceContext_->IASetVertexBuffers(0, 1, &mesh_->vertexBuffer_, &stride, &offset);
-	deviceContext_->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	deviceContext_->VSSetShader(vertexShader_->shader_, nullptr, 0);
-	deviceContext_->PSSetShader(pixelShader_->shader_, nullptr, 0);
-
 	deviceContext_->Draw(3, 0);
 }
 
@@ -194,19 +188,18 @@ float4 PS(PS_INPUT input) : SV_Target
 	return input.color; // 빨간색으로 출력
 }
 )";
-
 	mesh_ = new VertexBuffer;
 	if (nullptr == mesh_)
 	{
 		return false;
 	}
+
 	if (false == mesh_->Initialize(vertices, sizeof(SimpleVertex)*_countof(vertices)))
 	{
 		mesh_->Release();
 		mesh_ = nullptr;
 		return false;
 	}
-
 
 	// Vertex Shader
 	ID3DBlob* pVSBlob = nullptr;
@@ -279,8 +272,8 @@ float4 PS(PS_INPUT input) : SV_Target
 		inputLayout_ = nullptr;
 		return false;
 	}
-
 	pixelShader_ = new PixelShader;
+
 	if (nullptr == pixelShader_)
 	{
 		pPSBlob->Release();
@@ -292,6 +285,7 @@ float4 PS(PS_INPUT input) : SV_Target
 		inputLayout_ = nullptr;
 		return false;
 	}
+
 	if (false == pixelShader_->CreateShader(pPSBlob->GetBufferPointer(), pPSBlob->GetBufferSize()))
 	{
 		mesh_->Release();
@@ -307,12 +301,12 @@ float4 PS(PS_INPUT input) : SV_Target
 	pPSBlob->Release();
 
 	deviceContext_->IASetInputLayout(inputLayout_);
-	//UINT stride = sizeof(SimpleVertex);
-	//UINT offset = 0;
-	//deviceContext_->IASetVertexBuffers(0, 1, &mesh_->vertexBuffer_, &stride, &offset);
-	//deviceContext_->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	//deviceContext_->VSSetShader(vertexShader_->shader_, nullptr, 0);
-	//deviceContext_->PSSetShader(pixelShader_->shader_, nullptr, 0);
+	UINT stride = sizeof(SimpleVertex);
+	UINT offset = 0;
+	deviceContext_->IASetVertexBuffers(0, 1, &mesh_->vertexBuffer_, &stride, &offset);
+	deviceContext_->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	deviceContext_->VSSetShader(vertexShader_->shader_, nullptr, 0);
+	deviceContext_->PSSetShader(pixelShader_->shader_, nullptr, 0);
 
 	return true;
 }
@@ -438,7 +432,6 @@ lb_return:
 		DEBUG_BREAK();
 		return false;
 	}
-
 	return true;
 }
 
@@ -481,6 +474,12 @@ bool D3D11Renderer::CreateRenderTarget()
 	}
 
 	if (false == backBuffer_->SetTexture(newTexture))
+	{
+		DEBUG_BREAK();
+		return false;
+	}
+
+	if (false == backBuffer_->CreateDepthTexture())
 	{
 		DEBUG_BREAK();
 		return false;

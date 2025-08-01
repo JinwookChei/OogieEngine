@@ -7,7 +7,9 @@ RenderTarget* GCurrentSetRenderTarget = nullptr;
 
 RenderTarget::RenderTarget()
 	: refCount_(1),
-	texture_(nullptr),
+	renderTexture_(nullptr),
+	depthTexture_(nullptr),
+	clearColor_({0.2f, 0.4f, 0.6f, 1.0f}),
 	viewport_()
 {
 }
@@ -47,31 +49,64 @@ bool RenderTarget::SetTexture(Texture* texture)
 		return false;
 	}
 
-	texture_ = texture;
+	renderTexture_ = texture;
 
 	viewport_.TopLeftX = 0.0f;
 	viewport_.TopLeftY = 0.0f;
-	viewport_.Width = texture_->Width();
-	viewport_.Height = texture->Height();
+	viewport_.Width = renderTexture_->Width();
+	viewport_.Height = renderTexture_->Height();
 	viewport_.MinDepth = 0.0f;
 	viewport_.MaxDepth = 1.0f;
 
 	return true;
 }
 
+bool RenderTarget::CreateDepthTexture()
+{
+	D3D11_TEXTURE2D_DESC desc = { 0, };
+	desc.Width = renderTexture_->Width();
+	desc.Height = renderTexture_->Height();
+	desc.MipLevels = 1;
+	desc.ArraySize = 1;
+	desc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+	desc.SampleDesc.Count = 1;
+	desc.SampleDesc.Quality = 0;
+	desc.Usage = D3D11_USAGE_DEFAULT;
+	desc.BindFlags = D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL;
+	desc.CPUAccessFlags = 0;
+	desc.MiscFlags = 0;
+
+	depthTexture_ = Texture::Create(desc);
+	return nullptr != depthTexture_;
+}
+
 void RenderTarget::Clear()
 {
-	ID3D11RenderTargetView* renderTargetView = texture_->RenderTargetView();
+	ID3D11RenderTargetView* renderTargetView = renderTexture_->RenderTargetView();
 
 	if (nullptr == renderTargetView)
 	{
 		DEBUG_BREAK();
 		return;
 	}
+	
+	GRenderer->DeviceContext()->ClearRenderTargetView(renderTargetView, clearColor_.Array1D);
 
-	float clearColor[4] = { 0.0f, 0.2f, 0.4f, 1.0f };
-	GRenderer->DeviceContext()->ClearRenderTargetView(renderTargetView, clearColor);
-}
+	if (nullptr == depthTexture_)
+	{
+		// DepthStencil View를 사용하지 않는 경우. DepthStencilView를 Clear 하지 않음.
+		return;
+	}
+
+	ID3D11DepthStencilView* depthStencilView = depthTexture_->DepthStencilView();
+	if (nullptr == depthStencilView)
+	{
+		DEBUG_BREAK();
+		return;
+	}
+
+	GRenderer->DeviceContext()->ClearDepthStencilView(depthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+}	
 
 void RenderTarget::Setting()
 {
@@ -80,24 +115,36 @@ void RenderTarget::Setting()
 		return;
 	}
 
-	ID3D11RenderTargetView* renderTargetView = texture_->RenderTargetView();
+	ID3D11RenderTargetView* renderTargetView = renderTexture_->RenderTargetView();
 	if (nullptr == renderTargetView)
 	{
 		DEBUG_BREAK();
 		return;
 	}
 
-	GCurrentSetRenderTarget = this;
+	ID3D11DepthStencilView* depthStencilView = depthTexture_->DepthStencilView();
+	if (nullptr == depthStencilView)
+	{
+		DEBUG_BREAK();
+		return;
+	}
 
-	GRenderer->DeviceContext()->OMSetRenderTargets(1, &renderTargetView, nullptr);
+	GCurrentSetRenderTarget = this;
+	GRenderer->DeviceContext()->OMSetRenderTargets(1, &renderTargetView, depthStencilView);
 	GRenderer->DeviceContext()->RSSetViewports(1, &viewport_);
 }
 
-void RenderTarget::CleanUp()
+void RenderTarget::CleanUp()	
 {
-	if (nullptr != texture_)
+	if (nullptr != renderTexture_)
 	{
-		texture_->Release();
-		texture_ = nullptr;
+		renderTexture_->Release();
+		renderTexture_ = nullptr;
+	}
+
+	if (nullptr != depthTexture_)
+	{
+		depthTexture_->Release();
+		depthTexture_ = nullptr;
 	}
 }

@@ -16,6 +16,8 @@ public:
 
 	bool SetTexture(Texture* texture);
 
+	bool CreateDepthTexture();
+
 	void Clear();
 
 	void Setting();
@@ -25,7 +27,11 @@ private:
 
 	ULONG refCount_;
 
-	Texture* texture_;
+	Texture* renderTexture_;
+
+	Texture* depthTexture_;
+
+	Color clearColor_;
 
 	D3D11_VIEWPORT viewport_;
 };

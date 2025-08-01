@@ -5,6 +5,7 @@ Texture::Texture()
 	: refCount_(1),
 	texture_(nullptr),
 	renderTargetView_(nullptr),
+	depthStencilView_(nullptr),
 	desc_()
 {
 }
@@ -34,6 +35,22 @@ ULONG __stdcall Texture::Release()
 	return tmpRefCount;
 }
 
+Texture* Texture::Create(const D3D11_TEXTURE2D_DESC& desc)
+{
+	ID3D11Texture2D* texture;
+
+	HRESULT hr = GRenderer->Device()->CreateTexture2D(&desc, nullptr, &texture);
+	if (FAILED(hr))
+	{
+		DEBUG_BREAK();
+		return nullptr;
+	}
+
+	Texture* newTexture = new Texture;
+	bool ret = newTexture->SetTexture(texture);
+	return newTexture;
+}
+
 float Texture::Width() const
 {
 	return (float)desc_.Width;
@@ -48,19 +65,32 @@ bool Texture::SetTexture(ID3D11Texture2D* texture)
 {
 	CleanUp();
 
-	if (nullptr == texture)
+	texture_ = texture;
+	if (nullptr == texture_)
 	{
 		return true;
 	}
 
-	texture_ = texture;
 	texture_->GetDesc(&desc_);
 
-	if (false == CreateRenderTargetView())
+	if (D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET & desc_.BindFlags)
 	{
-		return false;
+		bool ret = CreateRenderTargetView();
+		if (false == ret)
+		{
+			return false;
+		}
 	}
-	
+
+	if (D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL & desc_.BindFlags)
+	{
+		bool ret = CreateDepthStencilView();
+		if (false == ret)
+		{
+			return false;
+		}
+	}
+
 	return true;
 }
 
@@ -87,11 +117,37 @@ bool Texture::CreateRenderTargetView()
 	return true;
 }
 
-ID3D11RenderTargetView* Texture::RenderTargetView()
+bool Texture::CreateDepthStencilView()
+{
+	if (nullptr == texture_)
+	{
+		return false;
+	}
+
+	if (nullptr != depthStencilView_)
+	{
+		depthStencilView_->Release();
+		depthStencilView_ = nullptr;
+	}
+	HRESULT hr = GRenderer->Device()->CreateDepthStencilView(texture_, nullptr, &depthStencilView_);
+	if (FAILED(hr))
+	{
+		DEBUG_BREAK();
+		return false;
+	}
+
+	return true;
+}
+
+ID3D11RenderTargetView* Texture::RenderTargetView() const
 {
 	return renderTargetView_;
 }
 
+ID3D11DepthStencilView* Texture::DepthStencilView() const
+{
+	return depthStencilView_;
+}
 
 void Texture::CleanUp()
 {
@@ -99,6 +155,11 @@ void Texture::CleanUp()
 	{
 		renderTargetView_->Release();
 		renderTargetView_ = nullptr;
+	}
+	if (nullptr != depthStencilView_)
+	{
+		depthStencilView_->Release();
+		depthStencilView_ = nullptr;
 	}
 	if (nullptr != texture_)
 	{
