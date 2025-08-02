@@ -11,24 +11,22 @@ VertexShader::~VertexShader()
 	CleanUp();
 }
 
-bool VertexShader::CreateShader(void* shaderByteCode, size_t byteCodeLength)
+bool VertexShader::CreateShader(ID3DBlob* pBlob)
 {
-	if (nullptr == shaderByteCode)
+	if (nullptr == pBlob)
 	{
 		DEBUG_BREAK();
 		return false;
 	}
 
-	if (0 == byteCodeLength)
-	{
-		DEBUG_BREAK();
-		return false;
-	}
+	pBlob_ = pBlob;
 
-	HRESULT hr = GRenderer->Device()->CreateVertexShader(shaderByteCode, byteCodeLength, nullptr, &shader_);
+	HRESULT hr = GRenderer->Device()->CreateVertexShader(pBlob_->GetBufferPointer(), pBlob_->GetBufferSize(), nullptr, &shader_);
 	if (FAILED(hr))
 	{
 		DEBUG_BREAK();
+		pBlob_->Release();
+		pBlob_ = nullptr;
 		return false;
 	}
 
@@ -47,6 +45,12 @@ void VertexShader::SetShader()
 
 void VertexShader::CleanUp()
 {
+	if (nullptr != pBlob_)
+	{
+		pBlob_->Release();
+		pBlob_ = nullptr;
+	}
+
 	if (nullptr != shader_)
 	{
 		shader_->Release();

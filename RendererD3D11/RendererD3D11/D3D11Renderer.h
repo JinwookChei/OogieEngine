@@ -29,9 +29,11 @@ public:
 	// TEMP
 	void __stdcall Render() override;
 
-	IVertex* __stdcall CreateVertex(void* vertices, UINT vertexSize, UINT vertexCount, void* indices = nullptr, UINT indexSize = 0) override;
-	
-	//IInputLayout* __stdcall CreateLayout() override;
+	bool __stdcall CreateVertex(void* vertices, UINT vertexSize, UINT vertexCount, void* indices, UINT indexSize, IVertex** outVertex) override;
+
+	bool __stdcall CreateVertex(void* vertices, UINT vertexSize, UINT vertexCount, IVertex** outVertex) override;
+
+	bool __stdcall CreateShader(LPCWSTR pFileName, bool isVertexShader, IShader** outShader) override;
 
 	// TEMP
 	bool __stdcall CreateTriangle() override;

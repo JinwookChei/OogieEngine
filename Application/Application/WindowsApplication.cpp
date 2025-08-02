@@ -87,7 +87,6 @@ bool __stdcall WindowsApplication::InitializeMainWindow(const wchar_t* className
 		return false;
 	}
 
-	
 	if (nullptr == iconPath_)
 	{
 		DEBUG_BREAK();

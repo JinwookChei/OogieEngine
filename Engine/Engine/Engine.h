@@ -23,6 +23,7 @@ public:
 
 	ENGINE_API void Run();
 
+
 private:
 	bool LoadApplication
 	(
@@ -49,4 +50,13 @@ private:
 	HMODULE applicationModule_;
 
 	HMODULE rendererModule_;
+
+
+	// TEST : Actor Class
+	IVertex* mesh_;
+
+	IShader* vertexShader_;
+
+	IShader* pixelShader_;
+
 };

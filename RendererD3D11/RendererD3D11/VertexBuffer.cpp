@@ -6,13 +6,14 @@ VertexBuffer::VertexBuffer()
 	stride_(0),
 	offset_(0),
 	vertexBuffer_(nullptr),
-	indexBuffer_(nullptr)
+	indexBuffer_(nullptr),
+	inputLayout_(nullptr)
 {
 }
 
 VertexBuffer::~VertexBuffer()
 {
-	//CleanUp();
+	CleanUp();
 }
 
 HRESULT __stdcall VertexBuffer::QueryInterface(REFIID riid, void** ppvObject)
@@ -46,18 +47,62 @@ bool VertexBuffer::AddInputLayout(const char* semanticName, unsigned int semanti
 	desc.AlignedByteOffset = offset_;
 	offset_ += FormatSize(desc.Format);
 	desc.InputSlotClass = isInstanceData ? D3D11_INPUT_PER_INSTANCE_DATA : D3D11_INPUT_PER_VERTEX_DATA;
-	desc.InstanceDataStepRate = isInstanceData ? 0 : 1;
+	desc.InstanceDataStepRate = isInstanceData ? 1 : 0;
+	
 
 	desc_.push_back(desc);
+	return true;
+}
+
+bool __stdcall VertexBuffer::CreateInputLayout(IShader* vertexShader)
+{
+	if (nullptr == vertexShader)
+	{
+		DEBUG_BREAK();
+		return false;
+	}
+
+	
+	BaseShader* pVertexShader = dynamic_cast<BaseShader*>(vertexShader);
+	if (nullptr == pVertexShader)
+	{
+		DEBUG_BREAK();
+		return false;
+	}
+
+	ID3DBlob* pBlob = pVertexShader->GetBlob();
+	if (nullptr == pBlob)
+	{
+		DEBUG_BREAK();
+		return false;
+	}
+
+	if (nullptr != inputLayout_)
+	{
+		inputLayout_->Release();
+		inputLayout_ = nullptr;
+	}
+	
+	HRESULT hr = GRenderer->Device()->CreateInputLayout(desc_.data(), desc_.size(), pBlob->GetBufferPointer(), pBlob->GetBufferSize(), &inputLayout_);
+	if (FAILED(hr))
+	{
+		DEBUG_BREAK();
+		return false;
+	}
+
 	return true;
 }
 
 void __stdcall VertexBuffer::Setting()
 {
 	UINT offset = 0;
-	GRenderer->DeviceContext()->IASetVertexBuffers(0, 1, &vertexBuffer_, &stride_, &offset);
+	UINT stride = sizeof(SimpleVertex);
 
-	GRenderer->DeviceContext()->IASetIndexBuffer(indexBuffer_, DXGI_FORMAT_R16_UINT, 0);
+	GRenderer->DeviceContext()->IASetInputLayout(inputLayout_);
+	
+	GRenderer->DeviceContext()->IASetVertexBuffers(0, 1, &vertexBuffer_, &stride, &offset);
+
+	//GRenderer->DeviceContext()->IASetIndexBuffer(indexBuffer_, DXGI_FORMAT_R16_UINT, 0);
 
 	GRenderer->DeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
@@ -331,6 +376,11 @@ UINT VertexBuffer::FormatSize(DXGI_FORMAT format)
 
 void VertexBuffer::CleanUp()
 {
+	if (nullptr != inputLayout_)
+	{
+		inputLayout_->Release();
+		inputLayout_ = nullptr;
+	}
 	if (nullptr != vertexBuffer_)
 	{
 		vertexBuffer_->Release();
@@ -342,4 +392,5 @@ void VertexBuffer::CleanUp()
 		indexBuffer_->Release();
 		indexBuffer_ = nullptr;
 	}
+	
 }

@@ -10,7 +10,7 @@ public:
 
 	~VertexShader() override;
 
-	bool CreateShader(void* shaderByteCode, size_t byteCodeLength) override;
+	bool CreateShader(ID3DBlob* pBlob) override;
 
 	void SetShader() override;
 
@@ -18,4 +18,5 @@ public:
 
 private:
 	ID3D11VertexShader* shader_;
+
 };

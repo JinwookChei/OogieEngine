@@ -12,7 +12,10 @@ Engine::Engine()
 	application_(nullptr),
 	renderer_(nullptr),
 	applicationModule_(nullptr),
-	rendererModule_(nullptr)
+	rendererModule_(nullptr),
+	mesh_(nullptr),
+	vertexShader_(nullptr),
+	pixelShader_(nullptr)
 {
 }
 
@@ -81,11 +84,51 @@ bool Engine::Initialize
 
 void Engine::Run()
 {
-	//TEMP
-	if (false == renderer_->CreateTriangle())
+	SimpleVertex vertices[] = {
+{DirectX::XMFLOAT3(0.0f, 0.5f, 0.0f), DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f)},
+{DirectX::XMFLOAT3(0.5f, -0.5f, 0.0f), DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f)},
+{DirectX::XMFLOAT3(-0.5f, -0.5f, 0.0f), DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f)}
+	};
+
+	bool ret = renderer_->CreateVertex(&vertices, sizeof(SimpleVertex), _countof(vertices), &mesh_);
+	if (false == ret)
 	{
 		return;
 	}
+
+	ret = renderer_->CreateShader(L"VertexShader.cso", true, &vertexShader_);
+	if (false == ret)
+	{
+		return;
+	}
+
+	ret = renderer_->CreateShader(L"PixelShader.cso", false, &pixelShader_);
+	if (false == ret)
+	{
+		return;
+	}
+	
+	ret = mesh_->AddInputLayout("POSITION", 0, 6, 0, false);
+	if (false == ret)
+	{
+		return;
+	}
+	ret = mesh_->AddInputLayout("COLOR", 0, 2, 0, false);
+	if (false == ret)
+	{
+		return;
+	}
+
+	ret = mesh_->CreateInputLayout(vertexShader_);
+	if (false == ret)
+	{
+		return;
+	}
+
+	mesh_->Setting();
+	vertexShader_->Setting();
+	pixelShader_->Setting();
+
 
 	while (false == application_->ApplicationQuit())
 	{
@@ -202,6 +245,25 @@ bool Engine::InitializeStartUp(IStartup* startUp)
 
 void Engine::CleanUp()
 {
+	if (nullptr != pixelShader_)
+	{
+		pixelShader_->Release();
+		pixelShader_ = nullptr;
+	}
+	if (nullptr != vertexShader_)
+	{
+		vertexShader_->Release();
+		vertexShader_ = nullptr;
+	}
+
+	if (nullptr != mesh_)
+	{
+		mesh_->Release();
+		mesh_ = nullptr;
+	}
+
+
+
 	if (nullptr != startUp_)
 	{
 		startUp_->Release();

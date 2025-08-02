@@ -11,23 +11,22 @@ PixelShader::~PixelShader()
 	CleanUp();
 }
 
-bool PixelShader::CreateShader(void* shaderByteCode, size_t byteCodeLength)
+bool PixelShader::CreateShader(ID3DBlob* pBlob)
 {
-	if (nullptr == shaderByteCode)
-	{
-		DEBUG_BREAK();
-		return false;
-	}
-	if (0 == byteCodeLength)
+	if (nullptr == pBlob)
 	{
 		DEBUG_BREAK();
 		return false;
 	}
 
-	HRESULT hr = GRenderer->Device()->CreatePixelShader(shaderByteCode, byteCodeLength, nullptr, &shader_);
+	pBlob_ = pBlob;
+
+	HRESULT hr = GRenderer->Device()->CreatePixelShader(pBlob_->GetBufferPointer(), pBlob_->GetBufferSize(), nullptr, &shader_);
 	if (FAILED(hr))
 	{
 		DEBUG_BREAK();
+		pBlob_->Release();
+		pBlob_ = nullptr;
 		return false;
 	}
 
@@ -47,6 +46,12 @@ void PixelShader::SetShader()
 
 void PixelShader::CleanUp()
 {
+	if (nullptr != pBlob_)
+	{
+		pBlob_->Release();
+		pBlob_ = nullptr;
+	}
+
 	if (nullptr != shader_)
 	{
 		shader_->Release();

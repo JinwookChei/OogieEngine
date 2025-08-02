@@ -22,6 +22,8 @@ public:
 
 	bool __stdcall AddInputLayout(const char* semanticName, unsigned int semanticIndex, unsigned int format, unsigned int inputSlot, bool isInstanceData) override;
 
+	bool __stdcall CreateInputLayout(IShader* vertexShader) override;
+
 	void __stdcall Setting() override;
 
 private:
@@ -45,4 +47,7 @@ private:
 	ID3D11Buffer* indexBuffer_;
 
 	std::vector<D3D11_INPUT_ELEMENT_DESC> desc_;
+
+	// TEMP : VertexBuffer에서 가지고 있는게 맞을까?
+	ID3D11InputLayout* inputLayout_;
 };

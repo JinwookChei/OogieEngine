@@ -147,4 +147,5 @@ void RenderTarget::CleanUp()
 		depthTexture_->Release();
 		depthTexture_ = nullptr;
 	}
+
 }

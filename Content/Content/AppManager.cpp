@@ -58,7 +58,7 @@ bool AppManager::Initialize(HINSTANCE hInstance, PWSTR pCmdLine, int cmdShow)
 
 	const wchar_t* mainWindowClassName = L"MAIN";
 	const wchar_t* mainWindowText = L"WOOGIE ENGINE";
-	const wchar_t* iConPath = L"..//..//Resource//Logo//LogoResize.ico";
+	const wchar_t* iConPath = L"..//Resource//Logo//LogoResize.ico";
 
 	if (false == engine_->Initialize(hInstance, pCmdLine, cmdShow, mainWindowClassName, mainWindowText, iConPath, this))
 	{

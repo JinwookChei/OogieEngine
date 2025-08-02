@@ -28,6 +28,9 @@
     <Filter Include="Source Files\Manager">
       <UniqueIdentifier>{e5ff74fd-18a0-4e03-bc41-989682524065}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\TEST">
+      <UniqueIdentifier>{770ba8f1-7343-4fbe-99b5-6597d47d6729}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -49,7 +52,7 @@
       <Filter>Source Files\Manager</Filter>
     </ClInclude>
     <ClInclude Include="Test.h">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\TEST</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -66,10 +69,18 @@
       <Filter>Source Files\Manager</Filter>
     </ClCompile>
     <ClCompile Include="Test.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\TEST</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="VertexShader.hlsl">
+      <Filter>Source Files\TEST</Filter>
+    </FxCompile>
+    <FxCompile Include="PixelShader.hlsl">
+      <Filter>Source Files\TEST</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

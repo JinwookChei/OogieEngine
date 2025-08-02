@@ -19,12 +19,21 @@ public:
 
 	ULONG __stdcall Release() override;
 
-	virtual bool CreateShader(void* shaderBytecode, size_t bytecodeLength) = 0;
+	void __stdcall Setting() override;
+
+	virtual bool CreateShader(ID3DBlob* pBlob) = 0;
 
 	virtual void SetShader() = 0;
 
+	ID3DBlob* GetBlob() const;
+
 	virtual void CleanUp() = 0;
+
+protected:
+	ID3DBlob* pBlob_;
 
 private:
 	UINT refCount_;
+
+	
 };
