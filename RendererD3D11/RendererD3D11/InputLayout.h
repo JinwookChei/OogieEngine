@@ -1,6 +1,6 @@
 #pragma once
 
-class InputLayout
+class InputLayout final
 	: public IInputLayout
 {
 public:
@@ -16,6 +16,12 @@ public:
 
 	void __stdcall Setting() override;
 
+	bool Create(IVertex* vertex, IShader* vertexShader);
+
 private:
+	void Cleanup();
+
 	UINT refCount_;
+
+	ID3D11InputLayout* inputLayout_;
 };

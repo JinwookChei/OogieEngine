@@ -5,9 +5,9 @@ VertexBuffer::VertexBuffer()
 	: refCount_(1),
 	stride_(0),
 	offset_(0),
+	indexCount_(0),
 	vertexBuffer_(nullptr),
-	indexBuffer_(nullptr),
-	inputLayout_(nullptr)
+	indexBuffer_(nullptr)
 {
 }
 
@@ -48,66 +48,37 @@ bool VertexBuffer::AddInputLayout(const char* semanticName, unsigned int semanti
 	offset_ += FormatSize(desc.Format);
 	desc.InputSlotClass = isInstanceData ? D3D11_INPUT_PER_INSTANCE_DATA : D3D11_INPUT_PER_VERTEX_DATA;
 	desc.InstanceDataStepRate = isInstanceData ? 1 : 0;
-	
+
 
 	desc_.push_back(desc);
-	return true;
-}
-
-bool __stdcall VertexBuffer::CreateInputLayout(IShader* vertexShader)
-{
-	if (nullptr == vertexShader)
-	{
-		DEBUG_BREAK();
-		return false;
-	}
-
-	
-	BaseShader* pVertexShader = dynamic_cast<BaseShader*>(vertexShader);
-	if (nullptr == pVertexShader)
-	{
-		DEBUG_BREAK();
-		return false;
-	}
-
-	ID3DBlob* pBlob = pVertexShader->GetBlob();
-	if (nullptr == pBlob)
-	{
-		DEBUG_BREAK();
-		return false;
-	}
-
-	if (nullptr != inputLayout_)
-	{
-		inputLayout_->Release();
-		inputLayout_ = nullptr;
-	}
-	
-	HRESULT hr = GRenderer->Device()->CreateInputLayout(desc_.data(), desc_.size(), pBlob->GetBufferPointer(), pBlob->GetBufferSize(), &inputLayout_);
-	if (FAILED(hr))
-	{
-		DEBUG_BREAK();
-		return false;
-	}
-
 	return true;
 }
 
 void __stdcall VertexBuffer::Setting()
 {
 	UINT offset = 0;
-	UINT stride = sizeof(SimpleVertex);
 
-	GRenderer->DeviceContext()->IASetInputLayout(inputLayout_);
-	
-	GRenderer->DeviceContext()->IASetVertexBuffers(0, 1, &vertexBuffer_, &stride, &offset);
+	GRenderer->DeviceContext()->IASetVertexBuffers(0, 1, &vertexBuffer_, &stride_, &offset);
 
-	//GRenderer->DeviceContext()->IASetIndexBuffer(indexBuffer_, DXGI_FORMAT_R16_UINT, 0);
+	GRenderer->DeviceContext()->IASetIndexBuffer(indexBuffer_, DXGI_FORMAT_R16_UINT, 0);
 
 	GRenderer->DeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
 
-bool VertexBuffer::Initialize(void* vertices, UINT vertexSize, UINT vertexCount, void* indices /*= nullptr*/, UINT indexSize /*= 0*/)
+bool __stdcall VertexBuffer::Draw()
+{
+	GRenderer->DeviceContext()->DrawIndexed(indexCount_, 0, 0);
+
+	//GRenderer->IncrementDrawCall();
+	return true;
+}
+
+const std::vector<D3D11_INPUT_ELEMENT_DESC>& VertexBuffer::GetDesc() const
+{
+	return desc_;
+}
+
+bool VertexBuffer::Initialize(void* vertices, UINT vertexSize, UINT vertexCount, void* indices /*= nullptr*/, UINT indexTypeSize /*= 0*/, UINT indexCount /*= 0*/)
 {
 	if (nullptr == vertices)
 	{
@@ -139,7 +110,7 @@ bool VertexBuffer::Initialize(void* vertices, UINT vertexSize, UINT vertexCount,
 		return false;
 	}
 
-	if (nullptr == indices && 0 != indexSize)
+	if (nullptr == indices && 0 != indexCount)
 	{
 		DEBUG_BREAK();
 		return false;
@@ -150,7 +121,7 @@ bool VertexBuffer::Initialize(void* vertices, UINT vertexSize, UINT vertexCount,
 		return true;
 	}
 
-	if (0 == indexSize)
+	if (0 == indexCount)
 	{
 		DEBUG_BREAK();
 		return false;
@@ -158,7 +129,7 @@ bool VertexBuffer::Initialize(void* vertices, UINT vertexSize, UINT vertexCount,
 
 	// ÀÎµ¦½º ¹öÆÛ
 	bd.Usage = D3D11_USAGE_DEFAULT;
-	bd.ByteWidth = sizeof(indices);
+	bd.ByteWidth = indexTypeSize * indexCount;
 	bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	bd.CPUAccessFlags = 0;
 
@@ -171,12 +142,23 @@ bool VertexBuffer::Initialize(void* vertices, UINT vertexSize, UINT vertexCount,
 		return hr;
 	}
 
+	indexCount_ = indexCount;
+
 	return true;
 }
 
-std::vector<D3D11_INPUT_ELEMENT_DESC> VertexBuffer::LayoutDesc() const
+void VertexBuffer::CleanUp()
 {
-	return desc_;
+	if (nullptr != indexBuffer_)
+	{
+		indexBuffer_->Release();
+		indexBuffer_ = nullptr;
+	}
+	if (nullptr != vertexBuffer_)
+	{
+		vertexBuffer_->Release();
+		vertexBuffer_ = nullptr;
+	}
 }
 
 UINT VertexBuffer::FormatSize(DXGI_FORMAT format)
@@ -374,23 +356,3 @@ UINT VertexBuffer::FormatSize(DXGI_FORMAT format)
 	return -1;
 }
 
-void VertexBuffer::CleanUp()
-{
-	if (nullptr != inputLayout_)
-	{
-		inputLayout_->Release();
-		inputLayout_ = nullptr;
-	}
-	if (nullptr != vertexBuffer_)
-	{
-		vertexBuffer_->Release();
-		vertexBuffer_ = nullptr;
-	}
-
-	if (nullptr != indexBuffer_)
-	{
-		indexBuffer_->Release();
-		indexBuffer_ = nullptr;
-	}
-	
-}

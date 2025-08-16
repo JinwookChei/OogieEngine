@@ -1,11 +1,6 @@
 #pragma once
 
-
 class RenderTarget;
-class VertexBuffer;
-class VertexShader;
-class PixelShader;
-
 class D3D11Renderer final
 	: public IRenderer
 {
@@ -26,21 +21,27 @@ public:
 
 	void __stdcall EndRender() override;
 
-	// TEMP
-	void __stdcall Render() override;
+	unsigned __int64 __stdcall DrawCallCount() override;
 
-	bool __stdcall CreateVertex(void* vertices, UINT vertexSize, UINT vertexCount, void* indices, UINT indexSize, IVertex** outVertex) override;
+	IVertex* CreateVertex(void* vertices, UINT vertexSize, UINT vertexCount, void* indices = nullptr, UINT indexTypeSize = 0, UINT indexCount = 0) override;
 
-	bool __stdcall CreateVertex(void* vertices, UINT vertexSize, UINT vertexCount, IVertex** outVertex) override;
+	IShader* __stdcall CreateShader(ShaderType type, const wchar_t* path) override;
 
-	bool __stdcall CreateShader(LPCWSTR pFileName, bool isVertexShader, IShader** outShader) override;
+	IInputLayOut* __stdcall CreateLayOut(IVertex* vertex, IShader* vertexShader) override;
 
-	// TEMP
-	bool __stdcall CreateTriangle() override;
+	ISamplerState* __stdcall CreateSampler(bool linear, bool clamp) override;
+
+	IMaterial* __stdcall CreateMaterial() override;
+
+	IConstantBuffer* __stdcall CreateConstantBuffer(unsigned int bufferSize) override;
+
+	IRasterizer* __stdcall CreateRasterizer(bool back) override;
 
 	ID3D11Device* Device();
 
 	ID3D11DeviceContext* DeviceContext();
+
+	void IncrementDrawCall();
 
 private:
 	IDXGIAdapter* GetBestAdapter();
@@ -55,6 +56,8 @@ private:
 
 	ULONG refCount_;
 
+	unsigned __int64 drawCallCount_;
+
 	HWND hWnd_;
 
 	ID3D11Device* device_;
@@ -64,12 +67,4 @@ private:
 	IDXGISwapChain* swapChain_;
 
 	RenderTarget* backBuffer_;
-
-	VertexBuffer* mesh_;
-
-	VertexShader* vertexShader_;
-
-	PixelShader* pixelShader_;
-
-	ID3D11InputLayout* inputLayout_;
 };

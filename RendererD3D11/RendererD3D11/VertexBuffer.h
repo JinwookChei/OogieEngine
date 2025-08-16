@@ -22,25 +22,26 @@ public:
 
 	bool __stdcall AddInputLayout(const char* semanticName, unsigned int semanticIndex, unsigned int format, unsigned int inputSlot, bool isInstanceData) override;
 
-	bool __stdcall CreateInputLayout(IShader* vertexShader) override;
-
 	void __stdcall Setting() override;
 
+	bool __stdcall Draw() override;
+
+	const std::vector<D3D11_INPUT_ELEMENT_DESC>& GetDesc() const;
+
 private:
-	bool Initialize(void* vertices, UINT vertexSize, UINT vertexCount, void* indices = nullptr, UINT indexSize = 0);
-
-	std::vector<D3D11_INPUT_ELEMENT_DESC> LayoutDesc() const;
-
-	UINT FormatSize(DXGI_FORMAT format);
+	bool Initialize(void* vertices, UINT vertexSize, UINT vertexCount, void* indices = nullptr, UINT indexTypeSize = 0, UINT indexCount = 0);
 
 	void CleanUp();
 
-private:
+	UINT FormatSize(DXGI_FORMAT format);
+
 	ULONG refCount_;
 
 	UINT stride_;
 
 	UINT offset_;
+
+	UINT indexCount_;
 
 	ID3D11Buffer* vertexBuffer_;
 
@@ -49,5 +50,5 @@ private:
 	std::vector<D3D11_INPUT_ELEMENT_DESC> desc_;
 
 	// TEMP : VertexBuffer에서 가지고 있는게 맞을까?
-	ID3D11InputLayout* inputLayout_;
+	//ID3D11InputLayout* inputLayout_;
 };
