@@ -2,6 +2,7 @@
 #include "Material.h"
 #include "VertexShader.h";
 #include "PixelShader.h"
+#include "SamplerState.h"
 
 Material::Material()
 	: refCount_(1),
@@ -78,7 +79,7 @@ void __stdcall Material::SetSampler(ISamplerState* sampler, uint32_t slot)
 		sampler_ = nullptr;
 	}
 
-	sampler_ = sampler;
+	sampler_ = (SamplerState*)sampler;
 
 	if (nullptr != sampler_)
 	{

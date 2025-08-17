@@ -149,6 +149,7 @@
     <ClInclude Include="PixelShader.h" />
     <ClInclude Include="RenderTarget.h" />
     <ClInclude Include="BaseShader.h" />
+    <ClInclude Include="SamplerState.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="VertexBuffer.h" />
@@ -162,6 +163,7 @@
     <ClCompile Include="PixelShader.cpp" />
     <ClCompile Include="RenderTarget.cpp" />
     <ClCompile Include="BaseShader.cpp" />
+    <ClCompile Include="SamplerState.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>

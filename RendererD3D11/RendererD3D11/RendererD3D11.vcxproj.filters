@@ -40,6 +40,9 @@
     <Filter Include="Source Files\Material">
       <UniqueIdentifier>{5b51a802-37f7-4a67-bd0d-62d9b26e978d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Sampler">
+      <UniqueIdentifier>{68e458d7-76d0-45f3-9723-5f9b775c9690}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -75,6 +78,9 @@
     <ClInclude Include="Material.h">
       <Filter>Source Files\Material</Filter>
     </ClInclude>
+    <ClInclude Include="SamplerState.h">
+      <Filter>Source Files\Sampler</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -109,6 +115,9 @@
     </ClCompile>
     <ClCompile Include="Material.cpp">
       <Filter>Source Files\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="SamplerState.cpp">
+      <Filter>Source Files\Sampler</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

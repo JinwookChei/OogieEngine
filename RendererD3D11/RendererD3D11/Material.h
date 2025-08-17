@@ -2,6 +2,7 @@
 
 class VertexShader;
 class PixelShader;
+class SamplerState;
 
 class Material final
 	: public IMaterial
@@ -34,7 +35,7 @@ private:
 
 	PixelShader* pixelShader_;
 
-	ISamplerState* sampler_;
+	SamplerState* sampler_;
 
 	uint32_t samplerSlot_;
 };
