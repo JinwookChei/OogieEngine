@@ -43,6 +43,9 @@
     <Filter Include="Source Files\Sampler">
       <UniqueIdentifier>{68e458d7-76d0-45f3-9723-5f9b775c9690}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Rasterizer">
+      <UniqueIdentifier>{1aef9740-edc9-49e0-bea4-978dd6c9554c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -81,6 +84,9 @@
     <ClInclude Include="SamplerState.h">
       <Filter>Source Files\Sampler</Filter>
     </ClInclude>
+    <ClInclude Include="Rasterizer.h">
+      <Filter>Source Files\Rasterizer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -118,6 +124,9 @@
     </ClCompile>
     <ClCompile Include="SamplerState.cpp">
       <Filter>Source Files\Sampler</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer.cpp">
+      <Filter>Source Files\Rasterizer</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
