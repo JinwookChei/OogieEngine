@@ -8,50 +8,33 @@ PixelShader::PixelShader()
 
 PixelShader::~PixelShader()
 {
-	CleanUp();
+	Cleanup();
 }
 
-bool PixelShader::CreateShader(ID3DBlob* pBlob)
+void PixelShader::SetShader()
 {
-	if (nullptr == pBlob)
+	GRenderer->DeviceContext()->PSSetShader(shader_, nullptr, 0);
+}
+
+bool PixelShader::OnCreateShader(ID3DBlob* blob)
+{
+	if (nullptr == blob)
 	{
-		DEBUG_BREAK();
 		return false;
 	}
 
-	pBlob_ = pBlob;
-
-	HRESULT hr = GRenderer->Device()->CreatePixelShader(pBlob_->GetBufferPointer(), pBlob_->GetBufferSize(), nullptr, &shader_);
+	HRESULT hr = GRenderer->Device()->CreatePixelShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, &shader_);
 	if (FAILED(hr))
 	{
 		DEBUG_BREAK();
-		pBlob_->Release();
-		pBlob_ = nullptr;
 		return false;
 	}
 
 	return true;
 }
 
-void PixelShader::SetShader()
+void PixelShader::OnCleanup()
 {
-	if (nullptr == shader_)
-	{
-		DEBUG_BREAK();
-		return;
-	}
-
-	GRenderer->DeviceContext()->PSSetShader(shader_, nullptr, 0);
-}
-
-void PixelShader::CleanUp()
-{
-	if (nullptr != pBlob_)
-	{
-		pBlob_->Release();
-		pBlob_ = nullptr;
-	}
-
 	if (nullptr != shader_)
 	{
 		shader_->Release();

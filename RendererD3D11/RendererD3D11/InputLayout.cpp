@@ -45,7 +45,7 @@ bool InputLayout::Create(IVertex* vertex, IShader* vertexShader)
 	Cleanup();
 
 	VertexBuffer* buffer = (VertexBuffer*)vertex;
-	Shader* shader = (Shader*)vertexShader;
+	BaseShader* shader = (BaseShader*)vertexShader;
 
 	const std::vector<D3D11_INPUT_ELEMENT_DESC>& layoutDesc = buffer->GetDesc();
 

@@ -20,7 +20,7 @@ public:
 
 	ULONG __stdcall Release() override;
 
-	bool __stdcall AddInputLayout(const char* semanticName, unsigned int semanticIndex, unsigned int format, unsigned int inputSlot, bool isInstanceData) override;
+	bool __stdcall AddInputLayout(const char* semanticName, uint32_t semanticIndex, uint32_t format, uint32_t inputSlot, bool isInstanceData) override;
 
 	void __stdcall Setting() override;
 
@@ -31,7 +31,7 @@ public:
 private:
 	bool Initialize(void* vertices, UINT vertexSize, UINT vertexCount, void* indices = nullptr, UINT indexTypeSize = 0, UINT indexCount = 0);
 
-	void CleanUp();
+	void Cleanup();
 
 	UINT FormatSize(DXGI_FORMAT format);
 
@@ -48,7 +48,4 @@ private:
 	ID3D11Buffer* indexBuffer_;
 
 	std::vector<D3D11_INPUT_ELEMENT_DESC> desc_;
-
-	// TEMP : VertexBuffer에서 가지고 있는게 맞을까?
-	//ID3D11InputLayout* inputLayout_;
 };

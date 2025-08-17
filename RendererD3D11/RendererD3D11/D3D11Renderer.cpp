@@ -2,8 +2,14 @@
 #include "Texture.h"
 #include "RenderTarget.h"
 #include "VertexBuffer.h"
+#include "VertexShader.h"
 #include "PixelShader.h"
-#include "D3D11Renderer.h"
+#include "InputLayout.h"
+//#include "Shader.h"
+//#include "SamplerState.h"
+//#include "Material.h"
+//#include "ConstantBuffer.h"
+//#include "Rasterizer.h"
 
 
 
@@ -167,7 +173,7 @@ IShader* __stdcall D3D11Renderer::CreateShader(ShaderType type, const wchar_t* p
 		return nullptr;
 	}
 
-	Shader* shader = nullptr;
+	BaseShader* shader = nullptr;
 	switch (type)
 	{
 	case ShaderType::Vertex:
@@ -187,7 +193,7 @@ IShader* __stdcall D3D11Renderer::CreateShader(ShaderType type, const wchar_t* p
 	return shader;
 }
 
-IInputLayOut* __stdcall D3D11Renderer::CreateLayOut(IVertex* vertex, IShader* vertexShader)
+IInputLayout* __stdcall D3D11Renderer::CreateLayout(IVertex* vertex, IShader* vertexShader)
 {
 	InputLayout* newInputLayout = new InputLayout;
 	if (false == newInputLayout->Create(vertex, vertexShader))

@@ -27,7 +27,7 @@ public:
 
 	IShader* __stdcall CreateShader(ShaderType type, const wchar_t* path) override;
 
-	IInputLayOut* __stdcall CreateLayOut(IVertex* vertex, IShader* vertexShader) override;
+	IInputLayout* __stdcall CreateLayout(IVertex* vertex, IShader* vertexShader) override;
 
 	ISamplerState* __stdcall CreateSampler(bool linear, bool clamp) override;
 

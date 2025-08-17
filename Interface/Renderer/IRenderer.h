@@ -26,9 +26,7 @@ struct IVertex : public IUnknown
 {
 	virtual void __stdcall Setting() = 0;
 
-	virtual bool __stdcall AddInputLayout(const char* semanticName, unsigned int semanticIndex, unsigned int format, unsigned int inputSlot, bool isInstanceData) = 0;
-
-	//virtual bool __stdcall CreateInputLayout(IShader* vertexShader) = 0;
+	virtual bool __stdcall AddInputLayout(const char* semanticName, uint32_t semanticIndex, uint32_t format, uint32_t inputSlot, bool isInstanceData) = 0;
 
 	virtual bool __stdcall Draw() = 0;
 };
@@ -38,7 +36,7 @@ struct IShader : public IUnknown {
 };
 
 struct ISamplerState : public IUnknown {
-	virtual void __stdcall Setting(unsigned int slot) = 0;
+	virtual void __stdcall Setting(uint32_t slot) = 0;
 };
 
 struct IMaterial : public IUnknown {
@@ -46,7 +44,7 @@ struct IMaterial : public IUnknown {
 
 	virtual void __stdcall SetPixelShader(IShader* shader) = 0;
 
-	virtual void __stdcall SetSampler(ISamplerState* sampler, unsigned int slot = 0) = 0;
+	virtual void __stdcall SetSampler(ISamplerState* sampler, uint32_t slot = 0) = 0;
 
 	virtual void __stdcall Setting() = 0;
 };
@@ -58,9 +56,9 @@ struct IInputLayout : public IUnknown {
 struct IConstantBuffer : public IUnknown {
 	virtual void __stdcall Update(void* srcData) = 0;
 
-	virtual void __stdcall VSSetting(unsigned int slot) = 0;
+	virtual void __stdcall VSSetting(uint32_t slot) = 0;
 
-	virtual void __stdcall PSSetting(unsigned int slot) = 0;
+	virtual void __stdcall PSSetting(uint32_t slot) = 0;
 };
 
 
@@ -71,7 +69,7 @@ struct IRasterizer : public IUnknown {
 };
 
 struct IRenderer : public IUnknown {
-	virtual bool __stdcall Initialize(void* hWnd, UINT width, UINT height) = 0;
+	virtual bool __stdcall Initialize(void* hWnd, uint32_t width, uint32_t height) = 0;
 
 	virtual void __stdcall BeginRender() = 0;
 	
@@ -79,17 +77,17 @@ struct IRenderer : public IUnknown {
 
 	virtual unsigned __int64 __stdcall DrawCallCount() = 0;
 
-	virtual IVertex* __stdcall CreateVertex(void* vertices, UINT vertexSize, UINT vertexCount, void* indices = nullptr, UINT indexTypeSize = 0, UINT indexCount = 0) = 0;
+	virtual IVertex* __stdcall CreateVertex(void* vertices, uint32_t vertexSize, uint32_t vertexCount, void* indices = nullptr, uint32_t indexTypeSize = 0, uint32_t indexCount = 0) = 0;
 
 	virtual IShader* __stdcall CreateShader(ShaderType type, const wchar_t* path) = 0;
 
-	virtual IInputLayOut* __stdcall CreateLayOut(IVertex* vertex, IShader* vertexShader) = 0;
+	virtual IInputLayout* __stdcall CreateLayOut(IVertex* vertex, IShader* vertexShader) = 0;
 
 	virtual ISamplerState* __stdcall  CreateSampler(bool linear, bool clamp) = 0;
 
 	virtual IMaterial* __stdcall CreateMaterial() = 0;
 
-	virtual IConstantBuffer* __stdcall CreateConstantBuffer(unsigned int bufferSize) = 0;
+	virtual IConstantBuffer* __stdcall CreateConstantBuffer(uint32_t bufferSize) = 0;
 
 	virtual IRasterizer* __stdcall  CreateRasterizer(bool back) = 0;
 };

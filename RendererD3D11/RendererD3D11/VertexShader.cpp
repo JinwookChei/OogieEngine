@@ -8,49 +8,33 @@ VertexShader::VertexShader()
 
 VertexShader::~VertexShader()
 {
-	CleanUp();
+	Cleanup();
 }
 
-bool VertexShader::CreateShader(ID3DBlob* pBlob)
+void VertexShader::SetShader()
 {
-	if (nullptr == pBlob)
+	GRenderer->DeviceContext()->VSSetShader(shader_, nullptr, 0);
+}
+
+bool VertexShader::OnCreateShader(ID3DBlob* blob)
+{
+	if (nullptr == blob)
 	{
-		DEBUG_BREAK();
 		return false;
 	}
 
-	pBlob_ = pBlob;
-
-	HRESULT hr = GRenderer->Device()->CreateVertexShader(pBlob_->GetBufferPointer(), pBlob_->GetBufferSize(), nullptr, &shader_);
+	HRESULT hr = GRenderer->Device()->CreateVertexShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, &shader_);
 	if (FAILED(hr))
 	{
 		DEBUG_BREAK();
-		pBlob_->Release();
-		pBlob_ = nullptr;
 		return false;
 	}
 
 	return true;
 }
 
-void VertexShader::SetShader()
+void VertexShader::OnCleanup()
 {
-	if (nullptr == shader_)
-	{
-		DEBUG_BREAK();
-		return;
-	}
-	GRenderer->DeviceContext()->VSSetShader(shader_, nullptr, 0);
-}
-
-void VertexShader::CleanUp()
-{
-	if (nullptr != pBlob_)
-	{
-		pBlob_->Release();
-		pBlob_ = nullptr;
-	}
-
 	if (nullptr != shader_)
 	{
 		shader_->Release();

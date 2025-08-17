@@ -6,12 +6,7 @@ class BaseShader
 public:
 	BaseShader();
 
-	virtual ~BaseShader();
-
-	//virtual ~BaseShader() = 0
-	//{
-	//	CleanUp();
-	//}
+	virtual ~BaseShader() = 0;
 
 	HRESULT __stdcall QueryInterface(REFIID riid, _COM_Outptr_ void __RPC_FAR* __RPC_FAR* ppvObject) override;
 
@@ -19,21 +14,23 @@ public:
 
 	ULONG __stdcall Release() override;
 
-	void __stdcall Setting() override;
-
-	virtual bool CreateShader(ID3DBlob* pBlob) = 0;
+	bool CreateShader(ID3DBlob* blob);
 
 	virtual void SetShader() = 0;
 
-	ID3DBlob* GetBlob() const;
+	void* GetBufferPointer();
 
-	virtual void CleanUp() = 0;
+	size_t GetBufferSize();
+
+	void Cleanup();
 
 protected:
-	ID3DBlob* pBlob_;
+	virtual bool OnCreateShader(ID3DBlob* blob) = 0;
+
+	virtual void OnCleanup() = 0;
 
 private:
-	UINT refCount_;
+	ULONG refCount_;
 
-	
+	ID3DBlob* blob_;
 };

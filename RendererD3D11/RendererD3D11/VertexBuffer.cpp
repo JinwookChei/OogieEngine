@@ -13,7 +13,7 @@ VertexBuffer::VertexBuffer()
 
 VertexBuffer::~VertexBuffer()
 {
-	CleanUp();
+	Cleanup();
 }
 
 HRESULT __stdcall VertexBuffer::QueryInterface(REFIID riid, void** ppvObject)
@@ -37,7 +37,7 @@ ULONG __stdcall VertexBuffer::Release()
 	return tmpRefCount;
 }
 
-bool VertexBuffer::AddInputLayout(const char* semanticName, unsigned int semanticIndex, unsigned int format, unsigned int inputSlot, bool isInstanceData)
+bool VertexBuffer::AddInputLayout(const char* semanticName, uint32_t semanticIndex, uint32_t format, uint32_t inputSlot, bool isInstanceData)
 {
 	D3D11_INPUT_ELEMENT_DESC desc = { 0 };
 	desc.SemanticName = semanticName;
@@ -69,7 +69,7 @@ bool __stdcall VertexBuffer::Draw()
 {
 	GRenderer->DeviceContext()->DrawIndexed(indexCount_, 0, 0);
 
-	//GRenderer->IncrementDrawCall();
+	GRenderer->IncrementDrawCall();
 	return true;
 }
 
@@ -147,7 +147,7 @@ bool VertexBuffer::Initialize(void* vertices, UINT vertexSize, UINT vertexCount,
 	return true;
 }
 
-void VertexBuffer::CleanUp()
+void VertexBuffer::Cleanup()
 {
 	if (nullptr != indexBuffer_)
 	{
