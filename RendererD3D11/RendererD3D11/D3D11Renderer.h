@@ -23,19 +23,19 @@ public:
 
 	uint64_t __stdcall DrawCallCount() override;
 
+	IInputLayout* __stdcall CreateLayout(IVertex* vertex, IShader* vertexShader) override;
+
 	IVertex* __stdcall CreateVertex(void* vertices, uint32_t vertexSize, uint32_t vertexCount, void* indices = nullptr, uint32_t indexTypeSize = 0, uint32_t indexCount = 0) override;
+
+	IConstantBuffer* __stdcall CreateConstantBuffer(uint32_t bufferSize) override;
 
 	IShader* __stdcall CreateShader(ShaderType shaderType, const wchar_t* path) override;
 
-	IInputLayout* __stdcall CreateLayout(IVertex* vertex, IShader* vertexShader) override;
+	IMaterial* __stdcall CreateMaterial() override;
 
-	//ISamplerState* __stdcall  CreateSampler(bool linear, bool clamp) override;
-
-	//IMaterial* __stdcall CreateMaterial() override;
-
-	//IConstantBuffer* __stdcall CreateConstantBuffer(uint32_t bufferSize) override;
-
-	//IRasterizer* __stdcall  CreateRasterizer(bool back) override;
+	ISamplerState* __stdcall  CreateSampler(bool linear, bool clamp) override;
+	
+	IRasterizer* __stdcall  CreateRasterizer(bool back) override;
 
 	ID3D11Device* Device();
 

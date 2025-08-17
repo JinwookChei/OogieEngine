@@ -5,12 +5,10 @@
 #include "VertexShader.h"
 #include "PixelShader.h"
 #include "InputLayout.h"
-//#include "Shader.h"
-//#include "SamplerState.h"
-//#include "Material.h"
-//#include "ConstantBuffer.h"
-//#include "Rasterizer.h"
-
+#include "SamplerState.h"
+#include "Material.h"
+#include "ConstantBuffer.h"
+#include "Rasterizer.h"
 
 
 D3D11Renderer* GRenderer = nullptr;
@@ -33,17 +31,17 @@ D3D11Renderer::~D3D11Renderer()
 	Cleanup();
 }
 
-HRESULT __stdcall D3D11Renderer::QueryInterface(REFIID riid, void** ppvObject)
+HRESULT  D3D11Renderer::QueryInterface(REFIID riid, void** ppvObject)
 {
 	return E_NOTIMPL;
 }
 
-ULONG __stdcall D3D11Renderer::AddRef()
+ULONG  D3D11Renderer::AddRef()
 {
 	return ++refCount_;
 }
 
-ULONG __stdcall D3D11Renderer::Release()
+ULONG  D3D11Renderer::Release()
 {
 	--refCount_;
 	ULONG tmpRefCount = refCount_;
@@ -127,7 +125,7 @@ bool D3D11Renderer::Initialize(void* hWnd, uint32_t width, uint32_t height)
 	return true;
 }
 
-void __stdcall D3D11Renderer::RenderBegin()
+void  D3D11Renderer::RenderBegin()
 {
 	drawCallCount_ = 0;
 
@@ -136,7 +134,7 @@ void __stdcall D3D11Renderer::RenderBegin()
 	backBuffer_->Setting();
 }
 
-void __stdcall D3D11Renderer::RenderEnd()
+void  D3D11Renderer::RenderEnd()
 {
 	swapChain_->Present(0, 0);
 }
@@ -144,6 +142,18 @@ void __stdcall D3D11Renderer::RenderEnd()
 uint64_t D3D11Renderer::DrawCallCount()
 {
 	return drawCallCount_;
+}
+
+IInputLayout* D3D11Renderer::CreateLayout(IVertex* vertex, IShader* vertexShader)
+{
+	InputLayout* newInputLayout = new InputLayout;
+	if (false == newInputLayout->Create(vertex, vertexShader))
+	{
+		newInputLayout->Release();
+		newInputLayout = nullptr;
+	}
+
+	return newInputLayout;
 }
 
 IVertex* D3D11Renderer::CreateVertex(void* vertices, uint32_t vertexSize, uint32_t vertexCount, void* indices, uint32_t indexTypeSize, uint32_t indexCount)
@@ -162,6 +172,17 @@ IVertex* D3D11Renderer::CreateVertex(void* vertices, uint32_t vertexSize, uint32
 	}
 
 	return vertexBuffer;
+}
+
+IConstantBuffer*  D3D11Renderer::CreateConstantBuffer(uint32_t bufferSize)
+{
+	ConstantBuffer* buffer = new ConstantBuffer;
+	if (false == buffer->CreateBuffer(bufferSize))
+	{
+		buffer->Release();
+		buffer = nullptr;
+	}
+	return buffer;
 }
 
 IShader* D3D11Renderer::CreateShader(ShaderType shaderType, const wchar_t* path)
@@ -193,57 +214,34 @@ IShader* D3D11Renderer::CreateShader(ShaderType shaderType, const wchar_t* path)
 	return shader;
 }
 
-IInputLayout*  D3D11Renderer::CreateLayout(IVertex* vertex, IShader* vertexShader)
+IMaterial*  D3D11Renderer::CreateMaterial()
 {
-	InputLayout* newInputLayout = new InputLayout;
-	if (false == newInputLayout->Create(vertex, vertexShader))
+	return new Material;
+
+}
+ISamplerState*  D3D11Renderer::CreateSampler(bool linear, bool clamp)
+{
+	SamplerState* sampler = new SamplerState;
+	if (false == sampler->CreateSampler(linear, clamp))
 	{
-		newInputLayout->Release();
-		newInputLayout = nullptr;
+		sampler->Release();
+		sampler = nullptr;
 	}
 
-	return newInputLayout;
+	return sampler;
 }
 
-//ISamplerState* D3D11Renderer::CreateSampler(bool linear, bool clamp)
-//{
-//	SamplerState* sampler = new SamplerState;
-//	if (false == sampler->CreateSampler(linear, clamp))
-//	{
-//		sampler->Release();
-//		sampler = nullptr;
-//	}
-//
-//	return sampler;
-//}
+IRasterizer*  D3D11Renderer::CreateRasterizer(bool back)
+{
+	Rasterizer* rasterizer = new Rasterizer;
+	if (false == rasterizer->CreateRasterizer(false, back))
+	{
+		rasterizer->Release();
+		rasterizer = nullptr;
+	}
 
-//IMaterial* __stdcall D3D11Renderer::CreateMaterial()
-//{
-//	return new Material;
-//}
-
-//IConstantBuffer* __stdcall D3D11Renderer::CreateConstantBuffer(unsigned int bufferSize)
-//{
-//	ConstantBuffer* buffer = new ConstantBuffer;
-//	if (false == buffer->CreateBuffer(bufferSize))
-//	{
-//		buffer->Release();
-//		buffer = nullptr;
-//	}
-//	return buffer;
-//}
-
-//IRasterizer* __stdcall D3D11Renderer::CreateRasterizer(bool back)
-//{
-//	Rasterizer* rasterizer = new Rasterizer;
-//	if (false == rasterizer->CreateRasterizer(false, back))
-//	{
-//		rasterizer->Release();
-//		rasterizer = nullptr;
-//	}
-//
-//	return rasterizer;
-//}
+	return rasterizer;
+}
 
 ID3D11Device* D3D11Renderer::Device()
 {

@@ -44,7 +44,7 @@ bool InputLayout::Create(IVertex* vertex, IShader* vertexShader)
 
 	const std::vector<D3D11_INPUT_ELEMENT_DESC>& layoutDesc = buffer->GetDesc();
 
-	HRESULT hr = GRenderer->Device()->CreateInputLayout(&layoutDesc[0], (UINT)layoutDesc.size(), shader->GetBufferPointer(), shader->GetBufferSize(), &inputLayOut_);
+	HRESULT hr = GRenderer->Device()->CreateInputLayout(&layoutDesc[0], (UINT)layoutDesc.size(), shader->GetBufferPointer(), shader->GetBufferSize(), &inputLayout_);
 	if (FAILED(hr))
 	{
 		DEBUG_BREAK();

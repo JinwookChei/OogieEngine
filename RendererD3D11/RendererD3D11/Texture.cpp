@@ -91,14 +91,14 @@ bool Texture::SetTexture(ID3D11Texture2D* texture)
 	return true;
 }
 
-float Texture::Width() const
+FLOAT Texture::Width() const
 {
-	return (float)desc_.Width;
+	return (FLOAT)desc_.Width;
 }
 
-float Texture::Height() const
+FLOAT Texture::Height() const
 {
-	return (float)desc_.Height;
+	return (FLOAT)desc_.Height;
 }
 
 ID3D11RenderTargetView* Texture::RenderTargetView() const

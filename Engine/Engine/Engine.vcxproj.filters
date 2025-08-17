@@ -31,6 +31,9 @@
     <Filter Include="Source Files\TEST">
       <UniqueIdentifier>{770ba8f1-7343-4fbe-99b5-6597d47d6729}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Shader">
+      <UniqueIdentifier>{58bbbbf2-bf6b-4326-9f6b-6c9e74b5ffb1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -77,10 +80,10 @@
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="VertexShader.hlsl">
-      <Filter>Source Files\TEST</Filter>
+      <Filter>Resource Files\Shader</Filter>
     </FxCompile>
     <FxCompile Include="PixelShader.hlsl">
-      <Filter>Source Files\TEST</Filter>
+      <Filter>Resource Files\Shader</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

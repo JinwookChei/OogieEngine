@@ -17,9 +17,9 @@ public:
 
 	bool SetTexture(ID3D11Texture2D* texture);
 
-	float Width() const;
+	FLOAT Width() const;
 
-	float Height() const;
+	FLOAT Height() const;
 
 	ID3D11RenderTargetView* RenderTargetView() const;
 

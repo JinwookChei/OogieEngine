@@ -77,17 +77,17 @@ struct IRenderer : public IUnknown {
 
 	virtual uint64_t __stdcall DrawCallCount() = 0;
 
+	virtual IInputLayout* __stdcall CreateLayout(IVertex* vertex, IShader* vertexShader) = 0;
+
 	virtual IVertex* __stdcall CreateVertex(void* vertices, uint32_t vertexSize, uint32_t vertexCount, void* indices = nullptr, uint32_t indexTypeSize = 0, uint32_t indexCount = 0) = 0;
+
+	virtual IConstantBuffer* __stdcall CreateConstantBuffer(uint32_t bufferSize) = 0;
 
 	virtual IShader* __stdcall CreateShader(ShaderType shaderType, const wchar_t* path) = 0;
 
-	virtual IInputLayout* __stdcall CreateLayout(IVertex* vertex, IShader* vertexShader) = 0;
-
-	virtual ISamplerState* __stdcall  CreateSampler(bool linear, bool clamp) = 0;
-
 	virtual IMaterial* __stdcall CreateMaterial() = 0;
 
-	virtual IConstantBuffer* __stdcall CreateConstantBuffer(uint32_t bufferSize) = 0;
+	virtual ISamplerState* __stdcall  CreateSampler(bool linear, bool clamp) = 0;
 
 	virtual IRasterizer* __stdcall  CreateRasterizer(bool back) = 0;
 };
