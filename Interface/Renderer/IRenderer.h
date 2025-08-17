@@ -6,7 +6,7 @@ enum class ShaderType
 	Pixel
 };
 
-enum class FillMode
+enum class FillModeType
 {
 	WireFrame = 0,
 	Solid
@@ -40,9 +40,9 @@ struct ISamplerState : public IUnknown {
 };
 
 struct IMaterial : public IUnknown {
-	virtual void __stdcall SetVertexShader(IShader* shader) = 0;
+	virtual void __stdcall SetVertexShader(IShader* vertexShader) = 0;
 
-	virtual void __stdcall SetPixelShader(IShader* shader) = 0;
+	virtual void __stdcall SetPixelShader(IShader* pixelShader) = 0;
 
 	virtual void __stdcall SetSampler(ISamplerState* sampler, uint32_t slot = 0) = 0;
 
@@ -65,23 +65,23 @@ struct IConstantBuffer : public IUnknown {
 struct IRasterizer : public IUnknown {
 	virtual void __stdcall Setting() = 0;
 
-	virtual void __stdcall SetFillMode(FillMode fillmode) = 0;
+	virtual void __stdcall SetFillMode(FillModeType fillModeType) = 0;
 };
 
 struct IRenderer : public IUnknown {
 	virtual bool __stdcall Initialize(void* hWnd, uint32_t width, uint32_t height) = 0;
 
-	virtual void __stdcall BeginRender() = 0;
+	virtual void __stdcall RenderBegin() = 0;
 	
-	virtual void __stdcall EndRender() = 0;
+	virtual void __stdcall RenderEnd() = 0;
 
-	virtual unsigned __int64 __stdcall DrawCallCount() = 0;
+	virtual uint64_t __stdcall DrawCallCount() = 0;
 
 	virtual IVertex* __stdcall CreateVertex(void* vertices, uint32_t vertexSize, uint32_t vertexCount, void* indices = nullptr, uint32_t indexTypeSize = 0, uint32_t indexCount = 0) = 0;
 
-	virtual IShader* __stdcall CreateShader(ShaderType type, const wchar_t* path) = 0;
+	virtual IShader* __stdcall CreateShader(ShaderType shaderType, const wchar_t* path) = 0;
 
-	virtual IInputLayout* __stdcall CreateLayOut(IVertex* vertex, IShader* vertexShader) = 0;
+	virtual IInputLayout* __stdcall CreateLayout(IVertex* vertex, IShader* vertexShader) = 0;
 
 	virtual ISamplerState* __stdcall  CreateSampler(bool linear, bool clamp) = 0;
 

@@ -37,6 +37,9 @@
     <Filter Include="Source Files\Shader">
       <UniqueIdentifier>{7c5da77f-27f9-4527-90da-9f3b73ab0602}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Material">
+      <UniqueIdentifier>{5b51a802-37f7-4a67-bd0d-62d9b26e978d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -69,6 +72,9 @@
     <ClInclude Include="InputLayout.h">
       <Filter>Source Files\Layout</Filter>
     </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>Source Files\Material</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -100,6 +106,9 @@
     </ClCompile>
     <ClCompile Include="InputLayout.cpp">
       <Filter>Source Files\Layout</Filter>
+    </ClCompile>
+    <ClCompile Include="Material.cpp">
+      <Filter>Source Files\Material</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

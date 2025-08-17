@@ -12,7 +12,7 @@ Texture::Texture()
 
 Texture::~Texture()
 {
-	CleanUp();
+	Cleanup();
 }
 
 HRESULT __stdcall Texture::QueryInterface(REFIID riid, void** ppvObject)
@@ -48,22 +48,19 @@ Texture* Texture::Create(const D3D11_TEXTURE2D_DESC& desc)
 
 	Texture* newTexture = new Texture;
 	bool ret = newTexture->SetTexture(texture);
+
+	if (ret == false)
+	{
+		DEBUG_BREAK();
+		return nullptr;
+	}
+
 	return newTexture;
-}
-
-float Texture::Width() const
-{
-	return (float)desc_.Width;
-}
-
-float Texture::Height() const
-{
-	return (float)desc_.Height;
 }
 
 bool Texture::SetTexture(ID3D11Texture2D* texture)
 {
-	CleanUp();
+	Cleanup();
 
 	texture_ = texture;
 	if (nullptr == texture_)
@@ -92,6 +89,26 @@ bool Texture::SetTexture(ID3D11Texture2D* texture)
 	}
 
 	return true;
+}
+
+float Texture::Width() const
+{
+	return (float)desc_.Width;
+}
+
+float Texture::Height() const
+{
+	return (float)desc_.Height;
+}
+
+ID3D11RenderTargetView* Texture::RenderTargetView() const
+{
+	return renderTargetView_;
+}
+
+ID3D11DepthStencilView* Texture::DepthStencilView() const
+{
+	return depthStencilView_;
 }
 
 bool Texture::CreateRenderTargetView()
@@ -139,17 +156,7 @@ bool Texture::CreateDepthStencilView()
 	return true;
 }
 
-ID3D11RenderTargetView* Texture::RenderTargetView() const
-{
-	return renderTargetView_;
-}
-
-ID3D11DepthStencilView* Texture::DepthStencilView() const
-{
-	return depthStencilView_;
-}
-
-void Texture::CleanUp()
+void Texture::Cleanup()
 {
 	if (nullptr != renderTargetView_)
 	{

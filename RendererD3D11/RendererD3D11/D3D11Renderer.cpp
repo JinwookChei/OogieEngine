@@ -30,7 +30,7 @@ D3D11Renderer::D3D11Renderer()
 
 D3D11Renderer::~D3D11Renderer()
 {
-	CleanUp();
+	Cleanup();
 }
 
 HRESULT __stdcall D3D11Renderer::QueryInterface(REFIID riid, void** ppvObject)
@@ -54,7 +54,7 @@ ULONG __stdcall D3D11Renderer::Release()
 	return tmpRefCount;
 }
 
-bool __stdcall D3D11Renderer::Initialize(void* hWnd, UINT width, UINT height)
+bool D3D11Renderer::Initialize(void* hWnd, uint32_t width, uint32_t height)
 {
 	if (nullptr == hWnd)
 	{
@@ -78,7 +78,7 @@ bool __stdcall D3D11Renderer::Initialize(void* hWnd, UINT width, UINT height)
 	{
 		return false;
 	}
-
+	
 	int createDeviceFlag = 0;
 #ifdef _DEBUG
 	createDeviceFlag = D3D11_CREATE_DEVICE_DEBUG;
@@ -127,7 +127,7 @@ bool __stdcall D3D11Renderer::Initialize(void* hWnd, UINT width, UINT height)
 	return true;
 }
 
-void __stdcall D3D11Renderer::BeginRender()
+void __stdcall D3D11Renderer::RenderBegin()
 {
 	drawCallCount_ = 0;
 
@@ -136,22 +136,22 @@ void __stdcall D3D11Renderer::BeginRender()
 	backBuffer_->Setting();
 }
 
-void __stdcall D3D11Renderer::EndRender()
+void __stdcall D3D11Renderer::RenderEnd()
 {
 	swapChain_->Present(0, 0);
 }
 
-unsigned __int64 __stdcall D3D11Renderer::DrawCallCount()
+uint64_t D3D11Renderer::DrawCallCount()
 {
 	return drawCallCount_;
 }
 
-IVertex* D3D11Renderer::CreateVertex(void* vertices, UINT vertexSize, UINT vertexCount, void* indices, UINT indexTypeSize, UINT indexCount)
+IVertex* D3D11Renderer::CreateVertex(void* vertices, uint32_t vertexSize, uint32_t vertexCount, void* indices, uint32_t indexTypeSize, uint32_t indexCount)
 {
 	VertexBuffer* vertexBuffer = new VertexBuffer;
 	if (nullptr == vertexBuffer)
 	{
-		__debugbreak();
+		DEBUG_BREAK();
 		return nullptr;
 	}
 
@@ -164,7 +164,7 @@ IVertex* D3D11Renderer::CreateVertex(void* vertices, UINT vertexSize, UINT verte
 	return vertexBuffer;
 }
 
-IShader* __stdcall D3D11Renderer::CreateShader(ShaderType type, const wchar_t* path)
+IShader* D3D11Renderer::CreateShader(ShaderType shaderType, const wchar_t* path)
 {
 	ID3DBlob* blob = nullptr;
 	HRESULT hr = D3DReadFileToBlob(path, &blob);
@@ -174,7 +174,7 @@ IShader* __stdcall D3D11Renderer::CreateShader(ShaderType type, const wchar_t* p
 	}
 
 	BaseShader* shader = nullptr;
-	switch (type)
+	switch (shaderType)
 	{
 	case ShaderType::Vertex:
 		shader = new VertexShader;
@@ -193,7 +193,7 @@ IShader* __stdcall D3D11Renderer::CreateShader(ShaderType type, const wchar_t* p
 	return shader;
 }
 
-IInputLayout* __stdcall D3D11Renderer::CreateLayout(IVertex* vertex, IShader* vertexShader)
+IInputLayout*  D3D11Renderer::CreateLayout(IVertex* vertex, IShader* vertexShader)
 {
 	InputLayout* newInputLayout = new InputLayout;
 	if (false == newInputLayout->Create(vertex, vertexShader))
@@ -205,45 +205,45 @@ IInputLayout* __stdcall D3D11Renderer::CreateLayout(IVertex* vertex, IShader* ve
 	return newInputLayout;
 }
 
-ISamplerState* __stdcall D3D11Renderer::CreateSampler(bool linear, bool clamp)
-{
-	SamplerState* sampler = new SamplerState;
-	if (false == sampler->CreateSampler(linear, clamp))
-	{
-		sampler->Release();
-		sampler = nullptr;
-	}
+//ISamplerState* D3D11Renderer::CreateSampler(bool linear, bool clamp)
+//{
+//	SamplerState* sampler = new SamplerState;
+//	if (false == sampler->CreateSampler(linear, clamp))
+//	{
+//		sampler->Release();
+//		sampler = nullptr;
+//	}
+//
+//	return sampler;
+//}
 
-	return sampler;
-}
+//IMaterial* __stdcall D3D11Renderer::CreateMaterial()
+//{
+//	return new Material;
+//}
 
-IMaterial* __stdcall D3D11Renderer::CreateMaterial()
-{
-	return new Material;
-}
+//IConstantBuffer* __stdcall D3D11Renderer::CreateConstantBuffer(unsigned int bufferSize)
+//{
+//	ConstantBuffer* buffer = new ConstantBuffer;
+//	if (false == buffer->CreateBuffer(bufferSize))
+//	{
+//		buffer->Release();
+//		buffer = nullptr;
+//	}
+//	return buffer;
+//}
 
-IConstantBuffer* __stdcall D3D11Renderer::CreateConstantBuffer(unsigned int bufferSize)
-{
-	ConstantBuffer* buffer = new ConstantBuffer;
-	if (false == buffer->CreateBuffer(bufferSize))
-	{
-		buffer->Release();
-		buffer = nullptr;
-	}
-	return buffer;
-}
-
-IRasterizer* __stdcall D3D11Renderer::CreateRasterizer(bool back)
-{
-	Rasterizer* rasterizer = new Rasterizer;
-	if (false == rasterizer->CreateRasterizer(false, back))
-	{
-		rasterizer->Release();
-		rasterizer = nullptr;
-	}
-
-	return rasterizer;
-}
+//IRasterizer* __stdcall D3D11Renderer::CreateRasterizer(bool back)
+//{
+//	Rasterizer* rasterizer = new Rasterizer;
+//	if (false == rasterizer->CreateRasterizer(false, back))
+//	{
+//		rasterizer->Release();
+//		rasterizer = nullptr;
+//	}
+//
+//	return rasterizer;
+//}
 
 ID3D11Device* D3D11Renderer::Device()
 {
@@ -427,7 +427,7 @@ bool D3D11Renderer::CreateRenderTarget()
 	return true;
 }
 
-void D3D11Renderer::CleanUp()
+void D3D11Renderer::Cleanup()
 {
 
 	if (nullptr != deviceContext_)

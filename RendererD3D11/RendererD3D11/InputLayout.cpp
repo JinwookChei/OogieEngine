@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "InputLayout.h"
 #include "VertexBuffer.h"
-//#include "Shader.h"
+#include "BaseShader.h"
 
 InputLayout::InputLayout()
 	: refCount_(1),
@@ -35,11 +35,6 @@ ULONG __stdcall InputLayout::Release()
 	return tmpRefCount;
 }
 
-void __stdcall InputLayout::Setting()
-{
-	GRenderer->DeviceContext()->IASetInputLayout(inputLayout_);
-}
-
 bool InputLayout::Create(IVertex* vertex, IShader* vertexShader)
 {
 	Cleanup();
@@ -52,11 +47,19 @@ bool InputLayout::Create(IVertex* vertex, IShader* vertexShader)
 	HRESULT hr = GRenderer->Device()->CreateInputLayout(&layoutDesc[0], (UINT)layoutDesc.size(), shader->GetBufferPointer(), shader->GetBufferSize(), &inputLayOut_);
 	if (FAILED(hr))
 	{
+		DEBUG_BREAK();
 		return false;
 	}
 
 	return true;
 }
+
+
+void __stdcall InputLayout::Setting()
+{
+	GRenderer->DeviceContext()->IASetInputLayout(inputLayout_);
+}
+
 
 void InputLayout::Cleanup()
 {

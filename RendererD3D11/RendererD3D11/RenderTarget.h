@@ -14,16 +14,16 @@ public:
 
 	ULONG __stdcall Release() override;
 
-	bool SetTexture(Texture* texture);
-
 	bool CreateDepthTexture();
+
+	bool SetTexture(Texture* texture);
 
 	void Clear();
 
 	void Setting();
 
 private:
-	void CleanUp();
+	void Cleanup();
 
 	ULONG refCount_;
 
@@ -31,7 +31,7 @@ private:
 
 	Texture* depthTexture_;
 
-	Color clearColor_;
-
 	D3D11_VIEWPORT viewport_;
+
+	Color clearColor_;
 };

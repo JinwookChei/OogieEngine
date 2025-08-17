@@ -9,14 +9,14 @@ RenderTarget::RenderTarget()
 	: refCount_(1),
 	renderTexture_(nullptr),
 	depthTexture_(nullptr),
-	clearColor_({0.2f, 0.4f, 0.6f, 1.0f}),
-	viewport_()
+	viewport_(),
+	clearColor_({ 0.2f, 0.4f, 0.6f, 1.0f })
 {
 }
 
 RenderTarget::~RenderTarget()
 {
-	CleanUp();
+	Cleanup();
 }
 
 HRESULT __stdcall RenderTarget::QueryInterface(REFIID riid, void** ppvObject)
@@ -40,27 +40,6 @@ ULONG __stdcall RenderTarget::Release()
 	return tmpRefCount;
 }
 
-bool RenderTarget::SetTexture(Texture* texture)
-{
-	CleanUp();
-
-	if (nullptr == texture)
-	{
-		return false;
-	}
-
-	renderTexture_ = texture;
-
-	viewport_.TopLeftX = 0.0f;
-	viewport_.TopLeftY = 0.0f;
-	viewport_.Width = renderTexture_->Width();
-	viewport_.Height = renderTexture_->Height();
-	viewport_.MinDepth = 0.0f;
-	viewport_.MaxDepth = 1.0f;
-
-	return true;
-}
-
 bool RenderTarget::CreateDepthTexture()
 {
 	D3D11_TEXTURE2D_DESC desc = { 0, };
@@ -78,6 +57,27 @@ bool RenderTarget::CreateDepthTexture()
 
 	depthTexture_ = Texture::Create(desc);
 	return nullptr != depthTexture_;
+}
+
+bool RenderTarget::SetTexture(Texture* texture)
+{
+	Cleanup();
+
+	if (nullptr == texture)
+	{
+		return false;
+	}
+
+	renderTexture_ = texture;
+
+	viewport_.TopLeftX = 0.0f;
+	viewport_.TopLeftY = 0.0f;
+	viewport_.Width = renderTexture_->Width();
+	viewport_.Height = renderTexture_->Height();
+	viewport_.MinDepth = 0.0f;
+	viewport_.MaxDepth = 1.0f;
+
+	return true;
 }
 
 void RenderTarget::Clear()
@@ -134,7 +134,7 @@ void RenderTarget::Setting()
 	GRenderer->DeviceContext()->RSSetViewports(1, &viewport_);
 }
 
-void RenderTarget::CleanUp()	
+void RenderTarget::Cleanup()	
 {
 	if (nullptr != renderTexture_)
 	{

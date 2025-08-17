@@ -14,9 +14,9 @@ public:
 
 	ULONG __stdcall Release() override;
 
-	void __stdcall Setting() override;
-
 	bool Create(IVertex* vertex, IShader* vertexShader);
+
+	void __stdcall Setting() override;
 
 private:
 	void Cleanup();

@@ -15,21 +15,22 @@ public:
 
 	static Texture* Create(const D3D11_TEXTURE2D_DESC& desc);
 
+	bool SetTexture(ID3D11Texture2D* texture);
+
 	float Width() const;
 
 	float Height() const;
 
-	bool SetTexture(ID3D11Texture2D* texture);
+	ID3D11RenderTargetView* RenderTargetView() const;
 
+	ID3D11DepthStencilView* DepthStencilView() const;
+
+private:
 	bool CreateRenderTargetView();
 
 	bool CreateDepthStencilView();
 
-	ID3D11RenderTargetView* RenderTargetView() const;
-
-	ID3D11DepthStencilView* DepthStencilView() const;
-private:
-	void CleanUp();
+	void Cleanup();
 
 	ULONG refCount_;
 

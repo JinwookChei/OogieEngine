@@ -15,27 +15,27 @@ public:
 
 	ULONG __stdcall Release() override;
 
-	bool __stdcall Initialize(void* hWnd, UINT width, UINT height) override;
+	bool __stdcall Initialize(void* hWnd, uint32_t width, uint32_t height) override;
 
-	void __stdcall BeginRender() override;
+	void __stdcall RenderBegin() override;
 
-	void __stdcall EndRender() override;
+	void __stdcall RenderEnd() override;
 
-	unsigned __int64 __stdcall DrawCallCount() override;
+	uint64_t __stdcall DrawCallCount() override;
 
-	IVertex* CreateVertex(void* vertices, UINT vertexSize, UINT vertexCount, void* indices = nullptr, UINT indexTypeSize = 0, UINT indexCount = 0) override;
+	IVertex* __stdcall CreateVertex(void* vertices, uint32_t vertexSize, uint32_t vertexCount, void* indices = nullptr, uint32_t indexTypeSize = 0, uint32_t indexCount = 0) override;
 
-	IShader* __stdcall CreateShader(ShaderType type, const wchar_t* path) override;
+	IShader* __stdcall CreateShader(ShaderType shaderType, const wchar_t* path) override;
 
 	IInputLayout* __stdcall CreateLayout(IVertex* vertex, IShader* vertexShader) override;
 
-	ISamplerState* __stdcall CreateSampler(bool linear, bool clamp) override;
+	//ISamplerState* __stdcall  CreateSampler(bool linear, bool clamp) override;
 
-	IMaterial* __stdcall CreateMaterial() override;
+	//IMaterial* __stdcall CreateMaterial() override;
 
-	IConstantBuffer* __stdcall CreateConstantBuffer(unsigned int bufferSize) override;
+	//IConstantBuffer* __stdcall CreateConstantBuffer(uint32_t bufferSize) override;
 
-	IRasterizer* __stdcall CreateRasterizer(bool back) override;
+	//IRasterizer* __stdcall  CreateRasterizer(bool back) override;
 
 	ID3D11Device* Device();
 
@@ -50,13 +50,13 @@ private:
 
 	bool CreateRenderTarget();
 
-	void CleanUp();
+	void Cleanup();
 
 	bool coInit_;
 
 	ULONG refCount_;
 
-	unsigned __int64 drawCallCount_;
+	uint64_t drawCallCount_;
 
 	HWND hWnd_;
 
