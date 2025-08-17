@@ -46,6 +46,9 @@
     <Filter Include="Source Files\Rasterizer">
       <UniqueIdentifier>{1aef9740-edc9-49e0-bea4-978dd6c9554c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Constant">
+      <UniqueIdentifier>{21c6ea67-e3d9-4ca3-a179-d51a63f6f5e8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -87,6 +90,9 @@
     <ClInclude Include="Rasterizer.h">
       <Filter>Source Files\Rasterizer</Filter>
     </ClInclude>
+    <ClInclude Include="ConstantBuffer.h">
+      <Filter>Source Files\Constant</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -127,6 +133,9 @@
     </ClCompile>
     <ClCompile Include="Rasterizer.cpp">
       <Filter>Source Files\Rasterizer</Filter>
+    </ClCompile>
+    <ClCompile Include="ConstantBuffer.cpp">
+      <Filter>Source Files\Constant</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

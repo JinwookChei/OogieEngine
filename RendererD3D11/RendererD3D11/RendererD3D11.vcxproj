@@ -143,6 +143,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Interface\Renderer\IRenderer.h" />
+    <ClInclude Include="ConstantBuffer.h" />
     <ClInclude Include="D3D11Renderer.h" />
     <ClInclude Include="InputLayout.h" />
     <ClInclude Include="Material.h" />
@@ -157,6 +158,7 @@
     <ClInclude Include="VertexShader.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ConstantBuffer.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="D3D11Renderer.cpp" />
     <ClCompile Include="InputLayout.cpp" />
