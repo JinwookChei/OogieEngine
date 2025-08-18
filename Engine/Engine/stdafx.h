@@ -15,9 +15,10 @@
 #define UTILITY_API __declspec(dllimport)
 
 #include <windows.h>
+// TEST용 Engine에서는 DirextX 라이브러리 가지지 X
+#include <DirectXMath.h>
 #include <vector>
 
-#include <DirectXMath.h>
 
 #include <Application/IApplication.h>
 #include <Renderer/IRenderer.h>
@@ -26,9 +27,8 @@
 #include <Utility/LinkedList.h>
 #include <Utility/HashTable.h>
 
-#include "Test.h"
-
 #include "InputManager.h"
+
 extern InputManager* GInputManager;
 
 

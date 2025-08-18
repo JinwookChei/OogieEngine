@@ -1,6 +1,5 @@
 #pragma once
 
-
 struct SimpleVertex {
 	DirectX::XMFLOAT3 position;
 	DirectX::XMFLOAT4 color;
@@ -43,4 +42,4 @@ struct ConstantBuffer
 	float pad1;
 };
 
-bool Create
+bool CreateSphere(std::vector<SimpleVertex>* outVertices, std::vector<WORD>* outIndices, float radius = 0.5f);

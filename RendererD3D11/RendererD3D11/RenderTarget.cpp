@@ -43,8 +43,8 @@ ULONG __stdcall RenderTarget::Release()
 bool RenderTarget::CreateDepthTexture()
 {
 	D3D11_TEXTURE2D_DESC desc = { 0, };
-	desc.Width = renderTexture_->Width();
-	desc.Height = renderTexture_->Height();
+	desc.Width = (UINT)renderTexture_->Width();
+	desc.Height = (UINT)renderTexture_->Height();
 	desc.MipLevels = 1;
 	desc.ArraySize = 1;
 	desc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;

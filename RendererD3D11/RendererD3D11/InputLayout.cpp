@@ -35,6 +35,13 @@ ULONG __stdcall InputLayout::Release()
 	return tmpRefCount;
 }
 
+void __stdcall InputLayout::Setting()
+{
+	GRenderer->DeviceContext()->IASetInputLayout(inputLayout_);
+}
+
+
+
 bool InputLayout::Create(IVertex* vertex, IShader* vertexShader)
 {
 	Cleanup();
@@ -44,7 +51,8 @@ bool InputLayout::Create(IVertex* vertex, IShader* vertexShader)
 
 	const std::vector<D3D11_INPUT_ELEMENT_DESC>& layoutDesc = buffer->GetDesc();
 
-	HRESULT hr = GRenderer->Device()->CreateInputLayout(&layoutDesc[0], (UINT)layoutDesc.size(), shader->GetBufferPointer(), shader->GetBufferSize(), &inputLayout_);
+	//HRESULT hr = GRenderer->Device()->CreateInputLayout(&layoutDesc[0], (UINT)layoutDesc.size(), shader->GetBufferPointer(), shader->GetBufferSize(), &inputLayout_);
+	HRESULT hr = GRenderer->Device()->CreateInputLayout(layoutDesc.data(), (UINT)layoutDesc.size(), shader->GetBufferPointer(), shader->GetBufferSize(), &inputLayout_);
 	if (FAILED(hr))
 	{
 		DEBUG_BREAK();
@@ -53,13 +61,6 @@ bool InputLayout::Create(IVertex* vertex, IShader* vertexShader)
 
 	return true;
 }
-
-
-void __stdcall InputLayout::Setting()
-{
-	GRenderer->DeviceContext()->IASetInputLayout(inputLayout_);
-}
-
 
 void InputLayout::Cleanup()
 {

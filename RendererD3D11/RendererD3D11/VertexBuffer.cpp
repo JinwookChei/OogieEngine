@@ -37,13 +37,13 @@ ULONG __stdcall VertexBuffer::Release()
 	return tmpRefCount;
 }
 
-bool VertexBuffer::AddInputLayout(const char* semanticName, uint32_t semanticIndex, uint32_t format, uint32_t inputSlot, bool isInstanceData)
+bool __stdcall VertexBuffer::AddInputLayout(const char* semanticName, uint32_t semanticIndex, uint32_t format, uint32_t inputSlot, bool isInstanceData)
 {
 	D3D11_INPUT_ELEMENT_DESC desc = { 0 };
 	desc.SemanticName = semanticName;
-	desc.SemanticIndex = semanticIndex;
+	desc.SemanticIndex = (UINT)semanticIndex;
 	desc.Format = (DXGI_FORMAT)format;
-	desc.InputSlot = inputSlot;
+	desc.InputSlot = (UINT)inputSlot;
 	desc.AlignedByteOffset = offset_;
 	offset_ += FormatSize(desc.Format);
 	desc.InputSlotClass = isInstanceData ? D3D11_INPUT_PER_INSTANCE_DATA : D3D11_INPUT_PER_VERTEX_DATA;
@@ -92,6 +92,8 @@ bool VertexBuffer::Initialize(void* vertices, UINT vertexSize, UINT vertexCount,
 		return false;
 	}
 
+	stride_ = vertexSize;
+
 	D3D11_BUFFER_DESC bd;
 	memset(&bd, 0x00, sizeof(D3D11_BUFFER_DESC));
 	bd.Usage = D3D11_USAGE_DEFAULT;
@@ -139,7 +141,7 @@ bool VertexBuffer::Initialize(void* vertices, UINT vertexSize, UINT vertexCount,
 	if (FAILED(hr))
 	{
 		DEBUG_BREAK();
-		return hr;
+		return false;
 	}
 
 	indexCount_ = indexCount;

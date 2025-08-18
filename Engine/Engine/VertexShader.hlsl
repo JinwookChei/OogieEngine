@@ -3,54 +3,65 @@ cbuffer ConstantBuffer : register(b0)
     matrix World;
     matrix View;
     matrix Projection;
-    float4 color;
-    float4 lightDir;
-    float4 lightColor;
-    float4 ambientColor;
-    
-    float3 spotPosition;
-    float spotRange;
-    float3 spotDirection;
-    float spotAngle;
 }
 
 struct VS_INPUT
 {
-    float3 position : POSITION;
-    float4 color : COLOR;
-    float3 normal : NORMAL;
-    float2 uv : TEXCOORD;
-    float4 tangent : TANGENT;
+    float3 position : POSITION; // 정점 위치
+    float4 color : COLOR; // 정점 색상
+    float3 normal : NORMAL; // (사용 안 함)
+    float2 uv : TEXCOORD; // (사용 안 함)
+    float4 tangent : TANGENT; // (사용 안 함)
 };
 
 struct PS_INPUT
 {
-    float4 Pos : SV_POSITION;
-    float4 Color : COLOR;
-    float3 normal : NORMAL;
-    float3 worldPos : TEXCOORD0;
-    float2 uv : TEXCOORD1;
-    float3x3 TBN : TEXCOORD2;
+    // SV_POSITION, SV->SystemValue :  
+    // SV_POSITION 시멘틱은 주로 픽셀 셰이더에서 사용되며, 해당 변수는 정점의 클립 공간 좌표를 나타냅니다. 이는 정점이 변환된 후의 위치를 표현
+    // 주로 이 변수는 최종 화면에 그려지는 픽셀의 위치를 결정하는 데 필요합니다.
+    
+    // + SV(System Value)란 ? 그래픽스 파이프라인에서 GPU가 특별하게 관리하거나 자동으로 제공하는 값임을 나타냅니다.
+    // 사용자가 따로 데이터를 넘기거나 설정하지 않아도 하드웨어/드라이버가 내부적으로 채워서 셰이더에 제공하는 값입니다.
+    float4 position : SV_POSITION; // 클립 공간 좌표
+    float4 color : COLOR; // 픽셀 셰이더로 넘길 색상
 };
 
 PS_INPUT main(VS_INPUT input)
 {
-    PS_INPUT output = (PS_INPUT) 0;
-    
-    float4 worldPosition = mul(float4(input.position, 1.0f), World); // 월드 포지션 ( 원점을 기준으로 얼마만큼 떨어져있나 )
-    float4 viewPosition = mul(worldPosition, View); // 뷰 포지션 ( 카메라를 기준으로 둔 포지션 ) ( 카메라 기준이란? 카메라의 포지션을 0, 0, 0 으로 본다 ) ( 카메라 기준이란? 카메라를 원점으로 만든다. )
-    output.Pos = mul(viewPosition, Projection);
-    output.Color = input.color;
-    
-    float3 N = normalize(mul(input.normal, (float3x3) World));
-    float3 T = normalize(mul(input.tangent.xyz, (float3x3) World));
-    float3 B = cross(N, T) * input.tangent.w;
-    
-    float3x3 normalMatrix = (float3x3) World;
-    output.normal = mul(input.normal, normalMatrix);
-    output.worldPos = worldPosition.xyz;
-    output.uv = input.uv;
-    output.TBN = float3x3(T, B, N);
-    
+    PS_INPUT output;
+
+    // 모델 좌표 -> 월드 좌표
+    float4 worldPos = mul(float4(input.position, 1.0f), World);
+
+    // 월드 좌표 -> 뷰 좌표
+    float4 viewPos = mul(worldPos, View);
+
+    // 뷰 좌표 -> 클립 좌표
+    output.position = mul(viewPos, Projection);
+
+    // 정점 색상 그대로 넘김
+    output.color = input.color;
+
     return output;
 }
+
+
+//// SV_Semantic vs 일반 Semantic
+//// HLSL에서 시멘틱(Semantic)은 셰이더가 어떤 의미의 데이터를 주고받는지를 나타내는 일종의 "태그"입니다. 
+//// 이 시멘틱은 크게 두 가지로 나뉩니다. 하나는 SV_로 시작하는 시스템 시멘틱이고, 다른 하나는 사용자가 정의한 일반 시멘틱입니다.
+//// 먼저 SV_ 시멘틱은 'System Value'의 약자로, GPU나 드라이버, Direct3D 시스템이 자동으로 값을 제공하거나 특별하게 해석하는 값들입니다.
+//// 예를 들어 SV_POSITION은 정점 셰이더의 결과로 꼭 필요한 값인데, 이것은 변환된 정점의 위치를 의미하며,
+//// GPU가 후속 파이프라인에서 화면상 픽셀 위치를 계산하기 위해 반드시 참조합니다. 또 SV_TARGET은 픽셀 셰이더에서 최종적으로 색상을 출력할 때 사용하는데, 
+//// 이것 역시 GPU가 출력 버퍼에 기록할 때 쓰이는 시스템 값입니다. 사용자가 따로 준비하거나 버퍼로 넘겨주는 것이 아니라 GPU가 처리 흐름상 자동으로 처리하고 넘겨줍니다.
+//// 따라서 이런 시멘틱은 반드시 해당 위치에서 사용되어야 하며, 없으면 셰이더가 제대로 작동하지 않습니다. 이런 이유로 '필수적'이고 '특별한 의미'를 갖습니다.
+//// 반면, 일반 시멘틱은 사용자가 직접 지정하여 버텍스 버퍼나 셰이더 입출력 구조체를 통해 넘기는 데이터입니다. 
+//// 대표적으로 POSITION, NORMAL, TEXCOORD 같은 것들이 있습니다. 예를 들어, 메시 데이터에 저장된 정점 위치, 법선 벡터, 텍스처 좌표 등을 
+//// 셰이더로 넘길 때 이런 시멘틱을 사용합니다. 이 값들은 사용자가 필요에 따라 정의하며, GPU가 자동으로 채워주는 것이 아니라 
+//// 어플리케이션 코드나 버텍스 버퍼에 사용자가 넣은 값을 그대로 셰이더가 받습니다. 그래서 이 시멘틱들은 '사용자 선택적'이며 '사용 목적에 따라 자유롭게' 사용됩니다.
+//// 핵심적인 차이는 바로 이 부분입니다. SV_ 시멘틱은 GPU가 셰이더 동작을 위해 반드시 알아야 하는 값이고 시스템이 직접 관리하지만, 
+//// 일반 시멘틱은 오로지 사용자가 필요에 따라 정의하고 넘기는 데이터입니다. 예를 들어 어떤 셰이더가 조명을 계산하려면 NORMAL 시멘틱이 필요할 수 있지만, 
+//// 이것은 전적으로 사용자의 선택이며 시스템이 강제하지 않습니다. 그러나 SV_POSITION은 반드시 필요하며 정점 셰이더에서 이 값을 출력하지 않으면 렌더링 자체가 불가능합니다.
+//// 활용 면에서도 차이가 있습니다. SV 시멘틱은 파이프라인 제어, 스레드 식별, 위치 정보, 출력 대상 지정 등 시스템적인 의미가 강하며, 
+//// 일반 시멘틱은 메시의 구성 데이터나 텍스처 좌표처럼 그래픽스 표현 자체에 필요한 데이터를 전달하는 데 사용됩니다.
+//// 결론적으로, SV 시멘틱은 시스템 레벨의 필수 정보 전달용이고, 일반 시멘틱은 사용자가 설계한 데이터 전달용입니다. 
+//// 이 둘을 구분하고 목적에 맞게 사용하는 것이 HLSL 셰이더 설계의 중요한 기본입니다.

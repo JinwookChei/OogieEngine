@@ -39,7 +39,7 @@ private:
 
 	bool InitializeStartUp(IStartup* startUp);
 
-	void CleanUp();
+	void Cleanup();
 
 	IStartup* startUp_;
 
@@ -50,13 +50,5 @@ private:
 	HMODULE applicationModule_;
 
 	HMODULE rendererModule_;
-
-
-	// TEST : Actor Class
-	IVertex* mesh_;
-
-	IShader* vertexShader_;
-
-	IShader* pixelShader_;
 
 };

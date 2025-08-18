@@ -1,27 +1,25 @@
 #include "stdafx.h"
 #include "StartUp.h"
 #include "Engine.h"
+#include "Test.h"
+
+InputManager* GInputManager = nullptr;
 
 typedef bool (*DLL_FUNCTION_ARG5)(void**, HINSTANCE, PWSTR, int, const wchar_t*);
 typedef bool (*DLL_FUNCTION_ARG1)(void**);
-
-InputManager* GInputManager = nullptr;
 
 Engine::Engine()
 	: startUp_(nullptr),
 	application_(nullptr),
 	renderer_(nullptr),
 	applicationModule_(nullptr),
-	rendererModule_(nullptr),
-	mesh_(nullptr),
-	vertexShader_(nullptr),
-	pixelShader_(nullptr)
+	rendererModule_(nullptr)
 {
 }
 
 Engine::~Engine()
 {
-	CleanUp();
+	Cleanup();
 }
 
 Engine* Engine::CreateEngine()
@@ -74,6 +72,11 @@ bool Engine::Initialize
 		return false;
 	}
 
+	if (false == GInputManager->Initialize())
+	{
+		return false;
+	}
+
 	if (false == InitializeStartUp(startup))
 	{
 		return false;
@@ -84,64 +87,109 @@ bool Engine::Initialize
 
 void Engine::Run()
 {
-	SimpleVertex vertices[] = {
-{DirectX::XMFLOAT3(0.0f, 0.5f, 0.0f), DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f)},
-{DirectX::XMFLOAT3(0.5f, -0.5f, 0.0f), DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f)},
-{DirectX::XMFLOAT3(-0.5f, -0.5f, 0.0f), DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f)}
-	};
+	 
+	std::vector<SimpleVertex> vertices;
+	std::vector<WORD> indices;
+	if (false == CreateSphere(&vertices, &indices)) {
+		DEBUG_BREAK();
+		return;
+	}
+	// 버텍스, 인덱스 버퍼 생성.
+	IVertex* vertex = renderer_->CreateVertex(vertices.data(), (uint32_t)sizeof(SimpleVertex), (uint32_t)vertices.size(), indices.data(), (uint32_t)sizeof(WORD), (uint32_t)indices.size());
+	if (nullptr == vertex) {
+		DEBUG_BREAK();
+		return;
+	}
+	vertex->AddInputLayout("POSITION", 0, 6, 0, false);
+	vertex->AddInputLayout("COLOR", 0, 2, 0, false);
+	vertex->AddInputLayout("NORMAL", 0, 6, 0, false);
+	vertex->AddInputLayout("TEXCOORD", 0, 16, 0, false);
+	vertex->AddInputLayout("TANGENT", 0, 2, 0, false);
 
-	bool ret = renderer_->CreateVertex(&vertices, sizeof(SimpleVertex), _countof(vertices), &mesh_);
-	if (false == ret)
-	{
+	IConstantBuffer* constantBuffer = renderer_->CreateConstantBuffer((uint32_t)sizeof(ConstantBuffer));
+	if (nullptr == constantBuffer) {
+		DEBUG_BREAK();
 		return;
 	}
 
-	ret = renderer_->CreateShader(L"VertexShader.cso", true, &vertexShader_);
-	if (false == ret)
+
+	IShader* vertexShader = renderer_->CreateShader(ShaderType::Vertex, L"VertexShader.cso");
+	if (nullptr == vertexShader)
 	{
+		DEBUG_BREAK();
 		return;
 	}
 
-	ret = renderer_->CreateShader(L"PixelShader.cso", false, &pixelShader_);
-	if (false == ret)
+	IShader* pixelShader = renderer_->CreateShader(ShaderType::Pixel, L"PixelShader.cso");
+	if (nullptr == pixelShader)
 	{
-		return;
-	}
-	
-	ret = mesh_->AddInputLayout("POSITION", 0, 6, 0, false);
-	if (false == ret)
-	{
-		return;
-	}
-	ret = mesh_->AddInputLayout("COLOR", 0, 2, 0, false);
-	if (false == ret)
-	{
+		DEBUG_BREAK();
 		return;
 	}
 
-	ret = mesh_->CreateInputLayout(vertexShader_);
-	if (false == ret)
+	IInputLayout* layout = renderer_->CreateLayout(vertex, vertexShader);
+	if (nullptr == layout)
 	{
+		DEBUG_BREAK();
 		return;
 	}
-
-	mesh_->Setting();
-	vertexShader_->Setting();
-	pixelShader_->Setting();
-
-
-	while (false == application_->ApplicationQuit())
+	IMaterial* material = renderer_->CreateMaterial();
+	if (nullptr == material)
 	{
+		DEBUG_BREAK();
+		return;
+	}
+	material->SetVertexShader(vertexShader);
+	material->SetPixelShader(pixelShader);
+	//material->SetSampler(sampler, 0);
+
+
+	// 월드, 뷰, 프로젝션 행렬 설정
+	// 스케일 * 자전 * 이동 * 공전 * 부모
+	DirectX::XMMATRIX parentPosition = DirectX::XMMatrixTranslation(0.0f, 0.0f, 0.0f);
+	DirectX::XMMATRIX world = DirectX::XMMatrixScaling(1.0f, 1.0f, 1.0f) * parentPosition; 
+	DirectX::XMMATRIX view = DirectX::XMMatrixLookAtLH(DirectX::XMVectorSet(-10.0f, 0.0f, 0.0f, 0.0f), DirectX::XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f), DirectX::XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f));
+	DirectX::XMMATRIX projection = DirectX::XMMatrixPerspectiveFovLH(DirectX::XM_PIDIV4, 800.0f / 600.0f, 0.01f, 100.0f);
+
+	// 상수 버퍼 업데이트
+	ConstantBuffer cb;
+	cb.world = DirectX::XMMatrixTranspose(world);
+	cb.view = DirectX::XMMatrixTranspose(view);
+	cb.projection = DirectX::XMMatrixTranspose(projection);
+
+	while (false == application_->ApplicationQuit()) {
+
 		application_->WinPumpMessage();
 
-		renderer_->BeginRender();
+		renderer_->RenderBegin();
 
-		// ... render
-		// TEMP
-		renderer_->Render();
+		// render
+		{
+			material->Setting();
+			layout->Setting();
+			vertex->Setting();
 
-		renderer_->EndRender();
+			//rasterizer->SetFillMode(FillModeType::WireFrame);
+			//rasterizer->Setting();
+
+			constantBuffer->Update(&cb);
+			constantBuffer->VSSetting(0);
+			constantBuffer->PSSetting(0);
+
+			vertex->Draw();
+		}
+
+		renderer_->RenderEnd();
 	}
+
+	vertexShader->Release();
+	pixelShader->Release();
+	vertex->Release();
+	layout->Release();
+	//sampler->Release();
+	material->Release();
+	constantBuffer->Release();
+	//rasterizer->Release();
 
 	if (nullptr != startUp_)
 	{
@@ -243,27 +291,8 @@ bool Engine::InitializeStartUp(IStartup* startUp)
 	return true;
 }
 
-void Engine::CleanUp()
+void Engine::Cleanup()
 {
-	if (nullptr != pixelShader_)
-	{
-		pixelShader_->Release();
-		pixelShader_ = nullptr;
-	}
-	if (nullptr != vertexShader_)
-	{
-		vertexShader_->Release();
-		vertexShader_ = nullptr;
-	}
-
-	if (nullptr != mesh_)
-	{
-		mesh_->Release();
-		mesh_ = nullptr;
-	}
-
-
-
 	if (nullptr != startUp_)
 	{
 		startUp_->Release();
