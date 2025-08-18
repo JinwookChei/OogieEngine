@@ -34,6 +34,24 @@
     <Filter Include="Resource Files\Shader">
       <UniqueIdentifier>{58bbbbf2-bf6b-4326-9f6b-6c9e74b5ffb1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Actor">
+      <UniqueIdentifier>{d94abd63-bdec-4ccc-a9de-2d3906c1b368}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Component">
+      <UniqueIdentifier>{b2175ee2-52bd-4faa-8458-61fc1c6edd75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Mesh">
+      <UniqueIdentifier>{7733d5c5-42ea-4ec2-a719-d9ac2ef337aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Material">
+      <UniqueIdentifier>{3c21c836-0752-48ab-9ca9-e7f4fc89a7c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\InputLayout">
+      <UniqueIdentifier>{4bc24f67-c397-4fcc-9105-1e84ad935c01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\StartUp">
+      <UniqueIdentifier>{8c9ee83a-d930-4f10-afb6-8e8b017fb8bb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -41,9 +59,6 @@
     </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>Precompiled Header</Filter>
-    </ClInclude>
-    <ClInclude Include="StartUp.h">
-      <Filter>Source Files\Engine</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Interface\Application\IApplication.h">
       <Filter>Interface</Filter>
@@ -56,6 +71,24 @@
     </ClInclude>
     <ClInclude Include="Test.h">
       <Filter>Source Files\TEST</Filter>
+    </ClInclude>
+    <ClInclude Include="StartUp.h">
+      <Filter>Source Files\StartUp</Filter>
+    </ClInclude>
+    <ClInclude Include="Actor.h">
+      <Filter>Source Files\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer.h">
+      <Filter>Source Files\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Source Files\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>Source Files\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="InputLayout.h">
+      <Filter>Source Files\InputLayout</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -73,6 +106,21 @@
     </ClCompile>
     <ClCompile Include="Test.cpp">
       <Filter>Source Files\TEST</Filter>
+    </ClCompile>
+    <ClCompile Include="Actor.cpp">
+      <Filter>Source Files\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>Source Files\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Source Files\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Material.cpp">
+      <Filter>Source Files\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="InputLayout.cpp">
+      <Filter>Source Files\InputLayout</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
