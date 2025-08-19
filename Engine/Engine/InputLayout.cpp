@@ -8,4 +8,9 @@ InputLayout::InputLayout()
 
 InputLayout::~InputLayout()
 {
+	if (nullptr != pInputLayout_)
+	{
+		pInputLayout_->Release();
+		pInputLayout_ = nullptr;
+	}
 }

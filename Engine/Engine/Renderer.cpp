@@ -15,6 +15,21 @@ Renderer::Renderer()
 
 Renderer::~Renderer()
 {
+	if (nullptr != pMesh_) 
+	{
+		delete pMesh_;
+		pMesh_ = nullptr;
+	}
+	if (nullptr != pMaterial_)
+	{
+		delete pMaterial_;
+		pMaterial_ = nullptr;
+	}
+	if (nullptr != pInputLayout_)
+	{
+		delete pInputLayout_;
+		pInputLayout_ = nullptr;
+	}
 }
 
 

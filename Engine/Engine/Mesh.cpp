@@ -8,5 +8,10 @@ Mesh::Mesh()
 
 Mesh::~Mesh()
 {
+	if (nullptr != pVertex_)
+	{
+		pVertex_->Release();
+		pVertex_ = nullptr;
+	}
 }
 

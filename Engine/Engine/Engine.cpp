@@ -21,7 +21,8 @@ Engine::Engine()
 	application_(nullptr),
 	renderer_(nullptr),
 	applicationModule_(nullptr),
-	rendererModule_(nullptr)
+	rendererModule_(nullptr),
+	prevUpdateTick_(0)
 {
 }
 
@@ -103,25 +104,32 @@ void Engine::Run()
 	// Mesh
 	Mesh* pMeshSphere = new Mesh;
 	pMeshSphere->pVertex_ = pSphereVertex;
+	pMeshSphere->pVertex_->AddRef();
 	pMeshSphere->pVertex_->AddInputLayout("POSITION", 0, 6, 0, false);
 	pMeshSphere->pVertex_->AddInputLayout("COLOR", 0, 2, 0, false);
 	pMeshSphere->pVertex_->AddInputLayout("NORMAL", 0, 6, 0, false);
 	pMeshSphere->pVertex_->AddInputLayout("TEXCOORD", 0, 16, 0, false);
 	pMeshSphere->pVertex_->AddInputLayout("TANGENT", 0, 2, 0, false);
-	
+
 	// Material
 	Material* pMaterialSphere = new Material;
-	pMaterialSphere->pMaterial_ = renderer_->CreateMaterial();
+	IMaterial* pMaterial = renderer_->CreateMaterial();
+	pMaterialSphere->pMaterial_ = pMaterial;
+	pMaterialSphere->pMaterial_->AddRef();
 	IShader* pVertexShader = renderer_->CreateShader(ShaderType::Vertex, L"VertexShader.cso");
 	IShader* pPixelShader = renderer_->CreateShader(ShaderType::Pixel, L"PixelShader.cso");
 	pMaterialSphere->pMaterial_->SetVertexShader(pVertexShader);
 	pMaterialSphere->pMaterial_->SetPixelShader(pPixelShader);
 	pMaterialSphere->pVertexShader_ = pVertexShader;
+	pMaterialSphere->pVertexShader_->AddRef();
 	pMaterialSphere->pPixelShader_ = pPixelShader;
+	pMaterialSphere->pPixelShader_->AddRef();
 
 	// InputLayout
 	InputLayout* pInputLayoutSphere = new InputLayout;
-	pInputLayoutSphere->pInputLayout_ = renderer_->CreateLayout(pSphereVertex, pVertexShader);;
+	IInputLayout* pInputLayout = renderer_->CreateLayout(pSphereVertex, pVertexShader);
+	pInputLayoutSphere->pInputLayout_ = pInputLayout;
+	pInputLayoutSphere->pInputLayout_->AddRef();
 
 	Actor* actor = new Actor;
 	actor->pRenderer_ = new Renderer;
@@ -134,27 +142,79 @@ void Engine::Run()
 		DEBUG_BREAK();
 		return;
 	}
-	// 월드, 뷰, 프로젝션 행렬 설정
-	// 스케일 * 자전 * 이동 * 공전 * 부모
-	DirectX::XMMATRIX parentPosition = DirectX::XMMatrixTranslation(0.0f, 0.0f, 0.0f);
-	DirectX::XMMATRIX world = DirectX::XMMatrixScaling(1.0f, 1.0f, 1.0f) * parentPosition;
-	DirectX::XMMATRIX view = DirectX::XMMatrixLookAtLH(DirectX::XMVectorSet(-10.0f, 0.0f, 0.0f, 0.0f), DirectX::XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f), DirectX::XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f));
-	DirectX::XMMATRIX projection = DirectX::XMMatrixPerspectiveFovLH(DirectX::XM_PIDIV4, 800.0f / 600.0f, 0.01f, 100.0f);
 
-	// 상수 버퍼 업데이트
-	ConstantBuffer cb;
-	cb.world = DirectX::XMMatrixTranspose(world);
-	cb.view = DirectX::XMMatrixTranspose(view);
-	cb.projection = DirectX::XMMatrixTranspose(projection);
+	Vector moveDir{ 0.0f, 0.0f, 0.0f };
+	Vector actorPosition{ 0.0f, 0.0f, 0.0f };
 
 	while (false == application_->ApplicationQuit()) {
 
 		application_->WinPumpMessage();
 
-		renderer_->RenderBegin();
+		// Calc Tick
+		ULONGLONG curTick = GetTickCount64();
+		if (prevUpdateTick_ == 0) {
+			prevUpdateTick_ = curTick;
+		}
+		
+		unsigned long long deltaTick = curTick - prevUpdateTick_;
+		prevUpdateTick_ = curTick;
+
+		if (deltaTick < 16)
+		{
+		}
+		else if (20 <= deltaTick)
+		{
+			deltaTick = 16;
+		}
+		
+		// Game Loop
+		{
+			InputManager::Instance()->Tick(deltaTick);
+		}
+
 
 		// render
+		renderer_->RenderBegin();
 		{
+			moveDir = { 0.0f, 0.0f , 0.0f };
+			if (InputManager::Instance()->IsPress('W'))
+			{
+				moveDir.X += 0.01f;
+			}
+			if (InputManager::Instance()->IsPress('S'))
+			{
+				moveDir.X -= 0.01f;
+			}
+			if (InputManager::Instance()->IsPress('A'))
+			{
+				moveDir.Y -= 0.01f;
+			}
+			if (InputManager::Instance()->IsPress('D'))
+			{
+				moveDir.Y += 0.01f;
+			}
+			if (InputManager::Instance()->IsPress('Q'))
+			{
+				moveDir.Z -= 0.01f;
+			}
+			if (InputManager::Instance()->IsPress('E'))
+			{
+				moveDir.Z += 0.01f;
+			}
+			actorPosition += moveDir;
+
+
+			DirectX::XMMATRIX position = DirectX::XMMatrixTranslation(actorPosition.X, actorPosition.Y, actorPosition.Z);
+			DirectX::XMMATRIX world = DirectX::XMMatrixScaling(1.0f, 1.0f, 1.0f) * position;
+			DirectX::XMMATRIX view = DirectX::XMMatrixLookAtLH(DirectX::XMVectorSet(-10.0f, 0.0f, 0.0f, 0.0f), DirectX::XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f), DirectX::XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f));
+			DirectX::XMMATRIX projection = DirectX::XMMatrixPerspectiveFovLH(DirectX::XM_PIDIV4, 800.0f / 600.0f, 0.01f, 100.0f);
+
+			// 상수 버퍼 업데이트
+			ConstantBuffer cb;
+			cb.world = DirectX::XMMatrixTranspose(world);
+			cb.view = DirectX::XMMatrixTranspose(view);
+			cb.projection = DirectX::XMMatrixTranspose(projection);
+
 			actor->pRenderer_->Setting();
 			constantBuffer->Update(&cb);
 			constantBuffer->VSSetting(0);
@@ -165,7 +225,19 @@ void Engine::Run()
 		renderer_->RenderEnd();
 	}
 
+
+
 	constantBuffer->Release();
+	pSphereVertex->Release();
+	pMaterial->Release();
+	pVertexShader->Release();
+	pPixelShader->Release();
+	pInputLayout->Release();
+	if (nullptr != actor)
+	{
+		delete actor;
+		actor = nullptr;
+	}
 	if (nullptr != startUp_)
 	{
 		startUp_->End();

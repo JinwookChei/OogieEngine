@@ -51,4 +51,5 @@ private:
 
 	HMODULE rendererModule_;
 
+	unsigned long long prevUpdateTick_;      // N ms 가 지났는지
 };

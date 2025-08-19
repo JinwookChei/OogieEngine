@@ -12,4 +12,9 @@ Actor::Actor()
 
 Actor::~Actor()
 {
+	if (nullptr != pRenderer_)
+	{
+		delete pRenderer_;
+		pRenderer_ = nullptr;
+	}
 }
