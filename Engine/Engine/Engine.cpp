@@ -19,12 +19,12 @@ typedef bool (*DLL_FUNCTION_ARG1)(void**);
 
 Engine::Engine()
 	: pStartUp_(nullptr),
+	pWorld_(nullptr),
 	pApplication_(nullptr),
 	pRenderer_(nullptr),
 	applicationModule_(nullptr),
 	rendererModule_(nullptr),
-	prevTickCount_(0),
-	pWorld_(nullptr)
+	prevTickCount_(0)
 {
 }
 
@@ -93,14 +93,10 @@ bool Engine::Initialize
 		return false;
 	}
 
-	// TODO Á¤¸®
-	pWorld_ = new World;
-	if (nullptr == pWorld_)
+	if (false == InitializeWorld())
 	{
-		DEBUG_BREAK();
 		return false;
 	}
-	pWorld_->ChangeLevel<TestLevel>();
 
 	return true;
 }
@@ -498,6 +494,25 @@ bool Engine::InitializeStartUp(IStartup* startUp)
 	if (false == pStartUp_->Start())
 	{
 		DEBUG_BREAK();
+		return false;
+	}
+
+	return true;
+}
+
+bool Engine::InitializeWorld()
+{
+	pWorld_ = new World;
+	if (nullptr == pWorld_)
+	{
+		DEBUG_BREAK();
+		return false;
+	}
+
+	pWorld_->ChangeLevel<TestLevel>();
+
+	if (nullptr == pWorld_)
+	{
 		return false;
 	}
 

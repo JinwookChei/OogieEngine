@@ -8,23 +8,23 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine
 	//_CrtSetBreakAlloc(352);
 #endif  // _DEBUG
 
-	AppManager* appManager = new AppManager;
-	if (nullptr == appManager)
+	ContentManager* pContentManager = new ContentManager;
+	if (nullptr == pContentManager)
 	{
 		DEBUG_BREAK();
 		return 0;
 	}
 
-	if (false == appManager->Initialize(hInstance, pCmdLine, cmdShow))
+	if (false == pContentManager->Initialize(hInstance, pCmdLine, cmdShow))
 	{
 		goto lb_return;
 	}
 
-	appManager->EngineLoop();
+	pContentManager->EngineLoop();
 
 lb_return:
-	appManager->Release();
-	appManager = nullptr;
+	pContentManager->Release();
+	pContentManager = nullptr;
 
 #ifdef _DEBUG
 	_ASSERT(_CrtCheckMemory());

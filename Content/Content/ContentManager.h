@@ -5,13 +5,13 @@ struct IEngineContainer
 	virtual Engine* GetEngine() = 0;
 };
 
-class AppManager final
+class ContentManager final
 	: public IStartup,
 	public IEngineContainer {
 public:
-	AppManager();
+	ContentManager();
 
-	~AppManager();
+	~ContentManager();
 
 	HRESULT __stdcall QueryInterface(REFIID riid, _COM_Outptr_ void __RPC_FAR* __RPC_FAR* ppvObject) override;
 

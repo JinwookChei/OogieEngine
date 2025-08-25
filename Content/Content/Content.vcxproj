@@ -137,7 +137,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AppManager.cpp" />
+    <ClCompile Include="ContentManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="StartLevel.cpp" />
     <ClCompile Include="stdafx.cpp" />
@@ -146,7 +146,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\Interface\Application\IApplication.h" />
     <ClInclude Include="..\..\Interface\Renderer\IRenderer.h" />
-    <ClInclude Include="AppManager.h" />
+    <ClInclude Include="ContentManager.h" />
     <ClInclude Include="StartLevel.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="TestActor.h" />

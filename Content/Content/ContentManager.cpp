@@ -1,32 +1,32 @@
 #include "stdafx.h"
-#include "AppManager.h"
+#include "ContentManager.h"
 
 IEngineContainer* GEngineContainer = nullptr;
 
-AppManager::AppManager()
+ContentManager::ContentManager()
 	:refCount_(1),
 	engine_(nullptr)
 {
 	GEngineContainer = this;
 }
 
-AppManager::~AppManager()
+ContentManager::~ContentManager()
 {
 	GEngineContainer = nullptr;
 }
 
-HRESULT __stdcall AppManager::QueryInterface(REFIID riid, void** ppvObject)
+HRESULT __stdcall ContentManager::QueryInterface(REFIID riid, void** ppvObject)
 {
 	return E_NOTIMPL;
 }
 
-ULONG __stdcall AppManager::AddRef()
+ULONG __stdcall ContentManager::AddRef()
 {
 	++refCount_;
 	return refCount_;
 }
 
-ULONG __stdcall AppManager::Release()
+ULONG __stdcall ContentManager::Release()
 {
 	--refCount_;
 	ULONG tmpRefCount = refCount_;
@@ -37,16 +37,16 @@ ULONG __stdcall AppManager::Release()
 	return tmpRefCount;
 }
 
-bool __stdcall AppManager::Start()
+bool __stdcall ContentManager::Start()
 {
 	return true;
 }
 
-void __stdcall AppManager::End()
+void __stdcall ContentManager::End()
 {
 }
 
-bool AppManager::Initialize(HINSTANCE hInstance, PWSTR pCmdLine, int cmdShow)
+bool ContentManager::Initialize(HINSTANCE hInstance, PWSTR pCmdLine, int cmdShow)
 {
 	engine_ = Engine::CreateEngine();
 
@@ -69,7 +69,7 @@ bool AppManager::Initialize(HINSTANCE hInstance, PWSTR pCmdLine, int cmdShow)
 	return true;
 }
 
-void AppManager::EngineLoop()
+void ContentManager::EngineLoop()
 {
 	if (nullptr == engine_)
 	{
@@ -84,7 +84,7 @@ void AppManager::EngineLoop()
 	engine_ = nullptr;
 }
 
-Engine* AppManager::GetEngine()
+Engine* ContentManager::GetEngine()
 {
 	return engine_;
 }

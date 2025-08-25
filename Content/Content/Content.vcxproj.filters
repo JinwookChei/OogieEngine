@@ -36,7 +36,7 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Precompiled Header</Filter>
     </ClCompile>
-    <ClCompile Include="AppManager.cpp">
+    <ClCompile Include="ContentManager.cpp">
       <Filter>Source Files\Main</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
@@ -59,7 +59,7 @@
     <ClInclude Include="..\..\Interface\Renderer\IRenderer.h">
       <Filter>Interface</Filter>
     </ClInclude>
-    <ClInclude Include="AppManager.h">
+    <ClInclude Include="ContentManager.h">
       <Filter>Source Files\Main</Filter>
     </ClInclude>
     <ClInclude Include="StartLevel.h">

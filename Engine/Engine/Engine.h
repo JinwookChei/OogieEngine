@@ -43,9 +43,13 @@ private:
 
 	bool InitializeStartUp(IStartup* pStartUp);
 
+	bool InitializeWorld();
+
 	void CleanUp();
 
 	IStartup* pStartUp_;
+
+	World* pWorld_;
 
 	IApplication* pApplication_;
 
@@ -56,6 +60,4 @@ private:
 	HMODULE rendererModule_;
 
 	unsigned long long prevTickCount_;
-
-	World* pWorld_;
 };
