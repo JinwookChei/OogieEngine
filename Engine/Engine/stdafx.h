@@ -27,9 +27,10 @@
 #include <Utility/LinkedList.h>
 #include <Utility/HashTable.h>
 
-#include "World.h"
 #include "InputManager.h"
+#include "TimeManager.h"
 
 extern InputManager* GInputManager;
+extern TimeManager* GTimeManager;
 
 

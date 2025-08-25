@@ -49,8 +49,6 @@ private:
 
 	IStartup* pStartUp_;
 
-	World* pWorld_;
-
 	IApplication* pApplication_;
 
 	IRenderer* pRenderer_;
@@ -59,5 +57,5 @@ private:
 
 	HMODULE rendererModule_;
 
-	unsigned long long prevTickCount_;
+	World* pWorld_;
 };

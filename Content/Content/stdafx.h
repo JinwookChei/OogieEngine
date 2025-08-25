@@ -44,6 +44,9 @@
 #include <Engine/Level.h>
 #include <Engine/Actor.h>
 
+#include <Engine/World.h>
+#include "StartLevel.h"
+
 #include "ContentManager.h"
 
 extern IEngineContainer* GEngineContainer;

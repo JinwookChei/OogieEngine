@@ -5,7 +5,7 @@ IEngineContainer* GEngineContainer = nullptr;
 
 ContentManager::ContentManager()
 	:refCount_(1),
-	engine_(nullptr)
+	pEngine_(nullptr)
 {
 	GEngineContainer = this;
 }
@@ -46,23 +46,27 @@ void __stdcall ContentManager::End()
 {
 }
 
-bool ContentManager::Initialize(HINSTANCE hInstance, PWSTR pCmdLine, int cmdShow)
+bool ContentManager::Initialize
+(
+	HINSTANCE hInstance, 
+	PWSTR pCmdLine, 
+	int cmdShow,
+	const wchar_t* pMainWindowClassName,
+	const wchar_t* pMainWindowText,
+	const wchar_t* pIConPath
+)
 {
-	engine_ = Engine::CreateEngine();
+	pEngine_ = Engine::CreateEngine();
 
-	if (nullptr == engine_)
+	if (nullptr == pEngine_)
 	{
 		DEBUG_BREAK();
 		return false;
 	}
 
-	const wchar_t* mainWindowClassName = L"MAIN";
-	const wchar_t* mainWindowText = L"WOOGIE ENGINE";
-	const wchar_t* iConPath = L"..//Resource//Logo//LogoResize.ico";
-
-	if (false == engine_->Initialize(hInstance, pCmdLine, cmdShow, mainWindowClassName, mainWindowText, iConPath, this))
+	if (false == pEngine_->Initialize(hInstance, pCmdLine, cmdShow, pMainWindowClassName, pMainWindowText, pIConPath, this))
 	{
-		Engine::DestroyEngine(engine_);
+		Engine::DestroyEngine(pEngine_);
 		return false;
 	}
 
@@ -71,20 +75,20 @@ bool ContentManager::Initialize(HINSTANCE hInstance, PWSTR pCmdLine, int cmdShow
 
 void ContentManager::EngineLoop()
 {
-	if (nullptr == engine_)
+	if (nullptr == pEngine_)
 	{
 		DEBUG_BREAK();
 		return;
 	}
 
-	engine_->Run();
+	pEngine_->Run();
 
-	Engine::DestroyEngine(engine_);
+	Engine::DestroyEngine(pEngine_);
 
-	engine_ = nullptr;
+	pEngine_ = nullptr;
 }
 
 Engine* ContentManager::GetEngine()
 {
-	return engine_;
+	return pEngine_;
 }

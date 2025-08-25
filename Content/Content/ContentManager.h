@@ -23,7 +23,15 @@ public:
 
 	void  __stdcall End() override;
 
-	bool Initialize(HINSTANCE hInstance, PWSTR pCmdLine, int cmdShow);
+	bool Initialize
+	(
+		HINSTANCE hInstance, 
+		PWSTR pCmdLine, 
+		int cmdShow,
+		const wchar_t* pMainWindowClassName,
+		const wchar_t* pMainWindowText,
+		const wchar_t* pIConPath
+	);
 
 	void EngineLoop();
 
@@ -32,5 +40,5 @@ public:
 private:
 	ULONG refCount_;
 
-	Engine* engine_;
+	Engine* pEngine_;
 };

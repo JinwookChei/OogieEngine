@@ -10,7 +10,7 @@ public:
 
 	ENGINE_API virtual ~Actor();
 
-	ENGINE_API virtual void Tick(unsigned long long deltaTime) = 0;
+	ENGINE_API virtual void Tick(double deltaTime) = 0;
 
 	ENGINE_API virtual void BeginPlay() = 0;
 

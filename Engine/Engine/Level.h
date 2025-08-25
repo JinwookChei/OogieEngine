@@ -12,7 +12,7 @@ public:
 
 	ENGINE_API virtual void BeginPlay() = 0;
 
-	ENGINE_API virtual void Tick(unsigned long long deltaTime) = 0;
+	ENGINE_API virtual void Tick(double deltaTime) = 0;
 
 	template <typename ActorType>
 	ActorType* SpawnActor()
@@ -25,7 +25,7 @@ public:
 	}
 
 private:
-	void UpdateTick(unsigned long long deltaTime);
+	void UpdateTick(double deltaTime);
 
 	void SpawnActorInternal(Actor* pActor);
 

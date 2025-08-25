@@ -10,9 +10,10 @@ World::World()
 
 World::~World()
 {
+	CleanUp();
 }
 
-void World::UpdateTick(unsigned long long deltaTime)
+void World::UpdateTick(double deltaTime)
 {
 	curLevel_->UpdateTick(deltaTime);
 }
@@ -42,6 +43,21 @@ void World::CheckChangeLevel()
 
 		curLevel_ = nextLevel_;
 		nextLevel_ = nullptr;
+	}
+}
+
+void World::CleanUp()
+{
+	if (nullptr != nextLevel_)
+	{
+		delete nextLevel_;
+		nextLevel_ = nullptr;
+	}
+
+	if (nullptr != curLevel_)
+	{
+		delete curLevel_;
+		curLevel_ = nullptr;
 	}
 }
 

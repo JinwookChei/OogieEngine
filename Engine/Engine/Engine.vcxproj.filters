@@ -102,8 +102,8 @@
     <ClInclude Include="World.h">
       <Filter>Source Files\World</Filter>
     </ClInclude>
-    <ClInclude Include="TestLevel.h">
-      <Filter>Source Files\Level</Filter>
+    <ClInclude Include="TimeManager.h">
+      <Filter>Source Files\Manager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -143,8 +143,8 @@
     <ClCompile Include="World.cpp">
       <Filter>Source Files\World</Filter>
     </ClCompile>
-    <ClCompile Include="TestLevel.cpp">
-      <Filter>Source Files\Level</Filter>
+    <ClCompile Include="TimeManager.cpp">
+      <Filter>Source Files\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

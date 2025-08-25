@@ -153,7 +153,7 @@
     <ClInclude Include="StartUp.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Test.h" />
-    <ClInclude Include="TestLevel.h" />
+    <ClInclude Include="TimeManager.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>
   <ItemGroup>
@@ -168,7 +168,7 @@
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="Test.cpp" />
-    <ClCompile Include="TestLevel.cpp" />
+    <ClCompile Include="TimeManager.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>

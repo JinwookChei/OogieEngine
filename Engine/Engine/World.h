@@ -23,11 +23,13 @@ public:
 	}
 
 private:
-	void UpdateTick(unsigned long long deltaTime);
+	void UpdateTick(double deltaTime);
 
-	void ChangeLevelInternal(Level* level);
+	ENGINE_API void ChangeLevelInternal(Level* level);
 
 	void CheckChangeLevel();
+
+	void CleanUp();
 
 	Level* curLevel_;
 

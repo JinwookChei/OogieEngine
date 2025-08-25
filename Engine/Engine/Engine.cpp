@@ -10,9 +10,8 @@
 #include "Material.h"
 #include "InputLayout.h"
 
-#include "TestLevel.h"
-
 InputManager* GInputManager = nullptr;
+TimeManager* GTimeManager = nullptr;
 
 typedef bool (*DLL_FUNCTION_ARG5)(void**, HINSTANCE, PWSTR, int, const wchar_t*);
 typedef bool (*DLL_FUNCTION_ARG1)(void**);
@@ -23,8 +22,7 @@ Engine::Engine()
 	pApplication_(nullptr),
 	pRenderer_(nullptr),
 	applicationModule_(nullptr),
-	rendererModule_(nullptr),
-	prevTickCount_(0)
+	rendererModule_(nullptr)
 {
 }
 
@@ -88,6 +86,14 @@ bool Engine::Initialize
 		return false;
 	}
 
+	GTimeManager = new TimeManager;
+	if (nullptr == GTimeManager)
+	{
+		DEBUG_BREAK();
+		return false;
+	}
+
+
 	if (false == InitializeStartUp(pStartup))
 	{
 		return false;
@@ -107,21 +113,7 @@ void Engine::Run()
 
 		pApplication_->WinPumpMessage();
 
-		// TODO : TimeManager
-		unsigned long long curTickCount = GetTickCount64();
-		if (prevTickCount_ == 0) 
-		{
-			prevTickCount_ = curTickCount;
-		}
-		unsigned long long deltaTime = curTickCount - prevTickCount_;
-		prevTickCount_ = curTickCount;
-		if (deltaTime < 16)
-		{
-		}
-		else if (20 <= deltaTime)
-		{
-			deltaTime = 16;
-		}
+		double deltaTime = GTimeManager->CalcDeltaTime();
 
 		// GameLoop
 		pWorld_->CheckChangeLevel();
@@ -509,13 +501,6 @@ bool Engine::InitializeWorld()
 		return false;
 	}
 
-	pWorld_->ChangeLevel<TestLevel>();
-
-	if (nullptr == pWorld_)
-	{
-		return false;
-	}
-
 	return true;
 }
 
@@ -531,6 +516,12 @@ void Engine::CleanUp()
 	{
 		pStartUp_->Release();
 		pStartUp_ = nullptr;
+	}
+
+	if (nullptr != GTimeManager)
+	{
+		delete GTimeManager;
+		GTimeManager = nullptr;
 	}
 
 	if (nullptr != GInputManager)

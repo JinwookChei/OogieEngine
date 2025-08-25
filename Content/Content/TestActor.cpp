@@ -13,6 +13,6 @@ void TestActor::BeginPlay()
 {
 }
 
-void TestActor::Tick(unsigned long long deltaTime)
+void TestActor::Tick(double deltaTime)
 {
 }

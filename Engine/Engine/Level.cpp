@@ -14,7 +14,7 @@ Level::~Level()
 }
 
 
-void Level::UpdateTick(unsigned long long deltaTime)
+void Level::UpdateTick(double deltaTime)
 {
 	LINK_ITEM* pItem = actorHead_;
 	while (pItem)

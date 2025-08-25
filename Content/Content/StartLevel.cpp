@@ -13,6 +13,6 @@ void StartLevel::BeginPlay()
 {
 }
 
-void StartLevel::Tick(unsigned long long deltaTime)
+void StartLevel::Tick(double deltaTime)
 {
 }
