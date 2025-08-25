@@ -1,15 +1,16 @@
 #include "stdafx.h"
 #include "StartUp.h"
+#include "Level.h"
+#include "World.h"
 #include "Engine.h"
 #include "Test.h"
-
-
 #include "Actor.h"
 #include "Renderer.h"
 #include "Mesh.h"
 #include "Material.h"
 #include "InputLayout.h"
 
+#include "TestLevel.h"
 
 InputManager* GInputManager = nullptr;
 
@@ -17,18 +18,19 @@ typedef bool (*DLL_FUNCTION_ARG5)(void**, HINSTANCE, PWSTR, int, const wchar_t*)
 typedef bool (*DLL_FUNCTION_ARG1)(void**);
 
 Engine::Engine()
-	: startUp_(nullptr),
-	application_(nullptr),
-	renderer_(nullptr),
+	: pStartUp_(nullptr),
+	pApplication_(nullptr),
+	pRenderer_(nullptr),
 	applicationModule_(nullptr),
 	rendererModule_(nullptr),
-	prevUpdateTick_(0)
+	prevTickCount_(0),
+	pWorld_(nullptr)
 {
 }
 
 Engine::~Engine()
 {
-	Cleanup();
+	CleanUp();
 }
 
 Engine* Engine::CreateEngine()
@@ -36,15 +38,15 @@ Engine* Engine::CreateEngine()
 	return new Engine;
 }
 
-void Engine::DestroyEngine(Engine* engine)
+void Engine::DestroyEngine(Engine* pEngine)
 {
-	if (nullptr == engine)
+	if (nullptr == pEngine)
 	{
 		DEBUG_BREAK();
 		return;
 	}
 
-	delete engine;
+	delete pEngine;
 }
 
 bool Engine::Initialize
@@ -52,19 +54,19 @@ bool Engine::Initialize
 	HINSTANCE hInstance,
 	PWSTR pCmdLine,
 	int nCmdShow,
-	const wchar_t* mainWindowClassName,
-	const wchar_t* mainWindowText,
-	const wchar_t* iConPath,
-	IStartup* startup
+	const wchar_t* pMainWindowClassName,
+	const wchar_t* pMainWindowText,
+	const wchar_t* pIConPath,
+	IStartup* pStartup
 )
 {
-	if (nullptr == startup)
+	if (nullptr == pStartup)
 	{
 		DEBUG_BREAK();
 		return false;
 	}
 
-	if (false == LoadApplication(hInstance, pCmdLine, nCmdShow, mainWindowClassName, mainWindowText, iConPath))
+	if (false == LoadApplication(hInstance, pCmdLine, nCmdShow, pMainWindowClassName, pMainWindowText, pIConPath))
 	{
 		return false;
 	}
@@ -86,164 +88,208 @@ bool Engine::Initialize
 		return false;
 	}
 
-	if (false == InitializeStartUp(startup))
+	if (false == InitializeStartUp(pStartup))
 	{
 		return false;
 	}
+
+	// TODO 정리
+	pWorld_ = new World;
+	if (nullptr == pWorld_)
+	{
+		DEBUG_BREAK();
+		return false;
+	}
+	pWorld_->ChangeLevel<TestLevel>();
 
 	return true;
 }
 
 void Engine::Run()
 {
-	std::vector<SimpleVertex> sphereVertices;
-	std::vector<WORD> sphereIndices;
-	CreateSphere(&sphereVertices, &sphereIndices);
-	IVertex* pSphereVertex = renderer_->CreateVertex(sphereVertices.data(), (uint32_t)sizeof(SimpleVertex), (uint32_t)sphereVertices.size(), sphereIndices.data(), (uint32_t)sizeof(WORD), (uint32_t)sphereIndices.size());
+	while (false == pApplication_->ApplicationQuit()) {
 
-	// Mesh
-	Mesh* pMeshSphere = new Mesh;
-	pMeshSphere->pVertex_ = pSphereVertex;
-	pMeshSphere->pVertex_->AddRef();
-	pMeshSphere->pVertex_->AddInputLayout("POSITION", 0, 6, 0, false);
-	pMeshSphere->pVertex_->AddInputLayout("COLOR", 0, 2, 0, false);
-	pMeshSphere->pVertex_->AddInputLayout("NORMAL", 0, 6, 0, false);
-	pMeshSphere->pVertex_->AddInputLayout("TEXCOORD", 0, 16, 0, false);
-	pMeshSphere->pVertex_->AddInputLayout("TANGENT", 0, 2, 0, false);
+		pApplication_->WinPumpMessage();
 
-	// Material
-	Material* pMaterialSphere = new Material;
-	IMaterial* pMaterial = renderer_->CreateMaterial();
-	pMaterialSphere->pMaterial_ = pMaterial;
-	pMaterialSphere->pMaterial_->AddRef();
-	IShader* pVertexShader = renderer_->CreateShader(ShaderType::Vertex, L"VertexShader.cso");
-	IShader* pPixelShader = renderer_->CreateShader(ShaderType::Pixel, L"PixelShader.cso");
-	pMaterialSphere->pMaterial_->SetVertexShader(pVertexShader);
-	pMaterialSphere->pMaterial_->SetPixelShader(pPixelShader);
-	pMaterialSphere->pVertexShader_ = pVertexShader;
-	pMaterialSphere->pVertexShader_->AddRef();
-	pMaterialSphere->pPixelShader_ = pPixelShader;
-	pMaterialSphere->pPixelShader_->AddRef();
-
-	// InputLayout
-	InputLayout* pInputLayoutSphere = new InputLayout;
-	IInputLayout* pInputLayout = renderer_->CreateLayout(pSphereVertex, pVertexShader);
-	pInputLayoutSphere->pInputLayout_ = pInputLayout;
-	pInputLayoutSphere->pInputLayout_->AddRef();
-
-	Actor* actor = new Actor;
-	actor->pRenderer_ = new Renderer;
-	actor->pRenderer_->pMesh_ = pMeshSphere;
-	actor->pRenderer_->pMaterial_ = pMaterialSphere;
-	actor->pRenderer_->pInputLayout_ = pInputLayoutSphere;
-
-	IConstantBuffer* constantBuffer = renderer_->CreateConstantBuffer((uint32_t)sizeof(ConstantBuffer));
-	if (nullptr == constantBuffer) {
-		DEBUG_BREAK();
-		return;
-	}
-
-	Vector moveDir{ 0.0f, 0.0f, 0.0f };
-	Vector actorPosition{ 0.0f, 0.0f, 0.0f };
-
-	while (false == application_->ApplicationQuit()) {
-
-		application_->WinPumpMessage();
-
-		// Calc Tick
-		ULONGLONG curTick = GetTickCount64();
-		if (prevUpdateTick_ == 0) {
-			prevUpdateTick_ = curTick;
+		// TODO : TimeManager
+		unsigned long long curTickCount = GetTickCount64();
+		if (prevTickCount_ == 0) 
+		{
+			prevTickCount_ = curTickCount;
 		}
-		
-		unsigned long long deltaTick = curTick - prevUpdateTick_;
-		prevUpdateTick_ = curTick;
-
-		if (deltaTick < 16)
+		unsigned long long deltaTime = curTickCount - prevTickCount_;
+		prevTickCount_ = curTickCount;
+		if (deltaTime < 16)
 		{
 		}
-		else if (20 <= deltaTick)
+		else if (20 <= deltaTime)
 		{
-			deltaTick = 16;
-		}
-		
-		// Game Loop
-		{
-			InputManager::Instance()->Tick(deltaTick);
+			deltaTime = 16;
 		}
 
+		// GameLoop
+		pWorld_->CheckChangeLevel();
 
-		// render
-		renderer_->RenderBegin();
-		{
-			moveDir = { 0.0f, 0.0f , 0.0f };
-			if (InputManager::Instance()->IsPress('W'))
-			{
-				moveDir.X += 0.01f;
-			}
-			if (InputManager::Instance()->IsPress('S'))
-			{
-				moveDir.X -= 0.01f;
-			}
-			if (InputManager::Instance()->IsPress('A'))
-			{
-				moveDir.Y -= 0.01f;
-			}
-			if (InputManager::Instance()->IsPress('D'))
-			{
-				moveDir.Y += 0.01f;
-			}
-			if (InputManager::Instance()->IsPress('Q'))
-			{
-				moveDir.Z -= 0.01f;
-			}
-			if (InputManager::Instance()->IsPress('E'))
-			{
-				moveDir.Z += 0.01f;
-			}
-			actorPosition += moveDir;
+		pWorld_->UpdateTick(deltaTime);
 
+		// Render
+		pRenderer_->RenderBegin();
 
-			DirectX::XMMATRIX position = DirectX::XMMatrixTranslation(actorPosition.X, actorPosition.Y, actorPosition.Z);
-			DirectX::XMMATRIX world = DirectX::XMMatrixScaling(1.0f, 1.0f, 1.0f) * position;
-			DirectX::XMMATRIX view = DirectX::XMMatrixLookAtLH(DirectX::XMVectorSet(-10.0f, 0.0f, 0.0f, 0.0f), DirectX::XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f), DirectX::XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f));
-			DirectX::XMMATRIX projection = DirectX::XMMatrixPerspectiveFovLH(DirectX::XM_PIDIV4, 800.0f / 600.0f, 0.01f, 100.0f);
-
-			// 상수 버퍼 업데이트
-			ConstantBuffer cb;
-			cb.world = DirectX::XMMatrixTranspose(world);
-			cb.view = DirectX::XMMatrixTranspose(view);
-			cb.projection = DirectX::XMMatrixTranspose(projection);
-
-			actor->pRenderer_->Setting();
-			constantBuffer->Update(&cb);
-			constantBuffer->VSSetting(0);
-			constantBuffer->PSSetting(0);
-			actor->pRenderer_->Draw();
-		}
-
-		renderer_->RenderEnd();
+		pRenderer_->RenderEnd();
 	}
 
 
 
-	constantBuffer->Release();
-	pSphereVertex->Release();
-	pMaterial->Release();
-	pVertexShader->Release();
-	pPixelShader->Release();
-	pInputLayout->Release();
-	if (nullptr != actor)
-	{
-		delete actor;
-		actor = nullptr;
-	}
-	if (nullptr != startUp_)
-	{
-		startUp_->End();
-		startUp_->Release();
-		startUp_ = nullptr;
-	}
+	// --------------------- Ragacy --------------------------------
+	//std::vector<SimpleVertex> sphereVertices;
+	//std::vector<WORD> sphereIndices;
+	//CreateSphere(&sphereVertices, &sphereIndices);
+	//IVertex* pSphereVertex = renderer_->CreateVertex(sphereVertices.data(), (uint32_t)sizeof(SimpleVertex), (uint32_t)sphereVertices.size(), sphereIndices.data(), (uint32_t)sizeof(WORD), (uint32_t)sphereIndices.size());
+
+	//// Mesh
+	//Mesh* pMeshSphere = new Mesh;
+	//pMeshSphere->pVertex_ = pSphereVertex;
+	//pMeshSphere->pVertex_->AddRef();
+	//pMeshSphere->pVertex_->AddInputLayout("POSITION", 0, 6, 0, false);
+	//pMeshSphere->pVertex_->AddInputLayout("COLOR", 0, 2, 0, false);
+	//pMeshSphere->pVertex_->AddInputLayout("NORMAL", 0, 6, 0, false);
+	//pMeshSphere->pVertex_->AddInputLayout("TEXCOORD", 0, 16, 0, false);
+	//pMeshSphere->pVertex_->AddInputLayout("TANGENT", 0, 2, 0, false);
+
+	//// Material
+	//Material* pMaterialSphere = new Material;
+	//IMaterial* pMaterial = renderer_->CreateMaterial();
+	//pMaterialSphere->pMaterial_ = pMaterial;
+	//pMaterialSphere->pMaterial_->AddRef();
+	//IShader* pVertexShader = renderer_->CreateShader(ShaderType::Vertex, L"VertexShader.cso");
+	//IShader* pPixelShader = renderer_->CreateShader(ShaderType::Pixel, L"PixelShader.cso");
+	//pMaterialSphere->pMaterial_->SetVertexShader(pVertexShader);
+	//pMaterialSphere->pMaterial_->SetPixelShader(pPixelShader);
+	//pMaterialSphere->pVertexShader_ = pVertexShader;
+	//pMaterialSphere->pVertexShader_->AddRef();
+	//pMaterialSphere->pPixelShader_ = pPixelShader;
+	//pMaterialSphere->pPixelShader_->AddRef();
+
+	//// InputLayout
+	//InputLayout* pInputLayoutSphere = new InputLayout;
+	//IInputLayout* pInputLayout = renderer_->CreateLayout(pSphereVertex, pVertexShader);
+	//pInputLayoutSphere->pInputLayout_ = pInputLayout;
+	//pInputLayoutSphere->pInputLayout_->AddRef();
+
+	//Actor* actor = new Actor;
+	//actor->pRenderer_ = new Renderer;
+	//actor->pRenderer_->pMesh_ = pMeshSphere;
+	//actor->pRenderer_->pMaterial_ = pMaterialSphere;
+	//actor->pRenderer_->pInputLayout_ = pInputLayoutSphere;
+
+	//IConstantBuffer* constantBuffer = renderer_->CreateConstantBuffer((uint32_t)sizeof(ConstantBuffer));
+	//if (nullptr == constantBuffer) {
+	//	DEBUG_BREAK();
+	//	return;
+	//}
+
+	//Vector moveDir{ 0.0f, 0.0f, 0.0f };
+	//Vector actorPosition{ 0.0f, 0.0f, 0.0f };
+
+	//while (false == application_->ApplicationQuit()) {
+
+	//	application_->WinPumpMessage();
+
+	//	// Calc Tick
+	//	ULONGLONG curTick = GetTickCount64();
+	//	if (prevUpdateTick_ == 0) {
+	//		prevUpdateTick_ = curTick;
+	//	}
+	//	
+	//	unsigned long long deltaTick = curTick - prevUpdateTick_;
+	//	prevUpdateTick_ = curTick;
+
+	//	if (deltaTick < 16)
+	//	{
+	//	}
+	//	else if (20 <= deltaTick)
+	//	{
+	//		deltaTick = 16;
+	//	}
+	//	
+	//	// Game Loop
+	//	{
+
+	//		InputManager::Instance()->Tick(deltaTick);
+	//	}
+
+
+	//	// render
+	//	renderer_->RenderBegin();
+	//	{
+	//		moveDir = { 0.0f, 0.0f , 0.0f };
+	//		if (InputManager::Instance()->IsPress('W'))
+	//		{
+	//			moveDir.X += 0.01f;
+	//		}
+	//		if (InputManager::Instance()->IsPress('S'))
+	//		{
+	//			moveDir.X -= 0.01f;
+	//		}
+	//		if (InputManager::Instance()->IsPress('A'))
+	//		{
+	//			moveDir.Y -= 0.01f;
+	//		}
+	//		if (InputManager::Instance()->IsPress('D'))
+	//		{
+	//			moveDir.Y += 0.01f;
+	//		}
+	//		if (InputManager::Instance()->IsPress('Q'))
+	//		{
+	//			moveDir.Z -= 0.01f;
+	//		}
+	//		if (InputManager::Instance()->IsPress('E'))
+	//		{
+	//			moveDir.Z += 0.01f;
+	//		}
+	//		actorPosition += moveDir;
+
+
+	//		DirectX::XMMATRIX position = DirectX::XMMatrixTranslation(actorPosition.X, actorPosition.Y, actorPosition.Z);
+	//		DirectX::XMMATRIX world = DirectX::XMMatrixScaling(1.0f, 1.0f, 1.0f) * position;
+	//		DirectX::XMMATRIX view = DirectX::XMMatrixLookAtLH(DirectX::XMVectorSet(-10.0f, 0.0f, 0.0f, 0.0f), DirectX::XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f), DirectX::XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f));
+	//		DirectX::XMMATRIX projection = DirectX::XMMatrixPerspectiveFovLH(DirectX::XM_PIDIV4, 800.0f / 600.0f, 0.01f, 100.0f);
+
+	//		// 상수 버퍼 업데이트
+	//		ConstantBuffer cb;
+	//		cb.world = DirectX::XMMatrixTranspose(world);
+	//		cb.view = DirectX::XMMatrixTranspose(view);
+	//		cb.projection = DirectX::XMMatrixTranspose(projection);
+
+	//		actor->pRenderer_->Setting();
+	//		constantBuffer->Update(&cb);
+	//		constantBuffer->VSSetting(0);
+	//		constantBuffer->PSSetting(0);
+	//		actor->pRenderer_->Draw();
+	//	}
+
+	//	renderer_->RenderEnd();
+	//}
+
+
+
+	//constantBuffer->Release();
+	//pSphereVertex->Release();
+	//pMaterial->Release();
+	//pVertexShader->Release();
+	//pPixelShader->Release();
+	//pInputLayout->Release();
+	//if (nullptr != actor)
+	//{
+	//	delete actor;
+	//	actor = nullptr;
+	//}
+	//if (nullptr != startUp_)
+	//{
+	//	startUp_->End();
+	//	startUp_->Release();
+	//	startUp_ = nullptr;
+	//}
 
 
 
@@ -361,14 +407,19 @@ void Engine::Run()
 	//}
 }
 
+World* Engine::GetWorld() const
+{
+	return pWorld_;
+}
+
 bool Engine::LoadApplication
 (
 	HINSTANCE hInstance,
 	PWSTR pCmdLine,
 	int nCmdShow,
-	const wchar_t* mainWindowClassName,
-	const wchar_t* mainWindowText,
-	const wchar_t* iConPath
+	const wchar_t* pMainWindowClassName,
+	const wchar_t* pMainWindowText,
+	const wchar_t* pIConPath
 )
 {
 	applicationModule_ = LoadLibrary(L"Application_x64_Debug.dll");
@@ -385,14 +436,14 @@ bool Engine::LoadApplication
 		return false;
 	}
 
-	CreateWindowsApplication((void**)&application_, hInstance, pCmdLine, nCmdShow, iConPath);
-	if (nullptr == application_)
+	CreateWindowsApplication((void**)&pApplication_, hInstance, pCmdLine, nCmdShow, pIConPath);
+	if (nullptr == pApplication_)
 	{
 		DEBUG_BREAK();
 		return false;
 	}
 
-	if (false == application_->InitializeMainWindow(mainWindowClassName, mainWindowText))
+	if (false == pApplication_->InitializeMainWindow(pMainWindowClassName, pMainWindowText))
 	{
 		DEBUG_BREAK();
 		return false;
@@ -417,14 +468,14 @@ bool Engine::LoadRenderer()
 		return false;
 	}
 
-	CreateRenderer((void**)&renderer_);
-	if (nullptr == renderer_)
+	CreateRenderer((void**)&pRenderer_);
+	if (nullptr == pRenderer_)
 	{
 		DEBUG_BREAK();
 		return false;
 	}
 
-	if (false == renderer_->Initialize(application_->GetMainWindowHandle(), 800, 600))
+	if (false == pRenderer_->Initialize(pApplication_->GetMainWindowHandle(), 800, 600))
 	{
 		DEBUG_BREAK();
 		return false;
@@ -441,10 +492,10 @@ bool Engine::InitializeStartUp(IStartup* startUp)
 		return false;
 	}
 
-	startUp_ = startUp;
-	startUp_->AddRef();
+	pStartUp_ = startUp;
+	pStartUp_->AddRef();
 
-	if (false == startUp_->Start())
+	if (false == pStartUp_->Start())
 	{
 		DEBUG_BREAK();
 		return false;
@@ -453,12 +504,18 @@ bool Engine::InitializeStartUp(IStartup* startUp)
 	return true;
 }
 
-void Engine::Cleanup()
+void Engine::CleanUp()
 {
-	if (nullptr != startUp_)
+	if (nullptr != pWorld_)
 	{
-		startUp_->Release();
-		startUp_ = nullptr;
+		delete pWorld_;
+		pWorld_ = nullptr;
+	}
+
+	if (nullptr != pStartUp_)
+	{
+		pStartUp_->Release();
+		pStartUp_ = nullptr;
 	}
 
 	if (nullptr != GInputManager)
@@ -467,16 +524,16 @@ void Engine::Cleanup()
 		GInputManager = nullptr;
 	}
 
-	if (nullptr != renderer_)
+	if (nullptr != pRenderer_)
 	{
-		renderer_->Release();
-		renderer_ = nullptr;
+		pRenderer_->Release();
+		pRenderer_ = nullptr;
 	}
 
-	if (nullptr != application_)
+	if (nullptr != pApplication_)
 	{
-		application_->Release();
-		application_ = nullptr;
+		pApplication_->Release();
+		pApplication_ = nullptr;
 	}
 
 	if (nullptr != rendererModule_)

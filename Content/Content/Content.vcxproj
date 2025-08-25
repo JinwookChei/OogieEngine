@@ -112,7 +112,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\Interface\;$(SolutionDir)..\Engine\Engine\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\Interface\;$(SolutionDir)..\Engine\;$(SolutionDir)..\Utility\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -139,13 +139,17 @@
   <ItemGroup>
     <ClCompile Include="AppManager.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="StartLevel.cpp" />
     <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="TestActor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Interface\Application\IApplication.h" />
     <ClInclude Include="..\..\Interface\Renderer\IRenderer.h" />
     <ClInclude Include="AppManager.h" />
+    <ClInclude Include="StartLevel.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="TestActor.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

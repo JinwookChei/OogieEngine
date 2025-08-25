@@ -27,6 +27,7 @@
 #include <Utility/LinkedList.h>
 #include <Utility/HashTable.h>
 
+#include "World.h"
 #include "InputManager.h"
 
 extern InputManager* GInputManager;

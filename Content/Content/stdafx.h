@@ -21,7 +21,7 @@
 #endif // _DEBUG
 
 #define ENGINE_API __declspec(dllimport)
-
+#define UTILITY_API __declspec(dllimport)
 
 #ifdef _DEBUG
 #define DEBUG_BREAK __debugbreak
@@ -32,12 +32,18 @@
 #ifndef UNICODE
 #define UNICODE
 #endif 
+
+#include <cstdint>
 #include <windows.h>
 
 #include <Application/IApplication.h>
 #include <Renderer/IRenderer.h>
-#include "Engine.h"
-#include "StartUp.h"
+#include <Utility/LinkedList.h>
+#include <Engine/Engine.h>
+#include <Engine/StartUp.h>
+#include <Engine/Level.h>
+#include <Engine/Actor.h>
+
 
 #include "AppManager.h"
 extern IEngineContainer* GEngineContainer;

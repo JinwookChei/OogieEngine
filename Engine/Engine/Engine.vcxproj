@@ -146,12 +146,15 @@
     <ClInclude Include="Engine.h" />
     <ClInclude Include="InputLayout.h" />
     <ClInclude Include="InputManager.h" />
+    <ClInclude Include="Level.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="StartUp.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Test.h" />
+    <ClInclude Include="TestLevel.h" />
+    <ClInclude Include="World.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Actor.cpp" />
@@ -159,11 +162,14 @@
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="InputLayout.cpp" />
     <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="Level.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="Test.cpp" />
+    <ClCompile Include="TestLevel.cpp" />
+    <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />

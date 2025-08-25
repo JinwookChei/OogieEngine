@@ -19,19 +19,34 @@
     <Filter Include="Interface">
       <UniqueIdentifier>{86385d27-0590-4756-9799-4a11dad60f78}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Main">
+    <Filter Include="Source Files\Main">
       <UniqueIdentifier>{5ea1ba14-4ef9-47b9-b9a5-75aa77e5d1a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Game">
+      <UniqueIdentifier>{a7950b2c-9e25-4da6-9ff6-e33ad004e91e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Game\Level">
+      <UniqueIdentifier>{ed6f411c-b199-44c6-88dd-38ea1f49e55d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Game\Actors">
+      <UniqueIdentifier>{666af89b-d60b-481b-a9cf-f8ef1c2c1c49}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Precompiled Header</Filter>
     </ClCompile>
     <ClCompile Include="AppManager.cpp">
-      <Filter>Main</Filter>
+      <Filter>Source Files\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="StartLevel.cpp">
+      <Filter>Source Files\Game\Level</Filter>
+    </ClCompile>
+    <ClCompile Include="TestActor.cpp">
+      <Filter>Source Files\Game\Actors</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -45,7 +60,13 @@
       <Filter>Interface</Filter>
     </ClInclude>
     <ClInclude Include="AppManager.h">
-      <Filter>Main</Filter>
+      <Filter>Source Files\Main</Filter>
+    </ClInclude>
+    <ClInclude Include="StartLevel.h">
+      <Filter>Source Files\Game\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="TestActor.h">
+      <Filter>Source Files\Game\Actors</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,5 +1,7 @@
 #pragma once
 struct IStartup;
+class World;
+
 class Engine final {
 public:
 	Engine();
@@ -8,48 +10,52 @@ public:
 
 	ENGINE_API static Engine* CreateEngine();
 
-	ENGINE_API static void DestroyEngine(Engine* engine);
+	ENGINE_API static void DestroyEngine(Engine* pEngine);
 
 	ENGINE_API bool Initialize
 	(
 		HINSTANCE hInstance,
 		PWSTR pCmdLine,
 		int nCmdShow,
-		const wchar_t* mainWindowClassName,
-		const wchar_t* mainWindowText,
-		const wchar_t* iConPath,
-		IStartup* startup
+		const wchar_t* pMainWindowClassName,
+		const wchar_t* pMainWindowText,
+		const wchar_t* pIConPath,
+		IStartup* pStartup
 	);
 
 	ENGINE_API void Run();
 
+	ENGINE_API World* GetWorld() const;
 
 private:
+
 	bool LoadApplication
 	(
 		HINSTANCE hInstance,
 		PWSTR pCmdLine,
 		int nCmdShow,
-		const wchar_t* mainWindowClassName,
-		const wchar_t* mainWindowText,
-		const wchar_t* iConPath
+		const wchar_t* pMainWindowClassName,
+		const wchar_t* pMainWindowText,
+		const wchar_t* pIConPath
 	);
 
 	bool LoadRenderer();
 
-	bool InitializeStartUp(IStartup* startUp);
+	bool InitializeStartUp(IStartup* pStartUp);
 
-	void Cleanup();
+	void CleanUp();
 
-	IStartup* startUp_;
+	IStartup* pStartUp_;
 
-	IApplication* application_;
+	IApplication* pApplication_;
 
-	IRenderer* renderer_;
+	IRenderer* pRenderer_;
 
 	HMODULE applicationModule_;
 
 	HMODULE rendererModule_;
 
-	unsigned long long prevUpdateTick_;      // N ms °¡ Áö³µ´ÂÁö
+	unsigned long long prevTickCount_;
+
+	World* pWorld_;
 };
