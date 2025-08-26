@@ -30,7 +30,6 @@
 #include "TimeManager.h"
 
 
-extern IRenderer* GRenderer;
 extern InputManager* GInputManager;
 extern TimeManager* GTimeManager;
 

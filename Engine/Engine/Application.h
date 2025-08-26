@@ -3,15 +3,22 @@
 class Application final
 {
 public:
-	friend Engine;
-
 	Application();
 
 	virtual ~Application();
 
-	static Application* Instance();
+	bool Load
+	(
+		HINSTANCE hInstance,
+		PWSTR pCmdLine,
+		int nCmdShow,
+		const wchar_t* pMainWindowClassName,
+		const wchar_t* pMainWindowText,
+		const wchar_t* pIConPath,
+		LPCWSTR libFileName
+	);
 
-	bool InitializeMainWindow(const wchar_t* className, const wchar_t* windowText);
+	static Application* Instance();
 
 	void WinPumpMessage();
 
@@ -22,9 +29,6 @@ public:
 	void* GetMainWindowHandle();
 
 private:
-	void SetApplicationInterface(IApplication* pApplication);
-
-	void SetApplicationModule(HMODULE appModule);
 
 	void CleanUp();
 

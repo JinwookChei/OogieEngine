@@ -1,29 +1,25 @@
 #include "stdafx.h"
 #include "Application.h"
+#include "RenderDevice.h"
 #include "StartUp.h"
 #include "Level.h"
 #include "World.h"
 #include "Engine.h"
 #include "Test.h"
 #include "Actor.h"
-#include "Renderer.h"
 #include "Mesh.h"
 #include "Material.h"
 #include "InputLayout.h"
 
-IRenderer* GRenderer = nullptr;
+
 InputManager* GInputManager = nullptr;
 TimeManager* GTimeManager = nullptr;
-
-typedef bool (*DLL_FUNCTION_ARG5)(void**, HINSTANCE, PWSTR, int, const wchar_t*);
-typedef bool (*DLL_FUNCTION_ARG1)(void**);
 
 Engine::Engine()
 	: pStartUp_(nullptr),
 	pWorld_(nullptr),
 	pApplication_(nullptr),
-	pRenderer_(nullptr),
-	rendererModule_(nullptr)
+	pRenderDevice_(nullptr)
 {
 }
 
@@ -65,12 +61,13 @@ bool Engine::Initialize
 		return false;
 	}
 
+
 	if (false == LoadApplication(hInstance, pCmdLine, nCmdShow, pMainWindowClassName, pMainWindowText, pIConPath))
 	{
 		return false;
 	}
 
-	if (false == LoadRenderer())
+	if (false == LoadRenderDevice())
 	{
 		return false;
 	}
@@ -123,11 +120,11 @@ void Engine::Run()
 		pWorld_->OnTick(deltaTime);
 
 		// Render
-		pRenderer_->RenderBegin();
+		pRenderDevice_->RenderBegin();
 
 		pWorld_->OnRender();
 
-		pRenderer_->RenderEnd();
+		pRenderDevice_->RenderEnd();
 	}
 
 
@@ -422,72 +419,30 @@ bool Engine::LoadApplication
 		return false;
 	}
 
-	HMODULE applicationModule = LoadLibrary(L"Application_x64_Debug.dll");
-	if (!applicationModule)
-	{
-		DEBUG_BREAK();
-		return false;
-	}
-
-
-	DLL_FUNCTION_ARG5 CreateWindowsApplication = (DLL_FUNCTION_ARG5)GetProcAddress(applicationModule, "CreateWindowsApplication");
-	if (!CreateWindowsApplication)
-	{
-		DEBUG_BREAK();
-		return false;
-	}
-
-	IApplication* pApplication;
-	CreateWindowsApplication((void**)&pApplication, hInstance, pCmdLine, nCmdShow, pIConPath);
-	if (nullptr == pApplication)
-	{
-		DEBUG_BREAK();
-		return false;
-	}
-
-	pApplication_->SetApplicationModule(applicationModule);
-	pApplication_->SetApplicationInterface(pApplication);
-	
-
-	if (false == pApplication_->InitializeMainWindow(pMainWindowClassName, pMainWindowText))
-	{
-		DEBUG_BREAK();
-		return false;
-	}
-
-	return true;
+	LPCWSTR libFileName = L"Application_x64_Debug.dll";
+	return pApplication_->Load(hInstance, pCmdLine, nCmdShow, pMainWindowClassName, pMainWindowText, pIConPath, libFileName);
 }
 
-bool Engine::LoadRenderer()
+bool Engine::LoadRenderDevice()
 {
-	rendererModule_ = LoadLibrary(L"RendererD3D11_x64_Debug.dll");
-	if (!rendererModule_)
+	pRenderDevice_ = new RenderDevice;
+	if (nullptr == pRenderDevice_)
+	{
+		DEBUG_BREAK();
+		return false;
+	}
+	
+	if (nullptr == pApplication_)
 	{
 		DEBUG_BREAK();
 		return false;
 	}
 
-	DLL_FUNCTION_ARG1 CreateRenderer = (DLL_FUNCTION_ARG1)GetProcAddress(rendererModule_, "CreateRenderer");
-	if (!CreateRenderer)
-	{
-		DEBUG_BREAK();
-		return false;
-	}
+	void* pMainHwnd = pApplication_->GetMainWindowHandle();
 
-	CreateRenderer((void**)&GRenderer);
-	if (nullptr == GRenderer)
-	{
-		DEBUG_BREAK();
-		return false;
-	}
+	LPCWSTR libFileName = L"RendererD3D11_x64_Debug.dll";
 
-	if (false == GRenderer->Initialize(pApplication_->GetMainWindowHandle(), 800, 600))
-	{
-		DEBUG_BREAK();
-		return false;
-	}
-
-	return true;
+	return pRenderDevice_->Load(pMainHwnd, libFileName);
 }
 
 bool Engine::InitializeStartUp(IStartup* startUp)
@@ -548,21 +503,15 @@ void Engine::CleanUp()
 		GInputManager = nullptr;
 	}
 
-	if (nullptr != pRenderer_)
+	if (nullptr != pRenderDevice_)
 	{
-		pRenderer_->Release();
-		pRenderer_ = nullptr;
+		delete pRenderDevice_;
+		pRenderDevice_ = nullptr;
 	}
 
 	if (nullptr != pApplication_)
 	{
 		delete pApplication_;
 		pApplication_ = nullptr;
-	}
-
-	if (nullptr != rendererModule_)
-	{
-		FreeLibrary(rendererModule_);
-		rendererModule_ = nullptr;
 	}
 }

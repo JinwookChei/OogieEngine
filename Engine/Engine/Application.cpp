@@ -2,6 +2,8 @@
 #include "Engine.h"
 #include "Application.h"
 
+typedef bool (*DLL_FUNCTION_ARG5)(void**, HINSTANCE, PWSTR, int, const wchar_t*);
+
 Application::Application()
 	:pApplicationInterface_(nullptr),
 	applicationModule_(nullptr)
@@ -13,20 +15,51 @@ Application::~Application()
 	CleanUp();
 }
 
-Application* Application::Instance()
+bool Application::Load
+(
+	HINSTANCE hInstance,
+	PWSTR pCmdLine,
+	int nCmdShow,
+	const wchar_t* pMainWindowClassName,
+	const wchar_t* pMainWindowText,
+	const wchar_t* pIConPath,
+	LPCWSTR libFileName
+)
 {
-	return nullptr;
-}
+	applicationModule_ = LoadLibrary(libFileName);
+	if (!applicationModule_)
+	{
+		DEBUG_BREAK();
+		return false;
+	}	
 
-bool Application::InitializeMainWindow(const wchar_t* className, const wchar_t* windowText)
-{
+	DLL_FUNCTION_ARG5 CreateWindowsApplication = (DLL_FUNCTION_ARG5)GetProcAddress(applicationModule_, "CreateWindowsApplication");
+	if (!CreateWindowsApplication)
+	{
+		DEBUG_BREAK();
+		return false;
+	}
+
+	CreateWindowsApplication((void**)&pApplicationInterface_, hInstance, pCmdLine, nCmdShow, pIConPath);
 	if (nullptr == pApplicationInterface_)
 	{
 		DEBUG_BREAK();
 		return false;
 	}
 
-	return pApplicationInterface_->InitializeMainWindow(className, windowText);
+
+	if (false == pApplicationInterface_->InitializeMainWindow(pMainWindowClassName, pMainWindowText))
+	{
+		DEBUG_BREAK();
+		return false;
+	}
+
+	return true;
+}
+
+Application* Application::Instance()
+{
+	return nullptr;
 }
 
 void Application::WinPumpMessage()
@@ -71,28 +104,6 @@ void* Application::GetMainWindowHandle()
 	}
 
 	return pApplicationInterface_->GetMainWindowHandle();
-}
-
-void Application::SetApplicationInterface(IApplication* pApplication)
-{
-	if (nullptr == pApplication)
-	{
-		DEBUG_BREAK();
-		return;
-	}
-
-	pApplicationInterface_ = pApplication;
-}
-
-void Application::SetApplicationModule(HMODULE appModule)
-{
-	if (!appModule)
-	{
-		DEBUG_BREAK();
-		return;
-	}
-
-	applicationModule_ = appModule;
 }
 
 void Application::CleanUp()

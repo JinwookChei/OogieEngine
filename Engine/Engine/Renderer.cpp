@@ -36,7 +36,9 @@ Renderer::~Renderer()
 void Renderer::Setting()
 {
 	pMaterial_->pMaterial_->Setting();
+
 	pInputLayout_->pInputLayout_->Setting();
+
 	pMesh_->pVertex_->Setting();
 }
 

@@ -1,6 +1,7 @@
 #pragma once
 struct IStartup;
 class Application;
+class RenderDevice;
 class World;
 
 class Engine final {
@@ -28,10 +29,7 @@ public:
 
 	ENGINE_API World* GetWorld() const;
 
-	//static IRenderer* Renderer();
-
 private:
-
 	bool LoadApplication
 	(
 		HINSTANCE hInstance,
@@ -42,7 +40,7 @@ private:
 		const wchar_t* pIConPath
 	);
 
-	bool LoadRenderer();
+	bool LoadRenderDevice();
 
 	bool InitializeStartUp(IStartup* pStartUp);
 
@@ -54,9 +52,7 @@ private:
 
 	Application* pApplication_;
 
-	IRenderer* pRenderer_;
-
-	HMODULE rendererModule_;
+	RenderDevice* pRenderDevice_;
 
 	World* pWorld_;
 };
