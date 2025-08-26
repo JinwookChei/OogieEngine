@@ -143,12 +143,14 @@
     <ClInclude Include="..\..\Interface\Application\IApplication.h" />
     <ClInclude Include="..\..\Interface\Renderer\IRenderer.h" />
     <ClInclude Include="Actor.h" />
+    <ClInclude Include="Application.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="InputLayout.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Material.h" />
+    <ClInclude Include="RenderDevice.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="StartUp.h" />
     <ClInclude Include="stdafx.h" />
@@ -158,6 +160,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Actor.cpp" />
+    <ClCompile Include="Application.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="InputLayout.cpp" />
@@ -165,6 +168,7 @@
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="RenderDevice.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="Test.cpp" />

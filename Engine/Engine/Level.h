@@ -25,12 +25,17 @@ public:
 	}
 
 private:
-	void UpdateTick(double deltaTime);
-
-	void SpawnActorInternal(Actor* pActor);
+	ENGINE_API void SpawnActorInternal(Actor* pActor);
 
 	void RegisterActor(Actor* pActor);
 
+public:
+
+private:
+	void OnTick(double deltaTime);
+
+	void OnRender();
+	
 	void CleanUp(); 
 
 	LINK_ITEM* actorHead_;

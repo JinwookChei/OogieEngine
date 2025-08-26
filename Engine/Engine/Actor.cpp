@@ -6,9 +6,11 @@
 
 
 Actor::Actor()
-	:levelLink_(),
-	pRenderer_(nullptr)
+	: pRenderer_(new Renderer)
 {
+	levelLink_.prev_ = nullptr;
+	levelLink_.next_ = nullptr;
+	levelLink_.item_ = this;
 }
 
 Actor::~Actor()
@@ -28,4 +30,9 @@ void Actor::CleanUp()
 		delete pRenderer_;
 		pRenderer_ = nullptr;
 	}
+}
+
+void Actor::Render()
+{
+
 }

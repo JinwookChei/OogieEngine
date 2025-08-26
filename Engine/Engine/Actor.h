@@ -17,6 +17,8 @@ public:
 private:
 	ENGINE_API void CleanUp();
 
+	void Render();
+
 	LINK_ITEM* LevelLink();
 
 	Renderer* pRenderer_;

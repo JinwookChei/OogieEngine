@@ -13,8 +13,25 @@ Level::~Level()
 	CleanUp();
 }
 
+void Level::SpawnActorInternal(Actor* pActor)
+{
+	if (nullptr == pActor)
+	{
+		return;
+	}
 
-void Level::UpdateTick(double deltaTime)
+	RegisterActor(pActor);
+
+	pActor->BeginPlay();
+}
+
+
+void Level::RegisterActor(Actor* pActor)
+{
+	LinkToLinkedList(&actorHead_, &actorTail_, pActor->LevelLink());
+}
+
+void Level::OnTick(double deltaTime)
 {
 	LINK_ITEM* pItem = actorHead_;
 	while (pItem)
@@ -29,21 +46,17 @@ void Level::UpdateTick(double deltaTime)
 	Tick(deltaTime);
 }
 
-void Level::SpawnActorInternal(Actor* pActor)
+void Level::OnRender()
 {
-	if (nullptr == pActor)
+	LINK_ITEM* pItem = actorHead_;
+	while (pItem)
 	{
-		return;
+		Actor* actor = (Actor*)pItem->item_;
+
+		pItem = pItem->next_;
+
+		actor->Render();
 	}
-
-	RegisterActor(pActor);
-
-	pActor->BeginPlay();
-}
-
-void Level::RegisterActor(Actor* pActor)
-{
-	LinkToLinkedList(&actorHead_, &actorTail_, pActor->LevelLink());
 }
 
 void Level::CleanUp()

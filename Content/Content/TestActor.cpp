@@ -11,8 +11,10 @@ TestActor::~TestActor()
 
 void TestActor::BeginPlay()
 {
+
 }
 
 void TestActor::Tick(double deltaTime)
 {
+
 }

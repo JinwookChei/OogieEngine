@@ -19,7 +19,6 @@
 #include <DirectXMath.h>
 #include <vector>
 
-
 #include <Application/IApplication.h>
 #include <Renderer/IRenderer.h>
 
@@ -30,6 +29,8 @@
 #include "InputManager.h"
 #include "TimeManager.h"
 
+
+extern IRenderer* GRenderer;
 extern InputManager* GInputManager;
 extern TimeManager* GTimeManager;
 

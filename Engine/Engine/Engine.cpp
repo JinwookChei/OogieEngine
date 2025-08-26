@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "Application.h"
 #include "StartUp.h"
 #include "Level.h"
 #include "World.h"
@@ -10,6 +11,7 @@
 #include "Material.h"
 #include "InputLayout.h"
 
+IRenderer* GRenderer = nullptr;
 InputManager* GInputManager = nullptr;
 TimeManager* GTimeManager = nullptr;
 
@@ -21,7 +23,6 @@ Engine::Engine()
 	pWorld_(nullptr),
 	pApplication_(nullptr),
 	pRenderer_(nullptr),
-	applicationModule_(nullptr),
 	rendererModule_(nullptr)
 {
 }
@@ -74,6 +75,7 @@ bool Engine::Initialize
 		return false;
 	}
 
+
 	GInputManager = new InputManager;
 	if (nullptr == GInputManager)
 	{
@@ -118,10 +120,12 @@ void Engine::Run()
 		// GameLoop
 		pWorld_->CheckChangeLevel();
 
-		pWorld_->UpdateTick(deltaTime);
+		pWorld_->OnTick(deltaTime);
 
 		// Render
 		pRenderer_->RenderBegin();
+
+		pWorld_->OnRender();
 
 		pRenderer_->RenderEnd();
 	}
@@ -410,26 +414,40 @@ bool Engine::LoadApplication
 	const wchar_t* pIConPath
 )
 {
-	applicationModule_ = LoadLibrary(L"Application_x64_Debug.dll");
-	if (!applicationModule_)
+	pApplication_ = new Application;
+
+	if (nullptr == pApplication_)
 	{
 		DEBUG_BREAK();
 		return false;
 	}
 
-	DLL_FUNCTION_ARG5 CreateWindowsApplication = (DLL_FUNCTION_ARG5)GetProcAddress(applicationModule_, "CreateWindowsApplication");
+	HMODULE applicationModule = LoadLibrary(L"Application_x64_Debug.dll");
+	if (!applicationModule)
+	{
+		DEBUG_BREAK();
+		return false;
+	}
+
+
+	DLL_FUNCTION_ARG5 CreateWindowsApplication = (DLL_FUNCTION_ARG5)GetProcAddress(applicationModule, "CreateWindowsApplication");
 	if (!CreateWindowsApplication)
 	{
 		DEBUG_BREAK();
 		return false;
 	}
 
-	CreateWindowsApplication((void**)&pApplication_, hInstance, pCmdLine, nCmdShow, pIConPath);
-	if (nullptr == pApplication_)
+	IApplication* pApplication;
+	CreateWindowsApplication((void**)&pApplication, hInstance, pCmdLine, nCmdShow, pIConPath);
+	if (nullptr == pApplication)
 	{
 		DEBUG_BREAK();
 		return false;
 	}
+
+	pApplication_->SetApplicationModule(applicationModule);
+	pApplication_->SetApplicationInterface(pApplication);
+	
 
 	if (false == pApplication_->InitializeMainWindow(pMainWindowClassName, pMainWindowText))
 	{
@@ -456,14 +474,14 @@ bool Engine::LoadRenderer()
 		return false;
 	}
 
-	CreateRenderer((void**)&pRenderer_);
-	if (nullptr == pRenderer_)
+	CreateRenderer((void**)&GRenderer);
+	if (nullptr == GRenderer)
 	{
 		DEBUG_BREAK();
 		return false;
 	}
 
-	if (false == pRenderer_->Initialize(pApplication_->GetMainWindowHandle(), 800, 600))
+	if (false == GRenderer->Initialize(pApplication_->GetMainWindowHandle(), 800, 600))
 	{
 		DEBUG_BREAK();
 		return false;
@@ -538,7 +556,7 @@ void Engine::CleanUp()
 
 	if (nullptr != pApplication_)
 	{
-		pApplication_->Release();
+		delete pApplication_;
 		pApplication_ = nullptr;
 	}
 
@@ -546,10 +564,5 @@ void Engine::CleanUp()
 	{
 		FreeLibrary(rendererModule_);
 		rendererModule_ = nullptr;
-	}
-	if (nullptr != applicationModule_)
-	{
-		FreeLibrary(applicationModule_);
-		applicationModule_ = nullptr;
 	}
 }

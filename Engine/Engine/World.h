@@ -23,9 +23,11 @@ public:
 	}
 
 private:
-	void UpdateTick(double deltaTime);
-
 	ENGINE_API void ChangeLevelInternal(Level* level);
+
+	void OnTick(double deltaTime);
+
+	void OnRender();
 
 	void CheckChangeLevel();
 

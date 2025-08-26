@@ -13,11 +13,6 @@ World::~World()
 	CleanUp();
 }
 
-void World::UpdateTick(double deltaTime)
-{
-	curLevel_->UpdateTick(deltaTime);
-}
-
 void World::ChangeLevelInternal(Level* level)
 {
 	if (nullptr == level) {
@@ -29,6 +24,26 @@ void World::ChangeLevelInternal(Level* level)
 		nextLevel_ = nullptr;
 	}
 	nextLevel_ = level;
+}
+
+void World::OnTick(double deltaTime)
+{
+	if (nullptr == curLevel_)
+	{
+		DEBUG_BREAK();
+		return;
+	}
+	curLevel_->OnTick(deltaTime);
+}
+
+void World::OnRender()
+{
+	if (nullptr == curLevel_)
+	{
+		DEBUG_BREAK();
+		return;
+	}
+	curLevel_->OnRender();
 }
 
 void World::CheckChangeLevel()

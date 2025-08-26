@@ -1,5 +1,6 @@
 #pragma once
 struct IStartup;
+class Application;
 class World;
 
 class Engine final {
@@ -27,6 +28,8 @@ public:
 
 	ENGINE_API World* GetWorld() const;
 
+	//static IRenderer* Renderer();
+
 private:
 
 	bool LoadApplication
@@ -49,11 +52,9 @@ private:
 
 	IStartup* pStartUp_;
 
-	IApplication* pApplication_;
+	Application* pApplication_;
 
 	IRenderer* pRenderer_;
-
-	HMODULE applicationModule_;
 
 	HMODULE rendererModule_;
 

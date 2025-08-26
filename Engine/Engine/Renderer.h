@@ -16,6 +16,10 @@ public:
 
 	void Draw();	
 
+	// TODO : Test ¿ë ÇÔ¼ö.
+	//void Create();
+
+private:
 	Mesh* pMesh_;
 
 	Material* pMaterial_;
