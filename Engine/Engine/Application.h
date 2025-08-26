@@ -32,7 +32,7 @@ private:
 
 	void CleanUp();
 
-	IApplication* pApplicationInterface_;
+	IApplication* pApplicationImpl_;
 	
 	HMODULE applicationModule_;
 };

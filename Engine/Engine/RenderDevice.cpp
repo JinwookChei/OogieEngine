@@ -5,7 +5,7 @@
 typedef bool (*DLL_FUNCTION_ARG1)(void**);
 
 RenderDevice::RenderDevice()
-	: pRendererInterface_(nullptr),
+	: pRendererImpl_(nullptr),
 	rendererModule_(nullptr)
 {
 }
@@ -31,15 +31,15 @@ bool RenderDevice::Load(void* pMainHwnd, LPCWSTR libFileName)
 		return false;
 	}
 
-	CreateRenderer((void**)&pRendererInterface_);
-	if (nullptr == pRendererInterface_)
+	CreateRenderer((void**)&pRendererImpl_);
+	if (nullptr == pRendererImpl_)
 	{
 		DEBUG_BREAK();
 		return false;
 	}
 
 
-	if (false == pRendererInterface_->Initialize(pMainHwnd, 800, 600))
+	if (false == pRendererImpl_->Initialize(pMainHwnd, 800, 600))
 	{
 		DEBUG_BREAK();
 		return false;
@@ -50,120 +50,120 @@ bool RenderDevice::Load(void* pMainHwnd, LPCWSTR libFileName)
 
 void  RenderDevice::RenderBegin()
 {
-	if (nullptr == pRendererInterface_)
+	if (nullptr == pRendererImpl_)
 	{
 		DEBUG_BREAK();
 		return;
 	}
 
-	pRendererInterface_->RenderBegin();
+	pRendererImpl_->RenderBegin();
 }
 
 void  RenderDevice::RenderEnd()
 {
-	if (nullptr == pRendererInterface_)
+	if (nullptr == pRendererImpl_)
 	{
 		DEBUG_BREAK();
 		return;
 	}
 
-	pRendererInterface_->RenderEnd();
+	pRendererImpl_->RenderEnd();
 }
 
 uint64_t  RenderDevice::DrawCallCount()
 {
-	if (nullptr == pRendererInterface_)
+	if (nullptr == pRendererImpl_)
 	{
 		DEBUG_BREAK();
 		return -1;
 	}
 
-	return pRendererInterface_->DrawCallCount();
+	return pRendererImpl_->DrawCallCount();
 }
 
 IInputLayout* RenderDevice::CreateLayout(IVertex* vertex, IShader* vertexShader)
 {
-	if (nullptr == pRendererInterface_)
+	if (nullptr == pRendererImpl_)
 	{
 		DEBUG_BREAK();
 		return nullptr;
 	}
 
-	return pRendererInterface_->CreateLayout(vertex, vertexShader);
+	return pRendererImpl_->CreateLayout(vertex, vertexShader);
 }
 
 IVertex* RenderDevice::CreateVertex(void* vertices, uint32_t vertexSize, uint32_t vertexCount, void* indices /*= nullptr*/, uint32_t indexTypeSize/* = 0*/, uint32_t indexCount/* = 0*/)
 {
-	if (nullptr == pRendererInterface_)
+	if (nullptr == pRendererImpl_)
 	{
 		DEBUG_BREAK();
 		return nullptr;
 	}
-	return pRendererInterface_->CreateVertex(vertices, vertexSize, vertexCount, indices, indexTypeSize, indexCount);
+	return pRendererImpl_->CreateVertex(vertices, vertexSize, vertexCount, indices, indexTypeSize, indexCount);
 }
 
 IConstantBuffer* RenderDevice::CreateConstantBuffer(uint32_t bufferSize)
 {
-	if (nullptr == pRendererInterface_)
+	if (nullptr == pRendererImpl_)
 	{
 		DEBUG_BREAK();
 		return nullptr;
 	}
 
-	return pRendererInterface_->CreateConstantBuffer(bufferSize);
+	return pRendererImpl_->CreateConstantBuffer(bufferSize);
 }
 
 IShader* RenderDevice::CreateShader(ShaderType shaderType, const wchar_t* path)
 {
-	if (nullptr == pRendererInterface_)
+	if (nullptr == pRendererImpl_)
 	{
 		DEBUG_BREAK();
 		return nullptr;
 	}
 
-	return pRendererInterface_->CreateShader(shaderType, path);
+	return pRendererImpl_->CreateShader(shaderType, path);
 }
 
 IMaterial* RenderDevice::CreateMaterial()
 {
-	if (nullptr == pRendererInterface_)
+	if (nullptr == pRendererImpl_)
 	{
 		DEBUG_BREAK();
 		return nullptr;
 	}
 
-	return pRendererInterface_->CreateMaterial();
+	return pRendererImpl_->CreateMaterial();
 }
 
 ISamplerState* RenderDevice::CreateSampler(bool linear, bool clamp)
 {
-	if (nullptr == pRendererInterface_)
+	if (nullptr == pRendererImpl_)
 	{
 		DEBUG_BREAK();
 		return nullptr;
 	}
 
-	return pRendererInterface_->CreateSampler(linear, clamp);
+	return pRendererImpl_->CreateSampler(linear, clamp);
 }
 
 IRasterizer* RenderDevice::CreateRasterizer(bool back)
 {
-	if (nullptr == pRendererInterface_)
+	if (nullptr == pRendererImpl_)
 	{
 		DEBUG_BREAK();
 		return nullptr;
 	}
 
-	return pRendererInterface_->CreateRasterizer(back);
+	return pRendererImpl_->CreateRasterizer(back);
 }
 
 
 void RenderDevice::CleanUp()
 {
-	if (nullptr != pRendererInterface_)
+	if (nullptr != pRendererImpl_)
 	{
-		pRendererInterface_->Release();
-		pRendererInterface_ = nullptr;
+		pRendererImpl_->Release();
+		pRendererImpl_ = nullptr;
 	}
 
 	if (nullptr != rendererModule_)

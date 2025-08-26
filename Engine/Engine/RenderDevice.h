@@ -33,7 +33,9 @@ public:
 private:
 	void CleanUp();
 
-	IRenderer* pRendererInterface_;
+	IRenderer* pRendererImpl_;
+
+	//imple
 
 	HMODULE rendererModule_;
 

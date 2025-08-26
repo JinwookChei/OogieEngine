@@ -5,7 +5,7 @@
 typedef bool (*DLL_FUNCTION_ARG5)(void**, HINSTANCE, PWSTR, int, const wchar_t*);
 
 Application::Application()
-	:pApplicationInterface_(nullptr),
+	:pApplicationImpl_(nullptr),
 	applicationModule_(nullptr)
 {
 }
@@ -40,15 +40,15 @@ bool Application::Load
 		return false;
 	}
 
-	CreateWindowsApplication((void**)&pApplicationInterface_, hInstance, pCmdLine, nCmdShow, pIConPath);
-	if (nullptr == pApplicationInterface_)
+	CreateWindowsApplication((void**)&pApplicationImpl_, hInstance, pCmdLine, nCmdShow, pIConPath);
+	if (nullptr == pApplicationImpl_)
 	{
 		DEBUG_BREAK();
 		return false;
 	}
 
 
-	if (false == pApplicationInterface_->InitializeMainWindow(pMainWindowClassName, pMainWindowText))
+	if (false == pApplicationImpl_->InitializeMainWindow(pMainWindowClassName, pMainWindowText))
 	{
 		DEBUG_BREAK();
 		return false;
@@ -64,54 +64,54 @@ Application* Application::Instance()
 
 void Application::WinPumpMessage()
 {
-	if (nullptr == pApplicationInterface_)
+	if (nullptr == pApplicationImpl_)
 	{
 		DEBUG_BREAK();
 		return;
 	}
 
-	pApplicationInterface_->WinPumpMessage();
+	pApplicationImpl_->WinPumpMessage();
 }
 
 bool Application::ApplicationQuit()
 {
-	if (nullptr == pApplicationInterface_)
+	if (nullptr == pApplicationImpl_)
 	{
 		DEBUG_BREAK();
 		return false;
 	}
 
-	return pApplicationInterface_->ApplicationQuit();
+	return pApplicationImpl_->ApplicationQuit();
 }
 
 void Application::SetShowCursor(bool show)
 {
-	if (nullptr == pApplicationInterface_)
+	if (nullptr == pApplicationImpl_)
 	{
 		DEBUG_BREAK();
 		return;
 	}
 
-	pApplicationInterface_->SetShowCursor(show);
+	pApplicationImpl_->SetShowCursor(show);
 }
 
 void* Application::GetMainWindowHandle()
 {
-	if (nullptr == pApplicationInterface_)
+	if (nullptr == pApplicationImpl_)
 	{
 		DEBUG_BREAK();
 		return nullptr;
 	}
 
-	return pApplicationInterface_->GetMainWindowHandle();
+	return pApplicationImpl_->GetMainWindowHandle();
 }
 
 void Application::CleanUp()
 {
-	if (nullptr != pApplicationInterface_)
+	if (nullptr != pApplicationImpl_)
 	{
-		pApplicationInterface_->Release();
-		pApplicationInterface_ = nullptr;
+		pApplicationImpl_->Release();
+		pApplicationImpl_ = nullptr;
 	}
 
 	if (nullptr != applicationModule_)
