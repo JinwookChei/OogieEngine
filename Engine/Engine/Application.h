@@ -7,6 +7,12 @@ public:
 
 	virtual ~Application();
 
+	static Application* Create();
+
+	static void Destroy();
+
+	static Application* Instance();
+
 	bool Load
 	(
 		HINSTANCE hInstance,
@@ -17,8 +23,6 @@ public:
 		const wchar_t* pIConPath,
 		LPCWSTR libFileName
 	);
-
-	static Application* Instance();
 
 	void WinPumpMessage();
 

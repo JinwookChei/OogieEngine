@@ -1,12 +1,12 @@
 #include "stdafx.h"
 #include "Actor.h"
-#include "Renderer.h"
+#include "RenderComponent.h"
 #include "Mesh.h"
 #include "Material.h"
 
 
 Actor::Actor()
-	: pRenderer_(new Renderer)
+	: pRenderComponent_(new RenderComponent)
 {
 	levelLink_.prev_ = nullptr;
 	levelLink_.next_ = nullptr;
@@ -25,10 +25,10 @@ LINK_ITEM* Actor::LevelLink()
 
 void Actor::CleanUp()
 {
-	if (nullptr != pRenderer_)
+	if (nullptr != pRenderComponent_)
 	{
-		delete pRenderer_;
-		pRenderer_ = nullptr;
+		delete pRenderComponent_;
+		pRenderComponent_ = nullptr;
 	}
 }
 

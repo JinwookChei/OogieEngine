@@ -26,10 +26,14 @@
 #include <Utility/LinkedList.h>
 #include <Utility/HashTable.h>
 
+#include "Application.h"
+#include "RenderDevice.h"
 #include "InputManager.h"
 #include "TimeManager.h"
 
 
+extern Application* GApplication;
+extern RenderDevice* GRenderDevice;
 extern InputManager* GInputManager;
 extern TimeManager* GTimeManager;
 

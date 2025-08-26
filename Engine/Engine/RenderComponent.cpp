@@ -1,11 +1,11 @@
 #include "stdafx.h"
-#include "Renderer.h"
 #include "Mesh.h"
 #include "Material.h"
 #include "InputLayout.h"
 #include "Test.h"
+#include "RenderComponent.h"
 
-Renderer::Renderer()
+RenderComponent::RenderComponent()
 	:
 	pMesh_(nullptr),
 	pMaterial_(nullptr),
@@ -13,7 +13,7 @@ Renderer::Renderer()
 {
 }
 
-Renderer::~Renderer()
+RenderComponent::~RenderComponent()
 {
 	if (nullptr != pMesh_) 
 	{
@@ -33,7 +33,7 @@ Renderer::~Renderer()
 }
 
 
-void Renderer::Setting()
+void RenderComponent::Setting()
 {
 	pMaterial_->pMaterial_->Setting();
 
@@ -42,12 +42,12 @@ void Renderer::Setting()
 	pMesh_->pVertex_->Setting();
 }
 
-void Renderer::Draw()
+void RenderComponent::Draw()
 {
 	pMesh_->pVertex_->Draw();
 }
 
-//void Renderer::Create()
+//void RenderComponent::Create()
 //{
 //	std::vector<SimpleVertex> sphereVertices;
 //	std::vector<WORD> sphereIndices;

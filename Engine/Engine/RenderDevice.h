@@ -8,6 +8,12 @@ public:
 
 	virtual ~RenderDevice();
 
+	static RenderDevice* Create();
+
+	static void Destroy();
+
+	static RenderDevice* Instance();
+
 	bool Load(void* pMainHwnd, LPCWSTR libFileName);
 
 	void  RenderBegin();

@@ -4,6 +4,8 @@
 
 typedef bool (*DLL_FUNCTION_ARG5)(void**, HINSTANCE, PWSTR, int, const wchar_t*);
 
+Application* GApplication = nullptr;
+
 Application::Application()
 	:pApplicationImpl_(nullptr),
 	applicationModule_(nullptr)
@@ -13,6 +15,33 @@ Application::Application()
 Application::~Application()
 {
 	CleanUp();
+}
+
+Application* Application::Create()
+{
+	if (nullptr != GApplication)
+	{
+		Application::Destroy();
+	}
+
+	GApplication = new Application;
+	return GApplication;
+}
+
+void Application::Destroy()
+{
+	if (nullptr != GApplication)
+	{
+		GApplication->CleanUp();
+	}
+
+	delete GApplication;
+	GApplication = nullptr;
+}
+
+Application* Application::Instance()
+{
+	return GApplication;
 }
 
 bool Application::Load
@@ -31,7 +60,7 @@ bool Application::Load
 	{
 		DEBUG_BREAK();
 		return false;
-	}	
+	}
 
 	DLL_FUNCTION_ARG5 CreateWindowsApplication = (DLL_FUNCTION_ARG5)GetProcAddress(applicationModule_, "CreateWindowsApplication");
 	if (!CreateWindowsApplication)
@@ -55,11 +84,6 @@ bool Application::Load
 	}
 
 	return true;
-}
-
-Application* Application::Instance()
-{
-	return nullptr;
 }
 
 void Application::WinPumpMessage()

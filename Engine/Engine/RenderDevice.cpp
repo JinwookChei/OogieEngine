@@ -4,6 +4,8 @@
 
 typedef bool (*DLL_FUNCTION_ARG1)(void**);
 
+RenderDevice* GRenderDevice = nullptr;
+
 RenderDevice::RenderDevice()
 	: pRendererImpl_(nullptr),
 	rendererModule_(nullptr)
@@ -13,6 +15,30 @@ RenderDevice::RenderDevice()
 RenderDevice::~RenderDevice()
 {
 	CleanUp();
+}
+RenderDevice* RenderDevice::Create()
+{
+	if (nullptr != GRenderDevice)
+	{
+		RenderDevice::Destroy();
+	}
+
+	GRenderDevice = new RenderDevice;
+	return GRenderDevice;
+}
+void RenderDevice::Destroy()
+{
+	if(nullptr != GRenderDevice)
+	{
+		GRenderDevice->CleanUp();
+	}
+
+	delete GRenderDevice;
+	GRenderDevice = nullptr;
+}
+RenderDevice* RenderDevice::Instance()
+{
+	return GRenderDevice;
 }
 
 bool RenderDevice::Load(void* pMainHwnd, LPCWSTR libFileName)
@@ -47,6 +73,7 @@ bool RenderDevice::Load(void* pMainHwnd, LPCWSTR libFileName)
 
 	return true;
 }
+
 
 void  RenderDevice::RenderBegin()
 {

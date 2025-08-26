@@ -61,6 +61,9 @@
     <Filter Include="Source Files\Engine\Modules">
       <UniqueIdentifier>{e68fcdd2-546a-4a33-a0cd-4b167d8419d3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Actor\Component\RenderComponent">
+      <UniqueIdentifier>{0ee59b9b-733d-49dc-b14c-4eab904a7ac0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -83,9 +86,6 @@
     </ClInclude>
     <ClInclude Include="Actor.h">
       <Filter>Source Files\Actor</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer.h">
-      <Filter>Source Files\Actor\Component</Filter>
     </ClInclude>
     <ClInclude Include="Mesh.h">
       <Filter>Source Files\Mesh</Filter>
@@ -114,6 +114,9 @@
     <ClInclude Include="RenderDevice.h">
       <Filter>Source Files\Engine\Modules</Filter>
     </ClInclude>
+    <ClInclude Include="RenderComponent.h">
+      <Filter>Source Files\Actor\Component\RenderComponent</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -133,9 +136,6 @@
     </ClCompile>
     <ClCompile Include="Actor.cpp">
       <Filter>Source Files\Actor</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer.cpp">
-      <Filter>Source Files\Actor\Component</Filter>
     </ClCompile>
     <ClCompile Include="Mesh.cpp">
       <Filter>Source Files\Mesh</Filter>
@@ -160,6 +160,9 @@
     </ClCompile>
     <ClCompile Include="RenderDevice.cpp">
       <Filter>Source Files\Engine\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderComponent.cpp">
+      <Filter>Source Files\Actor\Component\RenderComponent</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

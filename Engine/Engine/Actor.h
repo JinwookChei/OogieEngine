@@ -1,6 +1,6 @@
 #pragma once
 
-class Renderer;
+class RenderComponent;
 class Actor
 {
 public:
@@ -14,14 +14,14 @@ public:
 
 	ENGINE_API virtual void BeginPlay() = 0;
 
+	LINK_ITEM* LevelLink();
+
 private:
 	ENGINE_API void CleanUp();
 
 	void Render();
 
-	LINK_ITEM* LevelLink();
-
-	Renderer* pRenderer_;
+	RenderComponent* pRenderComponent_;
 
 	LINK_ITEM levelLink_;
 };

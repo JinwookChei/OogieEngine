@@ -11,7 +11,6 @@
 #include "Material.h"
 #include "InputLayout.h"
 
-
 InputManager* GInputManager = nullptr;
 TimeManager* GTimeManager = nullptr;
 
@@ -411,7 +410,7 @@ bool Engine::LoadApplication
 	const wchar_t* pIConPath
 )
 {
-	pApplication_ = new Application;
+	pApplication_ = Application::Create();
 
 	if (nullptr == pApplication_)
 	{
@@ -425,7 +424,8 @@ bool Engine::LoadApplication
 
 bool Engine::LoadRenderDevice()
 {
-	pRenderDevice_ = new RenderDevice;
+	pRenderDevice_ = RenderDevice::Create();
+	
 	if (nullptr == pRenderDevice_)
 	{
 		DEBUG_BREAK();
@@ -502,16 +502,8 @@ void Engine::CleanUp()
 		delete GInputManager;
 		GInputManager = nullptr;
 	}
+	
+	RenderDevice::Destroy();
 
-	if (nullptr != pRenderDevice_)
-	{
-		delete pRenderDevice_;
-		pRenderDevice_ = nullptr;
-	}
-
-	if (nullptr != pApplication_)
-	{
-		delete pApplication_;
-		pApplication_ = nullptr;
-	}
+	Application::Destroy();
 }

@@ -5,12 +5,12 @@ class Mesh;
 class Material;
 class InputLayout;
 
-class Renderer
+class RenderComponent
 {
 public:
-	Renderer();
+	RenderComponent();
 
-	virtual ~Renderer();
+	virtual ~RenderComponent();
 
 	void Setting();
 
