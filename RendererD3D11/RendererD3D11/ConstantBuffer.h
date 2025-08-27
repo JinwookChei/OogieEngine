@@ -14,7 +14,7 @@ public:
 
 	ULONG __stdcall Release() override;
 
-	void __stdcall Update(void* srcData) override;
+	void __stdcall Update(void* pSrcData) override;
 
 	void __stdcall VSSetting(uint32_t slot) override;
 
@@ -23,9 +23,9 @@ public:
 	bool CreateBuffer(UINT bufferSize);
 
 private:
-	void Cleanup();
+	void CleanUp();
 
 	ULONG refCount_;
 
-	ID3D11Buffer* buffer_;
+	ID3D11Buffer* pBuffer_;
 };

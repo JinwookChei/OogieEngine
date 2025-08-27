@@ -26,7 +26,7 @@ struct IVertex : public IUnknown
 {
 	virtual void __stdcall Setting() = 0;
 
-	virtual bool __stdcall AddInputLayout(const char* semanticName, uint32_t semanticIndex, uint32_t format, uint32_t inputSlot, bool isInstanceData) = 0;
+	virtual bool __stdcall AddInputLayout(const char* pSemanticName, uint32_t semanticIndex, uint32_t format, uint32_t inputSlot, bool isInstanceData) = 0;
 
 	virtual bool __stdcall Draw() = 0;
 };
@@ -40,11 +40,11 @@ struct ISamplerState : public IUnknown {
 };
 
 struct IMaterial : public IUnknown {
-	virtual void __stdcall SetVertexShader(IShader* vertexShader) = 0;
+	virtual void __stdcall SetVertexShader(IShader* pVertexShader) = 0;
 
-	virtual void __stdcall SetPixelShader(IShader* pixelShader) = 0;
+	virtual void __stdcall SetPixelShader(IShader* pPixelShader) = 0;
 
-	virtual void __stdcall SetSampler(ISamplerState* sampler, uint32_t slot = 0) = 0;
+	virtual void __stdcall SetSampler(ISamplerState* pSampler, uint32_t slot = 0) = 0;
 
 	virtual void __stdcall Setting() = 0;
 };
@@ -54,7 +54,7 @@ struct IInputLayout : public IUnknown {
 };
 
 struct IConstantBuffer : public IUnknown {
-	virtual void __stdcall Update(void* srcData) = 0;
+	virtual void __stdcall Update(void* pSrcData) = 0;
 
 	virtual void __stdcall VSSetting(uint32_t slot) = 0;
 
@@ -77,13 +77,13 @@ struct IRenderer : public IUnknown {
 
 	virtual uint64_t __stdcall DrawCallCount() = 0;
 
-	virtual IInputLayout* __stdcall CreateLayout(IVertex* vertex, IShader* vertexShader) = 0;
+	virtual IInputLayout* __stdcall CreateLayout(IVertex* pVertex, IShader* pVertexShader) = 0;
 
-	virtual IVertex* __stdcall CreateVertex(void* vertices, uint32_t vertexSize, uint32_t vertexCount, void* indices = nullptr, uint32_t indexTypeSize = 0, uint32_t indexCount = 0) = 0;
+	virtual IVertex* __stdcall CreateVertex(void* pVertices, uint32_t vertexSize, uint32_t vertexCount, void* pIndices = nullptr, uint32_t indexTypeSize = 0, uint32_t indexCount = 0) = 0;
 
 	virtual IConstantBuffer* __stdcall CreateConstantBuffer(uint32_t bufferSize) = 0;
 
-	virtual IShader* __stdcall CreateShader(ShaderType shaderType, const wchar_t* path) = 0;
+	virtual IShader* __stdcall CreateShader(ShaderType shaderType, const wchar_t* pPath) = 0;
 
 	virtual IMaterial* __stdcall CreateMaterial() = 0;
 

@@ -14,7 +14,7 @@ public:
 
 	ULONG __stdcall Release() override;
 
-	bool CreateShader(ID3DBlob* blob);
+	bool CreateShader(ID3DBlob* pBlob);
 
 	virtual void SetShader() = 0;
 
@@ -23,12 +23,12 @@ public:
 	size_t GetBufferSize();
 
 protected:
-	virtual bool OnCreateShader(ID3DBlob* blob) = 0;
+	virtual bool OnCreateShader(ID3DBlob* pBlob) = 0;
 
 	virtual void CleanUp();
 
 private:
 	ULONG refCount_;
 
-	ID3DBlob* blob_;
+	ID3DBlob* pBlob_;
 };

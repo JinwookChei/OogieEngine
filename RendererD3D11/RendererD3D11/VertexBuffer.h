@@ -20,7 +20,7 @@ public:
 
 	ULONG __stdcall Release() override;
 
-	bool __stdcall AddInputLayout(const char* semanticName, uint32_t semanticIndex, uint32_t format, uint32_t inputSlot, bool isInstanceData) override;
+	bool __stdcall AddInputLayout(const char* pSemanticName, uint32_t semanticIndex, uint32_t format, uint32_t inputSlot, bool isInstanceData) override;
 
 	void __stdcall Setting() override;
 
@@ -29,7 +29,7 @@ public:
 	const std::vector<D3D11_INPUT_ELEMENT_DESC>& GetDesc() const;
 
 private:
-	bool Initialize(void* vertices, UINT vertexSize, UINT vertexCount, void* indices = nullptr, UINT indexTypeSize = 0, UINT indexCount = 0);
+	bool Initialize(void* pVertices, UINT vertexSize, UINT vertexCount, void* pIndices = nullptr, UINT indexTypeSize = 0, UINT indexCount = 0);
 
 	void CleanUp();
 
@@ -43,9 +43,9 @@ private:
 
 	UINT indexCount_;
 
-	ID3D11Buffer* vertexBuffer_;
+	ID3D11Buffer* pVertexBuffer_;
 
-	ID3D11Buffer* indexBuffer_;
+	ID3D11Buffer* pIndexBuffer_;
 
 	std::vector<D3D11_INPUT_ELEMENT_DESC> desc_;
 };

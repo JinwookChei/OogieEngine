@@ -3,7 +3,7 @@
 
 BaseShader::BaseShader()
 	:refCount_(1),
-	blob_(nullptr)
+	pBlob_(nullptr)
 {
 }
 
@@ -33,45 +33,45 @@ ULONG __stdcall BaseShader::Release()
 	return tmpRefCount;
 }
 
-bool BaseShader::CreateShader(ID3DBlob* blob)
+bool BaseShader::CreateShader(ID3DBlob* pBlob)
 {
-	if (nullptr == blob)
+	if (nullptr == pBlob)
 	{
 		return false;
 	}
 
-	blob_ = blob;
+	pBlob_ = pBlob;
 
-	blob_->AddRef();
+	pBlob_->AddRef();
 
-	return OnCreateShader(blob_);
+	return OnCreateShader(pBlob_);
 }
 
 void* BaseShader::GetBufferPointer()
 {
-	if (nullptr == blob_)
+	if (nullptr == pBlob_)
 	{
 		return nullptr;
 	}
-	return blob_->GetBufferPointer();
+	return pBlob_->GetBufferPointer();
 }
 
 size_t BaseShader::GetBufferSize()
 {
-	if (nullptr == blob_)
+	if (nullptr == pBlob_)
 	{
 		return 0;
 	}
 
-	return blob_->GetBufferSize();
+	return pBlob_->GetBufferSize();
 }
 
 
 void BaseShader::CleanUp()
 {
-	if (nullptr != blob_)
+	if (nullptr != pBlob_)
 	{
-		blob_->Release();
-		blob_ = nullptr;
+		pBlob_->Release();
+		pBlob_ = nullptr;
 	}
 }

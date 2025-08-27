@@ -14,6 +14,7 @@ ShaderConstants::ShaderConstants(IConstantBuffer* pConstantBuffer)
 
 ShaderConstants::~ShaderConstants()
 {
+	CleanUp();
 }
 
 void ShaderConstants::Update(void* pSrcData)

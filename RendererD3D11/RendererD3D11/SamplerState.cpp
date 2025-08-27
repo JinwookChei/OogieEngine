@@ -3,13 +3,13 @@
 
 SamplerState::SamplerState()
 	: refCount_(1),
-	samplerState_(nullptr)
+	pSamplerState_(nullptr)
 {
 }
 
 SamplerState::~SamplerState()
 {
-	Cleanup();
+	CleanUp();
 }
 
 HRESULT __stdcall SamplerState::QueryInterface(REFIID riid, void** ppvObject)
@@ -35,7 +35,7 @@ ULONG __stdcall SamplerState::Release()
 
 void __stdcall SamplerState::Setting(uint32_t slot)
 {
-	GRenderer->DeviceContext()->PSSetSamplers(slot, 1, &samplerState_);
+	GRenderer->DeviceContext()->PSSetSamplers(slot, 1, &pSamplerState_);
 }
 
 bool SamplerState::CreateSampler(bool linear, bool clamp)
@@ -52,22 +52,27 @@ bool SamplerState::CreateSampler(bool linear, bool clamp)
 	samplerDesc.MinLOD = FLT_MIN;
 	samplerDesc.MaxLOD = FLT_MAX;
 
-	HRESULT hr = GRenderer->Device()->CreateSamplerState(&samplerDesc, &samplerState_);
+	HRESULT hr = GRenderer->Device()->CreateSamplerState(&samplerDesc, &pSamplerState_);
 	if (FAILED(hr))
 	{
 		DEBUG_BREAK();
 		return false;
 	}
 
+	// ---------------- 메모리 누수 디버깅용 이름 설정. ----------------------------
+	const char* debugObjectName = "SamplerState::pSamplerState_";
+	pSamplerState_->SetPrivateData(WKPDID_D3DDebugObjectName, (UINT)strlen(debugObjectName), debugObjectName);
+	// ---------------------------------------------------------------------------
+
 	return true;
 }
 
 
-void SamplerState::Cleanup()
+void SamplerState::CleanUp()
 {
-	if (nullptr != samplerState_)
+	if (nullptr != pSamplerState_)
 	{
-		samplerState_->Release();
-		samplerState_ = nullptr;
+		pSamplerState_->Release();
+		pSamplerState_ = nullptr;
 	}
 }

@@ -18,24 +18,24 @@ public:
 
 	ULONG __stdcall Release() override;
 
-	void __stdcall SetVertexShader(IShader* vertexShader) override;
+	void __stdcall SetVertexShader(IShader* pVertexShader) override;
 
-	void __stdcall SetPixelShader(IShader* pixelShader) override;
+	void __stdcall SetPixelShader(IShader* pPixelShader) override;
 
-	void __stdcall SetSampler(ISamplerState* sampler, uint32_t slot = 0) override;
+	void __stdcall SetSampler(ISamplerState* pSamplerState, uint32_t slot = 0) override;
 
 	void __stdcall Setting() override;
 
 private:
-	void Cleanup();
+	void CleanUp();
 
 	ULONG refCount_;
 
-	VertexShader* vertexShader_;
+	VertexShader* pVertexShader_;
 
-	PixelShader* pixelShader_;
+	PixelShader* pPixelShader_;
 
-	SamplerState* sampler_;
+	SamplerState* pSamplerState_;
 
 	uint32_t samplerSlot_;
 };

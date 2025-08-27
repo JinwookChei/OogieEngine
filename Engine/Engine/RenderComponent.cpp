@@ -53,7 +53,6 @@ void RenderComponent::Create()
 	std::vector<WORD> sphereIndices;
 	CreateSphere(&sphereVertices, &sphereIndices);
 
-
 	// Mesh
 	IVertex* pSphereVertex = RenderDevice::Instance()->CreateVertex(sphereVertices.data(), (uint32_t)sizeof(SimpleVertex), (uint32_t)sphereVertices.size(), sphereIndices.data(), (uint32_t)sizeof(WORD), (uint32_t)sphereIndices.size());
 	pMesh_ = new Mesh(pSphereVertex);

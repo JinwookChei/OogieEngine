@@ -19,9 +19,9 @@ public:
 	bool CreateSampler(bool linear, bool clamp);
 
 private:
-	void Cleanup();
+	void CleanUp();
 
 	ULONG refCount_;
 
-	ID3D11SamplerState* samplerState_;
+	ID3D11SamplerState* pSamplerState_;
 };

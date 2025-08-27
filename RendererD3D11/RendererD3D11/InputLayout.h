@@ -16,12 +16,12 @@ public:
 
 	void __stdcall Setting() override;
 
-	bool Create(IVertex* vertex, IShader* vertexShader);
+	bool Create(IVertex* pVertex, IShader* pVertexShader);
 
 private:
-	void Cleanup();
+	void CleanUp();
 
 	UINT refCount_;
 
-	ID3D11InputLayout* inputLayout_;
+	ID3D11InputLayout* pInputLayout_;
 };

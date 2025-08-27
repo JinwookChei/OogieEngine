@@ -21,13 +21,13 @@ public:
 	bool CreateRasterizer(bool frontCounterClockwise, bool backFace);
 
 private:
-	void Cleanup();
+	void CleanUp();
 
 	ULONG refCount_;
 
-	ID3D11RasterizerState* currentState_;
+	ID3D11RasterizerState* pCurrentState_;
 
-	ID3D11RasterizerState* solidState_;
+	ID3D11RasterizerState* pSolidState_;
 
-	ID3D11RasterizerState* wireframeState_;
+	ID3D11RasterizerState* pWireframeState_;
 };

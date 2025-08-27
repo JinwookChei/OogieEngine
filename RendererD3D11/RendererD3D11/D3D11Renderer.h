@@ -23,13 +23,13 @@ public:
 
 	uint64_t __stdcall DrawCallCount() override;
 
-	IInputLayout* __stdcall CreateLayout(IVertex* vertex, IShader* vertexShader) override;
+	IInputLayout* __stdcall CreateLayout(IVertex* pVertex, IShader* pVertexShader) override;
 
-	IVertex* __stdcall CreateVertex(void* vertices, uint32_t vertexSize, uint32_t vertexCount, void* indices = nullptr, uint32_t indexTypeSize = 0, uint32_t indexCount = 0) override;
+	IVertex* __stdcall CreateVertex(void* pVertices, uint32_t vertexSize, uint32_t vertexCount, void* pIndices = nullptr, uint32_t indexTypeSize = 0, uint32_t indexCount = 0) override;
 
 	IConstantBuffer* __stdcall CreateConstantBuffer(uint32_t bufferSize) override;
 
-	IShader* __stdcall CreateShader(ShaderType shaderType, const wchar_t* path) override;
+	IShader* __stdcall CreateShader(ShaderType shaderType, const wchar_t* pPath) override;
 
 	IMaterial* __stdcall CreateMaterial() override;
 
@@ -50,7 +50,7 @@ private:
 
 	bool CreateRenderTarget();
 
-	void Cleanup();
+	void CleanUp();
 
 	bool coInit_;
 
@@ -60,11 +60,11 @@ private:
 
 	HWND hWnd_;
 
-	ID3D11Device* device_;
+	ID3D11Device* pDevice_;
 
-	ID3D11DeviceContext* deviceContext_;
+	ID3D11DeviceContext* pDeviceContext_;
 
-	IDXGISwapChain* swapChain_;
+	IDXGISwapChain* pSwapChain_;
 
-	RenderTarget* backBuffer_;
+	RenderTarget* pBackBuffer_;
 };

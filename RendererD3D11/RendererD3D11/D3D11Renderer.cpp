@@ -18,17 +18,17 @@ D3D11Renderer::D3D11Renderer()
 	refCount_(1),
 	drawCallCount_(0),
 	hWnd_(nullptr),
-	device_(nullptr),
-	deviceContext_(nullptr),
-	swapChain_(nullptr),
-	backBuffer_(nullptr)
+	pDevice_(nullptr),
+	pDeviceContext_(nullptr),
+	pSwapChain_(nullptr),
+	pBackBuffer_(nullptr)
 {
 	GRenderer = this;
 }
 
 D3D11Renderer::~D3D11Renderer()
 {
-	Cleanup();
+	CleanUp();
 }
 
 HRESULT __stdcall D3D11Renderer::QueryInterface(REFIID riid, void** ppvObject)
@@ -92,10 +92,17 @@ bool __stdcall D3D11Renderer::Initialize(void* hWnd, uint32_t width, uint32_t he
 		nullptr,
 		0,
 		D3D11_SDK_VERSION,
-		&device_,
+		&pDevice_,
 		&featureLevel,
-		&deviceContext_
+		&pDeviceContext_
 	);
+
+	// ---------------- 메모리 누수 디버깅용 이름 설정. ----------------------------
+	const char* debugObjectName = "D3D11Renderer::pDevice_";
+	pDevice_->SetPrivateData(WKPDID_D3DDebugObjectName, (UINT)strlen(debugObjectName), debugObjectName);
+	debugObjectName = "D3D11Renderer::pDeviceContext_";
+	pDeviceContext_->SetPrivateData(WKPDID_D3DDebugObjectName, (UINT)strlen(debugObjectName), debugObjectName);
+	// ---------------------------------------------------------------------------
 
 	pBestAdapter->Release();
 	pBestAdapter = nullptr;
@@ -129,14 +136,14 @@ void __stdcall D3D11Renderer::RenderBegin()
 {
 	drawCallCount_ = 0;
 
-	backBuffer_->Clear();
+	pBackBuffer_->Clear();
 
-	backBuffer_->Setting();
+	pBackBuffer_->Setting();
 }
 
 void __stdcall D3D11Renderer::RenderEnd()
 {
-	swapChain_->Present(0, 0);
+	pSwapChain_->Present(0, 0);
 }
 
 uint64_t __stdcall D3D11Renderer::DrawCallCount()
@@ -146,14 +153,14 @@ uint64_t __stdcall D3D11Renderer::DrawCallCount()
 
 IInputLayout* __stdcall D3D11Renderer::CreateLayout(IVertex* vertex, IShader* vertexShader)
 {
-	InputLayout* newInputLayout = new InputLayout;
-	if (false == newInputLayout->Create(vertex, vertexShader))
+	InputLayout* pNewInputLayout = new InputLayout;
+	if (false == pNewInputLayout->Create(vertex, vertexShader))
 	{
-		newInputLayout->Release();
-		newInputLayout = nullptr;
+		pNewInputLayout->Release();
+		pNewInputLayout = nullptr;
 	}
 
-	return newInputLayout;
+	return pNewInputLayout;
 }
 
 IVertex* __stdcall D3D11Renderer::CreateVertex(void* vertices, uint32_t vertexSize, uint32_t vertexCount, void* indices, uint32_t indexTypeSize, uint32_t indexCount)
@@ -185,34 +192,34 @@ IConstantBuffer* __stdcall D3D11Renderer::CreateConstantBuffer(uint32_t bufferSi
 	return buffer;
 }
 
-IShader* __stdcall D3D11Renderer::CreateShader(ShaderType shaderType, const wchar_t* path)
+IShader* __stdcall D3D11Renderer::CreateShader(ShaderType shaderType, const wchar_t* pPath)
 {
-	ID3DBlob* blob = nullptr;
-	HRESULT hr = D3DReadFileToBlob(path, &blob);
+	ID3DBlob* pBlob = nullptr;
+	HRESULT hr = D3DReadFileToBlob(pPath, &pBlob);
 	if (FAILED(hr))
 	{
 		DEBUG_BREAK();
 		return nullptr;
 	}
 
-	BaseShader* shader = nullptr;
+	BaseShader* pShader = nullptr;
 	switch (shaderType)
 	{
 	case ShaderType::Vertex:
-		shader = new VertexShader;
+		pShader = new VertexShader;
 		break;
 	case ShaderType::Pixel:
-		shader = new PixelShader;
+		pShader = new PixelShader;
 		break;
 	}
 
-	if (nullptr != shader && false == shader->CreateShader(blob))
+	if (nullptr != pShader && false == pShader->CreateShader(pBlob))
 	{
-		shader->Release();
-		shader = nullptr;
+		pShader->Release();
+		pShader = nullptr;
 	}
 
-	return shader;
+	return pShader;
 }
 
 IMaterial* __stdcall D3D11Renderer::CreateMaterial()
@@ -222,36 +229,36 @@ IMaterial* __stdcall D3D11Renderer::CreateMaterial()
 }
 ISamplerState* __stdcall D3D11Renderer::CreateSampler(bool linear, bool clamp)
 {
-	SamplerState* sampler = new SamplerState;
-	if (false == sampler->CreateSampler(linear, clamp))
+	SamplerState* pSampler = new SamplerState;
+	if (false == pSampler->CreateSampler(linear, clamp))
 	{
-		sampler->Release();
-		sampler = nullptr;
+		pSampler->Release();
+		pSampler = nullptr;
 	}
 
-	return sampler;
+	return pSampler;
 }
 
 IRasterizer* __stdcall D3D11Renderer::CreateRasterizer(bool back)
 {
-	Rasterizer* rasterizer = new Rasterizer;
-	if (false == rasterizer->CreateRasterizer(false, back))
+	Rasterizer* pRasterizer = new Rasterizer;
+	if (false == pRasterizer->CreateRasterizer(false, back))
 	{
-		rasterizer->Release();
-		rasterizer = nullptr;
+		pRasterizer->Release();
+		pRasterizer = nullptr;
 	}
 
-	return rasterizer;
+	return pRasterizer;
 }
 
 ID3D11Device*  D3D11Renderer::Device()
 {
-	return device_;
+	return pDevice_;
 }
 
 ID3D11DeviceContext* D3D11Renderer::DeviceContext()
 {
-	return deviceContext_;
+	return pDeviceContext_;
 }
 
 void D3D11Renderer::IncrementDrawCall()
@@ -317,53 +324,53 @@ bool D3D11Renderer::CreateSwapChain(UINT width, UINT height)
 	sd.SwapEffect = DXGI_SWAP_EFFECT::DXGI_SWAP_EFFECT_DISCARD;	// 	백버퍼 프레젠트 후 처리 방식 지정
 	sd.Flags = 0; // 스왑 체인의 동작에 대한 추가적인 옵션을 지정하는 비트 플래그. 옵션 없음.
 
-	IDXGIDevice* swapDevice = nullptr;
-	IDXGIAdapter* swapAdapter = nullptr;
-	IDXGIFactory* swapFactory = nullptr;
+	IDXGIDevice* pSwapDevice = nullptr;
+	IDXGIAdapter* pSwapAdapter = nullptr;
+	IDXGIFactory* pSwapFactory = nullptr;
 
-	HRESULT hr = device_->QueryInterface(__uuidof(IDXGIDevice), (void**)&swapDevice);
-	if (FAILED(hr) || nullptr == swapDevice)
+	HRESULT hr = pDevice_->QueryInterface(__uuidof(IDXGIDevice), (void**)&pSwapDevice);
+	if (FAILED(hr) || nullptr == pSwapDevice)
 	{
 		DEBUG_BREAK();
 		goto lb_return;
 	}
 
-	hr = swapDevice->GetParent(__uuidof(IDXGIAdapter), (void**)&swapAdapter);
-	if (FAILED(hr) || nullptr == swapAdapter)
+	hr = pSwapDevice->GetParent(__uuidof(IDXGIAdapter), (void**)&pSwapAdapter);
+	if (FAILED(hr) || nullptr == pSwapAdapter)
 	{
 		DEBUG_BREAK();
 		goto lb_return;
 	}
 
-	hr = swapAdapter->GetParent(__uuidof(IDXGIFactory), (void**)&swapFactory);
-	if (FAILED(hr) || nullptr == swapFactory)
+	hr = pSwapAdapter->GetParent(__uuidof(IDXGIFactory), (void**)&pSwapFactory);
+	if (FAILED(hr) || nullptr == pSwapFactory)
 	{
 		DEBUG_BREAK();
 		goto lb_return;
 	}
 
-	hr = swapFactory->CreateSwapChain(device_, &sd, &swapChain_);
-	if (FAILED(hr) || nullptr == swapChain_)
+	hr = pSwapFactory->CreateSwapChain(pDevice_, &sd, &pSwapChain_);
+	if (FAILED(hr) || nullptr == pSwapChain_)
 	{
 		DEBUG_BREAK();
 		goto lb_return;
 	}
 
 lb_return:
-	if (nullptr != swapDevice)
+	if (nullptr != pSwapDevice)
 	{
-		swapDevice->Release();
-		swapDevice = nullptr;
+		pSwapDevice->Release();
+		pSwapDevice = nullptr;
 	}
-	if (nullptr != swapAdapter)
+	if (nullptr != pSwapAdapter)
 	{
-		swapAdapter->Release();
-		swapAdapter = nullptr;
+		pSwapAdapter->Release();
+		pSwapAdapter = nullptr;
 	}
-	if (nullptr != swapFactory)
+	if (nullptr != pSwapFactory)
 	{
-		swapFactory->Release();
-		swapFactory = nullptr;
+		pSwapFactory->Release();
+		pSwapFactory = nullptr;
 	}
 	if (FAILED(hr))
 	{
@@ -375,49 +382,49 @@ lb_return:
 
 bool D3D11Renderer::CreateRenderTarget()
 {
-	ID3D11Texture2D* backBufferTexture = nullptr;
+	ID3D11Texture2D* pBackBufferTexture = nullptr;
 
-	HRESULT hr = swapChain_->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)&backBufferTexture);
+	HRESULT hr = pSwapChain_->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)&pBackBufferTexture);
 	if (FAILED(hr))
 	{
 		DEBUG_BREAK();
 		return false;
 	}
 
-	if (nullptr == backBufferTexture)
+	if (nullptr == pBackBufferTexture)
 	{
 		DEBUG_BREAK();
 		return false;
 	}
 
-	Texture* newTexture = new Texture;
-	if (nullptr == newTexture)
+	Texture* pNewTexture = new Texture;
+	if (nullptr == pNewTexture)
 	{
-		backBufferTexture->Release();
+		pBackBufferTexture->Release();
 		DEBUG_BREAK();
 		return false;
 	}
 
-	if (false == newTexture->SetTexture(backBufferTexture))
+	if (false == pNewTexture->SetTexture(pBackBufferTexture))
 	{
-		newTexture->Release();
+		pNewTexture->Release();
 		return false;
 	}
 
-	backBuffer_ = new RenderTarget;
-	if (nullptr == backBuffer_)
-	{
-		DEBUG_BREAK();
-		return false;
-	}
-
-	if (false == backBuffer_->SetTexture(newTexture))
+	pBackBuffer_ = new RenderTarget;
+	if (nullptr == pBackBuffer_)
 	{
 		DEBUG_BREAK();
 		return false;
 	}
 
-	if (false == backBuffer_->CreateDepthTexture())
+	if (false == pBackBuffer_->SetTexture(pNewTexture))
+	{
+		DEBUG_BREAK();
+		return false;
+	}
+
+	if (false == pBackBuffer_->CreateDepthTexture())
 	{
 		DEBUG_BREAK();
 		return false;
@@ -426,33 +433,33 @@ bool D3D11Renderer::CreateRenderTarget()
 	return true;
 }
 
-void D3D11Renderer::Cleanup()
+void D3D11Renderer::CleanUp()
 {
 
-	if (nullptr != deviceContext_)
+	if (nullptr != pDeviceContext_)
 	{
-		deviceContext_->ClearState();
+		pDeviceContext_->ClearState();
 	}
 
-	if (nullptr != backBuffer_)
+	if (nullptr != pBackBuffer_)
 	{
-		backBuffer_->Release();
-		backBuffer_ = nullptr;
+		pBackBuffer_->Release();
+		pBackBuffer_ = nullptr;
 	}
-	if (nullptr != swapChain_)
+	if (nullptr != pSwapChain_)
 	{
-		swapChain_->Release();
-		swapChain_ = nullptr;
+		pSwapChain_->Release();
+		pSwapChain_ = nullptr;
 	}
-	if (nullptr != deviceContext_)
+	if (nullptr != pDeviceContext_)
 	{
-		deviceContext_->Release();
-		deviceContext_ = nullptr;
+		pDeviceContext_->Release();
+		pDeviceContext_ = nullptr;
 	}
-	if (nullptr != device_)
+	if (nullptr != pDevice_)
 	{
-		device_->Release();
-		device_ = nullptr;
+		pDevice_->Release();
+		pDevice_ = nullptr;
 	}
 	if (coInit_)
 	{

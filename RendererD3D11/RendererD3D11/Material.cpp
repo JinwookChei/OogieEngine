@@ -1,21 +1,21 @@
 #include "stdafx.h"
 #include "Material.h"
-#include "VertexShader.h";
+#include "VertexShader.h"
 #include "PixelShader.h"
 #include "SamplerState.h"
 
 Material::Material()
 	: refCount_(1),
-	vertexShader_(nullptr),
-	pixelShader_(nullptr),
-	sampler_(nullptr),
+	pVertexShader_(nullptr),
+	pPixelShader_(nullptr),
+	pSamplerState_(nullptr),
 	samplerSlot_(0)
 {
 }
 
 Material::~Material()
 {
-	Cleanup();
+	CleanUp();
 }
 
 HRESULT __stdcall Material::QueryInterface(REFIID riid, void** ppvObject)
@@ -39,51 +39,51 @@ ULONG __stdcall Material::Release()
 	return tmpRefCount;
 }
 
-void __stdcall Material::SetVertexShader(IShader* vertexShader)
+void __stdcall Material::SetVertexShader(IShader* pVertexShader)
 {
-	if (nullptr != vertexShader_)
+	if (nullptr != pVertexShader_)
 	{
-		vertexShader_->Release();
-		vertexShader_ = nullptr;
+		pVertexShader_->Release();
+		pVertexShader_ = nullptr;
 	}
 
-	vertexShader_ = (VertexShader*)vertexShader;
+	pVertexShader_ = (VertexShader*)pVertexShader;
 
-	if (nullptr != vertexShader_)
+	if (nullptr != pVertexShader_)
 	{
-		vertexShader_->AddRef();
+		pVertexShader_->AddRef();
 	}
 }
 
-void __stdcall Material::SetPixelShader(IShader* pixelShader)
+void __stdcall Material::SetPixelShader(IShader* pPixelShader)
 {
-	if (nullptr != pixelShader_)
+	if (nullptr != pPixelShader_)
 	{
-		pixelShader_->Release();
-		pixelShader_ = nullptr;
+		pPixelShader_->Release();
+		pPixelShader_ = nullptr;
 	}
 
-	pixelShader_ = (PixelShader*)pixelShader;
+	pPixelShader_ = (PixelShader*)pPixelShader;
 
-	if (nullptr != pixelShader_)
+	if (nullptr != pPixelShader_)
 	{
-		pixelShader_->AddRef();
+		pPixelShader_->AddRef();
 	}
 }
 
-void __stdcall Material::SetSampler(ISamplerState* sampler, uint32_t slot)
+void __stdcall Material::SetSampler(ISamplerState* pSamplerState, uint32_t slot)
 {
-	if (nullptr != sampler_)
+	if (nullptr != pSamplerState_)
 	{
-		sampler_->Release();
-		sampler_ = nullptr;
+		pSamplerState_->Release();
+		pSamplerState_ = nullptr;
 	}
 
-	sampler_ = (SamplerState*)sampler;
+	pSamplerState_ = (SamplerState*)pSamplerState;
 
-	if (nullptr != sampler_)
+	if (nullptr != pSamplerState_)
 	{
-		sampler_->AddRef();
+		pSamplerState_->AddRef();
 	}
 
 	samplerSlot_ = slot;
@@ -91,35 +91,35 @@ void __stdcall Material::SetSampler(ISamplerState* sampler, uint32_t slot)
 
 void __stdcall Material::Setting()
 {
-	if (nullptr != vertexShader_)
+	if (nullptr != pVertexShader_)
 	{
-		vertexShader_->SetShader();
+		pVertexShader_->SetShader();
 	}
-	if (nullptr != pixelShader_)
+	if (nullptr != pPixelShader_)
 	{
-		pixelShader_->SetShader();
+		pPixelShader_->SetShader();
 	}
-	if (nullptr != sampler_)
+	if (nullptr != pSamplerState_)
 	{
-		sampler_->Setting(samplerSlot_);
+		pSamplerState_->Setting(samplerSlot_);
 	}
 }
 
-void Material::Cleanup()
+void Material::CleanUp()
 {
-	if (nullptr != vertexShader_)
+	if (nullptr != pVertexShader_)
 	{
-		vertexShader_->Release();
-		vertexShader_ = nullptr;
+		pVertexShader_->Release();
+		pVertexShader_ = nullptr;
 	}
-	if (nullptr != pixelShader_)
+	if (nullptr != pPixelShader_)
 	{
-		pixelShader_->Release();
-		pixelShader_ = nullptr;
+		pPixelShader_->Release();
+		pPixelShader_ = nullptr;
 	}
-	if (nullptr != sampler_)
+	if (nullptr != pSamplerState_)
 	{
-		sampler_->Release();
-		sampler_ = nullptr;
+		pSamplerState_->Release();
+		pSamplerState_ = nullptr;
 	}
 }

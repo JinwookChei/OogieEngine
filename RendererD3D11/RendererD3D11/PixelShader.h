@@ -11,10 +11,10 @@ public:
 	void SetShader() override;
 
 protected:
-	bool OnCreateShader(ID3DBlob* blob) override;
+	bool OnCreateShader(ID3DBlob* pBlob) override;
 
 	void CleanUp() override;
 
 private:
-	ID3D11PixelShader* shader_;
+	ID3D11PixelShader* pShader_;
 };

@@ -3,9 +3,9 @@
 
 Texture::Texture()
 	: refCount_(1),
-	texture_(nullptr),
-	renderTargetView_(nullptr),
-	depthStencilView_(nullptr),
+	pTexture_(nullptr),
+	pRenderTargetView_(nullptr),
+	pDepthStencilView_(nullptr),
 	desc_()
 {
 }
@@ -58,17 +58,17 @@ Texture* Texture::Create(const D3D11_TEXTURE2D_DESC& desc)
 	return newTexture;
 }
 
-bool Texture::SetTexture(ID3D11Texture2D* texture)
+bool Texture::SetTexture(ID3D11Texture2D* pTexture)
 {
 	CleanUp();
 
-	texture_ = texture;
-	if (nullptr == texture_)
+	pTexture_ = pTexture;
+	if (nullptr == pTexture_)
 	{
 		return true;
 	}
 
-	texture_->GetDesc(&desc_);
+	pTexture_->GetDesc(&desc_);
 
 	if (D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET & desc_.BindFlags)
 	{
@@ -103,28 +103,28 @@ FLOAT Texture::Height() const
 
 ID3D11RenderTargetView* Texture::RenderTargetView() const
 {
-	return renderTargetView_;
+	return pRenderTargetView_;
 }
 
 ID3D11DepthStencilView* Texture::DepthStencilView() const
 {
-	return depthStencilView_;
+	return pDepthStencilView_;
 }
 
 bool Texture::CreateRenderTargetView()
 {
-	if (nullptr == texture_)
+	if (nullptr == pTexture_)
 	{
 		return false;
 	}
 
-	if (nullptr != renderTargetView_)
+	if (nullptr != pRenderTargetView_)
 	{
-		renderTargetView_->Release();
-		renderTargetView_ = nullptr;
+		pRenderTargetView_->Release();
+		pRenderTargetView_ = nullptr;
 	}
 
-	HRESULT hr = GRenderer->Device()->CreateRenderTargetView(texture_, nullptr, &renderTargetView_);
+	HRESULT hr = GRenderer->Device()->CreateRenderTargetView(pTexture_, nullptr, &pRenderTargetView_);
 	if (FAILED(hr))
 	{
 		DEBUG_BREAK();
@@ -136,17 +136,17 @@ bool Texture::CreateRenderTargetView()
 
 bool Texture::CreateDepthStencilView()
 {
-	if (nullptr == texture_)
+	if (nullptr == pTexture_)
 	{
 		return false;
 	}
 
-	if (nullptr != depthStencilView_)
+	if (nullptr != pDepthStencilView_)
 	{
-		depthStencilView_->Release();
-		depthStencilView_ = nullptr;
+		pDepthStencilView_->Release();
+		pDepthStencilView_ = nullptr;
 	}
-	HRESULT hr = GRenderer->Device()->CreateDepthStencilView(texture_, nullptr, &depthStencilView_);
+	HRESULT hr = GRenderer->Device()->CreateDepthStencilView(pTexture_, nullptr, &pDepthStencilView_);
 	if (FAILED(hr))
 	{
 		DEBUG_BREAK();
@@ -158,19 +158,19 @@ bool Texture::CreateDepthStencilView()
 
 void Texture::CleanUp()
 {
-	if (nullptr != renderTargetView_)
+	if (nullptr != pRenderTargetView_)
 	{
-		renderTargetView_->Release();
-		renderTargetView_ = nullptr;
+		pRenderTargetView_->Release();
+		pRenderTargetView_ = nullptr;
 	}
-	if (nullptr != depthStencilView_)
+	if (nullptr != pDepthStencilView_)
 	{
-		depthStencilView_->Release();
-		depthStencilView_ = nullptr;
+		pDepthStencilView_->Release();
+		pDepthStencilView_ = nullptr;
 	}
-	if (nullptr != texture_)
+	if (nullptr != pTexture_)
 	{
-		texture_->Release();
-		texture_ = nullptr;
+		pTexture_->Release();
+		pTexture_ = nullptr;
 	}
 }

@@ -6,8 +6,8 @@ VertexBuffer::VertexBuffer()
 	stride_(0),
 	offset_(0),
 	indexCount_(0),
-	vertexBuffer_(nullptr),
-	indexBuffer_(nullptr)
+	pVertexBuffer_(nullptr),
+	pIndexBuffer_(nullptr)
 {
 }
 
@@ -37,10 +37,10 @@ ULONG __stdcall VertexBuffer::Release()
 	return tmpRefCount;
 }
 
-bool __stdcall VertexBuffer::AddInputLayout(const char* semanticName, uint32_t semanticIndex, uint32_t format, uint32_t inputSlot, bool isInstanceData)
+bool __stdcall VertexBuffer::AddInputLayout(const char* pSemanticName, uint32_t semanticIndex, uint32_t format, uint32_t inputSlot, bool isInstanceData)
 {
 	D3D11_INPUT_ELEMENT_DESC desc = { 0 };
-	desc.SemanticName = semanticName;
+	desc.SemanticName = pSemanticName;
 	desc.SemanticIndex = (UINT)semanticIndex;
 	desc.Format = (DXGI_FORMAT)format;
 	desc.InputSlot = (UINT)inputSlot;
@@ -48,7 +48,6 @@ bool __stdcall VertexBuffer::AddInputLayout(const char* semanticName, uint32_t s
 	offset_ += FormatSize(desc.Format);
 	desc.InputSlotClass = isInstanceData ? D3D11_INPUT_PER_INSTANCE_DATA : D3D11_INPUT_PER_VERTEX_DATA;
 	desc.InstanceDataStepRate = isInstanceData ? 1 : 0;
-
 
 	desc_.push_back(desc);
 	return true;
@@ -58,9 +57,9 @@ void __stdcall VertexBuffer::Setting()
 {
 	UINT offset = 0;
 
-	GRenderer->DeviceContext()->IASetVertexBuffers(0, 1, &vertexBuffer_, &stride_, &offset);
+	GRenderer->DeviceContext()->IASetVertexBuffers(0, 1, &pVertexBuffer_, &stride_, &offset);
 
-	GRenderer->DeviceContext()->IASetIndexBuffer(indexBuffer_, DXGI_FORMAT_R16_UINT, 0);
+	GRenderer->DeviceContext()->IASetIndexBuffer(pIndexBuffer_, DXGI_FORMAT_R16_UINT, 0);
 
 	GRenderer->DeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
@@ -78,9 +77,9 @@ const std::vector<D3D11_INPUT_ELEMENT_DESC>& VertexBuffer::GetDesc() const
 	return desc_;
 }
 
-bool VertexBuffer::Initialize(void* vertices, UINT vertexSize, UINT vertexCount, void* indices /*= nullptr*/, UINT indexTypeSize /*= 0*/, UINT indexCount /*= 0*/)
+bool VertexBuffer::Initialize(void* pVertices, UINT vertexSize, UINT vertexCount, void* pIndices /*= nullptr*/, UINT indexTypeSize /*= 0*/, UINT indexCount /*= 0*/)
 {
-	if (nullptr == vertices)
+	if (nullptr == pVertices)
 	{
 		DEBUG_BREAK();
 		return false;
@@ -103,22 +102,27 @@ bool VertexBuffer::Initialize(void* vertices, UINT vertexSize, UINT vertexCount,
 
 	D3D11_SUBRESOURCE_DATA InitData;
 	memset(&InitData, 0x00, sizeof(D3D11_SUBRESOURCE_DATA));
-	InitData.pSysMem = vertices;								// pSysMem: 리소스 생성 시 GPU로 복사할 시스템 메모리상의 데이터 포인터입니다.
+	InitData.pSysMem = pVertices;								// pSysMem: 리소스 생성 시 GPU로 복사할 시스템 메모리상의 데이터 포인터입니다.
 
-	HRESULT hr = GRenderer->Device()->CreateBuffer(&bd, &InitData, &vertexBuffer_);
+	HRESULT hr = GRenderer->Device()->CreateBuffer(&bd, &InitData, &pVertexBuffer_);
 	if (FAILED(hr))
 	{
 		DEBUG_BREAK();
 		return false;
 	}
 
-	if (nullptr == indices && 0 != indexCount)
+	// ---------------- 메모리 누수 디버깅용 이름 설정. ----------------------------
+	const char* debugObjectName = "VertexBuffer::pVertexBuffer_";
+	pVertexBuffer_->SetPrivateData(WKPDID_D3DDebugObjectName, (UINT)strlen(debugObjectName), debugObjectName);
+	// ---------------------------------------------------------------------------
+
+	if (nullptr == pIndices && 0 != indexCount)
 	{
 		DEBUG_BREAK();
 		return false;
 	}
 
-	if (nullptr == indices)
+	if (nullptr == pIndices)
 	{
 		return true;
 	}
@@ -135,14 +139,19 @@ bool VertexBuffer::Initialize(void* vertices, UINT vertexSize, UINT vertexCount,
 	bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	bd.CPUAccessFlags = 0;
 
-	InitData.pSysMem = indices;
+	InitData.pSysMem = pIndices;
 
-	hr = GRenderer->Device()->CreateBuffer(&bd, &InitData, &indexBuffer_);
+	hr = GRenderer->Device()->CreateBuffer(&bd, &InitData, &pIndexBuffer_);
 	if (FAILED(hr))
 	{
 		DEBUG_BREAK();
 		return false;
 	}
+
+	// ---------------- 메모리 누수 디버깅용 이름 설정. ----------------------------
+	debugObjectName = "VertexBuffer::pIndexBuffer_";
+	pIndexBuffer_->SetPrivateData(WKPDID_D3DDebugObjectName, (UINT)strlen(debugObjectName), debugObjectName);
+	// ---------------------------------------------------------------------------
 
 	indexCount_ = indexCount;
 
@@ -151,15 +160,15 @@ bool VertexBuffer::Initialize(void* vertices, UINT vertexSize, UINT vertexCount,
 
 void VertexBuffer::CleanUp()
 {
-	if (nullptr != indexBuffer_)
+	if (nullptr != pIndexBuffer_)
 	{
-		indexBuffer_->Release();
-		indexBuffer_ = nullptr;
+		pIndexBuffer_->Release();
+		pIndexBuffer_ = nullptr;
 	}
-	if (nullptr != vertexBuffer_)
+	if (nullptr != pVertexBuffer_)
 	{
-		vertexBuffer_->Release();
-		vertexBuffer_ = nullptr;
+		pVertexBuffer_->Release();
+		pVertexBuffer_ = nullptr;
 	}
 }
 

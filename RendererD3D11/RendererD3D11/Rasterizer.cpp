@@ -3,15 +3,15 @@
 
 Rasterizer::Rasterizer()
 	: refCount_(1),
-	currentState_(nullptr),
-	solidState_(nullptr),
-	wireframeState_(nullptr)
+	pCurrentState_(nullptr),
+	pSolidState_(nullptr),
+	pWireframeState_(nullptr)
 {
 }
 
 Rasterizer::~Rasterizer()
 {
-	Cleanup();
+	CleanUp();
 }
 
 HRESULT __stdcall Rasterizer::QueryInterface(REFIID riid, void** ppvObject)
@@ -37,18 +37,26 @@ ULONG __stdcall Rasterizer::Release()
 
 void __stdcall Rasterizer::Setting()
 {
-	GRenderer->DeviceContext()->RSSetState(currentState_);
+	GRenderer->DeviceContext()->RSSetState(pCurrentState_);
 }
 
 void __stdcall Rasterizer::SetFillMode(FillModeType fillmode)
 {
+	if (nullptr != pCurrentState_)
+	{
+		pCurrentState_->Release();
+		pCurrentState_ = nullptr;
+	}
+	
 	switch (fillmode)
 	{
 	case FillModeType::WireFrame:
-		currentState_ = wireframeState_;
+		pCurrentState_ = pWireframeState_;
+		pCurrentState_->AddRef();
 		break;
 	case FillModeType::Solid:
-		currentState_ = solidState_;
+		pCurrentState_ = pSolidState_;
+		pCurrentState_->AddRef();
 		break;
 	default:
 		break;
@@ -62,36 +70,48 @@ bool Rasterizer::CreateRasterizer(bool frontCounterClockwise, bool backFace)
 	desc.FrontCounterClockwise = frontCounterClockwise ? TRUE : FALSE;
 
 	desc.FillMode = D3D11_FILL_WIREFRAME;
-	HRESULT hr = GRenderer->Device()->CreateRasterizerState(&desc, &wireframeState_);
+	HRESULT hr = GRenderer->Device()->CreateRasterizerState(&desc, &pWireframeState_);
 	if (FAILED(hr))
 	{
 		return false;
 	}
+
+	// 메모리 누수 디버깅용 이름 설정.
+	const char* debugObjectName = "Rasterizer::pWireframeState_";
+	pWireframeState_->SetPrivateData(WKPDID_D3DDebugObjectName, (UINT)strlen(debugObjectName), debugObjectName);
 
 	desc.FillMode = D3D11_FILL_SOLID;
-	hr = GRenderer->Device()->CreateRasterizerState(&desc, &solidState_);
+	hr = GRenderer->Device()->CreateRasterizerState(&desc, &pSolidState_);
 	if (FAILED(hr))
 	{
 		return false;
 	}
 
-	SetFillMode(FillModeType::Solid);
+	// ---------------- 메모리 누수 디버깅용 이름 설정. ----------------------------
+	debugObjectName = "Rasterizer::pSolidState_";
+	pSolidState_->SetPrivateData(WKPDID_D3DDebugObjectName, (UINT)strlen(debugObjectName), debugObjectName);
+	// ---------------------------------------------------------------------------
 
+	SetFillMode(FillModeType::Solid);
 	return true;
 }
 
-void Rasterizer::Cleanup()
+void Rasterizer::CleanUp()
 {
-	currentState_ = nullptr;
-
-	if (nullptr != solidState_)
+	if (nullptr != pCurrentState_)
 	{
-		solidState_->Release();
-		solidState_ = nullptr;
+		pCurrentState_->Release();
+		pCurrentState_ = nullptr;
 	}
-	if (nullptr != wireframeState_)
+
+	if (nullptr != pSolidState_)
 	{
-		wireframeState_->Release();
-		wireframeState_ = nullptr;
+		pSolidState_->Release();
+		pSolidState_ = nullptr;
+	}
+	if (nullptr != pWireframeState_)
+	{
+		pWireframeState_->Release();
+		pWireframeState_ = nullptr;
 	}
 }

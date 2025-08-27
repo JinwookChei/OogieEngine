@@ -15,7 +15,7 @@ public:
 
 	static Texture* Create(const D3D11_TEXTURE2D_DESC& desc);
 
-	bool SetTexture(ID3D11Texture2D* texture);
+	bool SetTexture(ID3D11Texture2D* pTexture);
 
 	FLOAT Width() const;
 
@@ -34,11 +34,11 @@ private:
 
 	ULONG refCount_;
 
-	ID3D11Texture2D* texture_;
+	ID3D11Texture2D* pTexture_;
 
-	ID3D11RenderTargetView* renderTargetView_;
+	ID3D11RenderTargetView* pRenderTargetView_;
 
-	ID3D11DepthStencilView* depthStencilView_;
+	ID3D11DepthStencilView* pDepthStencilView_;
 
 	D3D11_TEXTURE2D_DESC desc_;
 };

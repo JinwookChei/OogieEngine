@@ -5,13 +5,13 @@
 
 InputLayout::InputLayout()
 	: refCount_(1),
-	inputLayout_(nullptr)
+	pInputLayout_(nullptr)
 {
 }
 
 InputLayout::~InputLayout()
 {
-	Cleanup();
+	CleanUp();
 }
 
 HRESULT __stdcall InputLayout::QueryInterface(REFIID riid, void** ppvObject)
@@ -37,35 +37,39 @@ ULONG __stdcall InputLayout::Release()
 
 void __stdcall InputLayout::Setting()
 {
-	GRenderer->DeviceContext()->IASetInputLayout(inputLayout_);
+	GRenderer->DeviceContext()->IASetInputLayout(pInputLayout_);
 }
 
 
-bool InputLayout::Create(IVertex* vertex, IShader* vertexShader)
+bool InputLayout::Create(IVertex* pVertex, IShader* pVertexShader)
 {
-	Cleanup();
+	CleanUp();
 
-	VertexBuffer* buffer = (VertexBuffer*)vertex;
-	BaseShader* shader = (BaseShader*)vertexShader;
+	VertexBuffer* pBuffer = (VertexBuffer*)pVertex;
+	BaseShader* pShader = (BaseShader*)pVertexShader;
 
-	const std::vector<D3D11_INPUT_ELEMENT_DESC>& layoutDesc = buffer->GetDesc();
+	const std::vector<D3D11_INPUT_ELEMENT_DESC>& layoutDesc = pBuffer->GetDesc();
 
-	//HRESULT hr = GRenderer->Device()->CreateInputLayout(&layoutDesc[0], (UINT)layoutDesc.size(), shader->GetBufferPointer(), shader->GetBufferSize(), &inputLayout_);
-	HRESULT hr = GRenderer->Device()->CreateInputLayout(layoutDesc.data(), (UINT)layoutDesc.size(), shader->GetBufferPointer(), shader->GetBufferSize(), &inputLayout_);
+	HRESULT hr = GRenderer->Device()->CreateInputLayout(layoutDesc.data(), (UINT)layoutDesc.size(), pShader->GetBufferPointer(), pShader->GetBufferSize(), &pInputLayout_);
 	if (FAILED(hr))
 	{
 		DEBUG_BREAK();
 		return false;
 	}
 
+	// ---------------- 메모리 누수 디버깅용 이름 설정. ----------------------------
+	const char* debugObjectName = "InputLayout::pInputLayout_";
+	pInputLayout_->SetPrivateData(WKPDID_D3DDebugObjectName, (UINT)strlen(debugObjectName), debugObjectName);
+	// ---------------------------------------------------------------------------
+
 	return true;
 }
 
-void InputLayout::Cleanup()
+void InputLayout::CleanUp()
 {
-	if (nullptr != inputLayout_)
+	if (nullptr != pInputLayout_)
 	{
-		inputLayout_->Release();
-		inputLayout_ = nullptr;
+		pInputLayout_->Release();
+		pInputLayout_ = nullptr;
 	}
 }
