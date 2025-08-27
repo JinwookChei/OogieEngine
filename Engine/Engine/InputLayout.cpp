@@ -2,15 +2,51 @@
 #include "InputLayout.h"
 
 InputLayout::InputLayout()
-	:pInputLayout_(nullptr)
+	:pInputLayoutImpl_(nullptr)
 {
+}
+
+InputLayout::InputLayout(IInputLayout* pInputLayout)
+	:pInputLayoutImpl_(nullptr)
+{
+	SetInputLayout(pInputLayout);
 }
 
 InputLayout::~InputLayout()
 {
-	if (nullptr != pInputLayout_)
+	CleanUp();
+}
+
+void InputLayout::Setting()
+{
+	if (nullptr == pInputLayoutImpl_)
 	{
-		pInputLayout_->Release();
-		pInputLayout_ = nullptr;
+		DEBUG_BREAK();
+		return;
+	}
+
+	pInputLayoutImpl_->Setting();
+}
+
+void InputLayout::SetInputLayout(IInputLayout* pInputLayout)
+{
+	if (nullptr != pInputLayoutImpl_)
+	{
+		pInputLayoutImpl_->Release();
+		pInputLayoutImpl_ = nullptr;
+	}
+	if (nullptr != pInputLayout)
+	{
+		pInputLayoutImpl_ = pInputLayout;
+		pInputLayoutImpl_->AddRef();
+	}
+}
+
+void InputLayout::CleanUp()
+{
+	if (nullptr != pInputLayoutImpl_)
+	{
+		pInputLayoutImpl_->Release();
+		pInputLayoutImpl_ = nullptr;
 	}
 }

@@ -11,7 +11,7 @@ class ContentManager final
 public:
 	ContentManager();
 
-	~ContentManager();
+	virtual ~ContentManager();
 
 	HRESULT __stdcall QueryInterface(REFIID riid, _COM_Outptr_ void __RPC_FAR* __RPC_FAR* ppvObject) override;
 

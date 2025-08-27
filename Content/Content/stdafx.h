@@ -43,10 +43,12 @@
 #include <Engine/StartUp.h>
 #include <Engine/Level.h>
 #include <Engine/Actor.h>
+#include <Engine/RenderComponent.h>
+
 
 #include <Engine/World.h>
 #include "StartLevel.h"
 
 #include "ContentManager.h"
 
-extern IEngineContainer* GEngineContainer;
+//extern IEngineContainer* GEngineContainer;

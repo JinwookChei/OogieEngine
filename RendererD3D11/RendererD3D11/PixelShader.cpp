@@ -8,7 +8,7 @@ PixelShader::PixelShader()
 
 PixelShader::~PixelShader()
 {
-	Cleanup();
+	CleanUp();
 }
 
 void PixelShader::SetShader()
@@ -33,7 +33,7 @@ bool PixelShader::OnCreateShader(ID3DBlob* blob)
 	return true;
 }
 
-void PixelShader::OnCleanup()
+void PixelShader::CleanUp()
 {
 	if (nullptr != shader_)
 	{

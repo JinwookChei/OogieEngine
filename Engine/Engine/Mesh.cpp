@@ -2,16 +2,76 @@
 #include "Mesh.h"
 
 Mesh::Mesh()
-	:pVertex_(nullptr)
+	: pVertexImpl_(nullptr)
 {
+}
+
+Mesh::Mesh(IVertex* pVertex)
+	: pVertexImpl_(nullptr)
+{
+	SetVertex(pVertex);
 }
 
 Mesh::~Mesh()
 {
-	if (nullptr != pVertex_)
+	CleanUp();
+}
+
+void Mesh::Setting()
+{
+	if (nullptr == pVertexImpl_)
 	{
-		pVertex_->Release();
-		pVertex_ = nullptr;
+		DEBUG_BREAK();
+		return;
+	}
+
+	pVertexImpl_->Setting();
+}
+
+bool Mesh::AddInputLayout(const char* semanticName, uint32_t semanticIndex, uint32_t format, uint32_t inputSlot, bool isInstanceData)
+{
+	if (nullptr == pVertexImpl_)
+	{
+		DEBUG_BREAK();
+		return false;
+	}
+
+	return pVertexImpl_->AddInputLayout(semanticName, semanticIndex, format, inputSlot, isInstanceData);
+}
+
+bool Mesh::Draw()
+{
+	if (nullptr == pVertexImpl_)
+	{
+		DEBUG_BREAK();
+		return false;
+	}
+
+	return pVertexImpl_->Draw();
+}
+
+void Mesh::SetVertex(IVertex* pVertex)
+{
+	if (nullptr != pVertexImpl_)
+	{
+		pVertexImpl_->Release();
+		pVertexImpl_ = nullptr;
+	}
+
+	if (nullptr != pVertex)
+	{
+		pVertexImpl_ = pVertex;
+		pVertexImpl_->AddRef();
+	}
+}
+
+
+void Mesh::CleanUp()
+{
+	if (nullptr != pVertexImpl_)
+	{
+		pVertexImpl_->Release();
+		pVertexImpl_ = nullptr;
 	}
 }
 

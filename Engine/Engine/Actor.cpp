@@ -6,7 +6,7 @@
 
 
 Actor::Actor()
-	: pRenderComponent_(new RenderComponent)
+	: pRenderComponent_(new RenderComponent) //TODO
 {
 	levelLink_.prev_ = nullptr;
 	levelLink_.next_ = nullptr;
@@ -34,5 +34,5 @@ void Actor::CleanUp()
 
 void Actor::Render()
 {
-
+	pRenderComponent_->Render();
 }

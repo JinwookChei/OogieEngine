@@ -16,7 +16,7 @@ RenderTarget::RenderTarget()
 
 RenderTarget::~RenderTarget()
 {
-	Cleanup();
+	CleanUp();
 }
 
 HRESULT __stdcall RenderTarget::QueryInterface(REFIID riid, void** ppvObject)
@@ -61,7 +61,7 @@ bool RenderTarget::CreateDepthTexture()
 
 bool RenderTarget::SetTexture(Texture* texture)
 {
-	Cleanup();
+	CleanUp();
 
 	if (nullptr == texture)
 	{
@@ -134,7 +134,7 @@ void RenderTarget::Setting()
 	GRenderer->DeviceContext()->RSSetViewports(1, &viewport_);
 }
 
-void RenderTarget::Cleanup()	
+void RenderTarget::CleanUp()
 {
 	if (nullptr != renderTexture_)
 	{

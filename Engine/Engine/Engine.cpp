@@ -127,12 +127,12 @@ void Engine::Run()
 	}
 
 
-
+	
 	// --------------------- Ragacy --------------------------------
 	//std::vector<SimpleVertex> sphereVertices;
 	//std::vector<WORD> sphereIndices;
 	//CreateSphere(&sphereVertices, &sphereIndices);
-	//IVertex* pSphereVertex = renderer_->CreateVertex(sphereVertices.data(), (uint32_t)sizeof(SimpleVertex), (uint32_t)sphereVertices.size(), sphereIndices.data(), (uint32_t)sizeof(WORD), (uint32_t)sphereIndices.size());
+	//IVertex* pSphereVertex = GRenderer_->CreateVertex(sphereVertices.data(), (uint32_t)sizeof(SimpleVertex), (uint32_t)sphereVertices.size(), sphereIndices.data(), (uint32_t)sizeof(WORD), (uint32_t)sphereIndices.size());
 
 	//// Mesh
 	//Mesh* pMeshSphere = new Mesh;
@@ -170,7 +170,7 @@ void Engine::Run()
 	//actor->pRenderer_->pMaterial_ = pMaterialSphere;
 	//actor->pRenderer_->pInputLayout_ = pInputLayoutSphere;
 
-	//IConstantBuffer* constantBuffer = renderer_->CreateConstantBuffer((uint32_t)sizeof(ConstantBuffer));
+	//-* constantBuffer = renderer_->CreateConstantBuffer((uint32_t)sizeof(ConstantBuffer));
 	//if (nullptr == constantBuffer) {
 	//	DEBUG_BREAK();
 	//	return;
@@ -291,7 +291,7 @@ void Engine::Run()
 	//}
 
 	//// 버텍스, 인덱스 버퍼 생성.
-	//IVertex* vertex = renderer_->CreateVertex(vertices.data(), (uint32_t)sizeof(SimpleVertex), (uint32_t)vertices.size(), indices.data(), (uint32_t)sizeof(WORD), (uint32_t)indices.size());
+	//IVertex* vertex = RenderDevice::Instance()->CreateVertex(vertices.data(), (uint32_t)sizeof(SimpleVertex), (uint32_t)vertices.size(), indices.data(), (uint32_t)sizeof(WORD), (uint32_t)indices.size());
 	//if (nullptr == vertex) {
 	//	DEBUG_BREAK();
 	//	return;
@@ -302,34 +302,34 @@ void Engine::Run()
 	//vertex->AddInputLayout("TEXCOORD", 0, 16, 0, false);
 	//vertex->AddInputLayout("TANGENT", 0, 2, 0, false);
 
-	//IConstantBuffer* constantBuffer = renderer_->CreateConstantBuffer((uint32_t)sizeof(ConstantBuffer));
+	//IConstantBuffer* constantBuffer = RenderDevice::Instance()->CreateConstantBuffer((uint32_t)sizeof(ConstantBuffer));
 	//if (nullptr == constantBuffer) {
 	//	DEBUG_BREAK();
 	//	return;
 	//}
 
-	//IShader* vertexShader = renderer_->CreateShader(ShaderType::Vertex, L"VertexShader.cso");
+	//IShader* vertexShader = RenderDevice::Instance()->CreateShader(ShaderType::Vertex, L"VertexShader.cso");
 	//if (nullptr == vertexShader)
 	//{
 	//	DEBUG_BREAK();
 	//	return;
 	//}
 
-	//IShader* pixelShader = renderer_->CreateShader(ShaderType::Pixel, L"PixelShader.cso");
+	//IShader* pixelShader = RenderDevice::Instance()->CreateShader(ShaderType::Pixel, L"PixelShader.cso");
 	//if (nullptr == pixelShader)
 	//{
 	//	DEBUG_BREAK();
 	//	return;
 	//}
 
-	//IInputLayout* layout = renderer_->CreateLayout(vertex, vertexShader);
+	//IInputLayout* layout = RenderDevice::Instance()->CreateLayout(vertex, vertexShader);
 	//if (nullptr == layout)
 	//{
 	//	DEBUG_BREAK();
 	//	return;
 	//}
 
-	//IMaterial* material = renderer_->CreateMaterial();
+	//IMaterial* material = RenderDevice::Instance()->CreateMaterial();
 	//if (nullptr == material)
 	//{
 	//	DEBUG_BREAK();
@@ -353,11 +353,11 @@ void Engine::Run()
 	//cb.view = DirectX::XMMatrixTranspose(view);
 	//cb.projection = DirectX::XMMatrixTranspose(projection);
 
-	//while (false == application_->ApplicationQuit()) {
+	//while (false == Application::Instance()->ApplicationQuit()) {
 
-	//	application_->WinPumpMessage();
+	//	Application::Instance()->WinPumpMessage();
 
-	//	renderer_->RenderBegin();
+	//	RenderDevice::Instance()->RenderBegin();
 
 	//	// render
 	//	{
@@ -375,7 +375,7 @@ void Engine::Run()
 	//		vertex->Draw();
 	//	}
 
-	//	renderer_->RenderEnd();
+	//	RenderDevice::Instance()->RenderEnd();
 	//}
 
 	//vertexShader->Release();
@@ -387,12 +387,12 @@ void Engine::Run()
 	//constantBuffer->Release();
 	////rasterizer->Release();
 
-	//if (nullptr != startUp_)
-	//{
-	//	startUp_->End();
-	//	startUp_->Release();
-	//	startUp_ = nullptr;
-	//}
+	////if (nullptr != startUp_)
+	////{
+	////	startUp_->End();
+	////	startUp_->Release();
+	////	startUp_ = nullptr;
+	////}
 }
 
 World* Engine::GetWorld() const
@@ -425,13 +425,13 @@ bool Engine::LoadApplication
 bool Engine::LoadRenderDevice()
 {
 	pRenderDevice_ = RenderDevice::Create();
-	
+
 	if (nullptr == pRenderDevice_)
 	{
 		DEBUG_BREAK();
 		return false;
 	}
-	
+
 	if (nullptr == pApplication_)
 	{
 		DEBUG_BREAK();
@@ -502,8 +502,9 @@ void Engine::CleanUp()
 		delete GInputManager;
 		GInputManager = nullptr;
 	}
-	
+
 	RenderDevice::Destroy();
 
 	Application::Destroy();
+
 }

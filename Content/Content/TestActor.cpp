@@ -11,7 +11,7 @@ TestActor::~TestActor()
 
 void TestActor::BeginPlay()
 {
-
+	pRenderComponent_->Create();
 }
 
 void TestActor::Tick(double deltaTime)

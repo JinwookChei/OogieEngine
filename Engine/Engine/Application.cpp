@@ -32,11 +32,10 @@ void Application::Destroy()
 {
 	if (nullptr != GApplication)
 	{
-		GApplication->CleanUp();
-	}
+		delete GApplication;
 
-	delete GApplication;
-	GApplication = nullptr;
+		GApplication = nullptr;
+	}
 }
 
 Application* Application::Instance()

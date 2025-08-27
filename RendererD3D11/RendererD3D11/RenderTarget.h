@@ -2,7 +2,7 @@
 
 class Texture;
 class RenderTarget final
-	:public IRenderTarget {
+	: public IRenderTarget {
 public:
 	RenderTarget();
 
@@ -23,7 +23,7 @@ public:
 	void Setting();
 
 private:
-	void Cleanup();
+	void CleanUp();
 
 	ULONG refCount_;
 

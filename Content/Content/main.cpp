@@ -1,7 +1,6 @@
 #include "stdafx.h"
 
 
-
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int cmdShow)
 {
 #ifdef _DEBUG

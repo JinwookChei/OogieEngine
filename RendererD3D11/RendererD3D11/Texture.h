@@ -30,7 +30,7 @@ private:
 
 	bool CreateDepthStencilView();
 
-	void Cleanup();
+	void CleanUp();
 
 	ULONG refCount_;
 

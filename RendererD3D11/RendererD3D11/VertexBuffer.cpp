@@ -13,7 +13,7 @@ VertexBuffer::VertexBuffer()
 
 VertexBuffer::~VertexBuffer()
 {
-	Cleanup();
+	CleanUp();
 }
 
 HRESULT __stdcall VertexBuffer::QueryInterface(REFIID riid, void** ppvObject)
@@ -149,7 +149,7 @@ bool VertexBuffer::Initialize(void* vertices, UINT vertexSize, UINT vertexCount,
 	return true;
 }
 
-void VertexBuffer::Cleanup()
+void VertexBuffer::CleanUp()
 {
 	if (nullptr != indexBuffer_)
 	{

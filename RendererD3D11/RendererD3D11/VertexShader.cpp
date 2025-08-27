@@ -8,7 +8,7 @@ VertexShader::VertexShader()
 
 VertexShader::~VertexShader()
 {
-	Cleanup();
+	CleanUp();
 }
 
 void VertexShader::SetShader()
@@ -33,7 +33,7 @@ bool VertexShader::OnCreateShader(ID3DBlob* blob)
 	return true;
 }
 
-void VertexShader::OnCleanup()
+void VertexShader::CleanUp()
 {
 	if (nullptr != shader_)
 	{

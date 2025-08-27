@@ -5,7 +5,15 @@ class InputLayout
 public:
 	InputLayout();
 
+	InputLayout(IInputLayout* pInputLayout);
+
 	virtual ~InputLayout();
 
-	IInputLayout* pInputLayout_;
+	void Setting();
+
+	void SetInputLayout(IInputLayout* pInputLayout);
+private:
+	void CleanUp();
+
+	IInputLayout* pInputLayoutImpl_;
 };

@@ -3,7 +3,10 @@
 
 class Mesh;
 class Material;
+class Shader;
 class InputLayout;
+class ShaderConstants;
+class Rasterizer;
 
 class RenderComponent
 {
@@ -12,17 +15,21 @@ public:
 
 	virtual ~RenderComponent();
 
-	void Setting();
-
-	void Draw();	
+	void Render();	
 
 	// TODO : Test ¿ë ÇÔ¼ö.
-	//void Create();
+	ENGINE_API void Create();
 
 private:
+	void CleanUp();
+
 	Mesh* pMesh_;
 
 	Material* pMaterial_;
 
 	InputLayout* pInputLayout_;
+
+	ShaderConstants* pConstantBuffer_;
+
+	Rasterizer* pRasterizer_;
 };

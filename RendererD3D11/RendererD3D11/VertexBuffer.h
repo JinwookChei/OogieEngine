@@ -31,7 +31,7 @@ public:
 private:
 	bool Initialize(void* vertices, UINT vertexSize, UINT vertexCount, void* indices = nullptr, UINT indexTypeSize = 0, UINT indexCount = 0);
 
-	void Cleanup();
+	void CleanUp();
 
 	UINT FormatSize(DXGI_FORMAT format);
 

@@ -1,18 +1,18 @@
 #include "stdafx.h"
 #include "ContentManager.h"
 
-IEngineContainer* GEngineContainer = nullptr;
+//IEngineContainer* GEngineContainer = nullptr;
 
 ContentManager::ContentManager()
 	:refCount_(1),
 	pEngine_(nullptr)
 {
-	GEngineContainer = this;
+	//GEngineContainer = this;
 }
 
 ContentManager::~ContentManager()
 {
-	GEngineContainer = nullptr;
+	//GEngineContainer = nullptr;
 }
 
 HRESULT __stdcall ContentManager::QueryInterface(REFIID riid, void** ppvObject)

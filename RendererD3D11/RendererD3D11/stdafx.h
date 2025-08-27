@@ -13,11 +13,16 @@
 
 #define UTILITY_API __declspec(dllimport)
 
+
 #include <windows.h>
 #include <d3d11.h>
 #include <d3dcompiler.h>
 #include <dxgi.h>
 #include <DirectXMath.h>
+#ifdef _DEBUG
+#include <dxgidebug.h>
+#endif
+
 #include <vector>
 
 #include <Renderer/IRenderer.h>
@@ -28,4 +33,5 @@
 
 extern D3D11Renderer* GRenderer;
 
+//void DumpLiveD3D11Objects();
 

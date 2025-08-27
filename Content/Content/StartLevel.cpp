@@ -13,7 +13,6 @@ StartLevel::~StartLevel()
 void StartLevel::BeginPlay()
 {
 	TestActor* pActor = SpawnActor<TestActor>();
-
 }
 
 void StartLevel::Tick(double deltaTime)

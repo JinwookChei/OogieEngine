@@ -2,27 +2,84 @@
 #include "Material.h"
 
 Material::Material()
-	:pVertexShader_(nullptr),
-	pPixelShader_(nullptr),
-	pMaterial_(nullptr){
+	: pMaterialImpl_(nullptr)
+{
+}
+
+Material::Material(IMaterial* pMaterial)
+	: pMaterialImpl_(nullptr)
+{
+	SetMaterial(pMaterial);
 }
 
 Material::~Material()
 {
-	if (nullptr != pVertexShader_)
+	CleanUp();
+}
+
+void Material::SetVertexShader(IShader* vertexShader)
+{
+	if (nullptr == pMaterialImpl_)
 	{
-		pVertexShader_->Release();
-		pVertexShader_ = nullptr;
+		DEBUG_BREAK();
+		return;
 	}
-	if (nullptr != pPixelShader_)
+
+	pMaterialImpl_->SetVertexShader(vertexShader);
+}
+
+void Material::SetPixelShader(IShader* pixelShader)
+{
+	if (nullptr == pMaterialImpl_)
 	{
-		pPixelShader_->Release();
-		pPixelShader_ = nullptr;
+		DEBUG_BREAK();
+		return;
 	}
-	if (nullptr != pMaterial_)
+
+	pMaterialImpl_->SetPixelShader(pixelShader);
+}
+
+void Material::SetSampler(ISamplerState* sampler, uint32_t slot/* = 0*/)
+{
+	if (nullptr == pMaterialImpl_)
 	{
-		pMaterial_->Release();
-		pMaterial_ = nullptr;
-		pMaterial_ = nullptr;
+		DEBUG_BREAK();
+		return;
+	}
+
+	pMaterialImpl_->SetSampler(sampler, slot);
+}
+
+void Material::Setting()
+{
+	if (nullptr == pMaterialImpl_)
+	{
+		DEBUG_BREAK();
+		return;
+	}
+
+	pMaterialImpl_->Setting();
+}
+
+void Material::SetMaterial(IMaterial* pMaterial)
+{
+	if (nullptr != pMaterialImpl_)
+	{
+		pMaterialImpl_->Release();
+		pMaterialImpl_ = nullptr;
+	}
+	if (nullptr != pMaterial)
+	{
+		pMaterialImpl_ = pMaterial;
+		pMaterialImpl_->AddRef();
+	}
+}
+
+void Material::CleanUp()
+{
+	if (nullptr != pMaterialImpl_)
+	{
+		pMaterialImpl_->Release();
+		pMaterialImpl_ = nullptr;
 	}
 }

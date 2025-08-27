@@ -13,7 +13,7 @@ public:
 protected:
 	bool OnCreateShader(ID3DBlob* blob) override;
 
-	void OnCleanup() override;
+	void CleanUp() override;
 
 private:
 	ID3D11PixelShader* shader_;

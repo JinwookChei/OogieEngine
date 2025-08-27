@@ -12,7 +12,7 @@ Texture::Texture()
 
 Texture::~Texture()
 {
-	Cleanup();
+	CleanUp();
 }
 
 HRESULT __stdcall Texture::QueryInterface(REFIID riid, void** ppvObject)
@@ -60,7 +60,7 @@ Texture* Texture::Create(const D3D11_TEXTURE2D_DESC& desc)
 
 bool Texture::SetTexture(ID3D11Texture2D* texture)
 {
-	Cleanup();
+	CleanUp();
 
 	texture_ = texture;
 	if (nullptr == texture_)
@@ -156,7 +156,7 @@ bool Texture::CreateDepthStencilView()
 	return true;
 }
 
-void Texture::Cleanup()
+void Texture::CleanUp()
 {
 	if (nullptr != renderTargetView_)
 	{

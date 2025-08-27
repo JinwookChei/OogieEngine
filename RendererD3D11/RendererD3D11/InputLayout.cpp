@@ -41,7 +41,6 @@ void __stdcall InputLayout::Setting()
 }
 
 
-
 bool InputLayout::Create(IVertex* vertex, IShader* vertexShader)
 {
 	Cleanup();

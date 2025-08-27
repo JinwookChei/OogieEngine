@@ -1,7 +1,10 @@
 #include "stdafx.h"
 #include "Mesh.h"
 #include "Material.h"
+#include "Shader.h"
 #include "InputLayout.h"
+#include "ShaderConstants.h"
+#include "Rasterizer.h"
 #include "Test.h"
 #include "RenderComponent.h"
 
@@ -9,91 +12,115 @@ RenderComponent::RenderComponent()
 	:
 	pMesh_(nullptr),
 	pMaterial_(nullptr),
-	pInputLayout_(nullptr)
+	pInputLayout_(nullptr),
+	pConstantBuffer_(nullptr),
+	pRasterizer_(nullptr)
 {
 }
 
 RenderComponent::~RenderComponent()
 {
-	if (nullptr != pMesh_) 
+	CleanUp();
+}
+
+void RenderComponent::Render()
+{
+	DirectX::XMMATRIX position = DirectX::XMMatrixTranslation(0.0f, 0.0f, 0.0f);
+	DirectX::XMMATRIX world = DirectX::XMMatrixScaling(1.0f, 1.0f, 1.0f) * position;
+	DirectX::XMMATRIX view = DirectX::XMMatrixLookAtLH(DirectX::XMVectorSet(-10.0f, 0.0f, 0.0f, 0.0f), DirectX::XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f), DirectX::XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f));
+	DirectX::XMMATRIX projection = DirectX::XMMatrixPerspectiveFovLH(DirectX::XM_PIDIV4, 800.0f / 600.0f, 0.01f, 100.0f);
+
+	// 상수 버퍼 업데이트
+	ConstantBuffer cb;
+	cb.world = DirectX::XMMatrixTranspose(world);
+	cb.view = DirectX::XMMatrixTranspose(view);
+	cb.projection = DirectX::XMMatrixTranspose(projection);
+
+	pMaterial_->Setting();
+	pMesh_->Setting();
+	pInputLayout_->Setting();
+
+	pConstantBuffer_->Update(&cb);
+	pConstantBuffer_->VSSetting(0);
+	pConstantBuffer_->PSSetting(0);
+
+	pMesh_->Draw();
+}
+
+void RenderComponent::Create()
+{
+	std::vector<SimpleVertex> sphereVertices;
+	std::vector<WORD> sphereIndices;
+	CreateSphere(&sphereVertices, &sphereIndices);
+
+
+	// Mesh
+	IVertex* pSphereVertex = RenderDevice::Instance()->CreateVertex(sphereVertices.data(), (uint32_t)sizeof(SimpleVertex), (uint32_t)sphereVertices.size(), sphereIndices.data(), (uint32_t)sizeof(WORD), (uint32_t)sphereIndices.size());
+	pMesh_ = new Mesh(pSphereVertex);
+	pMesh_->AddInputLayout("POSITION", 0, 6, 0, false);
+	pMesh_->AddInputLayout("COLOR", 0, 2, 0, false);
+	pMesh_->AddInputLayout("NORMAL", 0, 6, 0, false);
+	pMesh_->AddInputLayout("TEXCOORD", 0, 16, 0, false);
+	pMesh_->AddInputLayout("TANGENT", 0, 2, 0, false);
+
+
+	// Shader
+	IShader* pVertexShader = RenderDevice::Instance()->CreateShader(ShaderType::Vertex, L"VertexShader.cso");
+	IShader* pPixelShader = RenderDevice::Instance()->CreateShader(ShaderType::Pixel, L"PixelShader.cso");
+
+	// Material
+	IMaterial* pMaterial = RenderDevice::Instance()->CreateMaterial();
+	pMaterial_ = new Material(pMaterial);
+	pMaterial_->SetVertexShader(pVertexShader);
+	pMaterial_->SetPixelShader(pPixelShader);
+
+	// InputLayout
+	IInputLayout* pInputLayout = RenderDevice::Instance()->CreateLayout(pSphereVertex, pVertexShader);
+	pInputLayout_ = new InputLayout(pInputLayout);
+
+	// ShaderConstants
+	IConstantBuffer* pContantBuffer = RenderDevice::Instance()->CreateConstantBuffer((uint32_t)sizeof(ConstantBuffer));
+	pConstantBuffer_ = new ShaderConstants(pContantBuffer);
+
+
+	pSphereVertex->Release();
+	pVertexShader->Release();
+	pPixelShader->Release();
+	pMaterial->Release();
+	pInputLayout->Release();
+	pContantBuffer->Release();
+}
+
+
+void RenderComponent::CleanUp()
+{
+	if (nullptr != pMesh_)
 	{
 		delete pMesh_;
 		pMesh_ = nullptr;
 	}
+
 	if (nullptr != pMaterial_)
 	{
 		delete pMaterial_;
 		pMaterial_ = nullptr;
 	}
+
 	if (nullptr != pInputLayout_)
 	{
 		delete pInputLayout_;
 		pInputLayout_ = nullptr;
 	}
+
+	if (nullptr != pConstantBuffer_)
+	{
+		delete pConstantBuffer_;
+		pConstantBuffer_ = nullptr;
+	}
+
+	if (nullptr != pRasterizer_)
+	{
+		delete pRasterizer_;
+		pRasterizer_ = nullptr;
+	}
 }
-
-
-void RenderComponent::Setting()
-{
-	pMaterial_->pMaterial_->Setting();
-
-	pInputLayout_->pInputLayout_->Setting();
-
-	pMesh_->pVertex_->Setting();
-}
-
-void RenderComponent::Draw()
-{
-	pMesh_->pVertex_->Draw();
-}
-
-//void RenderComponent::Create()
-//{
-//	std::vector<SimpleVertex> sphereVertices;
-//	std::vector<WORD> sphereIndices;
-//	CreateSphere(&sphereVertices, &sphereIndices);
-//	IVertex* pSphereVertex = renderer_->CreateVertex(sphereVertices.data(), (uint32_t)sizeof(SimpleVertex), (uint32_t)sphereVertices.size(), sphereIndices.data(), (uint32_t)sizeof(WORD), (uint32_t)sphereIndices.size());
-//
-//
-//	// Mesh
-//	Mesh* pMeshSphere = new Mesh;
-//	pMeshSphere->pVertex_ = pSphereVertex;
-//	pMeshSphere->pVertex_->AddRef();
-//	pMeshSphere->pVertex_->AddInputLayout("POSITION", 0, 6, 0, false);
-//	pMeshSphere->pVertex_->AddInputLayout("COLOR", 0, 2, 0, false);
-//	pMeshSphere->pVertex_->AddInputLayout("NORMAL", 0, 6, 0, false);
-//	pMeshSphere->pVertex_->AddInputLayout("TEXCOORD", 0, 16, 0, false);
-//	pMeshSphere->pVertex_->AddInputLayout("TANGENT", 0, 2, 0, false);
-//
-//	// Material
-//	Material* pMaterialSphere = new Material;
-//	IMaterial* pMaterial = renderer_->CreateMaterial();
-//	pMaterialSphere->pMaterial_ = pMaterial;
-//	pMaterialSphere->pMaterial_->AddRef();
-//	IShader* pVertexShader = renderer_->CreateShader(ShaderType::Vertex, L"VertexShader.cso");
-//	IShader* pPixelShader = renderer_->CreateShader(ShaderType::Pixel, L"PixelShader.cso");
-//	pMaterialSphere->pMaterial_->SetVertexShader(pVertexShader);
-//	pMaterialSphere->pMaterial_->SetPixelShader(pPixelShader);
-//	pMaterialSphere->pVertexShader_ = pVertexShader;
-//	pMaterialSphere->pVertexShader_->AddRef();
-//	pMaterialSphere->pPixelShader_ = pPixelShader;
-//	pMaterialSphere->pPixelShader_->AddRef();
-//
-//	// InputLayout
-//	InputLayout* pInputLayoutSphere = new InputLayout;
-//	IInputLayout* pInputLayout = renderer_->CreateLayout(pSphereVertex, pVertexShader);
-//	pInputLayoutSphere->pInputLayout_ = pInputLayout;
-//	pInputLayoutSphere->pInputLayout_->AddRef();
-//
-//	Actor* actor = new Actor;
-//	actor->pRenderer_ = new Renderer;
-//	actor->pRenderer_->pMesh_ = pMeshSphere;
-//	actor->pRenderer_->pMaterial_ = pMaterialSphere;
-//	actor->pRenderer_->pInputLayout_ = pInputLayoutSphere;
-//
-//	IConstantBuffer* constantBuffer = renderer_->CreateConstantBuffer((uint32_t)sizeof(ConstantBuffer));
-//	if (nullptr == constantBuffer) {
-//		DEBUG_BREAK();
-//		return;
-//	}
-//}

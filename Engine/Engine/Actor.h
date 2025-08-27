@@ -21,6 +21,7 @@ private:
 
 	void Render();
 
+protected:
 	RenderComponent* pRenderComponent_;
 
 	LINK_ITEM levelLink_;

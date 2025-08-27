@@ -9,7 +9,7 @@ BaseShader::BaseShader()
 
 BaseShader::~BaseShader()
 {
-
+	CleanUp();
 }
 
 HRESULT __stdcall BaseShader::QueryInterface(REFIID riid, void** ppvObject)
@@ -33,7 +33,7 @@ ULONG __stdcall BaseShader::Release()
 	return tmpRefCount;
 }
 
-bool BaseShader::CreateShader(ID3DBlob* blob) 
+bool BaseShader::CreateShader(ID3DBlob* blob)
 {
 	if (nullptr == blob)
 	{
@@ -66,15 +66,12 @@ size_t BaseShader::GetBufferSize()
 	return blob_->GetBufferSize();
 }
 
-void BaseShader::Cleanup()
-{
-	OnCleanup();
 
+void BaseShader::CleanUp()
+{
 	if (nullptr != blob_)
 	{
 		blob_->Release();
 		blob_ = nullptr;
 	}
 }
-
-

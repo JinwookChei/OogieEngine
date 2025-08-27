@@ -5,12 +5,23 @@ class Material
 public:
 	Material();
 
+	Material(IMaterial* pMaterial);
+
 	virtual ~Material();
 
-	IShader* pVertexShader_;
+	void SetVertexShader(IShader* vertexShader);
 
-	IShader* pPixelShader_;
+	void SetPixelShader(IShader* pixelShader);
 
-	IMaterial* pMaterial_;
-//private:
+	void SetSampler(ISamplerState* sampler, uint32_t slot = 0);
+
+	void Setting();
+
+	void SetMaterial(IMaterial* pMaterial);
+
+private:
+	void CleanUp();
+
+	IMaterial* pMaterialImpl_;
+
 };
