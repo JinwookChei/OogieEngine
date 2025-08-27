@@ -1,6 +1,9 @@
 #pragma once
 
+#include "Transform.h"
+
 class RenderComponent;
+
 class Actor
 {
 public:
@@ -14,6 +17,8 @@ public:
 
 	ENGINE_API virtual void BeginPlay() = 0;
 
+	Transform& GetTransform() const;
+
 	LINK_ITEM* LevelLink();
 
 private:
@@ -22,6 +27,8 @@ private:
 	void Render();
 
 protected:
+	Transform* pTransform_;
+
 	RenderComponent* pRenderComponent_;
 
 	LINK_ITEM levelLink_;

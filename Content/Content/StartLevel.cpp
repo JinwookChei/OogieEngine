@@ -1,3 +1,4 @@
+#include "Actor.h"
 #include "stdafx.h"
 #include "StartLevel.h"
 #include "TestActor.h"

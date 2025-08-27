@@ -76,6 +76,9 @@
     <Filter Include="Source Files\Graphics\ShaderConstants">
       <UniqueIdentifier>{f8212f74-7a1e-45fe-9ae1-8ed5e3ac674c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Actor\Component\Transform">
+      <UniqueIdentifier>{c5f06b07-d3ba-44d5-b5ad-babf8fd96da4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -138,6 +141,9 @@
     <ClInclude Include="Rasterizer.h">
       <Filter>Source Files\Graphics\Rasterizer</Filter>
     </ClInclude>
+    <ClInclude Include="Transform.h">
+      <Filter>Source Files\Actor\Component\Transform</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -193,6 +199,9 @@
     </ClCompile>
     <ClCompile Include="Rasterizer.cpp">
       <Filter>Source Files\Graphics\Rasterizer</Filter>
+    </ClCompile>
+    <ClCompile Include="Transform.cpp">
+      <Filter>Source Files\Actor\Component\Transform</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
