@@ -144,6 +144,9 @@
     <ClInclude Include="Transform.h">
       <Filter>Source Files\Actor\Component\Transform</Filter>
     </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Source Files\Actor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -202,6 +205,9 @@
     </ClCompile>
     <ClCompile Include="Transform.cpp">
       <Filter>Source Files\Actor\Component\Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Source Files\Actor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

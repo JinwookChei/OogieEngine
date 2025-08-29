@@ -1,4 +1,3 @@
-#include "Actor.h"
 #include "stdafx.h"
 #include "StartLevel.h"
 #include "TestActor.h"
@@ -13,7 +12,8 @@ StartLevel::~StartLevel()
 
 void StartLevel::BeginPlay()
 {
-	TestActor* pActor = SpawnActor<TestActor>();
+	//Camera* pCamear = SpawnActor<Camera>();
+	TestActor* pActor = SpawnActor<TestActor>(ACTOR_TYPE::NORMAL);
 }
 
 void StartLevel::Tick(double deltaTime)

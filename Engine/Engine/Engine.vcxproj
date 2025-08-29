@@ -115,6 +115,7 @@
       <PreprocessorDefinitions>_DEBUG;ENGINE_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)..\Interface\;$(SolutionDir)..\Utility\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeader>Use</PrecompiledHeader>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -144,6 +145,7 @@
     <ClInclude Include="..\..\Interface\Renderer\IRenderer.h" />
     <ClInclude Include="Actor.h" />
     <ClInclude Include="Application.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="ShaderConstants.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="InputLayout.h" />
@@ -165,6 +167,7 @@
   <ItemGroup>
     <ClCompile Include="Actor.cpp" />
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ShaderConstants.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="Engine.cpp" />
@@ -177,7 +180,9 @@
     <ClCompile Include="RenderDevice.cpp" />
     <ClCompile Include="RenderComponent.cpp" />
     <ClCompile Include="Shader.cpp" />
-    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="Test.cpp" />
     <ClCompile Include="TimeManager.cpp" />
     <ClCompile Include="Transform.cpp" />

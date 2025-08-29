@@ -6,8 +6,8 @@
 
 
 Actor::Actor()
-	:pTransform_(new Transform),
-	pRenderComponent_(new RenderComponent) //TODO
+	:pTransform_(new Transform)
+	//pRenderComponent_(new RenderComponent(this)) //TODO
 {
 	levelLink_.prev_ = nullptr;
 	levelLink_.next_ = nullptr;
@@ -19,7 +19,12 @@ Actor::~Actor()
 	CleanUp();
 }
 
-Transform& Actor::GetTransform() const
+void Actor::Render()
+{
+
+}
+
+Transform& Actor::GetWorldTransform() const
 {
 	return *pTransform_;
 }
@@ -37,14 +42,14 @@ void Actor::CleanUp()
 		pTransform_ = nullptr;
 	}
 
-	if (nullptr != pRenderComponent_)
-	{
-		delete pRenderComponent_;
-		pRenderComponent_ = nullptr;
-	}
+	//if (nullptr != pRenderComponent_)
+	//{
+	//	delete pRenderComponent_;
+	//	pRenderComponent_ = nullptr;
+	//}
 }
 
-void Actor::Render()
-{
-	pRenderComponent_->Render();
-}
+//void Actor::Render()
+//{
+//	//pRenderComponent_->Render();
+//}

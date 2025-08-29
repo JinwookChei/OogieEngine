@@ -13,6 +13,7 @@
 
 InputManager* GInputManager = nullptr;
 TimeManager* GTimeManager = nullptr;
+//Camera* GCamera = nullptr;
 
 Engine::Engine()
 	: pStartUp_(nullptr),
@@ -91,6 +92,13 @@ bool Engine::Initialize
 		return false;
 	}
 
+	/*GCamera = new Camera;
+	if (nullptr == GCamera)
+	{
+		DEBUG_BREAK();
+		return false;
+	}*/
+
 
 	if (false == InitializeStartUp(pStartup))
 	{
@@ -127,7 +135,7 @@ void Engine::Run()
 	}
 
 
-	
+
 	// --------------------- Ragacy --------------------------------
 	//std::vector<SimpleVertex> sphereVertices;
 	//std::vector<WORD> sphereIndices;
@@ -490,6 +498,12 @@ void Engine::CleanUp()
 		pStartUp_->Release();
 		pStartUp_ = nullptr;
 	}
+
+	//if (nullptr != GCamera)
+	//{
+	//	delete GCamera;
+	//	GCamera = nullptr;
+	//}
 
 	if (nullptr != GTimeManager)
 	{

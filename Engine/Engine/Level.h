@@ -1,5 +1,25 @@
 #pragma once
 
+enum class ACTOR_TYPE
+{
+	NONE = 0,
+	NORMAL,
+	CAMERA,
+	MAX,
+};
+
+struct ActorGroupContainer
+{
+	ACTOR_TYPE actorType_ = ACTOR_TYPE::NONE;
+
+	LINK_ITEM groupLink_;
+
+	LINK_ITEM* pActorHead_ = nullptr;
+
+	LINK_ITEM* pActorTail_ = nullptr;
+};
+
+
 class Actor;
 class Level
 {
@@ -15,19 +35,19 @@ public:
 	ENGINE_API virtual void Tick(double deltaTime) = 0;
 
 	template <typename ActorType>
-	ActorType* SpawnActor()
+	ActorType* SpawnActor(ACTOR_TYPE actorType)
 	{
 		ActorType* newActor = new ActorType();
 
-		SpawnActorInternal(newActor);
+		SpawnActorInternal(newActor, actorType);
 
 		return newActor;
 	}
 
 private:
-	ENGINE_API void SpawnActorInternal(Actor* pActor);
+	ENGINE_API void SpawnActorInternal(Actor* pActor, ACTOR_TYPE actorType);
 
-	void RegisterActor(Actor* pActor);
+	void RegisterActor(Actor* pActor, ACTOR_TYPE actorType);
 
 public:
 
@@ -38,8 +58,11 @@ private:
 	
 	void CleanUp(); 
 
-	LINK_ITEM* actorHead_;
+	void CleanUpActorGroup();
 
-	LINK_ITEM* actorTail_;
+	LINK_ITEM* pActorGroupHead_;
+
+	LINK_ITEM* pActorGroupTail_;
+
 };
 

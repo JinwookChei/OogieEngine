@@ -6,15 +6,15 @@ class Transform final
 public:
 	Transform();
 
-	~Transform();
+	virtual ~Transform();
 
-	void SetScale(const DirectX::XMFLOAT4& scale);
+	ENGINE_API void SetScale(const DirectX::XMFLOAT4& scale);
 
-	void SetRotation(const DirectX::XMFLOAT4& rotation);
+	ENGINE_API void SetRotation(const DirectX::XMFLOAT4& rotation);
 
-	void AddRotaionY(float addRotation);
+	ENGINE_API void AddRotaionY(float addRotation);
 
-	void SetPosition(const DirectX::XMFLOAT4& position);
+	ENGINE_API void SetPosition(const DirectX::XMFLOAT4& position);
 
 	const DirectX::XMMATRIX GetWorldMatrix() const;
 

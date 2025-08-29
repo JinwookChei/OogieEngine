@@ -32,9 +32,15 @@
 #include "TimeManager.h"
 
 
+//#include "Camera.h"
+
+
 extern Application* GApplication;
 extern RenderDevice* GRenderDevice;
 extern InputManager* GInputManager;
 extern TimeManager* GTimeManager;
+//extern Camera* GCamera;
 
+
+#define PI 3.141592654f
 

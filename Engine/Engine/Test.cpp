@@ -10,7 +10,6 @@ bool CreateSphere(std::vector<SimpleVertex>* outVertices, std::vector<WORD>* out
 
 	const int SPHERE_STACKS = 20;
 	const int SPHERE_SLICES = 20;
-	const float PI = 3.14159265359f;
 
 	for (int stack = 0; stack <= SPHERE_STACKS; ++stack)
 	{

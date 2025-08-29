@@ -17,19 +17,19 @@ public:
 
 	ENGINE_API virtual void BeginPlay() = 0;
 
-	Transform& GetTransform() const;
+	ENGINE_API virtual void Render();
+
+	Transform& GetWorldTransform() const;
 
 	LINK_ITEM* LevelLink();
 
-private:
-	ENGINE_API void CleanUp();
-
-	void Render();
+protected:
+	ENGINE_API virtual void CleanUp();
 
 protected:
 	Transform* pTransform_;
 
-	RenderComponent* pRenderComponent_;
+	//RenderComponent* pRenderComponent_;
 
 	LINK_ITEM levelLink_;
 };

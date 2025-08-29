@@ -113,6 +113,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)..\Interface\;$(SolutionDir)..\Engine\;$(SolutionDir)..\Utility\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeader>Use</PrecompiledHeader>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -140,7 +141,9 @@
     <ClCompile Include="ContentManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="StartLevel.cpp" />
-    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="TestActor.cpp" />
   </ItemGroup>
   <ItemGroup>
