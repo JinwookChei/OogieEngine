@@ -41,15 +41,4 @@ void Actor::CleanUp()
 		delete pTransform_;
 		pTransform_ = nullptr;
 	}
-
-	//if (nullptr != pRenderComponent_)
-	//{
-	//	delete pRenderComponent_;
-	//	pRenderComponent_ = nullptr;
-	//}
 }
-
-//void Actor::Render()
-//{
-//	//pRenderComponent_->Render();
-//}

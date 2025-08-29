@@ -21,14 +21,32 @@ Camera::~Camera()
 
 void Camera::Tick(double deltaTime)
 {
+	if (InputManager::Instance()->IsPress(VK_RBUTTON)) {
+	}
+
+	if (InputManager::Instance()->IsPress('W')) {
+		pTransform_->AddPositionX(10.0f * deltaTime);
+	}
+	if (InputManager::Instance()->IsPress('S')) {
+		pTransform_->AddPositionX(-10.0f * deltaTime);
+	}
+	if (InputManager::Instance()->IsPress('A')) {
+		pTransform_->AddPositionY(-10.0f * deltaTime);
+	}
+	if (InputManager::Instance()->IsPress('D')) {
+		pTransform_->AddPositionY(10.0f * deltaTime);
+	}
+
+
+
 	CameraTransformUpdate();
 }
 
 void Camera::BeginPlay()
 {
 	pTransform_->SetScale({1.0f, 1.0f, 1.0f, 0.0f});
-	pTransform_->SetRotation({0.0f, 0.0f, 0.0f, 0.0f});
-	pTransform_->SetPosition({-5.0f, 0.0f, 0.0f, 1.0f});
+	pTransform_->SetRotation({0.0f, 30.0f, 0.0f, 0.0f});
+	pTransform_->SetPosition({-7.0f, 0.0f, 5.0f, 1.0f});
 	
 }
 

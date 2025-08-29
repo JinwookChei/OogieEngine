@@ -61,7 +61,6 @@ void RenderComponent::Create(MESH_TYPE meshType)
 	default:
 		break;
 	}
-	
 
 	// Mesh
 	IVertex* pSphereVertex = RenderDevice::Instance()->CreateVertex(sphereVertices.data(), (uint32_t)sizeof(SimpleVertex), (uint32_t)sphereVertices.size(), sphereIndices.data(), (uint32_t)sizeof(WORD), (uint32_t)sphereIndices.size());
@@ -71,7 +70,6 @@ void RenderComponent::Create(MESH_TYPE meshType)
 	pMesh_->AddInputLayout("NORMAL", 0, 6, 0, false);
 	pMesh_->AddInputLayout("TEXCOORD", 0, 16, 0, false);
 	pMesh_->AddInputLayout("TANGENT", 0, 2, 0, false);
-
 
 	// Shader
 	IShader* pVertexShader = RenderDevice::Instance()->CreateShader(ShaderType::Vertex, L"VertexShader.cso");

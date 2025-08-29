@@ -119,7 +119,11 @@ void Engine::Run()
 
 		pApplication_->WinPumpMessage();
 
+		// Calc DeltaTime
 		double deltaTime = GTimeManager->CalcDeltaTime();
+
+		// Input Update
+		GInputManager->Tick(deltaTime);
 
 		// GameLoop
 		pWorld_->CheckChangeLevel();

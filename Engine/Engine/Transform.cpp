@@ -31,18 +31,47 @@ void Transform::SetRotation(const DirectX::XMFLOAT4& rotation)
 	TransformUpdate();
 }
 
-void Transform::AddRotaionY(float addRotation)
-{
-	rotation_.y += addRotation;
-
-	TransformUpdate();
-}
-
 void Transform::SetPosition(const DirectX::XMFLOAT4& position)
 {
 	position_ = position;
 
 	TransformUpdate();
+}
+
+void Transform::AddRotaionPitch(float pitch)
+{
+	rotation_.x += pitch;
+
+	TransformUpdate();
+}
+
+void Transform::AddRotaionYaw(float yaw)
+{
+	rotation_.y += yaw;
+
+	TransformUpdate();
+}
+
+void Transform::AddRotaionRoll(float roll)
+{
+	rotation_.z += roll;
+
+	TransformUpdate();
+}
+
+void Transform::AddPositionX(float x)
+{
+	position_.x += x;
+}
+
+void Transform::AddPositionY(float y)
+{
+	position_.y += y;
+}
+
+void Transform::AddPositionZ(float z)
+{
+	position_.z += z;
 }
 
 const DirectX::XMMATRIX Transform::GetWorldMatrix() const
@@ -65,14 +94,14 @@ DirectX::XMVECTOR Transform::ForwardVector() const
 	return DirectX::XMVector3Normalize(worldMatrix_.r[0]);
 }
 
-DirectX::XMVECTOR Transform::UpVector() const
-{
-	return DirectX::XMVector3Normalize(worldMatrix_.r[2]);
-}
-
 DirectX::XMVECTOR Transform::RightVector() const
 {
 	return DirectX::XMVector3Normalize(worldMatrix_.r[1]);
+}
+
+DirectX::XMVECTOR Transform::UpVector() const
+{
+	return DirectX::XMVector3Normalize(worldMatrix_.r[2]);
 }
 
 void Transform::TransformUpdate()
@@ -86,7 +115,7 @@ void Transform::TransformUpdate()
 	// rotation_ (XMFLOAT4)은 (x, y, z, w) 형태의 회전값 저장소.
 	// XMLoadFloat4로 XMVECTOR 타입으로 변환 → SIMD 연산 가능.
 	DirectX::XMVECTOR rotationVector = DirectX::XMLoadFloat4(&rotation_);
-	
+
 	// rotation을 quaternion으로 변환.(4차원)
 	// XMQuaternionRotationRollPitchYawFromVector는(pitch, yaw, roll) → 쿼터니언 변환 함수.
 	// radian 변환 전 rotation_을 그대로 사용해서 원본 회전 쿼터니언을 만듦.
@@ -110,5 +139,6 @@ void Transform::TransformUpdate()
 	//	ㄴ RotaionOrigin(회전 기준점 - Pivot) = {px, py, pz, 1} 예) {0, 0, 0, 1} -> 원점회전, {10, 0, 0, 1} -> {10, 0, 0} 기준 회전. 
 	//  ㄴ RotationQuaternion(실제 회전을 표현하는 쿼터니언) 
 	//  ㄴ Translation (이동 벡터)
-	worldMatrix_ = DirectX::XMMatrixAffineTransformation(scale, quaternionVectorOrigin, quaternionVector, position);
+	worldMatrix_ = DirectX::XMMatrixAffineTransformation(scale, { 0, 0, 0, 1 }, quaternionVector, position);
+	//worldMatrix_ = DirectX::XMMatrixAffineTransformation(scale, quaternionVectorOrigin, quaternionVector, position);
 }
