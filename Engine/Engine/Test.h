@@ -43,3 +43,4 @@ struct ConstantBuffer
 };
 
 bool CreateSphere(std::vector<SimpleVertex>* outVertices, std::vector<WORD>* outIndices, float radius = 0.5f);
+bool CreateCube(std::vector<SimpleVertex>* outVertices, std::vector<WORD>* outIndices, float halfExtent = 0.5f);

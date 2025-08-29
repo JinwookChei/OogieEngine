@@ -45,12 +45,23 @@ void RenderComponent::Render()
 }
 
 
-
-void RenderComponent::Create()
+void RenderComponent::Create(MESH_TYPE meshType)
 {
 	std::vector<SimpleVertex> sphereVertices;
 	std::vector<WORD> sphereIndices;
-	CreateSphere(&sphereVertices, &sphereIndices);
+	
+	switch (meshType)
+	{
+	case MESH_TYPE::SPHERE:
+		CreateSphere(&sphereVertices, &sphereIndices);
+		break;
+	case MESH_TYPE::CUBE:
+		CreateCube(&sphereVertices, &sphereIndices);
+		break;
+	default:
+		break;
+	}
+	
 
 	// Mesh
 	IVertex* pSphereVertex = RenderDevice::Instance()->CreateVertex(sphereVertices.data(), (uint32_t)sizeof(SimpleVertex), (uint32_t)sphereVertices.size(), sphereIndices.data(), (uint32_t)sizeof(WORD), (uint32_t)sphereIndices.size());

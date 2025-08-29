@@ -163,3 +163,53 @@ bool CreateSphere(std::vector<SimpleVertex>* outVertices, std::vector<WORD>* out
 	}
 	return true;
 }
+
+bool CreateCube(std::vector<SimpleVertex>* outVertices, std::vector<WORD>* outIndices, float halfExtent /*= 0.5f*/)
+{
+	if (nullptr == outVertices || nullptr == outIndices) {
+		return false;
+	}
+
+	// 8개 꼭지점 정의
+	DirectX::XMFLOAT3 cubePos[8] = {
+		DirectX::XMFLOAT3(-halfExtent, -halfExtent, -halfExtent),
+		DirectX::XMFLOAT3(-halfExtent, +halfExtent, -halfExtent),
+		DirectX::XMFLOAT3(+halfExtent, +halfExtent, -halfExtent),
+		DirectX::XMFLOAT3(+halfExtent, -halfExtent, -halfExtent),
+		DirectX::XMFLOAT3(-halfExtent, -halfExtent, +halfExtent),
+		DirectX::XMFLOAT3(-halfExtent, +halfExtent, +halfExtent),
+		DirectX::XMFLOAT3(+halfExtent, +halfExtent, +halfExtent),
+		DirectX::XMFLOAT3(+halfExtent, -halfExtent, +halfExtent)
+	};
+
+	// 꼭지점별 Color, Normal, UV 설정 예시
+	for (int i = 0; i < 8; ++i) {
+		DirectX::XMFLOAT3 pos = cubePos[i];
+		DirectX::XMFLOAT3 normal = DirectX::XMFLOAT3(0, 0, 0); // 이후 튜토리얼 등에서 face-normal로 보정 가능
+		DirectX::XMFLOAT4 color = DirectX::XMFLOAT4(
+			0.5f + 0.5f * pos.x / halfExtent,
+			0.5f + 0.5f * pos.y / halfExtent,
+			0.5f + 0.5f * pos.z / halfExtent,
+			1.0f
+		);
+		DirectX::XMFLOAT2 uv = DirectX::XMFLOAT2(0, 0); // cube는 필요에 따라 수정
+		outVertices->push_back({ pos, color, normal, uv });
+	}
+
+	// Cube 인덱스: 6면 × 2삼각형 × 3정점
+	std::vector<WORD> cubeIndices = {
+		0, 1, 2,  0, 2, 3, // -Z면
+		4, 6, 5,  4, 7, 6, // +Z면
+		4, 5, 1,  4, 1, 0, // -X면
+		3, 2, 6,  3, 6, 7, // +X면
+		1, 5, 6,  1, 6, 2, // +Y면
+		4, 0, 3,  4, 3, 7  // -Y면
+	};
+
+	for (int i = 0; i < 36; ++i) {
+		outIndices->push_back(cubeIndices[i]);
+	}
+
+	// tangent 계산은 생략(평면 Normal 사용), 필요시 Sphere와 동일한 방식으로 확장
+	return true;
+}

@@ -9,6 +9,12 @@ class InputLayout;
 class ShaderConstants;
 class Rasterizer;
 
+enum class MESH_TYPE
+{
+	SPHERE = 0,
+	CUBE
+};
+
 class RenderComponent
 {
 public:
@@ -18,7 +24,7 @@ public:
 
 	ENGINE_API void Render();	
 
-	ENGINE_API void Create();
+	ENGINE_API void Create(MESH_TYPE meshType);
 
 private:
 	void CleanUp();
