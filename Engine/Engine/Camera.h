@@ -19,6 +19,12 @@ public:
 
 	const DirectX::XMMATRIX& Projection() const;
 
+	void SetWidth(float width);
+
+	void SetHeight(float height);
+
+	void SetConfig(float fov, float Near, float Far);
+
 private:
 	void CleanUp() override;
 

@@ -19,7 +19,7 @@ public:
 
 	ENGINE_API virtual void Render();
 
-	Transform& GetWorldTransform() const;
+	ENGINE_API Transform& GetWorldTransform() const;
 
 	LINK_ITEM* LevelLink();
 

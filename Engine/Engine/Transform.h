@@ -16,17 +16,17 @@ public:
 
 	ENGINE_API void SetPosition(const DirectX::XMFLOAT4& position);
 
-	const DirectX::XMMATRIX GetWorldMatrix() const;
+	ENGINE_API const DirectX::XMMATRIX GetWorldMatrix() const;
 
-	const DirectX::XMMATRIX GetWorldMatrixTranspose() const;
+	ENGINE_API const DirectX::XMMATRIX GetWorldMatrixTranspose() const;
 
-	DirectX::XMVECTOR GetPosition() const;
+	ENGINE_API DirectX::XMVECTOR GetPosition() const;
 
-	DirectX::XMVECTOR ForwardVector() const;
+	ENGINE_API DirectX::XMVECTOR ForwardVector() const;
 
-	DirectX::XMVECTOR UpVector() const;
+	ENGINE_API DirectX::XMVECTOR UpVector() const;
 
-	DirectX::XMVECTOR RightVector() const;
+	ENGINE_API DirectX::XMVECTOR RightVector() const;
 
 private:
 	void TransformUpdate();

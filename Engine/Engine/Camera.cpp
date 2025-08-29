@@ -28,7 +28,8 @@ void Camera::BeginPlay()
 {
 	pTransform_->SetScale({1.0f, 1.0f, 1.0f, 0.0f});
 	pTransform_->SetRotation({0.0f, 0.0f, 0.0f, 0.0f});
-	pTransform_->SetPosition({0.0f, 0.0f, 0.0f, 1.0f});
+	pTransform_->SetPosition({-5.0f, 0.0f, 0.0f, 1.0f});
+	
 }
 
 const DirectX::XMMATRIX& Camera::View() const
@@ -39,6 +40,23 @@ const DirectX::XMMATRIX& Camera::View() const
 const DirectX::XMMATRIX& Camera::Projection() const
 {
 	return projection_;
+}
+
+void Camera::SetWidth(float width)
+{
+	width_ = width;
+}
+
+void Camera::SetHeight(float height)
+{
+	height_ = height;
+}
+
+void Camera::SetConfig(float fov, float Near, float Far)
+{
+	fov_ = fov;
+	near_ = Near;
+	far_ = Far;
 }
 
 void Camera::CleanUp()

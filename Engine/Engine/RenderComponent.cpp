@@ -27,15 +27,11 @@ RenderComponent::~RenderComponent()
 
 void RenderComponent::Render()
 {
-	// 카메라
-	DirectX::XMMATRIX view = DirectX::XMMatrixLookAtLH(DirectX::XMVectorSet(-10.0f, 0.0f, 0.0f, 0.0f), DirectX::XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f), DirectX::XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f));
-	DirectX::XMMATRIX projection = DirectX::XMMatrixPerspectiveFovLH(DirectX::XM_PIDIV4, 800.0f / 600.0f, 0.01f, 100.0f);
-
 	// 상수 버퍼 업데이트
 	ConstantBuffer cb;
 	cb.world = pOwner_->GetWorldTransform().GetWorldMatrixTranspose();
-	cb.view = DirectX::XMMatrixTranspose(view);
-	cb.projection = DirectX::XMMatrixTranspose(projection);
+	cb.view = DirectX::XMMatrixTranspose(GCamera->View());
+	cb.projection = DirectX::XMMatrixTranspose(GCamera->Projection());
 
 	pMaterial_->Setting();
 	pMesh_->Setting();
@@ -48,24 +44,6 @@ void RenderComponent::Render()
 	pMesh_->Draw();
 }
 
-//Transform RenderComponent::GetWorldTransform() const
-//{
-//	if (nullptr == pOwner_)
-//	{
-//		return Transform();
-//	}
-//
-//	Transform ownerTransform = pOwner_->GetWorldTransform();
-//
-//	ownerTransform += *pRelativeTransform_;
-//
-//	return ;
-//}
-//
-//Transform* RenderComponent::GetRelativeTransform() const
-//{
-//
-//}
 
 
 void RenderComponent::Create()

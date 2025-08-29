@@ -13,7 +13,7 @@
 
 InputManager* GInputManager = nullptr;
 TimeManager* GTimeManager = nullptr;
-//Camera* GCamera = nullptr;
+Camera* GCamera = nullptr;
 
 Engine::Engine()
 	: pStartUp_(nullptr),
@@ -92,13 +92,13 @@ bool Engine::Initialize
 		return false;
 	}
 
-	/*GCamera = new Camera;
+	GCamera = new Camera;
 	if (nullptr == GCamera)
 	{
 		DEBUG_BREAK();
 		return false;
-	}*/
-
+	}
+	GCamera->BeginPlay();
 
 	if (false == InitializeStartUp(pStartup))
 	{
@@ -127,6 +127,8 @@ void Engine::Run()
 		pWorld_->OnTick(deltaTime);
 
 		// Render
+		GCamera->Tick(deltaTime);
+
 		pRenderDevice_->RenderBegin();
 
 		pWorld_->OnRender();
@@ -499,11 +501,11 @@ void Engine::CleanUp()
 		pStartUp_ = nullptr;
 	}
 
-	//if (nullptr != GCamera)
-	//{
-	//	delete GCamera;
-	//	GCamera = nullptr;
-	//}
+	if (nullptr != GCamera)
+	{
+		delete GCamera;
+		GCamera = nullptr;
+	}
 
 	if (nullptr != GTimeManager)
 	{
