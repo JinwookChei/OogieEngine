@@ -15,5 +15,5 @@ struct IApplication : public IUnknown {
 
 	//virtual void __stdcall UpdateMousePosition() = 0;
 
-	//virtual const Vector& __stdcall GetMousePosition() const = 0;
+	virtual const std::array<float, 2>& __stdcall GetMousePosition() const = 0;
 };

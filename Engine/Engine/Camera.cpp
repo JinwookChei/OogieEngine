@@ -9,7 +9,9 @@ Camera::Camera()
 	width_(800.0f),
 	height_(600.0f),
 	near_(0.01f),
-	far_(100.0f)
+	far_(100.0f),
+	cameraSensitivity_(0.1f),
+	cameraSpeed_(2.0f)
 {
 
 }
@@ -21,20 +23,42 @@ Camera::~Camera()
 
 void Camera::Tick(double deltaTime)
 {
-	if (InputManager::Instance()->IsPress(VK_RBUTTON)) {
+	if (InputManager::Instance()->IsPress(VK_RBUTTON))
+	{
+		const Vector& deltaMouseMove = InputManager::Instance()->GetDeltaMouseMove();
+
+		//pTransform_->RotateAroundAxis(pTransform_->UpVector(), deltaMouseMove.X * cameraSensitivity_);
+		//pTransform_->RotateAroundAxis(pTransform_->RightVector(), deltaMouseMove.Y * cameraSensitivity_);
 	}
 
-	if (InputManager::Instance()->IsPress('W')) {
-		pTransform_->AddPositionX(10.0f * deltaTime);
+	if (InputManager::Instance()->IsPress('W'))
+	{
+		DirectX::XMFLOAT4 forwardVector;
+		XMStoreFloat4(&forwardVector, pTransform_->ForwardVector());
+		Vector offset = { forwardVector.x, forwardVector.y , forwardVector.z };
+		pTransform_->AddPosition(offset * cameraSpeed_ * (float)deltaTime);
+
 	}
-	if (InputManager::Instance()->IsPress('S')) {
-		pTransform_->AddPositionX(-10.0f * deltaTime);
+	if (InputManager::Instance()->IsPress('S'))
+	{
+		DirectX::XMFLOAT4 forwardVector;
+		XMStoreFloat4(&forwardVector, pTransform_->ForwardVector());
+		Vector offset = { forwardVector.x, forwardVector.y, forwardVector.z };
+		pTransform_->AddPosition(-offset * cameraSpeed_ * (float)deltaTime);
 	}
-	if (InputManager::Instance()->IsPress('A')) {
-		pTransform_->AddPositionY(-10.0f * deltaTime);
+	if (InputManager::Instance()->IsPress('A'))
+	{
+		DirectX::XMFLOAT4 rightVector;
+		XMStoreFloat4(&rightVector, pTransform_->RightVector());
+		Vector offset = { rightVector.x , rightVector.y, rightVector.z };
+		pTransform_->AddPosition(-offset * cameraSpeed_ * (float)deltaTime);
 	}
-	if (InputManager::Instance()->IsPress('D')) {
-		pTransform_->AddPositionY(10.0f * deltaTime);
+	if (InputManager::Instance()->IsPress('D'))
+	{
+		DirectX::XMFLOAT4 rightVector;
+		XMStoreFloat4(&rightVector, pTransform_->RightVector());
+		Vector offset = { rightVector.x , rightVector.y , rightVector.z };
+		pTransform_->AddPosition(offset * cameraSpeed_ * (float)deltaTime);
 	}
 
 
@@ -44,10 +68,10 @@ void Camera::Tick(double deltaTime)
 
 void Camera::BeginPlay()
 {
-	pTransform_->SetScale({1.0f, 1.0f, 1.0f, 0.0f});
-	pTransform_->SetRotation({0.0f, 30.0f, 0.0f, 0.0f});
-	pTransform_->SetPosition({-7.0f, 0.0f, 5.0f, 1.0f});
-	
+	pTransform_->SetScale({ 1.0f, 1.0f, 1.0f, 0.0f });
+	pTransform_->SetRotation({ 0.0f, 0.0f, 0.0f, 0.0f });
+	pTransform_->SetPosition({ -7.0f, 0.0f, 5.0f, 1.0f });
+
 }
 
 const DirectX::XMMATRIX& Camera::View() const
@@ -96,5 +120,5 @@ void Camera::CameraTransformUpdate()
 	view_ = DirectX::XMMatrixLookToLH(eyePos, eyeDir, eyeUp);
 	float degToRad = PI / 180;
 
-	projection_ = DirectX::XMMatrixPerspectiveFovLH(fov_ * degToRad, (width_/ height_), near_, far_);
+	projection_ = DirectX::XMMatrixPerspectiveFovLH(fov_ * degToRad, (width_ / height_), near_, far_);
 }

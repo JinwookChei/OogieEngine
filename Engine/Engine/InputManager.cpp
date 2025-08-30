@@ -2,14 +2,17 @@
 #include "InputManager.h"
 
 
-InputManager::InputState::InputState() {
+InputManager::InputState::InputState() 
+{
 }
 
 InputManager::InputState::InputState(int key)
-    : key_(key) {
+    : key_(key) 
+{
 }
 
-void InputManager::InputState::InputStateCheck(unsigned long long deltaTick) {
+void InputManager::InputState::InputStateCheck(unsigned long long deltaTick) 
+{
     short ret = GetAsyncKeyState(key_);
     if (0 != ret) {
         pressTime_ += deltaTick;
@@ -46,7 +49,10 @@ void InputManager::InputState::InputStateCheck(unsigned long long deltaTick) {
 }
 
 InputManager::InputManager()
-    : isAnyKeyDown_(false), isAnyKeyPress_(false), hashTable_(nullptr) {
+    : isAnyKeyDown_(false), 
+    isAnyKeyPress_(false), 
+    hashTable_(nullptr) 
+{
 }
 
 InputManager::~InputManager() {
@@ -67,73 +73,104 @@ InputManager::~InputManager() {
     hashTable_ = nullptr;
 }
 
-InputManager* InputManager::Instance() {
+InputManager* InputManager::Instance()
+{
     return GInputManager;
 }
 
-bool InputManager::IsAnyKeyDown() const {
+bool InputManager::IsAnyKeyDown() const
+{
     return isAnyKeyDown_;
 }
 
-bool InputManager::IsAnyKeyPress() const {
+bool InputManager::IsAnyKeyPress() const
+{
     return isAnyKeyPress_;
 }
 
-bool InputManager::IsDown(int key) {
+bool InputManager::IsDown(int key) 
+{
     InputState* pFind = nullptr;
-    if (0 == hashTable_->Select((void**)&pFind, 1, &key, 4)) {
+    if (0 == hashTable_->Select((void**)&pFind, 1, &key, 4))
+    {
         return false;
     }
 
     return pFind->down_;
 }
 
-bool InputManager::IsPress(int key) {
+bool InputManager::IsPress(int key) 
+{
     InputState* pFind = nullptr;
-    if (0 == hashTable_->Select((void**)&pFind, 1, &key, 4)) {
+    if (0 == hashTable_->Select((void**)&pFind, 1, &key, 4))
+    {
         return false;
     }
 
     return pFind->press_;
 }
 
-unsigned long long InputManager::PressTime(int key) {
+unsigned long long InputManager::PressTime(int key)
+{
     InputState* pFind = nullptr;
-    if (0 == hashTable_->Select((void**)&pFind, 1, &key, 4)) {
+    if (0 == hashTable_->Select((void**)&pFind, 1, &key, 4))
+    {
         return 0;
     }
 
     return pFind->pressTime_;
 }
 
-bool InputManager::IsUp(int key) {
+bool InputManager::IsUp(int key) 
+{
     InputState* pFind = nullptr;
-    if (0 == hashTable_->Select((void**)&pFind, 1, &key, 4)) {
+    if (0 == hashTable_->Select((void**)&pFind, 1, &key, 4))
+    {
         return false;
     }
 
     return pFind->up_;
 }
 
-bool InputManager::IsFree(int key) {
+bool InputManager::IsFree(int key)
+{
     InputState* pFind = nullptr;
-    if (0 == hashTable_->Select((void**)&pFind, 1, &key, 4)) {
+    if (0 == hashTable_->Select((void**)&pFind, 1, &key, 4))
+    {
         return false;
     }
 
     return pFind->free_;
 }
 
-unsigned long long InputManager::UpTime(int key) {
+unsigned long long InputManager::UpTime(int key)
+{
     InputState* pFind = nullptr;
-    if (0 == hashTable_->Select((void**)&pFind, 1, &key, 4)) {
+    if (0 == hashTable_->Select((void**)&pFind, 1, &key, 4))
+    {
         return 0;
     }
 
     return pFind->upTime_;
 }
 
-bool InputManager::Initialize() {
+const Vector& InputManager::GetPrevMousePosition() const
+{
+    return prevMousePos_;
+}
+
+const Vector& InputManager::GetCurrentMousePosition() const
+{
+    return curMousePos_;
+}
+
+const Vector& InputManager::GetDeltaMouseMove() const
+{
+    return deltaMouseMove_;
+}
+
+bool InputManager::Initialize()
+{
     hashTable_ = new HashTable;
 
     hashTable_->Initialize(8, 4);
@@ -158,22 +195,26 @@ bool InputManager::Initialize() {
     newState = new InputState(VK_DOWN);
     hashTable_->Insert(newState, &newState->key_, 4);
 
-    for (int n = VK_F1; n < VK_F13; ++n) {
+    for (int n = VK_F1; n < VK_F13; ++n) 
+    {
         newState = new InputState(n);
         hashTable_->Insert(newState, &newState->key_, 4);
     }
-    for (int n = 'A'; n <= 'Z'; ++n) {
+    for (int n = 'A'; n <= 'Z'; ++n)
+    {
         newState = new InputState(n);
         hashTable_->Insert(newState, &newState->key_, 4);
     }
 
     constexpr int interval = 'a' - 'A';
-    for (int n = 'a'; n <= 'z'; ++n) {
+    for (int n = 'a'; n <= 'z'; ++n) 
+    {
         int realKey = n - interval;
         newState = new InputState(realKey);
         hashTable_->Insert(newState, &n, 4);
     }
-    for (int n = '0'; n <= '9'; ++n) {
+    for (int n = '0'; n <= '9'; ++n) 
+    {
         newState = new InputState(n);
         hashTable_->Insert(newState, &newState->key_, 4);
     }
@@ -181,7 +222,15 @@ bool InputManager::Initialize() {
     return true;
 }
 
-void InputManager::Tick(unsigned long long deltaTime) {
+void InputManager::Tick(double deltaTime)
+{
+    UpdateInputState(deltaTime);
+
+    UpdateMouseMove();
+}
+
+void InputManager::UpdateInputState(double deltaTime)
+{
     if (nullptr == hashTable_) {
         return;
     }
@@ -203,4 +252,13 @@ void InputManager::Tick(unsigned long long deltaTime) {
             isAnyKeyPress_ = true;
         }
     }
+}
+
+void InputManager::UpdateMouseMove()
+{
+    prevMousePos_ = curMousePos_;
+
+    curMousePos_ = Application::Instance()->GetMousePosition();
+
+    deltaMouseMove_ = curMousePos_ - prevMousePos_;
 }

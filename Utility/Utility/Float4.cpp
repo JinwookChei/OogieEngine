@@ -16,6 +16,14 @@ Float4::Float4()
 {
 }
 
+Float4::Float4(float x, float y)
+	: X(x),
+	Y(y),
+	Z(0.0f),
+	W(1.0f)
+{
+}
+
 Float4::Float4(float x, float y, float z)
 	: X(x),
 	Y(y),
@@ -132,7 +140,7 @@ Float4 Float4::operator*(float value) const
 	Float4 Result = *this;
 	Result.X *= value;
 	Result.Y *= value;
-	Result.Z -= value;
+	Result.Z *= value;
 	Result.W = 1.0f;
 	/*Result.W *= value;
 	Result.W = max(0.0f, min(1.0f, Result.W));*/

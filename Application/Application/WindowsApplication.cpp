@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Window.h"
+
 #include "WindowsApplication.h"
 
 WindowsApplication* GApplication = nullptr;
@@ -11,21 +12,11 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		return 0;
-
-	//case WM_PAINT:
-	//{
-	//	PAINTSTRUCT ps;
-	//	HDC hdc = BeginPaint(hwnd, &ps);
-
-	//	// All painting occurs here, between BeginPaint and EndPaint.
-
-	//	FillRect(hdc, &ps.rcPaint, (HBRUSH)(COLOR_WINDOW + 1));
-
-	//	EndPaint(hwnd, &ps);
-	//}
-	//return 0;
-
-
+	case WM_MOUSEMOVE:
+		float posX = GET_X_LPARAM(lParam);
+		float posY = GET_Y_LPARAM(lParam);		
+		GApplication->UpdateMousePosition(posX,	 posY);
+		return 0;
 	}
 	return DefWindowProc(hwnd, uMsg, wParam, lParam);
 }
@@ -43,7 +34,8 @@ WindowsApplication::WindowsApplication(
 	iCon_(nullptr),
 	mainWindow_(nullptr),
 	refCount_(1),
-	isApplicationQuit_(false)
+	isApplicationQuit_(false),
+	mousePos_({0.0f, 0.0f})
 {
 	GApplication = this;
 }
@@ -164,6 +156,17 @@ void* __stdcall WindowsApplication::GetMainWindowHandle()
 	return mainWindow_->Handle();
 }
 
+const std::array<float,2>& __stdcall WindowsApplication::GetMousePosition() const
+{
+	return mousePos_;
+}
+
+void WindowsApplication::UpdateMousePosition(float posX, float posY)
+{
+	mousePos_[0] = posX;
+	mousePos_[1] = posY;
+}
+
 const HINSTANCE WindowsApplication::HandleInstance() const
 {
 	return hInstance_;
@@ -183,3 +186,6 @@ const int WindowsApplication::CmdShowParam() const
 {
 	return nCmdShow_;
 }
+
+
+

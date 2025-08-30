@@ -26,6 +26,10 @@ public:
 
 	void* __stdcall GetMainWindowHandle() override;
 
+	const std::array<float, 2>& __stdcall GetMousePosition() const override;
+
+	void UpdateMousePosition(float posX, float posY);
+
 	const HINSTANCE HandleInstance() const;
 
 	Window* MainWindow() const;
@@ -33,6 +37,7 @@ public:
 	const PWSTR CmdLine() const;
 
 	const int CmdShowParam() const;
+	
 private:
 	HINSTANCE hInstance_;
 
@@ -49,4 +54,6 @@ private:
 	ULONG refCount_;
 
 	bool isApplicationQuit_;
+
+	std::array<float, 2> mousePos_;
 };

@@ -50,14 +50,30 @@ public:
 
     ENGINE_API unsigned long long UpTime(int key);
 
+    ENGINE_API const Vector& GetPrevMousePosition() const;
+
+    ENGINE_API const Vector& GetCurrentMousePosition() const;
+
+    ENGINE_API const Vector& GetDeltaMouseMove() const;
+
 private:
     bool Initialize();
 
-    void Tick(unsigned long long deltaTime);
+    void Tick(double deltaTime);
+
+    void UpdateInputState(double deltaTime);
+
+    void UpdateMouseMove();
 
     unsigned long long isAnyKeyDown_ : 1;
 
     unsigned long long isAnyKeyPress_ : 1;
 
     HashTable* hashTable_;
+
+    Vector prevMousePos_;
+
+    Vector curMousePos_;
+
+    Vector deltaMouseMove_;
 };

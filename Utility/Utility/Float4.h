@@ -33,6 +33,8 @@ public:
 
 	Float4();
 
+	Float4(float x, float y);
+
 	Float4(float x, float y, float z);
 
 	Float4(float x, float y, float z, float w);

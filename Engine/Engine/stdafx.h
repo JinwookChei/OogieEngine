@@ -18,6 +18,7 @@
 // TEST용 Engine에서는 DirextX 라이브러리 가지지 X
 #include <DirectXMath.h>
 #include <vector>
+#include <array>
 
 #include <Application/IApplication.h>
 #include <Renderer/IRenderer.h>

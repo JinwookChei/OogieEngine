@@ -18,9 +18,10 @@
 #endif 
 
 
+#include <array>
 #include <windows.h>
+#include <windowsx.h>
 
 #include <Application\IApplication.h>
-//#include "WindowsApplication.h"
 
 extern class WindowsApplication* GApplication;

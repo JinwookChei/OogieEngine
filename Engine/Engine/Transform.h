@@ -14,11 +14,13 @@ public:
 
 	ENGINE_API void SetPosition(const DirectX::XMFLOAT4& position);
 
+	ENGINE_API void AddRotaionRoll(float roll);
+
 	ENGINE_API void AddRotaionPitch(float pitch);
 
 	ENGINE_API void AddRotaionYaw(float yaw);
 
-	ENGINE_API void AddRotaionRoll(float roll);
+	ENGINE_API void AddPosition(const Vector& add);
 
 	ENGINE_API void AddPositionX(float x);
 
@@ -26,7 +28,7 @@ public:
 
 	ENGINE_API void AddPositionZ(float z);
 
-
+	ENGINE_API void RotateAroundAxis(const DirectX::XMVECTOR& axis, float angleDegrees);
 
 	ENGINE_API const DirectX::XMMATRIX GetWorldMatrix() const;
 

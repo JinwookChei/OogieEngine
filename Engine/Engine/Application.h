@@ -32,6 +32,8 @@ public:
 
 	void* GetMainWindowHandle();
 
+	Vector GetMousePosition();
+
 private:
 
 	void CleanUp();

@@ -31,6 +31,7 @@ private:
 	void CameraTransformUpdate();
 
 	DirectX::XMMATRIX view_;
+
 	DirectX::XMMATRIX projection_;
 
 	float fov_;
@@ -38,4 +39,8 @@ private:
 	float height_;
 	float near_;
 	float far_;
+
+	float cameraSensitivity_;
+
+	float cameraSpeed_;
 };
