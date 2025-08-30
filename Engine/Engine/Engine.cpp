@@ -14,6 +14,8 @@
 InputManager* GInputManager = nullptr;
 TimeManager* GTimeManager = nullptr;
 Camera* GCamera = nullptr;
+SpotLight* GSpotLight = nullptr;
+
 
 Engine::Engine()
 	: pStartUp_(nullptr),
@@ -99,6 +101,14 @@ bool Engine::Initialize
 		return false;
 	}
 	GCamera->BeginPlay();
+
+	GSpotLight = new SpotLight;
+	if (nullptr == GSpotLight)
+	{
+		DEBUG_BREAK();
+		return false;
+	}
+	GSpotLight->BeginPlay();
 
 	if (false == InitializeStartUp(pStartup))
 	{
@@ -235,6 +245,12 @@ void Engine::CleanUp()
 	{
 		pStartUp_->Release();
 		pStartUp_ = nullptr;
+	}
+
+	if (nullptr != GSpotLight)
+	{
+		delete GSpotLight;
+		GSpotLight = nullptr;
 	}
 
 	if (nullptr != GCamera)

@@ -38,10 +38,12 @@
 
 // TEMP : Vector 완성되면 삭제.
 #include <DirectXMath.h>
+#include <array>
 
 #include <Application/IApplication.h>
 #include <Renderer/IRenderer.h>
 #include <Utility/LinkedList.h>
+#include <Utility/Float4.h>
 #include <Engine/Engine.h>
 #include <Engine/StartUp.h>
 #include <Engine/Level.h>

@@ -60,7 +60,20 @@ void Camera::Tick(double deltaTime)
 		Vector offset = { rightVector.x , rightVector.y , rightVector.z };
 		pTransform_->AddPosition(offset * cameraSpeed_ * (float)deltaTime);
 	}
-
+	if (InputManager::Instance()->IsPress('Q'))
+	{
+		DirectX::XMFLOAT4 upVector;
+		XMStoreFloat4(&upVector, pTransform_->UpVector());
+		Vector offset = { upVector.x , upVector.y , upVector.z };
+		pTransform_->AddPosition(-offset * cameraSpeed_ * (float)deltaTime);
+	}
+	if (InputManager::Instance()->IsPress('E'))
+	{
+		DirectX::XMFLOAT4 upVector;
+		XMStoreFloat4(&upVector, pTransform_->UpVector());
+		Vector offset = { upVector.x , upVector.y , upVector.z };
+		pTransform_->AddPosition(offset * cameraSpeed_ * (float)deltaTime);
+	}
 
 
 	CameraTransformUpdate();
@@ -70,7 +83,7 @@ void Camera::BeginPlay()
 {
 	pTransform_->SetScale({ 1.0f, 1.0f, 1.0f, 0.0f });
 	pTransform_->SetRotation({ 0.0f, 0.0f, 0.0f, 0.0f });
-	pTransform_->SetPosition({ -7.0f, 0.0f, 5.0f, 1.0f });
+	pTransform_->SetPosition({ -10.0f, 0.0f, 0.0f, 1.0f });
 
 }
 

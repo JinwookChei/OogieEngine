@@ -21,7 +21,8 @@ struct ConstantBuffer
 	DirectX::XMMATRIX world;
 	DirectX::XMMATRIX view;
 	DirectX::XMMATRIX projection;
-	DirectX::XMFLOAT4 color;
+	//DirectX::XMFLOAT4 color;
+
 	DirectX::XMFLOAT4 lightDir;
 	DirectX::XMFLOAT4 lightColor;
 	DirectX::XMFLOAT4 ambientColor;

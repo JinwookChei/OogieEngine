@@ -40,9 +40,6 @@
     <Filter Include="Source Files\Actor">
       <UniqueIdentifier>{d94abd63-bdec-4ccc-a9de-2d3906c1b368}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Actor\Component">
-      <UniqueIdentifier>{b2175ee2-52bd-4faa-8458-61fc1c6edd75}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Level">
       <UniqueIdentifier>{ca238cca-67c2-442b-b272-359cb178dd6e}</UniqueIdentifier>
     </Filter>
@@ -51,9 +48,6 @@
     </Filter>
     <Filter Include="Source Files\Engine\Modules">
       <UniqueIdentifier>{e68fcdd2-546a-4a33-a0cd-4b167d8419d3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Actor\Component\RenderComponent">
-      <UniqueIdentifier>{0ee59b9b-733d-49dc-b14c-4eab904a7ac0}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Graphics">
       <UniqueIdentifier>{94168407-658e-4754-a783-df63e0303040}</UniqueIdentifier>
@@ -76,7 +70,19 @@
     <Filter Include="Source Files\Graphics\ShaderConstants">
       <UniqueIdentifier>{f8212f74-7a1e-45fe-9ae1-8ed5e3ac674c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Actor\Component\Transform">
+    <Filter Include="Source Files\Graphics\NewFilter1">
+      <UniqueIdentifier>{1710ab23-5b6d-4c65-ad11-0ae891692f8e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Actor\Light">
+      <UniqueIdentifier>{1e6e41c0-8f1f-4d5b-b178-2447b4105718}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Component">
+      <UniqueIdentifier>{b2175ee2-52bd-4faa-8458-61fc1c6edd75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Component\RenderComponent">
+      <UniqueIdentifier>{0ee59b9b-733d-49dc-b14c-4eab904a7ac0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Component\Transform">
       <UniqueIdentifier>{c5f06b07-d3ba-44d5-b5ad-babf8fd96da4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -130,7 +136,7 @@
       <Filter>Source Files\Engine\Modules</Filter>
     </ClInclude>
     <ClInclude Include="RenderComponent.h">
-      <Filter>Source Files\Actor\Component\RenderComponent</Filter>
+      <Filter>Source Files\Component\RenderComponent</Filter>
     </ClInclude>
     <ClInclude Include="Shader.h">
       <Filter>Source Files\Graphics\Shader</Filter>
@@ -142,10 +148,16 @@
       <Filter>Source Files\Graphics\Rasterizer</Filter>
     </ClInclude>
     <ClInclude Include="Transform.h">
-      <Filter>Source Files\Actor\Component\Transform</Filter>
+      <Filter>Source Files\Component\Transform</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>Source Files\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>Source Files\Actor\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="SpotLight.h">
+      <Filter>Source Files\Actor\Light</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -192,7 +204,7 @@
       <Filter>Source Files\Engine\Modules</Filter>
     </ClCompile>
     <ClCompile Include="RenderComponent.cpp">
-      <Filter>Source Files\Actor\Component\RenderComponent</Filter>
+      <Filter>Source Files\Component\RenderComponent</Filter>
     </ClCompile>
     <ClCompile Include="Shader.cpp">
       <Filter>Source Files\Graphics\Shader</Filter>
@@ -204,10 +216,16 @@
       <Filter>Source Files\Graphics\Rasterizer</Filter>
     </ClCompile>
     <ClCompile Include="Transform.cpp">
-      <Filter>Source Files\Actor\Component\Transform</Filter>
+      <Filter>Source Files\Component\Transform</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>Source Files\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="Light.cpp">
+      <Filter>Source Files\Actor\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="SpotLight.cpp">
+      <Filter>Source Files\Actor\Light</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -3,6 +3,23 @@ cbuffer ConstantBuffer : register(b0)
     matrix World;
     matrix View;
     matrix Projection;
+    
+    float4 lightDir;
+    float4 lightColor;
+    float4 ambientColor;
+    
+    float3 spotPosition;
+    float spotRange;
+    float3 spotDirection;
+    float spotAngle;
+    
+    float3 pointPosition;
+    float pointRange;
+    
+    float attenuationConst;
+    float attenuationLinear;
+    float attenuationQuad;
+    float pad1;
 }
 
 struct VS_INPUT
@@ -16,35 +33,55 @@ struct VS_INPUT
 
 struct PS_INPUT
 {
-    // SV_POSITION, SV->SystemValue :  
-    // SV_POSITION 시멘틱은 주로 픽셀 셰이더에서 사용되며, 해당 변수는 정점의 클립 공간 좌표를 나타냅니다. 이는 정점이 변환된 후의 위치를 표현
-    // 주로 이 변수는 최종 화면에 그려지는 픽셀의 위치를 결정하는 데 필요합니다.
-    
-    // + SV(System Value)란 ? 그래픽스 파이프라인에서 GPU가 특별하게 관리하거나 자동으로 제공하는 값임을 나타냅니다.
-    // 사용자가 따로 데이터를 넘기거나 설정하지 않아도 하드웨어/드라이버가 내부적으로 채워서 셰이더에 제공하는 값입니다.
-    float4 position : SV_POSITION; // 클립 공간 좌표
-    float4 color : COLOR; // 픽셀 셰이더로 넘길 색상
+    float4 Pos : SV_POSITION;
+    float4 Color : COLOR;
+    float3 normal : NORMAL;
+    float3 worldPos : TEXCOORD0;
+    float2 uv : TEXCOORD1;
+    float3x3 TBN : TEXCOORD2;
 };
+
+//PS_INPUT main(VS_INPUT input)
+//{
+//    PS_INPUT output;
+
+//    // 모델 좌표 -> 월드 좌표
+//    float4 worldPos = mul(float4(input.position, 1.0f), World);
+
+//    // 월드 좌표 -> 뷰 좌표
+//    float4 viewPos = mul(worldPos, View);
+
+//    // 뷰 좌표 -> 클립 좌표
+//    output.position = mul(viewPos, Projection);
+
+//    // 정점 색상 그대로 넘김
+//    output.color = input.color;
+
+//    return output;
+//}
+
 
 PS_INPUT main(VS_INPUT input)
 {
-    PS_INPUT output;
-
-    // 모델 좌표 -> 월드 좌표
-    float4 worldPos = mul(float4(input.position, 1.0f), World);
-
-    // 월드 좌표 -> 뷰 좌표
-    float4 viewPos = mul(worldPos, View);
-
-    // 뷰 좌표 -> 클립 좌표
-    output.position = mul(viewPos, Projection);
-
-    // 정점 색상 그대로 넘김
-    output.color = input.color;
-
+    PS_INPUT output = (PS_INPUT) 0;
+    
+    float4 worldPosition = mul(float4(input.position, 1.0f), World); // 월드 포지션 ( 원점을 기준으로 얼마만큼 떨어져있나 )
+    float4 viewPosition = mul(worldPosition, View); // 뷰 포지션 ( 카메라를 기준으로 둔 포지션 ) ( 카메라 기준이란? 카메라의 포지션을 0, 0, 0 으로 본다 ) ( 카메라 기준이란? 카메라를 원점으로 만든다. )
+    output.Pos = mul(viewPosition, Projection);
+    output.Color = input.color;
+    
+    float3 N = normalize(mul(input.normal, (float3x3) World));
+    float3 T = normalize(mul(input.tangent.xyz, (float3x3) World));
+    float3 B = cross(N, T) * input.tangent.w;
+    
+    float3x3 normalMatrix = (float3x3) World;
+    output.normal = mul(input.normal, normalMatrix);
+    output.worldPos = worldPosition.xyz;
+    output.uv = input.uv;
+    output.TBN = float3x3(T, B, N);
+    
     return output;
 }
-
 
 //// SV_Semantic vs 일반 Semantic
 //// HLSL에서 시멘틱(Semantic)은 셰이더가 어떤 의미의 데이터를 주고받는지를 나타내는 일종의 "태그"입니다. 
