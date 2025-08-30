@@ -146,6 +146,7 @@
     <ClInclude Include="Actor.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="ConstantManager.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="ShaderConstants.h" />
     <ClInclude Include="Engine.h" />
@@ -170,6 +171,7 @@
     <ClCompile Include="Actor.cpp" />
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="ConstantManager.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="ShaderConstants.cpp" />
     <ClCompile Include="dllmain.cpp" />

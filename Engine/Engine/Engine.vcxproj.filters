@@ -70,9 +70,6 @@
     <Filter Include="Source Files\Graphics\ShaderConstants">
       <UniqueIdentifier>{f8212f74-7a1e-45fe-9ae1-8ed5e3ac674c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Graphics\NewFilter1">
-      <UniqueIdentifier>{1710ab23-5b6d-4c65-ad11-0ae891692f8e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Actor\Light">
       <UniqueIdentifier>{1e6e41c0-8f1f-4d5b-b178-2447b4105718}</UniqueIdentifier>
     </Filter>
@@ -159,6 +156,9 @@
     <ClInclude Include="SpotLight.h">
       <Filter>Source Files\Actor\Light</Filter>
     </ClInclude>
+    <ClInclude Include="ConstantManager.h">
+      <Filter>Source Files\Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -226,6 +226,9 @@
     </ClCompile>
     <ClCompile Include="SpotLight.cpp">
       <Filter>Source Files\Actor\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="ConstantManager.cpp">
+      <Filter>Source Files\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -31,6 +31,7 @@
 #include "RenderDevice.h"
 #include "InputManager.h"
 #include "TimeManager.h"
+#include "ConstantManager.h"
 
 #include "Camera.h"
 #include "Light.h"
@@ -40,6 +41,7 @@ extern Application* GApplication;
 extern RenderDevice* GRenderDevice;
 extern InputManager* GInputManager;
 extern TimeManager* GTimeManager;
+extern ConstantManager* GConstantManager;
 extern Camera* GCamera;
 extern SpotLight* GSpotLight;
 

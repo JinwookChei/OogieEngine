@@ -13,6 +13,7 @@
 
 InputManager* GInputManager = nullptr;
 TimeManager* GTimeManager = nullptr;
+ConstantManager* GConstantManager = nullptr;
 Camera* GCamera = nullptr;
 SpotLight* GSpotLight = nullptr;
 
@@ -102,6 +103,13 @@ bool Engine::Initialize
 	}
 	GCamera->BeginPlay();
 
+	GConstantManager = new ConstantManager;
+	if (nullptr == GConstantManager)
+	{
+		DEBUG_BREAK();
+		return false;
+	}
+
 	GSpotLight = new SpotLight;
 	if (nullptr == GSpotLight)
 	{
@@ -131,6 +139,9 @@ void Engine::Run()
 
 		// Calc DeltaTime
 		double deltaTime = GTimeManager->CalcDeltaTime();
+
+		// Constant Update
+		GConstantManager->Update();
 
 		// Input Update
 		GInputManager->Tick(deltaTime);
@@ -251,6 +262,12 @@ void Engine::CleanUp()
 	{
 		delete GSpotLight;
 		GSpotLight = nullptr;
+	}
+
+	if (nullptr != GConstantManager)
+	{
+		delete GConstantManager;
+		GConstantManager = nullptr;
 	}
 
 	if (nullptr != GCamera)

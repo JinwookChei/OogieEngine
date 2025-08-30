@@ -26,32 +26,20 @@ RenderComponent::~RenderComponent()
 }
 
 void RenderComponent::Render()
-{
-	// 상수 버퍼 업데이트
-	//DirectX::XMFLOAT4 lightDir = DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 0.0f);
-
-
-
-		
-	ConstantBuffer cb;
-	cb.world = pOwner_->GetWorldTransform().GetWorldMatrixTranspose();
-	cb.view = DirectX::XMMatrixTranspose(GCamera->View());
-	cb.projection = DirectX::XMMatrixTranspose(GCamera->Projection());
-
-	// Light
-	cb.lightColor = GSpotLight->LightColor();
-	cb.ambientColor = GSpotLight->AmbientColor();
-
-	cb.spotPosition = GSpotLight->SpotPosition();
-	cb.spotDirection = GSpotLight->SpotDirection();
-	cb.spotRange = GSpotLight->SpotRange();
-	cb.spotAngle = GSpotLight->SpotAngle();
+{		
+	ConstantBuffer* cb = ConstantManager::Instance()->GetConstantBuffer();
+	if (nullptr == cb)
+	{
+		DEBUG_BREAK();
+		return;
+	}
+	cb->world = pOwner_->GetWorldTransform().GetWorldMatrixTranspose();
 
 
 	pMaterial_->Setting();
 	pMesh_->Setting();
 	pInputLayout_->Setting();
-	pConstantBuffer_->Update(&cb);
+	pConstantBuffer_->Update(cb);
 	pConstantBuffer_->VSSetting(0);
 	pConstantBuffer_->PSSetting(0);
 
