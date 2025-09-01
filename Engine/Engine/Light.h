@@ -8,14 +8,14 @@ public:
 
 	~Light() override;
 
-	const DirectX::XMFLOAT4& LightColor() const;
+	const Color& LightColor() const;
 
-	const DirectX::XMFLOAT4& AmbientColor() const;
+	const Color& AmbientColor() const;
 
 protected:
-	DirectX::XMFLOAT4 lightColor_;
+	Color lightColor_;
 
-	DirectX::XMFLOAT4 ambientColor_;
+	Color ambientColor_;
 private:
 	void CleanUp() override;
 };

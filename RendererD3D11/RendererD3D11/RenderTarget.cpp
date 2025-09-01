@@ -89,8 +89,8 @@ void RenderTarget::Clear()
 		DEBUG_BREAK();
 		return;
 	}
-	
-	GRenderer->DeviceContext()->ClearRenderTargetView(pRenderTargetView, clearColor_.Array1D);
+	FLOAT ColorRGBA[4] = { 0.1f, 0.2f, 0.4f, 1.0f };
+	GRenderer->DeviceContext()->ClearRenderTargetView(pRenderTargetView, clearColor_.Arr1D);
 
 	if (nullptr == pDepthTexture_)
 	{

@@ -30,8 +30,6 @@ void RenderDevice::Destroy()
 {
 	if(nullptr != GRenderDevice)
 	{
-		//GRenderDevice->CleanUp();
-
 		delete GRenderDevice;
 
 		GRenderDevice = nullptr;

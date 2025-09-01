@@ -149,12 +149,14 @@ void Engine::Run()
 		// GameLoop
 		pWorld_->CheckChangeLevel();
 
+		GCamera->Tick(deltaTime);
+
 		pWorld_->OnTick(deltaTime);
 
 		// Render
-		GCamera->Tick(deltaTime);
-
 		pRenderDevice_->RenderBegin();
+
+		GCamera->Render();
 
 		pWorld_->OnRender();
 

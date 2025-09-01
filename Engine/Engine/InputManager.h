@@ -50,11 +50,11 @@ public:
 
     ENGINE_API unsigned long long UpTime(int key);
 
-    ENGINE_API const Vector& GetPrevMousePosition() const;
+    ENGINE_API const Float2& GetPrevMousePosition() const;
 
-    ENGINE_API const Vector& GetCurrentMousePosition() const;
+    ENGINE_API const Float2& GetCurrentMousePosition() const;
 
-    ENGINE_API const Vector& GetDeltaMouseMove() const;
+    ENGINE_API const Float2& GetDeltaMouseMove() const;
 
 private:
     bool Initialize();
@@ -71,9 +71,9 @@ private:
 
     HashTable* hashTable_;
 
-    Vector prevMousePos_;
+    Float2 prevMousePos_;
 
-    Vector curMousePos_;
+    Float2 curMousePos_;
 
-    Vector deltaMouseMove_;
+    Float2 deltaMouseMove_;
 };

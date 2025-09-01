@@ -19,9 +19,12 @@ ConstantManager* ConstantManager::Instance()
 
 void ConstantManager::Update()
 {
-	//constantBuffer_->world = pOwner_->GetWorldTransform().GetWorldMatrixTranspose();
-	constantBuffer_->view = DirectX::XMMatrixTranspose(GCamera->View());
-	constantBuffer_->projection = DirectX::XMMatrixTranspose(GCamera->Projection());
+	Float4x4 tmpMat;
+	MatrixTranspose(tmpMat, GCamera->View());
+	constantBuffer_->view = tmpMat;
+
+	MatrixTranspose(tmpMat, GCamera->Projection());
+	constantBuffer_->projection = tmpMat;
 
 	// Light
 	constantBuffer_->lightColor = GSpotLight->LightColor();

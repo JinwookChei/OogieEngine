@@ -1,57 +1,54 @@
 #pragma once
 
 
-class Transform final
-{
+class Transform final {
 public:
 	Transform();
 
-	virtual ~Transform();
+	~Transform();
 
-	ENGINE_API void SetScale(const DirectX::XMFLOAT4& scale);
+	ENGINE_API void SetScale(const Float4& scale);
 
-	ENGINE_API void SetRotation(const DirectX::XMFLOAT4& rotation);
+	ENGINE_API void SetRotation(const Float4& rotation);
 
-	ENGINE_API void SetPosition(const DirectX::XMFLOAT4& position);
+	ENGINE_API void AddRotaion(const Float4& offset);
 
-	ENGINE_API void AddRotaionRoll(float roll);
+	ENGINE_API void AddRotaionX(float offset);
 
-	ENGINE_API void AddRotaionPitch(float pitch);
+	ENGINE_API void AddRotaionY(float offset);
 
-	ENGINE_API void AddRotaionYaw(float yaw);
+	ENGINE_API void AddRotaionZ(float offset);
 
-	ENGINE_API void AddPosition(const Vector& add);
+	ENGINE_API void SetPosition(const Float4& position);
 
-	ENGINE_API void AddPositionX(float x);
+	ENGINE_API void AddPosition(const Float4& offset);
 
-	ENGINE_API void AddPositionY(float y);
+	ENGINE_API void AddPositionX(float offset);
 
-	ENGINE_API void AddPositionZ(float z);
+	ENGINE_API void AddPositionY(float offset);
 
-	ENGINE_API void RotateAroundAxis(const DirectX::XMVECTOR& axis, float angleDegrees);
+	ENGINE_API void AddPositionZ(float offset);
 
-	ENGINE_API const DirectX::XMMATRIX GetWorldMatrix() const;
+	ENGINE_API const Float4x4& __stdcall GetWorldMatrix() const;
 
-	ENGINE_API const DirectX::XMMATRIX GetWorldMatrixTranspose() const;
+	ENGINE_API const Float4x4 __stdcall GetWorldMatrixTranspose() const;
 
-	ENGINE_API DirectX::XMVECTOR GetPosition() const;
+	ENGINE_API const Float4& __stdcall GetPosition() const;
 
-	ENGINE_API DirectX::XMVECTOR ForwardVector() const;
-
-	ENGINE_API DirectX::XMVECTOR RightVector() const;
-
-	ENGINE_API DirectX::XMVECTOR UpVector() const;
+	ENGINE_API Float4 __stdcall ForwardVector() const;
+	ENGINE_API Float4 __stdcall UpVector() const;
+	ENGINE_API Float4 __stdcall RightVector() const;
 
 private:
 	void TransformUpdate();
 
-	DirectX::XMFLOAT4 scale_;
-	DirectX::XMFLOAT4 rotation_;
-	DirectX::XMFLOAT4 quaternion_;
-	DirectX::XMFLOAT4 position_;
+	Float4 scale_;
+	Float4 rotation_;
+	Float4 quaternion_;
+	Float4 position_;
 
-	DirectX::XMMATRIX scaleMatrix_;
-	DirectX::XMMATRIX rotationMatrix_;
-	DirectX::XMMATRIX positionMatrix_;
-	DirectX::XMMATRIX worldMatrix_;
+	Float4x4 scaleMatrix_;
+	Float4x4 rotationMatrix_;
+	Float4x4 positionMatrix_;
+	Float4x4 worldMatrix_;
 };

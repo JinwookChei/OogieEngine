@@ -154,17 +154,17 @@ unsigned long long InputManager::UpTime(int key)
     return pFind->upTime_;
 }
 
-const Vector& InputManager::GetPrevMousePosition() const
+const Float2& InputManager::GetPrevMousePosition() const
 {
     return prevMousePos_;
 }
 
-const Vector& InputManager::GetCurrentMousePosition() const
+const Float2& InputManager::GetCurrentMousePosition() const
 {
     return curMousePos_;
 }
 
-const Vector& InputManager::GetDeltaMouseMove() const
+const Float2& InputManager::GetDeltaMouseMove() const
 {
     return deltaMouseMove_;
 }

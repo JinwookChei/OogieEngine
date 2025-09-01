@@ -3,17 +3,16 @@
 #include "Camera.h"
 
 Camera::Camera()
-	: view_(),
-	projection_(),
-	fov_(60.0f),
+	: fov_(60.0f),
 	width_(800.0f),
 	height_(600.0f),
 	near_(0.01f),
 	far_(100.0f),
-	cameraSensitivity_(0.1f),
+	cameraSensitivity_(10.0f),
 	cameraSpeed_(2.0f)
 {
-
+	MatrixIdentity(view_);
+	MatrixIdentity(projection_);
 }
 
 Camera::~Camera()
@@ -25,58 +24,77 @@ void Camera::Tick(double deltaTime)
 {
 	if (InputManager::Instance()->IsPress(VK_RBUTTON))
 	{
-		const Vector& deltaMouseMove = InputManager::Instance()->GetDeltaMouseMove();
+		const Float2& deltaMouseMove = InputManager::Instance()->GetDeltaMouseMove();
 
-		//pTransform_->RotateAroundAxis(pTransform_->UpVector(), deltaMouseMove.X * cameraSensitivity_);
-		//pTransform_->RotateAroundAxis(pTransform_->RightVector(), deltaMouseMove.Y * cameraSensitivity_);
+		/*DirectX::XMVECTOR a = pTransform_->UpVector();
+
+		DirectX::XMVECTOR b = pTransform_->RightVector();
+
+		pTransform_->RotateAroundAxis(pTransform_->UpVector(), deltaMouseMove.X * cameraSensitivity_);
+		 
+		pTransform_->RotateAroundAxis(pTransform_->RightVector(), deltaMouseMove.Y * cameraSensitivity_);*/
 	}
 
 	if (InputManager::Instance()->IsPress('W'))
 	{
-		DirectX::XMFLOAT4 forwardVector;
-		XMStoreFloat4(&forwardVector, pTransform_->ForwardVector());
-		Vector offset = { forwardVector.x, forwardVector.y , forwardVector.z };
-		pTransform_->AddPosition(offset * cameraSpeed_ * (float)deltaTime);
+		Float4 forwardVector = pTransform_->ForwardVector();
 
+		Float4 offset;
+
+		VectorScale(offset, forwardVector, cameraSpeed_ * (float)deltaTime);
+
+		pTransform_->AddPosition(offset);
 	}
 	if (InputManager::Instance()->IsPress('S'))
 	{
-		DirectX::XMFLOAT4 forwardVector;
-		XMStoreFloat4(&forwardVector, pTransform_->ForwardVector());
-		Vector offset = { forwardVector.x, forwardVector.y, forwardVector.z };
-		pTransform_->AddPosition(-offset * cameraSpeed_ * (float)deltaTime);
+		Float4 forwardVector = pTransform_->ForwardVector();
+
+		Float4 offset;
+
+		VectorScale(offset, forwardVector, -1.0f * cameraSpeed_ * (float)deltaTime);
+
+		pTransform_->AddPosition(offset);
 	}
 	if (InputManager::Instance()->IsPress('A'))
 	{
-		DirectX::XMFLOAT4 rightVector;
-		XMStoreFloat4(&rightVector, pTransform_->RightVector());
-		Vector offset = { rightVector.x , rightVector.y, rightVector.z };
-		pTransform_->AddPosition(-offset * cameraSpeed_ * (float)deltaTime);
+		Float4 rightVector = pTransform_->RightVector();
+
+		Float4 offset;
+
+		VectorScale(offset, rightVector, -1.0f * cameraSpeed_ * (float)deltaTime);
+
+		pTransform_->AddPosition(offset);
 	}
 	if (InputManager::Instance()->IsPress('D'))
 	{
-		DirectX::XMFLOAT4 rightVector;
-		XMStoreFloat4(&rightVector, pTransform_->RightVector());
-		Vector offset = { rightVector.x , rightVector.y , rightVector.z };
-		pTransform_->AddPosition(offset * cameraSpeed_ * (float)deltaTime);
+		Float4 rightVector = pTransform_->RightVector();
+
+		Float4 offset;
+
+		VectorScale(offset, rightVector, cameraSpeed_ * (float)deltaTime);
+
+		pTransform_->AddPosition(offset);
 	}
 	if (InputManager::Instance()->IsPress('Q'))
 	{
-		DirectX::XMFLOAT4 upVector;
-		XMStoreFloat4(&upVector, pTransform_->UpVector());
-		Vector offset = { upVector.x , upVector.y , upVector.z };
-		pTransform_->AddPosition(-offset * cameraSpeed_ * (float)deltaTime);
+		Float4 upVector = pTransform_->UpVector();
+
+		Float4 offset;
+
+		VectorScale(offset, upVector, -1.0f * cameraSpeed_ * (float)deltaTime);
+
+		pTransform_->AddPosition(offset);
 	}
 	if (InputManager::Instance()->IsPress('E'))
 	{
-		DirectX::XMFLOAT4 upVector;
-		XMStoreFloat4(&upVector, pTransform_->UpVector());
-		Vector offset = { upVector.x , upVector.y , upVector.z };
-		pTransform_->AddPosition(offset * cameraSpeed_ * (float)deltaTime);
+		Float4 upVector = pTransform_->UpVector();
+
+		Float4 offset;
+
+		VectorScale(offset, upVector, cameraSpeed_ * (float)deltaTime);
+
+		pTransform_->AddPosition(offset);
 	}
-
-
-	CameraTransformUpdate();
 }
 
 void Camera::BeginPlay()
@@ -87,12 +105,17 @@ void Camera::BeginPlay()
 
 }
 
-const DirectX::XMMATRIX& Camera::View() const
+void Camera::Render()
+{
+	CameraTransformUpdate();
+}
+
+const Float4x4& Camera::View() const
 {
 	return view_;
 }
 
-const DirectX::XMMATRIX& Camera::Projection() const
+const Float4x4& Camera::Projection() const
 {
 	return projection_;
 }
@@ -126,12 +149,14 @@ void Camera::CleanUp()
 void Camera::CameraTransformUpdate()
 {
 	const Transform& worldForm = GetWorldTransform();
-	DirectX::XMVECTOR eyePos = worldForm.GetPosition();
-	DirectX::XMVECTOR eyeDir = worldForm.ForwardVector();
-	DirectX::XMVECTOR eyeUp = worldForm.UpVector();
+	Vector eyePos = worldForm.GetPosition();
+	Vector eyeDir = worldForm.ForwardVector();
+	Vector eyeUp = worldForm.UpVector();
 
-	view_ = DirectX::XMMatrixLookToLH(eyePos, eyeDir, eyeUp);
-	float degToRad = PI / 180;
+	MatrixLookToLH(view_, eyePos, eyeDir, eyeUp);
 
-	projection_ = DirectX::XMMatrixPerspectiveFovLH(fov_ * degToRad, (width_ / height_), near_, far_);
+	float fovRad = ConvertDegToRad(fov_);
+
+	MatrixPerspectiveFovLH(projection_, fov_, (width_ / height_), near_, far_);	
 }
+

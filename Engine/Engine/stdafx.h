@@ -15,17 +15,16 @@
 #define UTILITY_API __declspec(dllimport)
 
 #include <windows.h>
-// TEST용 Engine에서는 DirextX 라이브러리 가지지 X
-#include <DirectXMath.h>
+#include <stdint.h>
+#include <math.h>
 #include <vector>
-#include <array>
+
+#include <Utility/Math.h>
+#include <Utility/LinkedList.h>
+#include <Utility/HashTable.h>
 
 #include <Application/IApplication.h>
 #include <Renderer/IRenderer.h>
-
-#include <Utility/Float4.h>
-#include <Utility/LinkedList.h>
-#include <Utility/HashTable.h>
 
 #include "Application.h"
 #include "RenderDevice.h"
@@ -44,7 +43,4 @@ extern TimeManager* GTimeManager;
 extern ConstantManager* GConstantManager;
 extern Camera* GCamera;
 extern SpotLight* GSpotLight;
-
-
-#define PI 3.141592654f
 

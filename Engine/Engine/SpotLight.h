@@ -12,9 +12,9 @@ public:
 
 	void BeginPlay() override;
 
-	const DirectX::XMFLOAT3& SpotPosition() const;
+	const Float3& SpotPosition() const;
 
-	const DirectX::XMFLOAT3& SpotDirection() const;
+	const Float3& SpotDirection() const;
 
 	float SpotRange() const;
 
@@ -23,9 +23,9 @@ public:
 private:
 	void CleanUp() override;
 
-	DirectX::XMFLOAT3 spotPosition_;
+	Float3 spotPosition_;
 	
-	DirectX::XMFLOAT3 spotDirection_;
+	Float3 spotDirection_;
 	
 	float spotRange_;
 	

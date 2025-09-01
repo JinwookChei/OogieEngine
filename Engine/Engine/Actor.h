@@ -29,7 +29,5 @@ protected:
 protected:
 	Transform* pTransform_;
 
-	//RenderComponent* pRenderComponent_;
-
 	LINK_ITEM levelLink_;
 };

@@ -26,9 +26,9 @@ public:
 
 	void* __stdcall GetMainWindowHandle() override;
 
-	const std::array<float, 2>& __stdcall GetMousePosition() const override;
+	const Float2& __stdcall GetMousePosition() const override;
 
-	void UpdateMousePosition(float posX, float posY);
+	void UpdateMousePosition(const Float2& mousePos);
 
 	const HINSTANCE HandleInstance() const;
 
@@ -55,5 +55,5 @@ private:
 
 	bool isApplicationQuit_;
 
-	std::array<float, 2> mousePos_;
+	Float2 mousePos_;
 };

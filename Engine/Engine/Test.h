@@ -1,39 +1,38 @@
 #pragma once
 
 struct SimpleVertex {
-	DirectX::XMFLOAT3 position;
-	DirectX::XMFLOAT4 color;
-	DirectX::XMFLOAT3 normal;
-	DirectX::XMFLOAT2 UV;
-	DirectX::XMFLOAT4 tangent;
+	Float3 position;
+	Float4 color;
+	Float3 normal;
+	Float2 UV;
+	Float4 tangent;
 
 	/*SimpleVertex(Vector pos, Vector tmpcolor, Vector tmpnormal, Vector uv, Vector tan)
 		: position(pos), color(tmpcolor), normal(tmpnormal), UV(uv), tangent(tan) {
 	}*/
 
-	SimpleVertex(DirectX::XMFLOAT3 pos, DirectX::XMFLOAT4 tmpcolor, DirectX::XMFLOAT3 tmpnormal, DirectX::XMFLOAT2 uv)
+	SimpleVertex(Float3 pos, Float4 tmpcolor, Float3 tmpnormal, Float2 uv)
 		: position(pos), color(tmpcolor), normal(tmpnormal), UV(uv), tangent() {
 	}
 };
 
 struct ConstantBuffer
 {
-	DirectX::XMMATRIX world;
-	DirectX::XMMATRIX view;
-	DirectX::XMMATRIX projection;
-	//DirectX::XMFLOAT4 color;
+	Float4x4 world;
+	Float4x4 view;
+	Float4x4 projection;
 
-	DirectX::XMFLOAT4 lightDir;
-	DirectX::XMFLOAT4 lightColor;
-	DirectX::XMFLOAT4 ambientColor;
+	Float4 lightDir;
+	Float4 lightColor;
+	Float4 ambientColor;
 
-	DirectX::XMFLOAT3 spotPosition;
+	Float3 spotPosition;
 	float spotRange;
-	DirectX::XMFLOAT3 spotDirection;
+	Float3 spotDirection;
 	float spotAngle;
 
 	// point light
-	DirectX::XMFLOAT3 pointPosition;
+	Float3 pointPosition;
 	float pointLightRange;
 
 	// °¨¼è °è¼ö
@@ -44,4 +43,5 @@ struct ConstantBuffer
 };
 
 bool CreateSphere(std::vector<SimpleVertex>* outVertices, std::vector<WORD>* outIndices, float radius = 0.5f);
+
 bool CreateCube(std::vector<SimpleVertex>* outVertices, std::vector<WORD>* outIndices, float halfExtent = 0.5f);

@@ -12,12 +12,12 @@ Light::~Light()
 	CleanUp();
 }
 
-const DirectX::XMFLOAT4& Light::LightColor() const
+const Color& Light::LightColor() const
 {
 	return lightColor_;
 }
 
-const DirectX::XMFLOAT4& Light::AmbientColor() const
+const Color& Light::AmbientColor() const
 {
 	return ambientColor_;
 }

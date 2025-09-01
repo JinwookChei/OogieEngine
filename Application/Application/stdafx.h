@@ -17,10 +17,12 @@
 #define UNICODE
 #endif 
 
+#define UTILITY_API __declspec(dllexport)
 
-#include <array>
+
 #include <windows.h>
 #include <windowsx.h>
+#include <Utility/Math.h>
 
 #include <Application\IApplication.h>
 

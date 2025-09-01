@@ -36,14 +36,10 @@
 #include <cstdint>
 #include <windows.h>
 
-// TEMP : Vector 완성되면 삭제.
-#include <DirectXMath.h>
-#include <array>
-
+#include <Utility/Math.h>
+#include <Utility/LinkedList.h>
 #include <Application/IApplication.h>
 #include <Renderer/IRenderer.h>
-#include <Utility/LinkedList.h>
-#include <Utility/Float4.h>
 #include <Engine/Engine.h>
 #include <Engine/StartUp.h>
 #include <Engine/Level.h>
@@ -56,4 +52,3 @@
 #include "StartLevel.h"
 
 #include "ContentManager.h"
-//extern IEngineContainer* GEngineContainer;

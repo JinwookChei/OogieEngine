@@ -129,7 +129,7 @@ void* Application::GetMainWindowHandle()
 	return pApplicationImpl_->GetMainWindowHandle();
 }
 
-Vector Application::GetMousePosition()
+const Float2& Application::GetMousePosition() const
 {
 	if (nullptr == pApplicationImpl_)
 	{
@@ -137,9 +137,9 @@ Vector Application::GetMousePosition()
 		return {0.0f, 0.0f};
 	}
 
-	const std::array<float, 2>& mousePosition = pApplicationImpl_->GetMousePosition();
+	const Float2& mousePosition = pApplicationImpl_->GetMousePosition();
 
-	return {mousePosition[0], mousePosition[1]};
+	return mousePosition;
 }
 
 void Application::CleanUp()

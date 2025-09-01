@@ -15,9 +15,11 @@ public:
 
 	ENGINE_API void BeginPlay() override;
 
-	const DirectX::XMMATRIX& View() const;
+	ENGINE_API void Render() override;
 
-	const DirectX::XMMATRIX& Projection() const;
+	const Float4x4& View() const;
+
+	const Float4x4& Projection() const;
 
 	void SetWidth(float width);
 
@@ -30,9 +32,9 @@ private:
 
 	void CameraTransformUpdate();
 
-	DirectX::XMMATRIX view_;
+	Float4x4 view_;
 
-	DirectX::XMMATRIX projection_;
+	Float4x4 projection_;
 
 	float fov_;
 	float width_;

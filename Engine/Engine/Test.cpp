@@ -13,19 +13,19 @@ bool CreateSphere(std::vector<SimpleVertex>* outVertices, std::vector<WORD>* out
 
 	for (int stack = 0; stack <= SPHERE_STACKS; ++stack)
 	{
-		float phi = PI * stack / SPHERE_STACKS; // 0 ~ PI
+		float phi = MATH::PI * stack / SPHERE_STACKS; // 0 ~ PI
 		float z = cosf(phi);
 		float r = sinf(phi);
 
 		for (int slice = 0; slice <= SPHERE_SLICES; ++slice)
 		{
-			float theta = 2.0f * PI * slice / SPHERE_SLICES; // 0 ~ 2PI
+			float theta = 2.0f * MATH::PI * slice / SPHERE_SLICES; // 0 ~ 2PI
 			float x = r * cosf(theta);
 			float y = r * sinf(theta);
 
-			DirectX::XMFLOAT3 pos = DirectX::XMFLOAT3(x * radius, y * radius, z * radius);
-			DirectX::XMFLOAT3 normal = DirectX::XMFLOAT3(x, y, z);
-			DirectX::XMFLOAT4 color = DirectX::XMFLOAT4(
+			Float3 pos = Float3(x * radius, y * radius, z * radius);
+			Float3 normal = Float3(x, y, z);
+			Float4 color = Float4(
 				0.5f + 0.5f * x,
 				0.5f + 0.5f * y,
 				0.5f + 0.5f * z,
@@ -35,7 +35,7 @@ bool CreateSphere(std::vector<SimpleVertex>* outVertices, std::vector<WORD>* out
 			float u = (float)slice / SPHERE_SLICES;
 			float v = (float)stack / SPHERE_STACKS;
 
-			DirectX::XMFLOAT2 uv = DirectX::XMFLOAT2(u, v);
+			Float2 uv = Float2(u, v);
 			outVertices->push_back({ pos, color, normal, uv });
 		}
 	}
@@ -59,8 +59,8 @@ bool CreateSphere(std::vector<SimpleVertex>* outVertices, std::vector<WORD>* out
 		}
 	}
 
-	std::vector<DirectX::XMFLOAT3> tan1(outVertices->size(), DirectX::XMFLOAT3(0, 0, 0));
-	std::vector<DirectX::XMFLOAT3> tan2(outVertices->size(), DirectX::XMFLOAT3(0, 0, 0));
+	std::vector<Float3> tan1(outVertices->size(), Float3(0, 0, 0));
+	std::vector<Float3> tan2(outVertices->size(), Float3(0, 0, 0));
 
 	for (size_t n = 0; n < outIndices->size(); n += 3)
 	{
@@ -68,21 +68,21 @@ bool CreateSphere(std::vector<SimpleVertex>* outVertices, std::vector<WORD>* out
 		WORD i1 = (*outIndices)[n + 1];
 		WORD i2 = (*outIndices)[n + 2];
 
-		const Vector& p0 = (*outVertices)[i0].position;
-		const Vector& p1 = (*outVertices)[i1].position;
-		const Vector& p2 = (*outVertices)[i2].position;
+		const Float3& p0 = (*outVertices)[i0].position;
+		const Float3& p1 = (*outVertices)[i1].position;
+		const Float3& p2 = (*outVertices)[i2].position;
 
-		const Vector& uv0 = (*outVertices)[i0].UV;
-		const Vector& uv1 = (*outVertices)[i1].UV;
-		const Vector& uv2 = (*outVertices)[i2].UV;
+		const Float2& uv0 = (*outVertices)[i0].UV;
+		const Float2& uv1 = (*outVertices)[i1].UV;
+		const Float2& uv2 = (*outVertices)[i2].UV;
 
-		DirectX::XMVECTOR v0 = p0.dxVector;
-		DirectX::XMVECTOR v1 = p1.dxVector;
-		DirectX::XMVECTOR v2 = p2.dxVector;
+		//DirectX::XMVECTOR v0 = p0.dxVector;
+		//DirectX::XMVECTOR v1 = p1.dxVector;
+		//DirectX::XMVECTOR v2 = p2.dxVector;
 
-		DirectX::XMVECTOR uvv0 = uv0.dxVector;
-		DirectX::XMVECTOR uvv1 = uv1.dxVector;
-		DirectX::XMVECTOR uvv2 = uv2.dxVector;
+		//DirectX::XMVECTOR uvv0 = uv0.dxVector;
+		//DirectX::XMVECTOR uvv1 = uv1.dxVector;
+		//DirectX::XMVECTOR uvv2 = uv2.dxVector;
 
 		float x1 = p1.X - p0.X;
 		float y1 = p1.Y - p0.Y;
@@ -106,59 +106,70 @@ bool CreateSphere(std::vector<SimpleVertex>* outVertices, std::vector<WORD>* out
 
 		float invR = 1.0f / r;
 
-		DirectX::XMFLOAT3 sdir(
+		Float3 sdir(
 			(t2 * x1 - t1 * x2) * invR,
 			(t2 * y1 - t1 * y2) * invR,
 			(t2 * z1 - t1 * z2) * invR
 		);
 
-		DirectX::XMFLOAT3 tdir(
+		Float3 tdir(
 			(s1 * x2 - s2 * x1) * invR,
 			(s1 * y2 - s2 * y1) * invR,
 			(s1 * z2 - s2 * z1) * invR
 		);
 
-		tan1[i0].x += sdir.x;
-		tan1[i0].y += sdir.y;
-		tan1[i0].z += sdir.z;
+		tan1[i0].X += sdir.X;
+		tan1[i0].Y += sdir.Y;
+		tan1[i0].Z += sdir.Z;
 
-		tan1[i1].x += sdir.x;
-		tan1[i1].y += sdir.y;
-		tan1[i1].z += sdir.z;
+		tan1[i1].X += sdir.X;
+		tan1[i1].Y += sdir.Y;
+		tan1[i1].Z += sdir.Z;
 
-		tan1[i2].x += sdir.x;
-		tan1[i2].y += sdir.y;
-		tan1[i2].z += sdir.z;
+		tan1[i2].X += sdir.X;
+		tan1[i2].Y += sdir.Y;
+		tan1[i2].Z += sdir.Z;
 
-		tan2[i0].x += tdir.x;
-		tan2[i0].y += tdir.y;
-		tan2[i0].z += tdir.z;
+		tan2[i0].X += tdir.X;
+		tan2[i0].Y += tdir.Y;
+		tan2[i0].Z += tdir.Z;
 
-		tan2[i1].x += tdir.x;
-		tan2[i1].y += tdir.y;
-		tan2[i1].z += tdir.z;
+		tan2[i1].X += tdir.X;
+		tan2[i1].Y += tdir.Y;
+		tan2[i1].Z += tdir.Z;
 
-		tan2[i2].x += tdir.x;
-		tan2[i2].y += tdir.y;
-		tan2[i2].z += tdir.z;
+		tan2[i2].X += tdir.X;
+		tan2[i2].Y += tdir.Y;
+		tan2[i2].Z += tdir.Z;
 	}
 
 	for (size_t n = 0; n < outVertices->size(); ++n)
 	{
-		const Vector& normal = (*outVertices)[n].normal;
-		const DirectX::XMFLOAT3& tangent = tan1[n];
+		const Float3& normal = (*outVertices)[n].normal;
+		const Float3& tangent = tan1[n];
+		const Float3& tangent2 = tan2[n];
 
-		DirectX::XMVECTOR convertN = normal.dxVector;
-		DirectX::XMVECTOR convertT = DirectX::XMLoadFloat3(&tangent);
+		float dotResult = 0.0f;
+		VectorDot(dotResult, normal, tangent);
 
-		DirectX::XMVECTOR finalTangent = DirectX::XMVector3Normalize(DirectX::XMVectorSubtract(convertT, DirectX::XMVectorScale(convertN, DirectX::XMVectorGetX(DirectX::XMVector3Dot(convertN, convertT)))));
+		Float3 scaleResult;
+		VectorScale(scaleResult, normal, dotResult);
 
-		DirectX::XMVECTOR B = DirectX::XMLoadFloat3(&tan2[n]);
-		float handedness = (DirectX::XMVectorGetX(DirectX::XMVector3Dot(DirectX::XMVector3Cross(convertN, convertT), B)) < 0.0f) ? -1.0f : 1.0f;
+		Float3 subResult;
+		VectorSub(subResult, tangent, scaleResult);
 
-		DirectX::XMFLOAT3 tangent3;
-		DirectX::XMStoreFloat3(&tangent3, finalTangent);
-		(*outVertices)[n].tangent = DirectX::XMFLOAT4(tangent3.x, tangent3.y, tangent3.z, handedness);
+		Float3  finalTangent;
+		VectorNormalize(finalTangent, subResult);
+
+		Float3 crossResult;
+		VectorCross(crossResult, normal, tangent);
+
+		float dotResult2 = 0.0f;
+		VectorDot(dotResult2, crossResult, tangent2);
+
+		float handedness = (dotResult2 < 0.0f) ? -1.0f : 1.0f;
+
+		(*outVertices)[n].tangent = Float4(finalTangent.X, finalTangent.Y, finalTangent.Z, handedness);
 
 	}
 	return true;
@@ -171,28 +182,28 @@ bool CreateCube(std::vector<SimpleVertex>* outVertices, std::vector<WORD>* outIn
 	}
 
 	// 8개 꼭지점 정의
-	DirectX::XMFLOAT3 cubePos[8] = {
-		DirectX::XMFLOAT3(-halfExtent, -halfExtent, -halfExtent),
-		DirectX::XMFLOAT3(-halfExtent, +halfExtent, -halfExtent),
-		DirectX::XMFLOAT3(+halfExtent, +halfExtent, -halfExtent),
-		DirectX::XMFLOAT3(+halfExtent, -halfExtent, -halfExtent),
-		DirectX::XMFLOAT3(-halfExtent, -halfExtent, +halfExtent),
-		DirectX::XMFLOAT3(-halfExtent, +halfExtent, +halfExtent),
-		DirectX::XMFLOAT3(+halfExtent, +halfExtent, +halfExtent),
-		DirectX::XMFLOAT3(+halfExtent, -halfExtent, +halfExtent)
+	Float3 cubePos[8] = {
+		Float3(-halfExtent, -halfExtent, -halfExtent),
+		Float3(-halfExtent, +halfExtent, -halfExtent),
+		Float3(+halfExtent, +halfExtent, -halfExtent),
+		Float3(+halfExtent, -halfExtent, -halfExtent),
+		Float3(-halfExtent, -halfExtent, +halfExtent),
+		Float3(-halfExtent, +halfExtent, +halfExtent),
+		Float3(+halfExtent, +halfExtent, +halfExtent),
+		Float3(+halfExtent, -halfExtent, +halfExtent)
 	};
 
 	// 꼭지점별 Color, Normal, UV 설정 예시
 	for (int i = 0; i < 8; ++i) {
-		DirectX::XMFLOAT3 pos = cubePos[i];
-		DirectX::XMFLOAT3 normal = DirectX::XMFLOAT3(0, 0, 0); // 이후 튜토리얼 등에서 face-normal로 보정 가능
-		DirectX::XMFLOAT4 color = DirectX::XMFLOAT4(
-			0.5f + 0.5f * pos.x / halfExtent,
-			0.5f + 0.5f * pos.y / halfExtent,
-			0.5f + 0.5f * pos.z / halfExtent,
+		Float3 pos = cubePos[i];
+		Float3 normal = Float3(0, 0, 0);
+		Float4 color = Float4(
+			0.5f + 0.5f * pos.X / halfExtent,
+			0.5f + 0.5f * pos.Y / halfExtent,
+			0.5f + 0.5f * pos.Z / halfExtent,
 			1.0f
 		);
-		DirectX::XMFLOAT2 uv = DirectX::XMFLOAT2(0, 0); // cube는 필요에 따라 수정
+		Float2 uv = Float2(0, 0); // cube는 필요에 따라 수정
 		outVertices->push_back({ pos, color, normal, uv });
 	}
 

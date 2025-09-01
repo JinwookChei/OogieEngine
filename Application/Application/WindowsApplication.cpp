@@ -14,8 +14,10 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		return 0;
 	case WM_MOUSEMOVE:
 		float posX = GET_X_LPARAM(lParam);
-		float posY = GET_Y_LPARAM(lParam);		
-		GApplication->UpdateMousePosition(posX,	 posY);
+		float posY = GET_Y_LPARAM(lParam);
+
+		Float2 mousePos{ posX , posY};
+		GApplication->UpdateMousePosition(mousePos);
 		return 0;
 	}
 	return DefWindowProc(hwnd, uMsg, wParam, lParam);
@@ -35,7 +37,7 @@ WindowsApplication::WindowsApplication(
 	mainWindow_(nullptr),
 	refCount_(1),
 	isApplicationQuit_(false),
-	mousePos_({0.0f, 0.0f})
+	mousePos_({ 0.0f, 0.0f })
 {
 	GApplication = this;
 }
@@ -156,15 +158,14 @@ void* __stdcall WindowsApplication::GetMainWindowHandle()
 	return mainWindow_->Handle();
 }
 
-const std::array<float,2>& __stdcall WindowsApplication::GetMousePosition() const
+const Float2& __stdcall WindowsApplication::GetMousePosition() const
 {
 	return mousePos_;
 }
 
-void WindowsApplication::UpdateMousePosition(float posX, float posY)
+void WindowsApplication::UpdateMousePosition(const Float2& mousePos)
 {
-	mousePos_[0] = posX;
-	mousePos_[1] = posY;
+	mousePos_ = mousePos;
 }
 
 const HINSTANCE WindowsApplication::HandleInstance() const

@@ -20,7 +20,7 @@ public:
 
 	void  RenderEnd();
 
-	uint64_t  DrawCallCount();
+	uint64_t DrawCallCount();
 
 	IInputLayout* CreateLayout(IVertex* vertex, IShader* vertexShader);
 
@@ -40,8 +40,6 @@ private:
 	void CleanUp();
 
 	IRenderer* pRendererImpl_;
-
-	//imple
 
 	HMODULE rendererModule_;
 

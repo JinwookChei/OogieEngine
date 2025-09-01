@@ -32,7 +32,7 @@ public:
 
 	void* GetMainWindowHandle();
 
-	Vector GetMousePosition();
+	const Float2& GetMousePosition() const;
 
 private:
 
