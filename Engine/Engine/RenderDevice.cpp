@@ -64,7 +64,7 @@ bool RenderDevice::Load(void* pMainHwnd, LPCWSTR libFileName)
 	}
 
 
-	if (false == pRendererImpl_->Initialize(pMainHwnd, 800, 600))
+	if (false == pRendererImpl_->Initialize(pMainHwnd, 2560, 1440))
 	{
 		DEBUG_BREAK();
 		return false;

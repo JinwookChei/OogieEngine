@@ -102,6 +102,10 @@ bool Engine::Initialize
 		return false;
 	}
 	GCamera->BeginPlay();
+	GCamera->SetWidth(2560.f);
+	GCamera->SetHeight(1440.f);
+	
+
 
 	GConstantManager = new ConstantManager;
 	if (nullptr == GConstantManager)
