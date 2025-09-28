@@ -1,12 +1,12 @@
 #pragma once
 
-class SamplerState final
+class D3D11SamplerState final
 	: public ISamplerState
 {
 public:
-	SamplerState();
+	D3D11SamplerState();
 
-	virtual ~SamplerState();
+	virtual ~D3D11SamplerState();
 
 	HRESULT __stdcall QueryInterface(REFIID riid, _COM_Outptr_ void __RPC_FAR* __RPC_FAR* ppvObject) override;
 

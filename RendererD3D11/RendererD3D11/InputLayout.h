@@ -1,12 +1,12 @@
 #pragma once
 
-class InputLayout final
+class D3D11InputLayout final
 	: public IInputLayout
 {
 public:
-	InputLayout();
+	D3D11InputLayout();
 
-	virtual ~InputLayout();
+	virtual ~D3D11InputLayout();
 
 	HRESULT __stdcall QueryInterface(REFIID riid, _COM_Outptr_ void __RPC_FAR* __RPC_FAR* ppvObject) override;
 

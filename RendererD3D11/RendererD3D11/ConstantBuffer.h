@@ -1,12 +1,12 @@
 #pragma once
 
-class ConstantBuffer final
+class D3D11ConstantBuffer final
 	: public IConstantBuffer
 {
 public:
-	ConstantBuffer();
+	D3D11ConstantBuffer();
 
-	virtual ~ConstantBuffer();
+	virtual ~D3D11ConstantBuffer();
 
 	HRESULT __stdcall QueryInterface(REFIID riid, _COM_Outptr_ void __RPC_FAR* __RPC_FAR* ppvObject) override;
 

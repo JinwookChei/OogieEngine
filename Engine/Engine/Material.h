@@ -3,7 +3,7 @@
 class Material
 {
 public:
-	Material();
+	Material() = delete;
 
 	Material(IShader* pVertexShader, IShader* pPixelShader, ISamplerState* pSampleState);
 

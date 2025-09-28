@@ -20,6 +20,8 @@ struct IRenderTarget : public IUnknown
 	virtual void __stdcall Clear() = 0;
 
 	virtual void __stdcall Setting() = 0;
+
+	virtual void __stdcall SetClearColor(const Color& color) = 0;
 };
 
 struct IVertex : public IUnknown 

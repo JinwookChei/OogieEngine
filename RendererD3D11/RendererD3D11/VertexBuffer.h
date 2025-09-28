@@ -5,14 +5,14 @@ struct SimpleVertex {
 	DirectX::XMFLOAT4 color;
 };
 
-class VertexBuffer
+class D3D11VertexBuffer
 	: public IVertex
 {
 	friend D3D11Renderer;
 public:
-	VertexBuffer();
+	D3D11VertexBuffer();
 
-	virtual ~VertexBuffer();
+	virtual ~D3D11VertexBuffer();
 
 	HRESULT __stdcall QueryInterface(REFIID riid, _COM_Outptr_ void __RPC_FAR* __RPC_FAR* ppvObject) override;
 

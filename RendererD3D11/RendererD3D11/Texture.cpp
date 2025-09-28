@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Texture.h"
 
-Texture::Texture()
+D3D11Texture::D3D11Texture()
 	: refCount_(1),
 	pTexture_(nullptr),
 	pRenderTargetView_(nullptr),
@@ -10,22 +10,22 @@ Texture::Texture()
 {
 }
 
-Texture::~Texture()
+D3D11Texture::~D3D11Texture()
 {
 	CleanUp();
 }
 
-HRESULT __stdcall Texture::QueryInterface(REFIID riid, void** ppvObject)
+HRESULT __stdcall D3D11Texture::QueryInterface(REFIID riid, void** ppvObject)
 {
 	return E_NOTIMPL;
 }
 
-ULONG __stdcall Texture::AddRef()
+ULONG __stdcall D3D11Texture::AddRef()
 {
 	return ++refCount_;
 }
 
-ULONG __stdcall Texture::Release()
+ULONG __stdcall D3D11Texture::Release()
 {
 	--refCount_;
 	ULONG tmpRefCount = refCount_;
@@ -35,7 +35,7 @@ ULONG __stdcall Texture::Release()
 	return tmpRefCount;
 }
 
-Texture* Texture::Create(const Float2& size, DXGI_FORMAT format, uint32_t flag)
+D3D11Texture* D3D11Texture::Create(const Float2& size, DXGI_FORMAT format, uint32_t flag)
 {
 	D3D11_TEXTURE2D_DESC desc = { 0, };
 	desc.ArraySize = 1;
@@ -52,7 +52,7 @@ Texture* Texture::Create(const Float2& size, DXGI_FORMAT format, uint32_t flag)
 	return Create(desc);
 }
 
-Texture* Texture::Create(const D3D11_TEXTURE2D_DESC& desc)
+D3D11Texture* D3D11Texture::Create(const D3D11_TEXTURE2D_DESC& desc)
 {
 	ID3D11Texture2D* texture;
 
@@ -63,7 +63,7 @@ Texture* Texture::Create(const D3D11_TEXTURE2D_DESC& desc)
 		return nullptr;
 	}
 
-	Texture* newTexture = new Texture;
+	D3D11Texture* newTexture = new D3D11Texture;
 	bool ret = newTexture->SetTexture(texture);
 
 	if (ret == false)
@@ -75,7 +75,7 @@ Texture* Texture::Create(const D3D11_TEXTURE2D_DESC& desc)
 	return newTexture;
 }
 
-bool Texture::SetTexture(ID3D11Texture2D* pTexture)
+bool D3D11Texture::SetTexture(ID3D11Texture2D* pTexture)
 {
 	CleanUp();
 
@@ -108,7 +108,7 @@ bool Texture::SetTexture(ID3D11Texture2D* pTexture)
 	return true;
 }
 
-Float2 Texture::Size() const
+Float2 D3D11Texture::Size() const
 {
 	return Float2({(float)desc_.Width , (float)desc_.Height });
 }
@@ -123,17 +123,17 @@ Float2 Texture::Size() const
 //	return (FLOAT);
 //}
 
-ID3D11RenderTargetView* Texture::RenderTargetView() const
+ID3D11RenderTargetView* D3D11Texture::RenderTargetView() const
 {
 	return pRenderTargetView_;
 }
 
-ID3D11DepthStencilView* Texture::DepthStencilView() const
+ID3D11DepthStencilView* D3D11Texture::DepthStencilView() const
 {
 	return pDepthStencilView_;
 }
 
-bool Texture::CreateRenderTargetView()
+bool D3D11Texture::CreateRenderTargetView()
 {
 	if (nullptr == pTexture_)
 	{
@@ -156,7 +156,7 @@ bool Texture::CreateRenderTargetView()
 	return true;
 }
 
-bool Texture::CreateDepthStencilView()
+bool D3D11Texture::CreateDepthStencilView()
 {
 	if (nullptr == pTexture_)
 	{
@@ -178,7 +178,7 @@ bool Texture::CreateDepthStencilView()
 	return true;
 }
 
-void Texture::CleanUp()
+void D3D11Texture::CleanUp()
 {
 	if (nullptr != pRenderTargetView_)
 	{

@@ -1,4 +1,5 @@
 #pragma once
+class RenderTarget;
 class Mesh;
 class Material;
 class InputLayout;
@@ -30,7 +31,7 @@ public:
 
 	//IRasterizer* CreateRasterizer(bool back);
 
-	//IRenderTarget* CreateRenderTarget(const Float2& size, const Color& clearColor);
+	RenderTarget* CreateRenderTarget(const Float2& size, const Color& clearColor);
 
 	InputLayout* CreateLayout(Mesh* pMesh, Material* pMaterial);
 

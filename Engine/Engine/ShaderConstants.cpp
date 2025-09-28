@@ -1,10 +1,10 @@
 #include "stdafx.h"
 #include "ShaderConstants.h"
 
-ShaderConstants::ShaderConstants()
-	:pConstantBufferImpl_(nullptr)
-{
-}
+//ShaderConstants::ShaderConstants()
+//	:pConstantBufferImpl_(nullptr)
+//{
+//}
 
 ShaderConstants::ShaderConstants(IConstantBuffer* pConstantBuffer)
 	:pConstantBufferImpl_(pConstantBuffer)

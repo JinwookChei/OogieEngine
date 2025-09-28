@@ -1,12 +1,12 @@
 #pragma once
 
-class Rasterizer final
+class D3D11Rasterizer final
 	: public IRasterizer
 {
 public:
-	Rasterizer();
+	D3D11Rasterizer();
 
-	virtual ~Rasterizer();
+	virtual ~D3D11Rasterizer();
 
 	HRESULT __stdcall QueryInterface(REFIID riid, _COM_Outptr_ void __RPC_FAR* __RPC_FAR* ppvObject) override;
 

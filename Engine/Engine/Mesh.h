@@ -3,7 +3,7 @@
 class Mesh
 {
 public:
-	Mesh();
+	Mesh() = delete;
 
 	Mesh(IVertex* pVertex);
 

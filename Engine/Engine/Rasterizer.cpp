@@ -1,10 +1,10 @@
 #include "stdafx.h"
 #include "Rasterizer.h"
-
-Rasterizer::Rasterizer()
-	:pRasterizerImpl_(nullptr)
-{
-}
+//
+//Rasterizer::Rasterizer()
+//	:pRasterizerImpl_(nullptr)
+//{
+//}
 
 Rasterizer::Rasterizer(IRasterizer* pRasterizer)
 	:pRasterizerImpl_(nullptr)

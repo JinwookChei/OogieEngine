@@ -18,15 +18,17 @@ public:
 
 	ENGINE_API void Render() override;
 
+	void RenderTest();
+
 	const Float4x4& View() const;
 
 	const Float4x4& Projection() const;
 
-	void SetWidth(float width);
-
-	void SetHeight(float height);
+	void SetSize(const Float2& size);
 
 	void SetConfig(float fov, float Near, float Far);
+
+	void SetClearColor(const Color& clearColor);
 
 private:
 	void CleanUp() override;
@@ -34,17 +36,17 @@ private:
 	void CameraTransformUpdate();
 
 	Float4x4 view_;
-
 	Float4x4 projection_;
 
 	float fov_;
-	float width_;
-	float height_;
+	Float2 size_;
 	float near_;
 	float far_;
 
+	Color clearColor_;
 	float cameraSensitivity_;
 	float cameraSpeed_;
 
 	RenderTarget* pRenderTarget_;
+
 };

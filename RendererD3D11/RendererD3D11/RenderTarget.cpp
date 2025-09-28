@@ -3,9 +3,9 @@
 #include "RenderTarget.h"
 
 
-RenderTarget* GCurrentSetRenderTarget = nullptr;
+D3D11RenderTarget* GCurrentSetRenderTarget = nullptr;
 
-RenderTarget::RenderTarget()
+D3D11RenderTarget::D3D11RenderTarget()
 	: refCount_(1),
 	pRenderTexture_(nullptr),
 	pDepthTexture_(nullptr),
@@ -14,22 +14,22 @@ RenderTarget::RenderTarget()
 {
 }
 
-RenderTarget::~RenderTarget()
+D3D11RenderTarget::~D3D11RenderTarget()
 {
 	CleanUp();
 }
 
-HRESULT __stdcall RenderTarget::QueryInterface(REFIID riid, void** ppvObject)
+HRESULT __stdcall D3D11RenderTarget::QueryInterface(REFIID riid, void** ppvObject)
 {
 	return E_NOTIMPL;
 }
 
-ULONG __stdcall RenderTarget::AddRef()
+ULONG __stdcall D3D11RenderTarget::AddRef()
 {
 	return ++refCount_;
 }
 
-ULONG __stdcall RenderTarget::Release()
+ULONG __stdcall D3D11RenderTarget::Release()
 {
 	--refCount_;
 	ULONG tmpRefCount = refCount_;
@@ -40,7 +40,12 @@ ULONG __stdcall RenderTarget::Release()
 	return tmpRefCount;
 }
 
-bool RenderTarget::CreateDepthTexture()
+void D3D11RenderTarget::SetClearColor(const Color& color)
+{
+	clearColor_ = color;
+}
+
+bool D3D11RenderTarget::CreateDepthTexture()
 {
 	if (nullptr == pRenderTexture_)
 	{
@@ -48,12 +53,12 @@ bool RenderTarget::CreateDepthTexture()
 		return false;
 	}
 
-	pDepthTexture_ = Texture::Create(pRenderTexture_->Size(), DXGI_FORMAT::DXGI_FORMAT_D24_UNORM_S8_UINT, D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL);
+	pDepthTexture_ = D3D11Texture::Create(pRenderTexture_->Size(), DXGI_FORMAT::DXGI_FORMAT_D24_UNORM_S8_UINT, D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL);
 
 	return nullptr != pDepthTexture_;
 }
 
-bool RenderTarget::SetTexture(Texture* pTexture)
+bool D3D11RenderTarget::SetTexture(D3D11Texture* pTexture)
 {
 	CleanUp();
 
@@ -76,12 +81,7 @@ bool RenderTarget::SetTexture(Texture* pTexture)
 	return true;
 }
 
-void RenderTarget::SetClearColor(const Color& color)
-{
-	clearColor_ = color;
-}
-
-void RenderTarget::Clear()
+void D3D11RenderTarget::Clear()
 {
 	ID3D11RenderTargetView* pRenderTargetView = pRenderTexture_->RenderTargetView();
 
@@ -109,7 +109,7 @@ void RenderTarget::Clear()
 	GRenderer->DeviceContext()->ClearDepthStencilView(pDepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 }	
 
-void RenderTarget::Setting()
+void D3D11RenderTarget::Setting()
 {
 	if (GCurrentSetRenderTarget == this)
 	{
@@ -135,7 +135,7 @@ void RenderTarget::Setting()
 	GRenderer->DeviceContext()->RSSetViewports(1, &viewport_);
 }
 
-void RenderTarget::CleanUp()
+void D3D11RenderTarget::CleanUp()
 {
 	if (nullptr != pRenderTexture_)
 	{

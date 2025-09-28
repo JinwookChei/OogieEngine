@@ -5,18 +5,16 @@
 
 Camera::Camera()
 	: fov_(60.0f),
-	width_(800.0f),
-	height_(600.0f),
+	size_({ 2560.f, 1440.0f }),
 	near_(0.01f),
 	far_(100.0f),
+	clearColor_({ 1.0f, 0.0f, 0.0f, 1.0f }),
 	cameraSensitivity_(10.0f),
 	cameraSpeed_(2.0f)
 {
 	MatrixIdentity(view_);
 	MatrixIdentity(projection_);
-	
-	//pRenderTarget_ = RenderDevice::Instance()->CreateRenderTarget();
-	//pRenderTarget_ =
+	pRenderTarget_ = RenderDevice::Instance()->CreateRenderTarget(size_, clearColor_);
 }
 
 Camera::~Camera()
@@ -35,7 +33,7 @@ void Camera::Tick(double deltaTime)
 		DirectX::XMVECTOR b = pTransform_->RightVector();
 
 		pTransform_->RotateAroundAxis(pTransform_->UpVector(), deltaMouseMove.X * cameraSensitivity_);
-		 
+
 		pTransform_->RotateAroundAxis(pTransform_->RightVector(), deltaMouseMove.Y * cameraSensitivity_);*/
 	}
 
@@ -113,6 +111,15 @@ void Camera::Render()
 	CameraTransformUpdate();
 }
 
+void Camera::RenderTest()
+{
+	CameraTransformUpdate();
+
+	pRenderTarget_->Clear();
+
+	pRenderTarget_->Setting();
+}
+
 const Float4x4& Camera::View() const
 {
 	return view_;
@@ -123,15 +130,19 @@ const Float4x4& Camera::Projection() const
 	return projection_;
 }
 
-void Camera::SetWidth(float width)
+void Camera::SetSize(const Float2& size)
 {
-	width_ = width;
+	size_ = size;
+
+	if (nullptr != pRenderTarget_)
+	{
+		delete pRenderTarget_;
+		pRenderTarget_ = nullptr;
+	}
+
+	pRenderTarget_ = RenderDevice::Instance()->CreateRenderTarget(size_, clearColor_);
 }
 
-void Camera::SetHeight(float height)
-{
-	height_ = height;
-}
 
 void Camera::SetConfig(float fov, float Near, float Far)
 {
@@ -140,19 +151,19 @@ void Camera::SetConfig(float fov, float Near, float Far)
 	far_ = Far;
 }
 
+void Camera::SetClearColor(const Color& clearColor)
+{
+	clearColor_ = clearColor;
+	pRenderTarget_->SetClearColor(clearColor_);
+}
+
 void Camera::CleanUp()
 {
-	//if (nullptr != pTransform_)
-	//{
-	//	delete pTransform_;
-	//	pTransform_ = nullptr;
-	//}
-
-	//if (nullptr != pRenderTarget_)
-	//{
-	//	delete pRenderTarget_;
-	//	pRenderTarget_ = nullptr;
-	//}
+	if (nullptr != pRenderTarget_)
+	{
+		delete pRenderTarget_;
+		pRenderTarget_ = nullptr;
+	}
 }
 
 void Camera::CameraTransformUpdate()
@@ -166,6 +177,6 @@ void Camera::CameraTransformUpdate()
 
 	float fovRad = ConvertDegToRad(fov_);
 
-	MatrixPerspectiveFovLH(projection_, fov_, (width_ / height_), near_, far_);	
+	MatrixPerspectiveFovLH(projection_, fov_, (size_.X / size_.Y), near_, far_);
 }
 

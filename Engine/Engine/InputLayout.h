@@ -3,7 +3,7 @@
 class InputLayout
 {
 public:
-	InputLayout();
+	InputLayout() = delete;
 
 	InputLayout(IInputLayout* pInputLayout);
 

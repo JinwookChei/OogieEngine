@@ -3,28 +3,28 @@
 #include "VertexBuffer.h"
 #include "BaseShader.h"
 
-InputLayout::InputLayout()
+D3D11InputLayout::D3D11InputLayout()
 	: refCount_(1),
 	pInputLayout_(nullptr)
 {
 }
 
-InputLayout::~InputLayout()
+D3D11InputLayout::~D3D11InputLayout()
 {
 	CleanUp();
 }
 
-HRESULT __stdcall InputLayout::QueryInterface(REFIID riid, void** ppvObject)
+HRESULT __stdcall D3D11InputLayout::QueryInterface(REFIID riid, void** ppvObject)
 {
 	return E_NOTIMPL;
 }
 
-ULONG __stdcall InputLayout::AddRef()
+ULONG __stdcall D3D11InputLayout::AddRef()
 {
 	return ++refCount_;
 }
 
-ULONG __stdcall InputLayout::Release()
+ULONG __stdcall D3D11InputLayout::Release()
 {
 	--refCount_;
 	ULONG tmpRefCount = refCount_;
@@ -35,18 +35,18 @@ ULONG __stdcall InputLayout::Release()
 	return tmpRefCount;
 }
 
-void __stdcall InputLayout::Setting()
+void __stdcall D3D11InputLayout::Setting()
 {
 	GRenderer->DeviceContext()->IASetInputLayout(pInputLayout_);
 }
 
 
-bool InputLayout::Create(IVertex* pVertex, IShader* pVertexShader)
+bool D3D11InputLayout::Create(IVertex* pVertex, IShader* pVertexShader)
 {
 	CleanUp();
 
-	VertexBuffer* pBuffer = (VertexBuffer*)pVertex;
-	BaseShader* pShader = (BaseShader*)pVertexShader;
+	D3D11VertexBuffer* pBuffer = (D3D11VertexBuffer*)pVertex;
+	D3D11BaseShader* pShader = (D3D11BaseShader*)pVertexShader;
 
 	const std::vector<D3D11_INPUT_ELEMENT_DESC>& layoutDesc = pBuffer->GetDesc();
 
@@ -65,7 +65,7 @@ bool InputLayout::Create(IVertex* pVertex, IShader* pVertexShader)
 	return true;
 }
 
-void InputLayout::CleanUp()
+void D3D11InputLayout::CleanUp()
 {
 	if (nullptr != pInputLayout_)
 	{

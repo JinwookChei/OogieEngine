@@ -1,28 +1,28 @@
 #include "stdafx.h"
 #include "BaseShader.h"
 
-BaseShader::BaseShader()
+D3D11BaseShader::D3D11BaseShader()
 	:refCount_(1),
 	pBlob_(nullptr)
 {
 }
 
-BaseShader::~BaseShader()
+D3D11BaseShader::~D3D11BaseShader()
 {
 	CleanUp();
 }
 
-HRESULT __stdcall BaseShader::QueryInterface(REFIID riid, void** ppvObject)
+HRESULT __stdcall D3D11BaseShader::QueryInterface(REFIID riid, void** ppvObject)
 {
 	return E_NOTIMPL;
 }
 
-ULONG __stdcall BaseShader::AddRef()
+ULONG __stdcall D3D11BaseShader::AddRef()
 {
 	return ++refCount_;
 }
 
-ULONG __stdcall BaseShader::Release()
+ULONG __stdcall D3D11BaseShader::Release()
 {
 	--refCount_;
 	ULONG tmpRefCount = refCount_;
@@ -33,12 +33,12 @@ ULONG __stdcall BaseShader::Release()
 	return tmpRefCount;
 }
 
-void __stdcall BaseShader::Setting()
+void __stdcall D3D11BaseShader::Setting()
 {
 	SetShader();
 }
 
-bool BaseShader::CreateShader(ID3DBlob* pBlob)
+bool D3D11BaseShader::CreateShader(ID3DBlob* pBlob)
 {
 	if (nullptr == pBlob)
 	{
@@ -52,7 +52,7 @@ bool BaseShader::CreateShader(ID3DBlob* pBlob)
 	return OnCreateShader(pBlob_);
 }
 
-void* BaseShader::GetBufferPointer()
+void* D3D11BaseShader::GetBufferPointer()
 {
 	if (nullptr == pBlob_)
 	{
@@ -61,7 +61,7 @@ void* BaseShader::GetBufferPointer()
 	return pBlob_->GetBufferPointer();
 }
 
-size_t BaseShader::GetBufferSize()
+size_t D3D11BaseShader::GetBufferSize()
 {
 	if (nullptr == pBlob_)
 	{
@@ -72,7 +72,7 @@ size_t BaseShader::GetBufferSize()
 }
 
 
-void BaseShader::CleanUp()
+void D3D11BaseShader::CleanUp()
 {
 	if (nullptr != pBlob_)
 	{

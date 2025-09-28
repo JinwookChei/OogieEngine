@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Rasterizer.h"
 
-Rasterizer::Rasterizer()
+D3D11Rasterizer::D3D11Rasterizer()
 	: refCount_(1),
 	pCurrentState_(nullptr),
 	pSolidState_(nullptr),
@@ -9,22 +9,22 @@ Rasterizer::Rasterizer()
 {
 }
 
-Rasterizer::~Rasterizer()
+D3D11Rasterizer::~D3D11Rasterizer()
 {
 	CleanUp();
 }
 
-HRESULT __stdcall Rasterizer::QueryInterface(REFIID riid, void** ppvObject)
+HRESULT __stdcall D3D11Rasterizer::QueryInterface(REFIID riid, void** ppvObject)
 {
 	return E_NOTIMPL;
 }
 
-ULONG __stdcall Rasterizer::AddRef()
+ULONG __stdcall D3D11Rasterizer::AddRef()
 {
 	return ++refCount_;
 }
 
-ULONG __stdcall Rasterizer::Release()
+ULONG __stdcall D3D11Rasterizer::Release()
 {
 	--refCount_;
 	ULONG tmpRefCount = refCount_;
@@ -35,12 +35,12 @@ ULONG __stdcall Rasterizer::Release()
 	return tmpRefCount;
 }
 
-void __stdcall Rasterizer::Setting()
+void __stdcall D3D11Rasterizer::Setting()
 {
 	GRenderer->DeviceContext()->RSSetState(pCurrentState_);
 }
 
-void __stdcall Rasterizer::SetFillMode(FillModeType fillmode)
+void __stdcall D3D11Rasterizer::SetFillMode(FillModeType fillmode)
 {
 	if (nullptr != pCurrentState_)
 	{
@@ -63,7 +63,7 @@ void __stdcall Rasterizer::SetFillMode(FillModeType fillmode)
 	}
 }
 
-bool Rasterizer::CreateRasterizer(bool frontCounterClockwise, bool backFace)
+bool D3D11Rasterizer::CreateRasterizer(bool frontCounterClockwise, bool backFace)
 {
 	D3D11_RASTERIZER_DESC desc = {};
 	desc.CullMode = backFace ? D3D11_CULL_MODE::D3D11_CULL_BACK : D3D11_CULL_MODE::D3D11_CULL_FRONT;
@@ -96,7 +96,7 @@ bool Rasterizer::CreateRasterizer(bool frontCounterClockwise, bool backFace)
 	return true;
 }
 
-void Rasterizer::CleanUp()
+void D3D11Rasterizer::CleanUp()
 {
 	if (nullptr != pCurrentState_)
 	{

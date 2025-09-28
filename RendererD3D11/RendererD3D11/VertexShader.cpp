@@ -1,22 +1,22 @@
 #include "stdafx.h"
 #include "VertexShader.h"
 
-VertexShader::VertexShader()
+D3D11VertexShader::D3D11VertexShader()
 	:pShader_(nullptr)
 {
 }
 
-VertexShader::~VertexShader()
+D3D11VertexShader::~D3D11VertexShader()
 {
 	CleanUp();
 }
 
-void VertexShader::SetShader()
+void D3D11VertexShader::SetShader()
 {
 	GRenderer->DeviceContext()->VSSetShader(pShader_, nullptr, 0);
 }
 
-bool VertexShader::OnCreateShader(ID3DBlob* pBlob)
+bool D3D11VertexShader::OnCreateShader(ID3DBlob* pBlob)
 {
 	if (nullptr == pBlob)
 	{
@@ -38,7 +38,7 @@ bool VertexShader::OnCreateShader(ID3DBlob* pBlob)
 	return true;
 }
 
-void VertexShader::CleanUp()
+void D3D11VertexShader::CleanUp()
 {
 	if (nullptr != pShader_)
 	{

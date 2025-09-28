@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "VertexBuffer.h"
 
-VertexBuffer::VertexBuffer()
+D3D11VertexBuffer::D3D11VertexBuffer()
 	: refCount_(1),
 	stride_(0),
 	offset_(0),
@@ -11,22 +11,22 @@ VertexBuffer::VertexBuffer()
 {
 }
 
-VertexBuffer::~VertexBuffer()
+D3D11VertexBuffer::~D3D11VertexBuffer()
 {
 	CleanUp();
 }
 
-HRESULT __stdcall VertexBuffer::QueryInterface(REFIID riid, void** ppvObject)
+HRESULT __stdcall D3D11VertexBuffer::QueryInterface(REFIID riid, void** ppvObject)
 {
 	return E_NOTIMPL;
 }
 
-ULONG __stdcall VertexBuffer::AddRef()
+ULONG __stdcall D3D11VertexBuffer::AddRef()
 {
 	return ++refCount_;
 }
 
-ULONG __stdcall VertexBuffer::Release()
+ULONG __stdcall D3D11VertexBuffer::Release()
 {
 	--refCount_;
 	ULONG tmpRefCount = refCount_;
@@ -37,7 +37,7 @@ ULONG __stdcall VertexBuffer::Release()
 	return tmpRefCount;
 }
 
-bool __stdcall VertexBuffer::AddInputLayout(const char* pSemanticName, uint32_t semanticIndex, uint32_t format, uint32_t inputSlot, bool isInstanceData)
+bool __stdcall D3D11VertexBuffer::AddInputLayout(const char* pSemanticName, uint32_t semanticIndex, uint32_t format, uint32_t inputSlot, bool isInstanceData)
 {
 	D3D11_INPUT_ELEMENT_DESC desc = { 0 };
 	desc.SemanticName = pSemanticName;
@@ -53,7 +53,7 @@ bool __stdcall VertexBuffer::AddInputLayout(const char* pSemanticName, uint32_t 
 	return true;
 }
 
-void __stdcall VertexBuffer::Setting()
+void __stdcall D3D11VertexBuffer::Setting()
 {
 	UINT offset = 0;
 
@@ -64,7 +64,7 @@ void __stdcall VertexBuffer::Setting()
 	GRenderer->DeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
 
-bool __stdcall VertexBuffer::Draw()
+bool __stdcall D3D11VertexBuffer::Draw()
 {
 	GRenderer->DeviceContext()->DrawIndexed(indexCount_, 0, 0);
 
@@ -72,12 +72,12 @@ bool __stdcall VertexBuffer::Draw()
 	return true;
 }
 
-const std::vector<D3D11_INPUT_ELEMENT_DESC>& VertexBuffer::GetDesc() const
+const std::vector<D3D11_INPUT_ELEMENT_DESC>& D3D11VertexBuffer::GetDesc() const
 {
 	return desc_;
 }
 
-bool VertexBuffer::Initialize(void* pVertices, UINT vertexSize, UINT vertexCount, void* pIndices /*= nullptr*/, UINT indexTypeSize /*= 0*/, UINT indexCount /*= 0*/)
+bool D3D11VertexBuffer::Initialize(void* pVertices, UINT vertexSize, UINT vertexCount, void* pIndices /*= nullptr*/, UINT indexTypeSize /*= 0*/, UINT indexCount /*= 0*/)
 {
 	if (nullptr == pVertices)
 	{
@@ -158,7 +158,7 @@ bool VertexBuffer::Initialize(void* pVertices, UINT vertexSize, UINT vertexCount
 	return true;
 }
 
-void VertexBuffer::CleanUp()
+void D3D11VertexBuffer::CleanUp()
 {
 	if (nullptr != pIndexBuffer_)
 	{
@@ -172,7 +172,7 @@ void VertexBuffer::CleanUp()
 	}
 }
 
-UINT VertexBuffer::FormatSize(DXGI_FORMAT format)
+UINT D3D11VertexBuffer::FormatSize(DXGI_FORMAT format)
 {
 	switch (format)
 	{

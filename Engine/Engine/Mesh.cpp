@@ -1,10 +1,10 @@
 #include "stdafx.h"
 #include "Mesh.h"
 
-Mesh::Mesh()
-	: pVertexImpl_(nullptr)
-{
-}
+//Mesh::Mesh()
+//	: pVertexImpl_(nullptr)
+//{
+//}
 
 Mesh::Mesh(IVertex* pVertex)
 	: pVertexImpl_(pVertex)

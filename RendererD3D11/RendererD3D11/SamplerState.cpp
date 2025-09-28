@@ -1,28 +1,28 @@
 #include "stdafx.h"
 #include "SamplerState.h"
 
-SamplerState::SamplerState()
+D3D11SamplerState::D3D11SamplerState()
 	: refCount_(1),
 	pSamplerState_(nullptr)
 {
 }
 
-SamplerState::~SamplerState()
+D3D11SamplerState::~D3D11SamplerState()
 {
 	CleanUp();
 }
 
-HRESULT __stdcall SamplerState::QueryInterface(REFIID riid, void** ppvObject)
+HRESULT __stdcall D3D11SamplerState::QueryInterface(REFIID riid, void** ppvObject)
 {
 	return E_NOTIMPL;
 }
 
-ULONG __stdcall SamplerState::AddRef()
+ULONG __stdcall D3D11SamplerState::AddRef()
 {
 	return ++refCount_;
 }
 
-ULONG __stdcall SamplerState::Release()
+ULONG __stdcall D3D11SamplerState::Release()
 {
 	--refCount_;
 	ULONG tmpRefCount = refCount_;
@@ -33,12 +33,12 @@ ULONG __stdcall SamplerState::Release()
 	return tmpRefCount;
 }
 
-void __stdcall SamplerState::Setting(uint32_t slot)
+void __stdcall D3D11SamplerState::Setting(uint32_t slot)
 {
 	GRenderer->DeviceContext()->PSSetSamplers(slot, 1, &pSamplerState_);
 }
 
-bool SamplerState::CreateSampler(bool linear, bool clamp)
+bool D3D11SamplerState::CreateSampler(bool linear, bool clamp)
 {
 	D3D11_SAMPLER_DESC samplerDesc = {};
 	samplerDesc.Filter = linear ? D3D11_FILTER_MIN_MAG_MIP_LINEAR : D3D11_FILTER_MIN_MAG_MIP_POINT;
@@ -68,7 +68,7 @@ bool SamplerState::CreateSampler(bool linear, bool clamp)
 }
 
 
-void SamplerState::CleanUp()
+void D3D11SamplerState::CleanUp()
 {
 	if (nullptr != pSamplerState_)
 	{

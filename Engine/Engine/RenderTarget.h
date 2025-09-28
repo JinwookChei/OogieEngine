@@ -4,11 +4,19 @@
 class RenderTarget final
 {
 public:
-	RenderTarget();
+	RenderTarget() = delete;
+
+	RenderTarget(IRenderTarget* pRenderTargetImpl);
+
 	virtual ~RenderTarget();
 
+	void Clear();
+
+	void Setting();
+
+	void SetClearColor(const Color& cleaColor);
 private:
-	void CleanUP();
+	void CleanUp();
 
 	IRenderTarget* pRenderTargetImpl_;
 };

@@ -1,6 +1,6 @@
 #pragma once
 
-class RenderTarget;
+class D3D11RenderTarget;
 class D3D11Renderer final
 	: public IRenderer
 {
@@ -66,5 +66,5 @@ private:
 
 	IDXGISwapChain* pSwapChain_;
 
-	RenderTarget* pBackBuffer_;
+	D3D11RenderTarget* pBackBuffer_;
 };

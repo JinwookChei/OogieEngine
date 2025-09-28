@@ -1,27 +1,27 @@
 #include "stdafx.h"
 #include "ConstantBuffer.h"
 
-ConstantBuffer::ConstantBuffer()
+D3D11ConstantBuffer::D3D11ConstantBuffer()
 	: refCount_(1),
 	pBuffer_(nullptr) {
 }
 
-ConstantBuffer::~ConstantBuffer()
+D3D11ConstantBuffer::~D3D11ConstantBuffer()
 {
 	CleanUp();
 }
 
-HRESULT __stdcall ConstantBuffer::QueryInterface(REFIID riid, void** ppvObject)
+HRESULT __stdcall D3D11ConstantBuffer::QueryInterface(REFIID riid, void** ppvObject)
 {
 	return E_NOTIMPL;
 }
 
-ULONG __stdcall ConstantBuffer::AddRef()
+ULONG __stdcall D3D11ConstantBuffer::AddRef()
 {
 	return ++refCount_;
 }
 
-ULONG __stdcall ConstantBuffer::Release()
+ULONG __stdcall D3D11ConstantBuffer::Release()
 {
 	--refCount_;
 	ULONG tmpRefCount = refCount_;
@@ -32,22 +32,22 @@ ULONG __stdcall ConstantBuffer::Release()
 	return tmpRefCount;
 }
 
-void __stdcall ConstantBuffer::Update(void* pSrcData)
+void __stdcall D3D11ConstantBuffer::Update(void* pSrcData)
 {
 	GRenderer->DeviceContext()->UpdateSubresource(pBuffer_, 0, nullptr, pSrcData, 0, 0);
 }
 
-void __stdcall ConstantBuffer::VSSetting(uint32_t slot)
+void __stdcall D3D11ConstantBuffer::VSSetting(uint32_t slot)
 {
 	GRenderer->DeviceContext()->VSSetConstantBuffers(slot, 1, &pBuffer_);
 }
 
-void __stdcall ConstantBuffer::PSSetting(uint32_t slot)
+void __stdcall D3D11ConstantBuffer::PSSetting(uint32_t slot)
 {
 	GRenderer->DeviceContext()->PSSetConstantBuffers(slot, 1, &pBuffer_);
 }
 
-bool ConstantBuffer::CreateBuffer(UINT bufferSize)
+bool D3D11ConstantBuffer::CreateBuffer(UINT bufferSize)
 {
 	D3D11_BUFFER_DESC desc{};
 	memset(&desc, 0x00, sizeof(D3D11_BUFFER_DESC));
@@ -73,7 +73,7 @@ bool ConstantBuffer::CreateBuffer(UINT bufferSize)
 	return true;
 }
 
-void ConstantBuffer::CleanUp()
+void D3D11ConstantBuffer::CleanUp()
 {
 	if (nullptr != pBuffer_)
 	{

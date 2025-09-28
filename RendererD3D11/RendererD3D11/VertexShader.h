@@ -1,13 +1,13 @@
 #pragma once
 
 
-class VertexShader
-	: public BaseShader
+class D3D11VertexShader
+	: public D3D11BaseShader
 {	
 public:
-	VertexShader();
+	D3D11VertexShader();
 
-	~VertexShader() override;
+	~D3D11VertexShader() override;
 
 	void SetShader() override;
 

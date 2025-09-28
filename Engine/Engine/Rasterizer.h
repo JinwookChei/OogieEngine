@@ -3,7 +3,7 @@
 class Rasterizer
 {
 public:
-	Rasterizer();
+	Rasterizer() = delete;
 
 	Rasterizer(IRasterizer* pRasterizer);
 

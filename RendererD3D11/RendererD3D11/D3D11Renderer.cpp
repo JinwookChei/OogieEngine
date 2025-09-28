@@ -152,7 +152,7 @@ uint64_t __stdcall D3D11Renderer::DrawCallCount()
 
 IInputLayout* __stdcall D3D11Renderer::CreateLayout(IVertex* vertex, IShader* vertexShader)
 {
-	InputLayout* pNewInputLayout = new InputLayout;
+	D3D11InputLayout* pNewInputLayout = new D3D11InputLayout;
 	if (false == pNewInputLayout->Create(vertex, vertexShader))
 	{
 		pNewInputLayout->Release();
@@ -164,7 +164,7 @@ IInputLayout* __stdcall D3D11Renderer::CreateLayout(IVertex* vertex, IShader* ve
 
 IVertex* __stdcall D3D11Renderer::CreateVertex(void* vertices, uint32_t vertexSize, uint32_t vertexCount, void* indices, uint32_t indexTypeSize, uint32_t indexCount)
 {
-	VertexBuffer* vertexBuffer = new VertexBuffer;
+	D3D11VertexBuffer* vertexBuffer = new D3D11VertexBuffer;
 	if (nullptr == vertexBuffer)
 	{
 		DEBUG_BREAK();
@@ -182,7 +182,7 @@ IVertex* __stdcall D3D11Renderer::CreateVertex(void* vertices, uint32_t vertexSi
 
 IConstantBuffer* __stdcall D3D11Renderer::CreateConstantBuffer(uint32_t bufferSize)
 {
-	ConstantBuffer* buffer = new ConstantBuffer;
+	D3D11ConstantBuffer* buffer = new D3D11ConstantBuffer;
 	if (false == buffer->CreateBuffer(bufferSize))
 	{
 		buffer->Release();
@@ -201,14 +201,14 @@ IShader* __stdcall D3D11Renderer::CreateShader(ShaderType shaderType, const wcha
 		return nullptr;
 	}
 
-	BaseShader* pShader = nullptr;
+	D3D11BaseShader* pShader = nullptr;
 	switch (shaderType)
 	{
 	case ShaderType::Vertex:
-		pShader = new VertexShader;
+		pShader = new D3D11VertexShader;
 		break;
 	case ShaderType::Pixel:
-		pShader = new PixelShader;
+		pShader = new D3D11PixelShader;
 		break;
 	}
 
@@ -223,7 +223,7 @@ IShader* __stdcall D3D11Renderer::CreateShader(ShaderType shaderType, const wcha
 
 ISamplerState* __stdcall D3D11Renderer::CreateSampler(bool linear, bool clamp)
 {
-	SamplerState* pSampler = new SamplerState;
+	D3D11SamplerState* pSampler = new D3D11SamplerState;
 	if (false == pSampler->CreateSampler(linear, clamp))
 	{
 		pSampler->Release();
@@ -235,7 +235,7 @@ ISamplerState* __stdcall D3D11Renderer::CreateSampler(bool linear, bool clamp)
 
 IRasterizer* __stdcall D3D11Renderer::CreateRasterizer(bool back)
 {
-	Rasterizer* pRasterizer = new Rasterizer;
+	D3D11Rasterizer* pRasterizer = new D3D11Rasterizer;
 	if (false == pRasterizer->CreateRasterizer(false, back))
 	{
 		pRasterizer->Release();
@@ -247,13 +247,13 @@ IRasterizer* __stdcall D3D11Renderer::CreateRasterizer(bool back)
 
 IRenderTarget* __stdcall D3D11Renderer::CreateRenderTarget(const Float2& size, const Color& clearColor)
 {
-	Texture* pTexture = Texture::Create(size, DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET | D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE);
+	D3D11Texture* pTexture = D3D11Texture::Create(size, DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET | D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE);
 	if (nullptr == pTexture)
 	{
 		return nullptr;
 	}
 
-	RenderTarget* pRenderTarget = new RenderTarget;
+	D3D11RenderTarget* pRenderTarget = new D3D11RenderTarget;
 	if (nullptr == pRenderTarget)
 	{
 		DEBUG_BREAK();
@@ -417,7 +417,7 @@ bool D3D11Renderer::CreateBackBuffer()
 		return false;
 	}
 
-	Texture* pNewTexture = new Texture;
+	D3D11Texture* pNewTexture = new D3D11Texture;
 	if (nullptr == pNewTexture)
 	{
 		pBackBufferTexture->Release();
@@ -431,7 +431,7 @@ bool D3D11Renderer::CreateBackBuffer()
 		return false;
 	}
 
-	pBackBuffer_ = new RenderTarget;
+	pBackBuffer_ = new D3D11RenderTarget;
 	if (nullptr == pBackBuffer_)
 	{
 		DEBUG_BREAK();

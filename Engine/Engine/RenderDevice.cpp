@@ -3,6 +3,7 @@
 #include "InputLayout.h"
 #include "Mesh.h"
 #include "Material.h"
+#include "RenderTarget.h"
 #include "ShaderConstants.h"
 #include "RenderDevice.h"
 
@@ -134,16 +135,26 @@ uint64_t  RenderDevice::DrawCallCount()
 //	return pRendererImpl_->CreateRasterizer(back);
 //}
 
-//IRenderTarget* RenderDevice::CreateRenderTarget(const Float2& size, const Color& clearColor)
-//{
-//	if (nullptr == pRendererImpl_)
-//	{
-//		DEBUG_BREAK();
-//		return nullptr;
-//	}
-//
-//	return pRendererImpl_->CreateRenderTarget(size, clearColor);
-//}
+RenderTarget* RenderDevice::CreateRenderTarget(const Float2& size, const Color& clearColor)
+{
+	if (nullptr == pRendererImpl_)
+	{
+		DEBUG_BREAK();
+		return nullptr;
+	}
+
+	IRenderTarget* pRenderTargetImpl = pRendererImpl_->CreateRenderTarget(size, clearColor);
+
+	RenderTarget* pRenderTarget = new RenderTarget(pRenderTargetImpl);
+	if (nullptr == pRenderTarget)
+	{
+		DEBUG_BREAK();
+		pRenderTargetImpl->Release();
+		return nullptr;
+	}
+
+	return pRenderTarget;
+}
 
 InputLayout* RenderDevice::CreateLayout(Mesh* pMesh, Material* pMaterial)
 {
@@ -192,7 +203,7 @@ Material* RenderDevice::CreateMaterial(const wchar_t* VS, const wchar_t* PS)
 	}
 
 	IShader* pVertexShaderImpl = nullptr;
-	if(nullptr != VS)
+	if (nullptr != VS)
 	{
 		pVertexShaderImpl = pRendererImpl_->CreateShader(ShaderType::Vertex, VS);
 	}
@@ -204,7 +215,7 @@ Material* RenderDevice::CreateMaterial(const wchar_t* VS, const wchar_t* PS)
 	}
 	ISamplerState* pSamplerState = nullptr;
 
-	
+
 	Material* pMaterial = new Material(pVertexShaderImpl, pPixelShaderImpl, pSamplerState);
 	if (nullptr == pMaterial)
 	{

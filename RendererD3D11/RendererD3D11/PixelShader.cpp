@@ -1,22 +1,22 @@
 #include "stdafx.h"
 #include "PixelShader.h"
 
-PixelShader::PixelShader()
+D3D11PixelShader::D3D11PixelShader()
 	: pShader_(nullptr)
 {
 }
 
-PixelShader::~PixelShader()
+D3D11PixelShader::~D3D11PixelShader()
 {
 	CleanUp();
 }
 
-void PixelShader::SetShader()
+void D3D11PixelShader::SetShader()
 {
 	GRenderer->DeviceContext()->PSSetShader(pShader_, nullptr, 0);
 }
 
-bool PixelShader::OnCreateShader(ID3DBlob* pBlob)
+bool D3D11PixelShader::OnCreateShader(ID3DBlob* pBlob)
 {
 	if (nullptr == pBlob)
 	{
@@ -38,7 +38,7 @@ bool PixelShader::OnCreateShader(ID3DBlob* pBlob)
 	return true;
 }
 
-void PixelShader::CleanUp()
+void D3D11PixelShader::CleanUp()
 {
 	if (nullptr != pShader_)
 	{

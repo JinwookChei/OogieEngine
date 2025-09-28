@@ -3,7 +3,7 @@
 class ShaderConstants
 {
 public:
-	ShaderConstants();
+	ShaderConstants() = delete;
 
 	ShaderConstants(IConstantBuffer* pConstantBuffer);
 
