@@ -7,9 +7,8 @@ Mesh::Mesh()
 }
 
 Mesh::Mesh(IVertex* pVertex)
-	: pVertexImpl_(nullptr)
+	: pVertexImpl_(pVertex)
 {
-	SetVertex(pVertex);
 }
 
 Mesh::~Mesh()
@@ -63,6 +62,11 @@ void Mesh::SetVertex(IVertex* pVertex)
 		pVertexImpl_ = pVertex;
 		pVertexImpl_->AddRef();
 	}
+}
+
+IVertex* Mesh::GetVertex() const
+{
+	return pVertexImpl_;
 }
 
 

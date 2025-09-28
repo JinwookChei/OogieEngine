@@ -7,9 +7,8 @@ InputLayout::InputLayout()
 }
 
 InputLayout::InputLayout(IInputLayout* pInputLayout)
-	:pInputLayoutImpl_(nullptr)
+	:pInputLayoutImpl_(pInputLayout)
 {
-	SetInputLayout(pInputLayout);
 }
 
 InputLayout::~InputLayout()

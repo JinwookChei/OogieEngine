@@ -46,9 +46,6 @@
     <Filter Include="Source Files\StartUp">
       <UniqueIdentifier>{09f27d5a-85b2-403e-8811-033cf2a1eb82}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Engine\Modules">
-      <UniqueIdentifier>{e68fcdd2-546a-4a33-a0cd-4b167d8419d3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Graphics">
       <UniqueIdentifier>{94168407-658e-4754-a783-df63e0303040}</UniqueIdentifier>
     </Filter>
@@ -81,6 +78,15 @@
     </Filter>
     <Filter Include="Source Files\Component\Transform">
       <UniqueIdentifier>{c5f06b07-d3ba-44d5-b5ad-babf8fd96da4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Graphics\RenderTarget">
+      <UniqueIdentifier>{d3c89d3f-8b50-4100-85e3-dadc5325692c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Graphics\RenderDevice">
+      <UniqueIdentifier>{24f0f453-8dcd-4026-9727-fbd9534da72f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Application">
+      <UniqueIdentifier>{6a6ee16b-cf94-4e60-84b7-52dfc4dbb0b2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -123,14 +129,8 @@
     <ClInclude Include="TimeManager.h">
       <Filter>Source Files\Manager</Filter>
     </ClInclude>
-    <ClInclude Include="Application.h">
-      <Filter>Source Files\Engine\Modules</Filter>
-    </ClInclude>
     <ClInclude Include="StartUp.h">
       <Filter>Source Files\StartUp</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderDevice.h">
-      <Filter>Source Files\Engine\Modules</Filter>
     </ClInclude>
     <ClInclude Include="RenderComponent.h">
       <Filter>Source Files\Component\RenderComponent</Filter>
@@ -158,6 +158,15 @@
     </ClInclude>
     <ClInclude Include="ConstantManager.h">
       <Filter>Source Files\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderTarget.h">
+      <Filter>Source Files\Graphics\RenderTarget</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderDevice.h">
+      <Filter>Source Files\Graphics\RenderDevice</Filter>
+    </ClInclude>
+    <ClInclude Include="Application.h">
+      <Filter>Source Files\Application</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -197,12 +206,6 @@
     <ClCompile Include="TimeManager.cpp">
       <Filter>Source Files\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="Application.cpp">
-      <Filter>Source Files\Engine\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderDevice.cpp">
-      <Filter>Source Files\Engine\Modules</Filter>
-    </ClCompile>
     <ClCompile Include="RenderComponent.cpp">
       <Filter>Source Files\Component\RenderComponent</Filter>
     </ClCompile>
@@ -229,6 +232,15 @@
     </ClCompile>
     <ClCompile Include="ConstantManager.cpp">
       <Filter>Source Files\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderTarget.cpp">
+      <Filter>Source Files\Graphics\RenderTarget</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderDevice.cpp">
+      <Filter>Source Files\Graphics\RenderDevice</Filter>
+    </ClCompile>
+    <ClCompile Include="Application.cpp">
+      <Filter>Source Files\Application</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

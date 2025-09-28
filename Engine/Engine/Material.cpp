@@ -2,14 +2,18 @@
 #include "Material.h"
 
 Material::Material()
-	: pMaterialImpl_(nullptr)
+	: pVertexShaderImpl_(nullptr),
+	pPixelShaderImpl_(nullptr),
+	pSampleStateImpl_(nullptr)
 {
 }
 
-Material::Material(IMaterial* pMaterial)
-	: pMaterialImpl_(nullptr)
+Material::Material(IShader* pVertexShader, IShader* pPixelShader, ISamplerState* pSampleState)
+	:pVertexShaderImpl_(pVertexShader),
+	pPixelShaderImpl_(pPixelShader),
+	pSampleStateImpl_(pSampleState)
 {
-	SetMaterial(pMaterial);
+
 }
 
 Material::~Material()
@@ -17,69 +21,38 @@ Material::~Material()
 	CleanUp();
 }
 
-void Material::SetVertexShader(IShader* vertexShader)
+IShader* Material::GetVertexShader() const
 {
-	if (nullptr == pMaterialImpl_)
-	{
-		DEBUG_BREAK();
-		return;
-	}
-
-	pMaterialImpl_->SetVertexShader(vertexShader);
-}
-
-void Material::SetPixelShader(IShader* pixelShader)
-{
-	if (nullptr == pMaterialImpl_)
-	{
-		DEBUG_BREAK();
-		return;
-	}
-
-	pMaterialImpl_->SetPixelShader(pixelShader);
+	return pVertexShaderImpl_;
 }
 
 void Material::SetSampler(ISamplerState* sampler, uint32_t slot/* = 0*/)
 {
-	if (nullptr == pMaterialImpl_)
-	{
-		DEBUG_BREAK();
-		return;
-	}
 
-	pMaterialImpl_->SetSampler(sampler, slot);
 }
 
 void Material::Setting()
 {
-	if (nullptr == pMaterialImpl_)
-	{
-		DEBUG_BREAK();
-		return;
-	}
+	pVertexShaderImpl_->Setting();
 
-	pMaterialImpl_->Setting();
-}
-
-void Material::SetMaterial(IMaterial* pMaterial)
-{
-	if (nullptr != pMaterialImpl_)
-	{
-		pMaterialImpl_->Release();
-		pMaterialImpl_ = nullptr;
-	}
-	if (nullptr != pMaterial)
-	{
-		pMaterialImpl_ = pMaterial;
-		pMaterialImpl_->AddRef();
-	}
+	pPixelShaderImpl_->Setting();
 }
 
 void Material::CleanUp()
 {
-	if (nullptr != pMaterialImpl_)
+	if (nullptr != pVertexShaderImpl_)
 	{
-		pMaterialImpl_->Release();
-		pMaterialImpl_ = nullptr;
+		pVertexShaderImpl_->Release();
+		pVertexShaderImpl_ = nullptr;
+	}
+	if (nullptr != pPixelShaderImpl_)
+	{
+		pPixelShaderImpl_->Release();
+		pPixelShaderImpl_ = nullptr;
+	}
+	if (nullptr != pSampleStateImpl_)
+	{
+		pSampleStateImpl_->Release();
+		pSampleStateImpl_ = nullptr;
 	}
 }

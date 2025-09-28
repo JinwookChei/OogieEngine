@@ -6,7 +6,6 @@
 #include "PixelShader.h"
 #include "InputLayout.h"
 #include "SamplerState.h"
-#include "Material.h"
 #include "ConstantBuffer.h"
 #include "Rasterizer.h"
 
@@ -124,7 +123,7 @@ bool __stdcall D3D11Renderer::Initialize(void* hWnd, uint32_t width, uint32_t he
 		return false;
 	}
 
-	if (false == CreateRenderTarget())
+	if (false == CreateBackBuffer())
 	{
 		return false;
 	}
@@ -222,11 +221,6 @@ IShader* __stdcall D3D11Renderer::CreateShader(ShaderType shaderType, const wcha
 	return pShader;
 }
 
-IMaterial* __stdcall D3D11Renderer::CreateMaterial()
-{
-	return new Material;
-
-}
 ISamplerState* __stdcall D3D11Renderer::CreateSampler(bool linear, bool clamp)
 {
 	SamplerState* pSampler = new SamplerState;
@@ -249,6 +243,32 @@ IRasterizer* __stdcall D3D11Renderer::CreateRasterizer(bool back)
 	}
 
 	return pRasterizer;
+}
+
+IRenderTarget* __stdcall D3D11Renderer::CreateRenderTarget(const Float2& size, const Color& clearColor)
+{
+	Texture* pTexture = Texture::Create(size, DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET | D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE);
+	if (nullptr == pTexture)
+	{
+		return nullptr;
+	}
+
+	RenderTarget* pRenderTarget = new RenderTarget;
+	if (nullptr == pRenderTarget)
+	{
+		DEBUG_BREAK();
+		pTexture->Release();
+		return nullptr;
+	}
+	if (false == pRenderTarget->SetTexture(pTexture))
+	{
+		pRenderTarget->Release();
+		return nullptr;
+	}
+	
+	pRenderTarget->SetClearColor(clearColor);
+
+	return pRenderTarget;
 }
 
 ID3D11Device*  D3D11Renderer::Device()
@@ -380,7 +400,7 @@ lb_return:
 	return true;
 }
 
-bool D3D11Renderer::CreateRenderTarget()
+bool D3D11Renderer::CreateBackBuffer()
 {
 	ID3D11Texture2D* pBackBufferTexture = nullptr;
 

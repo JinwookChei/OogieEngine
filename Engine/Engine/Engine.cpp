@@ -297,5 +297,4 @@ void Engine::CleanUp()
 	RenderDevice::Destroy();
 
 	Application::Destroy();
-
 }

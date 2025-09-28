@@ -14,6 +14,8 @@ public:
 
 	ULONG __stdcall Release() override;
 
+	void __stdcall Setting() override;
+
 	bool CreateShader(ID3DBlob* pBlob);
 
 	virtual void SetShader() = 0;

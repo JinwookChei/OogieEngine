@@ -31,11 +31,11 @@ public:
 
 	IShader* __stdcall CreateShader(ShaderType shaderType, const wchar_t* pPath) override;
 
-	IMaterial* __stdcall CreateMaterial() override;
-
 	ISamplerState* __stdcall  CreateSampler(bool linear, bool clamp) override;
 	
 	IRasterizer* __stdcall  CreateRasterizer(bool back) override;
+
+	IRenderTarget* __stdcall CreateRenderTarget(const Float2& size, const Color& clearColor) override;
 
 	ID3D11Device* Device();
 
@@ -48,7 +48,7 @@ private:
 
 	bool CreateSwapChain(UINT width, UINT height);
 
-	bool CreateRenderTarget();
+	bool CreateBackBuffer();
 
 	void CleanUp();
 

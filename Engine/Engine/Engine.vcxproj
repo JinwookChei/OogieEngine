@@ -148,6 +148,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ConstantManager.h" />
     <ClInclude Include="Light.h" />
+    <ClInclude Include="RenderTarget.h" />
     <ClInclude Include="ShaderConstants.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="InputLayout.h" />
@@ -173,6 +174,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ConstantManager.cpp" />
     <ClCompile Include="Light.cpp" />
+    <ClCompile Include="RenderTarget.cpp" />
     <ClCompile Include="ShaderConstants.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="Engine.cpp" />

@@ -26,7 +26,7 @@ RenderComponent::~RenderComponent()
 }
 
 void RenderComponent::Render()
-{		
+{
 	ConstantBuffer* cb = ConstantManager::Instance()->GetConstantBuffer();
 	if (nullptr == cb)
 	{
@@ -51,7 +51,7 @@ void RenderComponent::Create(MESH_TYPE meshType)
 {
 	std::vector<SimpleVertex> sphereVertices;
 	std::vector<WORD> sphereIndices;
-	
+
 	switch (meshType)
 	{
 	case MESH_TYPE::SPHERE:
@@ -65,39 +65,25 @@ void RenderComponent::Create(MESH_TYPE meshType)
 	}
 
 	// Mesh
-	IVertex* pSphereVertex = RenderDevice::Instance()->CreateVertex(sphereVertices.data(), (uint32_t)sizeof(SimpleVertex), (uint32_t)sphereVertices.size(), sphereIndices.data(), (uint32_t)sizeof(WORD), (uint32_t)sphereIndices.size());
-	pMesh_ = new Mesh(pSphereVertex);
+	pMesh_ = RenderDevice::Instance()->CreateMesh
+	(
+		sphereVertices.data(), (uint32_t)sizeof(SimpleVertex),
+		(uint32_t)sphereVertices.size(), sphereIndices.data(),
+		(uint32_t)sizeof(WORD),
+		(uint32_t)sphereIndices.size()
+	);
 	pMesh_->AddInputLayout("POSITION", 0, 6, 0, false);
 	pMesh_->AddInputLayout("COLOR", 0, 2, 0, false);
 	pMesh_->AddInputLayout("NORMAL", 0, 6, 0, false);
 	pMesh_->AddInputLayout("TEXCOORD", 0, 16, 0, false);
 	pMesh_->AddInputLayout("TANGENT", 0, 2, 0, false);
 
-	// Shader
-	IShader* pVertexShader = RenderDevice::Instance()->CreateShader(ShaderType::Vertex, L"VertexShader.cso");
-	IShader* pPixelShader = RenderDevice::Instance()->CreateShader(ShaderType::Pixel, L"PixelShader.cso");
+	pMaterial_ = RenderDevice::Instance()->CreateMaterial(L"VertexShader.cso", L"PixelShader.cso");
 
-	// Material
-	IMaterial* pMaterial = RenderDevice::Instance()->CreateMaterial();
-	pMaterial_ = new Material(pMaterial);
-	pMaterial_->SetVertexShader(pVertexShader);
-	pMaterial_->SetPixelShader(pPixelShader);
+	pInputLayout_ = RenderDevice::Instance()->CreateLayout(pMesh_, pMaterial_);
 
-	// InputLayout
-	IInputLayout* pInputLayout = RenderDevice::Instance()->CreateLayout(pSphereVertex, pVertexShader);
-	pInputLayout_ = new InputLayout(pInputLayout);
+	pConstantBuffer_ = RenderDevice::Instance()->CreateShaderConstants((uint32_t)sizeof(ConstantBuffer));
 
-	// ShaderConstants
-	IConstantBuffer* pContantBuffer = RenderDevice::Instance()->CreateConstantBuffer((uint32_t)sizeof(ConstantBuffer));
-	pConstantBuffer_ = new ShaderConstants(pContantBuffer);
-
-
-	pSphereVertex->Release();
-	pVertexShader->Release();
-	pPixelShader->Release();
-	pMaterial->Release();
-	pInputLayout->Release();
-	pContantBuffer->Release();
 }
 
 

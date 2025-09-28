@@ -17,6 +17,8 @@ public:
 
 	void SetVertex(IVertex* pVertex);
 
+	IVertex* GetVertex() const;
+
 private:
 	void CleanUp();
 

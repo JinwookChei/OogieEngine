@@ -33,6 +33,11 @@ ULONG __stdcall BaseShader::Release()
 	return tmpRefCount;
 }
 
+void __stdcall BaseShader::Setting()
+{
+	SetShader();
+}
+
 bool BaseShader::CreateShader(ID3DBlob* pBlob)
 {
 	if (nullptr == pBlob)

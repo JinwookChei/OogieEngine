@@ -146,7 +146,6 @@
     <ClInclude Include="ConstantBuffer.h" />
     <ClInclude Include="D3D11Renderer.h" />
     <ClInclude Include="InputLayout.h" />
-    <ClInclude Include="Material.h" />
     <ClInclude Include="PixelShader.h" />
     <ClInclude Include="Rasterizer.h" />
     <ClInclude Include="RenderTarget.h" />
@@ -162,7 +161,6 @@
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="D3D11Renderer.cpp" />
     <ClCompile Include="InputLayout.cpp" />
-    <ClCompile Include="Material.cpp" />
     <ClCompile Include="PixelShader.cpp" />
     <ClCompile Include="Rasterizer.cpp" />
     <ClCompile Include="RenderTarget.cpp" />

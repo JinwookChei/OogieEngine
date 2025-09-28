@@ -42,20 +42,14 @@ ULONG __stdcall RenderTarget::Release()
 
 bool RenderTarget::CreateDepthTexture()
 {
-	D3D11_TEXTURE2D_DESC desc = { 0, };
-	desc.Width = (UINT)pRenderTexture_->Width();
-	desc.Height = (UINT)pRenderTexture_->Height();
-	desc.MipLevels = 1;
-	desc.ArraySize = 1;
-	desc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
-	desc.SampleDesc.Count = 1;
-	desc.SampleDesc.Quality = 0;
-	desc.Usage = D3D11_USAGE_DEFAULT;
-	desc.BindFlags = D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL;
-	desc.CPUAccessFlags = 0;
-	desc.MiscFlags = 0;
+	if (nullptr == pRenderTexture_)
+	{
+		DEBUG_BREAK();
+		return false;
+	}
 
-	pDepthTexture_ = Texture::Create(desc);
+	pDepthTexture_ = Texture::Create(pRenderTexture_->Size(), DXGI_FORMAT::DXGI_FORMAT_D24_UNORM_S8_UINT, D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL);
+
 	return nullptr != pDepthTexture_;
 }
 
@@ -70,14 +64,21 @@ bool RenderTarget::SetTexture(Texture* pTexture)
 
 	pRenderTexture_ = pTexture;
 
+	Float2 textureSize = pRenderTexture_->Size();
+
 	viewport_.TopLeftX = 0.0f;
 	viewport_.TopLeftY = 0.0f;
-	viewport_.Width = pRenderTexture_->Width();
-	viewport_.Height = pRenderTexture_->Height();
+	viewport_.Width = textureSize.X;
+	viewport_.Height = textureSize.Y;
 	viewport_.MinDepth = 0.0f;
 	viewport_.MaxDepth = 1.0f;
 
 	return true;
+}
+
+void RenderTarget::SetClearColor(const Color& color)
+{
+	clearColor_ = color;
 }
 
 void RenderTarget::Clear()

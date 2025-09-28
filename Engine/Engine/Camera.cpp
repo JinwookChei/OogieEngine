@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Transform.h"
+#include "RenderTarget.h"
 #include "Camera.h"
 
 Camera::Camera()
@@ -13,6 +14,9 @@ Camera::Camera()
 {
 	MatrixIdentity(view_);
 	MatrixIdentity(projection_);
+	
+	//pRenderTarget_ = RenderDevice::Instance()->CreateRenderTarget();
+	//pRenderTarget_ =
 }
 
 Camera::~Camera()
@@ -102,7 +106,6 @@ void Camera::BeginPlay()
 	pTransform_->SetScale({ 1.0f, 1.0f, 1.0f, 0.0f });
 	pTransform_->SetRotation({ 0.0f, 0.0f, 0.0f, 0.0f });
 	pTransform_->SetPosition({ -10.0f, 0.0f, 0.0f, 1.0f });
-
 }
 
 void Camera::Render()
@@ -139,11 +142,17 @@ void Camera::SetConfig(float fov, float Near, float Far)
 
 void Camera::CleanUp()
 {
-	if (nullptr != pTransform_)
-	{
-		delete pTransform_;
-		pTransform_ = nullptr;
-	}
+	//if (nullptr != pTransform_)
+	//{
+	//	delete pTransform_;
+	//	pTransform_ = nullptr;
+	//}
+
+	//if (nullptr != pRenderTarget_)
+	//{
+	//	delete pRenderTarget_;
+	//	pRenderTarget_ = nullptr;
+	//}
 }
 
 void Camera::CameraTransformUpdate()

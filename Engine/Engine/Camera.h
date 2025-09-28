@@ -2,6 +2,7 @@
 #include "Actor.h"
 
 class Transform;
+class RenderTarget;
 
 class Camera
 	: public Actor
@@ -43,6 +44,7 @@ private:
 	float far_;
 
 	float cameraSensitivity_;
-
 	float cameraSpeed_;
+
+	RenderTarget* pRenderTarget_;
 };

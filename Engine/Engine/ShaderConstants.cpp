@@ -7,9 +7,8 @@ ShaderConstants::ShaderConstants()
 }
 
 ShaderConstants::ShaderConstants(IConstantBuffer* pConstantBuffer)
-	:pConstantBufferImpl_(nullptr)
+	:pConstantBufferImpl_(pConstantBuffer)
 {
-	SetConstantBuffer(pConstantBuffer);
 }
 
 ShaderConstants::~ShaderConstants()

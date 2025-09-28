@@ -18,6 +18,8 @@ public:
 
 	bool SetTexture(Texture* pTexture);
 
+	void SetClearColor(const Color& color);
+
 	void Clear();
 
 	void Setting();

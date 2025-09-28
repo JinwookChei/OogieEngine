@@ -13,13 +13,17 @@ public:
 
 	ULONG __stdcall Release() override;
 
+	static Texture* Create(const Float2& size, DXGI_FORMAT format, uint32_t flag);
+
 	static Texture* Create(const D3D11_TEXTURE2D_DESC& desc);
 
 	bool SetTexture(ID3D11Texture2D* pTexture);
 
-	FLOAT Width() const;
+	Float2 Size() const;
 
-	FLOAT Height() const;
+	//FLOAT Width() const;
+
+	//FLOAT Height() const;
 
 	ID3D11RenderTargetView* RenderTargetView() const;
 

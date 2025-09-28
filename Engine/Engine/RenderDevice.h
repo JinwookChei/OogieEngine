@@ -1,4 +1,8 @@
 #pragma once
+class Mesh;
+class Material;
+class InputLayout;
+class ShaderConstants;
 
 class RenderDevice final
 {
@@ -22,19 +26,19 @@ public:
 
 	uint64_t DrawCallCount();
 
-	IInputLayout* CreateLayout(IVertex* vertex, IShader* vertexShader);
+	//ISamplerState* CreateSampler(bool linear, bool clamp);
 
-	IVertex* CreateVertex(void* vertices, uint32_t vertexSize, uint32_t vertexCount, void* indices = nullptr, uint32_t indexTypeSize = 0, uint32_t indexCount = 0);
+	//IRasterizer* CreateRasterizer(bool back);
 
-	IConstantBuffer* CreateConstantBuffer(uint32_t bufferSize);
+	//IRenderTarget* CreateRenderTarget(const Float2& size, const Color& clearColor);
 
-	IShader* CreateShader(ShaderType shaderType, const wchar_t* path);
+	InputLayout* CreateLayout(Mesh* pMesh, Material* pMaterial);
 
-	IMaterial* CreateMaterial();
+	Mesh* CreateMesh(void* vertices, uint32_t vertexSize, uint32_t vertexCount, void* indices = nullptr, uint32_t indexTypeSize = 0, uint32_t indexCount = 0);
 
-	ISamplerState* CreateSampler(bool linear, bool clamp);
+	Material* CreateMaterial(const wchar_t* VS, const wchar_t* PS);
 
-	IRasterizer* CreateRasterizer(bool back);
+	ShaderConstants* CreateShaderConstants(uint32_t bufferSize);
 
 private:
 	void CleanUp();
@@ -42,5 +46,4 @@ private:
 	IRenderer* pRendererImpl_;
 
 	HMODULE rendererModule_;
-
 };

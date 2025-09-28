@@ -23,10 +23,10 @@
 #include <dxgi.h>
 #include <DirectXMath.h>
 
-
 #include <vector>
-#include <Renderer/IRenderer.h>
 #include <Utility/Math.h>
+
+#include <Renderer/IRenderer.h>
 
 #include "D3D11Renderer.h"
 #include "BaseShader.h"

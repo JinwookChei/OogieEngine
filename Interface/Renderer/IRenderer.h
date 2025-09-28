@@ -32,21 +32,11 @@ struct IVertex : public IUnknown
 };
 
 struct IShader : public IUnknown {
-	//virtual void __stdcall Setting() = 0;
+	virtual void __stdcall Setting() = 0;
 };
 
 struct ISamplerState : public IUnknown {
 	virtual void __stdcall Setting(uint32_t slot) = 0;
-};
-
-struct IMaterial : public IUnknown {
-	virtual void __stdcall SetVertexShader(IShader* pVertexShader) = 0;
-
-	virtual void __stdcall SetPixelShader(IShader* pPixelShader) = 0;
-
-	virtual void __stdcall SetSampler(ISamplerState* pSampler, uint32_t slot = 0) = 0;
-
-	virtual void __stdcall Setting() = 0;
 };
 
 struct IInputLayout : public IUnknown {
@@ -85,9 +75,9 @@ struct IRenderer : public IUnknown {
 
 	virtual IShader* __stdcall CreateShader(ShaderType shaderType, const wchar_t* pPath) = 0;
 
-	virtual IMaterial* __stdcall CreateMaterial() = 0;
-
 	virtual ISamplerState* __stdcall  CreateSampler(bool linear, bool clamp) = 0;
 
 	virtual IRasterizer* __stdcall  CreateRasterizer(bool back) = 0;
+
+	virtual IRenderTarget* __stdcall CreateRenderTarget(const Float2& size, const Color& clearColor) = 0;
 };

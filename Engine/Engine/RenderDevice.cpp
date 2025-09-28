@@ -1,5 +1,9 @@
 #include "stdafx.h"
 #include "Engine.h"
+#include "InputLayout.h"
+#include "Mesh.h"
+#include "Material.h"
+#include "ShaderConstants.h"
 #include "RenderDevice.h"
 
 typedef bool (*DLL_FUNCTION_ARG1)(void**);
@@ -28,7 +32,7 @@ RenderDevice* RenderDevice::Create()
 }
 void RenderDevice::Destroy()
 {
-	if(nullptr != GRenderDevice)
+	if (nullptr != GRenderDevice)
 	{
 		delete GRenderDevice;
 
@@ -107,28 +111,79 @@ uint64_t  RenderDevice::DrawCallCount()
 	return pRendererImpl_->DrawCallCount();
 }
 
-IInputLayout* RenderDevice::CreateLayout(IVertex* vertex, IShader* vertexShader)
+
+//ISamplerState* RenderDevice::CreateSampler(bool linear, bool clamp)
+//{
+//	if (nullptr == pRendererImpl_)
+//	{
+//		DEBUG_BREAK();
+//		return nullptr;
+//	}
+//
+//	return pRendererImpl_->CreateSampler(linear, clamp);
+//}
+
+//IRasterizer* RenderDevice::CreateRasterizer(bool back)
+//{
+//	if (nullptr == pRendererImpl_)
+//	{
+//		DEBUG_BREAK();
+//		return nullptr;
+//	}
+//
+//	return pRendererImpl_->CreateRasterizer(back);
+//}
+
+//IRenderTarget* RenderDevice::CreateRenderTarget(const Float2& size, const Color& clearColor)
+//{
+//	if (nullptr == pRendererImpl_)
+//	{
+//		DEBUG_BREAK();
+//		return nullptr;
+//	}
+//
+//	return pRendererImpl_->CreateRenderTarget(size, clearColor);
+//}
+
+InputLayout* RenderDevice::CreateLayout(Mesh* pMesh, Material* pMaterial)
 {
 	if (nullptr == pRendererImpl_)
 	{
 		DEBUG_BREAK();
 		return nullptr;
 	}
+	IInputLayout* pInputLayoutImpl = pRendererImpl_->CreateLayout(pMesh->GetVertex(), pMaterial->GetVertexShader());
+	InputLayout* pInputLayout = new InputLayout(pInputLayoutImpl);
+	if (nullptr == pInputLayout)
+	{
+		DEBUG_BREAK();
+		pInputLayoutImpl->Release();
+		return nullptr;
+	}
 
-	return pRendererImpl_->CreateLayout(vertex, vertexShader);
+	return pInputLayout;
 }
 
-IVertex* RenderDevice::CreateVertex(void* vertices, uint32_t vertexSize, uint32_t vertexCount, void* indices /*= nullptr*/, uint32_t indexTypeSize/* = 0*/, uint32_t indexCount/* = 0*/)
+Mesh* RenderDevice::CreateMesh(void* vertices, uint32_t vertexSize, uint32_t vertexCount, void* indices, uint32_t indexTypeSize, uint32_t indexCount)
 {
 	if (nullptr == pRendererImpl_)
 	{
 		DEBUG_BREAK();
 		return nullptr;
 	}
-	return pRendererImpl_->CreateVertex(vertices, vertexSize, vertexCount, indices, indexTypeSize, indexCount);
+	IVertex* pVertexImpl = pRendererImpl_->CreateVertex(vertices, vertexSize, vertexCount, indices, indexTypeSize, indexCount);
+	Mesh* pMesh = new Mesh(pVertexImpl);
+	if (nullptr == pMesh)
+	{
+		DEBUG_BREAK();
+		pVertexImpl->Release();
+		return nullptr;
+	}
+
+	return pMesh;
 }
 
-IConstantBuffer* RenderDevice::CreateConstantBuffer(uint32_t bufferSize)
+Material* RenderDevice::CreateMaterial(const wchar_t* VS, const wchar_t* PS)
 {
 	if (nullptr == pRendererImpl_)
 	{
@@ -136,10 +191,34 @@ IConstantBuffer* RenderDevice::CreateConstantBuffer(uint32_t bufferSize)
 		return nullptr;
 	}
 
-	return pRendererImpl_->CreateConstantBuffer(bufferSize);
+	IShader* pVertexShaderImpl = nullptr;
+	if(nullptr != VS)
+	{
+		pVertexShaderImpl = pRendererImpl_->CreateShader(ShaderType::Vertex, VS);
+	}
+
+	IShader* pPixelShaderImpl = nullptr;
+	if (nullptr != PS)
+	{
+		pPixelShaderImpl = pRendererImpl_->CreateShader(ShaderType::Pixel, PS);
+	}
+	ISamplerState* pSamplerState = nullptr;
+
+	
+	Material* pMaterial = new Material(pVertexShaderImpl, pPixelShaderImpl, pSamplerState);
+	if (nullptr == pMaterial)
+	{
+		DEBUG_BREAK();
+		if (nullptr != pVertexShaderImpl) pVertexShaderImpl->Release();
+		if (nullptr != pPixelShaderImpl) pPixelShaderImpl->Release();
+		if (nullptr != pSamplerState) pSamplerState->Release();
+		return nullptr;
+	}
+
+	return pMaterial;
 }
 
-IShader* RenderDevice::CreateShader(ShaderType shaderType, const wchar_t* path)
+ShaderConstants* RenderDevice::CreateShaderConstants(uint32_t bufferSize)
 {
 	if (nullptr == pRendererImpl_)
 	{
@@ -147,40 +226,16 @@ IShader* RenderDevice::CreateShader(ShaderType shaderType, const wchar_t* path)
 		return nullptr;
 	}
 
-	return pRendererImpl_->CreateShader(shaderType, path);
-}
-
-IMaterial* RenderDevice::CreateMaterial()
-{
-	if (nullptr == pRendererImpl_)
+	IConstantBuffer* pConstantBufferImpl = pRendererImpl_->CreateConstantBuffer(bufferSize);
+	ShaderConstants* pShaderConstants = new ShaderConstants(pConstantBufferImpl);
+	if (nullptr == pShaderConstants)
 	{
 		DEBUG_BREAK();
+		pConstantBufferImpl->Release();
 		return nullptr;
 	}
 
-	return pRendererImpl_->CreateMaterial();
-}
-
-ISamplerState* RenderDevice::CreateSampler(bool linear, bool clamp)
-{
-	if (nullptr == pRendererImpl_)
-	{
-		DEBUG_BREAK();
-		return nullptr;
-	}
-
-	return pRendererImpl_->CreateSampler(linear, clamp);
-}
-
-IRasterizer* RenderDevice::CreateRasterizer(bool back)
-{
-	if (nullptr == pRendererImpl_)
-	{
-		DEBUG_BREAK();
-		return nullptr;
-	}
-
-	return pRendererImpl_->CreateRasterizer(back);
+	return pShaderConstants;
 }
 
 
