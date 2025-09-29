@@ -14,17 +14,21 @@ public:
 
 	ULONG __stdcall Release() override;
 
-	void __stdcall SetClearColor(const Color& color) override;
+	void __stdcall Clear() override;
 
-	//bool CreateDepthTexture();
+	void __stdcall Setting() override;
+
+	void __stdcall BindRenderTextureForPS(uint32_t slot) override;
+
+	void __stdcall ClearRenderTextureForPS(uint32_t slot) override;
 
 	bool SetTexture(D3D11Texture* pRenderTexture, D3D11Texture* pDepthTexture);
 
+	void __stdcall SetClearColor(const Color& color) override;
+
+	//bool CreateDepthTexture();
+	// 
 	//bool SetDepthTexture(D3D11Texture* pDepthTexture);
-
-	void Clear();
-
-	void Setting();
 
 private:
 	void CleanUp();

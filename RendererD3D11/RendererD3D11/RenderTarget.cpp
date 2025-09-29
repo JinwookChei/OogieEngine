@@ -39,78 +39,6 @@ ULONG __stdcall D3D11RenderTarget::Release()
 	return tmpRefCount;
 }
 
-void D3D11RenderTarget::SetClearColor(const Color& color)
-{
-	clearColor_ = color;
-}
-
-bool D3D11RenderTarget::SetTexture(D3D11Texture* pRenderTexture, D3D11Texture* pDepthTexture)
-{
-	CleanUp();
-
-	if (nullptr == pRenderTexture)
-	{
-		return false;
-	}
-
-	pRenderTexture_ = pRenderTexture;
-
-	Float2 textureSize = pRenderTexture_->Size();
-	viewport_.TopLeftX = 0.0f;
-	viewport_.TopLeftY = 0.0f;
-	viewport_.Width = textureSize.X;
-	viewport_.Height = textureSize.Y;
-	viewport_.MinDepth = 0.0f;
-	viewport_.MaxDepth = 1.0f;
-
-	if (nullptr != pDepthTexture)
-	{
-		pDepthTexture_ = pDepthTexture;
-	}
-
-	return true;
-}
-
-//bool D3D11RenderTarget::CreateDepthTexture()
-//{
-//	if (nullptr == pRenderTexture_)
-//	{
-//		DEBUG_BREAK();
-//		return false;
-//	}
-//
-//	pDepthTexture_ = D3D11Texture::Create(pRenderTexture_->Size(), DXGI_FORMAT::DXGI_FORMAT_D24_UNORM_S8_UINT, D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL);
-//
-//	return nullptr != pDepthTexture_;
-//}
-
-//bool D3D11RenderTarget::SetRenderTexture(D3D11Texture* pRenderTexture)
-//{
-//	CleanUp();
-//
-//	if (nullptr == pRenderTexture)
-//	{
-//		return false;
-//	}
-//
-//	pRenderTexture_ = pRenderTexture;
-//
-//	Float2 textureSize = pRenderTexture_->Size();
-//	viewport_.TopLeftX = 0.0f;
-//	viewport_.TopLeftY = 0.0f;
-//	viewport_.Width = textureSize.X;
-//	viewport_.Height = textureSize.Y;
-//	viewport_.MinDepth = 0.0f;
-//	viewport_.MaxDepth = 1.0f;
-//
-//	return true;
-//}
-
-//bool D3D11RenderTarget::SetDepthTexture(D3D11Texture* pDepthTexture)
-//{
-//	return false;
-//}
-
 void D3D11RenderTarget::Clear()
 {
 	ID3D11RenderTargetView* pRenderTargetView = pRenderTexture_->RenderTargetView();
@@ -163,6 +91,90 @@ void D3D11RenderTarget::Setting()
 
 	GRenderer->DeviceContext()->OMSetRenderTargets(1, &pRenderTargetView, pDepthStencilView);
 	GRenderer->DeviceContext()->RSSetViewports(1, &viewport_);
+}
+
+void __stdcall D3D11RenderTarget::BindRenderTextureForPS(uint32_t slot)
+{
+	pRenderTexture_->BindRenderTextureForPS(slot);
+}
+
+void __stdcall D3D11RenderTarget::ClearRenderTextureForPS(uint32_t slot)
+{
+	pRenderTexture_->ClearRenderTextureForPS(slot);
+}
+
+
+
+//bool D3D11RenderTarget::CreateDepthTexture()
+//{
+//	if (nullptr == pRenderTexture_)
+//	{
+//		DEBUG_BREAK();
+//		return false;
+//	}
+//
+//	pDepthTexture_ = D3D11Texture::Create(pRenderTexture_->Size(), DXGI_FORMAT::DXGI_FORMAT_D24_UNORM_S8_UINT, D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL);
+//
+//	return nullptr != pDepthTexture_;
+//}
+
+//bool D3D11RenderTarget::SetRenderTexture(D3D11Texture* pRenderTexture)
+//{
+//	CleanUp();
+//
+//	if (nullptr == pRenderTexture)
+//	{
+//		return false;
+//	}
+//
+//	pRenderTexture_ = pRenderTexture;
+//
+//	Float2 textureSize = pRenderTexture_->Size();
+//	viewport_.TopLeftX = 0.0f;
+//	viewport_.TopLeftY = 0.0f;
+//	viewport_.Width = textureSize.X;
+//	viewport_.Height = textureSize.Y;
+//	viewport_.MinDepth = 0.0f;
+//	viewport_.MaxDepth = 1.0f;
+//
+//	return true;
+//}
+
+//bool D3D11RenderTarget::SetDepthTexture(D3D11Texture* pDepthTexture)
+//{
+//	return false;
+//}
+
+bool D3D11RenderTarget::SetTexture(D3D11Texture* pRenderTexture, D3D11Texture* pDepthTexture)
+{
+	CleanUp();
+
+	if (nullptr == pRenderTexture)
+	{
+		return false;
+	}
+
+	pRenderTexture_ = pRenderTexture;
+
+	Float2 textureSize = pRenderTexture_->Size();
+	viewport_.TopLeftX = 0.0f;
+	viewport_.TopLeftY = 0.0f;
+	viewport_.Width = textureSize.X;
+	viewport_.Height = textureSize.Y;
+	viewport_.MinDepth = 0.0f;
+	viewport_.MaxDepth = 1.0f;
+
+	if (nullptr != pDepthTexture)
+	{
+		pDepthTexture_ = pDepthTexture;
+	}
+
+	return true;
+}
+
+void D3D11RenderTarget::SetClearColor(const Color& color)
+{
+	clearColor_ = color;
 }
 
 void D3D11RenderTarget::CleanUp()

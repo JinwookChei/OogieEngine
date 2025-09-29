@@ -1,6 +1,5 @@
 #pragma once
 
-
 class RenderTarget final
 {
 public:
@@ -14,7 +13,12 @@ public:
 
 	void Setting();
 
+	void BindRenderTextureForPS(uint32_t slot);
+
+	void ClearRenderTextureForPS(uint32_t slot);
+
 	void SetClearColor(const Color& cleaColor);
+	
 private:
 	void CleanUp();
 

@@ -152,6 +152,12 @@ uint64_t __stdcall D3D11Renderer::DrawCallCount()
 
 IInputLayout* __stdcall D3D11Renderer::CreateLayout(IVertex* vertex, IShader* vertexShader)
 {
+	if (nullptr == vertex || nullptr == vertexShader)
+	{
+		DEBUG_BREAK();
+		return nullptr;
+	}
+
 	D3D11InputLayout* pNewInputLayout = new D3D11InputLayout;
 	if (false == pNewInputLayout->Create(vertex, vertexShader))
 	{

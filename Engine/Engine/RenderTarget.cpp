@@ -26,6 +26,16 @@ void RenderTarget::Setting()
 	pRenderTargetImpl_->Setting();
 }
 
+void RenderTarget::BindRenderTextureForPS(uint32_t slot)
+{
+	pRenderTargetImpl_->BindRenderTextureForPS(slot);
+}
+
+void RenderTarget::ClearRenderTextureForPS(uint32_t slot)
+{
+	pRenderTargetImpl_->ClearRenderTextureForPS(slot);
+}
+
 void RenderTarget::SetClearColor(const Color& cleaColor)
 {
 	pRenderTargetImpl_->SetClearColor(cleaColor);

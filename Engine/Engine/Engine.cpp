@@ -5,7 +5,6 @@
 #include "Level.h"
 #include "World.h"
 #include "Engine.h"
-#include "Test.h"
 #include "Actor.h"
 #include "Mesh.h"
 #include "Material.h"
@@ -102,6 +101,7 @@ bool Engine::Initialize
 		return false;
 	}
 	GCamera->BeginPlay();
+	
 	//GCamera->SetWidth(2560.f);
 	//GCamera->SetHeight(1440.f);
 	
@@ -163,9 +163,8 @@ void Engine::Run()
 		// Render
 		pRenderDevice_->RenderBegin();
 
-		//GCamera->Render();
+		GCamera->BlitToBackBuffer({ 0.0f, 0.0f }, {1.0f, 1.0f});
 		
-
 		pRenderDevice_->RenderEnd();
 	}
 }

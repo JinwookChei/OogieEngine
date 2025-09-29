@@ -1,4 +1,8 @@
 #pragma once
+#include "Mesh.h"
+#include "Material.h"
+#include "InputLayout.h"
+#include "ShaderConstants.h"
 #include "Actor.h"
 
 class Transform;
@@ -19,6 +23,8 @@ public:
 	ENGINE_API void Render() override;
 
 	void RenderTest();
+
+	void BlitToBackBuffer(const Float2& offset, const Float2& scale);
 
 	const Float4x4& View() const;
 

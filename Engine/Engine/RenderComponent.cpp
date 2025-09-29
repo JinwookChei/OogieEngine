@@ -7,9 +7,7 @@
 #include "InputLayout.h"
 #include "ShaderConstants.h"
 #include "Rasterizer.h"
-//#include "GraphicesStructures.h"
 #include "GeometryGenerator.h"
-
 #include "RenderComponent.h"
 
 RenderComponent::RenderComponent(Actor* pOwner)

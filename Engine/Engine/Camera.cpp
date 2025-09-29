@@ -20,6 +20,7 @@ Camera::Camera()
 	MatrixIdentity(view_);
 	MatrixIdentity(projection_);
 	pRenderTarget_ = RenderDevice::Instance()->CreateRenderTarget(size_, clearColor_);
+	InitScreenRect();
 }
 
 Camera::~Camera()
@@ -125,6 +126,28 @@ void Camera::RenderTest()
 	pRenderTarget_->Setting();
 }
 
+void Camera::BlitToBackBuffer(const Float2& offset, const Float2& scale)
+{
+	pRenderTarget_->BindRenderTextureForPS(0);
+
+	pScreenVertex_->Setting();
+
+	pScreenMaterial_->Setting();
+
+	pScreenInputLayout_->Setting();
+
+	ScreenRectConstant cb;
+	cb.offset = offset;
+	cb.scale = scale;
+
+	pScreenConstantBuffer_->Update(&cb);
+	pScreenConstantBuffer_->VSSetting(0);
+
+	pScreenVertex_->Draw();
+
+	pRenderTarget_->ClearRenderTextureForPS(0);
+}
+
 const Float4x4& Camera::View() const
 {
 	return view_;
@@ -166,13 +189,42 @@ void Camera::InitScreenRect()
 {
 	std::vector<ScreenRectVertex> vertices;
 	std::vector<WORD> indices;
-	//CreateScreenRect(&vertices, &indices);
+	GeometryGenerator::CreateScreenRect(&vertices, &indices);
+	pScreenVertex_ = RenderDevice::Instance()->CreateMesh
+	(
+		vertices.data(), (uint32_t)sizeof(ScreenRectVertex), (uint32_t)vertices.size(), 
+		indices.data(), (uint32_t)sizeof(WORD), (uint32_t)indices.size()
+	);
+	pScreenVertex_->AddInputLayout("POSITION", 0, 16, 0, false);
+	pScreenVertex_->AddInputLayout("TEXCOORD", 0, 16, 0, false);
 
-	//RenderDevice::Instance()->CreateMesh(vertices);
+	pScreenMaterial_ = RenderDevice::Instance()->CreateMaterial(L"ScreenVertexShader.cso", L"ScreenPixelShader.cso");
+	pScreenConstantBuffer_ = RenderDevice::Instance()->CreateShaderConstants((uint32_t)sizeof(ScreenRectConstant));
+	pScreenInputLayout_ = RenderDevice::Instance()->CreateLayout(pScreenVertex_, pScreenMaterial_);
 }
 
 void Camera::CleanUp()
 {
+	if (nullptr != pScreenConstantBuffer_)
+	{
+		delete pScreenConstantBuffer_;
+		pScreenConstantBuffer_ = nullptr;
+	}
+	if (nullptr != pScreenInputLayout_)
+	{
+		delete pScreenInputLayout_;
+		pScreenInputLayout_ = nullptr;
+	}
+	if (nullptr != pScreenMaterial_)
+	{
+		delete pScreenMaterial_;
+		pScreenMaterial_ = nullptr;
+	}
+	if (nullptr != pScreenVertex_)
+	{
+		delete pScreenVertex_;
+		pScreenVertex_ = nullptr;
+	}
 	if (nullptr != pRenderTarget_)
 	{
 		delete pRenderTarget_;

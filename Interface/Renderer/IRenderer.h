@@ -22,6 +22,11 @@ struct IRenderTarget : public IUnknown
 	virtual void __stdcall Setting() = 0;
 
 	virtual void __stdcall SetClearColor(const Color& color) = 0;
+
+	virtual void __stdcall BindRenderTextureForPS(uint32_t slot) = 0;
+
+	virtual void __stdcall ClearRenderTextureForPS(uint32_t slot) = 0;
+
 };
 
 struct IVertex : public IUnknown 

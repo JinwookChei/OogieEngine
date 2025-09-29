@@ -17,22 +17,26 @@ public:
 
 	static D3D11Texture* Create(const D3D11_TEXTURE2D_DESC& desc);
 
+	void BindRenderTextureForPS(uint32_t slot);
+
+	void ClearRenderTextureForPS(uint32_t slot);
+
 	bool SetTexture(ID3D11Texture2D* pTexture);
 
 	Float2 Size() const;
-
-	//FLOAT Width() const;
-
-	//FLOAT Height() const;
 
 	ID3D11RenderTargetView* RenderTargetView() const;
 
 	ID3D11DepthStencilView* DepthStencilView() const;
 
+	ID3D11ShaderResourceView* ShaderResourceView() const;
+
 private:
 	bool CreateRenderTargetView();
 
 	bool CreateDepthStencilView();
+
+	bool CreateShaderResourceView();
 
 	void CleanUp();
 
@@ -43,6 +47,8 @@ private:
 	ID3D11RenderTargetView* pRenderTargetView_;
 
 	ID3D11DepthStencilView* pDepthStencilView_;
+
+	ID3D11ShaderResourceView* pShaderResourceView_;
 
 	D3D11_TEXTURE2D_DESC desc_;
 };

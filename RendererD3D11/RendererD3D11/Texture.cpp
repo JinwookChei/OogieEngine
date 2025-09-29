@@ -6,6 +6,7 @@ D3D11Texture::D3D11Texture()
 	pTexture_(nullptr),
 	pRenderTargetView_(nullptr),
 	pDepthStencilView_(nullptr),
+	pShaderResourceView_(nullptr),
 	desc_()
 {
 }
@@ -75,6 +76,25 @@ D3D11Texture* D3D11Texture::Create(const D3D11_TEXTURE2D_DESC& desc)
 	return newTexture;
 }
 
+
+void D3D11Texture::BindRenderTextureForPS(uint32_t slot)
+{
+	if (nullptr == pShaderResourceView_)
+	{
+		DEBUG_BREAK();
+		return;
+	}
+
+	GRenderer->DeviceContext()->PSSetShaderResources(slot, 1, &pShaderResourceView_);
+}
+
+void D3D11Texture::ClearRenderTextureForPS(uint32_t slot)
+{
+	ID3D11ShaderResourceView* pNull = nullptr;
+
+	GRenderer->DeviceContext()->PSSetShaderResources(slot, 1, &pNull);
+}
+
 bool D3D11Texture::SetTexture(ID3D11Texture2D* pTexture)
 {
 	CleanUp();
@@ -105,23 +125,22 @@ bool D3D11Texture::SetTexture(ID3D11Texture2D* pTexture)
 		}
 	}
 
+	if (D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE & desc_.BindFlags)
+	{
+		bool ret = CreateShaderResourceView();
+		if (false == ret)
+		{
+			return false;
+		}
+	}
+
 	return true;
 }
 
 Float2 D3D11Texture::Size() const
 {
-	return Float2({(float)desc_.Width , (float)desc_.Height });
+	return Float2({ (float)desc_.Width , (float)desc_.Height });
 }
-
-//FLOAT Texture::Width() const
-//{
-//	return (FLOAT);
-//}
-//
-//FLOAT Texture::Height() const
-//{
-//	return (FLOAT);
-//}
 
 ID3D11RenderTargetView* D3D11Texture::RenderTargetView() const
 {
@@ -133,10 +152,16 @@ ID3D11DepthStencilView* D3D11Texture::DepthStencilView() const
 	return pDepthStencilView_;
 }
 
+ID3D11ShaderResourceView* D3D11Texture::ShaderResourceView() const
+{
+	return pShaderResourceView_;
+}
+
 bool D3D11Texture::CreateRenderTargetView()
 {
 	if (nullptr == pTexture_)
 	{
+		DEBUG_BREAK();
 		return false;
 	}
 
@@ -160,6 +185,7 @@ bool D3D11Texture::CreateDepthStencilView()
 {
 	if (nullptr == pTexture_)
 	{
+		DEBUG_BREAK();
 		return false;
 	}
 
@@ -178,8 +204,36 @@ bool D3D11Texture::CreateDepthStencilView()
 	return true;
 }
 
+bool D3D11Texture::CreateShaderResourceView()
+{
+	if (nullptr == pTexture_)
+	{
+		DEBUG_BREAK();
+		return false;
+	}
+
+	if (nullptr != pShaderResourceView_)
+	{
+		pShaderResourceView_->Release();
+		pShaderResourceView_ = nullptr;
+	}
+	HRESULT hr = GRenderer->Device()->CreateShaderResourceView(pTexture_, nullptr, &pShaderResourceView_);
+	if (FAILED(hr))
+	{
+		DEBUG_BREAK();
+		return false;
+	}
+
+	return true;
+}
+
 void D3D11Texture::CleanUp()
 {
+	if (nullptr != pShaderResourceView_)
+	{
+		pShaderResourceView_->Release();
+		pShaderResourceView_ = nullptr;
+	}
 	if (nullptr != pRenderTargetView_)
 	{
 		pRenderTargetView_->Release();

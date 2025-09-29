@@ -28,9 +28,6 @@
     <Filter Include="Source Files\Manager">
       <UniqueIdentifier>{e5ff74fd-18a0-4e03-bc41-989682524065}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\TEST">
-      <UniqueIdentifier>{770ba8f1-7343-4fbe-99b5-6597d47d6729}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\Shader">
       <UniqueIdentifier>{58bbbbf2-bf6b-4326-9f6b-6c9e74b5ffb1}</UniqueIdentifier>
     </Filter>
@@ -94,6 +91,9 @@
     <Filter Include="Source Files\Graphics\Generator">
       <UniqueIdentifier>{3589f1c8-6e82-43bf-9c5e-254d45268f12}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Shader\ScreenRect">
+      <UniqueIdentifier>{efb687ac-e933-4f94-a244-86aef18f5f92}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -110,9 +110,6 @@
     </ClInclude>
     <ClInclude Include="InputManager.h">
       <Filter>Source Files\Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="Test.h">
-      <Filter>Source Files\TEST</Filter>
     </ClInclude>
     <ClInclude Include="Actor.h">
       <Filter>Source Files\Actor</Filter>
@@ -194,9 +191,6 @@
     <ClCompile Include="InputManager.cpp">
       <Filter>Source Files\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="Test.cpp">
-      <Filter>Source Files\TEST</Filter>
-    </ClCompile>
     <ClCompile Include="Actor.cpp">
       <Filter>Source Files\Actor</Filter>
     </ClCompile>
@@ -270,6 +264,12 @@
     </FxCompile>
     <FxCompile Include="PixelShader.hlsl">
       <Filter>Resource Files\Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="ScreenVertexShader.hlsl">
+      <Filter>Resource Files\Shader\ScreenRect</Filter>
+    </FxCompile>
+    <FxCompile Include="ScreenPixelShader.hlsl">
+      <Filter>Resource Files\Shader\ScreenRect</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>
