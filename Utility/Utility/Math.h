@@ -230,6 +230,7 @@ UTILITY_API void VectorMultiply(Float3& out, const Float3& lhs, const Float3& rh
 UTILITY_API void VectorScale(Float3& out, const Float3& lhs, float scale);
 UTILITY_API void VectorNormalize(Float3& out, const Float3& lhs);
 UTILITY_API float VectorLength(const Float3& lhs);
+UTILITY_API void VectorToEulerDeg(Float4& out, const Float3& lhs);
 
 UTILITY_API void QuaternionToEulerDeg(Float4& out, const Float4& Q);
 UTILITY_API void QuaternionToEulerRad(Float4& out, const Float4& Q);

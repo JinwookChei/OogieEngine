@@ -54,6 +54,9 @@
     <ClCompile Include="MoveCamera.cpp">
       <Filter>Source Files\Game\Actors\Camera</Filter>
     </ClCompile>
+    <ClCompile Include="LookAtCamera.cpp">
+      <Filter>Source Files\Game\Actors\Camera</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -75,6 +78,9 @@
       <Filter>Source Files\Game\Actors</Filter>
     </ClInclude>
     <ClInclude Include="MoveCamera.h">
+      <Filter>Source Files\Game\Actors\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="LookAtCamera.h">
       <Filter>Source Files\Game\Actors\Camera</Filter>
     </ClInclude>
   </ItemGroup>

@@ -7,9 +7,9 @@ struct SimpleVertex {
 	Float2 UV;
 	Float4 tangent;
 
-	/*SimpleVertex(Vector pos, Vector tmpcolor, Vector tmpnormal, Vector uv, Vector tan)
+	SimpleVertex(Float3 pos, Float4 tmpcolor, Float3 tmpnormal, Float2 uv, Float4 tan)
 		: position(pos), color(tmpcolor), normal(tmpnormal), UV(uv), tangent(tan) {
-	}*/
+	}
 
 	SimpleVertex(Float3 pos, Float4 tmpcolor, Float3 tmpnormal, Float2 uv)
 		: position(pos), color(tmpcolor), normal(tmpnormal), UV(uv), tangent() {

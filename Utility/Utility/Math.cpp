@@ -130,6 +130,40 @@ float VectorLength(const Float3& lhs)
 	return result.m128_f32[0];
 }
 
+void VectorToEulerDeg(Float4& out, const Float3& lhs)
+{
+	//Float3 normal;
+	//VectorNormalize(normal, lhs);
+
+	//float dx = normal.X;
+	//float dy = normal.Y;
+	//float dz = normal.Z;
+
+	//float yaw = atan2f(dy, dx);
+	//float pitch = -atan2f(dz, sqrtf(dx * dx + dy * dy));
+	//float roll = 0.0f;
+
+	//out.X = ConvertRadToDeg(roll);
+	//out.Y = ConvertRadToDeg(pitch);
+	//out.Z = ConvertRadToDeg(yaw);
+
+	Float3 normal;
+	VectorNormalize(normal, lhs);
+
+	float dx = normal.X;
+	float dy = normal.Y;
+	float dz = normal.Z;
+
+	float yaw = atan2f(dy, dx);
+	float pitch = atan2f(-dz, sqrtf(dx * dx + dy * dy));
+	float roll = 0.0f;
+
+	out.X = 0;
+	out.Y = ConvertRadToDeg(pitch);
+	out.Z = ConvertRadToDeg(yaw);
+}
+
+
 void QuaternionToEulerDeg(Float4& out, const Float4& Q)
 {
 	Float4 rad;

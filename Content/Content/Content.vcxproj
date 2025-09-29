@@ -139,6 +139,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ContentManager.cpp" />
+    <ClCompile Include="LookAtCamera.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MoveCamera.cpp" />
     <ClCompile Include="StartLevel.cpp" />
@@ -151,6 +152,7 @@
     <ClInclude Include="..\..\Interface\Application\IApplication.h" />
     <ClInclude Include="..\..\Interface\Renderer\IRenderer.h" />
     <ClInclude Include="ContentManager.h" />
+    <ClInclude Include="LookAtCamera.h" />
     <ClInclude Include="MoveCamera.h" />
     <ClInclude Include="StartLevel.h" />
     <ClInclude Include="stdafx.h" />

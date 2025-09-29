@@ -180,48 +180,101 @@ bool GeometryGenerator::CreateCube(std::vector<SimpleVertex>* outVertices, std::
 	if (nullptr == outVertices || nullptr == outIndices) {
 		return false;
 	}
+	
+	float h = halfExtent;
 
-	// 8개 꼭지점 정의
-	Float3 cubePos[8] = {
-		Float3(-halfExtent, -halfExtent, -halfExtent),
-		Float3(-halfExtent, +halfExtent, -halfExtent),
-		Float3(+halfExtent, +halfExtent, -halfExtent),
-		Float3(+halfExtent, -halfExtent, -halfExtent),
-		Float3(-halfExtent, -halfExtent, +halfExtent),
-		Float3(-halfExtent, +halfExtent, +halfExtent),
-		Float3(+halfExtent, +halfExtent, +halfExtent),
-		Float3(+halfExtent, -halfExtent, +halfExtent)
-	};
+	outVertices->clear();
+	outVertices->reserve(24);
+	
+	// 뒤 (-Z)
+	outVertices->push_back(SimpleVertex(Float3(-h, -h, -h), Float4(1, 0, 0, 1), Float3(0, 0, -1), Float2(0, 1), Float4(-1, 0, 0, 1)));
+	outVertices->push_back(SimpleVertex(Float3(-h, h, -h), Float4(1, 0, 0, 1), Float3(0, 0, -1), Float2(0, 0), Float4(-1, 0, 0, 1)));
+	outVertices->push_back(SimpleVertex(Float3(h, h, -h), Float4(1, 0, 0, 1), Float3(0, 0, -1), Float2(1, 0), Float4(-1, 0, 0, 1)));
+	outVertices->push_back(SimpleVertex(Float3(h, -h, -h), Float4(1, 0, 0, 1), Float3(0, 0, -1), Float2(1, 1), Float4(-1, 0, 0, 1)));
 
-	// 꼭지점별 Color, Normal, UV 설정 예시
-	for (int i = 0; i < 8; ++i) {
-		Float3 pos = cubePos[i];
-		Float3 normal = Float3(0, 0, 0);
-		Float4 color = Float4(
-			0.5f + 0.5f * pos.X / halfExtent,
-			0.5f + 0.5f * pos.Y / halfExtent,
-			0.5f + 0.5f * pos.Z / halfExtent,
-			1.0f
-		);
-		Float2 uv = Float2(0, 0); // cube는 필요에 따라 수정
-		outVertices->push_back({ pos, color, normal, uv });
-	}
+	// 앞 (+Z)
+	outVertices->push_back(SimpleVertex(Float3(-h, -h, h), Float4(1, 0, 0, 1), Float3(0, 0, 1), Float2(1, 1), Float4(1, 0, 0, 1)));
+	outVertices->push_back(SimpleVertex(Float3(h, -h, h), Float4(1, 0, 0, 1), Float3(0, 0, 1), Float2(0, 1), Float4(1, 0, 0, 1)));
+	outVertices->push_back(SimpleVertex(Float3(h, h, h), Float4(1, 0, 0, 1), Float3(0, 0, 1), Float2(0, 0), Float4(1, 0, 0, 1)));
+	outVertices->push_back(SimpleVertex(Float3(-h, h, h), Float4(1, 0, 0, 1), Float3(0, 0, 1), Float2(1, 0), Float4(1, 0, 0, 1)));
 
-	// Cube 인덱스: 6면 × 2삼각형 × 3정점
-	std::vector<WORD> cubeIndices = {
-		0, 1, 2,  0, 2, 3, // -Z면
-		4, 6, 5,  4, 7, 6, // +Z면
-		4, 5, 1,  4, 1, 0, // -X면
-		3, 2, 6,  3, 6, 7, // +X면
-		1, 5, 6,  1, 6, 2, // +Y면
-		4, 0, 3,  4, 3, 7  // -Y면
-	};
+	// 왼쪽 (-X)
+	outVertices->push_back(SimpleVertex(Float3(-h, -h, h), Float4(0, 1, 0, 1), Float3(-1, 0, 0), Float2(0, 1), Float4(0, 0, 1, 1)));
+	outVertices->push_back(SimpleVertex(Float3(-h, h, h), Float4(0, 1, 0, 1), Float3(-1, 0, 0), Float2(0, 0), Float4(0, 0, 1, 1)));
+	outVertices->push_back(SimpleVertex(Float3(-h, h, -h), Float4(0, 1, 0, 1), Float3(-1, 0, 0), Float2(1, 0), Float4(0, 0, 1, 1)));
+	outVertices->push_back(SimpleVertex(Float3(-h, -h, -h), Float4(0, 1, 0, 1), Float3(-1, 0, 0), Float2(1, 1), Float4(0, 0, 1, 1)));
 
-	for (int i = 0; i < 36; ++i) {
-		outIndices->push_back(cubeIndices[i]);
-	}
+	// 오른쪽 (+X)
+	outVertices->push_back(SimpleVertex(Float3(h, -h, -h), Float4(0, 1, 0, 1), Float3(1, 0, 0), Float2(0, 1), Float4(0, 0, -1, 1)));
+	outVertices->push_back(SimpleVertex(Float3(h, h, -h), Float4(0, 1, 0, 1), Float3(1, 0, 0), Float2(0, 0), Float4(0, 0, -1, 1)));
+	outVertices->push_back(SimpleVertex(Float3(h, h, h), Float4(0, 1, 0, 1), Float3(1, 0, 0), Float2(1, 0), Float4(0, 0, -1, 1)));
+	outVertices->push_back(SimpleVertex(Float3(h, -h, h), Float4(0, 1, 0, 1), Float3(1, 0, 0), Float2(1, 1), Float4(0, 0, -1, 1)));
 
-	// tangent 계산은 생략(평면 Normal 사용), 필요시 Sphere와 동일한 방식으로 확장
+	// 위 (+Y)
+	outVertices->push_back(SimpleVertex(Float3(-h, h, -h), Float4(0, 0, 1, 1), Float3(0, 1, 0), Float2(0, 1), Float4(1, 0, 0, 1)));
+	outVertices->push_back(SimpleVertex(Float3(-h, h, h), Float4(0, 0, 1, 1), Float3(0, 1, 0), Float2(0, 0), Float4(1, 0, 0, 1)));
+	outVertices->push_back(SimpleVertex(Float3(h, h, h), Float4(0, 0, 1, 1), Float3(0, 1, 0), Float2(1, 0), Float4(1, 0, 0, 1)));
+	outVertices->push_back(SimpleVertex(Float3(h, h, -h), Float4(0, 0, 1, 1), Float3(0, 1, 0), Float2(1, 1), Float4(1, 0, 0, 1)));
+
+	// 아래 (-Y)
+	outVertices->push_back(SimpleVertex(Float3(-h, -h, h), Float4(0, 0, 1, 1), Float3(0, -1, 0), Float2(1, 1), Float4(-1, 0, 1, 1)));
+	outVertices->push_back(SimpleVertex(Float3(-h, -h, -h), Float4(0, 0, 1, 1), Float3(0, -1, 0), Float2(0, 1), Float4(-1, 0, 1, 1)));
+	outVertices->push_back(SimpleVertex(Float3(h, -h, -h), Float4(0, 0, 1, 1), Float3(0, -1, 0), Float2(0, 0), Float4(-1, 0, 1, 1)));
+	outVertices->push_back(SimpleVertex(Float3(h, -h, h), Float4(0, 0, 1, 1), Float3(0, -1, 0), Float2(1, 0), Float4(-1, 0, 1, 1)));
+
+
+
+	outIndices->clear();
+	outIndices->reserve(36);
+
+	outIndices->push_back(0);
+	outIndices->push_back(1);
+	outIndices->push_back(2);
+
+	outIndices->push_back(0);
+	outIndices->push_back(2);
+	outIndices->push_back(3);
+
+	outIndices->push_back(4);
+	outIndices->push_back(5);
+	outIndices->push_back(6);
+
+	outIndices->push_back(4);
+	outIndices->push_back(6);
+	outIndices->push_back(7);
+
+	outIndices->push_back(8);
+	outIndices->push_back(9);
+	outIndices->push_back(10);
+
+	outIndices->push_back(8);
+	outIndices->push_back(10);
+	outIndices->push_back(11);
+
+	outIndices->push_back(12);
+	outIndices->push_back(13);
+	outIndices->push_back(14);
+
+	outIndices->push_back(12);
+	outIndices->push_back(14);
+	outIndices->push_back(15);
+
+	outIndices->push_back(16);
+	outIndices->push_back(17);
+	outIndices->push_back(18);
+
+	outIndices->push_back(16);
+	outIndices->push_back(18);
+	outIndices->push_back(19);
+
+	outIndices->push_back(20);
+	outIndices->push_back(21);
+	outIndices->push_back(22);
+
+	outIndices->push_back(20);
+	outIndices->push_back(22);
+	outIndices->push_back(23);
+
 	return true;
 }
 
