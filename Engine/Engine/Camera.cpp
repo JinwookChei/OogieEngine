@@ -116,7 +116,7 @@ void Camera::BeginPlay()
 
 void Camera::Render()
 {
-	//CameraTransformUpdate();
+
 }
 
 void Camera::RenderTest()

@@ -171,12 +171,6 @@ IInputLayout* __stdcall D3D11Renderer::CreateLayout(IVertex* vertex, IShader* ve
 IVertex* __stdcall D3D11Renderer::CreateVertex(void* vertices, uint32_t vertexSize, uint32_t vertexCount, void* indices, uint32_t indexTypeSize, uint32_t indexCount)
 {
 	D3D11VertexBuffer* vertexBuffer = new D3D11VertexBuffer;
-	if (nullptr == vertexBuffer)
-	{
-		DEBUG_BREAK();
-		return nullptr;
-	}
-
 	if (false == vertexBuffer->Initialize(vertices, (UINT)vertexSize, (UINT)vertexCount, indices, (UINT)indexTypeSize, (UINT)indexCount))
 	{
 		vertexBuffer->Release();
@@ -254,11 +248,6 @@ IRasterizer* __stdcall D3D11Renderer::CreateRasterizer(bool back)
 IRenderTarget* __stdcall D3D11Renderer::CreateRenderTarget(const Float2& size, const Color& clearColor, bool useDepthStencil /*= true*/)
 {
 	D3D11RenderTarget* pRenderTarget = new D3D11RenderTarget;
-	if (nullptr == pRenderTarget)
-	{
-		DEBUG_BREAK();
-		return nullptr;
-	}
 
 	D3D11Texture* pRenderTexture = D3D11Texture::Create(size, DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET | D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE);
 	if (nullptr == pRenderTexture)
@@ -427,13 +416,6 @@ bool D3D11Renderer::CreateBackBuffer()
 	}
 
 	D3D11Texture* pRenderTexture = new D3D11Texture;
-	if (nullptr == pRenderTexture)
-	{
-		DEBUG_BREAK();
-		pBackBufferTexture->Release();
-		return false;
-	}
-
 	if (false == pRenderTexture->SetTexture(pBackBufferTexture))
 	{
 		pRenderTexture->Release();

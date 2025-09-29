@@ -66,7 +66,6 @@ D3D11Texture* D3D11Texture::Create(const D3D11_TEXTURE2D_DESC& desc)
 
 	D3D11Texture* newTexture = new D3D11Texture;
 	bool ret = newTexture->SetTexture(texture);
-
 	if (ret == false)
 	{
 		DEBUG_BREAK();

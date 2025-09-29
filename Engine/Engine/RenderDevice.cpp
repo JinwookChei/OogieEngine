@@ -146,12 +146,6 @@ RenderTarget* RenderDevice::CreateRenderTarget(const Float2& size, const Color& 
 	IRenderTarget* pRenderTargetImpl = pRendererImpl_->CreateRenderTarget(size, clearColor, useDepthStencil);
 
 	RenderTarget* pRenderTarget = new RenderTarget(pRenderTargetImpl);
-	if (nullptr == pRenderTarget)
-	{
-		DEBUG_BREAK();
-		pRenderTargetImpl->Release();
-		return nullptr;
-	}
 
 	return pRenderTarget;
 }
@@ -165,12 +159,6 @@ InputLayout* RenderDevice::CreateLayout(Mesh* pMesh, Material* pMaterial)
 	}
 	IInputLayout* pInputLayoutImpl = pRendererImpl_->CreateLayout(pMesh->GetVertex(), pMaterial->GetVertexShader());
 	InputLayout* pInputLayout = new InputLayout(pInputLayoutImpl);
-	if (nullptr == pInputLayout)
-	{
-		DEBUG_BREAK();
-		pInputLayoutImpl->Release();
-		return nullptr;
-	}
 
 	return pInputLayout;
 }
@@ -182,14 +170,9 @@ Mesh* RenderDevice::CreateMesh(void* vertices, uint32_t vertexSize, uint32_t ver
 		DEBUG_BREAK();
 		return nullptr;
 	}
+
 	IVertex* pVertexImpl = pRendererImpl_->CreateVertex(vertices, vertexSize, vertexCount, indices, indexTypeSize, indexCount);
 	Mesh* pMesh = new Mesh(pVertexImpl);
-	if (nullptr == pMesh)
-	{
-		DEBUG_BREAK();
-		pVertexImpl->Release();
-		return nullptr;
-	}
 
 	return pMesh;
 }
@@ -215,16 +198,7 @@ Material* RenderDevice::CreateMaterial(const wchar_t* VS, const wchar_t* PS)
 	}
 	ISamplerState* pSamplerState = nullptr;
 
-
 	Material* pMaterial = new Material(pVertexShaderImpl, pPixelShaderImpl, pSamplerState);
-	if (nullptr == pMaterial)
-	{
-		DEBUG_BREAK();
-		if (nullptr != pVertexShaderImpl) pVertexShaderImpl->Release();
-		if (nullptr != pPixelShaderImpl) pPixelShaderImpl->Release();
-		if (nullptr != pSamplerState) pSamplerState->Release();
-		return nullptr;
-	}
 
 	return pMaterial;
 }
@@ -239,12 +213,6 @@ ShaderConstants* RenderDevice::CreateShaderConstants(uint32_t bufferSize)
 
 	IConstantBuffer* pConstantBufferImpl = pRendererImpl_->CreateConstantBuffer(bufferSize);
 	ShaderConstants* pShaderConstants = new ShaderConstants(pConstantBufferImpl);
-	if (nullptr == pShaderConstants)
-	{
-		DEBUG_BREAK();
-		pConstantBufferImpl->Release();
-		return nullptr;
-	}
 
 	return pShaderConstants;
 }

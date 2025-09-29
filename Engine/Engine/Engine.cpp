@@ -13,11 +13,7 @@
 InputManager* GInputManager = nullptr;
 TimeManager* GTimeManager = nullptr;
 ConstantManager* GConstantManager = nullptr;
-
 Camera* GCurrentCamera = nullptr;
-//Camera* GCamera1 = nullptr;
-//Camera* GCamera2 = nullptr;
-
 SpotLight* GSpotLight = nullptr;
 
 
@@ -87,17 +83,8 @@ bool Engine::Initialize
 
 	GTimeManager = new TimeManager;
 
-	//GCamera1 = new Camera;
-	//GCamera1->BeginPlay();
-	//GCamera1->SetClearColor({0.0f, 0.0f, 0.6f ,1.0f});
-
-
-	//GCamera2 = new Camera;
-	//GCamera2->BeginPlay();
-	//GCamera2->SetClearColor({0.0f, 0.6f, 0.0f,1.0f });
-	
-
 	GConstantManager = new ConstantManager;
+
 	GSpotLight = new SpotLight;
 	GSpotLight->BeginPlay();
 
@@ -129,27 +116,14 @@ void Engine::Run()
 		// GameLoop
 		pWorld_->CheckChangeLevel();
 
-		//GCamera1->Tick(deltaTime);
-
 		pWorld_->OnTick(deltaTime);
 
-		//GCurrentCamera = GCamera1;
-		//GConstantManager->Update();
-		//GCamera1->RenderTest();
-		//pWorld_->OnRender();
-		//
-		//GCurrentCamera = GCamera2;
-		//GConstantManager->Update();
-		//GCamera2->RenderTest();
 		pWorld_->OnRender();
 		
 		// Render
 		pRenderDevice_->RenderBegin();
 		
 		pWorld_->OnBlit();
-		//GCamera1->BlitToBackBuffer({ -0.5f, 0.0f }, {0.5f, 1.0f});
-
-		//GCamera2->BlitToBackBuffer({ 0.5f, 0.0f }, { 0.5f, 1.0f });
 		
 		pRenderDevice_->RenderEnd();
 	}
@@ -257,17 +231,6 @@ void Engine::CleanUp()
 		delete GConstantManager;
 		GConstantManager = nullptr;
 	}
-
-	//if (nullptr != GCamera1)
-	//{
-	//	delete GCamera1;
-	//	GCamera1 = nullptr;
-	//}
-	//if (nullptr != GCamera2)
-	//{
-	//	delete GCamera2;
-	//	GCamera2 = nullptr;
-	//}
 
 	if (nullptr != GTimeManager)
 	{

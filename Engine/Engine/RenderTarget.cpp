@@ -1,11 +1,6 @@
 #include "stdafx.h"
 #include "RenderTarget.h"
 
-//RenderTarget::RenderTarget()
-//	: pRenderTargetImpl_(nullptr)
-//{
-//}
-
 RenderTarget::RenderTarget(IRenderTarget* pRenderTargetImpl)
 	:pRenderTargetImpl_(pRenderTargetImpl)
 {

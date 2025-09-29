@@ -1,12 +1,6 @@
 #include "stdafx.h"
 #include "Material.h"
 
-//Material::Material()
-//	: pVertexShaderImpl_(nullptr),
-//	pPixelShaderImpl_(nullptr),
-//	pSampleStateImpl_(nullptr)
-//{
-//}
 
 Material::Material(IShader* pVertexShader, IShader* pPixelShader, ISamplerState* pSampleState)
 	:pVertexShaderImpl_(pVertexShader),

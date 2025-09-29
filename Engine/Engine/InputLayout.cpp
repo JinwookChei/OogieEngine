@@ -1,11 +1,6 @@
 #include "stdafx.h"
 #include "InputLayout.h"
 
-//InputLayout::InputLayout()
-//	:pInputLayoutImpl_(nullptr)
-//{
-//}
-
 InputLayout::InputLayout(IInputLayout* pInputLayout)
 	:pInputLayoutImpl_(pInputLayout)
 {

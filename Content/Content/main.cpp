@@ -13,12 +13,6 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine
 	const wchar_t* iConPath = L"..//Resource//Logo//LogoResize.ico";
 
 	ContentManager* pContentManager = new ContentManager;
-	if (nullptr == pContentManager)
-	{
-		DEBUG_BREAK();
-		return 0;
-	}
-
 	if (false == pContentManager->Initialize(hInstance, pCmdLine, cmdShow, mainWindowClassName, mainWindowText, iConPath))
 	{
 		goto lb_return;
