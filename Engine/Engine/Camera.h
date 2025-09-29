@@ -40,17 +40,20 @@ public:
 
 	void SetConfig(float fov, float Near, float Far);
 
-	
-
-	
-
 private:
 	void InitScreenRect();
 
-	void CleanUp() override;
+	ENGINE_API void CleanUp() override;
 
 	void CameraTransformUpdate();
 
+
+protected:
+	float cameraSensitivity_;
+
+	float cameraSpeed_;
+
+private:
 	Float4x4 view_;
 	Float4x4 projection_;
 
@@ -60,9 +63,6 @@ private:
 	float far_;
 
 	Color clearColor_;
-	float cameraSensitivity_;
-	float cameraSpeed_;
-
 	RenderTarget* pRenderTarget_;
 	Mesh* pScreenVertex_;
 	Material* pScreenMaterial_;

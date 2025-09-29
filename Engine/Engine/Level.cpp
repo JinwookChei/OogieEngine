@@ -128,7 +128,22 @@ void Level::OnRender()
 		GCurrentCamera = (Camera*)pCameraIter->item_;
 		GConstantManager->Update();
 		GCurrentCamera->RenderTest();
+		OnRenderCameras();
 		OnRenderActors();
+		pCameraIter = pCameraIter->next_;
+	}
+}
+
+void Level::OnRenderCameras()
+{
+	LINK_ITEM* pCameraIter = pCameraHead_;
+	while (pCameraIter)
+	{
+		Camera* pCurCamera = (Camera*)pCameraIter->item_;
+		if (pCurCamera != GCurrentCamera)
+		{
+			pCurCamera->Render();
+		}
 		pCameraIter = pCameraIter->next_;
 	}
 }

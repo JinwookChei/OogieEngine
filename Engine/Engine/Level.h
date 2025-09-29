@@ -75,6 +75,8 @@ private:
 
 	void OnRender();
 
+	void OnRenderCameras();
+
 	void OnRenderActors();
 	
 	void BlitCameraToBackBuffer();

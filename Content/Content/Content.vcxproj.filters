@@ -31,6 +31,9 @@
     <Filter Include="Source Files\Game\Actors">
       <UniqueIdentifier>{666af89b-d60b-481b-a9cf-f8ef1c2c1c49}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Game\Actors\Camera">
+      <UniqueIdentifier>{f94cdf62-c46f-4f33-88a4-9c2c7ffefa78}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -47,6 +50,9 @@
     </ClCompile>
     <ClCompile Include="TestActor.cpp">
       <Filter>Source Files\Game\Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveCamera.cpp">
+      <Filter>Source Files\Game\Actors\Camera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -67,6 +73,9 @@
     </ClInclude>
     <ClInclude Include="TestActor.h">
       <Filter>Source Files\Game\Actors</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveCamera.h">
+      <Filter>Source Files\Game\Actors\Camera</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

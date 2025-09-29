@@ -46,6 +46,7 @@
 #include <Engine/Actor.h>
 #include <Engine/Camera.h>
 #include <Engine/RenderComponent.h>
+#include <Engine/InputManager.h>
 
 
 #include <Engine/World.h>
