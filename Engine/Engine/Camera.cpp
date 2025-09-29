@@ -15,7 +15,9 @@ Camera::Camera()
 	pScreenVertex_(nullptr),
 	pScreenMaterial_(nullptr),
 	pScreenInputLayout_(nullptr),
-	pScreenConstantBuffer_(nullptr)
+	pScreenConstantBuffer_(nullptr),
+	screenOffset_({0.0f, 0.0f}),
+	screenScale_({1.0f, 1.0f})
 {
 	MatrixIdentity(view_);
 	MatrixIdentity(projection_);
@@ -126,6 +128,11 @@ void Camera::RenderTest()
 	pRenderTarget_->Setting();
 }
 
+void Camera::BlitToBackBuffer()
+{
+	BlitToBackBuffer(screenOffset_, screenScale_);
+}
+
 void Camera::BlitToBackBuffer(const Float2& offset, const Float2& scale)
 {
 	pRenderTarget_->BindRenderTextureForPS(0);
@@ -183,6 +190,12 @@ void Camera::SetClearColor(const Color& clearColor)
 {
 	clearColor_ = clearColor;
 	pRenderTarget_->SetClearColor(clearColor_);
+}
+
+void Camera::SetScreenPlacement(const Float2& screenOffset, const Float2& screenScale)
+{
+	screenOffset_ = screenOffset;
+	screenScale_ = screenScale;
 }
 
 void Camera::InitScreenRect()

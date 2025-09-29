@@ -20,10 +20,10 @@ ConstantManager* ConstantManager::Instance()
 void ConstantManager::Update()
 {
 	Float4x4 tmpMat;
-	MatrixTranspose(tmpMat, GCamera->View());
+	MatrixTranspose(tmpMat, GCurrentCamera->View());
 	constantBuffer_->view = tmpMat;
 
-	MatrixTranspose(tmpMat, GCamera->Projection());
+	MatrixTranspose(tmpMat, GCurrentCamera->Projection());
 	constantBuffer_->projection = tmpMat;
 
 	// Light

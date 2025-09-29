@@ -29,6 +29,8 @@ private:
 
 	void OnRender();
 
+	void OnBlit();
+
 	void CheckChangeLevel();
 
 	void CleanUp();

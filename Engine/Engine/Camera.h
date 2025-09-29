@@ -22,7 +22,13 @@ public:
 
 	ENGINE_API void Render() override;
 
+	ENGINE_API void SetClearColor(const Color& clearColor);
+
+	ENGINE_API void SetScreenPlacement(const Float2& screenOffset, const Float2& screenScale);
+
 	void RenderTest();
+
+	void BlitToBackBuffer();
 
 	void BlitToBackBuffer(const Float2& offset, const Float2& scale);
 
@@ -34,7 +40,9 @@ public:
 
 	void SetConfig(float fov, float Near, float Far);
 
-	void SetClearColor(const Color& clearColor);
+	
+
+	
 
 private:
 	void InitScreenRect();
@@ -56,9 +64,10 @@ private:
 	float cameraSpeed_;
 
 	RenderTarget* pRenderTarget_;
-
 	Mesh* pScreenVertex_;
 	Material* pScreenMaterial_;
 	InputLayout* pScreenInputLayout_;
 	ShaderConstants* pScreenConstantBuffer_;
+	Float2 screenOffset_;
+	Float2 screenScale_;
 };

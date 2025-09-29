@@ -41,6 +41,6 @@ extern RenderDevice* GRenderDevice;
 extern InputManager* GInputManager;
 extern TimeManager* GTimeManager;
 extern ConstantManager* GConstantManager;
-extern Camera* GCamera;
+extern Camera* GCurrentCamera;
 extern SpotLight* GSpotLight;
 

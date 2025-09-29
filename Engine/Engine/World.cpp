@@ -46,6 +46,11 @@ void World::OnRender()
 	curLevel_->OnRender();
 }
 
+void World::OnBlit()
+{
+	curLevel_->BlitCameraToBackBuffer();
+}
+
 void World::CheckChangeLevel()
 {
 	if (nullptr != nextLevel_) {

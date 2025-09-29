@@ -13,7 +13,11 @@
 InputManager* GInputManager = nullptr;
 TimeManager* GTimeManager = nullptr;
 ConstantManager* GConstantManager = nullptr;
-Camera* GCamera = nullptr;
+
+Camera* GCurrentCamera = nullptr;
+//Camera* GCamera1 = nullptr;
+//Camera* GCamera2 = nullptr;
+
 SpotLight* GSpotLight = nullptr;
 
 
@@ -76,49 +80,25 @@ bool Engine::Initialize
 
 
 	GInputManager = new InputManager;
-	if (nullptr == GInputManager)
-	{
-		DEBUG_BREAK();
-		return false;
-	}
-
 	if (false == GInputManager->Initialize())
 	{
 		return false;
 	}
 
 	GTimeManager = new TimeManager;
-	if (nullptr == GTimeManager)
-	{
-		DEBUG_BREAK();
-		return false;
-	}
 
-	GCamera = new Camera;
-	if (nullptr == GCamera)
-	{
-		DEBUG_BREAK();
-		return false;
-	}
-	GCamera->BeginPlay();
-	
-	//GCamera->SetWidth(2560.f);
-	//GCamera->SetHeight(1440.f);
+	//GCamera1 = new Camera;
+	//GCamera1->BeginPlay();
+	//GCamera1->SetClearColor({0.0f, 0.0f, 0.6f ,1.0f});
+
+
+	//GCamera2 = new Camera;
+	//GCamera2->BeginPlay();
+	//GCamera2->SetClearColor({0.0f, 0.6f, 0.0f,1.0f });
 	
 
 	GConstantManager = new ConstantManager;
-	if (nullptr == GConstantManager)
-	{
-		DEBUG_BREAK();
-		return false;
-	}
-
 	GSpotLight = new SpotLight;
-	if (nullptr == GSpotLight)
-	{
-		DEBUG_BREAK();
-		return false;
-	}
 	GSpotLight->BeginPlay();
 
 	if (false == InitializeStartUp(pStartup))
@@ -143,27 +123,33 @@ void Engine::Run()
 		// Calc DeltaTime
 		double deltaTime = GTimeManager->CalcDeltaTime();
 
-		// Constant Update
-		GConstantManager->Update();
-
 		// Input Update
 		GInputManager->Tick(deltaTime);
 
 		// GameLoop
 		pWorld_->CheckChangeLevel();
 
-		GCamera->Tick(deltaTime);
+		//GCamera1->Tick(deltaTime);
 
 		pWorld_->OnTick(deltaTime);
 
-		GCamera->RenderTest();
-
+		//GCurrentCamera = GCamera1;
+		//GConstantManager->Update();
+		//GCamera1->RenderTest();
+		//pWorld_->OnRender();
+		//
+		//GCurrentCamera = GCamera2;
+		//GConstantManager->Update();
+		//GCamera2->RenderTest();
 		pWorld_->OnRender();
-
+		
 		// Render
 		pRenderDevice_->RenderBegin();
+		
+		pWorld_->OnBlit();
+		//GCamera1->BlitToBackBuffer({ -0.5f, 0.0f }, {0.5f, 1.0f});
 
-		GCamera->BlitToBackBuffer({ 0.0f, 0.0f }, {1.0f, 1.0f});
+		//GCamera2->BlitToBackBuffer({ 0.5f, 0.0f }, { 0.5f, 1.0f });
 		
 		pRenderDevice_->RenderEnd();
 	}
@@ -242,11 +228,6 @@ bool Engine::InitializeStartUp(IStartup* startUp)
 bool Engine::InitializeWorld()
 {
 	pWorld_ = new World;
-	if (nullptr == pWorld_)
-	{
-		DEBUG_BREAK();
-		return false;
-	}
 
 	return true;
 }
@@ -277,11 +258,16 @@ void Engine::CleanUp()
 		GConstantManager = nullptr;
 	}
 
-	if (nullptr != GCamera)
-	{
-		delete GCamera;
-		GCamera = nullptr;
-	}
+	//if (nullptr != GCamera1)
+	//{
+	//	delete GCamera1;
+	//	GCamera1 = nullptr;
+	//}
+	//if (nullptr != GCamera2)
+	//{
+	//	delete GCamera2;
+	//	GCamera2 = nullptr;
+	//}
 
 	if (nullptr != GTimeManager)
 	{

@@ -3,8 +3,11 @@
 #include "Level.h"
 
 Level::Level()
-	: pActorGroupHead_(nullptr),
+	: pCameraHead_(nullptr),
+	pCameraTail_(nullptr),
+	pActorGroupHead_(nullptr),
 	pActorGroupTail_(nullptr)
+
 {
 }
 
@@ -23,6 +26,18 @@ void Level::SpawnActorInternal(Actor* pActor, ACTOR_TYPE actorType)
 	RegisterActor(pActor, actorType);
 
 	pActor->BeginPlay();
+}
+
+void Level::SpawnCameraInternal(Camera* pCamera)
+{
+	if (nullptr == pCamera)
+	{
+		return;
+	} 
+
+	RegisterCamera(pCamera);
+
+	pCamera->BeginPlay();
 }
 
 
@@ -54,12 +69,40 @@ void Level::RegisterActor(Actor* pActor, ACTOR_TYPE actorType)
 	pNewActorGroup->groupLink_.item_ = pNewActorGroup;
 	pNewActorGroup->actorType_ = actorType;
 	
-	LinkToLinkedList(&pActorGroupHead_, &pActorGroupTail_, &pNewActorGroup->groupLink_);
+	LinkToLinkedListFIFO(&pActorGroupHead_, &pActorGroupTail_, &pNewActorGroup->groupLink_);
 
-	LinkToLinkedList(&pNewActorGroup->pActorHead_, &pNewActorGroup->pActorTail_, pActor->LevelLink());
+	LinkToLinkedListFIFO(&pNewActorGroup->pActorHead_, &pNewActorGroup->pActorTail_, pActor->LevelLink());
+}
+
+void Level::RegisterCamera(Camera* pCamera)
+{
+	if (nullptr == pCamera)
+	{
+		return;
+	}
+	
+	LinkToLinkedListFIFO(&pCameraHead_, &pCameraTail_, pCamera->LevelLink());
 }
 
 void Level::OnTick(double deltaTime)
+{
+	OnTickCameras(deltaTime);
+	OnTickActors(deltaTime);
+	Tick(deltaTime);
+}
+
+void Level::OnTickCameras(double deltaTime)
+{
+	LINK_ITEM* pCameraIter = pCameraHead_;
+	while (pCameraIter)
+	{
+		Camera* pCurCamera = (Camera*)pCameraIter->item_;
+		pCurCamera->Tick(deltaTime);
+		pCameraIter = pCameraIter->next_;
+	}
+}
+
+void Level::OnTickActors(double deltaTime)
 {
 	LINK_ITEM* pGroupIter = pActorGroupHead_;
 	while (pGroupIter)
@@ -75,11 +118,22 @@ void Level::OnTick(double deltaTime)
 		}
 		pGroupIter = pGroupIter->next_;
 	}
-	
-	Tick(deltaTime);
 }
 
 void Level::OnRender()
+{
+	LINK_ITEM* pCameraIter = pCameraHead_;
+	while (pCameraIter)
+	{
+		GCurrentCamera = (Camera*)pCameraIter->item_;
+		GConstantManager->Update();
+		GCurrentCamera->RenderTest();
+		OnRenderActors();
+		pCameraIter = pCameraIter->next_;
+	}
+}
+
+void Level::OnRenderActors()
 {
 	LINK_ITEM* pGroupIter = pActorGroupHead_;
 	while (pGroupIter)
@@ -97,9 +151,33 @@ void Level::OnRender()
 	}
 }
 
+void Level::BlitCameraToBackBuffer()
+{
+	LINK_ITEM* pCameraIter = pCameraHead_;
+	while (pCameraIter)
+	{
+		Camera* pCurCamera = (Camera*)pCameraIter->item_;
+		pCurCamera->BlitToBackBuffer();
+		pCameraIter = pCameraIter->next_;
+	}
+}
+
+
 void Level::CleanUp()
 {
+	CleanUpCamera();
+
 	CleanUpActorGroup();
+}
+
+void Level::CleanUpCamera()
+{
+	while (pCameraHead_)
+	{
+		Camera* pCurCamera = (Camera*)pCameraHead_->item_;
+		UnLinkFromLinkedList(&pCameraHead_, &pCameraTail_, pCurCamera->LevelLink());
+		delete pCurCamera;
+	}
 }
 
 void Level::CleanUpActorGroup()
