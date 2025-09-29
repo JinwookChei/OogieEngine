@@ -35,7 +35,7 @@ public:
 	
 	IRasterizer* __stdcall  CreateRasterizer(bool back) override;
 
-	IRenderTarget* __stdcall CreateRenderTarget(const Float2& size, const Color& clearColor) override;
+	IRenderTarget* __stdcall CreateRenderTarget(const Float2& size, const Color& clearColor, bool useDepthStencil = true) override;
 
 	ID3D11Device* Device();
 

@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Transform.h"
+#include "GeometryGenerator.h"
 #include "RenderTarget.h"
 #include "Camera.h"
 
@@ -10,7 +11,11 @@ Camera::Camera()
 	far_(100.0f),
 	clearColor_({ 1.0f, 0.0f, 0.0f, 1.0f }),
 	cameraSensitivity_(10.0f),
-	cameraSpeed_(2.0f)
+	cameraSpeed_(2.0f),
+	pScreenVertex_(nullptr),
+	pScreenMaterial_(nullptr),
+	pScreenInputLayout_(nullptr),
+	pScreenConstantBuffer_(nullptr)
 {
 	MatrixIdentity(view_);
 	MatrixIdentity(projection_);
@@ -108,7 +113,7 @@ void Camera::BeginPlay()
 
 void Camera::Render()
 {
-	CameraTransformUpdate();
+	//CameraTransformUpdate();
 }
 
 void Camera::RenderTest()
@@ -155,6 +160,15 @@ void Camera::SetClearColor(const Color& clearColor)
 {
 	clearColor_ = clearColor;
 	pRenderTarget_->SetClearColor(clearColor_);
+}
+
+void Camera::InitScreenRect()
+{
+	std::vector<ScreenRectVertex> vertices;
+	std::vector<WORD> indices;
+	//CreateScreenRect(&vertices, &indices);
+
+	//RenderDevice::Instance()->CreateMesh(vertices);
 }
 
 void Camera::CleanUp()

@@ -31,7 +31,7 @@ public:
 
 	//IRasterizer* CreateRasterizer(bool back);
 
-	RenderTarget* CreateRenderTarget(const Float2& size, const Color& clearColor);
+	RenderTarget* CreateRenderTarget(const Float2& size, const Color& clearColor, bool useDepthStencil = true);
 
 	InputLayout* CreateLayout(Mesh* pMesh, Material* pMaterial);
 

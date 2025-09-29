@@ -156,14 +156,15 @@ void Engine::Run()
 
 		pWorld_->OnTick(deltaTime);
 
-		//GCamera->RenderTest();
+		GCamera->RenderTest();
+
+		pWorld_->OnRender();
 
 		// Render
 		pRenderDevice_->RenderBegin();
 
-		GCamera->Render();
-
-		pWorld_->OnRender();
+		//GCamera->Render();
+		
 
 		pRenderDevice_->RenderEnd();
 	}

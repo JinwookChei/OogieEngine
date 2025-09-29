@@ -7,7 +7,9 @@
 #include "InputLayout.h"
 #include "ShaderConstants.h"
 #include "Rasterizer.h"
-#include "Test.h"
+//#include "GraphicesStructures.h"
+#include "GeometryGenerator.h"
+
 #include "RenderComponent.h"
 
 RenderComponent::RenderComponent(Actor* pOwner)
@@ -55,10 +57,10 @@ void RenderComponent::Create(MESH_TYPE meshType)
 	switch (meshType)
 	{
 	case MESH_TYPE::SPHERE:
-		CreateSphere(&sphereVertices, &sphereIndices);
+		GeometryGenerator::CreateSphere(&sphereVertices, &sphereIndices);
 		break;
 	case MESH_TYPE::CUBE:
-		CreateCube(&sphereVertices, &sphereIndices);
+		GeometryGenerator::CreateCube(&sphereVertices, &sphereIndices);
 		break;
 	default:
 		break;
@@ -79,9 +81,7 @@ void RenderComponent::Create(MESH_TYPE meshType)
 	pMesh_->AddInputLayout("TANGENT", 0, 2, 0, false);
 
 	pMaterial_ = RenderDevice::Instance()->CreateMaterial(L"VertexShader.cso", L"PixelShader.cso");
-
 	pInputLayout_ = RenderDevice::Instance()->CreateLayout(pMesh_, pMaterial_);
-
 	pConstantBuffer_ = RenderDevice::Instance()->CreateShaderConstants((uint32_t)sizeof(ConstantBuffer));
 
 }

@@ -16,9 +16,11 @@ public:
 
 	void __stdcall SetClearColor(const Color& color) override;
 
-	bool CreateDepthTexture();
+	//bool CreateDepthTexture();
 
-	bool SetTexture(D3D11Texture* pTexture);
+	bool SetTexture(D3D11Texture* pRenderTexture, D3D11Texture* pDepthTexture);
+
+	//bool SetDepthTexture(D3D11Texture* pDepthTexture);
 
 	void Clear();
 

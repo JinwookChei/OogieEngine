@@ -245,28 +245,33 @@ IRasterizer* __stdcall D3D11Renderer::CreateRasterizer(bool back)
 	return pRasterizer;
 }
 
-IRenderTarget* __stdcall D3D11Renderer::CreateRenderTarget(const Float2& size, const Color& clearColor)
+IRenderTarget* __stdcall D3D11Renderer::CreateRenderTarget(const Float2& size, const Color& clearColor, bool useDepthStencil /*= true*/)
 {
-	D3D11Texture* pTexture = D3D11Texture::Create(size, DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET | D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE);
-	if (nullptr == pTexture)
-	{
-		return nullptr;
-	}
-
 	D3D11RenderTarget* pRenderTarget = new D3D11RenderTarget;
 	if (nullptr == pRenderTarget)
 	{
 		DEBUG_BREAK();
-		pTexture->Release();
 		return nullptr;
 	}
-	if (false == pRenderTarget->SetTexture(pTexture))
+
+	D3D11Texture* pRenderTexture = D3D11Texture::Create(size, DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET | D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE);
+	if (nullptr == pRenderTexture)
+	{
+		return nullptr;
+	}
+
+	D3D11Texture* pDepthTexture = nullptr;
+	if (true == useDepthStencil)
+	{
+		pDepthTexture = D3D11Texture::Create(pRenderTexture->Size(), DXGI_FORMAT::DXGI_FORMAT_D24_UNORM_S8_UINT, D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL);
+	}
+
+	pRenderTarget->SetClearColor(clearColor);
+	if (false == pRenderTarget->SetTexture(pRenderTexture, pDepthTexture))
 	{
 		pRenderTarget->Release();
 		return nullptr;
 	}
-	
-	pRenderTarget->SetClearColor(clearColor);
 
 	return pRenderTarget;
 }
@@ -403,31 +408,37 @@ lb_return:
 bool D3D11Renderer::CreateBackBuffer()
 {
 	ID3D11Texture2D* pBackBufferTexture = nullptr;
-
 	HRESULT hr = pSwapChain_->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)&pBackBufferTexture);
 	if (FAILED(hr))
 	{
 		DEBUG_BREAK();
 		return false;
 	}
-
 	if (nullptr == pBackBufferTexture)
 	{
 		DEBUG_BREAK();
 		return false;
 	}
 
-	D3D11Texture* pNewTexture = new D3D11Texture;
-	if (nullptr == pNewTexture)
+	D3D11Texture* pRenderTexture = new D3D11Texture;
+	if (nullptr == pRenderTexture)
 	{
-		pBackBufferTexture->Release();
 		DEBUG_BREAK();
+		pBackBufferTexture->Release();
 		return false;
 	}
 
-	if (false == pNewTexture->SetTexture(pBackBufferTexture))
+	if (false == pRenderTexture->SetTexture(pBackBufferTexture))
 	{
-		pNewTexture->Release();
+		pRenderTexture->Release();
+		return false;
+	}
+
+	D3D11Texture* pDepthTexture = D3D11Texture::Create(pRenderTexture->Size(), DXGI_FORMAT::DXGI_FORMAT_D24_UNORM_S8_UINT, D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL);
+	if (nullptr == pDepthTexture)
+	{
+		DEBUG_BREAK();
+		pRenderTexture->Release();
 		return false;
 	}
 
@@ -435,22 +446,80 @@ bool D3D11Renderer::CreateBackBuffer()
 	if (nullptr == pBackBuffer_)
 	{
 		DEBUG_BREAK();
+		pRenderTexture->Release();
+		pDepthTexture->Release();
 		return false;
+
 	}
 
-	if (false == pBackBuffer_->SetTexture(pNewTexture))
+	if (false == pBackBuffer_->SetTexture(pRenderTexture, pDepthTexture))
 	{
 		DEBUG_BREAK();
-		return false;
-	}
-
-	if (false == pBackBuffer_->CreateDepthTexture())
-	{
-		DEBUG_BREAK();
+		pBackBuffer_->Release();
+		pRenderTexture->Release();
+		pDepthTexture->Release();
 		return false;
 	}
 
 	return true;
+
+
+	//if (false == pBackBuffer_->CreateDepthTexture())
+	//{
+	//	DEBUG_BREAK();
+	//	return false;
+	//}
+
+	
+	//ID3D11Texture2D* pBackBufferTexture = nullptr;
+
+	//HRESULT hr = pSwapChain_->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)&pBackBufferTexture);
+	//if (FAILED(hr))
+	//{
+	//	DEBUG_BREAK();
+	//	return false;
+	//}
+
+	//if (nullptr == pBackBufferTexture)
+	//{
+	//	DEBUG_BREAK();
+	//	return false;
+	//}
+
+	//D3D11Texture* pNewTexture = new D3D11Texture;
+	//if (nullptr == pNewTexture)
+	//{
+	//	pBackBufferTexture->Release();
+	//	DEBUG_BREAK();
+	//	return false;
+	//}
+
+	//if (false == pNewTexture->SetTexture(pBackBufferTexture))
+	//{
+	//	pNewTexture->Release();
+	//	return false;
+	//}
+
+	//pBackBuffer_ = new D3D11RenderTarget;
+	//if (nullptr == pBackBuffer_)
+	//{
+	//	DEBUG_BREAK();
+	//	return false;
+	//}
+
+	//if (false == pBackBuffer_->SetTexture(pNewTexture))
+	//{
+	//	DEBUG_BREAK();
+	//	return false;
+	//}
+
+	//if (false == pBackBuffer_->CreateDepthTexture())
+	//{
+	//	DEBUG_BREAK();
+	//	return false;
+	//}
+
+	//return true;
 }
 
 void D3D11Renderer::CleanUp()

@@ -81,5 +81,5 @@ struct IRenderer : public IUnknown {
 
 	virtual IRasterizer* __stdcall  CreateRasterizer(bool back) = 0;
 
-	virtual IRenderTarget* __stdcall CreateRenderTarget(const Float2& size, const Color& clearColor) = 0;
+	virtual IRenderTarget* __stdcall CreateRenderTarget(const Float2& size, const Color& clearColor, bool useDepthStencil = true) = 0;
 };

@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Test.h"
+#include "GraphicesStructures.h"
 #include "ConstantManager.h"
 
 ConstantManager::ConstantManager()

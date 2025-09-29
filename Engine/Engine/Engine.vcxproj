@@ -147,6 +147,8 @@
     <ClInclude Include="Application.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ConstantManager.h" />
+    <ClInclude Include="GeometryGenerator.h" />
+    <ClInclude Include="GraphicesStructures.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="RenderTarget.h" />
     <ClInclude Include="ShaderConstants.h" />
@@ -173,6 +175,8 @@
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ConstantManager.cpp" />
+    <ClCompile Include="GeometryGenerator.cpp" />
+    <ClCompile Include="GraphicsStructures.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="RenderTarget.cpp" />
     <ClCompile Include="ShaderConstants.cpp" />

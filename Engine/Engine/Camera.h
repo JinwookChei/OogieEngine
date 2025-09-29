@@ -31,6 +31,8 @@ public:
 	void SetClearColor(const Color& clearColor);
 
 private:
+	void InitScreenRect();
+
 	void CleanUp() override;
 
 	void CameraTransformUpdate();
@@ -49,4 +51,8 @@ private:
 
 	RenderTarget* pRenderTarget_;
 
+	Mesh* pScreenVertex_;
+	Material* pScreenMaterial_;
+	InputLayout* pScreenInputLayout_;
+	ShaderConstants* pScreenConstantBuffer_;
 };

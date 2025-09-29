@@ -88,6 +88,12 @@
     <Filter Include="Source Files\Application">
       <UniqueIdentifier>{6a6ee16b-cf94-4e60-84b7-52dfc4dbb0b2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Graphics\Structures">
+      <UniqueIdentifier>{91baee82-f6fb-4aec-9178-74d90e00e4ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Graphics\Generator">
+      <UniqueIdentifier>{3589f1c8-6e82-43bf-9c5e-254d45268f12}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -168,6 +174,12 @@
     <ClInclude Include="Application.h">
       <Filter>Source Files\Application</Filter>
     </ClInclude>
+    <ClInclude Include="GraphicesStructures.h">
+      <Filter>Source Files\Graphics\Structures</Filter>
+    </ClInclude>
+    <ClInclude Include="GeometryGenerator.h">
+      <Filter>Source Files\Graphics\Generator</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -241,6 +253,12 @@
     </ClCompile>
     <ClCompile Include="Application.cpp">
       <Filter>Source Files\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsStructures.cpp">
+      <Filter>Source Files\Graphics\Structures</Filter>
+    </ClCompile>
+    <ClCompile Include="GeometryGenerator.cpp">
+      <Filter>Source Files\Graphics\Generator</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

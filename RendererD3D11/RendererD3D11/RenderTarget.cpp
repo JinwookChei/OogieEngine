@@ -2,7 +2,6 @@
 #include "Texture.h"
 #include "RenderTarget.h"
 
-
 D3D11RenderTarget* GCurrentSetRenderTarget = nullptr;
 
 D3D11RenderTarget::D3D11RenderTarget()
@@ -45,32 +44,18 @@ void D3D11RenderTarget::SetClearColor(const Color& color)
 	clearColor_ = color;
 }
 
-bool D3D11RenderTarget::CreateDepthTexture()
-{
-	if (nullptr == pRenderTexture_)
-	{
-		DEBUG_BREAK();
-		return false;
-	}
-
-	pDepthTexture_ = D3D11Texture::Create(pRenderTexture_->Size(), DXGI_FORMAT::DXGI_FORMAT_D24_UNORM_S8_UINT, D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL);
-
-	return nullptr != pDepthTexture_;
-}
-
-bool D3D11RenderTarget::SetTexture(D3D11Texture* pTexture)
+bool D3D11RenderTarget::SetTexture(D3D11Texture* pRenderTexture, D3D11Texture* pDepthTexture)
 {
 	CleanUp();
 
-	if (nullptr == pTexture)
+	if (nullptr == pRenderTexture)
 	{
 		return false;
 	}
 
-	pRenderTexture_ = pTexture;
+	pRenderTexture_ = pRenderTexture;
 
 	Float2 textureSize = pRenderTexture_->Size();
-
 	viewport_.TopLeftX = 0.0f;
 	viewport_.TopLeftY = 0.0f;
 	viewport_.Width = textureSize.X;
@@ -78,8 +63,53 @@ bool D3D11RenderTarget::SetTexture(D3D11Texture* pTexture)
 	viewport_.MinDepth = 0.0f;
 	viewport_.MaxDepth = 1.0f;
 
+	if (nullptr != pDepthTexture)
+	{
+		pDepthTexture_ = pDepthTexture;
+	}
+
 	return true;
 }
+
+//bool D3D11RenderTarget::CreateDepthTexture()
+//{
+//	if (nullptr == pRenderTexture_)
+//	{
+//		DEBUG_BREAK();
+//		return false;
+//	}
+//
+//	pDepthTexture_ = D3D11Texture::Create(pRenderTexture_->Size(), DXGI_FORMAT::DXGI_FORMAT_D24_UNORM_S8_UINT, D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL);
+//
+//	return nullptr != pDepthTexture_;
+//}
+
+//bool D3D11RenderTarget::SetRenderTexture(D3D11Texture* pRenderTexture)
+//{
+//	CleanUp();
+//
+//	if (nullptr == pRenderTexture)
+//	{
+//		return false;
+//	}
+//
+//	pRenderTexture_ = pRenderTexture;
+//
+//	Float2 textureSize = pRenderTexture_->Size();
+//	viewport_.TopLeftX = 0.0f;
+//	viewport_.TopLeftY = 0.0f;
+//	viewport_.Width = textureSize.X;
+//	viewport_.Height = textureSize.Y;
+//	viewport_.MinDepth = 0.0f;
+//	viewport_.MaxDepth = 1.0f;
+//
+//	return true;
+//}
+
+//bool D3D11RenderTarget::SetDepthTexture(D3D11Texture* pDepthTexture)
+//{
+//	return false;
+//}
 
 void D3D11RenderTarget::Clear()
 {
@@ -107,7 +137,7 @@ void D3D11RenderTarget::Clear()
 	}
 
 	GRenderer->DeviceContext()->ClearDepthStencilView(pDepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
-}	
+}
 
 void D3D11RenderTarget::Setting()
 {
@@ -123,14 +153,14 @@ void D3D11RenderTarget::Setting()
 		return;
 	}
 
-	ID3D11DepthStencilView* pDepthStencilView = pDepthTexture_->DepthStencilView();
-	if (nullptr == pDepthStencilView)
+	ID3D11DepthStencilView* pDepthStencilView = nullptr;
+	if (nullptr != pDepthTexture_)
 	{
-		DEBUG_BREAK();
-		return;
+		pDepthStencilView = pDepthTexture_->DepthStencilView();
 	}
 
 	GCurrentSetRenderTarget = this;
+
 	GRenderer->DeviceContext()->OMSetRenderTargets(1, &pRenderTargetView, pDepthStencilView);
 	GRenderer->DeviceContext()->RSSetViewports(1, &viewport_);
 }

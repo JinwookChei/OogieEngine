@@ -135,7 +135,7 @@ uint64_t  RenderDevice::DrawCallCount()
 //	return pRendererImpl_->CreateRasterizer(back);
 //}
 
-RenderTarget* RenderDevice::CreateRenderTarget(const Float2& size, const Color& clearColor)
+RenderTarget* RenderDevice::CreateRenderTarget(const Float2& size, const Color& clearColor, bool useDepthStencil/* = true*/)
 {
 	if (nullptr == pRendererImpl_)
 	{
@@ -143,7 +143,7 @@ RenderTarget* RenderDevice::CreateRenderTarget(const Float2& size, const Color& 
 		return nullptr;
 	}
 
-	IRenderTarget* pRenderTargetImpl = pRendererImpl_->CreateRenderTarget(size, clearColor);
+	IRenderTarget* pRenderTargetImpl = pRendererImpl_->CreateRenderTarget(size, clearColor, useDepthStencil);
 
 	RenderTarget* pRenderTarget = new RenderTarget(pRenderTargetImpl);
 	if (nullptr == pRenderTarget)
