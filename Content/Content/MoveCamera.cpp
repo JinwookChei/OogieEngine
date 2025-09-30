@@ -66,7 +66,7 @@ void MoveCamera::Tick(double deltaTime)
 
 		pTransform_->AddPosition(offset);
 	}
-	if (InputManager::Instance()->IsPress('Q'))
+	if (InputManager::Instance()->IsPress('F'))
 	{
 		Float4 upVector = pTransform_->UpVector();
 
@@ -76,7 +76,7 @@ void MoveCamera::Tick(double deltaTime)
 
 		pTransform_->AddPosition(offset);
 	}
-	if (InputManager::Instance()->IsPress('E'))
+	if (InputManager::Instance()->IsPress('R'))
 	{
 		Float4 upVector = pTransform_->UpVector();
 
@@ -86,6 +86,15 @@ void MoveCamera::Tick(double deltaTime)
 
 		pTransform_->AddPosition(offset);
 	}
+	if (InputManager::Instance()->IsPress('Q'))
+	{
+		pTransform_->AddRotaionZ(-50 * deltaTime);
+	}
+	if (InputManager::Instance()->IsPress('E'))
+	{
+		pTransform_->AddRotaionZ(50 * deltaTime);
+	}
+
 }
 
 void MoveCamera::BeginPlay()

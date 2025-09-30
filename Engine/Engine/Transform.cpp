@@ -125,6 +125,7 @@ Float4 Transform::RightVector() const
 
 void Transform::TransformUpdate()
 {
+	//MatrixLookToLH();
 	MatrixCompose(worldMatrix_, scale_, rotation_, position_);
 
 	/*Float4 roQ;

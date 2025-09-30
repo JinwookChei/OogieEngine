@@ -138,10 +138,23 @@ void Camera::InitScreenRect()
 	);
 	pScreenVertex_->AddInputLayout("POSITION", 0, 16, 0, false);
 	pScreenVertex_->AddInputLayout("TEXCOORD", 0, 16, 0, false);
-
 	pScreenMaterial_ = RenderDevice::Instance()->CreateMaterial(L"ScreenVertexShader.cso", L"ScreenPixelShader.cso");
 	pScreenConstantBuffer_ = RenderDevice::Instance()->CreateShaderConstants((uint32_t)sizeof(ScreenRectConstant));
 	pScreenInputLayout_ = RenderDevice::Instance()->CreateLayout(pScreenVertex_, pScreenMaterial_);
+}
+
+void Camera::CameraTransformUpdate()
+{
+	const Transform& worldForm = GetWorldTransform();
+	Vector eyePos = worldForm.GetPosition();
+	Vector eyeDir = worldForm.ForwardVector();
+	Vector eyeUp = worldForm.UpVector();
+
+	MatrixLookToLH(view_, eyePos, eyeDir, eyeUp);
+
+	float fovRad = ConvertDegToRad(fov_);
+
+	MatrixPerspectiveFovLH(projection_, fov_, (size_.X / size_.Y), near_, far_);
 }
 
 void Camera::CleanUp()
@@ -171,19 +184,5 @@ void Camera::CleanUp()
 		delete pRenderTarget_;
 		pRenderTarget_ = nullptr;
 	}
-}
-
-void Camera::CameraTransformUpdate()
-{
-	const Transform& worldForm = GetWorldTransform();
-	Vector eyePos = worldForm.GetPosition();
-	Vector eyeDir = worldForm.ForwardVector();
-	Vector eyeUp = worldForm.UpVector();
-
-	MatrixLookToLH(view_, eyePos, eyeDir, eyeUp);
-
-	float fovRad = ConvertDegToRad(fov_);
-
-	MatrixPerspectiveFovLH(projection_, fov_, (size_.X / size_.Y), near_, far_);
 }
 

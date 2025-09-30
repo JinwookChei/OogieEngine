@@ -43,17 +43,14 @@ public:
 private:
 	void InitScreenRect();
 
+	virtual ENGINE_API void CameraTransformUpdate();
+
 	ENGINE_API void CleanUp() override;
-
-	void CameraTransformUpdate();
-
 
 protected:
 	float cameraSensitivity_;
-
 	float cameraSpeed_;
 
-private:
 	Float4x4 view_;
 	Float4x4 projection_;
 
@@ -61,6 +58,8 @@ private:
 	Float2 size_;
 	float near_;
 	float far_;
+
+private:
 
 	Color clearColor_;
 	RenderTarget* pRenderTarget_;

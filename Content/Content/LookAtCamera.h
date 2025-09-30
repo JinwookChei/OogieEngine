@@ -15,12 +15,14 @@ public:
 
 	void Render() override;
 
-	void SetTarget(Actor* pTarget);
+	void SetFocusActor(Actor* pActor);
 private:
+	void CameraTransformUpdate() override;
+
 	void CleanUp() override;
 
 	RenderComponent* pRenderer_;
 
-	Actor* pTarget_;
+	Actor* pFocusActor_;
 
 };

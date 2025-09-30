@@ -132,37 +132,59 @@ float VectorLength(const Float3& lhs)
 
 void VectorToEulerDeg(Float4& out, const Float3& lhs)
 {
-	//Float3 normal;
-	//VectorNormalize(normal, lhs);
+	Float3 worldUp = {0.0f, 0.0f, 1.0f};
+	Float3 right;
+	VectorCross(right, lhs, worldUp);
 
-	//float dx = normal.X;
-	//float dy = normal.Y;
-	//float dz = normal.Z;
+	Float3 up;
+	VectorCross(up, right, lhs);
 
-	//float yaw = atan2f(dy, dx);
-	//float pitch = -atan2f(dz, sqrtf(dx * dx + dy * dy));
-	//float roll = 0.0f;
+	Float4 zero = { 0.0f, 0.0f, 0.0f, 1.0f };
+	Float4 dir = { lhs.X, lhs.Y, lhs.Z, 1.0f };
+	Float4 dirUp = { up.X, up.Y, up.Z, 0.0f };
 
-	//out.X = ConvertRadToDeg(roll);
-	//out.Y = ConvertRadToDeg(pitch);
-	//out.Z = ConvertRadToDeg(yaw);
+	Float4x4 tmpMat;
+	MatrixLookToLH(tmpMat, zero, dir, dirUp);
 
-	Float3 normal;
-	VectorNormalize(normal, lhs);
 
-	float dx = normal.X;
-	float dy = normal.Y;
-	float dz = normal.Z;
+	Float4 rotQuat;
+	MatrixDecomposeFromRotQ(tmpMat, rotQuat);
 
-	float yaw = atan2f(dy, dx);
-	float pitch = atan2f(-dz, sqrtf(dx * dx + dy * dy));
-	float roll = 0.0f;
+	Float4 rotDegree;
+	QuaternionToEulerDeg(rotDegree, rotQuat);
 
-	out.X = 0;
-	out.Y = ConvertRadToDeg(pitch);
-	out.Z = ConvertRadToDeg(yaw);
+	out = rotDegree;
 }
 
+//void ForwardToEulerDeg(Float3& outEulerDeg, const Float3& forward)
+//{
+//	// 월드 Up 벡터 (Z-up)
+//	const Float3 worldUp = { 0.0f, 0.0f, 1.0f };
+//
+//	// Right 벡터 = Forward × Up
+//	Float3 right;
+//	VectorCross(right, forward, worldUp);
+//	VectorNormalize(right, right);
+//
+//	// Up 벡터 = Right × Forward
+//	Float3 up;
+//	VectorCross(up, right, forward);
+//	VectorNormalize(up, up);
+//
+//	// Yaw = Z-up 기준 회전
+//	float yaw = atan2f(forward.Y, forward.X);
+//
+//	// Pitch = Forward 벡터가 XY 평면에서 위/아래로 향하는 각도
+//	float pitch = atan2f(-forward.Z, sqrtf(forward.X * forward.X + forward.Y * forward.Y));
+//
+//	// Roll = Right 벡터와 Up 벡터를 기반으로 계산
+//	float roll = atan2f(right.Z, up.Z);
+//
+//	// rad → deg
+//	outEulerDeg.X = DirectX::XMConvertToDegrees(roll);
+//	outEulerDeg.Y = DirectX::XMConvertToDegrees(pitch);
+//	outEulerDeg.Z = DirectX::XMConvertToDegrees(yaw);
+//}
 
 void QuaternionToEulerDeg(Float4& out, const Float4& Q)
 {
@@ -219,17 +241,34 @@ void MatrixTranspose(Float4x4& out, const Float4x4& src)
 	DirectX::XMMATRIX matrix = DirectX::XMMatrixTranspose(srcMatrix);
 
 	memcpy_s(&out, sizeof(Float4x4), &matrix, sizeof(DirectX::XMMATRIX));
+
 }
 
-void MatrixCompose(Float4x4& out, const Float4& scale, const Float4& rotAngle, const Float4& pos)
+//void MatrixCompose(Float4x4& out, const Float4& scale, const Float4& rotAngle, const Float4& pos)
+//{
+//	__m128 convertRotAngle = _mm_loadu_ps(&rotAngle.X);
+//	__m128 quaternionVectorOrigin = DirectX::XMQuaternionRotationRollPitchYawFromVector(convertRotAngle);
+//
+//	__m128 rotationVector = _mm_mul_ps(convertRotAngle, _mm_loadu_ps(&MATH::DegToRad.X));
+//	__m128 quaternionVector = DirectX::XMQuaternionRotationRollPitchYawFromVector(rotationVector);
+//
+//	DirectX::XMMATRIX matrix = DirectX::XMMatrixAffineTransformation(_mm_loadu_ps(&scale.X), quaternionVectorOrigin, quaternionVector, _mm_loadu_ps(&pos.X));
+//	memcpy_s(&out, sizeof(Float4x4), &matrix, sizeof(DirectX::XMMATRIX));
+//}
+
+void MatrixCompose(Float4x4& out, const Float4& scale, const Float4& rotAngleDeg, const Float4& pos)
 {
-	__m128 convertRotAngle = _mm_loadu_ps(&rotAngle.X);
-	__m128 quaternionVectorOrigin = DirectX::XMQuaternionRotationRollPitchYawFromVector(convertRotAngle);
+	// degree → radian
+	__m128 radianAngles = _mm_mul_ps(_mm_loadu_ps(&rotAngleDeg.X), _mm_loadu_ps(&MATH::DegToRad.X));
+	__m128 quaternion = DirectX::XMQuaternionRotationRollPitchYawFromVector(radianAngles);
 
-	__m128 rotationVector = _mm_mul_ps(convertRotAngle, _mm_loadu_ps(&MATH::DegToRad.X));
-	__m128 quaternionVector = DirectX::XMQuaternionRotationRollPitchYawFromVector(rotationVector);
+	// 원점 기준 affine 변환 행렬
+	DirectX::XMMATRIX matrix = DirectX::XMMatrixAffineTransformation(
+		_mm_loadu_ps(&scale.X),
+		DirectX::g_XMZero,   // 회전 중심 = 원점
+		quaternion,
+		_mm_loadu_ps(&pos.X));
 
-	DirectX::XMMATRIX matrix = DirectX::XMMatrixAffineTransformation(_mm_loadu_ps(&scale.X), quaternionVectorOrigin, quaternionVector, _mm_loadu_ps(&pos.X));
 	memcpy_s(&out, sizeof(Float4x4), &matrix, sizeof(DirectX::XMMATRIX));
 }
 
@@ -251,6 +290,16 @@ void MatrixDecomposeFromRotQ(const Float4x4& matrx, Float4& rotQ)
 	Float4 tmpScale;
 	Float4 tmpPos;
 	MatrixDecompose(matrx, tmpScale, rotQ, tmpPos);
+}
+
+void MatrixLookAtLH(Float4x4& out, const Float4& eyePos, const Float4& focusPos, const Float4& eyeUp)
+{
+	DirectX::XMMATRIX matrix = DirectX::XMMatrixLookAtLH(
+		_mm_loadu_ps(&eyePos.X),
+		_mm_loadu_ps(&focusPos.X),
+		_mm_loadu_ps(&eyeUp.X));
+
+	memcpy_s(&out, sizeof(Float4x4), &matrix, sizeof(DirectX::XMMATRIX));
 }
 
 void MatrixLookToLH(Float4x4& out, const Float4& eyePos, const Float4& eyeDir, const Float4& eyeUp)
