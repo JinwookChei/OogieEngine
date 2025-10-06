@@ -5,13 +5,13 @@ class Material
 public:
 	Material() = delete;
 
-	Material(IShader* pVertexShader, IShader* pPixelShader, ISamplerState* pSampleState);
+	Material(IShader* pVertexShader, IShader* pPixelShader, ISamplerState* pSamplerState);
 
 	virtual ~Material();
 
 	IShader* GetVertexShader() const;
 
-	void SetSampler(ISamplerState* sampler, uint32_t slot = 0);
+	//void SetSampler(ISamplerState* sampler, uint32_t slot = 0);
 
 	void Setting();
 	
@@ -22,5 +22,5 @@ private:
 
 	IShader* pPixelShaderImpl_;
 
-	ISamplerState* pSampleStateImpl_;
+	ISamplerState* pSamplerStateImpl_;
 };

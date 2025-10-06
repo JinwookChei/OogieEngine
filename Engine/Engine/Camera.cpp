@@ -16,6 +16,7 @@ Camera::Camera()
 	pScreenMaterial_(nullptr),
 	pScreenInputLayout_(nullptr),
 	pScreenConstantBuffer_(nullptr),
+	pRasterizer_(nullptr),
 	screenOffset_({0.0f, 0.0f}),
 	screenScale_({1.0f, 1.0f})
 {
@@ -47,7 +48,7 @@ void Camera::Render()
 
 }
 
-void Camera::RenderTest()
+void Camera::CameraRenderBegin()
 {
 	CameraTransformUpdate();
 
@@ -77,6 +78,8 @@ void Camera::BlitToBackBuffer(const Float2& offset, const Float2& scale)
 
 	pScreenConstantBuffer_->Update(&cb);
 	pScreenConstantBuffer_->VSSetting(0);
+
+	pRasterizer_->Setting();
 
 	pScreenVertex_->Draw();
 
@@ -138,9 +141,11 @@ void Camera::InitScreenRect()
 	);
 	pScreenVertex_->AddInputLayout("POSITION", 0, 16, 0, false);
 	pScreenVertex_->AddInputLayout("TEXCOORD", 0, 16, 0, false);
-	pScreenMaterial_ = RenderDevice::Instance()->CreateMaterial(L"ScreenVertexShader.cso", L"ScreenPixelShader.cso");
+	pScreenMaterial_ = RenderDevice::Instance()->CreateMaterial(L"ScreenVertexShader.cso", L"ScreenPixelShader.cso", true, false);
 	pScreenConstantBuffer_ = RenderDevice::Instance()->CreateShaderConstants((uint32_t)sizeof(ScreenRectConstant));
 	pScreenInputLayout_ = RenderDevice::Instance()->CreateLayout(pScreenVertex_, pScreenMaterial_);
+	pRasterizer_ = RenderDevice::Instance()->CreateRasterizer(true, false);
+	pRasterizer_->SetFillMode(FillModeType::Solid);
 }
 
 void Camera::CameraTransformUpdate()
@@ -159,6 +164,11 @@ void Camera::CameraTransformUpdate()
 
 void Camera::CleanUp()
 {
+	if (nullptr != pRasterizer_)
+	{
+		delete pRasterizer_;
+		pRasterizer_ = nullptr;
+	}
 	if (nullptr != pScreenConstantBuffer_)
 	{
 		delete pScreenConstantBuffer_;

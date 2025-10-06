@@ -3,6 +3,7 @@ class RenderTarget;
 class Mesh;
 class Material;
 class InputLayout;
+class Rasterizer;
 class ShaderConstants;
 
 class RenderDevice final
@@ -27,9 +28,7 @@ public:
 
 	uint64_t DrawCallCount();
 
-	//ISamplerState* CreateSampler(bool linear, bool clamp);
-
-	//IRasterizer* CreateRasterizer(bool back);
+	Rasterizer* CreateRasterizer(bool frontCounterClockwise, bool backFaceCulling);
 
 	RenderTarget* CreateRenderTarget(const Float2& size, const Color& clearColor, bool useDepthStencil = true);
 
@@ -37,7 +36,7 @@ public:
 
 	Mesh* CreateMesh(void* vertices, uint32_t vertexSize, uint32_t vertexCount, void* indices = nullptr, uint32_t indexTypeSize = 0, uint32_t indexCount = 0);
 
-	Material* CreateMaterial(const wchar_t* VS, const wchar_t* PS);
+	Material* CreateMaterial(const wchar_t* VS, const wchar_t* PS, bool samplerLinear, bool samplerClamp);
 
 	ShaderConstants* CreateShaderConstants(uint32_t bufferSize);
 

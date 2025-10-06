@@ -4,6 +4,7 @@
 #include "Mesh.h"
 #include "Material.h"
 #include "RenderTarget.h"
+#include "Rasterizer.h"
 #include "ShaderConstants.h"
 #include "RenderDevice.h"
 
@@ -112,28 +113,19 @@ uint64_t  RenderDevice::DrawCallCount()
 	return pRendererImpl_->DrawCallCount();
 }
 
+Rasterizer* RenderDevice::CreateRasterizer(bool frontCounterClockwise, bool backFaceCulling)
+{
+	if (nullptr == pRendererImpl_)
+	{
+		DEBUG_BREAK();
+		return nullptr;
+	}
+	IRasterizer* pRasterizerImpl = pRendererImpl_->CreateRasterizer(frontCounterClockwise, backFaceCulling);
 
-//ISamplerState* RenderDevice::CreateSampler(bool linear, bool clamp)
-//{
-//	if (nullptr == pRendererImpl_)
-//	{
-//		DEBUG_BREAK();
-//		return nullptr;
-//	}
-//
-//	return pRendererImpl_->CreateSampler(linear, clamp);
-//}
+	Rasterizer* pRasterizer = new Rasterizer(pRasterizerImpl);
 
-//IRasterizer* RenderDevice::CreateRasterizer(bool back)
-//{
-//	if (nullptr == pRendererImpl_)
-//	{
-//		DEBUG_BREAK();
-//		return nullptr;
-//	}
-//
-//	return pRendererImpl_->CreateRasterizer(back);
-//}
+	return pRasterizer;
+}
 
 RenderTarget* RenderDevice::CreateRenderTarget(const Float2& size, const Color& clearColor, bool useDepthStencil/* = true*/)
 {
@@ -177,7 +169,7 @@ Mesh* RenderDevice::CreateMesh(void* vertices, uint32_t vertexSize, uint32_t ver
 	return pMesh;
 }
 
-Material* RenderDevice::CreateMaterial(const wchar_t* VS, const wchar_t* PS)
+Material* RenderDevice::CreateMaterial(const wchar_t* VS, const wchar_t* PS, bool samplerLinear, bool samplerClamp)
 {
 	if (nullptr == pRendererImpl_)
 	{
@@ -196,7 +188,10 @@ Material* RenderDevice::CreateMaterial(const wchar_t* VS, const wchar_t* PS)
 	{
 		pPixelShaderImpl = pRendererImpl_->CreateShader(ShaderType::Pixel, PS);
 	}
+
 	ISamplerState* pSamplerState = nullptr;
+	pSamplerState = pRendererImpl_->CreateSampler(samplerLinear, samplerClamp);
+
 
 	Material* pMaterial = new Material(pVertexShaderImpl, pPixelShaderImpl, pSamplerState);
 

@@ -3,6 +3,7 @@
 #include "Material.h"
 #include "InputLayout.h"
 #include "ShaderConstants.h"
+#include "Rasterizer.h"
 #include "Actor.h"
 
 class Transform;
@@ -26,7 +27,7 @@ public:
 
 	ENGINE_API void SetScreenPlacement(const Float2& screenOffset, const Float2& screenScale);
 
-	void RenderTest();
+	void CameraRenderBegin();
 
 	void BlitToBackBuffer();
 
@@ -67,6 +68,7 @@ private:
 	Material* pScreenMaterial_;
 	InputLayout* pScreenInputLayout_;
 	ShaderConstants* pScreenConstantBuffer_;
+	Rasterizer* pRasterizer_;
 	Float2 screenOffset_;
 	Float2 screenScale_;
 };

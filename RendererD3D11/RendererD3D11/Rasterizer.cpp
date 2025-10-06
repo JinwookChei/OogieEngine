@@ -63,10 +63,10 @@ void __stdcall D3D11Rasterizer::SetFillMode(FillModeType fillmode)
 	}
 }
 
-bool D3D11Rasterizer::CreateRasterizer(bool frontCounterClockwise, bool backFace)
+bool D3D11Rasterizer::CreateRasterizer(bool frontCounterClockwise, bool backFaceCulling)
 {
 	D3D11_RASTERIZER_DESC desc = {};
-	desc.CullMode = backFace ? D3D11_CULL_MODE::D3D11_CULL_BACK : D3D11_CULL_MODE::D3D11_CULL_FRONT;
+	desc.CullMode = backFaceCulling ? D3D11_CULL_MODE::D3D11_CULL_BACK : D3D11_CULL_MODE::D3D11_CULL_FRONT;
 	desc.FrontCounterClockwise = frontCounterClockwise ? TRUE : FALSE;
 
 	desc.FillMode = D3D11_FILL_WIREFRAME;

@@ -33,7 +33,7 @@ public:
 
 	ISamplerState* __stdcall  CreateSampler(bool linear, bool clamp) override;
 	
-	IRasterizer* __stdcall  CreateRasterizer(bool back) override;
+	IRasterizer* __stdcall  CreateRasterizer(bool frontCounterClockwise, bool backFaceCulling) override;
 
 	IRenderTarget* __stdcall CreateRenderTarget(const Float2& size, const Color& clearColor, bool useDepthStencil = true) override;
 

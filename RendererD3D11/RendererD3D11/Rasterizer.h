@@ -18,7 +18,7 @@ public:
 
 	void __stdcall SetFillMode(FillModeType fillmode) override;
 
-	bool CreateRasterizer(bool frontCounterClockwise, bool backFace);
+	bool CreateRasterizer(bool frontCounterClockwise, bool backFaceCulling);
 
 private:
 	void CleanUp();

@@ -233,10 +233,10 @@ ISamplerState* __stdcall D3D11Renderer::CreateSampler(bool linear, bool clamp)
 	return pSampler;
 }
 
-IRasterizer* __stdcall D3D11Renderer::CreateRasterizer(bool back)
+IRasterizer* __stdcall D3D11Renderer::CreateRasterizer(bool frontCounterClockwise, bool backFaceCulling)
 {
 	D3D11Rasterizer* pRasterizer = new D3D11Rasterizer;
-	if (false == pRasterizer->CreateRasterizer(false, back))
+	if (false == pRasterizer->CreateRasterizer(frontCounterClockwise, backFaceCulling))
 	{
 		pRasterizer->Release();
 		pRasterizer = nullptr;

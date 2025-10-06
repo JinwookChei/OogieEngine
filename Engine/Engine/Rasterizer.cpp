@@ -3,9 +3,8 @@
 
 
 Rasterizer::Rasterizer(IRasterizer* pRasterizer)
-	:pRasterizerImpl_(nullptr)
+	:pRasterizerImpl_(pRasterizer)
 {
-	SetRasterizer(pRasterizer);
 }
 
 Rasterizer::~Rasterizer()

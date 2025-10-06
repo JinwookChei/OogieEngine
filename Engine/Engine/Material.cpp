@@ -2,10 +2,10 @@
 #include "Material.h"
 
 
-Material::Material(IShader* pVertexShader, IShader* pPixelShader, ISamplerState* pSampleState)
+Material::Material(IShader* pVertexShader, IShader* pPixelShader, ISamplerState* pSamplerState)
 	:pVertexShaderImpl_(pVertexShader),
 	pPixelShaderImpl_(pPixelShader),
-	pSampleStateImpl_(pSampleState)
+	pSamplerStateImpl_(pSamplerState)
 {
 
 }
@@ -20,16 +20,18 @@ IShader* Material::GetVertexShader() const
 	return pVertexShaderImpl_;
 }
 
-void Material::SetSampler(ISamplerState* sampler, uint32_t slot/* = 0*/)
-{
-
-}
+//void Material::SetSampler(ISamplerState* sampler, uint32_t slot/* = 0*/)
+//{
+//
+//}
 
 void Material::Setting()
 {
 	pVertexShaderImpl_->Setting();
 
 	pPixelShaderImpl_->Setting();
+
+	pSamplerStateImpl_->Setting(0);
 }
 
 void Material::CleanUp()
@@ -44,9 +46,9 @@ void Material::CleanUp()
 		pPixelShaderImpl_->Release();
 		pPixelShaderImpl_ = nullptr;
 	}
-	if (nullptr != pSampleStateImpl_)
+	if (nullptr != pSamplerStateImpl_)
 	{
-		pSampleStateImpl_->Release();
-		pSampleStateImpl_ = nullptr;
+		pSamplerStateImpl_->Release();
+		pSamplerStateImpl_ = nullptr;
 	}
 }

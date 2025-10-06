@@ -42,7 +42,7 @@ void RenderComponent::Render()
 	pConstantBuffer_->Update(cb);
 	pConstantBuffer_->VSSetting(0);
 	pConstantBuffer_->PSSetting(0);
-
+	pRasterizer_->Setting();
 	pMesh_->Draw();
 }
 
@@ -78,15 +78,23 @@ void RenderComponent::Create(MESH_TYPE meshType)
 	pMesh_->AddInputLayout("TEXCOORD", 0, 16, 0, false);
 	pMesh_->AddInputLayout("TANGENT", 0, 2, 0, false);
 
-	pMaterial_ = RenderDevice::Instance()->CreateMaterial(L"VertexShader.cso", L"PixelShader.cso");
+	
+	pMaterial_ = RenderDevice::Instance()->CreateMaterial(L"VertexShader.cso", L"PixelShader.cso", true, true);
 	pInputLayout_ = RenderDevice::Instance()->CreateLayout(pMesh_, pMaterial_);
 	pConstantBuffer_ = RenderDevice::Instance()->CreateShaderConstants((uint32_t)sizeof(ConstantBuffer));
+	pRasterizer_ = RenderDevice::Instance()->CreateRasterizer(false, true);
+	pRasterizer_->SetFillMode(FillModeType::WireFrame);
 
 }
 
 
 void RenderComponent::CleanUp()
 {
+	if (nullptr != pRasterizer_)
+	{
+		delete pRasterizer_;
+		pRasterizer_ = nullptr;
+	}
 	if (nullptr != pMesh_)
 	{
 		delete pMesh_;
