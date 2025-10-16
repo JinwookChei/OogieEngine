@@ -1,12 +1,12 @@
 #pragma once
 
-enum class ShaderType
+enum class EShaderType
 {
 	Vertex = 0,
 	Pixel
 };
 
-enum class FillModeType
+enum class EFillModeType
 {
 	WireFrame = 0,
 	Solid
@@ -62,7 +62,7 @@ struct IConstantBuffer : public IUnknown {
 struct IRasterizer : public IUnknown {
 	virtual void __stdcall Setting() = 0;
 
-	virtual void __stdcall SetFillMode(FillModeType fillModeType) = 0;
+	virtual void __stdcall SetFillMode(EFillModeType fillModeType) = 0;
 };
 
 struct IRenderer : public IUnknown {
@@ -80,7 +80,7 @@ struct IRenderer : public IUnknown {
 
 	virtual IConstantBuffer* __stdcall CreateConstantBuffer(uint32_t bufferSize) = 0;
 
-	virtual IShader* __stdcall CreateShader(ShaderType shaderType, const wchar_t* pPath) = 0;
+	virtual IShader* __stdcall CreateShader(EShaderType shaderType, const wchar_t* pPath) = 0;
 
 	virtual ISamplerState* __stdcall  CreateSampler(bool linear, bool clamp) = 0;
 

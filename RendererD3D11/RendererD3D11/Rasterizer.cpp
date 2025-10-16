@@ -40,7 +40,7 @@ void __stdcall D3D11Rasterizer::Setting()
 	GRenderer->DeviceContext()->RSSetState(pCurrentState_);
 }
 
-void __stdcall D3D11Rasterizer::SetFillMode(FillModeType fillmode)
+void __stdcall D3D11Rasterizer::SetFillMode(EFillModeType fillmode)
 {
 	if (nullptr != pCurrentState_)
 	{
@@ -50,11 +50,11 @@ void __stdcall D3D11Rasterizer::SetFillMode(FillModeType fillmode)
 	
 	switch (fillmode)
 	{
-	case FillModeType::WireFrame:
+	case EFillModeType::WireFrame:
 		pCurrentState_ = pWireframeState_;
 		pCurrentState_->AddRef();
 		break;
-	case FillModeType::Solid:
+	case EFillModeType::Solid:
 		pCurrentState_ = pSolidState_;
 		pCurrentState_->AddRef();
 		break;
@@ -92,7 +92,7 @@ bool D3D11Rasterizer::CreateRasterizer(bool frontCounterClockwise, bool backFace
 	pSolidState_->SetPrivateData(WKPDID_D3DDebugObjectName, (UINT)strlen(debugObjectName), debugObjectName);
 	// ---------------------------------------------------------------------------
 
-	SetFillMode(FillModeType::Solid);
+	SetFillMode(EFillModeType::Solid);
 	return true;
 }
 

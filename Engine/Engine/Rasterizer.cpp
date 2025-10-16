@@ -23,7 +23,7 @@ void Rasterizer::Setting()
 	pRasterizerImpl_->Setting();
 }
 
-void Rasterizer::SetFillMode(FillModeType fillModeType)
+void Rasterizer::SetFillMode(EFillModeType fillModeType)
 {
 	if (nullptr == pRasterizerImpl_)
 	{

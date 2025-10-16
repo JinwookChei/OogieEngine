@@ -16,7 +16,7 @@ public:
 
 	void __stdcall Setting() override;
 
-	void __stdcall SetFillMode(FillModeType fillmode) override;
+	void __stdcall SetFillMode(EFillModeType fillmode) override;
 
 	bool CreateRasterizer(bool frontCounterClockwise, bool backFaceCulling);
 

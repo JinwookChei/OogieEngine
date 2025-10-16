@@ -83,8 +83,7 @@ void RenderComponent::Create(MESH_TYPE meshType)
 	pInputLayout_ = RenderDevice::Instance()->CreateLayout(pMesh_, pMaterial_);
 	pConstantBuffer_ = RenderDevice::Instance()->CreateShaderConstants((uint32_t)sizeof(ConstantBuffer));
 	pRasterizer_ = RenderDevice::Instance()->CreateRasterizer(false, true);
-	pRasterizer_->SetFillMode(FillModeType::WireFrame);
-
+	pRasterizer_->SetFillMode(EFillModeType::Solid);
 }
 
 

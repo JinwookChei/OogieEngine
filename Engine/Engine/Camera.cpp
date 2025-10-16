@@ -145,7 +145,7 @@ void Camera::InitScreenRect()
 	pScreenConstantBuffer_ = RenderDevice::Instance()->CreateShaderConstants((uint32_t)sizeof(ScreenRectConstant));
 	pScreenInputLayout_ = RenderDevice::Instance()->CreateLayout(pScreenVertex_, pScreenMaterial_);
 	pRasterizer_ = RenderDevice::Instance()->CreateRasterizer(true, false);
-	pRasterizer_->SetFillMode(FillModeType::Solid);
+	pRasterizer_->SetFillMode(EFillModeType::Solid);
 }
 
 void Camera::CameraTransformUpdate()

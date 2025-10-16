@@ -29,7 +29,7 @@ public:
 
 	IConstantBuffer* __stdcall CreateConstantBuffer(uint32_t bufferSize) override;
 
-	IShader* __stdcall CreateShader(ShaderType shaderType, const wchar_t* pPath) override;
+	IShader* __stdcall CreateShader(EShaderType shaderType, const wchar_t* pPath) override;
 
 	ISamplerState* __stdcall  CreateSampler(bool linear, bool clamp) override;
 	

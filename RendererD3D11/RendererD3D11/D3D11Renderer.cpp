@@ -191,7 +191,7 @@ IConstantBuffer* __stdcall D3D11Renderer::CreateConstantBuffer(uint32_t bufferSi
 	return buffer;
 }
 
-IShader* __stdcall D3D11Renderer::CreateShader(ShaderType shaderType, const wchar_t* pPath)
+IShader* __stdcall D3D11Renderer::CreateShader(EShaderType shaderType, const wchar_t* pPath)
 {
 	ID3DBlob* pBlob = nullptr;
 	HRESULT hr = D3DReadFileToBlob(pPath, &pBlob);
@@ -204,10 +204,10 @@ IShader* __stdcall D3D11Renderer::CreateShader(ShaderType shaderType, const wcha
 	D3D11BaseShader* pShader = nullptr;
 	switch (shaderType)
 	{
-	case ShaderType::Vertex:
+	case EShaderType::Vertex:
 		pShader = new D3D11VertexShader;
 		break;
-	case ShaderType::Pixel:
+	case EShaderType::Pixel:
 		pShader = new D3D11PixelShader;
 		break;
 	}

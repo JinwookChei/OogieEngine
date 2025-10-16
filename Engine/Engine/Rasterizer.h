@@ -11,7 +11,7 @@ public:
 
 	void Setting();
 
-	void SetFillMode(FillModeType fillModeType);
+	void SetFillMode(EFillModeType fillModeType);
 
 	void SetRasterizer(IRasterizer* pRasterizer);
 

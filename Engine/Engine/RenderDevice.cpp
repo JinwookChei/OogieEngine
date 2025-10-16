@@ -180,13 +180,13 @@ Material* RenderDevice::CreateMaterial(const wchar_t* VS, const wchar_t* PS, boo
 	IShader* pVertexShaderImpl = nullptr;
 	if (nullptr != VS)
 	{
-		pVertexShaderImpl = pRendererImpl_->CreateShader(ShaderType::Vertex, VS);
+		pVertexShaderImpl = pRendererImpl_->CreateShader(EShaderType::Vertex, VS);
 	}
 
 	IShader* pPixelShaderImpl = nullptr;
 	if (nullptr != PS)
 	{
-		pPixelShaderImpl = pRendererImpl_->CreateShader(ShaderType::Pixel, PS);
+		pPixelShaderImpl = pRendererImpl_->CreateShader(EShaderType::Pixel, PS);
 	}
 
 	ISamplerState* pSamplerState = nullptr;
