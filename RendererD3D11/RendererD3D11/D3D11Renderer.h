@@ -1,13 +1,13 @@
 #pragma once
 
-class D3D11RenderTarget;
-class D3D11Renderer final
+class RenderTarget;
+class Renderer final
 	: public IRenderer
 {
 public:
-	D3D11Renderer();
+	Renderer();
 
-	virtual ~D3D11Renderer();
+	virtual ~Renderer();
 
 	HRESULT __stdcall QueryInterface(REFIID riid, _COM_Outptr_ void __RPC_FAR* __RPC_FAR* ppvObject) override;
 
@@ -23,9 +23,11 @@ public:
 
 	uint64_t __stdcall DrawCallCount() override;
 
-	IInputLayout* __stdcall CreateLayout(IVertex* pVertex, IShader* pVertexShader) override;
+	IInputLayout* __stdcall CreateLayout(IMesh* pMesh, IShader* pVertexShader) override;
 
-	IVertex* __stdcall CreateVertex(void* pVertices, uint32_t vertexSize, uint32_t vertexCount, void* pIndices = nullptr, uint32_t indexTypeSize = 0, uint32_t indexCount = 0) override;
+	IMesh* __stdcall CreateMesh(void* pVertices, uint32_t vertexSize, uint32_t vertexCount, void* pIndices = nullptr, uint32_t indexTypeSize = 0, uint32_t indexCount = 0) override;
+
+	IMaterial* __stdcall CreateMaterial(const wchar_t* VS, const wchar_t* PS, bool samplerLinear, bool samplerClamp) override;
 
 	IConstantBuffer* __stdcall CreateConstantBuffer(uint32_t bufferSize) override;
 
@@ -66,5 +68,5 @@ private:
 
 	IDXGISwapChain* pSwapChain_;
 
-	D3D11RenderTarget* pBackBuffer_;
+	RenderTarget* pBackBuffer_;
 };

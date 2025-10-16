@@ -1,12 +1,12 @@
 #pragma once
 
-class D3D11BaseShader
+class BaseShader
 	: public IShader
 {
 public:
-	D3D11BaseShader();
+	BaseShader();
 
-	virtual ~D3D11BaseShader();
+	virtual ~BaseShader();
 
 	HRESULT __stdcall QueryInterface(REFIID riid, _COM_Outptr_ void __RPC_FAR* __RPC_FAR* ppvObject) override;
 

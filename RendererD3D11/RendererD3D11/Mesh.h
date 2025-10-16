@@ -5,14 +5,16 @@ struct SimpleVertex {
 	DirectX::XMFLOAT4 color;
 };
 
-class D3D11VertexBuffer
-	: public IVertex
+class Mesh
+	: public IMesh
 {
-	friend D3D11Renderer;
+	friend Renderer;
 public:
-	D3D11VertexBuffer();
+	Mesh() = delete;
 
-	virtual ~D3D11VertexBuffer();
+	Mesh(UINT stride, ID3D11Buffer* pVertexBuffer, UINT indexCount = 0, ID3D11Buffer* pIndexBuffer = nullptr);
+
+	virtual ~Mesh();
 
 	HRESULT __stdcall QueryInterface(REFIID riid, _COM_Outptr_ void __RPC_FAR* __RPC_FAR* ppvObject) override;
 
@@ -29,8 +31,6 @@ public:
 	const std::vector<D3D11_INPUT_ELEMENT_DESC>& GetDesc() const;
 
 private:
-	bool Initialize(void* pVertices, UINT vertexSize, UINT vertexCount, void* pIndices = nullptr, UINT indexTypeSize = 0, UINT indexCount = 0);
-
 	void CleanUp();
 
 	UINT FormatSize(DXGI_FORMAT format);

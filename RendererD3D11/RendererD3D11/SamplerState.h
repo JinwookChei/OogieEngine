@@ -1,12 +1,14 @@
 #pragma once
 
-class D3D11SamplerState final
+class SamplerState final
 	: public ISamplerState
 {
 public:
-	D3D11SamplerState();
+	SamplerState() = delete;
 
-	virtual ~D3D11SamplerState();
+	SamplerState(ID3D11SamplerState* pSamplerState);
+
+	virtual ~SamplerState();
 
 	HRESULT __stdcall QueryInterface(REFIID riid, _COM_Outptr_ void __RPC_FAR* __RPC_FAR* ppvObject) override;
 
@@ -15,8 +17,6 @@ public:
 	ULONG __stdcall Release() override;
 
 	void __stdcall Setting(uint32_t slot) override;
-
-	bool CreateSampler(bool linear, bool clamp);
 
 private:
 	void CleanUp();

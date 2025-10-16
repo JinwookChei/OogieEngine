@@ -71,7 +71,7 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 
 extern "C" __declspec(dllexport) bool CreateRenderer(void** pVoid)
 {
-	IRenderer* pNew = new D3D11Renderer;
+	IRenderer* pNew = new Renderer;
 	if (nullptr == pNew)
 	{
 		DEBUG_BREAK();

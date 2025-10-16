@@ -1,27 +1,29 @@
 #include "stdafx.h"
 #include "Application.h"
-#include "RenderDevice.h"
 #include "StartUp.h"
 #include "Level.h"
 #include "World.h"
 #include "Engine.h"
 #include "Actor.h"
-#include "Mesh.h"
-#include "Material.h"
-#include "InputLayout.h"
+
+typedef bool (*DLL_FUNCTION_ARG1)(void**);
+
 
 InputManager* GInputManager = nullptr;
+IRenderer* GRenderer = nullptr;
 TimeManager* GTimeManager = nullptr;
 ConstantManager* GConstantManager = nullptr;
 Camera* GCurrentCamera = nullptr;
 SpotLight* GSpotLight = nullptr;
 
 
+
 Engine::Engine()
 	: pStartUp_(nullptr),
 	pWorld_(nullptr),
 	pApplication_(nullptr),
-	pRenderDevice_(nullptr)
+	rendererModule_(),
+	pRenderer_(nullptr)
 {
 }
 
@@ -69,7 +71,7 @@ bool Engine::Initialize
 		return false;
 	}
 
-	if (false == LoadRenderDevice())
+	if (false == LoadRenderer())
 	{
 		return false;
 	}
@@ -119,13 +121,13 @@ void Engine::Run()
 		pWorld_->OnTick(deltaTime);
 
 		pWorld_->OnRender();
-		
+
 		// Render
-		pRenderDevice_->RenderBegin();
-		
+		pRenderer_->RenderBegin();
+
 		pWorld_->OnBlit();
-		
-		pRenderDevice_->RenderEnd();
+
+		pRenderer_->RenderEnd();
 	}
 }
 
@@ -156,27 +158,52 @@ bool Engine::LoadApplication
 	return pApplication_->Load(hInstance, pCmdLine, nCmdShow, pMainWindowClassName, pMainWindowText, pIConPath, libFileName);
 }
 
-bool Engine::LoadRenderDevice()
+bool Engine::LoadRenderer()
 {
-	pRenderDevice_ = RenderDevice::Create();
-
-	if (nullptr == pRenderDevice_)
-	{
-		DEBUG_BREAK();
-		return false;
-	}
-
 	if (nullptr == pApplication_)
 	{
 		DEBUG_BREAK();
 		return false;
 	}
 
-	void* pMainHwnd = pApplication_->GetMainWindowHandle();
+	if (nullptr != pRenderer_)
+	{
+		DEBUG_BREAK();
+		pRenderer_->Release();
+		pRenderer_ = nullptr;
+	}
 
 	LPCWSTR libFileName = L"RendererD3D11_x64_Debug.dll";
+	rendererModule_ = LoadLibrary(libFileName);
+	if (!rendererModule_)
+	{
+		DEBUG_BREAK();
+		return false;
+	}
 
-	return pRenderDevice_->Load(pMainHwnd, libFileName);
+	DLL_FUNCTION_ARG1 CreateRenderer = (DLL_FUNCTION_ARG1)GetProcAddress(rendererModule_, "CreateRenderer");
+	if (!CreateRenderer)
+	{
+		DEBUG_BREAK();
+		return false;
+	}
+
+	CreateRenderer((void**)&pRenderer_);
+	if (nullptr == pRenderer_)
+	{
+		DEBUG_BREAK();
+		return false;
+	}
+
+	void* pMainHwnd = pApplication_->GetMainWindowHandle();
+	if (false == pRenderer_->Initialize(pMainHwnd, 2560, 1440))
+	{
+		DEBUG_BREAK();
+		return false;
+	}
+
+	GRenderer = pRenderer_;
+	return true;
 }
 
 bool Engine::InitializeStartUp(IStartup* startUp)
@@ -244,7 +271,17 @@ void Engine::CleanUp()
 		GInputManager = nullptr;
 	}
 
-	RenderDevice::Destroy();
+	if (nullptr != pRenderer_)
+	{
+		pRenderer_->Release();
+		pRenderer_ = nullptr;
+	}
+
+	if (nullptr != rendererModule_)
+	{
+		FreeLibrary(rendererModule_);
+		rendererModule_ = nullptr;
+	}
 
 	Application::Destroy();
 }

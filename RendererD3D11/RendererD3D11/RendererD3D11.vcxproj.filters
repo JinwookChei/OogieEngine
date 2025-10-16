@@ -28,23 +28,26 @@
     <Filter Include="Source Files\Renderer">
       <UniqueIdentifier>{b5546a92-9c00-44dc-9845-3e1340611cb8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Vertex">
-      <UniqueIdentifier>{183def21-a8fd-4838-818f-944b4af7960c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Layout">
       <UniqueIdentifier>{cbef7a77-735f-429f-a047-cd0d15e1677b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Shader">
       <UniqueIdentifier>{7c5da77f-27f9-4527-90da-9f3b73ab0602}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Sampler">
-      <UniqueIdentifier>{68e458d7-76d0-45f3-9723-5f9b775c9690}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Rasterizer">
       <UniqueIdentifier>{1aef9740-edc9-49e0-bea4-978dd6c9554c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Constant">
       <UniqueIdentifier>{21c6ea67-e3d9-4ca3-a179-d51a63f6f5e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Mesh">
+      <UniqueIdentifier>{183def21-a8fd-4838-818f-944b4af7960c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Material">
+      <UniqueIdentifier>{5d59ba40-a1c0-4293-b587-76dfaa2ae70c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\SamplerState">
+      <UniqueIdentifier>{68e458d7-76d0-45f3-9723-5f9b775c9690}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -63,8 +66,8 @@
     <ClInclude Include="..\..\Interface\Renderer\IRenderer.h">
       <Filter>Interface</Filter>
     </ClInclude>
-    <ClInclude Include="VertexBuffer.h">
-      <Filter>Source Files\Vertex</Filter>
+    <ClInclude Include="Mesh.h">
+      <Filter>Source Files\Mesh</Filter>
     </ClInclude>
     <ClInclude Include="BaseShader.h">
       <Filter>Source Files\Shader</Filter>
@@ -79,13 +82,16 @@
       <Filter>Source Files\Layout</Filter>
     </ClInclude>
     <ClInclude Include="SamplerState.h">
-      <Filter>Source Files\Sampler</Filter>
+      <Filter>Source Files\SamplerState</Filter>
     </ClInclude>
     <ClInclude Include="Rasterizer.h">
       <Filter>Source Files\Rasterizer</Filter>
     </ClInclude>
     <ClInclude Include="ConstantBuffer.h">
       <Filter>Source Files\Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>Source Files\Material</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -104,8 +110,8 @@
     <ClCompile Include="dllmain.cpp">
       <Filter>Source Files\Main</Filter>
     </ClCompile>
-    <ClCompile Include="VertexBuffer.cpp">
-      <Filter>Source Files\Vertex</Filter>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Source Files\Mesh</Filter>
     </ClCompile>
     <ClCompile Include="BaseShader.cpp">
       <Filter>Source Files\Shader</Filter>
@@ -120,13 +126,16 @@
       <Filter>Source Files\Layout</Filter>
     </ClCompile>
     <ClCompile Include="SamplerState.cpp">
-      <Filter>Source Files\Sampler</Filter>
+      <Filter>Source Files\SamplerState</Filter>
     </ClCompile>
     <ClCompile Include="Rasterizer.cpp">
       <Filter>Source Files\Rasterizer</Filter>
     </ClCompile>
     <ClCompile Include="ConstantBuffer.cpp">
       <Filter>Source Files\Constant</Filter>
+    </ClCompile>
+    <ClCompile Include="Material.cpp">
+      <Filter>Source Files\Material</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -1,30 +1,30 @@
 #include "stdafx.h"
 #include "Rasterizer.h"
 
-D3D11Rasterizer::D3D11Rasterizer()
+Rasterizer::Rasterizer(ID3D11RasterizerState* pSolidState, ID3D11RasterizerState* pWireframeState)
 	: refCount_(1),
 	pCurrentState_(nullptr),
-	pSolidState_(nullptr),
-	pWireframeState_(nullptr)
+	pSolidState_(pSolidState),
+	pWireframeState_(pWireframeState)
 {
 }
 
-D3D11Rasterizer::~D3D11Rasterizer()
+Rasterizer::~Rasterizer()
 {
 	CleanUp();
 }
 
-HRESULT __stdcall D3D11Rasterizer::QueryInterface(REFIID riid, void** ppvObject)
+HRESULT __stdcall Rasterizer::QueryInterface(REFIID riid, void** ppvObject)
 {
 	return E_NOTIMPL;
 }
 
-ULONG __stdcall D3D11Rasterizer::AddRef()
+ULONG __stdcall Rasterizer::AddRef()
 {
 	return ++refCount_;
 }
 
-ULONG __stdcall D3D11Rasterizer::Release()
+ULONG __stdcall Rasterizer::Release()
 {
 	--refCount_;
 	ULONG tmpRefCount = refCount_;
@@ -35,12 +35,12 @@ ULONG __stdcall D3D11Rasterizer::Release()
 	return tmpRefCount;
 }
 
-void __stdcall D3D11Rasterizer::Setting()
+void __stdcall Rasterizer::Setting()
 {
 	GRenderer->DeviceContext()->RSSetState(pCurrentState_);
 }
 
-void __stdcall D3D11Rasterizer::SetFillMode(EFillModeType fillmode)
+void __stdcall Rasterizer::SetFillMode(EFillModeType fillmode)
 {
 	if (nullptr != pCurrentState_)
 	{
@@ -63,40 +63,7 @@ void __stdcall D3D11Rasterizer::SetFillMode(EFillModeType fillmode)
 	}
 }
 
-bool D3D11Rasterizer::CreateRasterizer(bool frontCounterClockwise, bool backFaceCulling)
-{
-	D3D11_RASTERIZER_DESC desc = {};
-	desc.CullMode = backFaceCulling ? D3D11_CULL_MODE::D3D11_CULL_BACK : D3D11_CULL_MODE::D3D11_CULL_FRONT;
-	desc.FrontCounterClockwise = frontCounterClockwise ? TRUE : FALSE;
-
-	desc.FillMode = D3D11_FILL_WIREFRAME;
-	HRESULT hr = GRenderer->Device()->CreateRasterizerState(&desc, &pWireframeState_);
-	if (FAILED(hr))
-	{
-		return false;
-	}
-
-	// 메모리 누수 디버깅용 이름 설정.
-	const char* debugObjectName = "Rasterizer::pWireframeState_";
-	pWireframeState_->SetPrivateData(WKPDID_D3DDebugObjectName, (UINT)strlen(debugObjectName), debugObjectName);
-
-	desc.FillMode = D3D11_FILL_SOLID;
-	hr = GRenderer->Device()->CreateRasterizerState(&desc, &pSolidState_);
-	if (FAILED(hr))
-	{
-		return false;
-	}
-
-	// ---------------- 메모리 누수 디버깅용 이름 설정. ----------------------------
-	debugObjectName = "Rasterizer::pSolidState_";
-	pSolidState_->SetPrivateData(WKPDID_D3DDebugObjectName, (UINT)strlen(debugObjectName), debugObjectName);
-	// ---------------------------------------------------------------------------
-
-	SetFillMode(EFillModeType::Solid);
-	return true;
-}
-
-void D3D11Rasterizer::CleanUp()
+void Rasterizer::CleanUp()
 {
 	if (nullptr != pCurrentState_)
 	{

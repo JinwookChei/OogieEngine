@@ -1,13 +1,7 @@
 #pragma once
-#include "Mesh.h"
-#include "Material.h"
-#include "InputLayout.h"
-#include "ShaderConstants.h"
-#include "Rasterizer.h"
 #include "Actor.h"
 
 class Transform;
-class RenderTarget;
 
 class Camera
 	: public Actor
@@ -63,12 +57,13 @@ protected:
 private:
 
 	Color clearColor_;
-	RenderTarget* pRenderTarget_;
-	Mesh* pScreenVertex_;
-	Material* pScreenMaterial_;
-	InputLayout* pScreenInputLayout_;
-	ShaderConstants* pScreenConstantBuffer_;
-	Rasterizer* pRasterizer_;
+	IRenderTarget* pRenderTarget_;
+	IMesh* pScreenVertex_;
+	IMaterial* pScreenMaterial_;
+	IInputLayout* pScreenInputLayout_;
+	IConstantBuffer* pScreenConstantBuffer_;
+	IRasterizer* pRasterizer_;
+
 	Float2 screenOffset_;
 	Float2 screenScale_;
 };

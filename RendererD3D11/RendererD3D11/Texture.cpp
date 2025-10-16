@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Texture.h"
 
-D3D11Texture::D3D11Texture()
+Texture::Texture()
 	: refCount_(1),
 	pTexture_(nullptr),
 	pRenderTargetView_(nullptr),
@@ -11,22 +11,22 @@ D3D11Texture::D3D11Texture()
 {
 }
 
-D3D11Texture::~D3D11Texture()
+Texture::~Texture()
 {
 	CleanUp();
 }
 
-HRESULT __stdcall D3D11Texture::QueryInterface(REFIID riid, void** ppvObject)
+HRESULT __stdcall Texture::QueryInterface(REFIID riid, void** ppvObject)
 {
 	return E_NOTIMPL;
 }
 
-ULONG __stdcall D3D11Texture::AddRef()
+ULONG __stdcall Texture::AddRef()
 {
 	return ++refCount_;
 }
 
-ULONG __stdcall D3D11Texture::Release()
+ULONG __stdcall Texture::Release()
 {
 	--refCount_;
 	ULONG tmpRefCount = refCount_;
@@ -36,7 +36,7 @@ ULONG __stdcall D3D11Texture::Release()
 	return tmpRefCount;
 }
 
-D3D11Texture* D3D11Texture::Create(const Float2& size, DXGI_FORMAT format, uint32_t flag)
+Texture* Texture::Create(const Float2& size, DXGI_FORMAT format, uint32_t flag)
 {
 	D3D11_TEXTURE2D_DESC desc = { 0, };
 	desc.ArraySize = 1;
@@ -53,7 +53,7 @@ D3D11Texture* D3D11Texture::Create(const Float2& size, DXGI_FORMAT format, uint3
 	return Create(desc);
 }
 
-D3D11Texture* D3D11Texture::Create(const D3D11_TEXTURE2D_DESC& desc)
+Texture* Texture::Create(const D3D11_TEXTURE2D_DESC& desc)
 {
 	ID3D11Texture2D* texture;
 
@@ -64,7 +64,7 @@ D3D11Texture* D3D11Texture::Create(const D3D11_TEXTURE2D_DESC& desc)
 		return nullptr;
 	}
 
-	D3D11Texture* newTexture = new D3D11Texture;
+	Texture* newTexture = new Texture;
 	bool ret = newTexture->SetTexture(texture);
 	if (ret == false)
 	{
@@ -76,7 +76,7 @@ D3D11Texture* D3D11Texture::Create(const D3D11_TEXTURE2D_DESC& desc)
 }
 
 
-void D3D11Texture::BindRenderTextureForPS(uint32_t slot)
+void Texture::BindRenderTextureForPS(uint32_t slot)
 {
 	if (nullptr == pShaderResourceView_)
 	{
@@ -87,14 +87,14 @@ void D3D11Texture::BindRenderTextureForPS(uint32_t slot)
 	GRenderer->DeviceContext()->PSSetShaderResources(slot, 1, &pShaderResourceView_);
 }
 
-void D3D11Texture::ClearRenderTextureForPS(uint32_t slot)
+void Texture::ClearRenderTextureForPS(uint32_t slot)
 {
 	ID3D11ShaderResourceView* pNull = nullptr;
 
 	GRenderer->DeviceContext()->PSSetShaderResources(slot, 1, &pNull);
 }
 
-bool D3D11Texture::SetTexture(ID3D11Texture2D* pTexture)
+bool Texture::SetTexture(ID3D11Texture2D* pTexture)
 {
 	CleanUp();
 
@@ -136,27 +136,27 @@ bool D3D11Texture::SetTexture(ID3D11Texture2D* pTexture)
 	return true;
 }
 
-Float2 D3D11Texture::Size() const
+Float2 Texture::Size() const
 {
 	return Float2({ (float)desc_.Width , (float)desc_.Height });
 }
 
-ID3D11RenderTargetView* D3D11Texture::RenderTargetView() const
+ID3D11RenderTargetView* Texture::RenderTargetView() const
 {
 	return pRenderTargetView_;
 }
 
-ID3D11DepthStencilView* D3D11Texture::DepthStencilView() const
+ID3D11DepthStencilView* Texture::DepthStencilView() const
 {
 	return pDepthStencilView_;
 }
 
-ID3D11ShaderResourceView* D3D11Texture::ShaderResourceView() const
+ID3D11ShaderResourceView* Texture::ShaderResourceView() const
 {
 	return pShaderResourceView_;
 }
 
-bool D3D11Texture::CreateRenderTargetView()
+bool Texture::CreateRenderTargetView()
 {
 	if (nullptr == pTexture_)
 	{
@@ -180,7 +180,7 @@ bool D3D11Texture::CreateRenderTargetView()
 	return true;
 }
 
-bool D3D11Texture::CreateDepthStencilView()
+bool Texture::CreateDepthStencilView()
 {
 	if (nullptr == pTexture_)
 	{
@@ -203,7 +203,7 @@ bool D3D11Texture::CreateDepthStencilView()
 	return true;
 }
 
-bool D3D11Texture::CreateShaderResourceView()
+bool Texture::CreateShaderResourceView()
 {
 	if (nullptr == pTexture_)
 	{
@@ -226,7 +226,7 @@ bool D3D11Texture::CreateShaderResourceView()
 	return true;
 }
 
-void D3D11Texture::CleanUp()
+void Texture::CleanUp()
 {
 	if (nullptr != pShaderResourceView_)
 	{

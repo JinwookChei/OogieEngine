@@ -1,12 +1,12 @@
 #pragma once
 
-class D3D11Texture;
-class D3D11RenderTarget final
+class Texture;
+class RenderTarget final
 	: public IRenderTarget {
 public:
-	D3D11RenderTarget();
+	RenderTarget();
 
-	virtual ~D3D11RenderTarget();
+	virtual ~RenderTarget();
 
 	HRESULT __stdcall QueryInterface(REFIID riid, _COM_Outptr_ void __RPC_FAR* __RPC_FAR* ppvObject) override;
 
@@ -22,22 +22,18 @@ public:
 
 	void __stdcall ClearRenderTextureForPS(uint32_t slot) override;
 
-	bool SetTexture(D3D11Texture* pRenderTexture, D3D11Texture* pDepthTexture);
+	bool SetTexture(Texture* pRenderTexture, Texture* pDepthTexture);
 
 	void __stdcall SetClearColor(const Color& color) override;
-
-	//bool CreateDepthTexture();
-	// 
-	//bool SetDepthTexture(D3D11Texture* pDepthTexture);
 
 private:
 	void CleanUp();
 
 	ULONG refCount_;
 
-	D3D11Texture* pRenderTexture_;
+	Texture* pRenderTexture_;
 
-	D3D11Texture* pDepthTexture_;
+	Texture* pDepthTexture_;
 
 	D3D11_VIEWPORT viewport_;
 

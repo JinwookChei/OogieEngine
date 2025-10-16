@@ -1,12 +1,12 @@
 #pragma once
 
-class D3D11PixelShader
-	: public D3D11BaseShader
+class PixelShader
+	: public BaseShader
 {
 public:
-	D3D11PixelShader();
+	PixelShader();
 
-	~D3D11PixelShader() override;
+	~PixelShader() override;
 
 	void SetShader() override;
 

@@ -2,9 +2,9 @@
 #include "Texture.h"
 #include "RenderTarget.h"
 
-D3D11RenderTarget* GCurrentSetRenderTarget = nullptr;
+RenderTarget* GCurrentSetRenderTarget = nullptr;
 
-D3D11RenderTarget::D3D11RenderTarget()
+RenderTarget::RenderTarget()
 	: refCount_(1),
 	pRenderTexture_(nullptr),
 	pDepthTexture_(nullptr),
@@ -13,22 +13,22 @@ D3D11RenderTarget::D3D11RenderTarget()
 {
 }
 
-D3D11RenderTarget::~D3D11RenderTarget()
+RenderTarget::~RenderTarget()
 {
 	CleanUp();
 }
 
-HRESULT __stdcall D3D11RenderTarget::QueryInterface(REFIID riid, void** ppvObject)
+HRESULT __stdcall RenderTarget::QueryInterface(REFIID riid, void** ppvObject)
 {
 	return E_NOTIMPL;
 }
 
-ULONG __stdcall D3D11RenderTarget::AddRef()
+ULONG __stdcall RenderTarget::AddRef()
 {
 	return ++refCount_;
 }
 
-ULONG __stdcall D3D11RenderTarget::Release()
+ULONG __stdcall RenderTarget::Release()
 {
 	--refCount_;
 	ULONG tmpRefCount = refCount_;
@@ -39,7 +39,7 @@ ULONG __stdcall D3D11RenderTarget::Release()
 	return tmpRefCount;
 }
 
-void D3D11RenderTarget::Clear()
+void RenderTarget::Clear()
 {
 	ID3D11RenderTargetView* pRenderTargetView = pRenderTexture_->RenderTargetView();
 
@@ -67,7 +67,7 @@ void D3D11RenderTarget::Clear()
 	GRenderer->DeviceContext()->ClearDepthStencilView(pDepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 }
 
-void D3D11RenderTarget::Setting()
+void RenderTarget::Setting()
 {
 	if (GCurrentSetRenderTarget == this)
 	{
@@ -93,59 +93,18 @@ void D3D11RenderTarget::Setting()
 	GRenderer->DeviceContext()->RSSetViewports(1, &viewport_);
 }
 
-void __stdcall D3D11RenderTarget::BindRenderTextureForPS(uint32_t slot)
+void __stdcall RenderTarget::BindRenderTextureForPS(uint32_t slot)
 {
 	pRenderTexture_->BindRenderTextureForPS(slot);
 }
 
-void __stdcall D3D11RenderTarget::ClearRenderTextureForPS(uint32_t slot)
+void __stdcall RenderTarget::ClearRenderTextureForPS(uint32_t slot)
 {
 	pRenderTexture_->ClearRenderTextureForPS(slot);
 }
 
 
-
-//bool D3D11RenderTarget::CreateDepthTexture()
-//{
-//	if (nullptr == pRenderTexture_)
-//	{
-//		DEBUG_BREAK();
-//		return false;
-//	}
-//
-//	pDepthTexture_ = D3D11Texture::Create(pRenderTexture_->Size(), DXGI_FORMAT::DXGI_FORMAT_D24_UNORM_S8_UINT, D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL);
-//
-//	return nullptr != pDepthTexture_;
-//}
-
-//bool D3D11RenderTarget::SetRenderTexture(D3D11Texture* pRenderTexture)
-//{
-//	CleanUp();
-//
-//	if (nullptr == pRenderTexture)
-//	{
-//		return false;
-//	}
-//
-//	pRenderTexture_ = pRenderTexture;
-//
-//	Float2 textureSize = pRenderTexture_->Size();
-//	viewport_.TopLeftX = 0.0f;
-//	viewport_.TopLeftY = 0.0f;
-//	viewport_.Width = textureSize.X;
-//	viewport_.Height = textureSize.Y;
-//	viewport_.MinDepth = 0.0f;
-//	viewport_.MaxDepth = 1.0f;
-//
-//	return true;
-//}
-
-//bool D3D11RenderTarget::SetDepthTexture(D3D11Texture* pDepthTexture)
-//{
-//	return false;
-//}
-
-bool D3D11RenderTarget::SetTexture(D3D11Texture* pRenderTexture, D3D11Texture* pDepthTexture)
+bool RenderTarget::SetTexture(Texture* pRenderTexture, Texture* pDepthTexture)
 {
 	CleanUp();
 
@@ -172,12 +131,12 @@ bool D3D11RenderTarget::SetTexture(D3D11Texture* pRenderTexture, D3D11Texture* p
 	return true;
 }
 
-void D3D11RenderTarget::SetClearColor(const Color& color)
+void RenderTarget::SetClearColor(const Color& color)
 {
 	clearColor_ = color;
 }
 
-void D3D11RenderTarget::CleanUp()
+void RenderTarget::CleanUp()
 {
 	if (nullptr != pRenderTexture_)
 	{

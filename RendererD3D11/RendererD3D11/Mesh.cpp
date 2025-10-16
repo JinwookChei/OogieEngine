@@ -1,32 +1,32 @@
 #include "stdafx.h"
-#include "VertexBuffer.h"
+#include "Mesh.h"
 
-D3D11VertexBuffer::D3D11VertexBuffer()
+Mesh::Mesh(UINT stride, ID3D11Buffer* pVertexBuffer, UINT indexCount /*= 0*/, ID3D11Buffer* pIndexBuffer /*= nullptr*/)
 	: refCount_(1),
-	stride_(0),
+	stride_(stride),
 	offset_(0),
-	indexCount_(0),
-	pVertexBuffer_(nullptr),
-	pIndexBuffer_(nullptr)
+	indexCount_(indexCount),
+	pVertexBuffer_(pVertexBuffer),
+	pIndexBuffer_(pIndexBuffer)
 {
 }
 
-D3D11VertexBuffer::~D3D11VertexBuffer()
+Mesh::~Mesh()
 {
 	CleanUp();
 }
 
-HRESULT __stdcall D3D11VertexBuffer::QueryInterface(REFIID riid, void** ppvObject)
+HRESULT __stdcall Mesh::QueryInterface(REFIID riid, void** ppvObject)
 {
 	return E_NOTIMPL;
 }
 
-ULONG __stdcall D3D11VertexBuffer::AddRef()
+ULONG __stdcall Mesh::AddRef()
 {
 	return ++refCount_;
 }
 
-ULONG __stdcall D3D11VertexBuffer::Release()
+ULONG __stdcall Mesh::Release()
 {
 	--refCount_;
 	ULONG tmpRefCount = refCount_;
@@ -37,7 +37,7 @@ ULONG __stdcall D3D11VertexBuffer::Release()
 	return tmpRefCount;
 }
 
-bool __stdcall D3D11VertexBuffer::AddInputLayout(const char* pSemanticName, uint32_t semanticIndex, uint32_t format, uint32_t inputSlot, bool isInstanceData)
+bool __stdcall Mesh::AddInputLayout(const char* pSemanticName, uint32_t semanticIndex, uint32_t format, uint32_t inputSlot, bool isInstanceData)
 {
 	D3D11_INPUT_ELEMENT_DESC desc = { 0 };
 	desc.SemanticName = pSemanticName;
@@ -53,7 +53,7 @@ bool __stdcall D3D11VertexBuffer::AddInputLayout(const char* pSemanticName, uint
 	return true;
 }
 
-void __stdcall D3D11VertexBuffer::Setting()
+void __stdcall Mesh::Setting()
 {
 	UINT offset = 0;
 
@@ -64,7 +64,7 @@ void __stdcall D3D11VertexBuffer::Setting()
 	GRenderer->DeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
 
-bool __stdcall D3D11VertexBuffer::Draw()
+bool __stdcall Mesh::Draw()
 {
 	GRenderer->DeviceContext()->DrawIndexed(indexCount_, 0, 0);
 
@@ -72,93 +72,13 @@ bool __stdcall D3D11VertexBuffer::Draw()
 	return true;
 }
 
-const std::vector<D3D11_INPUT_ELEMENT_DESC>& D3D11VertexBuffer::GetDesc() const
+const std::vector<D3D11_INPUT_ELEMENT_DESC>& Mesh::GetDesc() const
 {
 	return desc_;
 }
 
-bool D3D11VertexBuffer::Initialize(void* pVertices, UINT vertexSize, UINT vertexCount, void* pIndices /*= nullptr*/, UINT indexTypeSize /*= 0*/, UINT indexCount /*= 0*/)
-{
-	if (nullptr == pVertices)
-	{
-		DEBUG_BREAK();
-		return false;
-	}
 
-	if (0 == vertexSize || 0 == vertexCount)
-	{
-		DEBUG_BREAK();
-		return false;
-	}
-
-	stride_ = vertexSize;
-
-	D3D11_BUFFER_DESC bd;
-	memset(&bd, 0x00, sizeof(D3D11_BUFFER_DESC));
-	bd.Usage = D3D11_USAGE_DEFAULT;
-	bd.ByteWidth = vertexSize * vertexCount;
-	bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	bd.CPUAccessFlags = 0;
-
-	D3D11_SUBRESOURCE_DATA InitData;
-	memset(&InitData, 0x00, sizeof(D3D11_SUBRESOURCE_DATA));
-	InitData.pSysMem = pVertices;								// pSysMem: 리소스 생성 시 GPU로 복사할 시스템 메모리상의 데이터 포인터입니다.
-
-	HRESULT hr = GRenderer->Device()->CreateBuffer(&bd, &InitData, &pVertexBuffer_);
-	if (FAILED(hr))
-	{
-		DEBUG_BREAK();
-		return false;
-	}
-
-	// ---------------- 메모리 누수 디버깅용 이름 설정. ----------------------------
-	const char* debugObjectName = "VertexBuffer::pVertexBuffer_";
-	pVertexBuffer_->SetPrivateData(WKPDID_D3DDebugObjectName, (UINT)strlen(debugObjectName), debugObjectName);
-	// ---------------------------------------------------------------------------
-
-	if (nullptr == pIndices && 0 != indexCount)
-	{
-		DEBUG_BREAK();
-		return false;
-	}
-
-	if (nullptr == pIndices)
-	{
-		return true;
-	}
-
-	if (0 == indexCount)
-	{
-		DEBUG_BREAK();
-		return false;
-	}
-
-	// 인덱스 버퍼
-	bd.Usage = D3D11_USAGE_DEFAULT;
-	bd.ByteWidth = indexTypeSize * indexCount;
-	bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
-	bd.CPUAccessFlags = 0;
-
-	InitData.pSysMem = pIndices;
-
-	hr = GRenderer->Device()->CreateBuffer(&bd, &InitData, &pIndexBuffer_);
-	if (FAILED(hr))
-	{
-		DEBUG_BREAK();
-		return false;
-	}
-
-	// ---------------- 메모리 누수 디버깅용 이름 설정. ----------------------------
-	debugObjectName = "VertexBuffer::pIndexBuffer_";
-	pIndexBuffer_->SetPrivateData(WKPDID_D3DDebugObjectName, (UINT)strlen(debugObjectName), debugObjectName);
-	// ---------------------------------------------------------------------------
-
-	indexCount_ = indexCount;
-
-	return true;
-}
-
-void D3D11VertexBuffer::CleanUp()
+void Mesh::CleanUp()
 {
 	if (nullptr != pIndexBuffer_)
 	{
@@ -172,7 +92,7 @@ void D3D11VertexBuffer::CleanUp()
 	}
 }
 
-UINT D3D11VertexBuffer::FormatSize(DXGI_FORMAT format)
+UINT Mesh::FormatSize(DXGI_FORMAT format)
 {
 	switch (format)
 	{

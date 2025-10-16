@@ -1,12 +1,6 @@
 #include "stdafx.h"
 #include "Actor.h"
 #include "Transform.h"
-#include "Mesh.h"
-#include "Material.h"
-#include "Shader.h"
-#include "InputLayout.h"
-#include "ShaderConstants.h"
-#include "Rasterizer.h"
 #include "GeometryGenerator.h"
 #include "RenderComponent.h"
 
@@ -65,7 +59,7 @@ void RenderComponent::Create(MESH_TYPE meshType)
 	}
 
 	// Mesh
-	pMesh_ = RenderDevice::Instance()->CreateMesh
+	pMesh_ = GRenderer->CreateMesh
 	(
 		sphereVertices.data(), (uint32_t)sizeof(SimpleVertex),
 		(uint32_t)sphereVertices.size(), sphereIndices.data(),
@@ -78,11 +72,14 @@ void RenderComponent::Create(MESH_TYPE meshType)
 	pMesh_->AddInputLayout("TEXCOORD", 0, 16, 0, false);
 	pMesh_->AddInputLayout("TANGENT", 0, 2, 0, false);
 
-	
-	pMaterial_ = RenderDevice::Instance()->CreateMaterial(L"VertexShader.cso", L"PixelShader.cso", true, true);
-	pInputLayout_ = RenderDevice::Instance()->CreateLayout(pMesh_, pMaterial_);
-	pConstantBuffer_ = RenderDevice::Instance()->CreateShaderConstants((uint32_t)sizeof(ConstantBuffer));
-	pRasterizer_ = RenderDevice::Instance()->CreateRasterizer(false, true);
+
+	pMaterial_ = GRenderer->CreateMaterial(L"VertexShader.cso", L"PixelShader.cso", true, true);
+
+	pInputLayout_ = GRenderer->CreateLayout(pMesh_, pMaterial_->GetVertexShader());
+
+	pConstantBuffer_ = GRenderer->CreateConstantBuffer((uint32_t)sizeof(ConstantBuffer));
+
+	pRasterizer_ = GRenderer->CreateRasterizer(false, true);
 	pRasterizer_->SetFillMode(EFillModeType::Solid);
 }
 
@@ -91,36 +88,36 @@ void RenderComponent::CleanUp()
 {
 	if (nullptr != pRasterizer_)
 	{
-		delete pRasterizer_;
+		pRasterizer_->Release();
 		pRasterizer_ = nullptr;
 	}
 	if (nullptr != pMesh_)
 	{
-		delete pMesh_;
+		pMesh_->Release();
 		pMesh_ = nullptr;
 	}
 
 	if (nullptr != pMaterial_)
 	{
-		delete pMaterial_;
+		pMaterial_->Release();
 		pMaterial_ = nullptr;
 	}
 
 	if (nullptr != pInputLayout_)
 	{
-		delete pInputLayout_;
+		pInputLayout_->Release();
 		pInputLayout_ = nullptr;
 	}
 
 	if (nullptr != pConstantBuffer_)
 	{
-		delete pConstantBuffer_;
+		pConstantBuffer_->Release();
 		pConstantBuffer_ = nullptr;
 	}
 
 	if (nullptr != pRasterizer_)
 	{
-		delete pRasterizer_;
+		pRasterizer_->Release();
 		pRasterizer_ = nullptr;
 	}
 }

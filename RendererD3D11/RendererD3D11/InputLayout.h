@@ -1,12 +1,14 @@
 #pragma once
 
-class D3D11InputLayout final
+class InputLayout final
 	: public IInputLayout
 {
 public:
-	D3D11InputLayout();
+	InputLayout() = delete;
 
-	virtual ~D3D11InputLayout();
+	InputLayout(ID3D11InputLayout* pInputLayout);
+
+	virtual ~InputLayout();
 
 	HRESULT __stdcall QueryInterface(REFIID riid, _COM_Outptr_ void __RPC_FAR* __RPC_FAR* ppvObject) override;
 
@@ -15,8 +17,6 @@ public:
 	ULONG __stdcall Release() override;
 
 	void __stdcall Setting() override;
-
-	bool Create(IVertex* pVertex, IShader* pVertexShader);
 
 private:
 	void CleanUp();

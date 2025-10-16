@@ -1,27 +1,28 @@
 #include "stdafx.h"
 #include "ConstantBuffer.h"
 
-D3D11ConstantBuffer::D3D11ConstantBuffer()
+ConstantBuffer::ConstantBuffer(ID3D11Buffer* pBuffer)
 	: refCount_(1),
-	pBuffer_(nullptr) {
+	pBuffer_(pBuffer)
+{
 }
 
-D3D11ConstantBuffer::~D3D11ConstantBuffer()
+ConstantBuffer::~ConstantBuffer()
 {
 	CleanUp();
 }
 
-HRESULT __stdcall D3D11ConstantBuffer::QueryInterface(REFIID riid, void** ppvObject)
+HRESULT __stdcall ConstantBuffer::QueryInterface(REFIID riid, void** ppvObject)
 {
 	return E_NOTIMPL;
 }
 
-ULONG __stdcall D3D11ConstantBuffer::AddRef()
+ULONG __stdcall ConstantBuffer::AddRef()
 {
 	return ++refCount_;
 }
 
-ULONG __stdcall D3D11ConstantBuffer::Release()
+ULONG __stdcall ConstantBuffer::Release()
 {
 	--refCount_;
 	ULONG tmpRefCount = refCount_;
@@ -32,48 +33,22 @@ ULONG __stdcall D3D11ConstantBuffer::Release()
 	return tmpRefCount;
 }
 
-void __stdcall D3D11ConstantBuffer::Update(void* pSrcData)
+void __stdcall ConstantBuffer::Update(void* pSrcData)
 {
 	GRenderer->DeviceContext()->UpdateSubresource(pBuffer_, 0, nullptr, pSrcData, 0, 0);
 }
 
-void __stdcall D3D11ConstantBuffer::VSSetting(uint32_t slot)
+void __stdcall ConstantBuffer::VSSetting(uint32_t slot)
 {
 	GRenderer->DeviceContext()->VSSetConstantBuffers(slot, 1, &pBuffer_);
 }
 
-void __stdcall D3D11ConstantBuffer::PSSetting(uint32_t slot)
+void __stdcall ConstantBuffer::PSSetting(uint32_t slot)
 {
 	GRenderer->DeviceContext()->PSSetConstantBuffers(slot, 1, &pBuffer_);
 }
 
-bool D3D11ConstantBuffer::CreateBuffer(UINT bufferSize)
-{
-	D3D11_BUFFER_DESC desc{};
-	memset(&desc, 0x00, sizeof(D3D11_BUFFER_DESC));
-
-	desc.Usage = D3D11_USAGE_DEFAULT;
-	desc.ByteWidth = bufferSize;
-	desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	desc.CPUAccessFlags = 0;
-
-	HRESULT hr = GRenderer->Device()->CreateBuffer(&desc, nullptr, &pBuffer_);
-	if (FAILED(hr))
-	{
-		DEBUG_BREAK();
-		return false;
-	}
-
-	// ---------------- 메모리 누수 디버깅용 이름 설정. ----------------------------
-	const char* debugObjectName = "ConstantBuffer::pBuffer_";
-	pBuffer_->SetPrivateData(WKPDID_D3DDebugObjectName, (UINT)strlen(debugObjectName), debugObjectName);
-	// ---------------------------------------------------------------------------
-
-
-	return true;
-}
-
-void D3D11ConstantBuffer::CleanUp()
+void ConstantBuffer::CleanUp()
 {
 	if (nullptr != pBuffer_)
 	{

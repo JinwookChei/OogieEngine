@@ -40,7 +40,7 @@ private:
 		const wchar_t* pIConPath
 	);
 
-	bool LoadRenderDevice();
+	bool LoadRenderer();
 
 	bool InitializeStartUp(IStartup* pStartUp);
 
@@ -52,7 +52,8 @@ private:
 
 	Application* pApplication_;
 
-	RenderDevice* pRenderDevice_;
+	HMODULE rendererModule_;
+	IRenderer* pRenderer_;
 
 	World* pWorld_;
 };

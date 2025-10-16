@@ -1,7 +1,8 @@
 #include "stdafx.h"
 #include "Texture.h"
 #include "RenderTarget.h"
-#include "VertexBuffer.h"
+#include "Mesh.h"
+#include "Material.h"
 #include "VertexShader.h"
 #include "PixelShader.h"
 #include "InputLayout.h"
@@ -10,9 +11,9 @@
 #include "Rasterizer.h"
 
 
-D3D11Renderer* GRenderer = nullptr;
+Renderer* GRenderer = nullptr;
 
-D3D11Renderer::D3D11Renderer()
+Renderer::Renderer()
 	: coInit_(false),
 	refCount_(1),
 	drawCallCount_(0),
@@ -25,22 +26,22 @@ D3D11Renderer::D3D11Renderer()
 	GRenderer = this;
 }
 
-D3D11Renderer::~D3D11Renderer()
+Renderer::~Renderer()
 {
 	CleanUp();
 }
 
-HRESULT __stdcall D3D11Renderer::QueryInterface(REFIID riid, void** ppvObject)
+HRESULT __stdcall Renderer::QueryInterface(REFIID riid, void** ppvObject)
 {
 	return E_NOTIMPL;
 }
 
-ULONG __stdcall D3D11Renderer::AddRef()
+ULONG __stdcall Renderer::AddRef()
 {
 	return ++refCount_;
 }
 
-ULONG __stdcall D3D11Renderer::Release()
+ULONG __stdcall Renderer::Release()
 {
 	--refCount_;
 	ULONG tmpRefCount = refCount_;
@@ -51,7 +52,7 @@ ULONG __stdcall D3D11Renderer::Release()
 	return tmpRefCount;
 }
 
-bool __stdcall D3D11Renderer::Initialize(void* hWnd, uint32_t width, uint32_t height)
+bool __stdcall Renderer::Initialize(void* hWnd, uint32_t width, uint32_t height)
 {
 	if (nullptr == hWnd)
 	{
@@ -131,7 +132,7 @@ bool __stdcall D3D11Renderer::Initialize(void* hWnd, uint32_t width, uint32_t he
 	return true;
 }
 
-void __stdcall D3D11Renderer::RenderBegin()
+void __stdcall Renderer::RenderBegin()
 {
 	drawCallCount_ = 0;
 
@@ -140,58 +141,178 @@ void __stdcall D3D11Renderer::RenderBegin()
 	pBackBuffer_->Setting();
 }
 
-void __stdcall D3D11Renderer::RenderEnd()
+void __stdcall Renderer::RenderEnd()
 {
 	pSwapChain_->Present(0, 0);
 }
 
-uint64_t __stdcall D3D11Renderer::DrawCallCount()
+uint64_t __stdcall Renderer::DrawCallCount()
 {
 	return drawCallCount_;
 }
 
-IInputLayout* __stdcall D3D11Renderer::CreateLayout(IVertex* vertex, IShader* vertexShader)
+IInputLayout* __stdcall Renderer::CreateLayout(IMesh* pMesh, IShader* pVertexShadr)
 {
-	if (nullptr == vertex || nullptr == vertexShader)
+	if (nullptr == pMesh || nullptr == pVertexShadr)
 	{
 		DEBUG_BREAK();
 		return nullptr;
 	}
 
-	D3D11InputLayout* pNewInputLayout = new D3D11InputLayout;
-	if (false == pNewInputLayout->Create(vertex, vertexShader))
-	{
-		pNewInputLayout->Release();
-		pNewInputLayout = nullptr;
-	}
+	Mesh* pMeshImpl = (Mesh*)pMesh;
+	const std::vector<D3D11_INPUT_ELEMENT_DESC>& layoutDesc = pMeshImpl->GetDesc();
 
-	return pNewInputLayout;
-}
-
-IVertex* __stdcall D3D11Renderer::CreateVertex(void* vertices, uint32_t vertexSize, uint32_t vertexCount, void* indices, uint32_t indexTypeSize, uint32_t indexCount)
-{
-	D3D11VertexBuffer* vertexBuffer = new D3D11VertexBuffer;
-	if (false == vertexBuffer->Initialize(vertices, (UINT)vertexSize, (UINT)vertexCount, indices, (UINT)indexTypeSize, (UINT)indexCount))
+	VertexShader* pVertexShaderImpl = (VertexShader*)pVertexShadr;
+	ID3D11InputLayout* pInputLayout = nullptr;
+	HRESULT hr = GRenderer->Device()->CreateInputLayout(layoutDesc.data(), (UINT)layoutDesc.size(), pVertexShaderImpl->GetBufferPointer(), pVertexShaderImpl->GetBufferSize(), &pInputLayout);
+	if (FAILED(hr))
 	{
-		vertexBuffer->Release();
+		DEBUG_BREAK();
 		return nullptr;
 	}
 
-	return vertexBuffer;
+	// ---------------- 메모리 누수 디버깅용 이름 설정. ----------------------------
+	const char* debugObjectName = "InputLayout::pInputLayout_";
+	pInputLayout->SetPrivateData(WKPDID_D3DDebugObjectName, (UINT)strlen(debugObjectName), debugObjectName);
+	// ---------------------------------------------------------------------------
+
+
+	InputLayout* newInputLayout = new InputLayout(pInputLayout);
+	return newInputLayout;
 }
 
-IConstantBuffer* __stdcall D3D11Renderer::CreateConstantBuffer(uint32_t bufferSize)
+IMesh* __stdcall Renderer::CreateMesh(void* pVertices, uint32_t vertexSize, uint32_t vertexCount, void* pIndices /*= nullptr*/, uint32_t indexTypeSize /*= 0*/, uint32_t indexCount /*= 0*/)
 {
-	D3D11ConstantBuffer* buffer = new D3D11ConstantBuffer;
-	if (false == buffer->CreateBuffer(bufferSize))
+	if (nullptr == pVertices)
 	{
-		buffer->Release();
-		buffer = nullptr;
+		DEBUG_BREAK();
+		return nullptr;
 	}
-	return buffer;
+
+	if (0 == vertexSize || 0 == vertexCount)
+	{
+		DEBUG_BREAK();
+		return nullptr;
+	}
+
+	D3D11_BUFFER_DESC bd;
+	memset(&bd, 0x00, sizeof(D3D11_BUFFER_DESC));
+	bd.Usage = D3D11_USAGE_DEFAULT;
+	bd.ByteWidth = vertexSize * vertexCount;
+	bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	bd.CPUAccessFlags = 0;
+
+	D3D11_SUBRESOURCE_DATA InitData;
+	memset(&InitData, 0x00, sizeof(D3D11_SUBRESOURCE_DATA));
+	InitData.pSysMem = pVertices;								// pSysMem: 리소스 생성 시 GPU로 복사할 시스템 메모리상의 데이터 포인터입니다.
+
+
+	ID3D11Buffer* pVertexBuffer;
+	HRESULT hr = GRenderer->Device()->CreateBuffer(&bd, &InitData, &pVertexBuffer);
+	if (FAILED(hr))
+	{
+		DEBUG_BREAK();
+		return nullptr;
+	}
+
+	// ---------------- 메모리 누수 디버깅용 이름 설정. ----------------------------
+	const char* debugObjectName = "VertexBuffer::pVertexBuffer_";
+	pVertexBuffer->SetPrivateData(WKPDID_D3DDebugObjectName, (UINT)strlen(debugObjectName), debugObjectName);
+	// ---------------------------------------------------------------------------
+
+	if (nullptr == pIndices && 0 != indexCount)
+	{
+		DEBUG_BREAK();
+		return nullptr;
+	}
+
+	if (nullptr == pIndices)
+	{
+		Mesh* pNewMesh = new Mesh(vertexSize, pVertexBuffer, 0, nullptr);
+		return pNewMesh;
+	}
+
+	if (0 == indexCount)
+	{
+		DEBUG_BREAK();
+		return nullptr;
+	}
+
+	// 인덱스 버퍼
+	bd.Usage = D3D11_USAGE_DEFAULT;
+	bd.ByteWidth = indexTypeSize * indexCount;
+	bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
+	bd.CPUAccessFlags = 0;
+
+	InitData.pSysMem = pIndices;
+
+	ID3D11Buffer* pIndexBuffer;
+	hr = GRenderer->Device()->CreateBuffer(&bd, &InitData, &pIndexBuffer);
+	if (FAILED(hr))
+	{
+		DEBUG_BREAK();
+		return nullptr;
+	}
+
+	// ---------------- 메모리 누수 디버깅용 이름 설정. ----------------------------
+	debugObjectName = "VertexBuffer::pIndexBuffer_";
+	pIndexBuffer->SetPrivateData(WKPDID_D3DDebugObjectName, (UINT)strlen(debugObjectName), debugObjectName);
+	// ---------------------------------------------------------------------------
+
+	Mesh* pNewMesh = new Mesh(vertexSize, pVertexBuffer, indexCount, pIndexBuffer);
+	return pNewMesh;
 }
 
-IShader* __stdcall D3D11Renderer::CreateShader(EShaderType shaderType, const wchar_t* pPath)
+IMaterial* __stdcall Renderer::CreateMaterial(const wchar_t* VS, const wchar_t* PS, bool samplerLinear, bool samplerClamp)
+{
+	VertexShader* pVertexShader = nullptr;
+	if (nullptr != VS)
+	{
+		pVertexShader = (VertexShader*)CreateShader(EShaderType::Vertex, VS);
+	}
+
+	PixelShader* pPixelShader = nullptr;
+	if (nullptr != PS)
+	{
+		pPixelShader = (PixelShader*)CreateShader(EShaderType::Pixel, PS);
+	}
+
+	SamplerState* pSamplerState = nullptr;
+	pSamplerState = (SamplerState*)CreateSampler(samplerLinear, samplerClamp);
+
+
+	Material* pMaterial = new Material(pVertexShader, pPixelShader, pSamplerState);
+	return pMaterial;
+}
+
+IConstantBuffer* __stdcall Renderer::CreateConstantBuffer(uint32_t bufferSize)
+{
+	D3D11_BUFFER_DESC desc{};
+	memset(&desc, 0x00, sizeof(D3D11_BUFFER_DESC));
+
+	desc.Usage = D3D11_USAGE_DEFAULT;
+	desc.ByteWidth = bufferSize;
+	desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	desc.CPUAccessFlags = 0;
+
+	ID3D11Buffer* pBuffer = nullptr;
+	HRESULT hr = GRenderer->Device()->CreateBuffer(&desc, nullptr, &pBuffer);
+	if (FAILED(hr))
+	{
+		DEBUG_BREAK();
+		return nullptr;
+	}
+
+	// ---------------- 메모리 누수 디버깅용 이름 설정. ----------------------------
+	const char* debugObjectName = "ConstantBuffer::pBuffer_";
+	pBuffer->SetPrivateData(WKPDID_D3DDebugObjectName, (UINT)strlen(debugObjectName), debugObjectName);
+	// ---------------------------------------------------------------------------
+
+	ConstantBuffer* pNewInputLayout = new ConstantBuffer(pBuffer);
+	return pNewInputLayout;
+}
+
+IShader* __stdcall Renderer::CreateShader(EShaderType shaderType, const wchar_t* pPath)
 {
 	ID3DBlob* pBlob = nullptr;
 	HRESULT hr = D3DReadFileToBlob(pPath, &pBlob);
@@ -201,14 +322,14 @@ IShader* __stdcall D3D11Renderer::CreateShader(EShaderType shaderType, const wch
 		return nullptr;
 	}
 
-	D3D11BaseShader* pShader = nullptr;
+	BaseShader* pShader = nullptr;
 	switch (shaderType)
 	{
 	case EShaderType::Vertex:
-		pShader = new D3D11VertexShader;
+		pShader = new VertexShader;
 		break;
 	case EShaderType::Pixel:
-		pShader = new D3D11PixelShader;
+		pShader = new PixelShader;
 		break;
 	}
 
@@ -221,44 +342,87 @@ IShader* __stdcall D3D11Renderer::CreateShader(EShaderType shaderType, const wch
 	return pShader;
 }
 
-ISamplerState* __stdcall D3D11Renderer::CreateSampler(bool linear, bool clamp)
+ISamplerState* __stdcall Renderer::CreateSampler(bool linear, bool clamp)
 {
-	D3D11SamplerState* pSampler = new D3D11SamplerState;
-	if (false == pSampler->CreateSampler(linear, clamp))
+	D3D11_SAMPLER_DESC samplerDesc = {};
+	samplerDesc.Filter = linear ? D3D11_FILTER_MIN_MAG_MIP_LINEAR : D3D11_FILTER_MIN_MAG_MIP_POINT;
+	samplerDesc.AddressU = clamp ? D3D11_TEXTURE_ADDRESS_CLAMP : D3D11_TEXTURE_ADDRESS_WRAP;
+	samplerDesc.AddressV = clamp ? D3D11_TEXTURE_ADDRESS_CLAMP : D3D11_TEXTURE_ADDRESS_WRAP;
+	samplerDesc.AddressW = clamp ? D3D11_TEXTURE_ADDRESS_CLAMP : D3D11_TEXTURE_ADDRESS_WRAP;
+
+	samplerDesc.MipLODBias = 0.0f;
+	samplerDesc.MaxAnisotropy = 1;
+	samplerDesc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
+	samplerDesc.MinLOD = FLT_MIN;
+	samplerDesc.MaxLOD = FLT_MAX;
+
+	ID3D11SamplerState* pSamplerState = nullptr;
+	HRESULT hr = GRenderer->Device()->CreateSamplerState(&samplerDesc, &pSamplerState);
+	if (FAILED(hr))
 	{
-		pSampler->Release();
-		pSampler = nullptr;
+		DEBUG_BREAK();
+		return nullptr;
 	}
 
-	return pSampler;
+	// ---------------- 메모리 누수 디버깅용 이름 설정. ----------------------------
+	const char* debugObjectName = "SamplerState::pSamplerState_";
+	pSamplerState->SetPrivateData(WKPDID_D3DDebugObjectName, (UINT)strlen(debugObjectName), debugObjectName);
+	// ---------------------------------------------------------------------------
+
+	SamplerState* pNewSamplerState = new SamplerState(pSamplerState);
+
+	return pNewSamplerState;
 }
 
-IRasterizer* __stdcall D3D11Renderer::CreateRasterizer(bool frontCounterClockwise, bool backFaceCulling)
+IRasterizer* __stdcall Renderer::CreateRasterizer(bool frontCounterClockwise, bool backFaceCulling)
 {
-	D3D11Rasterizer* pRasterizer = new D3D11Rasterizer;
-	if (false == pRasterizer->CreateRasterizer(frontCounterClockwise, backFaceCulling))
+	D3D11_RASTERIZER_DESC desc = {};
+	desc.CullMode = backFaceCulling ? D3D11_CULL_MODE::D3D11_CULL_BACK : D3D11_CULL_MODE::D3D11_CULL_FRONT;
+	desc.FrontCounterClockwise = frontCounterClockwise ? TRUE : FALSE;
+
+	ID3D11RasterizerState* pSolidState = nullptr;
+	desc.FillMode = D3D11_FILL_SOLID;
+	HRESULT hr = GRenderer->Device()->CreateRasterizerState(&desc, &pSolidState);
+	if (FAILED(hr))
 	{
-		pRasterizer->Release();
-		pRasterizer = nullptr;
+		return nullptr;
 	}
 
-	return pRasterizer;
+	desc.FillMode = D3D11_FILL_WIREFRAME;
+	ID3D11RasterizerState* pWireframeState = nullptr;
+	hr = GRenderer->Device()->CreateRasterizerState(&desc, &pWireframeState);
+	if (FAILED(hr))
+	{
+		return nullptr;
+	}
+
+	// ---------------- 메모리 누수 디버깅용 이름 설정. ----------------------------
+	const char* debugObjectName = "Rasterizer::pSolidState_";
+	pSolidState->SetPrivateData(WKPDID_D3DDebugObjectName, (UINT)strlen(debugObjectName), debugObjectName);
+	debugObjectName = "Rasterizer::pWireframeState_";
+	pWireframeState->SetPrivateData(WKPDID_D3DDebugObjectName, (UINT)strlen(debugObjectName), debugObjectName);
+	// ---------------------------------------------------------------------------
+
+	Rasterizer* pNewRasterizer = new Rasterizer(pSolidState, pWireframeState);
+	pNewRasterizer->SetFillMode(EFillModeType::Solid);
+
+	return pNewRasterizer;
 }
 
-IRenderTarget* __stdcall D3D11Renderer::CreateRenderTarget(const Float2& size, const Color& clearColor, bool useDepthStencil /*= true*/)
+IRenderTarget* __stdcall Renderer::CreateRenderTarget(const Float2& size, const Color& clearColor, bool useDepthStencil /*= true*/)
 {
-	D3D11RenderTarget* pRenderTarget = new D3D11RenderTarget;
+	RenderTarget* pRenderTarget = new RenderTarget;
 
-	D3D11Texture* pRenderTexture = D3D11Texture::Create(size, DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET | D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE);
+	Texture* pRenderTexture = Texture::Create(size, DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET | D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE);
 	if (nullptr == pRenderTexture)
 	{
 		return nullptr;
 	}
 
-	D3D11Texture* pDepthTexture = nullptr;
+	Texture* pDepthTexture = nullptr;
 	if (true == useDepthStencil)
 	{
-		pDepthTexture = D3D11Texture::Create(pRenderTexture->Size(), DXGI_FORMAT::DXGI_FORMAT_D24_UNORM_S8_UINT, D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL);
+		pDepthTexture = Texture::Create(pRenderTexture->Size(), DXGI_FORMAT::DXGI_FORMAT_D24_UNORM_S8_UINT, D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL);
 	}
 
 	pRenderTarget->SetClearColor(clearColor);
@@ -271,22 +435,22 @@ IRenderTarget* __stdcall D3D11Renderer::CreateRenderTarget(const Float2& size, c
 	return pRenderTarget;
 }
 
-ID3D11Device*  D3D11Renderer::Device()
+ID3D11Device*  Renderer::Device()
 {
 	return pDevice_;
 }
 
-ID3D11DeviceContext* D3D11Renderer::DeviceContext()
+ID3D11DeviceContext* Renderer::DeviceContext()
 {
 	return pDeviceContext_;
 }
 
-void D3D11Renderer::IncrementDrawCall()
+void Renderer::IncrementDrawCall()
 {
 	++drawCallCount_;
 }
 
-IDXGIAdapter* D3D11Renderer::GetBestAdapter()
+IDXGIAdapter* Renderer::GetBestAdapter()
 {
 	IDXGIFactory* pFactory = nullptr;
 	HRESULT hr = CreateDXGIFactory(__uuidof(IDXGIFactory), (void**)&pFactory);
@@ -324,7 +488,7 @@ IDXGIAdapter* D3D11Renderer::GetBestAdapter()
 	return pBestAdapter;
 }
 
-bool D3D11Renderer::CreateSwapChain(UINT width, UINT height)
+bool Renderer::CreateSwapChain(UINT width, UINT height)
 {
 	DXGI_SWAP_CHAIN_DESC sd;
 	memset(&sd, 0x00, sizeof(sd));
@@ -400,7 +564,7 @@ lb_return:
 	return true;
 }
 
-bool D3D11Renderer::CreateBackBuffer()
+bool Renderer::CreateBackBuffer()
 {
 	ID3D11Texture2D* pBackBufferTexture = nullptr;
 	HRESULT hr = pSwapChain_->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)&pBackBufferTexture);
@@ -415,14 +579,14 @@ bool D3D11Renderer::CreateBackBuffer()
 		return false;
 	}
 
-	D3D11Texture* pRenderTexture = new D3D11Texture;
+	Texture* pRenderTexture = new Texture;
 	if (false == pRenderTexture->SetTexture(pBackBufferTexture))
 	{
 		pRenderTexture->Release();
 		return false;
 	}
 
-	D3D11Texture* pDepthTexture = D3D11Texture::Create(pRenderTexture->Size(), DXGI_FORMAT::DXGI_FORMAT_D24_UNORM_S8_UINT, D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL);
+	Texture* pDepthTexture = Texture::Create(pRenderTexture->Size(), DXGI_FORMAT::DXGI_FORMAT_D24_UNORM_S8_UINT, D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL);
 	if (nullptr == pDepthTexture)
 	{
 		DEBUG_BREAK();
@@ -430,7 +594,7 @@ bool D3D11Renderer::CreateBackBuffer()
 		return false;
 	}
 
-	pBackBuffer_ = new D3D11RenderTarget;
+	pBackBuffer_ = new RenderTarget;
 	if (nullptr == pBackBuffer_)
 	{
 		DEBUG_BREAK();
@@ -450,67 +614,9 @@ bool D3D11Renderer::CreateBackBuffer()
 	}
 
 	return true;
-
-
-	//if (false == pBackBuffer_->CreateDepthTexture())
-	//{
-	//	DEBUG_BREAK();
-	//	return false;
-	//}
-
-	
-	//ID3D11Texture2D* pBackBufferTexture = nullptr;
-
-	//HRESULT hr = pSwapChain_->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)&pBackBufferTexture);
-	//if (FAILED(hr))
-	//{
-	//	DEBUG_BREAK();
-	//	return false;
-	//}
-
-	//if (nullptr == pBackBufferTexture)
-	//{
-	//	DEBUG_BREAK();
-	//	return false;
-	//}
-
-	//D3D11Texture* pNewTexture = new D3D11Texture;
-	//if (nullptr == pNewTexture)
-	//{
-	//	pBackBufferTexture->Release();
-	//	DEBUG_BREAK();
-	//	return false;
-	//}
-
-	//if (false == pNewTexture->SetTexture(pBackBufferTexture))
-	//{
-	//	pNewTexture->Release();
-	//	return false;
-	//}
-
-	//pBackBuffer_ = new D3D11RenderTarget;
-	//if (nullptr == pBackBuffer_)
-	//{
-	//	DEBUG_BREAK();
-	//	return false;
-	//}
-
-	//if (false == pBackBuffer_->SetTexture(pNewTexture))
-	//{
-	//	DEBUG_BREAK();
-	//	return false;
-	//}
-
-	//if (false == pBackBuffer_->CreateDepthTexture())
-	//{
-	//	DEBUG_BREAK();
-	//	return false;
-	//}
-
-	//return true;
 }
 
-void D3D11Renderer::CleanUp()
+void Renderer::CleanUp()
 {
 
 	if (nullptr != pDeviceContext_)

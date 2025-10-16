@@ -46,24 +46,6 @@
     <Filter Include="Source Files\Graphics">
       <UniqueIdentifier>{94168407-658e-4754-a783-df63e0303040}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Graphics\Mesh">
-      <UniqueIdentifier>{7733d5c5-42ea-4ec2-a719-d9ac2ef337aa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Graphics\Material">
-      <UniqueIdentifier>{3c21c836-0752-48ab-9ca9-e7f4fc89a7c2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Graphics\InputLayout">
-      <UniqueIdentifier>{4bc24f67-c397-4fcc-9105-1e84ad935c01}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Graphics\Shader">
-      <UniqueIdentifier>{9dfb980d-2f21-4bda-b8bd-d1e466315da3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Graphics\Rasterizer">
-      <UniqueIdentifier>{b73e040b-b426-4f9c-a59d-c2446171fa44}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Graphics\ShaderConstants">
-      <UniqueIdentifier>{f8212f74-7a1e-45fe-9ae1-8ed5e3ac674c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Actor\Light">
       <UniqueIdentifier>{1e6e41c0-8f1f-4d5b-b178-2447b4105718}</UniqueIdentifier>
     </Filter>
@@ -75,12 +57,6 @@
     </Filter>
     <Filter Include="Source Files\Component\Transform">
       <UniqueIdentifier>{c5f06b07-d3ba-44d5-b5ad-babf8fd96da4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Graphics\RenderTarget">
-      <UniqueIdentifier>{d3c89d3f-8b50-4100-85e3-dadc5325692c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Graphics\RenderDevice">
-      <UniqueIdentifier>{24f0f453-8dcd-4026-9727-fbd9534da72f}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Application">
       <UniqueIdentifier>{6a6ee16b-cf94-4e60-84b7-52dfc4dbb0b2}</UniqueIdentifier>
@@ -114,15 +90,6 @@
     <ClInclude Include="Actor.h">
       <Filter>Source Files\Actor</Filter>
     </ClInclude>
-    <ClInclude Include="Mesh.h">
-      <Filter>Source Files\Graphics\Mesh</Filter>
-    </ClInclude>
-    <ClInclude Include="Material.h">
-      <Filter>Source Files\Graphics\Material</Filter>
-    </ClInclude>
-    <ClInclude Include="InputLayout.h">
-      <Filter>Source Files\Graphics\InputLayout</Filter>
-    </ClInclude>
     <ClInclude Include="Level.h">
       <Filter>Source Files\Level</Filter>
     </ClInclude>
@@ -138,15 +105,6 @@
     <ClInclude Include="RenderComponent.h">
       <Filter>Source Files\Component\RenderComponent</Filter>
     </ClInclude>
-    <ClInclude Include="Shader.h">
-      <Filter>Source Files\Graphics\Shader</Filter>
-    </ClInclude>
-    <ClInclude Include="ShaderConstants.h">
-      <Filter>Source Files\Graphics\ShaderConstants</Filter>
-    </ClInclude>
-    <ClInclude Include="Rasterizer.h">
-      <Filter>Source Files\Graphics\Rasterizer</Filter>
-    </ClInclude>
     <ClInclude Include="Transform.h">
       <Filter>Source Files\Component\Transform</Filter>
     </ClInclude>
@@ -161,12 +119,6 @@
     </ClInclude>
     <ClInclude Include="ConstantManager.h">
       <Filter>Source Files\Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderTarget.h">
-      <Filter>Source Files\Graphics\RenderTarget</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderDevice.h">
-      <Filter>Source Files\Graphics\RenderDevice</Filter>
     </ClInclude>
     <ClInclude Include="Application.h">
       <Filter>Source Files\Application</Filter>
@@ -194,15 +146,6 @@
     <ClCompile Include="Actor.cpp">
       <Filter>Source Files\Actor</Filter>
     </ClCompile>
-    <ClCompile Include="Mesh.cpp">
-      <Filter>Source Files\Graphics\Mesh</Filter>
-    </ClCompile>
-    <ClCompile Include="Material.cpp">
-      <Filter>Source Files\Graphics\Material</Filter>
-    </ClCompile>
-    <ClCompile Include="InputLayout.cpp">
-      <Filter>Source Files\Graphics\InputLayout</Filter>
-    </ClCompile>
     <ClCompile Include="Level.cpp">
       <Filter>Source Files\Level</Filter>
     </ClCompile>
@@ -214,15 +157,6 @@
     </ClCompile>
     <ClCompile Include="RenderComponent.cpp">
       <Filter>Source Files\Component\RenderComponent</Filter>
-    </ClCompile>
-    <ClCompile Include="Shader.cpp">
-      <Filter>Source Files\Graphics\Shader</Filter>
-    </ClCompile>
-    <ClCompile Include="ShaderConstants.cpp">
-      <Filter>Source Files\Graphics\ShaderConstants</Filter>
-    </ClCompile>
-    <ClCompile Include="Rasterizer.cpp">
-      <Filter>Source Files\Graphics\Rasterizer</Filter>
     </ClCompile>
     <ClCompile Include="Transform.cpp">
       <Filter>Source Files\Component\Transform</Filter>
@@ -238,12 +172,6 @@
     </ClCompile>
     <ClCompile Include="ConstantManager.cpp">
       <Filter>Source Files\Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderTarget.cpp">
-      <Filter>Source Files\Graphics\RenderTarget</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderDevice.cpp">
-      <Filter>Source Files\Graphics\RenderDevice</Filter>
     </ClCompile>
     <ClCompile Include="Application.cpp">
       <Filter>Source Files\Application</Filter>

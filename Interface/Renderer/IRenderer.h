@@ -29,7 +29,12 @@ struct IRenderTarget : public IUnknown
 
 };
 
-struct IVertex : public IUnknown 
+struct IShader : public IUnknown {
+
+	virtual void __stdcall Setting() = 0;
+};
+
+struct IMesh : public IUnknown 
 {
 	virtual void __stdcall Setting() = 0;
 
@@ -38,9 +43,14 @@ struct IVertex : public IUnknown
 	virtual bool __stdcall Draw() = 0;
 };
 
-struct IShader : public IUnknown {
+
+struct IMaterial : public IUnknown
+{
 	virtual void __stdcall Setting() = 0;
+
+	virtual IShader* __stdcall GetVertexShader() = 0;
 };
+
 
 struct ISamplerState : public IUnknown {
 	virtual void __stdcall Setting(uint32_t slot) = 0;
@@ -74,9 +84,11 @@ struct IRenderer : public IUnknown {
 
 	virtual uint64_t __stdcall DrawCallCount() = 0;
 
-	virtual IInputLayout* __stdcall CreateLayout(IVertex* pVertex, IShader* pVertexShader) = 0;
+	virtual IInputLayout* __stdcall CreateLayout(IMesh* pVertex, IShader* pVertexShader) = 0;
 
-	virtual IVertex* __stdcall CreateVertex(void* pVertices, uint32_t vertexSize, uint32_t vertexCount, void* pIndices = nullptr, uint32_t indexTypeSize = 0, uint32_t indexCount = 0) = 0;
+	virtual IMesh* __stdcall CreateMesh(void* pVertices, uint32_t vertexSize, uint32_t vertexCount, void* pIndices = nullptr, uint32_t indexTypeSize = 0, uint32_t indexCount = 0) = 0;
+
+	virtual IMaterial* __stdcall CreateMaterial(const wchar_t* VS, const wchar_t* PS, bool samplerLinear, bool samplerClamp) = 0;
 
 	virtual IConstantBuffer* __stdcall CreateConstantBuffer(uint32_t bufferSize) = 0;
 

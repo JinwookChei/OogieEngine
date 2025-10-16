@@ -1,11 +1,11 @@
 #pragma once
 
-class D3D11Texture final :
+class Texture final :
 	public ITexture {
 public:
-	D3D11Texture();
+	Texture();
 
-	virtual ~D3D11Texture();
+	virtual ~Texture();
 
 	HRESULT __stdcall QueryInterface(REFIID riid, _COM_Outptr_ void __RPC_FAR* __RPC_FAR* ppvObject) override;
 
@@ -13,9 +13,9 @@ public:
 
 	ULONG __stdcall Release() override;
 
-	static D3D11Texture* Create(const Float2& size, DXGI_FORMAT format, uint32_t flag);
+	static Texture* Create(const Float2& size, DXGI_FORMAT format, uint32_t flag);
 
-	static D3D11Texture* Create(const D3D11_TEXTURE2D_DESC& desc);
+	static Texture* Create(const D3D11_TEXTURE2D_DESC& desc);
 
 	void BindRenderTextureForPS(uint32_t slot);
 

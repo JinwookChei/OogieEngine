@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "Transform.h"
 #include "GeometryGenerator.h"
-#include "RenderTarget.h"
 #include "Camera.h"
 
 Camera::Camera()
@@ -17,12 +16,12 @@ Camera::Camera()
 	pScreenInputLayout_(nullptr),
 	pScreenConstantBuffer_(nullptr),
 	pRasterizer_(nullptr),
-	screenOffset_({0.0f, 0.0f}),
-	screenScale_({1.0f, 1.0f})
+	screenOffset_({ 0.0f, 0.0f }),
+	screenScale_({ 1.0f, 1.0f })
 {
 	MatrixIdentity(view_);
 	MatrixIdentity(projection_);
-	pRenderTarget_ = RenderDevice::Instance()->CreateRenderTarget(size_, clearColor_);
+	pRenderTarget_ = GRenderer->CreateRenderTarget(size_, clearColor_);
 	InitScreenRect();
 }
 
@@ -33,7 +32,7 @@ Camera::~Camera()
 
 void Camera::Tick(double deltaTime)
 {
-	
+
 }
 
 void Camera::BeginPlay()
@@ -106,7 +105,7 @@ void Camera::SetSize(const Float2& size)
 		pRenderTarget_ = nullptr;
 	}
 
-	pRenderTarget_ = RenderDevice::Instance()->CreateRenderTarget(size_, clearColor_);
+	pRenderTarget_ = GRenderer->CreateRenderTarget(size_, clearColor_);
 }
 
 
@@ -134,17 +133,22 @@ void Camera::InitScreenRect()
 	std::vector<ScreenRectVertex> vertices;
 	std::vector<WORD> indices;
 	GeometryGenerator::CreateScreenRect(&vertices, &indices);
-	pScreenVertex_ = RenderDevice::Instance()->CreateMesh
+	pScreenVertex_ = GRenderer->CreateMesh
 	(
-		vertices.data(), (uint32_t)sizeof(ScreenRectVertex), (uint32_t)vertices.size(), 
+		vertices.data(), (uint32_t)sizeof(ScreenRectVertex), (uint32_t)vertices.size(),
 		indices.data(), (uint32_t)sizeof(WORD), (uint32_t)indices.size()
 	);
+
 	pScreenVertex_->AddInputLayout("POSITION", 0, 16, 0, false);
 	pScreenVertex_->AddInputLayout("TEXCOORD", 0, 16, 0, false);
-	pScreenMaterial_ = RenderDevice::Instance()->CreateMaterial(L"ScreenVertexShader.cso", L"ScreenPixelShader.cso", true, false);
-	pScreenConstantBuffer_ = RenderDevice::Instance()->CreateShaderConstants((uint32_t)sizeof(ScreenRectConstant));
-	pScreenInputLayout_ = RenderDevice::Instance()->CreateLayout(pScreenVertex_, pScreenMaterial_);
-	pRasterizer_ = RenderDevice::Instance()->CreateRasterizer(true, false);
+
+	pScreenMaterial_ = GRenderer->CreateMaterial(L"ScreenVertexShader.cso", L"ScreenPixelShader.cso", true, false);
+
+	pScreenConstantBuffer_ = GRenderer->CreateConstantBuffer((uint32_t)sizeof(ScreenRectConstant));
+
+	pScreenInputLayout_ = GRenderer->CreateLayout(pScreenVertex_, pScreenMaterial_->GetVertexShader());
+
+	pRasterizer_ = GRenderer->CreateRasterizer(true, false);
 	pRasterizer_->SetFillMode(EFillModeType::Solid);
 }
 
@@ -166,32 +170,32 @@ void Camera::CleanUp()
 {
 	if (nullptr != pRasterizer_)
 	{
-		delete pRasterizer_;
+		pRasterizer_->Release();
 		pRasterizer_ = nullptr;
 	}
 	if (nullptr != pScreenConstantBuffer_)
 	{
-		delete pScreenConstantBuffer_;
+		pScreenConstantBuffer_->Release();
 		pScreenConstantBuffer_ = nullptr;
 	}
 	if (nullptr != pScreenInputLayout_)
 	{
-		delete pScreenInputLayout_;
+		pScreenInputLayout_->Release();
 		pScreenInputLayout_ = nullptr;
 	}
 	if (nullptr != pScreenMaterial_)
 	{
-		delete pScreenMaterial_;
+		pScreenMaterial_->Release();
 		pScreenMaterial_ = nullptr;
 	}
 	if (nullptr != pScreenVertex_)
 	{
-		delete pScreenVertex_;
+		pScreenVertex_->Release();
 		pScreenVertex_ = nullptr;
 	}
 	if (nullptr != pRenderTarget_)
 	{
-		delete pRenderTarget_;
+		pRenderTarget_->Release();
 		pRenderTarget_ = nullptr;
 	}
 }

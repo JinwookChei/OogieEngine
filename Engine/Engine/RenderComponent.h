@@ -31,13 +31,13 @@ private:
 
 	Actor* pOwner_;
 
-	Mesh* pMesh_;
+	IMesh* pMesh_;
 
-	Material* pMaterial_;
+	IMaterial* pMaterial_;
 
-	InputLayout* pInputLayout_;
+	IInputLayout* pInputLayout_;
 
-	ShaderConstants* pConstantBuffer_;
+	IConstantBuffer* pConstantBuffer_;
 
-	Rasterizer* pRasterizer_;
+	IRasterizer* pRasterizer_;
 };

@@ -31,5 +31,5 @@
 #include "D3D11Renderer.h"
 #include "BaseShader.h"
 
-extern D3D11Renderer* GRenderer;
+extern Renderer* GRenderer;
 

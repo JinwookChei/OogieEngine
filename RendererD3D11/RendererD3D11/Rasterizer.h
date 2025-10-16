@@ -1,12 +1,14 @@
 #pragma once
 
-class D3D11Rasterizer final
+class Rasterizer final
 	: public IRasterizer
 {
 public:
-	D3D11Rasterizer();
+	Rasterizer() = delete;
 
-	virtual ~D3D11Rasterizer();
+	Rasterizer(ID3D11RasterizerState* pSolidState, ID3D11RasterizerState* pWireframeState);
+
+	virtual ~Rasterizer();
 
 	HRESULT __stdcall QueryInterface(REFIID riid, _COM_Outptr_ void __RPC_FAR* __RPC_FAR* ppvObject) override;
 
@@ -17,8 +19,6 @@ public:
 	void __stdcall Setting() override;
 
 	void __stdcall SetFillMode(EFillModeType fillmode) override;
-
-	bool CreateRasterizer(bool frontCounterClockwise, bool backFaceCulling);
 
 private:
 	void CleanUp();

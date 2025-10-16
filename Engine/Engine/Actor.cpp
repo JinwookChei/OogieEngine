@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #include "Actor.h"
 #include "RenderComponent.h"
-#include "Mesh.h"
-#include "Material.h"
 
 
 Actor::Actor()
