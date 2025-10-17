@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include "Application.h"
 #include "StartUp.h"
 #include "Level.h"
 #include "World.h"
@@ -7,9 +6,11 @@
 #include "Actor.h"
 
 typedef bool (*DLL_FUNCTION_ARG1)(void**);
+typedef bool (*DLL_FUNCTION_ARG5)(void**, HINSTANCE, PWSTR, int, const wchar_t*);
 
 
 InputManager* GInputManager = nullptr;
+IApplication* GApplication = nullptr;
 IRenderer* GRenderer = nullptr;
 TimeManager* GTimeManager = nullptr;
 ConstantManager* GConstantManager = nullptr;
@@ -21,6 +22,7 @@ SpotLight* GSpotLight = nullptr;
 Engine::Engine()
 	: pStartUp_(nullptr),
 	pWorld_(nullptr),
+	applicationModule_(),
 	pApplication_(nullptr),
 	rendererModule_(),
 	pRenderer_(nullptr)
@@ -146,16 +148,46 @@ bool Engine::LoadApplication
 	const wchar_t* pIConPath
 )
 {
-	pApplication_ = Application::Create();
+	if (nullptr != pApplication_)
+	{
+		DEBUG_BREAK();
+		pApplication_->Release();
+		pApplication_ = nullptr;
+	}
 
+	LPCWSTR libFileName = L"Application_x64_Debug.dll";
+	applicationModule_ = LoadLibrary(libFileName);
+	if (!applicationModule_)
+	{
+		DEBUG_BREAK();
+		return false;
+	}
+
+	DLL_FUNCTION_ARG5 CreateWindowsApplication = (DLL_FUNCTION_ARG5)GetProcAddress(applicationModule_, "CreateWindowsApplication");
+	if (!CreateWindowsApplication)
+	{
+		DEBUG_BREAK();
+		return false;
+	}
+
+
+	CreateWindowsApplication((void**)&pApplication_, hInstance, pCmdLine, nCmdShow, pIConPath);
 	if (nullptr == pApplication_)
 	{
 		DEBUG_BREAK();
 		return false;
 	}
 
-	LPCWSTR libFileName = L"Application_x64_Debug.dll";
-	return pApplication_->Load(hInstance, pCmdLine, nCmdShow, pMainWindowClassName, pMainWindowText, pIConPath, libFileName);
+
+	if (false == pApplication_->InitializeMainWindow(pMainWindowClassName, pMainWindowText))
+	{
+		DEBUG_BREAK();
+		return false;
+	}
+
+	GApplication = pApplication_;
+
+	return true;
 }
 
 bool Engine::LoadRenderer()
@@ -271,6 +303,19 @@ void Engine::CleanUp()
 		GInputManager = nullptr;
 	}
 
+	if (nullptr != pApplication_)
+	{
+		pApplication_->Release();
+		pApplication_ = nullptr;
+	}
+
+	if (nullptr != applicationModule_)
+	{
+		FreeLibrary(applicationModule_);
+		applicationModule_ = nullptr;
+	}
+
+
 	if (nullptr != pRenderer_)
 	{
 		pRenderer_->Release();
@@ -282,6 +327,4 @@ void Engine::CleanUp()
 		FreeLibrary(rendererModule_);
 		rendererModule_ = nullptr;
 	}
-
-	Application::Destroy();
 }

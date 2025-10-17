@@ -26,7 +26,6 @@
 #include <Application/IApplication.h>
 #include <Renderer/IRenderer.h>
 
-#include "Application.h"
 #include "InputManager.h"
 #include "TimeManager.h"
 #include "ConstantManager.h"
@@ -35,7 +34,7 @@
 #include "Light.h"
 #include "SpotLight.h"
 
-extern Application* GApplication;
+extern IApplication* GApplication;
 extern IRenderer* GRenderer;
 extern InputManager* GInputManager;
 extern TimeManager* GTimeManager;

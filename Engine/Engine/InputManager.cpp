@@ -258,7 +258,7 @@ void InputManager::UpdateMouseMove()
 {
     prevMousePos_ = curMousePos_;
 
-    curMousePos_ = Application::Instance()->GetMousePosition();
+    curMousePos_ = GApplication->GetMousePosition();
 
     deltaMouseMove_ = curMousePos_ - prevMousePos_;
 }

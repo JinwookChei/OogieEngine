@@ -50,7 +50,8 @@ private:
 
 	IStartup* pStartUp_;
 
-	Application* pApplication_;
+	HMODULE applicationModule_;
+	IApplication* pApplication_;
 
 	HMODULE rendererModule_;
 	IRenderer* pRenderer_;

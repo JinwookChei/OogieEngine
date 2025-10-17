@@ -58,9 +58,6 @@
     <Filter Include="Source Files\Component\Transform">
       <UniqueIdentifier>{c5f06b07-d3ba-44d5-b5ad-babf8fd96da4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Application">
-      <UniqueIdentifier>{6a6ee16b-cf94-4e60-84b7-52dfc4dbb0b2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Graphics\Structures">
       <UniqueIdentifier>{91baee82-f6fb-4aec-9178-74d90e00e4ec}</UniqueIdentifier>
     </Filter>
@@ -120,9 +117,6 @@
     <ClInclude Include="ConstantManager.h">
       <Filter>Source Files\Manager</Filter>
     </ClInclude>
-    <ClInclude Include="Application.h">
-      <Filter>Source Files\Application</Filter>
-    </ClInclude>
     <ClInclude Include="GraphicesStructures.h">
       <Filter>Source Files\Graphics\Structures</Filter>
     </ClInclude>
@@ -172,9 +166,6 @@
     </ClCompile>
     <ClCompile Include="ConstantManager.cpp">
       <Filter>Source Files\Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="Application.cpp">
-      <Filter>Source Files\Application</Filter>
     </ClCompile>
     <ClCompile Include="GraphicsStructures.cpp">
       <Filter>Source Files\Graphics\Structures</Filter>
