@@ -21,6 +21,8 @@ public:
 
 	ENGINE_API void SetScreenPlacement(const Float2& screenOffset, const Float2& screenScale);
 
+	ENGINE_API Float2 GetRenderSize() const;
+
 	void CameraRenderBegin();
 
 	void BlitToBackBuffer();
@@ -50,13 +52,13 @@ protected:
 	Float4x4 projection_;
 
 	float fov_;
-	Float2 size_;
+	//Float2 size_;
 	float near_;
 	float far_;
 
 private:
 
-	Color clearColor_;
+	//Color clearColor_;
 	IRenderTarget* pRenderTarget_;
 	IMesh* pScreenVertex_;
 	IMaterial* pScreenMaterial_;

@@ -499,27 +499,77 @@ IRasterizer* __stdcall Renderer::CreateRasterizer(bool frontCounterClockwise, bo
 	return nullptr;
 }
 
-IRenderTarget* __stdcall Renderer::CreateRenderTarget(const Float2& size, const Color& clearColor, bool useDepthStencil /*= true*/)
+//IRenderTarget* __stdcall Renderer::CreateRenderTarget(const Float2& size, const Color& clearColor, bool useDepthStencil /*= true*/)
+//{
+//	Texture* pRenderTexture = nullptr;
+//	Texture* pDepthTexture = nullptr;
+//	RenderTarget* pRenderTarget = nullptr;
+//	do
+//	{
+//		pRenderTexture = static_cast<Texture*>(CreateTexture(size, DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET | D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE));
+//		if (nullptr == pRenderTexture)
+//		{
+//			DEBUG_BREAK();
+//			break;
+//		}
+//
+//		if (true == useDepthStencil)
+//		{
+//			pDepthTexture = static_cast<Texture*>(CreateTexture(pRenderTexture->Size(), DXGI_FORMAT::DXGI_FORMAT_D24_UNORM_S8_UINT, D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL));
+//		}
+//
+//		pRenderTarget = new RenderTarget;
+//		bool ret = pRenderTarget->Init(clearColor, pRenderTexture, pDepthTexture);
+//		if (false == ret)
+//		{
+//			DEBUG_BREAK();
+//			break;
+//		}
+//
+//		return pRenderTarget;
+//
+//	} while (false);
+//
+//	if (nullptr != pRenderTexture)
+//	{
+//		pRenderTexture->Release();
+//		pRenderTexture = nullptr;
+//	}
+//	if (nullptr != pDepthTexture)
+//	{
+//		pDepthTexture->Release();
+//		pDepthTexture = nullptr;
+//	}
+//	if (nullptr != pRenderTarget)
+//	{
+//		pRenderTarget->Release();
+//		pRenderTarget = nullptr;
+//	}
+//
+//	return nullptr;
+//}
+
+IRenderTarget* __stdcall Renderer::CreateRenderTarget(const RenderTargetDesc& desc)
 {
 	Texture* pRenderTexture = nullptr;
 	Texture* pDepthTexture = nullptr;
 	RenderTarget* pRenderTarget = nullptr;
 	do
 	{
-		pRenderTexture = static_cast<Texture*>(CreateTexture(size, DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET | D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE));
+		pRenderTexture = static_cast<Texture*>(CreateTexture(desc.size_, (DXGI_FORMAT)desc.fmtColor_, D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET | D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE));
 		if (nullptr == pRenderTexture)
 		{
 			DEBUG_BREAK();
 			break;
 		}
 
-		if (true == useDepthStencil)
+		if (true == desc.useDepthStencil_)
 		{
-			pDepthTexture = static_cast<Texture*>(CreateTexture(pRenderTexture->Size(), DXGI_FORMAT::DXGI_FORMAT_D24_UNORM_S8_UINT, D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL));
+			pDepthTexture = static_cast<Texture*>(CreateTexture(pRenderTexture->Size(), (DXGI_FORMAT)desc.fmtDepth_, D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL));
 		}
 
 		pRenderTarget = new RenderTarget;
-		bool ret = pRenderTarget->Init(clearColor, pRenderTexture, pDepthTexture);
+		bool ret = pRenderTarget->Init(desc, pRenderTexture, pDepthTexture);
 		if (false == ret)
 		{
 			DEBUG_BREAK();
@@ -871,7 +921,8 @@ bool Renderer::CreateBackBuffer()
 		}
 
 		pBackBuffer_ = new RenderTarget;
-		bool ret = pBackBuffer_->Init({ 0.0f, 0.0f, 0.0f,1.0f }, pRenderTexture, pDepthTexture);
+		RenderTargetDesc desc;
+		bool ret = pBackBuffer_->Init(desc, pRenderTexture, pDepthTexture);
 		if (false == ret)
 		{
 			DEBUG_BREAK();

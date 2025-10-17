@@ -33,3 +33,5 @@
 
 extern Renderer* GRenderer;
 
+extern IRenderTarget* GCurrentSetRenderTarget;
+

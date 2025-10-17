@@ -12,6 +12,29 @@ enum class EFillModeType
 	Solid
 };
 
+struct DeferredTargetDesc
+{
+	Float2 size_ {0.0f, 0.0f };
+	Color clearColor_{ 0.2f, 0.4f, 0.6f, 1.0f };
+
+	unsigned int fmtAlbedo_ = 28;	//DXGI_FORMAT::DXGI_FORMAT_R8G8B8A8_UNORM;
+	unsigned int fmtNormal_ = 10;	//DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT;
+	unsigned int fmtMaterial_ = 28;
+	unsigned int fmtDepth_ = 45;
+};
+
+
+struct RenderTargetDesc
+{
+	Float2 size_{ 0.0f, 0.0f };
+	Color clearColor_{ 0.2f, 0.4f, 0.6f, 1.0f };
+
+	unsigned int fmtColor_ = 2;		//DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT;
+	unsigned int fmtDepth_ = 45;	//DXGI_FORMAT::DXGI_FORMAT_D24_UNORM_S8_UINT
+
+	bool useDepthStencil_ = true;
+};
+
 struct ITexture : public IUnknown
 {
 };
@@ -72,6 +95,10 @@ struct IRenderTarget : public IUnknown
 
 	virtual void __stdcall Setting() = 0;
 
+	virtual RenderTargetDesc __stdcall GetDesc() const = 0;
+
+	virtual Float2 __stdcall GetSize() const = 0;
+
 	virtual void __stdcall SetClearColor(const Color& color) = 0;
 
 	virtual void __stdcall BindRenderTextureForPS(uint32_t slot) = 0;
@@ -86,7 +113,7 @@ struct IRenderer : public IUnknown {
 	virtual bool __stdcall Initialize(void* hWnd, uint32_t width, uint32_t height) = 0;
 
 	virtual void __stdcall RenderBegin() = 0;
-	
+
 	virtual void __stdcall RenderEnd() = 0;
 
 	virtual uint64_t __stdcall DrawCallCount() = 0;
@@ -105,5 +132,7 @@ struct IRenderer : public IUnknown {
 
 	virtual IRasterizer* __stdcall  CreateRasterizer(bool frontCounterClockwise, bool backFaceCulling) = 0;
 
-	virtual IRenderTarget* __stdcall CreateRenderTarget(const Float2& size, const Color& clearColor, bool useDepthStencil = true) = 0;
+	//virtual IRenderTarget* __stdcall CreateRenderTarget(const Float2& size, const Color& clearColor, bool useDepthStencil = true) = 0;
+
+	virtual IRenderTarget* __stdcall CreateRenderTarget(const RenderTargetDesc& desc) = 0;
 };

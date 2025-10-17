@@ -145,6 +145,7 @@
     <ClInclude Include="..\..\Interface\Renderer\IRenderer.h" />
     <ClInclude Include="ConstantBuffer.h" />
     <ClInclude Include="D3D11Renderer.h" />
+    <ClInclude Include="DeferredTarget.h" />
     <ClInclude Include="InputLayout.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="PixelShader.h" />
@@ -161,6 +162,7 @@
     <ClCompile Include="ConstantBuffer.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="D3D11Renderer.cpp" />
+    <ClCompile Include="DeferredTarget.cpp" />
     <ClCompile Include="InputLayout.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="PixelShader.cpp" />

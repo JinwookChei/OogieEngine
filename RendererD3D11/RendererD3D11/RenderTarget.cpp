@@ -2,14 +2,19 @@
 #include "Texture.h"
 #include "RenderTarget.h"
 
-RenderTarget* GCurrentSetRenderTarget = nullptr;
+IRenderTarget* GCurrentSetRenderTarget = nullptr;
 
 RenderTarget::RenderTarget()
 	: refCount_(1),
+	// Desc
+	clearColor_({ 0.2f, 0.4f, 0.6f, 1.0f }),
+	fmtColor_(0),
+	fmtDepth_(0),
+	useDepthStencil_(true),
+	//
 	pRenderTexture_(nullptr),
 	pDepthTexture_(nullptr),
-	viewport_(),
-	clearColor_({ 0.2f, 0.4f, 0.6f, 1.0f })
+	viewport_()
 {
 }
 
@@ -18,9 +23,12 @@ RenderTarget::~RenderTarget()
 	CleanUp();
 }
 
-bool RenderTarget::Init(const Color& clearColor, Texture* pRenderTexture, Texture* pDepthTexture)
+bool RenderTarget::Init(const RenderTargetDesc& desc, Texture* pRenderTexture, Texture* pDepthTexture)
 {
-	SetClearColor(clearColor);
+	SetClearColor(desc.clearColor_);
+	fmtColor_ = desc.fmtColor_;
+	fmtDepth_ = desc.fmtDepth_;
+	useDepthStencil_ = desc.useDepthStencil_;
 
 	bool ret = SetTexture(pRenderTexture, pDepthTexture);
 	if (false == ret)
@@ -62,7 +70,7 @@ void RenderTarget::Clear()
 		DEBUG_BREAK();
 		return;
 	}
-	FLOAT ColorRGBA[4] = { 0.1f, 0.2f, 0.4f, 1.0f };
+
 	GRenderer->DeviceContext()->ClearRenderTargetView(pRenderTargetView, clearColor_.Arr1D);
 
 	if (nullptr == pDepthTexture_)
@@ -107,6 +115,29 @@ void RenderTarget::Setting()
 	GRenderer->DeviceContext()->RSSetViewports(1, &viewport_);
 }
 
+RenderTargetDesc __stdcall RenderTarget::GetDesc() const
+{
+	RenderTargetDesc desc;
+	desc.clearColor_ = clearColor_;
+	desc.fmtColor_ = fmtColor_;
+	desc.fmtDepth_ = fmtDepth_;
+	desc.useDepthStencil_ = useDepthStencil_;
+	desc.size_ = pRenderTexture_->Size();
+	
+	return desc;
+}
+
+Float2 __stdcall RenderTarget::GetSize() const
+{
+	return pRenderTexture_->Size();
+}
+
+void __stdcall RenderTarget::SetClearColor(const Color& color)
+{
+	clearColor_ = color;
+}
+
+
 void __stdcall RenderTarget::BindRenderTextureForPS(uint32_t slot)
 {
 	pRenderTexture_->BindRenderTextureForPS(slot);
@@ -116,7 +147,6 @@ void __stdcall RenderTarget::ClearRenderTextureForPS(uint32_t slot)
 {
 	pRenderTexture_->ClearRenderTextureForPS(slot);
 }
-
 
 bool RenderTarget::SetTexture(Texture* pRenderTexture, Texture* pDepthTexture)
 {
@@ -143,11 +173,6 @@ bool RenderTarget::SetTexture(Texture* pRenderTexture, Texture* pDepthTexture)
 	}
 
 	return true;
-}
-
-void RenderTarget::SetClearColor(const Color& color)
-{
-	clearColor_ = color;
 }
 
 void RenderTarget::CleanUp()

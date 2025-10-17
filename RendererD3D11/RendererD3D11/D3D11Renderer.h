@@ -34,7 +34,9 @@ public:
 
 	IRasterizer* __stdcall  CreateRasterizer(bool frontCounterClockwise, bool backFaceCulling) override;
 
-	IRenderTarget* __stdcall CreateRenderTarget(const Float2& size, const Color& clearColor, bool useDepthStencil = true) override;
+	//IRenderTarget* __stdcall CreateRenderTarget(const Float2& size, const Color& clearColor, bool useDepthStencil = true) override;
+
+	IRenderTarget* __stdcall CreateRenderTarget(const RenderTargetDesc& desc) override;
 
 	
 	// ------------------------- 인터페이스 노출안된 Create -----------------------------

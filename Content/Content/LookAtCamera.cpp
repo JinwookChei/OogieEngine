@@ -114,7 +114,8 @@ void LookAtCamera::CameraTransformUpdate()
 	MatrixLookAtLH(view_, eyePos, focusPos, eyeUp);
 
 	float fovRad = ConvertDegToRad(fov_);
-	MatrixPerspectiveFovLH(projection_, fov_, (size_.X / size_.Y), near_, far_);
+	const Float2& size = GetRenderSize();
+	MatrixPerspectiveFovLH(projection_, fov_, (size.X / size.Y), near_, far_);
 }
 
 void LookAtCamera::CleanUp()

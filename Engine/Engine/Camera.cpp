@@ -5,10 +5,10 @@
 
 Camera::Camera()
 	: fov_(60.0f),
-	size_({ 2560.f, 1440.0f }),
+	//size_({ 2560.f, 1440.0f }),
 	near_(0.01f),
 	far_(100.0f),
-	clearColor_({ 1.0f, 0.0f, 0.0f, 1.0f }),
+	//clearColor_({ 1.0f, 0.0f, 0.0f, 1.0f }),
 	cameraSensitivity_(10.0f),
 	cameraSpeed_(2.0f),
 	pScreenVertex_(nullptr),
@@ -21,7 +21,13 @@ Camera::Camera()
 {
 	MatrixIdentity(view_);
 	MatrixIdentity(projection_);
-	pRenderTarget_ = GRenderer->CreateRenderTarget(size_, clearColor_);
+
+	RenderTargetDesc desc;
+	desc.size_ = { 2560.f, 1440.0f };
+	desc.clearColor_ = { 1.0f, 0.0f, 0.0f, 1.0f };
+	desc.useDepthStencil_ = true;
+	pRenderTarget_ = GRenderer->CreateRenderTarget(desc);
+
 	InitScreenRect();
 }
 
@@ -97,15 +103,16 @@ const Float4x4& Camera::Projection() const
 
 void Camera::SetSize(const Float2& size)
 {
-	size_ = size;
-
+	RenderTargetDesc desc;
 	if (nullptr != pRenderTarget_)
 	{
-		delete pRenderTarget_;
+		desc = pRenderTarget_->GetDesc();
+		pRenderTarget_->Release();
 		pRenderTarget_ = nullptr;
 	}
 
-	pRenderTarget_ = GRenderer->CreateRenderTarget(size_, clearColor_);
+	desc.size_ = size;
+	pRenderTarget_ = GRenderer->CreateRenderTarget(desc);
 }
 
 
@@ -118,8 +125,7 @@ void Camera::SetConfig(float fov, float Near, float Far)
 
 void Camera::SetClearColor(const Color& clearColor)
 {
-	clearColor_ = clearColor;
-	pRenderTarget_->SetClearColor(clearColor_);
+	pRenderTarget_->SetClearColor(clearColor);
 }
 
 void Camera::SetScreenPlacement(const Float2& screenOffset, const Float2& screenScale)
@@ -127,6 +133,12 @@ void Camera::SetScreenPlacement(const Float2& screenOffset, const Float2& screen
 	screenOffset_ = screenOffset;
 	screenScale_ = screenScale;
 }
+
+Float2 Camera::GetRenderSize() const
+{
+	return pRenderTarget_->GetSize();
+}
+
 
 void Camera::InitScreenRect()
 {
@@ -163,7 +175,8 @@ void Camera::CameraTransformUpdate()
 
 	float fovRad = ConvertDegToRad(fov_);
 
-	MatrixPerspectiveFovLH(projection_, fov_, (size_.X / size_.Y), near_, far_);
+	const Float2& size = GetRenderSize();
+	MatrixPerspectiveFovLH(projection_, fov_, (size.X / size.Y), near_, far_);
 }
 
 void Camera::CleanUp()

@@ -49,6 +49,9 @@
     <Filter Include="Source Files\SamplerState">
       <UniqueIdentifier>{68e458d7-76d0-45f3-9723-5f9b775c9690}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\RenderTarget">
+      <UniqueIdentifier>{847b08a2-6ad4-4ffc-93a7-e335bfa0c95f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -56,9 +59,6 @@
     </ClInclude>
     <ClInclude Include="D3D11Renderer.h">
       <Filter>Source Files\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderTarget.h">
-      <Filter>Source Files\Texture</Filter>
     </ClInclude>
     <ClInclude Include="Texture.h">
       <Filter>Source Files\Texture</Filter>
@@ -93,6 +93,12 @@
     <ClInclude Include="Material.h">
       <Filter>Source Files\Material</Filter>
     </ClInclude>
+    <ClInclude Include="RenderTarget.h">
+      <Filter>Source Files\RenderTarget</Filter>
+    </ClInclude>
+    <ClInclude Include="DeferredTarget.h">
+      <Filter>Source Files\RenderTarget</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -100,9 +106,6 @@
     </ClCompile>
     <ClCompile Include="D3D11Renderer.cpp">
       <Filter>Source Files\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderTarget.cpp">
-      <Filter>Source Files\Texture</Filter>
     </ClCompile>
     <ClCompile Include="Texture.cpp">
       <Filter>Source Files\Texture</Filter>
@@ -136,6 +139,12 @@
     </ClCompile>
     <ClCompile Include="Material.cpp">
       <Filter>Source Files\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderTarget.cpp">
+      <Filter>Source Files\RenderTarget</Filter>
+    </ClCompile>
+    <ClCompile Include="DeferredTarget.cpp">
+      <Filter>Source Files\RenderTarget</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
