@@ -23,6 +23,7 @@ public:
 
 	uint64_t __stdcall DrawCallCount() override;
 
+	// ------------------------- 인터페이스 노출된 Create -----------------------------
 	IInputLayout* __stdcall CreateLayout(IMesh* pMesh, IShader* pVertexShader) override;
 
 	IMesh* __stdcall CreateMesh(void* pVertices, uint32_t vertexSize, uint32_t vertexCount, void* pIndices = nullptr, uint32_t indexTypeSize = 0, uint32_t indexCount = 0) override;
@@ -31,13 +32,19 @@ public:
 
 	IConstantBuffer* __stdcall CreateConstantBuffer(uint32_t bufferSize) override;
 
-	IShader* __stdcall CreateShader(EShaderType shaderType, const wchar_t* pPath) override;
-
-	ISamplerState* __stdcall  CreateSampler(bool linear, bool clamp) override;
-	
 	IRasterizer* __stdcall  CreateRasterizer(bool frontCounterClockwise, bool backFaceCulling) override;
 
 	IRenderTarget* __stdcall CreateRenderTarget(const Float2& size, const Color& clearColor, bool useDepthStencil = true) override;
+
+	
+	// ------------------------- 인터페이스 노출안된 Create -----------------------------
+	IShader* CreateShader(EShaderType shaderType, const wchar_t* pPath);
+
+	ITexture* CreateTexture(const Float2& size, DXGI_FORMAT format, uint32_t flag);
+
+	ITexture* CreateTexture(const D3D11_TEXTURE2D_DESC& desc);
+
+	ISamplerState*  CreateSamplerState(bool linear, bool clamp);
 
 	ID3D11Device* Device();
 

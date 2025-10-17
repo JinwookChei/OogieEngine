@@ -5,17 +5,35 @@
 #include "Material.h"
 
 
-Material::Material(VertexShader* pVertexShader, PixelShader* pPixelShader, SamplerState* pSamplerState)
+Material::Material()
 	: refCount_(1),
-	pVertexShader_(pVertexShader),
-	pPixelShader_(pPixelShader),
-	pSamplerState_(pSamplerState)
+	pVertexShader_(nullptr),
+	pPixelShader_(nullptr),
+	pSamplerState_(nullptr)
 {
 }
 
 Material::~Material()
 {
 	CleanUp();
+}
+
+bool Material::Init(VertexShader* pVertexShader, PixelShader* pPixelShader, SamplerState* pSamplerState)
+{
+	if (nullptr != pVertexShader)
+	{
+		pVertexShader_ = pVertexShader;
+	}
+	if (nullptr != pPixelShader)
+	{
+		pPixelShader_ = pPixelShader;
+	}
+	if (nullptr != pSamplerState)
+	{
+		pSamplerState_ = pSamplerState;
+	}
+	
+	return true;
 }
 
 HRESULT __stdcall Material::QueryInterface(REFIID riid, void** ppvObject)

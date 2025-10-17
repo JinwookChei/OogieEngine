@@ -1,17 +1,38 @@
 #include "stdafx.h"
 #include "Rasterizer.h"
 
-Rasterizer::Rasterizer(ID3D11RasterizerState* pSolidState, ID3D11RasterizerState* pWireframeState)
+Rasterizer::Rasterizer()
 	: refCount_(1),
 	pCurrentState_(nullptr),
-	pSolidState_(pSolidState),
-	pWireframeState_(pWireframeState)
+	pSolidState_(nullptr),
+	pWireframeState_(nullptr)
 {
 }
 
 Rasterizer::~Rasterizer()
 {
 	CleanUp();
+}
+
+bool Rasterizer::Init(ID3D11RasterizerState* pSolidState, ID3D11RasterizerState* pWireframeState)
+{
+	if (nullptr == pSolidState)
+	{
+		DEBUG_BREAK();
+		return false;
+	}
+
+	if (nullptr == pWireframeState)
+	{
+		DEBUG_BREAK();
+		return false;
+	}
+	
+	pSolidState_ = pSolidState;
+	pWireframeState_ = pWireframeState;
+
+	SetFillMode(EFillModeType::Solid);
+	return true;
 }
 
 HRESULT __stdcall Rasterizer::QueryInterface(REFIID riid, void** ppvObject)
@@ -47,7 +68,7 @@ void __stdcall Rasterizer::SetFillMode(EFillModeType fillmode)
 		pCurrentState_->Release();
 		pCurrentState_ = nullptr;
 	}
-	
+
 	switch (fillmode)
 	{
 	case EFillModeType::WireFrame:

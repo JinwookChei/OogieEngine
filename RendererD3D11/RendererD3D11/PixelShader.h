@@ -3,14 +3,16 @@
 class PixelShader
 	: public BaseShader
 {
-public:
+protected:
+	friend class Renderer;
+
 	PixelShader();
 
 	~PixelShader() override;
 
+protected:
 	void SetShader() override;
 
-protected:
 	bool OnCreateShader(ID3DBlob* pBlob) override;
 
 	void CleanUp() override;

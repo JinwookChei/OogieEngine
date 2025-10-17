@@ -1,19 +1,42 @@
 #include "stdafx.h"
 #include "Mesh.h"
 
-Mesh::Mesh(UINT stride, ID3D11Buffer* pVertexBuffer, UINT indexCount /*= 0*/, ID3D11Buffer* pIndexBuffer /*= nullptr*/)
+Mesh::Mesh()
 	: refCount_(1),
-	stride_(stride),
+	stride_(0),
 	offset_(0),
-	indexCount_(indexCount),
-	pVertexBuffer_(pVertexBuffer),
-	pIndexBuffer_(pIndexBuffer)
+	indexCount_(0),
+	pVertexBuffer_(nullptr),
+	pIndexBuffer_(nullptr)
 {
 }
 
 Mesh::~Mesh()
 {
 	CleanUp();
+}
+
+bool Mesh::Init(UINT stride, ID3D11Buffer* pVertexBuffer, UINT indexCount, ID3D11Buffer* pIndexBuffer)
+{
+	stride_ = stride;
+
+	offset_ = 0;
+
+	pVertexBuffer_ = pVertexBuffer;
+	
+	if (0 != indexCount && nullptr == pIndexBuffer)
+	{
+		DEBUG_BREAK();
+		indexCount_ = 0;
+		pIndexBuffer_ = nullptr;
+		return false;
+	}
+
+	indexCount_ = indexCount;
+
+	pIndexBuffer_ = pIndexBuffer;
+
+	return true;
 }
 
 HRESULT __stdcall Mesh::QueryInterface(REFIID riid, void** ppvObject)

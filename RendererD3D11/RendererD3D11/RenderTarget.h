@@ -3,11 +3,16 @@
 class Texture;
 class RenderTarget final
 	: public IRenderTarget {
-public:
+private:
+	friend Renderer;
+
 	RenderTarget();
 
 	virtual ~RenderTarget();
 
+	bool Init(const Color& clearColor, Texture* pRenderTexture, Texture* pDepthTexture);
+
+public:
 	HRESULT __stdcall QueryInterface(REFIID riid, _COM_Outptr_ void __RPC_FAR* __RPC_FAR* ppvObject) override;
 
 	ULONG __stdcall AddRef() override;

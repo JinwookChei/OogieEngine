@@ -3,13 +3,16 @@
 class ConstantBuffer final
 	: public IConstantBuffer
 {
-public:
-	ConstantBuffer() = delete;
+private:
+	friend Renderer;
 
-	ConstantBuffer(ID3D11Buffer* pBuffer);
+	ConstantBuffer();
 
 	virtual ~ConstantBuffer();
 
+	bool Init(ID3D11Buffer* pBuffer);
+
+public:
 	HRESULT __stdcall QueryInterface(REFIID riid, _COM_Outptr_ void __RPC_FAR* __RPC_FAR* ppvObject) override;
 
 	ULONG __stdcall AddRef() override;

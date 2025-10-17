@@ -7,13 +7,16 @@ class SamplerState;
 class Material
 	: public IMaterial
 {
-public:
-	Material() = delete;
+private:
+	friend Renderer;
 
-	Material(VertexShader* pVertexShader, PixelShader* pPixelShader, SamplerState* pSamplerState);
+	Material();
 
 	virtual ~Material();
 
+	bool Init(VertexShader* pVertexShader, PixelShader* pPixelShader, SamplerState* pSamplerState);
+
+public:
 	HRESULT __stdcall QueryInterface(REFIID riid, _COM_Outptr_ void __RPC_FAR* __RPC_FAR* ppvObject) override;
 
 	ULONG __stdcall AddRef() override;

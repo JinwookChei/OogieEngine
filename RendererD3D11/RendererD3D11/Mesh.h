@@ -8,14 +8,16 @@ struct SimpleVertex {
 class Mesh
 	: public IMesh
 {
+private:
 	friend Renderer;
-public:
-	Mesh() = delete;
 
-	Mesh(UINT stride, ID3D11Buffer* pVertexBuffer, UINT indexCount = 0, ID3D11Buffer* pIndexBuffer = nullptr);
+	Mesh();
 
 	virtual ~Mesh();
 
+	bool Init(UINT stride, ID3D11Buffer* pVertexBuffer, UINT indexCount = 0, ID3D11Buffer* pIndexBuffer = nullptr);
+	
+public:
 	HRESULT __stdcall QueryInterface(REFIID riid, _COM_Outptr_ void __RPC_FAR* __RPC_FAR* ppvObject) override;
 
 	ULONG __stdcall AddRef() override;

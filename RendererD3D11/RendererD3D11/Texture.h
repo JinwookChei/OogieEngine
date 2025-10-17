@@ -2,20 +2,22 @@
 
 class Texture final :
 	public ITexture {
-public:
+private:
+	friend Renderer;
+	//Texture() = delete;
+
 	Texture();
 
 	virtual ~Texture();
 
+	bool Init(ID3D11Texture2D* pTexture);
+
+public:
 	HRESULT __stdcall QueryInterface(REFIID riid, _COM_Outptr_ void __RPC_FAR* __RPC_FAR* ppvObject) override;
 
 	ULONG __stdcall AddRef() override;
 
 	ULONG __stdcall Release() override;
-
-	static Texture* Create(const Float2& size, DXGI_FORMAT format, uint32_t flag);
-
-	static Texture* Create(const D3D11_TEXTURE2D_DESC& desc);
 
 	void BindRenderTextureForPS(uint32_t slot);
 
@@ -32,6 +34,8 @@ public:
 	ID3D11ShaderResourceView* ShaderResourceView() const;
 
 private:
+	bool InitTexture(ID3D11Texture2D* pTexture);
+
 	bool CreateRenderTargetView();
 
 	bool CreateDepthStencilView();

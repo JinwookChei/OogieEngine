@@ -3,13 +3,16 @@
 class Rasterizer final
 	: public IRasterizer
 {
-public:
-	Rasterizer() = delete;
+private:
+	friend Renderer;
 
-	Rasterizer(ID3D11RasterizerState* pSolidState, ID3D11RasterizerState* pWireframeState);
+	Rasterizer();
 
 	virtual ~Rasterizer();
 
+	bool Init(ID3D11RasterizerState* pSolidState, ID3D11RasterizerState* pWireframeState);
+
+public:
 	HRESULT __stdcall QueryInterface(REFIID riid, _COM_Outptr_ void __RPC_FAR* __RPC_FAR* ppvObject) override;
 
 	ULONG __stdcall AddRef() override;

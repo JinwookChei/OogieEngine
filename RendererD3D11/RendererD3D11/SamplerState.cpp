@@ -1,15 +1,27 @@
 #include "stdafx.h"
 #include "SamplerState.h"
 
-SamplerState::SamplerState(ID3D11SamplerState* pSamplerState)
+SamplerState::SamplerState()
 	: refCount_(1),
-	pSamplerState_(pSamplerState)
+	pSamplerState_(nullptr)
 {
 }
 
 SamplerState::~SamplerState()
 {
 	CleanUp();
+}
+
+bool SamplerState::Init(ID3D11SamplerState* pSamplerState)
+{
+	if (nullptr == pSamplerState)
+	{
+		DEBUG_BREAK();
+		return false;
+	}
+
+	pSamplerState_ = pSamplerState;
+	return true;
 }
 
 HRESULT __stdcall SamplerState::QueryInterface(REFIID riid, void** ppvObject)

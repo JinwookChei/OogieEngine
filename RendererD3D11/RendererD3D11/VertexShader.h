@@ -4,14 +4,16 @@
 class VertexShader
 	: public BaseShader
 {	
-public:
+protected:
+	friend class Renderer;
+
 	VertexShader();
 
 	~VertexShader() override;
 
+protected:
 	void SetShader() override;
 
-protected:
 	bool OnCreateShader(ID3DBlob* pBlob) override;
 
 	void CleanUp() override;

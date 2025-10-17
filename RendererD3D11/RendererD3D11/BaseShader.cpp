@@ -12,6 +12,21 @@ BaseShader::~BaseShader()
 	CleanUp();
 }
 
+bool BaseShader::Init(ID3DBlob* pBlob)
+{
+	if (nullptr == pBlob)
+	{
+		return false;
+	}
+
+	pBlob_ = pBlob;
+
+	pBlob_->AddRef();
+
+	return OnCreateShader(pBlob_);
+}
+
+
 HRESULT __stdcall BaseShader::QueryInterface(REFIID riid, void** ppvObject)
 {
 	return E_NOTIMPL;
@@ -38,20 +53,6 @@ void __stdcall BaseShader::Setting()
 	SetShader();
 }
 
-bool BaseShader::CreateShader(ID3DBlob* pBlob)
-{
-	if (nullptr == pBlob)
-	{
-		return false;
-	}
-
-	pBlob_ = pBlob;
-
-	pBlob_->AddRef();
-
-	return OnCreateShader(pBlob_);
-}
-
 void* BaseShader::GetBufferPointer()
 {
 	if (nullptr == pBlob_)
@@ -71,7 +72,6 @@ size_t BaseShader::GetBufferSize()
 	return pBlob_->GetBufferSize();
 }
 
-
 void BaseShader::CleanUp()
 {
 	if (nullptr != pBlob_)
@@ -80,3 +80,4 @@ void BaseShader::CleanUp()
 		pBlob_ = nullptr;
 	}
 }
+

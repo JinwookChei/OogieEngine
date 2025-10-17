@@ -12,29 +12,30 @@ enum class EFillModeType
 	Solid
 };
 
-struct ITexture : public IUnknown {
-};
-
-struct IRenderTarget : public IUnknown 
+struct ITexture : public IUnknown
 {
-	virtual void __stdcall Clear() = 0;
-
-	virtual void __stdcall Setting() = 0;
-
-	virtual void __stdcall SetClearColor(const Color& color) = 0;
-
-	virtual void __stdcall BindRenderTextureForPS(uint32_t slot) = 0;
-
-	virtual void __stdcall ClearRenderTextureForPS(uint32_t slot) = 0;
-
 };
 
-struct IShader : public IUnknown {
 
+struct IShader : public IUnknown
+{
+	//virtual void __stdcall Setting() = 0;
+};
+
+
+struct ISamplerState : public IUnknown
+{
+	//virtual void __stdcall Setting(uint32_t slot) = 0;
+};
+
+
+
+
+struct IInputLayout : public IUnknown {
 	virtual void __stdcall Setting() = 0;
 };
 
-struct IMesh : public IUnknown 
+struct IMesh : public IUnknown
 {
 	virtual void __stdcall Setting() = 0;
 
@@ -43,21 +44,11 @@ struct IMesh : public IUnknown
 	virtual bool __stdcall Draw() = 0;
 };
 
-
 struct IMaterial : public IUnknown
 {
 	virtual void __stdcall Setting() = 0;
 
 	virtual IShader* __stdcall GetVertexShader() = 0;
-};
-
-
-struct ISamplerState : public IUnknown {
-	virtual void __stdcall Setting(uint32_t slot) = 0;
-};
-
-struct IInputLayout : public IUnknown {
-	virtual void __stdcall Setting() = 0;
 };
 
 struct IConstantBuffer : public IUnknown {
@@ -74,6 +65,22 @@ struct IRasterizer : public IUnknown {
 
 	virtual void __stdcall SetFillMode(EFillModeType fillModeType) = 0;
 };
+
+struct IRenderTarget : public IUnknown
+{
+	virtual void __stdcall Clear() = 0;
+
+	virtual void __stdcall Setting() = 0;
+
+	virtual void __stdcall SetClearColor(const Color& color) = 0;
+
+	virtual void __stdcall BindRenderTextureForPS(uint32_t slot) = 0;
+
+	virtual void __stdcall ClearRenderTextureForPS(uint32_t slot) = 0;
+
+};
+
+
 
 struct IRenderer : public IUnknown {
 	virtual bool __stdcall Initialize(void* hWnd, uint32_t width, uint32_t height) = 0;
@@ -92,9 +99,9 @@ struct IRenderer : public IUnknown {
 
 	virtual IConstantBuffer* __stdcall CreateConstantBuffer(uint32_t bufferSize) = 0;
 
-	virtual IShader* __stdcall CreateShader(EShaderType shaderType, const wchar_t* pPath) = 0;
+	//virtual IShader* __stdcall CreateShader(EShaderType shaderType, const wchar_t* pPath) = 0;
 
-	virtual ISamplerState* __stdcall  CreateSampler(bool linear, bool clamp) = 0;
+	//virtual ISamplerState* __stdcall  CreateSampler(bool linear, bool clamp) = 0;
 
 	virtual IRasterizer* __stdcall  CreateRasterizer(bool frontCounterClockwise, bool backFaceCulling) = 0;
 

@@ -3,15 +3,28 @@
 #include "VertexShader.h"
 #include "InputLayout.h"
 
-InputLayout::InputLayout(ID3D11InputLayout* pInputLayout)
+InputLayout::InputLayout()
 	: refCount_(1),
-	pInputLayout_(pInputLayout)
+	pInputLayout_(nullptr)
 {
 }
 
 InputLayout::~InputLayout()
 {
 	CleanUp();
+}
+
+bool InputLayout::Init(ID3D11InputLayout* pInputLayout)
+{
+	if (nullptr == pInputLayout)
+	{
+		DEBUG_BREAK();
+		return false;
+	}
+
+	pInputLayout_ = pInputLayout;
+
+	return true;
 }
 
 HRESULT __stdcall InputLayout::QueryInterface(REFIID riid, void** ppvObject)

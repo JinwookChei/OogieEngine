@@ -1,9 +1,9 @@
 #include "stdafx.h"
 #include "ConstantBuffer.h"
 
-ConstantBuffer::ConstantBuffer(ID3D11Buffer* pBuffer)
+ConstantBuffer::ConstantBuffer()
 	: refCount_(1),
-	pBuffer_(pBuffer)
+	pBuffer_(nullptr)
 {
 }
 
@@ -11,6 +11,19 @@ ConstantBuffer::~ConstantBuffer()
 {
 	CleanUp();
 }
+
+bool ConstantBuffer::Init(ID3D11Buffer* pBuffer)
+{
+	if (nullptr == pBuffer)
+	{
+		DEBUG_BREAK();
+		return false;
+	}
+
+	pBuffer_ = pBuffer;
+	return true;
+}
+
 
 HRESULT __stdcall ConstantBuffer::QueryInterface(REFIID riid, void** ppvObject)
 {

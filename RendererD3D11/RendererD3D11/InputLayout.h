@@ -3,13 +3,16 @@
 class InputLayout final
 	: public IInputLayout
 {
-public:
-	InputLayout() = delete;
+private:
+	friend Renderer;
 
-	InputLayout(ID3D11InputLayout* pInputLayout);
+	InputLayout();
 
 	virtual ~InputLayout();
 
+	bool Init(ID3D11InputLayout* pInputLayout);
+
+public:
 	HRESULT __stdcall QueryInterface(REFIID riid, _COM_Outptr_ void __RPC_FAR* __RPC_FAR* ppvObject) override;
 
 	ULONG __stdcall AddRef() override;

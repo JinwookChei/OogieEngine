@@ -18,6 +18,20 @@ RenderTarget::~RenderTarget()
 	CleanUp();
 }
 
+bool RenderTarget::Init(const Color& clearColor, Texture* pRenderTexture, Texture* pDepthTexture)
+{
+	SetClearColor(clearColor);
+
+	bool ret = SetTexture(pRenderTexture, pDepthTexture);
+	if (false == ret)
+	{
+		DEBUG_BREAK();
+		return false;
+	}
+
+	return true;
+}
+
 HRESULT __stdcall RenderTarget::QueryInterface(REFIID riid, void** ppvObject)
 {
 	return E_NOTIMPL;
