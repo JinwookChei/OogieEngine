@@ -1,7 +1,7 @@
 #include "stdafx.h"
-#include "Texture.h"
-#include "DeferredTarget.h"
-
+//#include "Texture.h"
+//#include "DeferredTarget.h"
+//
 //DeferredTarget::DeferredTarget()
 //	: refCount_(1),
 //	viewport_(),

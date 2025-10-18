@@ -11,6 +11,18 @@
 #define DEBUG_BREAK
 #endif // DEBUG
 
+
+#define Assert(msg)                                                   \
+    do {                                                               \
+        char buffer[1024];                                             \
+        std::snprintf(buffer, sizeof(buffer),                           \
+            "Assertion failed: %s\nFile: %s\nLine: %d",               \
+            msg, __FILE__, __LINE__);                                  \
+        MessageBoxA(nullptr, buffer, "Assertion Failed", MB_ICONERROR);\
+        std::abort();                                                  \
+    } while(0)
+
+
 #define ENGINE_API __declspec(dllexport)
 #define UTILITY_API __declspec(dllimport)
 
@@ -18,6 +30,8 @@
 #include <stdint.h>
 #include <math.h>
 #include <vector>
+#include <cstdlib>
+#include <cstdio>
 
 #include <Utility/Math.h>
 #include <Utility/LinkedList.h>
@@ -33,6 +47,7 @@
 #include "Camera.h"
 #include "Light.h"
 #include "SpotLight.h"
+
 
 extern IApplication* GApplication;
 extern IRenderer* GRenderer;

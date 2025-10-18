@@ -11,6 +11,18 @@
 #define DEBUG_BREAK
 #endif // DEBUG
 
+
+#define Assert(msg)                                                   \
+    do {                                                               \
+        char buffer[1024];                                             \
+        std::snprintf(buffer, sizeof(buffer),                           \
+            "Assertion failed: %s\nFile: %s\nLine: %d",               \
+            msg, __FILE__, __LINE__);                                  \
+        MessageBoxA(nullptr, buffer, "Assertion Failed", MB_ICONERROR);\
+        std::abort();                                                  \
+    } while(0)
+
+
 #define UTILITY_API __declspec(dllimport)
 
 #ifdef _DEBUG
@@ -18,14 +30,16 @@
 #endif
 
 #include <windows.h>
+#include <vector>
+#include <cstdlib>
+#include <cstdio>
+
 #include <d3d11.h>
 #include <d3dcompiler.h>
 #include <dxgi.h>
 #include <DirectXMath.h>
 
-#include <vector>
 #include <Utility/Math.h>
-
 #include <Renderer/IRenderer.h>
 
 #include "D3D11Renderer.h"

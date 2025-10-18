@@ -5,10 +5,8 @@
 
 Camera::Camera()
 	: fov_(60.0f),
-	//size_({ 2560.f, 1440.0f }),
 	near_(0.01f),
 	far_(100.0f),
-	//clearColor_({ 1.0f, 0.0f, 0.0f, 1.0f }),
 	cameraSensitivity_(10.0f),
 	cameraSpeed_(2.0f),
 	pScreenVertex_(nullptr),
@@ -103,14 +101,25 @@ const Float4x4& Camera::Projection() const
 
 void Camera::SetSize(const Float2& size)
 {
-	RenderTargetDesc desc;
+	// 주의!! SetSize하는데 렌더 타겟이 없으면 크래쉬 발생유도.
+	if (nullptr == pRenderTarget_)
+	{
+		Assert("pRenderTarget == NULL!");
+		return;
+	}
 
+	RenderTargetDesc desc = pRenderTarget_->GetDesc();
+	pRenderTarget_->Release();
+	pRenderTarget_ = nullptr;
+
+	// Ragacy
+	/*RenderTargetDesc desc;
 	if (nullptr != pRenderTarget_)
 	{
 		desc = pRenderTarget_->GetDesc();
 		pRenderTarget_->Release();
 		pRenderTarget_ = nullptr;
-	}
+	}*/
 
 	desc.size_ = size;
 	pRenderTarget_ = GRenderer->CreateRenderTarget(desc);

@@ -1,6 +1,5 @@
-#pragma once
-
-
+//#pragma once
+//
 //class DeferredTarget final
 //	: public IRenderTarget
 //{
@@ -39,7 +38,12 @@
 //	ULONG refCount_;
 //	D3D11_VIEWPORT viewport_;
 //
-//	DeferredTargetDesc desc_;
+//	// Desc
+//	Color clearColor_;
+//	unsigned int fmtColor_;
+//	unsigned int fmtDepth_;
+//	bool useDepthStencil_;
+//	//
 //
 //	Texture* pRenderTextureAlbedo_;
 //	Texture* pRenderTextureNormal_;

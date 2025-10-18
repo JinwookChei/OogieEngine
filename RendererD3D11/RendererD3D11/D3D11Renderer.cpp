@@ -124,7 +124,7 @@ bool __stdcall Renderer::Initialize(void* hWnd, uint32_t width, uint32_t height)
 		return false;
 	}
 
-	if (false == CreateBackBuffer())
+	if (false == CreateBackBuffer(width, height, { 0.1f, 0.2f, 0.4f, 1.0f }))
 	{
 		return false;
 	}
@@ -499,55 +499,6 @@ IRasterizer* __stdcall Renderer::CreateRasterizer(bool frontCounterClockwise, bo
 	return nullptr;
 }
 
-//IRenderTarget* __stdcall Renderer::CreateRenderTarget(const Float2& size, const Color& clearColor, bool useDepthStencil /*= true*/)
-//{
-//	Texture* pRenderTexture = nullptr;
-//	Texture* pDepthTexture = nullptr;
-//	RenderTarget* pRenderTarget = nullptr;
-//	do
-//	{
-//		pRenderTexture = static_cast<Texture*>(CreateTexture(size, DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT, D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET | D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE));
-//		if (nullptr == pRenderTexture)
-//		{
-//			DEBUG_BREAK();
-//			break;
-//		}
-//
-//		if (true == useDepthStencil)
-//		{
-//			pDepthTexture = static_cast<Texture*>(CreateTexture(pRenderTexture->Size(), DXGI_FORMAT::DXGI_FORMAT_D24_UNORM_S8_UINT, D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL));
-//		}
-//
-//		pRenderTarget = new RenderTarget;
-//		bool ret = pRenderTarget->Init(clearColor, pRenderTexture, pDepthTexture);
-//		if (false == ret)
-//		{
-//			DEBUG_BREAK();
-//			break;
-//		}
-//
-//		return pRenderTarget;
-//
-//	} while (false);
-//
-//	if (nullptr != pRenderTexture)
-//	{
-//		pRenderTexture->Release();
-//		pRenderTexture = nullptr;
-//	}
-//	if (nullptr != pDepthTexture)
-//	{
-//		pDepthTexture->Release();
-//		pDepthTexture = nullptr;
-//	}
-//	if (nullptr != pRenderTarget)
-//	{
-//		pRenderTarget->Release();
-//		pRenderTarget = nullptr;
-//	}
-//
-//	return nullptr;
-//}
 
 IRenderTarget* __stdcall Renderer::CreateRenderTarget(const RenderTargetDesc& desc)
 {
@@ -906,7 +857,7 @@ lb_return:
 	return true;
 }
 
-bool Renderer::CreateBackBuffer()
+bool Renderer::CreateBackBuffer(UINT width, UINT height, const Color& clearColor)
 {
 	ID3D11Texture2D* pBackBufferTexture = nullptr;
 	Texture* pRenderTexture = nullptr;
@@ -941,7 +892,10 @@ bool Renderer::CreateBackBuffer()
 		}
 
 		pBackBuffer_ = new RenderTarget;
-		RenderTargetDesc desc;
+		RenderTargetDesc desc{ ERenderTechniqueType::Forward };
+		desc.size_ = { (float)width, (float)height };
+		desc.clearColor_ = clearColor;
+
 		bool ret = pBackBuffer_->Init(desc, pRenderTexture, pDepthTexture);
 		if (false == ret)
 		{

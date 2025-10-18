@@ -49,9 +49,17 @@ struct RenderTargetDesc
 		DeferredRenderingDesc deferredDesc_;
 	};
 
-	//RenderTargetDesc() = delete;
+	RenderTargetDesc() = delete;
+	//	: size_({ 0.0f, 0.0f }),
+	//	clearColor_({ 0.2f, 0.4f, 0.6f, 1.0f }),
+	//	renderTechniqueType_(ERenderTechniqueType::Forward)
+	//{
+
+	//}
 	RenderTargetDesc(ERenderTechniqueType renderTechniqueType = ERenderTechniqueType::Forward)
-		: renderTechniqueType_(renderTechniqueType)
+		: size_({ 0.0f, 0.0f }),
+		clearColor_({ 0.2f, 0.4f, 0.6f, 1.0f }), 
+		renderTechniqueType_(renderTechniqueType)
 	{
 		switch (renderTechniqueType_)
 		{

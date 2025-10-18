@@ -63,7 +63,7 @@ private:
 
 	bool CreateSwapChain(UINT width, UINT height);
 
-	bool CreateBackBuffer();
+	bool CreateBackBuffer(UINT width, UINT height, const Color& clearColor);
 
 	void CleanUp();
 

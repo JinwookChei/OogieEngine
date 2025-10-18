@@ -6,12 +6,8 @@ IRenderTarget* GCurrentSetRenderTarget = nullptr;
 
 RenderTarget::RenderTarget()
 	: refCount_(1),
-	// Desc
 	clearColor_({ 0.2f, 0.4f, 0.6f, 1.0f }),
-	fmtColor_(0),
-	fmtDepth_(0),
-	useDepthStencil_(true),
-	//
+	desc_(),
 	pRenderTexture_(nullptr),
 	pDepthTexture_(nullptr),
 	viewport_()
@@ -26,9 +22,7 @@ RenderTarget::~RenderTarget()
 bool RenderTarget::Init(const RenderTargetDesc& desc, Texture* pRenderTexture, Texture* pDepthTexture)
 {
 	SetClearColor(desc.clearColor_);
-	fmtColor_ = desc.forwardDesc_.fmtColor_;
-	fmtDepth_ = desc.forwardDesc_.fmtDepth_;
-	useDepthStencil_ = desc.forwardDesc_.useDepthStencil_;
+	desc_ = desc.forwardDesc_;
 
 	bool ret = SetTexture(pRenderTexture, pDepthTexture);
 	if (false == ret)
@@ -117,11 +111,9 @@ void RenderTarget::Setting()
 
 RenderTargetDesc __stdcall RenderTarget::GetDesc() const
 {
-	RenderTargetDesc desc;
+	RenderTargetDesc desc{ ERenderTechniqueType::Forward };
 	desc.clearColor_ = clearColor_;
-	desc.forwardDesc_.fmtColor_ = fmtColor_;
-	desc.forwardDesc_.fmtDepth_ = fmtDepth_;
-	desc.forwardDesc_.useDepthStencil_ = useDepthStencil_;
+	desc.forwardDesc_ = desc_;
 	desc.size_ = pRenderTexture_->Size();
 	
 	return desc;

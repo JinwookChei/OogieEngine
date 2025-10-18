@@ -40,12 +40,9 @@ private:
 
 	ULONG refCount_;
 
-	// Desc
 	Color clearColor_;
-	unsigned int fmtColor_;
-	unsigned int fmtDepth_;
-	bool useDepthStencil_;
-	//
+
+	ForwardRenderingDesc desc_;
 
 	Texture* pRenderTexture_;
 
