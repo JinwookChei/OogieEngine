@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Texture.h"
 #include "RenderTarget.h"
+#include "DeferredTarget.h"
 #include "Mesh.h"
 #include "Material.h"
 #include "VertexShader.h"
@@ -520,9 +521,10 @@ IRenderTarget* Renderer::CreateForwardRenderTarget(const RenderTargetDesc& desc)
 	Texture* pRenderTexture = nullptr;
 	Texture* pDepthTexture = nullptr;
 	RenderTarget* pRenderTarget = nullptr;
+
+	const ForwardRenderingDesc& forwardDesc = desc.forwardDesc_;
 	do
 	{
-		const ForwardRenderingDesc& forwardDesc = desc.forwardDesc_;
 		pRenderTexture = static_cast<Texture*>(CreateTexture(desc.size_, (DXGI_FORMAT)forwardDesc.fmtColor_, D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET | D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE));
 		if (nullptr == pRenderTexture)
 		{
@@ -567,6 +569,90 @@ IRenderTarget* Renderer::CreateForwardRenderTarget(const RenderTargetDesc& desc)
 
 IRenderTarget* Renderer::CreateDeferredRenderTarget(const RenderTargetDesc& desc)
 {
+	DeferredTarget* pDeferredTarget = nullptr;
+	Texture* pRenderTextureAlbedo = nullptr;
+	Texture* pRenderTextureNormal_ = nullptr;
+	Texture* pRenderTextureMaterial_ = nullptr;
+	Texture* pDepthTexture_ = nullptr;
+
+
+	DeferredRenderingDesc deferredDesc = desc.deferredDesc_;
+	// DXGI_FORMAT_D24_UNORM_S8_UINT, DXGI_FORMAT_D32_FLOAT 포맷은 Depth 전용 포맷 임. -> ShaderResource로 사용하려하면 에러 발생.
+	// 따라서 Depth로도 쓰고 ShaderResource로도 쓸려면 Type 없는 포맷으로 변환 해야함.
+	if (deferredDesc.fmtDepth_ == DXGI_FORMAT::DXGI_FORMAT_D24_UNORM_S8_UINT)
+	{
+		deferredDesc.fmtDepth_ = DXGI_FORMAT::DXGI_FORMAT_R24G8_TYPELESS;
+	}
+	else if (deferredDesc.fmtDepth_ == DXGI_FORMAT::DXGI_FORMAT_D32_FLOAT)
+	{
+		deferredDesc.fmtDepth_ = DXGI_FORMAT::DXGI_FORMAT_R32_TYPELESS;
+	}
+
+	do
+	{
+		pRenderTextureAlbedo = static_cast<Texture*>(CreateTexture(desc.size_, (DXGI_FORMAT)deferredDesc.fmtAlbedo_, D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET | D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE));
+		if (nullptr == pRenderTextureAlbedo)
+		{
+			Assert("pRenderTextureAlbedo = NULL");
+			break;
+		}
+		pRenderTextureNormal_ = static_cast<Texture*>(CreateTexture(desc.size_, (DXGI_FORMAT)deferredDesc.fmtNormal_, D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET | D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE));
+		if (nullptr == pRenderTextureNormal_)
+		{
+			Assert("pRenderTextureNormal_ = NULL");
+			break;
+		}
+		pRenderTextureMaterial_ = static_cast<Texture*>(CreateTexture(desc.size_, (DXGI_FORMAT)deferredDesc.fmtMaterial_, D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET | D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE));
+		if (nullptr == pRenderTextureMaterial_)
+		{
+			Assert("pRenderTextureMaterial_ = NULL");
+			break;
+		}
+		pDepthTexture_ = static_cast<Texture*>(CreateTexture(desc.size_, (DXGI_FORMAT)deferredDesc.fmtDepth_, D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL | D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE));
+		if (nullptr == pDepthTexture_)
+		{
+			Assert("pDepthTexture_ = NULL");
+			break;
+		}
+
+		pDeferredTarget = new DeferredTarget;
+		bool ret = pDeferredTarget->Init(desc, pRenderTextureAlbedo, pRenderTextureNormal_, pRenderTextureMaterial_, pDepthTexture_);
+		if (false == ret)
+		{
+			Assert("DeferredTarget->Init() FAIL");
+			break;
+		}
+
+		return pDeferredTarget;
+
+	} while (false);
+
+	if (nullptr != pDeferredTarget)
+	{
+		pDeferredTarget->Release();
+		pDeferredTarget = nullptr;
+	}
+	if (nullptr != pRenderTextureAlbedo)
+	{
+		pRenderTextureAlbedo->Release();
+		pRenderTextureAlbedo = nullptr;
+	}
+	if (nullptr != pRenderTextureNormal_)
+	{
+		pRenderTextureNormal_->Release();
+		pRenderTextureNormal_ = nullptr;
+	}
+	if (nullptr != pRenderTextureMaterial_)
+	{
+		pRenderTextureMaterial_->Release();
+		pRenderTextureMaterial_ = nullptr;
+	}
+	if (nullptr != pDepthTexture_)
+	{
+		pDepthTexture_->Release();
+		pDepthTexture_ = nullptr;
+	}
+
 	return nullptr;
 }
 
