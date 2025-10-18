@@ -551,21 +551,37 @@ IRasterizer* __stdcall Renderer::CreateRasterizer(bool frontCounterClockwise, bo
 
 IRenderTarget* __stdcall Renderer::CreateRenderTarget(const RenderTargetDesc& desc)
 {
+	switch (desc.renderTechniqueType_)
+	{
+	case ERenderTechniqueType::Forward:
+		return CreateForwardRenderTarget(desc);
+		break;
+	case ERenderTechniqueType::Deferred:
+		return CreateDeferredRenderTarget(desc);
+		break;
+	default:
+		break;
+	}
+}
+
+IRenderTarget* Renderer::CreateForwardRenderTarget(const RenderTargetDesc& desc)
+{
 	Texture* pRenderTexture = nullptr;
 	Texture* pDepthTexture = nullptr;
 	RenderTarget* pRenderTarget = nullptr;
 	do
 	{
-		pRenderTexture = static_cast<Texture*>(CreateTexture(desc.size_, (DXGI_FORMAT)desc.fmtColor_, D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET | D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE));
+		const ForwardRenderingDesc& forwardDesc = desc.forwardDesc_;
+		pRenderTexture = static_cast<Texture*>(CreateTexture(desc.size_, (DXGI_FORMAT)forwardDesc.fmtColor_, D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET | D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE));
 		if (nullptr == pRenderTexture)
 		{
 			DEBUG_BREAK();
 			break;
 		}
 
-		if (true == desc.useDepthStencil_)
+		if (true == forwardDesc.useDepthStencil_)
 		{
-			pDepthTexture = static_cast<Texture*>(CreateTexture(pRenderTexture->Size(), (DXGI_FORMAT)desc.fmtDepth_, D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL));
+			pDepthTexture = static_cast<Texture*>(CreateTexture(pRenderTexture->Size(), (DXGI_FORMAT)forwardDesc.fmtDepth_, D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL));
 		}
 
 		pRenderTarget = new RenderTarget;
@@ -577,7 +593,6 @@ IRenderTarget* __stdcall Renderer::CreateRenderTarget(const RenderTargetDesc& de
 		}
 
 		return pRenderTarget;
-
 	} while (false);
 
 	if (nullptr != pRenderTexture)
@@ -596,6 +611,11 @@ IRenderTarget* __stdcall Renderer::CreateRenderTarget(const RenderTargetDesc& de
 		pRenderTarget = nullptr;
 	}
 
+	return nullptr;
+}
+
+IRenderTarget* Renderer::CreateDeferredRenderTarget(const RenderTargetDesc& desc)
+{
 	return nullptr;
 }
 

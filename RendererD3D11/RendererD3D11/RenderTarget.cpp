@@ -26,9 +26,9 @@ RenderTarget::~RenderTarget()
 bool RenderTarget::Init(const RenderTargetDesc& desc, Texture* pRenderTexture, Texture* pDepthTexture)
 {
 	SetClearColor(desc.clearColor_);
-	fmtColor_ = desc.fmtColor_;
-	fmtDepth_ = desc.fmtDepth_;
-	useDepthStencil_ = desc.useDepthStencil_;
+	fmtColor_ = desc.forwardDesc_.fmtColor_;
+	fmtDepth_ = desc.forwardDesc_.fmtDepth_;
+	useDepthStencil_ = desc.forwardDesc_.useDepthStencil_;
 
 	bool ret = SetTexture(pRenderTexture, pDepthTexture);
 	if (false == ret)
@@ -119,9 +119,9 @@ RenderTargetDesc __stdcall RenderTarget::GetDesc() const
 {
 	RenderTargetDesc desc;
 	desc.clearColor_ = clearColor_;
-	desc.fmtColor_ = fmtColor_;
-	desc.fmtDepth_ = fmtDepth_;
-	desc.useDepthStencil_ = useDepthStencil_;
+	desc.forwardDesc_.fmtColor_ = fmtColor_;
+	desc.forwardDesc_.fmtDepth_ = fmtDepth_;
+	desc.forwardDesc_.useDepthStencil_ = useDepthStencil_;
 	desc.size_ = pRenderTexture_->Size();
 	
 	return desc;

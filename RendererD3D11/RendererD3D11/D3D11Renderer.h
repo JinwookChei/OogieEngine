@@ -38,6 +38,10 @@ public:
 
 	IRenderTarget* __stdcall CreateRenderTarget(const RenderTargetDesc& desc) override;
 
+	IRenderTarget* CreateForwardRenderTarget(const RenderTargetDesc& desc);
+
+	IRenderTarget* CreateDeferredRenderTarget(const RenderTargetDesc& desc);
+
 	
 	// ------------------------- 인터페이스 노출안된 Create -----------------------------
 	IShader* CreateShader(EShaderType shaderType, const wchar_t* pPath);

@@ -12,27 +12,64 @@ enum class EFillModeType
 	Solid
 };
 
-struct DeferredTargetDesc
-{
-	Float2 size_ {0.0f, 0.0f };
-	Color clearColor_{ 0.2f, 0.4f, 0.6f, 1.0f };
 
+
+enum class ERenderTechniqueType
+{
+	Forward = 0,
+	Deferred
+};
+
+struct ForwardRenderingDesc
+{
+
+	unsigned int fmtColor_ = 2;		//DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT;
+	unsigned int fmtDepth_ = 45;	//DXGI_FORMAT::DXGI_FORMAT_D24_UNORM_S8_UINT
+	bool useDepthStencil_ = true;
+};
+ 
+struct DeferredRenderingDesc
+{
 	unsigned int fmtAlbedo_ = 28;	//DXGI_FORMAT::DXGI_FORMAT_R8G8B8A8_UNORM;
 	unsigned int fmtNormal_ = 10;	//DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT;
 	unsigned int fmtMaterial_ = 28;
 	unsigned int fmtDepth_ = 45;
 };
 
-
 struct RenderTargetDesc
 {
 	Float2 size_{ 0.0f, 0.0f };
 	Color clearColor_{ 0.2f, 0.4f, 0.6f, 1.0f };
 
-	unsigned int fmtColor_ = 2;		//DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT;
-	unsigned int fmtDepth_ = 45;	//DXGI_FORMAT::DXGI_FORMAT_D24_UNORM_S8_UINT
+	ERenderTechniqueType renderTechniqueType_ = ERenderTechniqueType::Forward;
 
-	bool useDepthStencil_ = true;
+	union
+	{
+		ForwardRenderingDesc forwardDesc_;
+		DeferredRenderingDesc deferredDesc_;
+	};
+
+	//RenderTargetDesc() = delete;
+	RenderTargetDesc(ERenderTechniqueType renderTechniqueType = ERenderTechniqueType::Forward)
+		: renderTechniqueType_(renderTechniqueType)
+	{
+		switch (renderTechniqueType_)
+		{
+		case ERenderTechniqueType::Forward:
+			forwardDesc_.fmtColor_ = 2;
+			forwardDesc_.fmtDepth_ = 45;
+			forwardDesc_.useDepthStencil_ = true;
+			break;
+		case ERenderTechniqueType::Deferred:
+			deferredDesc_.fmtAlbedo_ = 28;	//DXGI_FORMAT::DXGI_FORMAT_R8G8B8A8_UNORM;
+			deferredDesc_.fmtNormal_ = 10;	//DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT;
+			deferredDesc_.fmtMaterial_ = 28;
+			deferredDesc_.fmtDepth_ = 45;
+			break;
+		default:
+			break;
+		}
+	}
 };
 
 struct ITexture : public IUnknown
@@ -50,8 +87,6 @@ struct ISamplerState : public IUnknown
 {
 	//virtual void __stdcall Setting(uint32_t slot) = 0;
 };
-
-
 
 
 struct IInputLayout : public IUnknown {
@@ -126,13 +161,7 @@ struct IRenderer : public IUnknown {
 
 	virtual IConstantBuffer* __stdcall CreateConstantBuffer(uint32_t bufferSize) = 0;
 
-	//virtual IShader* __stdcall CreateShader(EShaderType shaderType, const wchar_t* pPath) = 0;
-
-	//virtual ISamplerState* __stdcall  CreateSampler(bool linear, bool clamp) = 0;
-
 	virtual IRasterizer* __stdcall  CreateRasterizer(bool frontCounterClockwise, bool backFaceCulling) = 0;
-
-	//virtual IRenderTarget* __stdcall CreateRenderTarget(const Float2& size, const Color& clearColor, bool useDepthStencil = true) = 0;
 
 	virtual IRenderTarget* __stdcall CreateRenderTarget(const RenderTargetDesc& desc) = 0;
 };

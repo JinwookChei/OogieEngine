@@ -22,10 +22,10 @@ Camera::Camera()
 	MatrixIdentity(view_);
 	MatrixIdentity(projection_);
 
-	RenderTargetDesc desc;
+	RenderTargetDesc desc(ERenderTechniqueType::Forward);
 	desc.size_ = { 2560.f, 1440.0f };
 	desc.clearColor_ = { 1.0f, 0.0f, 0.0f, 1.0f };
-	desc.useDepthStencil_ = true;
+	desc.forwardDesc_.useDepthStencil_ = true;
 	pRenderTarget_ = GRenderer->CreateRenderTarget(desc);
 
 	InitScreenRect();
@@ -104,6 +104,7 @@ const Float4x4& Camera::Projection() const
 void Camera::SetSize(const Float2& size)
 {
 	RenderTargetDesc desc;
+
 	if (nullptr != pRenderTarget_)
 	{
 		desc = pRenderTarget_->GetDesc();
