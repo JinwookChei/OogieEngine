@@ -57,9 +57,9 @@ struct PS_ScreenRect
 //    }
 //}
 
+// Depth Shading
 //float4 main(PS_ScreenRect input) : SV_TARGET
 //{
-//    // Depth
 //    float depth = renderTextureDepth.Sample(samplers, input.uv).r;
 //    //// 비선형 → 선형 변환
 //    float near = 0.1f;
@@ -70,6 +70,7 @@ struct PS_ScreenRect
 //}
 
 
+// Direction Light 적용
 //float4 main(PS_ScreenRect input) : SV_TARGET
 //{
 //    //Direction LightTest
@@ -94,6 +95,8 @@ float4 main(PS_ScreenRect input) : SV_TARGET
     float4 normal = renderTextureNormal.Sample(samplers, input.uv);
     float depth = renderTextureDepth.Sample(samplers, input.uv).r;
     
+    clip(normal.w - 0.0001f);
+    
     float screen_x = input.uv.x * 2560.0f;
     float screen_y = input.uv.y * 1440.0f;
     
@@ -109,7 +112,6 @@ float4 main(PS_ScreenRect input) : SV_TARGET
     
     float4 worldPos = mul(viewPos, invViewTransform);
 
-    
     float3 L = normalize(spotPosition - worldPos.xyz);
     float3 S = normalize(-spotDirection);
     
@@ -123,6 +125,5 @@ float4 main(PS_ScreenRect input) : SV_TARGET
     float4 diffuseColor = diffuse * lightColor;
     
     float4 finalColor = color * (diffuseColor + ambientColor);
-    
     return finalColor;
 }

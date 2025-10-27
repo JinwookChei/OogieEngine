@@ -5,7 +5,7 @@
 DeferredTarget::DeferredTarget()
 	: refCount_(1),
 	viewport_(),
-	clearColor_({ 0.2f, 0.4f, 0.6f, 1.0f }),
+	clearColor_({ 0.0f, 0.8f, 0.0f, 0.0f }),
 	desc_(),
 	pRenderTextureAlbedo_(nullptr),
 	pRenderTextureNormal_(nullptr),

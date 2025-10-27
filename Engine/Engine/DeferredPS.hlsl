@@ -51,25 +51,11 @@ PS_OUTPUT main(PS_INPUT input)
     output.rt0 = input.Color;
     
     float3 N = normalize(input.normal);
-    float3 L = normalize(spotPosition - input.worldPos);
-    float3 S = normalize(-spotDirection);
-    
+
     float3 tmpN = N;
-    //float3 tmpN = 0.5f * (N + 1.0f);
+    //float3 tmpN = 0.5f * (N + 1.0f);  
+    
     output.rt1 = float4(tmpN, 1.0f);
-    
-    //
-    float spotCos = dot(L, S);
-    float spotEffect = smoothstep(spotAngle, spotAngle + 0.05, spotCos);
-    
-    float dist = length(spotPosition - input.worldPos);
-    float att = saturate(1 - dist / spotRange);
-    
-    float diffuse = saturate(dot(N, L)) * spotEffect * att;
-    float4 diffuseColor = diffuse * lightColor;
-    
-    float4 finalColor = input.Color * (diffuseColor + ambientColor);
-    //
     
     return output;
 }

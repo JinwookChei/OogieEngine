@@ -15,7 +15,6 @@ StartLevel::~StartLevel()
 void StartLevel::BeginPlay()
 {
 	MoveCamera* pCamera1 = SpawnCamera<MoveCamera>();
-	pCamera1->SetClearColor({0.0f, 0.0f, 0.3f, 1.0f});
 	pCamera1->SetScreenPlacement({ 0.0f, 0.0f }, {1.0f, 1.0f});
 
 	//pCamera1->GetWorldTransform().AddRotaionY(50);

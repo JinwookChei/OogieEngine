@@ -22,7 +22,7 @@ Camera::Camera()
 
 	RenderTargetDesc desc(ERenderTechniqueType::Deferred);
 	desc.size_ = { 2560.f, 1440.0f };
-	desc.clearColor_ = { 1.0f, 0.0f, 0.0f, 1.0f };
+	desc.clearColor_ = { 0.0f, 0.8f, 0.0f, 0.0f };
 
 	pRenderTarget_ = GRenderer->CreateRenderTarget(desc);
 

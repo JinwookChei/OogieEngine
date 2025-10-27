@@ -125,7 +125,7 @@ bool __stdcall Renderer::Initialize(void* hWnd, uint32_t width, uint32_t height)
 		return false;
 	}
 
-	if (false == CreateBackBuffer(width, height, { 0.0f, 0.0f, 0.0f, 1.0f }))
+	if (false == CreateBackBuffer(width, height, { 0.0f, 0.0f, 1.0f, 1.0f }))
 	{
 		return false;
 	}
@@ -164,7 +164,6 @@ void __stdcall Renderer::RenderBegin()
 	// reViewPosFromNDC_divideNDC_W == reViewPosFromClip
 	DirectX::XMVECTOR reViewPosFromNDC = DirectX::XMVector4Transform(reNDC, invProjMat);				
 	DirectX::XMVECTOR reViewPosFromNDC_divideNDC_W = DirectX::XMVectorScale(reViewPosFromNDC, 1 / DirectX::XMVectorGetW(reViewPosFromNDC)); 
-
 
 	drawCallCount_ = 0;
 

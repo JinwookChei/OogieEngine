@@ -107,19 +107,6 @@ bool Engine::Initialize
 
 void Engine::Run()
 {
-	//Float4x4 projMat;
-	//Float4 viewPos = { 0.0f, 0.0f, 0.0f, 1.0f };
-	//fov_(60.0f),
-	//near_(0.01f),
-	//far_(100.0f),
-	// 	desc.size_ = { 2560.f, 1440.0f };
-	//const Float2& size = GetRenderSize();
-	//MatrixPerspectiveFovLH(projection_, fov_, (size.X / size.Y), near_, far_);
-	//MatrixPerspectiveFovLH(projMat, 60.0f, (2560.0f/1440.0f), 0.01f, 100.0f);
-	
-	
-
-
 	while (false == pApplication_->ApplicationQuit()) {
 
 		pApplication_->WinPumpMessage();
