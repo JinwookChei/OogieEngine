@@ -13,8 +13,21 @@
 
 #define UTILITY_API __declspec(dllexport)
 
+#define Assert(msg)                                                   \
+    do {                                                               \
+        char buffer[1024];                                             \
+        std::snprintf(buffer, sizeof(buffer),                           \
+            "Assertion failed: %s\nFile: %s\nLine: %d",               \
+            msg, __FILE__, __LINE__);                                  \
+        MessageBoxA(nullptr, buffer, "Assertion Failed", MB_ICONERROR);\
+        std::abort();                                                  \
+    } while(0)
+
+
 #include <Windows.h>
 #include <cmath>
+#include <cstdlib>
+#include <cstdio>
 #include <DirectXMath.h>
 
 #include "LinkedList.h"

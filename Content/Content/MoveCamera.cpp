@@ -74,7 +74,8 @@ void MoveCamera::Tick(double deltaTime)
 
 		VectorScale(offset, upVector, -1.0f * cameraSpeed_ * (float)deltaTime);
 
-		pTransform_->AddPosition(offset);
+		//pTransform_->AddPosition(offset);
+		pTransform_->AddRotaionY(-1.0f);
 	}
 	if (InputManager::Instance()->IsPress('R'))
 	{
@@ -84,7 +85,8 @@ void MoveCamera::Tick(double deltaTime)
 
 		VectorScale(offset, upVector, cameraSpeed_ * (float)deltaTime);
 
-		pTransform_->AddPosition(offset);
+		//pTransform_->AddPosition(offset);
+		pTransform_->AddRotaionY(1.0f);
 	}
 	if (InputManager::Instance()->IsPress('Q'))
 	{

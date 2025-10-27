@@ -30,6 +30,7 @@
 #endif
 
 #include <windows.h>
+#include <algorithm>
 #include <vector>
 #include <cstdlib>
 #include <cstdio>

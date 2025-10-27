@@ -126,11 +126,13 @@ void Level::OnRender()
 	while (pCameraIter)
 	{
 		GCurrentCamera = (Camera*)pCameraIter->item_;
-		GConstantManager->Update();
 		GCurrentCamera->CameraRenderBegin();
+		GConstantManager->Update();
+		
 		OnRenderCameras();
 		OnRenderActors();
 		pCameraIter = pCameraIter->next_;
+		GCurrentCamera->CameraRenderEnd();
 	}
 }
 

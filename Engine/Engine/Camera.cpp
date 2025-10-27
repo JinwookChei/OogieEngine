@@ -20,10 +20,10 @@ Camera::Camera()
 	MatrixIdentity(view_);
 	MatrixIdentity(projection_);
 
-	RenderTargetDesc desc(ERenderTechniqueType::Forward);
+	RenderTargetDesc desc(ERenderTechniqueType::Deferred);
 	desc.size_ = { 2560.f, 1440.0f };
 	desc.clearColor_ = { 1.0f, 0.0f, 0.0f, 1.0f };
-	desc.forwardDesc_.useDepthStencil_ = true;
+
 	pRenderTarget_ = GRenderer->CreateRenderTarget(desc);
 
 	InitScreenRect();
@@ -60,6 +60,11 @@ void Camera::CameraRenderBegin()
 	pRenderTarget_->Setting();
 }
 
+void Camera::CameraRenderEnd()
+{
+	pRenderTarget_->EndRenderPass();
+}
+
 void Camera::BlitToBackBuffer()
 {
 	BlitToBackBuffer(screenOffset_, screenScale_);
@@ -76,11 +81,28 @@ void Camera::BlitToBackBuffer(const Float2& offset, const Float2& scale)
 	pScreenInputLayout_->Setting();
 
 	ScreenRectConstant cb;
+	Float4x4 invPojection;
+	MatrixInverse(invPojection, projection_);
+	MatrixTranspose(invPojection, invPojection);
+	Float4x4 invView;
+	MatrixInverse(invView, view_);
+	MatrixTranspose(invView, invView);
+	cb.invProjectTransform = invPojection;
+	cb.invViewTransform = invView;
 	cb.offset = offset;
 	cb.scale = scale;
 
+	cb.lightColor = GSpotLight->LightColor();
+	cb.ambientColor = GSpotLight->AmbientColor();
+	cb.spotPosition = GSpotLight->SpotPosition();
+	cb.spotDirection = GSpotLight->SpotDirection();
+	cb.spotRange = GSpotLight->SpotRange();
+	cb.spotAngle = GSpotLight->SpotAngle();
+	//cb.gBufferTextureNum_ = 1;
+
 	pScreenConstantBuffer_->Update(&cb);
 	pScreenConstantBuffer_->VSSetting(0);
+	pScreenConstantBuffer_->PSSetting(0);
 
 	pRasterizer_->Setting();
 
@@ -164,13 +186,14 @@ void Camera::InitScreenRect()
 	pScreenVertex_->AddInputLayout("POSITION", 0, 16, 0, false);
 	pScreenVertex_->AddInputLayout("TEXCOORD", 0, 16, 0, false);
 
-	pScreenMaterial_ = GRenderer->CreateMaterial(L"ScreenVertexShader.cso", L"ScreenPixelShader.cso", true, false);
+	pScreenMaterial_ = GRenderer->CreateMaterial(L"ScreenVertexShader.cso", L"DeferredMergePS.cso", true, false);
 
 	pScreenConstantBuffer_ = GRenderer->CreateConstantBuffer((uint32_t)sizeof(ScreenRectConstant));
 
 	pScreenInputLayout_ = GRenderer->CreateLayout(pScreenVertex_, pScreenMaterial_->GetVertexShader());
 
 	pRasterizer_ = GRenderer->CreateRasterizer(true, false);
+
 	pRasterizer_->SetFillMode(EFillModeType::Solid);
 }
 

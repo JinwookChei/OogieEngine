@@ -11,8 +11,12 @@ DeferredTarget::DeferredTarget()
 	pRenderTextureNormal_(nullptr),
 	pRenderTextureMaterial_(nullptr),
 	pDepthTexture_(nullptr),
-	pRtvs_{ nullptr, nullptr, nullptr }
+	//pRTVs_{ nullptr, nullptr, nullptr },
+	//pSRVs_{nullptr,nullptr, nullptr, nullptr},
+	pDSV_(nullptr)
 {
+	std::fill(pRTVs_, pRTVs_ + RENDER_BUFFER_COUNT, nullptr);
+	std::fill(pSRVs_, pSRVs_ + RESOURCE_BUFFER_COUNT, nullptr);
 }
 
 DeferredTarget::~DeferredTarget()
@@ -38,9 +42,39 @@ bool DeferredTarget::Init
 		return false;
 	}
 
-	pRtvs_[0] = pRenderTextureAlbedo->RenderTargetView();
-	pRtvs_[1] = pRenderTextureNormal->RenderTargetView();
-	pRtvs_[2] = pRenderTextureMaterial->RenderTargetView();
+	pRTVs_[0] = pRenderTextureAlbedo->RenderTargetView();
+	pRTVs_[1] = pRenderTextureNormal->RenderTargetView();
+	pRTVs_[2] = pRenderTextureMaterial->RenderTargetView();
+
+	for (int i = 0; i < RENDER_BUFFER_COUNT; ++i)
+	{
+		if (nullptr == pRTVs_[i])
+		{
+			Assert("RenderTargetView is NULL");
+			return false;
+		}
+	}
+
+	pSRVs_[0] = pRenderTextureAlbedo->ShaderResourceView();
+	pSRVs_[1] = pRenderTextureNormal->ShaderResourceView();
+	pSRVs_[2] = pRenderTextureMaterial->ShaderResourceView();
+	pSRVs_[3] = pDepthTexture_->ShaderResourceView();
+
+	for (int i = 0; i < RESOURCE_BUFFER_COUNT; ++i)
+	{
+		if (nullptr == pSRVs_[i])
+		{
+			Assert("ShaderResouceView is NULL");
+			return false;
+		}
+	}
+
+	pDSV_ = pDepthTexture_->DepthStencilView();
+	if (nullptr == pDSV_)
+	{
+		Assert("DepthStencilView is NULL");
+		return false;
+	}
 
 	return true;
 }
@@ -84,14 +118,8 @@ void __stdcall DeferredTarget::Setting()
 	}
 
 	GCurrentSetRenderTarget = this;
-	ID3D11DepthStencilView* pDsv = pDepthTexture_->DepthStencilView();
-	if (nullptr == pDsv)
-	{
-		Assert("Setting():: DepthStencilView = NULL");
-		return;
-	}
 
-	GRenderer->DeviceContext()->OMSetRenderTargets(rtvCnt, pRtvs_, pDsv);
+	GRenderer->DeviceContext()->OMSetRenderTargets(RENDER_BUFFER_COUNT, pRTVs_, pDSV_);
 	GRenderer->DeviceContext()->RSSetViewports(1, &viewport_);
 }
 
@@ -110,28 +138,27 @@ Float2 __stdcall DeferredTarget::GetSize() const
 	return pRenderTextureAlbedo_->Size();
 }
 
+void __stdcall DeferredTarget::SetClearColor(const Color& color)
+{
+	clearColor_ = color;
+}
+
 void __stdcall DeferredTarget::BindRenderTextureForPS(uint32_t slot)
 {
-	ID3D11ShaderResourceView* pSrvs[4] =
-	{
-		pRenderTextureAlbedo_->ShaderResourceView(),
-		pRenderTextureNormal_->ShaderResourceView(),
-		pRenderTextureMaterial_->ShaderResourceView(),
-		pDepthTexture_->ShaderResourceView()
-	};
-
-	GRenderer->DeviceContext()->PSSetShaderResources(slot, 4, pSrvs);
+	GRenderer->DeviceContext()->PSSetShaderResources(slot, RESOURCE_BUFFER_COUNT, pSRVs_);
 }
 
 void __stdcall DeferredTarget::ClearRenderTextureForPS(uint32_t slot)
 {
-	ID3D11ShaderResourceView* pNullSrvs[4] = { nullptr, nullptr, nullptr, nullptr };
-	GRenderer->DeviceContext()->PSSetShaderResources(slot, 4, pNullSrvs);
+	ID3D11ShaderResourceView* pNullSrvs[RESOURCE_BUFFER_COUNT] = { nullptr, nullptr, nullptr, nullptr };
+	GRenderer->DeviceContext()->PSSetShaderResources(slot, RESOURCE_BUFFER_COUNT, pNullSrvs);
 }
 
-void __stdcall DeferredTarget::SetClearColor(const Color& color)
+void __stdcall DeferredTarget::EndRenderPass()
 {
-	clearColor_ = color;
+	ID3D11RenderTargetView* nullRTV[RENDER_BUFFER_COUNT] = { nullptr, nullptr, nullptr };
+
+	GRenderer->DeviceContext()->OMSetRenderTargets(RENDER_BUFFER_COUNT, nullRTV, nullptr);
 }
 
 bool DeferredTarget::SetTexture(Texture* pRenderTextureAlbedo, Texture* pRenderTextureNormal, Texture* pRenderTextureMaterial, Texture* pDepthTexture)

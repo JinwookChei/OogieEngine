@@ -33,6 +33,8 @@ public:
 
 	void __stdcall ClearRenderTextureForPS(uint32_t slot) override;
 
+	void __stdcall EndRenderPass() override;
+
 	bool SetTexture(Texture* pRenderTexture, Texture* pDepthTexture);
 
 private:

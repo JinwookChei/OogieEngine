@@ -1,9 +1,19 @@
 cbuffer ConstantBuffer : register(b0)
 {
+    matrix invProjectTransform;
+    matrix invViewTransform;
+    
     float2 offset;
     float2 scale;
-}
+    
+    float4 lightColor;
+    float4 ambientColor;
 
+    float3 spotPosition;
+    float spotAngle;
+    float3 spotDirection;
+    float spotRange;
+}
 
 struct VS_ScreenRect
 {

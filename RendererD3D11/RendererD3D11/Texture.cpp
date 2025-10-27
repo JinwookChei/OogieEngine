@@ -6,8 +6,8 @@ Texture::Texture()
 	pTexture_(nullptr),
 	pRenderTargetView_(nullptr),
 	pDepthStencilView_(nullptr),
-	pShaderResourceView_(nullptr),
-	desc_()
+	pShaderResourceView_(nullptr)
+	//desc_()
 {
 
 }
@@ -109,7 +109,10 @@ bool Texture::SetTexture(ID3D11Texture2D* pTexture)
 
 Float2 Texture::Size() const
 {
-	return Float2({ (float)desc_.Width , (float)desc_.Height });
+	D3D11_TEXTURE2D_DESC texDesc;
+	pTexture_->GetDesc(&texDesc);
+
+	return Float2({ (float)texDesc.Width , (float)texDesc.Height });
 }
 
 ID3D11RenderTargetView* Texture::RenderTargetView() const
@@ -135,9 +138,11 @@ bool Texture::InitTexture(ID3D11Texture2D* pTexture)
 		return true;
 	}
 
-	pTexture_->GetDesc(&desc_);
+	//pTexture_->GetDesc(&desc_);
+	D3D11_TEXTURE2D_DESC texDesc;
+	pTexture_->GetDesc(&texDesc);
 
-	if (D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET & desc_.BindFlags)
+	if (D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET & texDesc.BindFlags)
 	{
 		bool ret = CreateRenderTargetView();
 		if (false == ret)
@@ -146,7 +151,7 @@ bool Texture::InitTexture(ID3D11Texture2D* pTexture)
 		}
 	}
 
-	if (D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL & desc_.BindFlags)
+	if (D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL & texDesc.BindFlags)
 	{
 		bool ret = CreateDepthStencilView();
 		if (false == ret)
@@ -155,7 +160,7 @@ bool Texture::InitTexture(ID3D11Texture2D* pTexture)
 		}
 	}
 
-	if (D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE & desc_.BindFlags)
+	if (D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE & texDesc.BindFlags)
 	{
 		bool ret = CreateShaderResourceView();
 		if (false == ret)
@@ -204,10 +209,27 @@ bool Texture::CreateDepthStencilView()
 		pDepthStencilView_->Release();
 		pDepthStencilView_ = nullptr;
 	}
-	HRESULT hr = GRenderer->Device()->CreateDepthStencilView(pTexture_, nullptr, &pDepthStencilView_);
+	
+	
+	D3D11_DEPTH_STENCIL_VIEW_DESC DSVDesc = {};
+	D3D11_TEXTURE2D_DESC texDesc;
+	pTexture_->GetDesc(&texDesc);
+	if (DXGI_FORMAT::DXGI_FORMAT_R24G8_TYPELESS == texDesc.Format)
+	{
+		DSVDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+	}
+	else if (DXGI_FORMAT::DXGI_FORMAT_R32_TYPELESS == texDesc.Format)
+	{
+		DSVDesc.Format = DXGI_FORMAT_D32_FLOAT;
+	}
+	DSVDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+	DSVDesc.Texture2D.MipSlice = 0;
+
+
+	HRESULT hr = GRenderer->Device()->CreateDepthStencilView(pTexture_, &DSVDesc, &pDepthStencilView_);
 	if (FAILED(hr))
 	{
-		DEBUG_BREAK();
+		Assert("CreateDepthStencilView() FAIL");
 		return false;
 	}
 
@@ -218,7 +240,7 @@ bool Texture::CreateShaderResourceView()
 {
 	if (nullptr == pTexture_)
 	{
-		DEBUG_BREAK();
+		Assert("CreateShaderResourceView::pTexture_ = NULL");
 		return false;
 	}
 
@@ -227,10 +249,38 @@ bool Texture::CreateShaderResourceView()
 		pShaderResourceView_->Release();
 		pShaderResourceView_ = nullptr;
 	}
-	HRESULT hr = GRenderer->Device()->CreateShaderResourceView(pTexture_, nullptr, &pShaderResourceView_);
+
+	D3D11_SHADER_RESOURCE_VIEW_DESC* pTmpDesc = nullptr;
+	D3D11_SHADER_RESOURCE_VIEW_DESC sd = {};
+	D3D11_TEXTURE2D_DESC texDesc;
+	pTexture_->GetDesc(&texDesc);
+
+	if (nullptr != pDepthStencilView_)
+	{
+		if (DXGI_FORMAT::DXGI_FORMAT_R24G8_TYPELESS == texDesc.Format)
+		{
+			sd.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+			sd.Format = DXGI_FORMAT::DXGI_FORMAT_R24_UNORM_X8_TYPELESS;			//R24(UNORM - 0~1 사이의 정규화된 값) bit, X8(타입미정-shader에서 접근하지 않음)
+			sd.Texture2D.MostDetailedMip = 0;
+			sd.Texture2D.MipLevels = 1;
+			pTmpDesc = &sd;
+		}
+		else if (DXGI_FORMAT::DXGI_FORMAT_R32_TYPELESS == texDesc.Format)
+		{
+			sd.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+			sd.Format = DXGI_FORMAT::DXGI_FORMAT_R32_FLOAT;
+			sd.Texture2D.MostDetailedMip = 0;
+			sd.Texture2D.MipLevels = 1;
+			pTmpDesc = &sd;
+		}
+	}
+
+	// 이 Texture가 Depth면 FormatType 계산이 들어가고,
+	// 이 Texture가 Depth가 아니면 nullptr Desc를 파라미터로 넘김.
+	HRESULT hr = GRenderer->Device()->CreateShaderResourceView(pTexture_, pTmpDesc, &pShaderResourceView_);
 	if (FAILED(hr))
 	{
-		DEBUG_BREAK();
+		Assert("CreateShaderResourceView()::CreateShaderResourceView = FAIL");
 		return false;
 	}
 

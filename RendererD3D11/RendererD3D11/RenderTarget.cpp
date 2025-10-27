@@ -140,6 +140,14 @@ void __stdcall RenderTarget::ClearRenderTextureForPS(uint32_t slot)
 	pRenderTexture_->ClearRenderTextureForPS(slot);
 }
 
+void __stdcall RenderTarget::EndRenderPass()
+{
+	GCurrentSetRenderTarget = nullptr;
+
+	ID3D11RenderTargetView* pRTV = nullptr;
+	GRenderer->DeviceContext()->OMSetRenderTargets(1, &pRTV, nullptr);
+}
+
 bool RenderTarget::SetTexture(Texture* pRenderTexture, Texture* pDepthTexture)
 {
 	CleanUp();

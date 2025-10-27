@@ -48,8 +48,28 @@ struct ScreenRectVertex
 	Float2 UV;
 };
 
+
 struct ScreenRectConstant
 {
+	Float4x4 invProjectTransform;
+	Float4x4 invViewTransform;
+
 	Float2 offset;
 	Float2 scale;
+
+	Float4 lightColor;
+	Float4 ambientColor;
+
+	Float3 spotPosition;
+	float spotAngle;
+	Float3 spotDirection;
+	float spotRange;
+	
+
+
+	//// TODO : Test¿ëµµ
+	//int gBufferTextureNum_ = 0;
+	//int pad1 = 0;
+	//int pad2 = 0;
+	//int pad3 = 0;
 };

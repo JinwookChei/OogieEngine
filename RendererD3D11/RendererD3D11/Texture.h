@@ -54,5 +54,5 @@ private:
 
 	ID3D11ShaderResourceView* pShaderResourceView_;
 
-	D3D11_TEXTURE2D_DESC desc_;
+	//D3D11_TEXTURE2D_DESC desc_;
 };

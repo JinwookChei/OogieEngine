@@ -3,10 +3,10 @@
 #include "SpotLight.h"
 
 SpotLight::SpotLight()
-	: spotPosition_({ 0.0f, 0.0f, 2.0f }),
-	spotDirection_({ 0.0f, 0.0f, -1.0f }),
-	spotRange_(5.0f),
-	spotAngle_(cosf(ConvertDegToRad(20.0f)))
+	: spotPosition_({ -1.5f, 0.0f, 0.0f }),
+	spotDirection_({ 1.0f, 0.0f, 0.0f }),
+	spotRange_(30.0f),
+	spotAngle_(cosf(ConvertDegToRad(15.0f)))
 {
 	
 }

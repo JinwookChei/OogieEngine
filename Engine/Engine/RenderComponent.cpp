@@ -73,13 +73,14 @@ void RenderComponent::Create(MESH_TYPE meshType)
 	pMesh_->AddInputLayout("TANGENT", 0, 2, 0, false);
 
 
-	pMaterial_ = GRenderer->CreateMaterial(L"VertexShader.cso", L"PixelShader.cso", true, true);
+	pMaterial_ = GRenderer->CreateMaterial(L"VertexShader.cso", L"DeferredPS.cso", true, true);
 
 	pInputLayout_ = GRenderer->CreateLayout(pMesh_, pMaterial_->GetVertexShader());
 
 	pConstantBuffer_ = GRenderer->CreateConstantBuffer((uint32_t)sizeof(ConstantBuffer));
 
 	pRasterizer_ = GRenderer->CreateRasterizer(false, true);
+
 	pRasterizer_->SetFillMode(EFillModeType::Solid);
 }
 

@@ -235,12 +235,16 @@ UTILITY_API void VectorToEulerDeg(Float4& out, const Float3& lhs);
 
 UTILITY_API void QuaternionToEulerDeg(Float4& out, const Float4& Q);
 UTILITY_API void QuaternionToEulerRad(Float4& out, const Float4& Q);
+//UTILITY_API void RotationToQuaternion(Float4& outQ, const Float4& rot);
+//UTILITY_API void QuaternionRotaionRollPitchYaw(Float4& outQ, const Float4& angle);
+
 
 UTILITY_API void MatrixIdentity(Float4x4& out);
 UTILITY_API void MatrixTranspose(Float4x4& out, const Float4x4& src);
+UTILITY_API void MatrixInverse(Float4x4& out, const Float4x4& src);
 UTILITY_API void MatrixCompose(Float4x4& out, const Float4& scale, const Float4& rotAngle, const Float4& pos);
 UTILITY_API void MatrixDecompose(const Float4x4& matrx, Float4& scale, Float4& rotQ, Float4& pos);
-UTILITY_API void MatrixDecomposeFromRotQ(const Float4x4& matrx, Float4& rotQ);
+//UTILITY_API void MatrixDecomposeFromRotQ(const Float4x4& matrx, Float4& rotQ);
 UTILITY_API void MatrixLookAtLH(Float4x4& out, const Float4& eyePos, const Float4& focusPos, const Float4& eyeUp);
 UTILITY_API void MatrixLookToLH(Float4x4& out, const Float4& eyePos, const Float4& eyeDir, const Float4& eyeUp);
 UTILITY_API void MatrixPerspectiveFovLH(Float4x4& out, float fovDegAngle, float aspectRatio, float nearZ, float farZ);

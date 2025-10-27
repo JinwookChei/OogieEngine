@@ -148,6 +148,7 @@ struct IRenderTarget : public IUnknown
 
 	virtual void __stdcall ClearRenderTextureForPS(uint32_t slot) = 0;
 
+	virtual void __stdcall EndRenderPass() = 0;
 };
 
 

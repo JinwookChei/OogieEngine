@@ -1,6 +1,8 @@
 Texture2D renderTexture : register(t0);
 SamplerState samplers : register(s0);
 
+
+
 struct PS_ScreenRect
 {
     float4 pos : SV_Position;

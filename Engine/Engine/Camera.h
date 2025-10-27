@@ -25,6 +25,8 @@ public:
 
 	void CameraRenderBegin();
 
+	void CameraRenderEnd();
+
 	void BlitToBackBuffer();
 
 	void BlitToBackBuffer(const Float2& offset, const Float2& scale);
@@ -52,13 +54,10 @@ protected:
 	Float4x4 projection_;
 
 	float fov_;
-	//Float2 size_;
 	float near_;
 	float far_;
 
 private:
-
-	//Color clearColor_;
 	IRenderTarget* pRenderTarget_;
 	IMesh* pScreenVertex_;
 	IMaterial* pScreenMaterial_;

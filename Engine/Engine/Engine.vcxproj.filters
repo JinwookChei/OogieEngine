@@ -64,8 +64,14 @@
     <Filter Include="Source Files\Graphics\Generator">
       <UniqueIdentifier>{3589f1c8-6e82-43bf-9c5e-254d45268f12}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\Shader\ScreenRect">
+    <Filter Include="Resource Files\Shader\Deferred">
+      <UniqueIdentifier>{3df7eb9b-626f-4854-8428-8bd0f591e6d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shader\ScreenMerge">
       <UniqueIdentifier>{efb687ac-e933-4f94-a244-86aef18f5f92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shader\Forward">
+      <UniqueIdentifier>{c346e3ef-7de6-4cfa-8352-65d800c5be1b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -178,17 +184,23 @@
     <None Include="cpp.hint" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="ScreenVertexShader.hlsl">
+      <Filter>Resource Files\Shader\ScreenMerge</Filter>
+    </FxCompile>
+    <FxCompile Include="ScreenPixelShader.hlsl">
+      <Filter>Resource Files\Shader\ScreenMerge</Filter>
+    </FxCompile>
     <FxCompile Include="VertexShader.hlsl">
       <Filter>Resource Files\Shader</Filter>
     </FxCompile>
     <FxCompile Include="PixelShader.hlsl">
-      <Filter>Resource Files\Shader</Filter>
+      <Filter>Resource Files\Shader\Forward</Filter>
     </FxCompile>
-    <FxCompile Include="ScreenVertexShader.hlsl">
-      <Filter>Resource Files\Shader\ScreenRect</Filter>
+    <FxCompile Include="DeferredPS.hlsl">
+      <Filter>Resource Files\Shader\Deferred</Filter>
     </FxCompile>
-    <FxCompile Include="ScreenPixelShader.hlsl">
-      <Filter>Resource Files\Shader\ScreenRect</Filter>
+    <FxCompile Include="DeferredMergePS.hlsl">
+      <Filter>Resource Files\Shader\ScreenMerge</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

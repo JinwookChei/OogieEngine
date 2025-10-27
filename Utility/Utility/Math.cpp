@@ -132,29 +132,55 @@ float VectorLength(const Float3& lhs)
 
 void VectorToEulerDeg(Float4& out, const Float3& lhs)
 {
-	Float3 worldUp = {0.0f, 0.0f, 1.0f};
-	Float3 right;
-	VectorCross(right, lhs, worldUp);
+	// 1. DirectXMath로 벡터 생성 및 정규화
+	Float3 v;
+	VectorNormalize(v, lhs);
 
-	Float3 up;
-	VectorCross(up, right, lhs);
+	float nx = v.X;
+	float ny = v.Y;
+	float nz = v.Z;
 
-	Float4 zero = { 0.0f, 0.0f, 0.0f, 1.0f };
-	Float4 dir = { lhs.X, lhs.Y, lhs.Z, 1.0f };
-	Float4 dirUp = { up.X, up.Y, up.Z, 0.0f };
+	// LHS, X-front, Y-right, Z-up
+	// 2. Roll (Y-axis rotation) -> 단일 벡터로는 결정 불가
+	out.X = 0.0f;
 
-	Float4x4 tmpMat;
-	MatrixLookToLH(tmpMat, zero, dir, dirUp);
+	// 3. Pitch (X-axis rotation)
+	out.Y = ConvertRadToDeg(atan2f(ny, nx)); // Yaw: rotation in X-Y plane
 
+	// 4. Yaw (Z-axis rotation)
+	out.Z = ConvertRadToDeg(asinf(-nz)); // Pitch: positive -> nose up
 
-	Float4 rotQuat;
-	MatrixDecomposeFromRotQ(tmpMat, rotQuat);
-
-	Float4 rotDegree;
-	QuaternionToEulerDeg(rotDegree, rotQuat);
-
-	out = rotDegree;
+	// 5. W는 사용하지 않거나 1로 설정
+	out.W = 1.0f;
 }
+
+//void VectorToEulerDeg(Float4& out, const Float3& lhs)
+//{
+//	Float3 worldUp = { 0.0f, 0.0f, 1.0f };
+//	Float3 right;
+//	VectorCross(right, lhs, worldUp);
+//
+//	Float3 up;
+//	VectorCross(up, right, lhs);
+//
+//	Float4 zero = { 0.0f, 0.0f, 0.0f, 1.0f };
+//	Float4 dir = { lhs.X, lhs.Y, lhs.Z, 1.0f };
+//	Float4 dirUp = { up.X, up.Y, up.Z, 0.0f };
+//
+//	Float4x4 tmpMat;
+//	MatrixLookToLH(tmpMat, zero, dir, dirUp);
+//
+//
+//	Float4 rotQuat;
+//	MatrixDecomposeFromRotQ(tmpMat, rotQuat);
+//
+//	Float4 rotDegree;
+//	QuaternionToEulerDeg(rotDegree, rotQuat);
+//
+//	out = rotDegree;
+//
+//
+//}
 
 //void ForwardToEulerDeg(Float3& outEulerDeg, const Float3& forward)
 //{
@@ -195,37 +221,71 @@ void QuaternionToEulerDeg(Float4& out, const Float4& Q)
 
 void QuaternionToEulerRad(Float4& out, const Float4& Q)
 {
-	float sinrCosp = 2.0f * (Q.W * Q.Z + Q.X * Q.Y);
-	float cosrCosp = 1.0f - 2.0f * (Q.Z * Q.Z + Q.X * Q.X);
-	out.Z = atan2f(sinrCosp, cosrCosp);
+	// Roll (X축)
+	float sinR_cosP = 2.0f * (Q.W * Q.X + Q.Y * Q.Z);
+	float cosR_cosP = 1.0f - 2.0f * (Q.X * Q.X + Q.Y * Q.Y);
+	out.X = atan2f(sinR_cosP, cosR_cosP);
 
-	float pitchTest = Q.W * Q.X - Q.Y * Q.Z;
-	float asinThreshold = 0.4999995f;
-	float sinp = 2.0f * pitchTest;
-
-	if (pitchTest < -asinThreshold)
+	// Pitch (Y축)
+	float sinP = 2.0f * (Q.W * Q.Y - Q.Z * Q.X);
+	if (fabsf(sinP) >= 1.0f)
 	{
-		out.X = -(0.5f * MATH::PI);
-	}
-	else if (pitchTest > asinThreshold)
-	{
-		out.X = (0.5f * MATH::PI);
+		out.Y = copysignf(DirectX::XM_PIDIV2, sinP);
 	}
 	else
 	{
-		out.X = asinf(sinp);
+		out.Y = asinf(sinP);
 	}
 
-	float sinyCosp = 2.0f * (Q.W * Q.Y + Q.X * Q.Z);
-	float cosyCosp = 1.0f - 2.0f * (Q.X * Q.X + Q.Y * Q.Y);
-	out.Y = atan2f(sinyCosp, cosyCosp);
+	// Yaw (Z축)
+	float sinY_cosP = 2.0f * (Q.W * Q.Z + Q.X * Q.Y);
+	float cosY_cosP = 1.0f - 2.0f * (Q.Y * Q.Y + Q.Z * Q.Z);
+	out.Z = atan2f(sinY_cosP, cosY_cosP);
 }
 
-void QuaternionRotaionRollPitchYaw(Float4& outQ, const Float4& angle)
-{
-	__m128 result = DirectX::XMQuaternionRotationRollPitchYawFromVector(_mm_loadu_ps(&angle.X));
-	_mm_storeu_ps(&outQ.X, result);
-}
+//void QuaternionToEulerRad(Float4& out, const Float4& Q)
+//{
+//	float sinrCosp = 2.0f * (Q.W * Q.Z + Q.X * Q.Y);
+//	float cosrCosp = 1.0f - 2.0f * (Q.Z * Q.Z + Q.X * Q.X);
+//	out.Z = atan2f(sinrCosp, cosrCosp);
+//
+//	float pitchTest = Q.W * Q.X - Q.Y * Q.Z;
+//	float asinThreshold = 0.4999995f;
+//	float sinp = 2.0f * pitchTest;
+//
+//	if (pitchTest < -asinThreshold)
+//	{
+//		out.X = -(0.5f * MATH::PI);
+//	}
+//	else if (pitchTest > asinThreshold)
+//	{
+//		out.X = (0.5f * MATH::PI);
+//	}
+//	else
+//	{
+//		out.X = asinf(sinp);
+//	}
+//
+//	float sinyCosp = 2.0f * (Q.W * Q.Y + Q.X * Q.Z);
+//	float cosyCosp = 1.0f - 2.0f * (Q.X * Q.X + Q.Y * Q.Y);
+//	out.Y = atan2f(sinyCosp, cosyCosp);
+//}
+
+//void RotationToQuaternion(Float4& outQ, const Float4& rot)
+//{
+//	// DirectXMath 사용
+//	__m128 quat = DirectX::XMQuaternionRotationRollPitchYaw(rot.X, rot.Y, rot.Z);
+//	// 주의: XMQuaternionRotationRollPitchYaw의 매개변수 순서는 pitch, yaw, roll
+//	
+//	// Float4에 저장
+//	_mm_storeu_ps(&outQ.X, quat);
+//}
+
+//void QuaternionRotaionRollPitchYaw(Float4& outQ, const Float4& angle)
+//{
+//	__m128 result = DirectX::XMQuaternionRotationRollPitchYawFromVector(_mm_loadu_ps(&angle.X));
+//	_mm_storeu_ps(&outQ.X, result);
+//}
 
 void MatrixIdentity(Float4x4& out)
 {
@@ -241,7 +301,22 @@ void MatrixTranspose(Float4x4& out, const Float4x4& src)
 	DirectX::XMMATRIX matrix = DirectX::XMMatrixTranspose(srcMatrix);
 
 	memcpy_s(&out, sizeof(Float4x4), &matrix, sizeof(DirectX::XMMATRIX));
+}
 
+void MatrixInverse(Float4x4& out, const Float4x4& src)
+{
+	DirectX::XMMATRIX srcMatrix;
+	memcpy_s(&srcMatrix, sizeof(DirectX::XMMATRIX), &src, sizeof(Float4x4));
+
+	DirectX::XMVECTOR det;
+	DirectX::XMMATRIX matrix = DirectX::XMMatrixInverse(&det, srcMatrix);
+	if (DirectX::XMVectorGetX(det) == 0.0f)
+	{
+		Assert("역행렬이 존재 하지 않습니다.");
+		return;
+	}
+	
+	memcpy_s(&out, sizeof(Float4x4), &matrix, sizeof(DirectX::XMMATRIX));
 }
 
 //void MatrixCompose(Float4x4& out, const Float4& scale, const Float4& rotAngle, const Float4& pos)
@@ -285,12 +360,12 @@ void MatrixDecompose(const Float4x4& matrx, Float4& scale, Float4& rotQ, Float4&
 	_mm_storeu_ps(&pos.X, outPos);
 }
 
-void MatrixDecomposeFromRotQ(const Float4x4& matrx, Float4& rotQ)
-{
-	Float4 tmpScale;
-	Float4 tmpPos;
-	MatrixDecompose(matrx, tmpScale, rotQ, tmpPos);
-}
+//void MatrixDecomposeFromRotQ(const Float4x4& matrx, Float4& rotQ)
+//{
+//	Float4 tmpScale;
+//	Float4 tmpPos;
+//	MatrixDecompose(matrx, tmpScale, rotQ, tmpPos);
+//}
 
 void MatrixLookAtLH(Float4x4& out, const Float4& eyePos, const Float4& focusPos, const Float4& eyeUp)
 {
