@@ -1,5 +1,33 @@
 #pragma once
-struct ConstantBuffer;
+
+struct CBPerCameraFrame
+{
+	Float4x4 view;
+	Float4x4 projection;
+};
+
+struct CBPerMergeFrame
+{
+	Float4x4 invProjectTransform;
+	Float4x4 invViewTransform;
+
+	Float2 offset;
+	Float2 scale;
+
+	Float4 lightColor;
+	Float4 ambientColor;
+
+	Float3 spotPosition;
+	float spotAngle;
+	Float3 spotDirection;
+	float spotRange;
+};
+
+struct CBPerObject
+{
+	Float4x4 world;
+};
+
 
 class ConstantManager
 {
@@ -10,12 +38,18 @@ public:
 
 	static ConstantManager* Instance();
 
-	void Update();
+	void UpdatePerCameraFrame(CBPerCameraFrame* pCBPerCameraFrame);
 
-	ConstantBuffer* GetConstantBuffer() const;
+	void UpdatePerMergeFrame(CBPerMergeFrame* pCBPerMergeFrame);
+
+	void UpdatePerObejct(CBPerObject* pCBPerObject);
 
 private:
 	void CleanUp();
 
-	ConstantBuffer* constantBuffer_;
+	IConstantBuffer* pPerCameraFrameBuffer_;
+
+	IConstantBuffer* pPerMergeFrameBuffer_;
+
+	IConstantBuffer* pPerObjectBuffer_;
 };

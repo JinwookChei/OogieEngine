@@ -9,7 +9,6 @@ RenderComponent::RenderComponent(Actor* pOwner)
 	pMesh_(nullptr),
 	pMaterial_(nullptr),
 	pInputLayout_(nullptr),
-	pConstantBuffer_(nullptr),
 	pRasterizer_(nullptr)
 {
 }
@@ -21,21 +20,13 @@ RenderComponent::~RenderComponent()
 
 void RenderComponent::Render()
 {
-	ConstantBuffer* cb = ConstantManager::Instance()->GetConstantBuffer();
-	if (nullptr == cb)
-	{
-		DEBUG_BREAK();
-		return;
-	}
-	cb->world = pOwner_->GetWorldTransform().GetWorldMatrixTranspose();
-
+	CBPerObject cbPerObject;
+	cbPerObject.world = pOwner_->GetWorldTransform().GetWorldMatrixTranspose();
+	ConstantManager::Instance()->UpdatePerObejct(&cbPerObject);
 
 	pMaterial_->Setting();
 	pMesh_->Setting();
 	pInputLayout_->Setting();
-	pConstantBuffer_->Update(cb);
-	pConstantBuffer_->VSSetting(0);
-	pConstantBuffer_->PSSetting(0);
 	pRasterizer_->Setting();
 	pMesh_->Draw();
 }
@@ -72,15 +63,9 @@ void RenderComponent::Create(MESH_TYPE meshType)
 	pMesh_->AddInputLayout("TEXCOORD", 0, 16, 0, false);
 	pMesh_->AddInputLayout("TANGENT", 0, 2, 0, false);
 
-
-	pMaterial_ = GRenderer->CreateMaterial(L"VertexShader.cso", L"DeferredPS.cso", true, true);
-
+	pMaterial_ = GRenderer->CreateMaterial(L"ObjectVS.cso", L"DeferredPS.cso", true, true);
 	pInputLayout_ = GRenderer->CreateLayout(pMesh_, pMaterial_->GetVertexShader());
-
-	pConstantBuffer_ = GRenderer->CreateConstantBuffer((uint32_t)sizeof(ConstantBuffer));
-
 	pRasterizer_ = GRenderer->CreateRasterizer(false, true);
-
 	pRasterizer_->SetFillMode(EFillModeType::Solid);
 }
 
@@ -108,12 +93,6 @@ void RenderComponent::CleanUp()
 	{
 		pInputLayout_->Release();
 		pInputLayout_ = nullptr;
-	}
-
-	if (nullptr != pConstantBuffer_)
-	{
-		pConstantBuffer_->Release();
-		pConstantBuffer_ = nullptr;
 	}
 
 	if (nullptr != pRasterizer_)

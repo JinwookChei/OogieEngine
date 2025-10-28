@@ -1,18 +1,18 @@
-cbuffer ConstantBuffer : register(b0)
+cbuffer CBPerMergeFrame : register(b0)
 {
-    matrix invProjectTransform;
-    matrix invViewTransform;
+    matrix InvProjectTransform;
+    matrix InvViewTransform;
     
-    float2 offset;
-    float2 scale;
+    float2 Offset;
+    float2 Scale;
     
-    float4 lightColor;
-    float4 ambientColor;
+    float4 LightColor;
+    float4 AmbientColor;
 
-    float3 spotPosition;
-    float spotAngle;
-    float3 spotDirection;
-    float spotRange;
+    float3 SpotPosition;
+    float SpotAngle;
+    float3 SpotDirection;
+    float SpotRange;
 }
 
 struct VS_ScreenRect
@@ -31,7 +31,7 @@ struct PS_ScreenRect
 PS_ScreenRect main(VS_ScreenRect input)
 {
     PS_ScreenRect output = (PS_ScreenRect) 0;
-    float2 calcPosition = input.pos * scale + offset;
+    float2 calcPosition = input.pos * Scale + Offset;
     output.pos = float4(calcPosition, 0.0f, 1.0f);
     output.uv = input.uv;
     

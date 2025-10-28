@@ -1,26 +1,13 @@
-cbuffer ConstantBuffer : register(b0)
+cbuffer CBPerFrame : register(b0)
 {
-    matrix World;
     matrix View;
     matrix Projection;
-    
-    float4 lightDir;
-    float4 lightColor;
-    float4 ambientColor;
-    
-    float3 spotPosition;
-    float spotRange;
-    float3 spotDirection;
-    float spotAngle;
-    
-    float3 pointPosition;
-    float pointRange;
-    
-    float attenuationConst;
-    float attenuationLinear;
-    float attenuationQuad;
-    float pad1;
-}
+};
+
+cbuffer CBPerObject : register(b1)
+{
+    matrix World;
+};
 
 struct VS_INPUT
 {
@@ -33,32 +20,13 @@ struct VS_INPUT
 
 struct PS_INPUT
 {
-    float4 Pos : SV_POSITION;
-    float4 Color : COLOR;
+    float4 pos : SV_POSITION;
+    float4 color : COLOR;
     float3 normal : NORMAL;
     float3 worldPos : TEXCOORD0;
     float2 uv : TEXCOORD1;
     float3x3 TBN : TEXCOORD2;
 };
-
-//PS_INPUT main(VS_INPUT input)
-//{
-//    PS_INPUT output;
-
-//    // 모델 좌표 -> 월드 좌표
-//    float4 worldPos = mul(float4(input.position, 1.0f), World);
-
-//    // 월드 좌표 -> 뷰 좌표
-//    float4 viewPos = mul(worldPos, View);
-
-//    // 뷰 좌표 -> 클립 좌표
-//    output.position = mul(viewPos, Projection);
-
-//    // 정점 색상 그대로 넘김
-//    output.color = input.color;
-
-//    return output;
-//}
 
 
 PS_INPUT main(VS_INPUT input)
@@ -67,8 +35,8 @@ PS_INPUT main(VS_INPUT input)
     
     float4 worldPosition = mul(float4(input.position, 1.0f), World); // 월드 포지션 ( 원점을 기준으로 얼마만큼 떨어져있나 )
     float4 viewPosition = mul(worldPosition, View); // 뷰 포지션 ( 카메라를 기준으로 둔 포지션 ) ( 카메라 기준이란? 카메라의 포지션을 0, 0, 0 으로 본다 ) ( 카메라 기준이란? 카메라를 원점으로 만든다. )
-    output.Pos = mul(viewPosition, Projection);
-    output.Color = input.color;
+    output.pos = mul(viewPosition, Projection);
+    output.color = input.color;
     
     float3 N = normalize(mul(input.normal, (float3x3) World));
     float3 T = normalize(mul(input.tangent.xyz, (float3x3) World));

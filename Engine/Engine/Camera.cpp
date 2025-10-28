@@ -12,7 +12,6 @@ Camera::Camera()
 	pScreenVertex_(nullptr),
 	pScreenMaterial_(nullptr),
 	pScreenInputLayout_(nullptr),
-	pScreenConstantBuffer_(nullptr),
 	pRasterizer_(nullptr),
 	screenOffset_({ 0.0f, 0.0f }),
 	screenScale_({ 1.0f, 1.0f })
@@ -55,6 +54,16 @@ void Camera::CameraRenderBegin()
 {
 	CameraTransformUpdate();
 
+	Float4x4 viewTrans;
+	MatrixTranspose(viewTrans, view_);
+	Float4x4 projectionTrans;
+	MatrixTranspose(projectionTrans, projection_);
+
+	CBPerCameraFrame pCBPerCameraFrame;
+	pCBPerCameraFrame.view = viewTrans;
+	pCBPerCameraFrame.projection = projectionTrans;
+	GConstantManager->UpdatePerCameraFrame(&pCBPerCameraFrame);
+
 	pRenderTarget_->Clear();
 
 	pRenderTarget_->Setting();
@@ -72,42 +81,32 @@ void Camera::BlitToBackBuffer()
 
 void Camera::BlitToBackBuffer(const Float2& offset, const Float2& scale)
 {
-	pRenderTarget_->BindRenderTextureForPS(0);
-
-	pScreenVertex_->Setting();
-
-	pScreenMaterial_->Setting();
-
-	pScreenInputLayout_->Setting();
-
-	ScreenRectConstant cb;
 	Float4x4 invPojection;
 	MatrixInverse(invPojection, projection_);
 	MatrixTranspose(invPojection, invPojection);
 	Float4x4 invView;
 	MatrixInverse(invView, view_);
 	MatrixTranspose(invView, invView);
-	cb.invProjectTransform = invPojection;
-	cb.invViewTransform = invView;
-	cb.offset = offset;
-	cb.scale = scale;
+	CBPerMergeFrame cbPerMergeFrame;
+	cbPerMergeFrame.invProjectTransform = invPojection;
+	cbPerMergeFrame.invViewTransform = invView;
+	cbPerMergeFrame.offset = offset;
+	cbPerMergeFrame.scale = scale;
+	cbPerMergeFrame.lightColor = GSpotLight->LightColor();
+	cbPerMergeFrame.ambientColor = GSpotLight->AmbientColor();
+	cbPerMergeFrame.spotPosition = GSpotLight->SpotPosition();
+	cbPerMergeFrame.spotDirection = GSpotLight->SpotDirection();
+	cbPerMergeFrame.spotRange = GSpotLight->SpotRange();
+	cbPerMergeFrame.spotAngle = GSpotLight->SpotAngle();
+	ConstantManager::Instance()->UpdatePerMergeFrame(&cbPerMergeFrame);
 
-	cb.lightColor = GSpotLight->LightColor();
-	cb.ambientColor = GSpotLight->AmbientColor();
-	cb.spotPosition = GSpotLight->SpotPosition();
-	cb.spotDirection = GSpotLight->SpotDirection();
-	cb.spotRange = GSpotLight->SpotRange();
-	cb.spotAngle = GSpotLight->SpotAngle();
-	//cb.gBufferTextureNum_ = 1;
 
-	pScreenConstantBuffer_->Update(&cb);
-	pScreenConstantBuffer_->VSSetting(0);
-	pScreenConstantBuffer_->PSSetting(0);
-
+	pRenderTarget_->BindRenderTextureForPS(0);
+	pScreenVertex_->Setting();
+	pScreenMaterial_->Setting();
+	pScreenInputLayout_->Setting();
 	pRasterizer_->Setting();
-
 	pScreenVertex_->Draw();
-
 	pRenderTarget_->ClearRenderTextureForPS(0);
 }
 
@@ -186,9 +185,7 @@ void Camera::InitScreenRect()
 	pScreenVertex_->AddInputLayout("POSITION", 0, 16, 0, false);
 	pScreenVertex_->AddInputLayout("TEXCOORD", 0, 16, 0, false);
 
-	pScreenMaterial_ = GRenderer->CreateMaterial(L"ScreenVertexShader.cso", L"DeferredMergePS.cso", true, false);
-
-	pScreenConstantBuffer_ = GRenderer->CreateConstantBuffer((uint32_t)sizeof(ScreenRectConstant));
+	pScreenMaterial_ = GRenderer->CreateMaterial(L"ScreenMergeVS.cso", L"ScreenMergePS.cso", true, false);
 
 	pScreenInputLayout_ = GRenderer->CreateLayout(pScreenVertex_, pScreenMaterial_->GetVertexShader());
 
@@ -218,11 +215,6 @@ void Camera::CleanUp()
 	{
 		pRasterizer_->Release();
 		pRasterizer_ = nullptr;
-	}
-	if (nullptr != pScreenConstantBuffer_)
-	{
-		pScreenConstantBuffer_->Release();
-		pScreenConstantBuffer_ = nullptr;
 	}
 	if (nullptr != pScreenInputLayout_)
 	{

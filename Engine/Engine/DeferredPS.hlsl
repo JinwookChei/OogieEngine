@@ -2,35 +2,10 @@ Texture2D g_Texture : register(t0);
 Texture2D g_NormalMap : register(t1);
 SamplerState g_Sampler : register(s0);
 
-
-cbuffer ConstantBuffer : register(b0)
-{
-    matrix World;
-    matrix View;
-    matrix Projection;
-    
-    float4 lightDir;
-    float4 lightColor;
-    float4 ambientColor;
-    
-    float3 spotPosition;
-    float spotRange;
-    float3 spotDirection;
-    float spotAngle;
-    
-    float3 pointPosition;
-    float pointRange;
-    
-    float attenuationConst;
-    float attenuationLinear;
-    float attenuationQuad;
-    float pad1;
-}
-
 struct PS_INPUT
 {
-    float4 Pos : SV_POSITION;
-    float4 Color : COLOR;
+    float4 pos : SV_POSITION;
+    float4 color : COLOR;
     float3 normal : NORMAL;
     float3 worldPos : TEXCOORD0; // PointLight Pos
     float2 uv : TEXCOORD1;
@@ -48,13 +23,11 @@ struct PS_OUTPUT
 PS_OUTPUT main(PS_INPUT input)
 {   
     PS_OUTPUT output = (PS_OUTPUT) 0;
-    output.rt0 = input.Color;
+    output.rt0 = input.color;
     
     float3 N = normalize(input.normal);
-
     float3 tmpN = N;
     //float3 tmpN = 0.5f * (N + 1.0f);  
-    
     output.rt1 = float4(tmpN, 1.0f);
     
     return output;

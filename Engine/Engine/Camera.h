@@ -62,7 +62,6 @@ private:
 	IMesh* pScreenVertex_;
 	IMaterial* pScreenMaterial_;
 	IInputLayout* pScreenInputLayout_;
-	IConstantBuffer* pScreenConstantBuffer_;
 	IRasterizer* pRasterizer_;
 
 	Float2 screenOffset_;

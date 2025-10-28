@@ -127,7 +127,6 @@ void Level::OnRender()
 	{
 		GCurrentCamera = (Camera*)pCameraIter->item_;
 		GCurrentCamera->CameraRenderBegin();
-		GConstantManager->Update();
 		
 		OnRenderCameras();
 		OnRenderActors();

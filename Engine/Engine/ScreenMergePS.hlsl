@@ -4,27 +4,22 @@ Texture2D renderTextureMaterial : register(t2);
 Texture2D renderTextureDepth : register(t3);
 SamplerState samplers : register(s0);
 
-cbuffer ConstantBuffer : register(b0)
-{
-    matrix invProjectTransform;
-    matrix invViewTransform;
-    
-    float2 offset;
-    float2 scale;
-    
-    float4 lightColor;
-    float4 ambientColor;
 
-    float3 spotPosition;
-    float spotAngle;
-    float3 spotDirection;
-    float spotRange;
+cbuffer CBPerMergeFrame : register(b0)
+{
+    matrix InvProjectTransform;
+    matrix InvViewTransform;
     
+    float2 Offset;
+    float2 Scale;
     
-    //int gBufferTextureNum;
-    //int pad1;
-    //int pad2;
-    //int pad3;
+    float4 LightColor;
+    float4 AmbientColor;
+
+    float3 SpotPosition;
+    float SpotAngle;
+    float3 SpotDirection;
+    float SpotRange;
 }
 
 
@@ -94,7 +89,6 @@ float4 main(PS_ScreenRect input) : SV_TARGET
     float4 color = renderTextureAlbedo.Sample(samplers, input.uv);
     float4 normal = renderTextureNormal.Sample(samplers, input.uv);
     float depth = renderTextureDepth.Sample(samplers, input.uv).r;
-    
     clip(normal.w - 0.0001f);
     
     float screen_x = input.uv.x * 2560.0f;
@@ -107,23 +101,23 @@ float4 main(PS_ScreenRect input) : SV_TARGET
     
     float4 ndcPos = { ndc_x, ndc_y, ndc_z, ndc_w };
     
-    float4 viewPos = mul(ndcPos, invProjectTransform);
+    float4 viewPos = mul(ndcPos, InvProjectTransform);
     viewPos /= viewPos.w;
     
-    float4 worldPos = mul(viewPos, invViewTransform);
+    float4 worldPos = mul(viewPos, InvViewTransform);
 
-    float3 L = normalize(spotPosition - worldPos.xyz);
-    float3 S = normalize(-spotDirection);
+    float3 L = normalize(SpotPosition - worldPos.xyz);
+    float3 S = normalize(-SpotDirection);
     
     float spotCos = dot(L, S);
-    float spotEffect = smoothstep(spotAngle, spotAngle + 0.05, spotCos);
+    float spotEffect = smoothstep(SpotAngle, SpotAngle + 0.05, spotCos);
     
-    float dist = length(spotPosition - worldPos.xyz);
-    float att = saturate(1 - dist / spotRange);
+    float dist = length(SpotPosition - worldPos.xyz);
+    float att = saturate(1 - dist / SpotRange);
     
     float diffuse = saturate(dot(normal.xyz, L)) * spotEffect * att;
-    float4 diffuseColor = diffuse * lightColor;
+    float4 diffuseColor = diffuse * LightColor;
     
-    float4 finalColor = color * (diffuseColor + ambientColor);
+    float4 finalColor = color * (diffuseColor + AmbientColor);
     return finalColor;
 }

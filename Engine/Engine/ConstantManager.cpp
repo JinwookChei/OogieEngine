@@ -3,8 +3,27 @@
 #include "ConstantManager.h"
 
 ConstantManager::ConstantManager()
-	:constantBuffer_(new ConstantBuffer)
 {
+	pPerCameraFrameBuffer_ = GRenderer->CreateConstantBuffer((uint32_t)sizeof(CBPerCameraFrame));
+	if (nullptr == pPerCameraFrameBuffer_)
+	{
+		Assert("PerCameraFrameBuffer is NULL!");
+		return;
+	}
+
+	pPerMergeFrameBuffer_ = GRenderer->CreateConstantBuffer((uint32_t)sizeof(CBPerMergeFrame));
+	if (nullptr == pPerMergeFrameBuffer_)
+	{
+		Assert("PerMergeFrameBuffer_ is NULL!");
+		return;
+	}
+
+	pPerObjectBuffer_ = GRenderer->CreateConstantBuffer((uint32_t)sizeof(CBPerObject));
+	if (nullptr == pPerObjectBuffer_)
+	{
+		Assert("PerObjectBuffer is NULL!");
+		return;
+	}
 }
 
 ConstantManager::~ConstantManager()
@@ -17,35 +36,44 @@ ConstantManager* ConstantManager::Instance()
 	return GConstantManager;
 }
 
-void ConstantManager::Update()
+void ConstantManager::UpdatePerCameraFrame(CBPerCameraFrame* pCBPerCameraFrame)
 {
-	Float4x4 tmpMat;
-	MatrixTranspose(tmpMat, GCurrentCamera->View());
-	constantBuffer_->view = tmpMat;
-
-	MatrixTranspose(tmpMat, GCurrentCamera->Projection());
-	constantBuffer_->projection = tmpMat;
-
-	// Light
-	constantBuffer_->lightColor = GSpotLight->LightColor();
-	constantBuffer_->ambientColor = GSpotLight->AmbientColor();
-	constantBuffer_->spotPosition = GSpotLight->SpotPosition();
-	constantBuffer_->spotDirection = GSpotLight->SpotDirection();
-	constantBuffer_->spotRange = GSpotLight->SpotRange();
-	constantBuffer_->spotAngle = GSpotLight->SpotAngle();
+	pPerCameraFrameBuffer_->Update(pCBPerCameraFrame);
+	pPerCameraFrameBuffer_->VSSetting(0);
 }
 
-ConstantBuffer* ConstantManager::GetConstantBuffer() const
+void ConstantManager::UpdatePerMergeFrame(CBPerMergeFrame* pCBPerMergeFrame)
 {
-	return constantBuffer_;
+	pPerMergeFrameBuffer_->Update(pCBPerMergeFrame);
+	pPerMergeFrameBuffer_->VSSetting(0);
+	pPerMergeFrameBuffer_->PSSetting(0);
+}
+
+
+void ConstantManager::UpdatePerObejct(CBPerObject* cbPerObject)
+{
+	pPerObjectBuffer_->Update(cbPerObject);
+	pPerObjectBuffer_->VSSetting(1);
 }
 
 
 void ConstantManager::CleanUp()
 {
-	if (nullptr != constantBuffer_)
+	if (nullptr != pPerCameraFrameBuffer_)
 	{
-		delete constantBuffer_;
-		constantBuffer_ = nullptr;
+		pPerCameraFrameBuffer_->Release();
+		pPerCameraFrameBuffer_ = nullptr;
+	}
+
+	if (nullptr != pPerMergeFrameBuffer_)
+	{
+		pPerMergeFrameBuffer_->Release();
+		pPerMergeFrameBuffer_ = nullptr;
+	}
+
+	if (nullptr != pPerObjectBuffer_)
+	{
+		pPerObjectBuffer_->Release();
+		pPerObjectBuffer_ = nullptr;
 	}
 }

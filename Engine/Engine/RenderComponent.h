@@ -37,7 +37,5 @@ private:
 
 	IInputLayout* pInputLayout_;
 
-	IConstantBuffer* pConstantBuffer_;
-
 	IRasterizer* pRasterizer_;
 };
