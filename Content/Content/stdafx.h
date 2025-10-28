@@ -63,6 +63,8 @@
 #include <Engine/Level.h>
 #include <Engine/Actor.h>
 #include <Engine/Camera.h>
+#include <Engine/Light.h>
+#include <Engine/SpotLight.h>
 #include <Engine/RenderComponent.h>
 #include <Engine/InputManager.h>
 

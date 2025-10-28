@@ -50,12 +50,7 @@ struct RenderTargetDesc
 	};
 
 	RenderTargetDesc() = delete;
-	//	: size_({ 0.0f, 0.0f }),
-	//	clearColor_({ 0.2f, 0.4f, 0.6f, 1.0f }),
-	//	renderTechniqueType_(ERenderTechniqueType::Forward)
-	//{
 
-	//}
 	RenderTargetDesc(ERenderTechniqueType renderTechniqueType = ERenderTechniqueType::Forward)
 		: size_({ 0.0f, 0.0f }),
 		clearColor_({ 0.2f, 0.4f, 0.6f, 1.0f }), 

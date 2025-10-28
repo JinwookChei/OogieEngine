@@ -135,36 +135,6 @@ bool __stdcall Renderer::Initialize(void* hWnd, uint32_t width, uint32_t height)
 
 void __stdcall Renderer::RenderBegin()
 {
-	//DirectX::XMMATRIX projMat;
-	//DirectX::XMVECTOR viewPos = { -3.0f, 3.0f, 99.0f, 1.0f };
-	//projMat = DirectX::XMMatrixPerspectiveFovLH(60.0f, (2560.0f / 1440.0f), 0.01f, 100.0f);
-	//DirectX::XMVECTOR clipPos = DirectX::XMVector4Transform(viewPos, projMat);
-	//DirectX::XMFLOAT4 ndcPos =
-	//{
-	//	DirectX::XMVectorGetX(clipPos) / DirectX::XMVectorGetW(clipPos),
-	//	DirectX::XMVectorGetY(clipPos) / DirectX::XMVectorGetW(clipPos),
-	//	DirectX::XMVectorGetZ(clipPos) / DirectX::XMVectorGetW(clipPos),
-	//	DirectX::XMVectorGetW(clipPos) / DirectX::XMVectorGetW(clipPos)
-	//};
-
-	//float screenX = (ndcPos.x + 1.0f) * 0.5f * 2560.0f;
-	//float screenY = (0.5f * (1.0f - ndcPos.y)) * 1440.0f;
-
-	//float reNDC_x = (2.0f * screenX) / 2560.0f - 1.0f;
-	//float reNDC_y = 1.0f - (2.0f * screenY) / 1440.0f;
-	//float reNDC_z = ndcPos.z;
-	//float reNDC_w = ndcPos.w;  // 사실상 1.0f 으로 고정.
-	//DirectX::XMVECTOR reNDC = { reNDC_x, reNDC_y, reNDC_z, reNDC_w };
-
-	//DirectX::XMMATRIX invProjMat = DirectX::XMMatrixInverse(nullptr, projMat);
-
-	//// reViewPosFromNDC_divideNDC_W == reViewPosFromClip
-	//DirectX::XMVECTOR reViewPosFromClip = DirectX::XMVector4Transform(clipPos, invProjMat);
-
-	//// reViewPosFromNDC_divideNDC_W == reViewPosFromClip
-	//DirectX::XMVECTOR reViewPosFromNDC = DirectX::XMVector4Transform(reNDC, invProjMat);				
-	//DirectX::XMVECTOR reViewPosFromNDC_divideNDC_W = DirectX::XMVectorScale(reViewPosFromNDC, 1 / DirectX::XMVectorGetW(reViewPosFromNDC)); 
-
 	drawCallCount_ = 0;
 
 	pBackBuffer_->Clear();

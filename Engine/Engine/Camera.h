@@ -23,9 +23,9 @@ public:
 
 	ENGINE_API Float2 GetRenderSize() const;
 
-	void CameraRenderBegin();
+	void GeometryPassBegin();
 
-	void CameraRenderEnd();
+	void GeometryPassEnd();
 
 	void BlitToBackBuffer();
 
@@ -40,6 +40,10 @@ public:
 	void SetConfig(float fov, float Near, float Far);
 
 private:
+	bool InitGBuffer();
+
+	bool InitLightBuffer();
+
 	void InitScreenRect();
 
 	virtual ENGINE_API void CameraTransformUpdate();
@@ -58,12 +62,18 @@ protected:
 	float far_;
 
 private:
-	IRenderTarget* pRenderTarget_;
+	// Geometry Pass
+	IRenderTarget* pGBufferTarget_;
+
+	// Light Pass
+	IRenderTarget* pLightBufferTarget_;
+	IMaterial* pLightBufferMaterial_;
+
+	// Blit to Screen
 	IMesh* pScreenVertex_;
 	IMaterial* pScreenMaterial_;
 	IInputLayout* pScreenInputLayout_;
 	IRasterizer* pRasterizer_;
-
 	Float2 screenOffset_;
 	Float2 screenScale_;
 };

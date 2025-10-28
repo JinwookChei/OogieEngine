@@ -22,6 +22,7 @@ struct ActorGroupContainer
 
 class Actor;
 class Camera;
+class Light;
 
 class Level
 {
@@ -49,11 +50,21 @@ public:
 	template <typename CameraType>
 	CameraType* SpawnCamera()
 	{
-		CameraType* newCamera = new CameraType();
+		CameraType* newCamera = new CameraType;
 
 		SpawnCameraInternal(newCamera);
 
 		return newCamera;
+	}
+
+	template <typename LightType>
+	LightType* SpawnLight()
+	{
+		LightType* newLight = new LightType;
+
+		SpawnLightInternal(newLight);
+
+		return newLight;
 	}
 
 private:
@@ -61,21 +72,28 @@ private:
 
 	ENGINE_API void SpawnCameraInternal(Camera* pCamera);
 
+	ENGINE_API void SpawnLightInternal(Light* pLight);
+
 	void RegisterActor(Actor* pActor, ACTOR_TYPE actorType);
 
 	void RegisterCamera(Camera* pCamera);
-public:
+
+	void RegisterLight(Light* pLight);
 
 private:
 	void OnTick(double deltaTime);
 
 	void OnTickCameras(double deltaTime);
 
+	void OnTickLights(double deltaTime);
+
 	void OnTickActors(double deltaTime);
 
 	void OnRender();
 
 	void OnRenderCameras();
+
+	void OnRenderLights();
 
 	void OnRenderActors();
 	
@@ -85,11 +103,17 @@ private:
 
 	void CleanUpCamera();
 
+	void CleanUpLight();
+
 	void CleanUpActorGroup();
 
 	LINK_ITEM* pCameraHead_;
 
 	LINK_ITEM* pCameraTail_;
+
+	LINK_ITEM* pLightHead_;
+
+	LINK_ITEM* pLightTail_;
 
 	LINK_ITEM* pActorGroupHead_;
 

@@ -9,6 +9,7 @@ Camera::Camera()
 	far_(100.0f),
 	cameraSensitivity_(10.0f),
 	cameraSpeed_(2.0f),
+	pLightBufferTarget_(nullptr),
 	pScreenVertex_(nullptr),
 	pScreenMaterial_(nullptr),
 	pScreenInputLayout_(nullptr),
@@ -18,13 +19,8 @@ Camera::Camera()
 {
 	MatrixIdentity(view_);
 	MatrixIdentity(projection_);
-
-	RenderTargetDesc desc(ERenderTechniqueType::Deferred);
-	desc.size_ = { 2560.f, 1440.0f };
-	desc.clearColor_ = { 0.0f, 0.8f, 0.0f, 0.0f };
-
-	pRenderTarget_ = GRenderer->CreateRenderTarget(desc);
-
+	InitGBuffer();
+	InitLightBuffer();
 	InitScreenRect();
 }
 
@@ -50,7 +46,7 @@ void Camera::Render()
 
 }
 
-void Camera::CameraRenderBegin()
+void Camera::GeometryPassBegin()
 {
 	CameraTransformUpdate();
 
@@ -64,14 +60,13 @@ void Camera::CameraRenderBegin()
 	pCBPerCameraFrame.projection = projectionTrans;
 	GConstantManager->UpdatePerCameraFrame(&pCBPerCameraFrame);
 
-	pRenderTarget_->Clear();
-
-	pRenderTarget_->Setting();
+	pGBufferTarget_->Clear();
+	pGBufferTarget_->Setting();
 }
 
-void Camera::CameraRenderEnd()
+void Camera::GeometryPassEnd()
 {
-	pRenderTarget_->EndRenderPass();
+	pGBufferTarget_->EndRenderPass();
 }
 
 void Camera::BlitToBackBuffer()
@@ -81,6 +76,8 @@ void Camera::BlitToBackBuffer()
 
 void Camera::BlitToBackBuffer(const Float2& offset, const Float2& scale)
 {
+
+	// LF
 	Float4x4 invPojection;
 	MatrixInverse(invPojection, projection_);
 	MatrixTranspose(invPojection, invPojection);
@@ -92,22 +89,24 @@ void Camera::BlitToBackBuffer(const Float2& offset, const Float2& scale)
 	cbPerMergeFrame.invViewTransform = invView;
 	cbPerMergeFrame.offset = offset;
 	cbPerMergeFrame.scale = scale;
-	cbPerMergeFrame.lightColor = GSpotLight->LightColor();
-	cbPerMergeFrame.ambientColor = GSpotLight->AmbientColor();
-	cbPerMergeFrame.spotPosition = GSpotLight->SpotPosition();
-	cbPerMergeFrame.spotDirection = GSpotLight->SpotDirection();
-	cbPerMergeFrame.spotRange = GSpotLight->SpotRange();
-	cbPerMergeFrame.spotAngle = GSpotLight->SpotAngle();
+	//cbPerMergeFrame.lightColor = GSpotLight->LightColor();
+	//cbPerMergeFrame.ambientColor = GSpotLight->AmbientColor();
+	//cbPerMergeFrame.spotPosition = GSpotLight->SpotPosition();
+	//cbPerMergeFrame.spotDirection = GSpotLight->SpotDirection();
+	//cbPerMergeFrame.spotRange = GSpotLight->SpotRange();
+	//cbPerMergeFrame.spotAngle = GSpotLight->SpotAngle();
 	ConstantManager::Instance()->UpdatePerMergeFrame(&cbPerMergeFrame);
 
 
-	pRenderTarget_->BindRenderTextureForPS(0);
+	pGBufferTarget_->BindRenderTextureForPS(0);
+
 	pScreenVertex_->Setting();
 	pScreenMaterial_->Setting();
 	pScreenInputLayout_->Setting();
 	pRasterizer_->Setting();
 	pScreenVertex_->Draw();
-	pRenderTarget_->ClearRenderTextureForPS(0);
+
+	pGBufferTarget_->ClearRenderTextureForPS(0);
 }
 
 const Float4x4& Camera::View() const
@@ -123,27 +122,18 @@ const Float4x4& Camera::Projection() const
 void Camera::SetSize(const Float2& size)
 {
 	// 주의!! SetSize하는데 렌더 타겟이 없으면 크래쉬 발생유도.
-	if (nullptr == pRenderTarget_)
+	if (nullptr == pGBufferTarget_)
 	{
-		Assert("pRenderTarget == NULL!");
+		Assert("pGBufferTarget_ == NULL!");
 		return;
 	}
 
-	RenderTargetDesc desc = pRenderTarget_->GetDesc();
-	pRenderTarget_->Release();
-	pRenderTarget_ = nullptr;
-
-	// Ragacy
-	/*RenderTargetDesc desc;
-	if (nullptr != pRenderTarget_)
-	{
-		desc = pRenderTarget_->GetDesc();
-		pRenderTarget_->Release();
-		pRenderTarget_ = nullptr;
-	}*/
+	RenderTargetDesc desc = pGBufferTarget_->GetDesc();
+	pGBufferTarget_->Release();
+	pGBufferTarget_ = nullptr;
 
 	desc.size_ = size;
-	pRenderTarget_ = GRenderer->CreateRenderTarget(desc);
+	pGBufferTarget_ = GRenderer->CreateRenderTarget(desc);
 }
 
 
@@ -156,7 +146,7 @@ void Camera::SetConfig(float fov, float Near, float Far)
 
 void Camera::SetClearColor(const Color& clearColor)
 {
-	pRenderTarget_->SetClearColor(clearColor);
+	pGBufferTarget_->SetClearColor(clearColor);
 }
 
 void Camera::SetScreenPlacement(const Float2& screenOffset, const Float2& screenScale)
@@ -167,9 +157,43 @@ void Camera::SetScreenPlacement(const Float2& screenOffset, const Float2& screen
 
 Float2 Camera::GetRenderSize() const
 {
-	return pRenderTarget_->GetSize();
+	return pGBufferTarget_->GetSize();
 }
 
+bool Camera::InitGBuffer()
+{
+	RenderTargetDesc gBufferDesc(ERenderTechniqueType::Deferred);
+	gBufferDesc.size_ = { 2560.f, 1440.0f };
+	gBufferDesc.clearColor_ = { 0.0f, 0.8f, 0.0f, 0.0f };
+	pGBufferTarget_ = GRenderer->CreateRenderTarget(gBufferDesc);
+
+	if (nullptr == pGBufferTarget_)
+	{
+		return false;
+	}
+
+	return true;
+}
+
+bool Camera::InitLightBuffer()
+{
+	RenderTargetDesc lightBufferDesc(ERenderTechniqueType::Forward);
+	lightBufferDesc.size_ = { 2560.f, 1440.0f };
+	lightBufferDesc.clearColor_ = { 1.0f, 1.0f, 0.0f, 0.0f };
+	pLightBufferTarget_ = GRenderer->CreateRenderTarget(lightBufferDesc);
+	if (nullptr == pLightBufferTarget_)
+	{
+		return false;
+	}
+
+	pLightBufferMaterial_ = GRenderer->CreateMaterial(L"ScreenMergeVS.cso", L"ScreenMergePS.cso", true, false);
+	if (nullptr == pLightBufferMaterial_)
+	{
+		return false;
+	}
+
+	return true;
+}
 
 void Camera::InitScreenRect()
 {
@@ -231,10 +255,23 @@ void Camera::CleanUp()
 		pScreenVertex_->Release();
 		pScreenVertex_ = nullptr;
 	}
-	if (nullptr != pRenderTarget_)
+
+	if (nullptr != pLightBufferMaterial_)
 	{
-		pRenderTarget_->Release();
-		pRenderTarget_ = nullptr;
+		pLightBufferMaterial_->Release();
+		pLightBufferMaterial_ = nullptr;
+	}
+
+	if (nullptr != pLightBufferTarget_)
+	{
+		pLightBufferTarget_->Release();
+		pLightBufferTarget_ = nullptr;
+	}
+
+	if (nullptr != pGBufferTarget_)
+	{
+		pGBufferTarget_->Release();
+		pGBufferTarget_ = nullptr;
 	}
 }
 

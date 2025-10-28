@@ -15,7 +15,7 @@ IRenderer* GRenderer = nullptr;
 TimeManager* GTimeManager = nullptr;
 ConstantManager* GConstantManager = nullptr;
 Camera* GCurrentCamera = nullptr;
-SpotLight* GSpotLight = nullptr;
+//SpotLight* GSpotLight = nullptr;
 
 
 
@@ -88,9 +88,6 @@ bool Engine::Initialize
 	GTimeManager = new TimeManager;
 
 	GConstantManager = new ConstantManager;
-
-	GSpotLight = new SpotLight;
-	GSpotLight->BeginPlay();
 
 	if (false == InitializeStartUp(pStartup))
 	{
@@ -277,12 +274,6 @@ void Engine::CleanUp()
 	{
 		pStartUp_->Release();
 		pStartUp_ = nullptr;
-	}
-
-	if (nullptr != GSpotLight)
-	{
-		delete GSpotLight;
-		GSpotLight = nullptr;
 	}
 
 	if (nullptr != GConstantManager)
