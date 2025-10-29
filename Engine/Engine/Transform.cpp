@@ -7,10 +7,10 @@ Transform::Transform()
 	position_(0, 0, 0, 1),
 	quaternion_(0, 0, 0, 1)
 {
-	MatrixIdentity(scaleMatrix_);
-	MatrixIdentity(rotationMatrix_);
-	MatrixIdentity(positionMatrix_);
-	MatrixIdentity(worldMatrix_);
+	MATH::MatrixIdentity(scaleMatrix_);
+	MATH::MatrixIdentity(rotationMatrix_);
+	MATH::MatrixIdentity(positionMatrix_);
+	MATH::MatrixIdentity(worldMatrix_);
 }
 
 Transform::~Transform()
@@ -33,7 +33,7 @@ void Transform::SetRotation(const Float4& rotation)
 
 void Transform::AddRotaion(const Float4& offset)
 {
-	VectorAdd(rotation_, rotation_, offset);	
+	MATH::VectorAdd(rotation_, rotation_, offset);
 
 	TransformUpdate();
 }
@@ -68,7 +68,7 @@ void Transform::SetPosition(const Float4& position)
 
 void Transform::AddPosition(const Float4& offset)
 {
-	VectorAdd(position_, position_, offset);
+	MATH::VectorAdd(position_, position_, offset);
 
 	TransformUpdate();
 }
@@ -93,7 +93,7 @@ const Float4x4& Transform::GetWorldMatrix() const
 const Float4x4 Transform::GetWorldMatrixTranspose() const
 {
 	Float4x4 ret;
-	MatrixTranspose(ret, worldMatrix_);
+	MATH::MatrixTranspose(ret, worldMatrix_);
 	return ret;
 }
 
@@ -105,29 +105,32 @@ const Float4& Transform::GetPosition() const
 Float4 Transform::ForwardVector() const
 {
 	Float4 normal;
-	VectorNormalize(normal, worldMatrix_.r[0]);
-	return normal;
-}
-
-Float4 Transform::UpVector() const
-{
-	Float4 normal;
-	VectorNormalize(normal, worldMatrix_.r[2]);
+	MATH::VectorNormalize(normal, worldMatrix_.r[0]);
 	return normal;
 }
 
 Float4 Transform::RightVector() const
 {
 	Float4 normal;
-	VectorNormalize(normal, worldMatrix_.r[1]);
+	MATH::VectorNormalize(normal, worldMatrix_.r[1]);
 	return normal;
 }
+
+Float4 Transform::UpVector() const
+{
+	Float4 normal;
+	MATH::VectorNormalize(normal, worldMatrix_.r[2]);
+	return normal;
+}
+
+
 
 void Transform::TransformUpdate()
 {
 	//MatrixLookToLH();
-	MatrixCompose(worldMatrix_, scale_, rotation_, position_);
+	MATH::MatrixCompose(worldMatrix_, scale_, rotation_, position_);
 
+	//MATH::MatrixDecomposeQ();
 	/*Float4 roQ;
 	MatrixDecomposeFromRotQ(worldMatrix_, roQ);
 

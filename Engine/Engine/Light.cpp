@@ -2,8 +2,9 @@
 #include "Light.h"
 
 Light::Light()
-	:lightColor_({1, 1, 1, 1}),
-	ambientColor_({ 0.2f, 0.2f, 0.2f, 0.2f })
+	: diffuseColor_(1.0f, 1.0f, 1.0f, 1.0f),
+	specularColor_(1.0f, 1.0f, 1.0f, 1.0f),
+	ambientColor_(0.2f, 0.2f, 0.2f, 1.0f)
 {
 }
 
@@ -12,9 +13,14 @@ Light::~Light()
 	CleanUp();
 }
 
-const Color& Light::LightColor() const
+const Color& Light::DiffuseColor() const
 {
-	return lightColor_;
+	return diffuseColor_;
+}
+
+const Color& Light::SpecularColor() const
+{
+	return specularColor_;
 }
 
 const Color& Light::AmbientColor() const

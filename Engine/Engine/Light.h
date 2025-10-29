@@ -8,14 +8,18 @@ public:
 
 	~Light() override;
 
-	const Color& LightColor() const;
+	const Color& DiffuseColor() const;
 
+	const Color& SpecularColor() const;
+	
 	const Color& AmbientColor() const;
-
-protected:
-	Color lightColor_;
-
-	Color ambientColor_;
+	
 private:
 	void CleanUp() override;
+
+	Color diffuseColor_;
+
+	Color specularColor_;
+
+	Color ambientColor_;
 };

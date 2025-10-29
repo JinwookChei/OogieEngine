@@ -36,8 +36,8 @@ public:
 	ENGINE_API const Float4& __stdcall GetPosition() const;
 
 	ENGINE_API Float4 __stdcall ForwardVector() const;
-	ENGINE_API Float4 __stdcall UpVector() const;
 	ENGINE_API Float4 __stdcall RightVector() const;
+	ENGINE_API Float4 __stdcall UpVector() const;
 
 private:
 	void TransformUpdate();

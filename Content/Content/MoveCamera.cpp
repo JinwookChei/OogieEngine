@@ -32,7 +32,7 @@ void MoveCamera::Tick(double deltaTime)
 
 		Float4 offset;
 
-		VectorScale(offset, forwardVector, cameraSpeed_ * (float)deltaTime);
+		MATH::VectorScale(offset, forwardVector, cameraSpeed_ * (float)deltaTime);
 
 		pTransform_->AddPosition(offset);
 	}
@@ -42,7 +42,7 @@ void MoveCamera::Tick(double deltaTime)
 
 		Float4 offset;
 
-		VectorScale(offset, forwardVector, -1.0f * cameraSpeed_ * (float)deltaTime);
+		MATH::VectorScale(offset, forwardVector, -1.0f * cameraSpeed_ * (float)deltaTime);
 
 		pTransform_->AddPosition(offset);
 	}
@@ -52,7 +52,7 @@ void MoveCamera::Tick(double deltaTime)
 
 		Float4 offset;
 
-		VectorScale(offset, rightVector, -1.0f * cameraSpeed_ * (float)deltaTime);
+		MATH::VectorScale(offset, rightVector, -1.0f * cameraSpeed_ * (float)deltaTime);
 
 		pTransform_->AddPosition(offset);
 	}
@@ -62,7 +62,7 @@ void MoveCamera::Tick(double deltaTime)
 
 		Float4 offset;
 
-		VectorScale(offset, rightVector, cameraSpeed_ * (float)deltaTime);
+		MATH::VectorScale(offset, rightVector, cameraSpeed_ * (float)deltaTime);
 
 		pTransform_->AddPosition(offset);
 	}
@@ -72,7 +72,7 @@ void MoveCamera::Tick(double deltaTime)
 
 		Float4 offset;
 
-		VectorScale(offset, upVector, -1.0f * cameraSpeed_ * (float)deltaTime);
+		MATH::VectorScale(offset, upVector, -1.0f * cameraSpeed_ * (float)deltaTime);
 
 		//pTransform_->AddPosition(offset);
 		pTransform_->AddRotaionY(-1.0f);
@@ -83,7 +83,7 @@ void MoveCamera::Tick(double deltaTime)
 
 		Float4 offset;
 
-		VectorScale(offset, upVector, cameraSpeed_ * (float)deltaTime);
+		MATH::VectorScale(offset, upVector, cameraSpeed_ * (float)deltaTime);
 
 		//pTransform_->AddPosition(offset);
 		pTransform_->AddRotaionY(1.0f);
@@ -96,7 +96,6 @@ void MoveCamera::Tick(double deltaTime)
 	{
 		pTransform_->AddRotaionZ(50 * deltaTime);
 	}
-
 }
 
 void MoveCamera::BeginPlay()

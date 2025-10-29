@@ -41,7 +41,11 @@ void StartLevel::BeginPlay()
 	TestActor* pActor2 = SpawnActor<TestActor>(ACTOR_TYPE::NORMAL);
 	pActor2->GetWorldTransform().SetPosition({0.0f, -2.0f, 0.0f, 1.0f });
 
-	SpotLight* pSpotLight = SpawnLight<SpotLight>();
+	
+	DirectionLight* pDirectionLight = SpawnLight<DirectionLight>();
+	pDirectionLight->GetWorldTransform().SetRotation({0.0f, -90.0f, 0.0f, 0.0f});
+	pDirectionLight->Direction();
+	//SpotLight* pSpotLight = SpawnLight<SpotLight>();
 	//pSpotLight->GetWorldTransform().SetPosition({0.0f, 0.0f, 1.0f, 1.0f});
 	//pSpotLight->GetWorldTransform().SetRotation({0.0f, 90.0f, 0.0f, 0.0f});
 }

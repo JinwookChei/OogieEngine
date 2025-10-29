@@ -17,9 +17,9 @@ Camera::Camera()
 	screenOffset_({ 0.0f, 0.0f }),
 	screenScale_({ 1.0f, 1.0f })
 {
-	MatrixIdentity(view_);
+	MATH::MatrixIdentity(view_);
 
-	MatrixIdentity(projection_);
+	MATH::MatrixIdentity(projection_);
 
 	InitGBuffer();
 
@@ -81,7 +81,7 @@ void Camera::RenderLight()
 	cbPerSpotLight.ambientColor = { 0.3f,0.3f, 0.3f, 1.0f };
 	cbPerSpotLight.spotPosition = { -1.0f, 0.0f, 0.0f };
 	cbPerSpotLight.spotDirection = { 1.0f, 0.0f, 0.0f };
-	cbPerSpotLight.spotAngle = cosf(ConvertDegToRad(30.0f));
+	cbPerSpotLight.spotAngle = cosf(MATH::ConvertDegToRad(30.0f));
 	cbPerSpotLight.spotRange = 30.0f;
 	ConstantManager::Instance()->UpdatePerSpotLight(&cbPerSpotLight);
 
@@ -171,15 +171,15 @@ void Camera::UpdatePerFrameConstant()
 	CameraTransformUpdate();
 
 	Float4x4 viewTrans;
-	MatrixTranspose(viewTrans, view_);
+	MATH::MatrixTranspose(viewTrans, view_);
 	Float4x4 projectionTrans;
-	MatrixTranspose(projectionTrans, projection_);
+	MATH::MatrixTranspose(projectionTrans, projection_);
 	Float4x4 invViewTrans;
-	MatrixInverse(invViewTrans, view_);
-	MatrixTranspose(invViewTrans, invViewTrans);
+	MATH::MatrixInverse(invViewTrans, view_);
+	MATH::MatrixTranspose(invViewTrans, invViewTrans);
 	Float4x4 invProjectionTrans;
-	MatrixInverse(invProjectionTrans, projection_);
-	MatrixTranspose(invProjectionTrans, invProjectionTrans);
+	MATH::MatrixInverse(invProjectionTrans, projection_);
+	MATH::MatrixTranspose(invProjectionTrans, invProjectionTrans);
 
 	CBPerFrame cbPerFrame;
 	cbPerFrame.view = viewTrans;
@@ -256,12 +256,12 @@ void Camera::CameraTransformUpdate()
 	Vector eyeDir = worldForm.ForwardVector();
 	Vector eyeUp = worldForm.UpVector();
 
-	MatrixLookToLH(view_, eyePos, eyeDir, eyeUp);
+	MATH::MatrixLookToLH(view_, eyePos, eyeDir, eyeUp);
 
-	float fovRad = ConvertDegToRad(fov_);
+	float fovRad = MATH::ConvertDegToRad(fov_);
 
 	const Float2& size = GetRenderSize();
-	MatrixPerspectiveFovLH(projection_, fov_, (size.X / size.Y), near_, far_);
+	MATH::MatrixPerspectiveFovLH(projection_, fov_, (size.X / size.Y), near_, far_);
 }
 
 void Camera::CleanUp()

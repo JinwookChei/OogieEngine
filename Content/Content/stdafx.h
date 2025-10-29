@@ -64,7 +64,9 @@
 #include <Engine/Actor.h>
 #include <Engine/Camera.h>
 #include <Engine/Light.h>
+#include <Engine/DirectionLight.h>
 #include <Engine/SpotLight.h>
+#include <Engine/PointLight.h>
 #include <Engine/RenderComponent.h>
 #include <Engine/InputManager.h>
 

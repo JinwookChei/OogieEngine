@@ -129,6 +129,12 @@
     <ClInclude Include="GeometryGenerator.h">
       <Filter>Source Files\Graphics\Generator</Filter>
     </ClInclude>
+    <ClInclude Include="DirectionLight.h">
+      <Filter>Source Files\Actor\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="PointLight.h">
+      <Filter>Source Files\Actor\Light</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -178,6 +184,12 @@
     </ClCompile>
     <ClCompile Include="GeometryGenerator.cpp">
       <Filter>Source Files\Graphics\Generator</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectionLight.cpp">
+      <Filter>Source Files\Actor\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="PointLight.cpp">
+      <Filter>Source Files\Actor\Light</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

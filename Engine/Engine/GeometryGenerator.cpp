@@ -150,22 +150,22 @@ bool GeometryGenerator::CreateSphere(std::vector<SimpleVertex>* outVertices, std
 		const Float3& tangent2 = tan2[n];
 
 		float dotResult = 0.0f;
-		VectorDot(dotResult, normal, tangent);
+		MATH::VectorDot(dotResult, normal, tangent);
 
 		Float3 scaleResult;
-		VectorScale(scaleResult, normal, dotResult);
+		MATH::VectorScale(scaleResult, normal, dotResult);
 
 		Float3 subResult;
-		VectorSub(subResult, tangent, scaleResult);
+		MATH::VectorSub(subResult, tangent, scaleResult);
 
 		Float3  finalTangent;
-		VectorNormalize(finalTangent, subResult);
+		MATH::VectorNormalize(finalTangent, subResult);
 
 		Float3 crossResult;
-		VectorCross(crossResult, normal, tangent);
+		MATH::VectorCross(crossResult, normal, tangent);
 
 		float dotResult2 = 0.0f;
-		VectorDot(dotResult2, crossResult, tangent2);
+		MATH::VectorDot(dotResult2, crossResult, tangent2);
 
 		float handedness = (dotResult2 < 0.0f) ? -1.0f : 1.0f;
 

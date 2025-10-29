@@ -111,11 +111,11 @@ void LookAtCamera::CameraTransformUpdate()
 	Vector eyePos = worldTrans.GetPosition();
 	Vector eyeUp = worldTrans.UpVector();
 	Vector focusPos = focusTrans.GetPosition();
-	MatrixLookAtLH(view_, eyePos, focusPos, eyeUp);
+	MATH::MatrixLookAtLH(view_, eyePos, focusPos, eyeUp);
 
-	float fovRad = ConvertDegToRad(fov_);
+	float fovRad = MATH::ConvertDegToRad(fov_);
 	const Float2& size = GetRenderSize();
-	MatrixPerspectiveFovLH(projection_, fov_, (size.X / size.Y), near_, far_);
+	MATH::MatrixPerspectiveFovLH(projection_, fov_, (size.X / size.Y), near_, far_);
 }
 
 void LookAtCamera::CleanUp()
