@@ -23,9 +23,17 @@ public:
 
 	ENGINE_API Float2 GetRenderSize() const;
 
+	void UpdatePerFrameConstant();
+
 	void GeometryPassBegin();
 
 	void GeometryPassEnd();
+
+	void LightPassBegin();
+
+	void RenderLight();
+
+	void LightPassEnd();
 
 	void BlitToBackBuffer();
 
@@ -73,7 +81,7 @@ private:
 	IMesh* pScreenVertex_;
 	IMaterial* pScreenMaterial_;
 	IInputLayout* pScreenInputLayout_;
-	IRasterizer* pRasterizer_;
+	IRasterizer* pScreenRasterizer_;
 	Float2 screenOffset_;
 	Float2 screenScale_;
 };

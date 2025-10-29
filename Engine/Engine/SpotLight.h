@@ -4,9 +4,9 @@ class SpotLight
 	: public Light
 {
 public:
-	SpotLight();
+	ENGINE_API SpotLight();
 
-	~SpotLight() override;
+	ENGINE_API ~SpotLight() override;
 
 	void Tick(double deltaTime) override;
 

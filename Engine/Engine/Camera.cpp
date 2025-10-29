@@ -13,14 +13,18 @@ Camera::Camera()
 	pScreenVertex_(nullptr),
 	pScreenMaterial_(nullptr),
 	pScreenInputLayout_(nullptr),
-	pRasterizer_(nullptr),
+	pScreenRasterizer_(nullptr),
 	screenOffset_({ 0.0f, 0.0f }),
 	screenScale_({ 1.0f, 1.0f })
 {
 	MatrixIdentity(view_);
+
 	MatrixIdentity(projection_);
+
 	InitGBuffer();
+
 	InitLightBuffer();
+
 	InitScreenRect();
 }
 
@@ -48,18 +52,6 @@ void Camera::Render()
 
 void Camera::GeometryPassBegin()
 {
-	CameraTransformUpdate();
-
-	Float4x4 viewTrans;
-	MatrixTranspose(viewTrans, view_);
-	Float4x4 projectionTrans;
-	MatrixTranspose(projectionTrans, projection_);
-
-	CBPerCameraFrame pCBPerCameraFrame;
-	pCBPerCameraFrame.view = viewTrans;
-	pCBPerCameraFrame.projection = projectionTrans;
-	GConstantManager->UpdatePerCameraFrame(&pCBPerCameraFrame);
-
 	pGBufferTarget_->Clear();
 	pGBufferTarget_->Setting();
 }
@@ -69,6 +61,40 @@ void Camera::GeometryPassEnd()
 	pGBufferTarget_->EndRenderPass();
 }
 
+void Camera::LightPassBegin()
+{
+	pLightBufferTarget_->Clear();
+	pLightBufferTarget_->Setting();
+
+	pGBufferTarget_->BindRenderTextureForPS(0);
+
+	pScreenVertex_->Setting();
+	pScreenInputLayout_->Setting();
+	pScreenRasterizer_->Setting();
+	pLightBufferMaterial_->Setting();
+}
+
+void Camera::RenderLight()
+{
+	CBPerSpotLight cbPerSpotLight;
+	cbPerSpotLight.lightColor = { 1.0f, 1.0f, 1.0f, 1.0f };
+	cbPerSpotLight.ambientColor = { 0.3f,0.3f, 0.3f, 1.0f };
+	cbPerSpotLight.spotPosition = { -1.0f, 0.0f, 0.0f };
+	cbPerSpotLight.spotDirection = { 1.0f, 0.0f, 0.0f };
+	cbPerSpotLight.spotAngle = cosf(ConvertDegToRad(30.0f));
+	cbPerSpotLight.spotRange = 30.0f;
+	ConstantManager::Instance()->UpdatePerSpotLight(&cbPerSpotLight);
+
+	pScreenVertex_->Draw();
+}
+
+void Camera::LightPassEnd()
+{
+	pGBufferTarget_->ClearRenderTextureForPS(0);
+
+	pLightBufferTarget_->EndRenderPass();
+}
+
 void Camera::BlitToBackBuffer()
 {
 	BlitToBackBuffer(screenOffset_, screenScale_);
@@ -76,37 +102,17 @@ void Camera::BlitToBackBuffer()
 
 void Camera::BlitToBackBuffer(const Float2& offset, const Float2& scale)
 {
-
-	// LF
-	Float4x4 invPojection;
-	MatrixInverse(invPojection, projection_);
-	MatrixTranspose(invPojection, invPojection);
-	Float4x4 invView;
-	MatrixInverse(invView, view_);
-	MatrixTranspose(invView, invView);
-	CBPerMergeFrame cbPerMergeFrame;
-	cbPerMergeFrame.invProjectTransform = invPojection;
-	cbPerMergeFrame.invViewTransform = invView;
-	cbPerMergeFrame.offset = offset;
-	cbPerMergeFrame.scale = scale;
-	//cbPerMergeFrame.lightColor = GSpotLight->LightColor();
-	//cbPerMergeFrame.ambientColor = GSpotLight->AmbientColor();
-	//cbPerMergeFrame.spotPosition = GSpotLight->SpotPosition();
-	//cbPerMergeFrame.spotDirection = GSpotLight->SpotDirection();
-	//cbPerMergeFrame.spotRange = GSpotLight->SpotRange();
-	//cbPerMergeFrame.spotAngle = GSpotLight->SpotAngle();
-	ConstantManager::Instance()->UpdatePerMergeFrame(&cbPerMergeFrame);
-
-
-	pGBufferTarget_->BindRenderTextureForPS(0);
-
+	pLightBufferTarget_->BindRenderTextureForPS(4);
+	//pGBufferTarget_->BindRenderTextureForPS(0);
+	
 	pScreenVertex_->Setting();
 	pScreenMaterial_->Setting();
 	pScreenInputLayout_->Setting();
-	pRasterizer_->Setting();
+	pScreenRasterizer_->Setting();
 	pScreenVertex_->Draw();
 
-	pGBufferTarget_->ClearRenderTextureForPS(0);
+	//pGBufferTarget_->ClearRenderTextureForPS(0);
+	pLightBufferTarget_->ClearRenderTextureForPS(4);
 }
 
 const Float4x4& Camera::View() const
@@ -160,11 +166,37 @@ Float2 Camera::GetRenderSize() const
 	return pGBufferTarget_->GetSize();
 }
 
+void Camera::UpdatePerFrameConstant()
+{
+	CameraTransformUpdate();
+
+	Float4x4 viewTrans;
+	MatrixTranspose(viewTrans, view_);
+	Float4x4 projectionTrans;
+	MatrixTranspose(projectionTrans, projection_);
+	Float4x4 invViewTrans;
+	MatrixInverse(invViewTrans, view_);
+	MatrixTranspose(invViewTrans, invViewTrans);
+	Float4x4 invProjectionTrans;
+	MatrixInverse(invProjectionTrans, projection_);
+	MatrixTranspose(invProjectionTrans, invProjectionTrans);
+
+	CBPerFrame cbPerFrame;
+	cbPerFrame.view = viewTrans;
+	cbPerFrame.projection = projectionTrans;
+	cbPerFrame.inverseView = invViewTrans;
+	cbPerFrame.inverseProjection = invProjectionTrans;
+	cbPerFrame.screenOffset = screenOffset_;
+	cbPerFrame.screenScale = screenScale_;
+
+	ConstantManager::Instance()->UpdatePerFrame(&cbPerFrame);
+}
+
 bool Camera::InitGBuffer()
 {
 	RenderTargetDesc gBufferDesc(ERenderTechniqueType::Deferred);
 	gBufferDesc.size_ = { 2560.f, 1440.0f };
-	gBufferDesc.clearColor_ = { 0.0f, 0.8f, 0.0f, 0.0f };
+	gBufferDesc.clearColor_ = { 0.0f, 0.0f, 0.0f, 0.0f };
 	pGBufferTarget_ = GRenderer->CreateRenderTarget(gBufferDesc);
 
 	if (nullptr == pGBufferTarget_)
@@ -186,7 +218,7 @@ bool Camera::InitLightBuffer()
 		return false;
 	}
 
-	pLightBufferMaterial_ = GRenderer->CreateMaterial(L"ScreenMergeVS.cso", L"ScreenMergePS.cso", true, false);
+	pLightBufferMaterial_ = GRenderer->CreateMaterial(L"ScreenMergeVS.cso", L"DeferredLightPS.cso", true, false);
 	if (nullptr == pLightBufferMaterial_)
 	{
 		return false;
@@ -213,9 +245,8 @@ void Camera::InitScreenRect()
 
 	pScreenInputLayout_ = GRenderer->CreateLayout(pScreenVertex_, pScreenMaterial_->GetVertexShader());
 
-	pRasterizer_ = GRenderer->CreateRasterizer(true, false);
-
-	pRasterizer_->SetFillMode(EFillModeType::Solid);
+	pScreenRasterizer_ = GRenderer->CreateRasterizer(true, false);
+	pScreenRasterizer_->SetFillMode(EFillModeType::Solid);
 }
 
 void Camera::CameraTransformUpdate()
@@ -235,10 +266,10 @@ void Camera::CameraTransformUpdate()
 
 void Camera::CleanUp()
 {
-	if (nullptr != pRasterizer_)
+	if (nullptr != pScreenRasterizer_)
 	{
-		pRasterizer_->Release();
-		pRasterizer_ = nullptr;
+		pScreenRasterizer_->Release();
+		pScreenRasterizer_ = nullptr;
 	}
 	if (nullptr != pScreenInputLayout_)
 	{

@@ -4,24 +4,31 @@
 
 ConstantManager::ConstantManager()
 {
-	pPerCameraFrameBuffer_ = GRenderer->CreateConstantBuffer((uint32_t)sizeof(CBPerCameraFrame));
-	if (nullptr == pPerCameraFrameBuffer_)
+	pPerFrameBuffer_ = GRenderer->CreateConstantBuffer((uint32_t)sizeof(CBPerFrame));
+	if (nullptr == pPerFrameBuffer_)
 	{
-		Assert("PerCameraFrameBuffer is NULL!");
+		Assert("CBPerFrame is NULL!");
 		return;
 	}
 
-	pPerMergeFrameBuffer_ = GRenderer->CreateConstantBuffer((uint32_t)sizeof(CBPerMergeFrame));
-	if (nullptr == pPerMergeFrameBuffer_)
-	{
-		Assert("PerMergeFrameBuffer_ is NULL!");
-		return;
-	}
+	//pPerMergeFrameBuffer_ = GRenderer->CreateConstantBuffer((uint32_t)sizeof(CBPerMergeFrame));
+	//if (nullptr == pPerMergeFrameBuffer_)
+	//{
+	//	Assert("PerMergeFrameBuffer_ is NULL!");
+	//	return;
+	//}
 
 	pPerObjectBuffer_ = GRenderer->CreateConstantBuffer((uint32_t)sizeof(CBPerObject));
 	if (nullptr == pPerObjectBuffer_)
 	{
 		Assert("PerObjectBuffer is NULL!");
+		return;
+	}
+
+	pPerSpotLightBuffer_ = GRenderer->CreateConstantBuffer((uint32_t)sizeof(CBPerSpotLight));
+	if (nullptr == pPerSpotLightBuffer_)
+	{
+		Assert("PerSpotLightBuffer_ is NULL!");
 		return;
 	}
 }
@@ -36,18 +43,20 @@ ConstantManager* ConstantManager::Instance()
 	return GConstantManager;
 }
 
-void ConstantManager::UpdatePerCameraFrame(CBPerCameraFrame* pCBPerCameraFrame)
+void ConstantManager::UpdatePerFrame(CBPerFrame* pCBPerFrame)
 {
-	pPerCameraFrameBuffer_->Update(pCBPerCameraFrame);
-	pPerCameraFrameBuffer_->VSSetting(0);
+	pPerFrameBuffer_->Update(pCBPerFrame);
+	pPerFrameBuffer_->VSSetting(0);
+	pPerFrameBuffer_->PSSetting(0);
 }
 
-void ConstantManager::UpdatePerMergeFrame(CBPerMergeFrame* pCBPerMergeFrame)
-{
-	pPerMergeFrameBuffer_->Update(pCBPerMergeFrame);
-	pPerMergeFrameBuffer_->VSSetting(0);
-	pPerMergeFrameBuffer_->PSSetting(0);
-}
+
+//void ConstantManager::UpdatePerMergeFrame(CBPerMergeFrame* pCBPerMergeFrame)
+//{
+//	pPerMergeFrameBuffer_->Update(pCBPerMergeFrame);
+//	pPerMergeFrameBuffer_->VSSetting(0);
+//	pPerMergeFrameBuffer_->PSSetting(0);
+//}
 
 
 void ConstantManager::UpdatePerObejct(CBPerObject* cbPerObject)
@@ -56,24 +65,36 @@ void ConstantManager::UpdatePerObejct(CBPerObject* cbPerObject)
 	pPerObjectBuffer_->VSSetting(1);
 }
 
+void ConstantManager::UpdatePerSpotLight(CBPerSpotLight* pCBPerSpotLight)
+{
+	pPerSpotLightBuffer_->Update(pCBPerSpotLight);
+	pPerSpotLightBuffer_->PSSetting(1);
+}
+
 
 void ConstantManager::CleanUp()
 {
-	if (nullptr != pPerCameraFrameBuffer_)
+	if (nullptr != pPerFrameBuffer_)
 	{
-		pPerCameraFrameBuffer_->Release();
-		pPerCameraFrameBuffer_ = nullptr;
+		pPerFrameBuffer_->Release();
+		pPerFrameBuffer_ = nullptr;
 	}
 
-	if (nullptr != pPerMergeFrameBuffer_)
-	{
-		pPerMergeFrameBuffer_->Release();
-		pPerMergeFrameBuffer_ = nullptr;
-	}
+	//if (nullptr != pPerMergeFrameBuffer_)
+	//{
+	//	pPerMergeFrameBuffer_->Release();
+	//	pPerMergeFrameBuffer_ = nullptr;
+	//}
 
 	if (nullptr != pPerObjectBuffer_)
 	{
 		pPerObjectBuffer_->Release();
 		pPerObjectBuffer_ = nullptr;
+	}
+
+	if (nullptr != pPerSpotLightBuffer_)
+	{
+		pPerSpotLightBuffer_->Release();
+		pPerSpotLightBuffer_ = nullptr;
 	}
 }

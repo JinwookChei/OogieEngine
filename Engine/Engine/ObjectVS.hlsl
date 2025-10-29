@@ -2,6 +2,12 @@ cbuffer CBPerFrame : register(b0)
 {
     matrix View;
     matrix Projection;
+    
+    matrix InvViewTransform;
+    matrix InvProjectTransform;
+    
+    float2 ScreenOffset;
+    float2 ScreenScale;
 };
 
 cbuffer CBPerObject : register(b1)

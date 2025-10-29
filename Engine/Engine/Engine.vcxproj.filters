@@ -193,11 +193,14 @@
     <FxCompile Include="FowardPS.hlsl">
       <Filter>Resource Files\Shader\Forward</Filter>
     </FxCompile>
-    <FxCompile Include="DeferredPS.hlsl">
+    <FxCompile Include="DeferredObjectPS.hlsl">
       <Filter>Resource Files\Shader\Deferred</Filter>
     </FxCompile>
     <FxCompile Include="ScreenMergePS.hlsl">
       <Filter>Resource Files\Shader\ScreenMerge</Filter>
+    </FxCompile>
+    <FxCompile Include="DeferredLightPS.hlsl">
+      <Filter>Resource Files\Shader\Deferred</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

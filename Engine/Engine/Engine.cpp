@@ -15,8 +15,6 @@ IRenderer* GRenderer = nullptr;
 TimeManager* GTimeManager = nullptr;
 ConstantManager* GConstantManager = nullptr;
 Camera* GCurrentCamera = nullptr;
-//SpotLight* GSpotLight = nullptr;
-
 
 
 Engine::Engine()
@@ -120,13 +118,15 @@ void Engine::Run()
 		pWorld_->OnTick(deltaTime);
 
 		pWorld_->OnRender();
+		// GameLoop End
 
-		// Render
+		// Blit RenderTarget 
 		pRenderer_->RenderBegin();
 
 		pWorld_->OnBlit();
 
 		pRenderer_->RenderEnd();
+		// Blit RenderTarget  End
 	}
 }
 

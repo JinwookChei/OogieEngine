@@ -125,7 +125,7 @@ bool __stdcall Renderer::Initialize(void* hWnd, uint32_t width, uint32_t height)
 		return false;
 	}
 
-	if (false == CreateBackBuffer(width, height, { 0.0f, 0.0f, 1.0f, 1.0f }))
+	if (false == CreateBackBuffer(width, height, { 0.0f, 0.0f, 0.3f, 1.0f }))
 	{
 		return false;
 	}

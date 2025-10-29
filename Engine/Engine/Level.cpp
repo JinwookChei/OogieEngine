@@ -142,7 +142,7 @@ void Level::OnTickActors(double deltaTime)
 	LINK_ITEM* pGroupIter = pActorGroupHead_;
 	while (pGroupIter)
 	{
-		ActorGroupContainer* pActorGroup = (ActorGroupContainer*)pGroupIter->item_;
+		ActorGroupContainer* pActorGroup = static_cast<ActorGroupContainer*>(pGroupIter->item_);
 
 		LINK_ITEM* pActorIter = pActorGroup->pActorHead_;
 		while (pActorIter)
@@ -161,14 +161,29 @@ void Level::OnRender()
 	while (pCameraIter)
 	{
 		GCurrentCamera = static_cast<Camera*>(pCameraIter->item_);
-		
+		pCameraIter = pCameraIter->next_;
+
+		// Update FrameConstant
+		GCurrentCamera->UpdatePerFrameConstant();
+
+		// Geometry Pass
 		GCurrentCamera->GeometryPassBegin();
 		OnRenderCameras();
 		OnRenderActors();
 		OnRenderLights();
 		GCurrentCamera->GeometryPassEnd();
+		// Geometry Pass End
 
-		pCameraIter = pCameraIter->next_;
+		// Light Pass
+		GCurrentCamera->LightPassBegin();
+		LINK_ITEM* pLightIter = pLightHead_;
+		while (pLightIter)
+		{
+			pLightIter = pLightIter->next_;
+			GCurrentCamera->RenderLight();
+		}
+		GCurrentCamera->LightPassEnd();
+		// Light Pass End
 	}
 }
 
