@@ -16,6 +16,8 @@ cbuffer CBPerFrame : register(b0)
     
     float2 ScreenOffset;
     float2 ScreenScale;
+    float2 ScreenResolution;
+    float2 Pad0;
     
     float4 CamPos;
 };

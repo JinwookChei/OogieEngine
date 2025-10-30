@@ -10,6 +10,8 @@ struct CBPerFrame
 
 	Float2 screenOffset;
 	Float2 screenScale;
+	Float2 screenResolution;
+	Float2 pad0;
 
 	Float4 camPos;
 };

@@ -180,6 +180,7 @@ void Camera::UpdatePerFrameConstant()
 	cbPerFrame.inverseProjection = invProjectionTrans;
 	cbPerFrame.screenOffset = screenOffset_;
 	cbPerFrame.screenScale = screenScale_;
+	cbPerFrame.screenResolution = pGBufferTarget_->GetSize();
 
 	ConstantManager::Instance()->UpdatePerFrame(&cbPerFrame);
 }
@@ -187,7 +188,7 @@ void Camera::UpdatePerFrameConstant()
 bool Camera::InitGBuffer()
 {
 	RenderTargetDesc gBufferDesc(ERenderTechniqueType::Deferred);
-	gBufferDesc.size_ = { 2560.f, 1440.0f };
+	gBufferDesc.size_ = { DEFAULT_SCREEN_WIDTH , DEFAULT_SCREEN_HEIGHT };
 	gBufferDesc.clearColor_ = { 0.0f, 0.0f, 0.0f, 0.0f };
 	pGBufferTarget_ = GRenderer->CreateRenderTarget(gBufferDesc);
 
@@ -202,7 +203,7 @@ bool Camera::InitGBuffer()
 bool Camera::InitLightBuffer()
 {
 	RenderTargetDesc lightBufferDesc(ERenderTechniqueType::Forward);
-	lightBufferDesc.size_ = { 2560.f, 1440.0f };
+	lightBufferDesc.size_ = { DEFAULT_SCREEN_WIDTH , DEFAULT_SCREEN_HEIGHT };
 	lightBufferDesc.clearColor_ = { 1.0f, 1.0f, 0.0f, 0.0f };
 	pLightBufferTarget_ = GRenderer->CreateRenderTarget(lightBufferDesc);
 	if (nullptr == pLightBufferTarget_)

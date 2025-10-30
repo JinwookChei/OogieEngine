@@ -14,6 +14,8 @@ cbuffer CBPerFrame : register(b0)
     
     float2 ScreenOffset;
     float2 ScreenScale;
+    float2 ScreenResolution;
+    float2 Pad0;
     
     float4 CamPos;
 };
@@ -55,6 +57,7 @@ float4 main(PS_ScreenRect input) : SV_TARGET
     
     clip(normal.w - 0.0001f);
     
+    // Calc WorldPos From Depth + PixelPosition
     float screen_x = input.uv.x * 2560.0f;
     float screen_y = input.uv.y * 1440.0f;
     float ndc_x = (2.0f * screen_x) / 2560.0f - 1.0f;

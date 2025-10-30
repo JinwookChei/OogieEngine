@@ -225,7 +225,7 @@ bool Engine::LoadRenderer()
 	}
 
 	void* pMainHwnd = pApplication_->GetMainWindowHandle();
-	if (false == pRenderer_->Initialize(pMainHwnd, 2560, 1440))
+	if (false == pRenderer_->Initialize(pMainHwnd, DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT))
 	{
 		DEBUG_BREAK();
 		return false;
