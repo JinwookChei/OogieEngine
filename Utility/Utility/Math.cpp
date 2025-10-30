@@ -132,11 +132,11 @@ float MATH::VectorLength(const Float3& lhs)
 	return result.m128_f32[0];
 }
 
-void MATH::VectorToEulerDeg(Float4& out, const Float3& lhs)
+void MATH::VectorToEulerDeg(Float4& out, const Float3& vector)
 {
 	// 1. DirectXMath로 벡터 생성 및 정규화
 	Float3 v;
-	VectorNormalize(v, lhs);
+	VectorNormalize(v, vector);
 	float nx = v.X;
 	float ny = v.Y;
 	float nz = v.Z;
@@ -154,6 +154,7 @@ void MATH::VectorToEulerDeg(Float4& out, const Float3& lhs)
 	// 5. W는 사용하지 않거나 1로 설정
 	out.W = 1.0f;
 }
+
 
 //void VectorToEulerDeg(Float4& out, const Float3& lhs)
 //{

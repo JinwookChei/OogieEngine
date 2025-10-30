@@ -8,12 +8,14 @@ public:
 
 	~Light() override;
 
+	virtual void BindLight() = 0;
+
 	const Color& DiffuseColor() const;
 
 	const Color& SpecularColor() const;
 	
 	const Color& AmbientColor() const;
-	
+
 private:
 	void CleanUp() override;
 

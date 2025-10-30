@@ -1,5 +1,10 @@
 #pragma once
-
+enum class ELightType
+{
+	DirectionLight = 0,
+	SpotLight,
+	PointLight
+};
 
 class DirectionLight
 	: public Light
@@ -12,6 +17,8 @@ public:
 	void Tick(double deltaTime) override;
 
 	void BeginPlay() override;
+
+	void BindLight() override;
 
 	ENGINE_API Float3 Direction() const;
 

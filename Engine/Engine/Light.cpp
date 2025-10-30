@@ -3,8 +3,8 @@
 
 Light::Light()
 	: diffuseColor_(1.0f, 1.0f, 1.0f, 1.0f),
-	specularColor_(1.0f, 1.0f, 1.0f, 1.0f),
-	ambientColor_(0.2f, 0.2f, 0.2f, 1.0f)
+	specularColor_(0.8f, 0.8f, 0.8f, 1.0f),
+	ambientColor_(0.3f, 0.3f, 0.3f, 1.0f)
 {
 }
 

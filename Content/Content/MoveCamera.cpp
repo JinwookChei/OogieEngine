@@ -68,25 +68,11 @@ void MoveCamera::Tick(double deltaTime)
 	}
 	if (InputManager::Instance()->IsPress('F'))
 	{
-		Float4 upVector = pTransform_->UpVector();
-
-		Float4 offset;
-
-		MATH::VectorScale(offset, upVector, -1.0f * cameraSpeed_ * (float)deltaTime);
-
-		//pTransform_->AddPosition(offset);
-		pTransform_->AddRotaionY(-1.0f);
+		pTransform_->AddRotaionY(1.0f);
 	}
 	if (InputManager::Instance()->IsPress('R'))
 	{
-		Float4 upVector = pTransform_->UpVector();
-
-		Float4 offset;
-
-		MATH::VectorScale(offset, upVector, cameraSpeed_ * (float)deltaTime);
-
-		//pTransform_->AddPosition(offset);
-		pTransform_->AddRotaionY(1.0f);
+		pTransform_->AddRotaionY(-1.0f);
 	}
 	if (InputManager::Instance()->IsPress('Q'))
 	{

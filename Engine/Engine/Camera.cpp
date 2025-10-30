@@ -76,15 +76,6 @@ void Camera::LightPassBegin()
 
 void Camera::RenderLight()
 {
-	CBPerSpotLight cbPerSpotLight;
-	cbPerSpotLight.lightColor = { 1.0f, 1.0f, 1.0f, 1.0f };
-	cbPerSpotLight.ambientColor = { 0.3f,0.3f, 0.3f, 1.0f };
-	cbPerSpotLight.spotPosition = { -1.0f, 0.0f, 0.0f };
-	cbPerSpotLight.spotDirection = { 1.0f, 0.0f, 0.0f };
-	cbPerSpotLight.spotAngle = cosf(MATH::ConvertDegToRad(30.0f));
-	cbPerSpotLight.spotRange = 30.0f;
-	ConstantManager::Instance()->UpdatePerSpotLight(&cbPerSpotLight);
-
 	pScreenVertex_->Draw();
 }
 
@@ -182,6 +173,7 @@ void Camera::UpdatePerFrameConstant()
 	MATH::MatrixTranspose(invProjectionTrans, invProjectionTrans);
 
 	CBPerFrame cbPerFrame;
+	cbPerFrame.camPos = pTransform_->GetPosition();
 	cbPerFrame.view = viewTrans;
 	cbPerFrame.projection = projectionTrans;
 	cbPerFrame.inverseView = invViewTrans;

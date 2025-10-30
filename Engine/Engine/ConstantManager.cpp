@@ -25,10 +25,10 @@ ConstantManager::ConstantManager()
 		return;
 	}
 
-	pPerSpotLightBuffer_ = GRenderer->CreateConstantBuffer((uint32_t)sizeof(CBPerSpotLight));
-	if (nullptr == pPerSpotLightBuffer_)
+	pPerLightBuffer_ = GRenderer->CreateConstantBuffer((uint32_t)sizeof(CBPerLight));
+	if (nullptr == pPerLightBuffer_)
 	{
-		Assert("PerSpotLightBuffer_ is NULL!");
+		Assert("PerLightBuffer_ is NULL!");
 		return;
 	}
 }
@@ -65,10 +65,10 @@ void ConstantManager::UpdatePerObejct(CBPerObject* cbPerObject)
 	pPerObjectBuffer_->VSSetting(1);
 }
 
-void ConstantManager::UpdatePerSpotLight(CBPerSpotLight* pCBPerSpotLight)
+void ConstantManager::UpdatePerLight(CBPerLight* pCBPerLight)
 {
-	pPerSpotLightBuffer_->Update(pCBPerSpotLight);
-	pPerSpotLightBuffer_->PSSetting(1);
+	pPerLightBuffer_->Update(pCBPerLight);
+	pPerLightBuffer_->PSSetting(1);
 }
 
 
@@ -92,9 +92,9 @@ void ConstantManager::CleanUp()
 		pPerObjectBuffer_ = nullptr;
 	}
 
-	if (nullptr != pPerSpotLightBuffer_)
+	if (nullptr != pPerLightBuffer_)
 	{
-		pPerSpotLightBuffer_->Release();
-		pPerSpotLightBuffer_ = nullptr;
+		pPerLightBuffer_->Release();
+		pPerLightBuffer_ = nullptr;
 	}
 }

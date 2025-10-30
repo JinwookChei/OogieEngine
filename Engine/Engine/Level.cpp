@@ -179,7 +179,10 @@ void Level::OnRender()
 		LINK_ITEM* pLightIter = pLightHead_;
 		while (pLightIter)
 		{
+			Light* curLight = static_cast<Light*>(pLightIter->item_);
 			pLightIter = pLightIter->next_;
+
+			curLight->BindLight();
 			GCurrentCamera->RenderLight();
 		}
 		GCurrentCamera->LightPassEnd();

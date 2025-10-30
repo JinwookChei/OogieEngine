@@ -123,20 +123,10 @@ Float4 Transform::UpVector() const
 	return normal;
 }
 
-
-
 void Transform::TransformUpdate()
 {
-	//MatrixLookToLH();
 	MATH::MatrixCompose(worldMatrix_, scale_, rotation_, position_);
 
-	//MATH::MatrixDecomposeQ();
-	/*Float4 roQ;
-	MatrixDecomposeFromRotQ(worldMatrix_, roQ);
+	MATH::MatrixDecompose(scale_, quaternion_, position_, worldMatrix_);
 
-	Float4 roDeg;
-	QuaternionToEulerDeg(roDeg, roQ);
-
-	Float4x4 tmpMatrix;
-	MatrixCompose(tmpMatrix, scale_, roDeg, position_);*/
 }

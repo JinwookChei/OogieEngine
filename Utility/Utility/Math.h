@@ -230,8 +230,11 @@ namespace MATH
 	UTILITY_API void VectorScale(Float3& out, const Float3& lhs, float scale);
 	UTILITY_API void VectorNormalize(Float3& out, const Float3& lhs);
 	UTILITY_API float VectorLength(const Float3& lhs);
-	UTILITY_API void VectorToEulerDeg(Float4& out, const Float3& lhs);
-	//UTILITY_API void ForwardToEulerDeg(Float3& outEulerDeg, const Float3& forward);
+
+	UTILITY_API void VectorToEulerDeg(Float4& out, const Float3& vector);
+	UTILITY_API void ForwardVectorFromEulerDeg(Float4& out, const Float3& deg);
+
+	//UTILITY_API void ForwardVectorFromDeg(Float3& out, const Float3& );
 
 	UTILITY_API void QuaternionToEulerDeg(Float4& out, const Float4& quat);
 	UTILITY_API void QuaternionToEulerRad(Float4& out, const Float4& quat);

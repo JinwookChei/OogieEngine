@@ -8,6 +8,8 @@ cbuffer CBPerFrame : register(b0)
     
     float2 ScreenOffset;
     float2 ScreenScale;
+    
+    float4 CamPos;
 };
 
 struct VS_ScreenRect

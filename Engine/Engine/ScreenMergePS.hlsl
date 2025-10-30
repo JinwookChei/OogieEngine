@@ -1,7 +1,7 @@
 Texture2D renderTextureAlbedo : register(t0);
-//Texture2D renderTextureNormal : register(t1);
-//Texture2D renderTextureMaterial : register(t2);
-//Texture2D renderTextureDepth : register(t3);
+Texture2D renderTextureNormal : register(t1);
+Texture2D renderTextureMaterial : register(t2);
+Texture2D renderTextureDepth : register(t3);
 Texture2D renderTexture : register(t4);
 SamplerState samplers : register(s0);
 
@@ -16,6 +16,8 @@ cbuffer CBPerFrame : register(b0)
     
     float2 ScreenOffset;
     float2 ScreenScale;
+    
+    float4 CamPos;
 };
 
 

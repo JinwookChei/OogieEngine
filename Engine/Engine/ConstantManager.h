@@ -10,6 +10,8 @@ struct CBPerFrame
 
 	Float2 screenOffset;
 	Float2 screenScale;
+
+	Float4 camPos;
 };
 
 struct CBPerObject
@@ -17,15 +19,40 @@ struct CBPerObject
 	Float4x4 world;
 };
 
-struct CBPerSpotLight
+struct CBPerLight
 {
-	Float4 lightColor;
-	Float4 ambientColor;
+	Color lightDiffuse;
+	Color lightSpecular;
+	Color lightAmbient;
 
+	// DirectionLight
+	Float3 lightDirection; // spotDirectionÀÌ¶û °øÀ¯.
+
+	// SpotLight
+	float spotRange;
 	Float3 spotPosition;
 	float spotAngle;
-	Float3 spotDirection;
-	float spotRange;
+
+	// PointLight
+	Float3 pointPosition;
+	float pointRange;
+
+	float attenuationConst;
+	float attenuationLinear;
+	float attenuationQuad;
+
+	// 0 -> DirectionLight
+	// 1 -> SpotLight
+	// 2 -> PointLight
+	float lightType;
+
+	//Float4 lightColor;
+	//Float4 ambientColor;
+
+	//Float3 spotPosition;
+	//float spotAngle;
+	//Float3 spotDirection;
+	//float spotRange;
 };
 
 
@@ -64,7 +91,7 @@ public:
 
 	void UpdatePerObejct(CBPerObject* pCBPerObject);
 
-	void UpdatePerSpotLight(CBPerSpotLight* pCBPerSpotLight);
+	void UpdatePerLight(CBPerLight* pCBPerLight);
 
 private:
 	void CleanUp();
@@ -75,5 +102,5 @@ private:
 
 	IConstantBuffer* pPerObjectBuffer_;
 
-	IConstantBuffer* pPerSpotLightBuffer_;
+	IConstantBuffer* pPerLightBuffer_;
 };
