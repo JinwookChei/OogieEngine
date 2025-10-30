@@ -3,8 +3,8 @@
 #include "SpotLight.h"
 
 SpotLight::SpotLight()
-	: spotRange_(30.0f),
-	spotAngle_(cosf(MATH::ConvertDegToRad(30.0f)))
+	: range_(30.0f),
+	angle_(cosf(MATH::ConvertDegToRad(30.0f)))
 {
 	
 }
@@ -30,10 +30,10 @@ void SpotLight::BindLight()
 	cbPerLight.lightSpecular = SpecularColor();
 	cbPerLight.lightAmbient = AmbientColor();
 	cbPerLight.direction_D_S = Direction();
-	Float4 worldPos = GetWorldTransform().GetPosition();
+	const Float4& worldPos = GetWorldTransform().GetPosition();
 	cbPerLight.position_S_P = { worldPos.X,worldPos.Y, worldPos.Z };
-	cbPerLight.angle_S = spotAngle_;
-	cbPerLight.range_S_P = spotRange_;
+	cbPerLight.angle_S = angle_;
+	cbPerLight.range_S_P = range_;
 	cbPerLight.lightType = (float)ELightType::SpotLight;
 
 	ConstantManager::Instance()->UpdatePerLight(&cbPerLight);
@@ -46,24 +46,24 @@ Float3 SpotLight::Direction() const
 	return Float3(forwardVector.X, forwardVector.Y, forwardVector.Z);
 }
 
-float SpotLight::SpotRange() const
+float SpotLight::GetRange() const
 {
-	return spotRange_;
+	return range_;
 }
 
 void SpotLight::SetRange(float range)
 {
-	spotRange_ = range;
+	range_ = range;
 }
 
-float SpotLight::SpotAngle() const
+float SpotLight::GetAngle() const
 {
-	return spotAngle_;
+	return angle_;
 }
 
 void SpotLight::SetAngle(float deg)
 {
-	spotAngle_ = cosf(MATH::ConvertDegToRad(deg));
+	angle_ = cosf(MATH::ConvertDegToRad(deg));
 }
 
 void SpotLight::CleanUp()

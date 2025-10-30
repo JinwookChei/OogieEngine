@@ -75,11 +75,11 @@ float4 main(PS_ScreenRect input) : SV_TARGET
         float3 R = normalize(reflect(-L, N));
         
         // Diffuse
-        float diffuseFactor = max(dot(N, L), 0.0f);
+        float diffuseFactor = saturate(dot(N, L));
         float3 diffuseColor = diffuseFactor * LightDiffuse.rgb * albedo.rgb;
 
         // Specular
-        float rDotV = max(dot(R, V), 0.0f);
+        float rDotV = saturate(dot(R, V));
         float shininessFactor = pow(rDotV, 16);
 
         float3 materialSpecular = float3(0.7f, 0.7f, 0.7f);
@@ -113,7 +113,7 @@ float4 main(PS_ScreenRect input) : SV_TARGET
         float3 diffuseColor = diffuseFactor * LightDiffuse.rgb * albedo.rgb;
     
         // Specular
-        float rDotV = max(dot(R, V), 0.0f);
+        float rDotV = saturate(dot(R, V));
         float shininessFactor = pow(rDotV, 16);
 
         // 거리/스포트 효과만 곱하기
@@ -133,39 +133,35 @@ float4 main(PS_ScreenRect input) : SV_TARGET
     // PointLight
     else
     {
+        // Diffuse
+        float3 N = normalize(normal.xyz);
+        float3 L = normalize(LightPosition - worldPos.xyz);
+        float3 V = normalize(CamPos.xyz - worldPos.xyz);
+        float3 R = normalize(reflect(-L, N));
         
+        float dist = length(LightPosition - worldPos.xyz);
+        float att = 1.0f / (AttenuationConst + AttenuationLinear * dist + AttenuationQuad * dist * dist);
+        
+        att *= step(dist, LightRange);
+        float diffuseFactor = saturate(dot(N, L)) * att;
+        float3 diffuseColor = diffuseFactor * LightDiffuse.rgb * albedo.rgb;
+        
+        // Specular
+        float rDotV = saturate(dot(R, V));
+        float shininessFactor = pow(rDotV, 16); // material shininess
+
+        float3 materialSpecular = float3(0.7f, 0.7f, 0.7f);
+        float3 specularColor = att * shininessFactor * LightSpecular.rgb * materialSpecular;
+        
+        // Ambient
+        float3 ambientColor = LightAmbient.rgb * albedo.rgb;
+        
+        // Emissive
+        float3 emissiveColor = 0.0f;
+        
+        //return float4(ambientColor, 1.0f);
+        return float4(diffuseColor + specularColor + ambientColor + emissiveColor, 1.0f);
     }
     
-    
     return float4(0.0f, 0.0f, 0.0f, 1.0f);
-    
-    //float screen_x = input.uv.x * 2560.0f;
-    //float screen_y = input.uv.y * 1440.0f;
-    
-    //float ndc_x = (2.0f * screen_x) / 2560.0f - 1.0f;
-    //float ndc_y = 1.0f - (2.0f * screen_y) / 1440.0f;
-    //float ndc_z = depth;
-    //float ndc_w = 1.0f;
-    
-    //float4 ndcPos = { ndc_x, ndc_y, ndc_z, ndc_w };
-    
-    //float4 viewPos = mul(ndcPos, InvProjectTransform);
-    //viewPos /= viewPos.w;
-    
-    //float4 worldPos = mul(viewPos, InvViewTransform);
-
-    //float3 L = normalize(SpotPosition - worldPos.xyz);
-    //float3 S = normalize(-LightDirection);
-    
-    //float spotCos = dot(L, S);
-    //float spotEffect = smoothstep(SpotAngle, SpotAngle + 0.05, spotCos);
-    
-    //float dist = length(SpotPosition - worldPos.xyz);
-    //float att = saturate(1 - dist / SpotRange);
-    
-    //float diffuse = saturate(dot(normal.xyz, L)) * spotEffect * att;
-    //float4 diffuseColor = diffuse * LightDiffuse;
-    
-    //float4 finalColor = albedo * (diffuseColor + LightAmbient);
-    //return finalColor;
 }

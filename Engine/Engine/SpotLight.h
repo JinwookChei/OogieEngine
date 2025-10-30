@@ -16,18 +16,18 @@ public:
 
 	Float3 Direction() const;
 
-	float SpotRange() const;
+	float GetRange() const;
 
 	void SetRange(float range);
 
-	float SpotAngle() const;
+	float GetAngle() const;		// Radian ¸®ÅÏ
 
 	void SetAngle(float deg);
 
 private:
 	void CleanUp() override;
 	
-	float spotRange_;
+	float range_;
 	
-	float spotAngle_;
+	float angle_;		// Rad °ª.
 };
