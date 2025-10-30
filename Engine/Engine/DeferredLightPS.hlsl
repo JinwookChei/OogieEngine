@@ -25,23 +25,21 @@ cbuffer CBPerSpotLight : register(b1)
     float4 LightSpecular;
     float4 LightAmbient;
 
-	// DirectionLight
-    float3 LightDirection; // spotDirection이랑 공유.
+    float3 LightDirection; // Spot, Direction이랑 공유.
+    float LightRange;
+    float3 LightPosition;
+    float LightAngle;
 
-	// SpotLight
-    float SpotRange;
-    float3 SpotPosition;
-    float SpotAngle;
-
-	// PointLight
-    float3 PointPosition;
-    float PointRange;
-    
     float AttenuationConst;
     float AttenuationLinear;
     float AttenuationQuad;
+
+	// 0 -> DirectionLight
+	// 1 -> SpotLight
+	// 2 -> PointLight
     float LightType;
 };
+
 
 struct PS_ScreenRect
 {
@@ -74,18 +72,18 @@ float4 main(PS_ScreenRect input) : SV_TARGET
         float3 N = normalize(normal.xyz);
         float3 L = normalize(-LightDirection); 
         float3 V = normalize(CamPos.xyz - worldPos.xyz); 
-
+        float3 R = normalize(reflect(-L, N));
+        
         // Diffuse
-        float nDotL = max(dot(N, L), 0.0f);
-        float3 diffuseColor = nDotL * LightDiffuse.rgb * albedo.rgb;
+        float diffuseFactor = max(dot(N, L), 0.0f);
+        float3 diffuseColor = diffuseFactor * LightDiffuse.rgb * albedo.rgb;
 
         // Specular
-        float3 R = normalize(reflect(-L, N)); 
         float rDotV = max(dot(R, V), 0.0f);
-        float adjShininess = pow(rDotV, 16);
+        float shininessFactor = pow(rDotV, 16);
 
         float3 materialSpecular = float3(0.7f, 0.7f, 0.7f);
-        float3 specularColor = adjShininess * LightSpecular.rgb * materialSpecular;
+        float3 specularColor = shininessFactor * LightSpecular.rgb * materialSpecular;
 
         // Ambient
         float3 ambientColor = LightAmbient.rgb * albedo.rgb;
@@ -100,20 +98,37 @@ float4 main(PS_ScreenRect input) : SV_TARGET
     {
         float3 N = normalize(normal.xyz);
         float3 L = normalize(-LightDirection);
-        float3 S = normalize(SpotPosition - worldPos.xyz);
+        float3 V = normalize(CamPos.xyz - worldPos.xyz);
+        float3 R = normalize(reflect(-L, N));
+        float3 S = normalize(LightPosition - worldPos.xyz);
     
         // Diffuse
         float spotCos = dot(L, S);
-        float spotEffect = smoothstep(SpotAngle, SpotAngle + 0.05, spotCos);
+        float spotEffect = smoothstep(LightAngle, LightAngle + 0.05, spotCos);
     
-        float dist = length(SpotPosition - worldPos.xyz);
-        float att = saturate(1 - dist / SpotRange);
+        float dist = length(LightPosition - worldPos.xyz);
+        float att = saturate(1 - dist / LightRange);
     
         float diffuseFactor = saturate(dot(N, L)) * spotEffect * att;
         float3 diffuseColor = diffuseFactor * LightDiffuse.rgb * albedo.rgb;
     
-        float4 finalColor = float4(diffuseColor.rgb, 1.0f);
-        return finalColor;
+        // Specular
+        float rDotV = max(dot(R, V), 0.0f);
+        float shininessFactor = pow(rDotV, 16);
+
+        // 거리/스포트 효과만 곱하기
+        float lightFalloff = spotEffect * att;
+        
+        float3 materialSpecular = float3(0.7f, 0.7f, 0.7f);
+        float3 specularColor = lightFalloff * shininessFactor * LightSpecular.rgb * materialSpecular;
+        
+        // Ambient
+        float3 ambientColor = LightAmbient.rgb * albedo.rgb;
+        
+        // Emissive
+        float3 emissiveColor = 0.0f;
+        
+        return float4(diffuseColor + specularColor + ambientColor + emissiveColor, 1.0f);
     }
     // PointLight
     else

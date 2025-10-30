@@ -1,5 +1,5 @@
 #pragma once
-//
+
 //class PointLight
 //	: public Light
 //{
@@ -12,6 +12,9 @@
 //
 //	void BeginPlay() override;
 //
+//	void BindLight() override;
+//
 //private:
 //	void CleanUp() override;
-//}
+//
+//};

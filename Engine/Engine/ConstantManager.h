@@ -25,34 +25,19 @@ struct CBPerLight
 	Color lightSpecular;
 	Color lightAmbient;
 
-	// DirectionLight
-	Float3 lightDirection; // spotDirectionÀÌ¶û °øÀ¯.
+	Float3 direction_D_S; // Spot, DirectionÀÌ¶û °øÀ¯.
+	float range_S_P;
+	Float3 position_S_P;
+	float angle_S;
 
-	// SpotLight
-	float spotRange;
-	Float3 spotPosition;
-	float spotAngle;
-
-	// PointLight
-	Float3 pointPosition;
-	float pointRange;
-
-	float attenuationConst;
-	float attenuationLinear;
-	float attenuationQuad;
+	float attenuationConst_P;
+	float attenuationLinear_P;
+	float attenuationQuad_P;
 
 	// 0 -> DirectionLight
 	// 1 -> SpotLight
 	// 2 -> PointLight
 	float lightType;
-
-	//Float4 lightColor;
-	//Float4 ambientColor;
-
-	//Float3 spotPosition;
-	//float spotAngle;
-	//Float3 spotDirection;
-	//float spotRange;
 };
 
 

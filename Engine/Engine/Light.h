@@ -1,4 +1,10 @@
 #pragma once
+enum class ELightType
+{
+	DirectionLight = 0,
+	SpotLight,
+	PointLight
+};
 
 class Light
 	: public Actor

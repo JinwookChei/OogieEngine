@@ -24,7 +24,7 @@ void DirectionLight::BindLight()
 	cbPerLight.lightDiffuse = DiffuseColor();
 	cbPerLight.lightSpecular = SpecularColor();
 	cbPerLight.lightAmbient = AmbientColor();
-	cbPerLight.lightDirection = Direction();
+	cbPerLight.direction_D_S = Direction();
 	cbPerLight.lightType = (float)ELightType::DirectionLight;
 	ConstantManager::Instance()->UpdatePerLight(&cbPerLight);
 
