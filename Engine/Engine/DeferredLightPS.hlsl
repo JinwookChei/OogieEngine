@@ -58,10 +58,10 @@ float4 main(PS_ScreenRect input) : SV_TARGET
     clip(normal.w - 0.0001f);
     
     // Calc WorldPos From Depth + PixelPosition
-    float screen_x = input.uv.x * 2560.0f;
-    float screen_y = input.uv.y * 1440.0f;
-    float ndc_x = (2.0f * screen_x) / 2560.0f - 1.0f;
-    float ndc_y = 1.0f - (2.0f * screen_y) / 1440.0f;
+    float screen_x = input.uv.x * ScreenResolution.x;
+    float screen_y = input.uv.y * ScreenResolution.y;
+    float ndc_x = (2.0f * screen_x) / ScreenResolution.x - 1.0f;
+    float ndc_y = 1.0f - (2.0f * screen_y) / ScreenResolution.y;
     float ndc_z = depth;
     float ndc_w = 1.0f;
     float4 ndcPos = { ndc_x, ndc_y, ndc_z, ndc_w };

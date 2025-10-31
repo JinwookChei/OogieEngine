@@ -73,6 +73,9 @@
     <Filter Include="Resource Files\Shader\Forward">
       <UniqueIdentifier>{c346e3ef-7de6-4cfa-8352-65d800c5be1b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Actor\Camera">
+      <UniqueIdentifier>{d9fc05ca-5bf2-4814-b2e5-6f954e1800fb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -111,9 +114,6 @@
     <ClInclude Include="Transform.h">
       <Filter>Source Files\Component\Transform</Filter>
     </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>Source Files\Actor</Filter>
-    </ClInclude>
     <ClInclude Include="Light.h">
       <Filter>Source Files\Actor\Light</Filter>
     </ClInclude>
@@ -134,6 +134,9 @@
     </ClInclude>
     <ClInclude Include="PointLight.h">
       <Filter>Source Files\Actor\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Source Files\Actor\Camera</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -167,9 +170,6 @@
     <ClCompile Include="Transform.cpp">
       <Filter>Source Files\Component\Transform</Filter>
     </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>Source Files\Actor</Filter>
-    </ClCompile>
     <ClCompile Include="Light.cpp">
       <Filter>Source Files\Actor\Light</Filter>
     </ClCompile>
@@ -190,6 +190,9 @@
     </ClCompile>
     <ClCompile Include="PointLight.cpp">
       <Filter>Source Files\Actor\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Source Files\Actor\Camera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

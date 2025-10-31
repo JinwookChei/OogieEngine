@@ -52,6 +52,9 @@
     <Filter Include="Source Files\RenderTarget">
       <UniqueIdentifier>{847b08a2-6ad4-4ffc-93a7-e335bfa0c95f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\BlendState">
+      <UniqueIdentifier>{68b0ed3b-27ae-43f8-ac8a-08b82caddf26}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -99,6 +102,9 @@
     <ClInclude Include="DeferredTarget.h">
       <Filter>Source Files\RenderTarget</Filter>
     </ClInclude>
+    <ClInclude Include="BlendState.h">
+      <Filter>Source Files\BlendState</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -145,6 +151,9 @@
     </ClCompile>
     <ClCompile Include="DeferredTarget.cpp">
       <Filter>Source Files\RenderTarget</Filter>
+    </ClCompile>
+    <ClCompile Include="BlendState.cpp">
+      <Filter>Source Files\BlendState</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

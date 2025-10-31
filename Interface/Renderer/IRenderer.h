@@ -127,6 +127,11 @@ struct IRasterizer : public IUnknown {
 	virtual void __stdcall SetFillMode(EFillModeType fillModeType) = 0;
 };
 
+struct IBlendState : public IUnknown
+{
+	virtual void __stdcall Setting() = 0;
+};
+
 struct IRenderTarget : public IUnknown
 {
 	virtual void __stdcall Clear() = 0;

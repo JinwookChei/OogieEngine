@@ -1,6 +1,8 @@
 #pragma once
 
 class RenderTarget;
+class BlendState;
+
 class Renderer final
 	: public IRenderer
 {
@@ -51,6 +53,8 @@ public:
 	ITexture* CreateTexture(const D3D11_TEXTURE2D_DESC& desc);
 
 	ISamplerState*  CreateSamplerState(bool linear, bool clamp);
+
+	IBlendState* CreateBlendState(D3D11_BLEND srcBlend, D3D11_BLEND destBlend, D3D11_BLEND srcBlendAlpha, D3D11_BLEND destBlendAlpha, float blendFactor[4]);
 
 	ID3D11Device* Device();
 

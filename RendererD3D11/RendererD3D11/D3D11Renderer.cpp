@@ -8,6 +8,7 @@
 #include "PixelShader.h"
 #include "InputLayout.h"
 #include "SamplerState.h"
+#include "BlendState.h"
 #include "ConstantBuffer.h"
 #include "Rasterizer.h"
 
@@ -814,6 +815,70 @@ ISamplerState* __stdcall Renderer::CreateSamplerState(bool linear, bool clamp)
 	return nullptr;
 }
 
+IBlendState* Renderer::CreateBlendState(D3D11_BLEND srcBlend, D3D11_BLEND destBlend, D3D11_BLEND srcBlendAlpha, D3D11_BLEND destBlendAlpha, float blendFactor[4])
+{
+	BlendState* pNewBlendState = nullptr;
+	ID3D11BlendState* pBlendState = nullptr;
+	do
+	{
+		// AlphaToCoverageEnable
+		// 멀티샘플링(MSAA, Multi-Sample Anti-Aliasing)과 알파 블렌딩(Alpha blending) 을 결합하기 위한 기능이에요.
+		// 즉, 반투명 오브젝트(예: 잎사귀 텍스처, 머리카락 등) 를 안티에일리어싱 처리할 때 자연스럽게 보이도록 도와줍니다.
+
+		// IndependentBlendEnable
+		// 렌더 타깃(Render Target)이 여러 개일 때(OMSetRenderTargets로 MRT 사용 시),
+		// 각각의 렌더 타깃에 대해 블렌딩 설정을 독립적으로 적용할지 여부를 지정합니다.
+
+		D3D11_BLEND_DESC blendDesc = {0};
+		blendDesc.AlphaToCoverageEnable = FALSE;
+		blendDesc.IndependentBlendEnable = FALSE;
+
+		blendDesc.RenderTarget[0].SrcBlend = srcBlend; // 소스 알파값 지금 그려질 오브젝트
+		blendDesc.RenderTarget[0].DestBlend = destBlend; // 1 - 소스 알파값  // 렌더타켓
+		blendDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+
+		// BlendFactor : 색을 강조하거나, 화면 전체 페이드 같은 특수 효과를 만들 때 사용. ->OMSetBlendState()에서 BlendFactor 값 인자로 넘김.
+		//blendDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_BLEND_FACTOR;
+		//blendDesc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_BLEND_FACTOR; // 1 - BlendFactor  // 렌더타켓
+
+		
+		blendDesc.RenderTarget[0].SrcBlendAlpha = srcBlendAlpha;
+		blendDesc.RenderTarget[0].DestBlendAlpha = destBlendAlpha;
+		blendDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+		blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+
+		HRESULT hr = GRenderer->Device()->CreateBlendState(&blendDesc, &pBlendState);
+		if (FAILED(hr))
+		{
+			Assert("CreateBlendState is FAILED!!!!!");
+			continue;
+		}
+
+		pNewBlendState = new BlendState;
+		if (false == pNewBlendState->Init(pBlendState, blendFactor)) {
+			Assert("BlendState Init is FAILED!!!!!");
+			continue;
+		}
+
+		return pNewBlendState;
+
+	} while (false);
+
+	if (nullptr != pBlendState)
+	{
+		pBlendState->Release();
+		pBlendState = nullptr;
+	}
+
+	if (nullptr != pNewBlendState)
+	{
+		pNewBlendState->Release();
+		pNewBlendState = nullptr;
+	}
+
+	return nullptr;
+}
+
 ID3D11Device* Renderer::Device()
 {
 	return pDevice_;
@@ -1049,3 +1114,4 @@ void Renderer::CleanUp()
 		CoUninitialize();
 	}
 }
+

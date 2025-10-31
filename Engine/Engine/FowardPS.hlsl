@@ -22,7 +22,7 @@ cbuffer CBPerObject : register(b1)
 
 struct PS_INPUT
 {
-    float4 pos : SV_POSITION;
+    float4 svPos : SV_POSITION;
     float4 color : COLOR;
     float3 normal : NORMAL;
     float3 worldPos : TEXCOORD0; // PointLight Pos

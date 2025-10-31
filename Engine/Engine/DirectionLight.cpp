@@ -27,14 +27,6 @@ void DirectionLight::BindLight()
 	cbPerLight.direction_D_S = Direction();
 	cbPerLight.lightType = (float)ELightType::DirectionLight;
 	ConstantManager::Instance()->UpdatePerLight(&cbPerLight);
-
-
-	/*cbPerLight.lightColor = { 1.0f, 1.0f, 1.0f, 1.0f };
-	cbPerLight.ambientColor = { 0.3f,0.3f, 0.3f, 1.0f };
-	cbPerLight.spotPosition = { -1.0f, 0.0f, 0.0f };
-	cbPerLight.spotDirection = { 1.0f, 0.0f, 0.0f };
-	cbPerLight.spotAngle = cosf(MATH::ConvertDegToRad(30.0f));
-	cbPerLight.spotRange = 30.0f;*/
 }
 
 Float3 DirectionLight::Direction() const
