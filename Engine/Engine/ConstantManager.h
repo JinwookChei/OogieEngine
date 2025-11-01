@@ -30,16 +30,21 @@ struct CBPerLight
 	Float3 direction_D_S; // Spot, DirectionÀÌ¶û °øÀ¯.
 	float range_S_P;
 	Float3 position_S_P;
-	float angle_S;
 
-	float attenuationConst_P;
-	float attenuationLinear_P;
-	float attenuationQuad_P;
+	float exponent_S;
+	float innerAngle_S;
+	float outerAngle_S;
+
+	float attenuationConst_S_P;
+	float attenuationLinear_S_P;
+	float attenuationQuad_S_P;
 
 	// 0 -> DirectionLight
 	// 1 -> SpotLight
 	// 2 -> PointLight
 	float lightType;
+
+	Float2 pad;
 };
 
 

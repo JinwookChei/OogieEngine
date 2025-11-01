@@ -44,6 +44,7 @@ public:
 
 	IRenderTarget* CreateDeferredRenderTarget(const RenderTargetDesc& desc);
 
+	IBlendState* CreateBlendState(uint32_t srcBlend, uint32_t destBlend, uint32_t srcBlendAlpha, uint32_t destBlendAlpha, float blendFactor[4] = nullptr) override;
 	
 	// ------------------------- 인터페이스 노출안된 Create -----------------------------
 	IShader* CreateShader(EShaderType shaderType, const wchar_t* pPath);
@@ -53,8 +54,7 @@ public:
 	ITexture* CreateTexture(const D3D11_TEXTURE2D_DESC& desc);
 
 	ISamplerState*  CreateSamplerState(bool linear, bool clamp);
-
-	IBlendState* CreateBlendState(D3D11_BLEND srcBlend, D3D11_BLEND destBlend, D3D11_BLEND srcBlendAlpha, D3D11_BLEND destBlendAlpha, float blendFactor[4]);
+	
 
 	ID3D11Device* Device();
 

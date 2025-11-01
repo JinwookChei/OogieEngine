@@ -55,7 +55,9 @@ struct PS_ScreenRect
 
 float4 main(PS_ScreenRect input) : SV_TARGET
 {    
-    return renderTexture.Sample(samplers, input.uv);
+    float4 albedo = renderTextureAlbedo.Sample(samplers, input.uv);
+    float4 render = renderTexture.Sample(samplers, input.uv);
+    return /*albedo **/ render;
 }
 
 // Depth Shading

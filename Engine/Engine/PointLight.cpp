@@ -2,7 +2,7 @@
 #include "PointLight.h"
 
 PointLight::PointLight()
-	:range_(10.0f),
+	:range_(3.0f),
 	attenuationConst_(1.0f),
 	attenuationLinear_(0.09f),
 	attenuationQuad_(0.032f)
@@ -31,9 +31,9 @@ void PointLight::BindLight()
 	const Float4& worldPos = GetWorldTransform().GetPosition();
 	cbPerLight.position_S_P = { worldPos.X, worldPos.Y, worldPos.Z };
 	cbPerLight.range_S_P = range_;
-	cbPerLight.attenuationConst_P = attenuationConst_;
-	cbPerLight.attenuationLinear_P = attenuationLinear_;
-	cbPerLight.attenuationQuad_P = attenuationQuad_;
+	cbPerLight.attenuationConst_S_P = attenuationConst_;
+	cbPerLight.attenuationLinear_S_P = attenuationLinear_;
+	cbPerLight.attenuationQuad_S_P = attenuationQuad_;
 	
 	cbPerLight.lightType = (float)ELightType::PointLight;
 	ConstantManager::Instance()->UpdatePerLight(&cbPerLight);

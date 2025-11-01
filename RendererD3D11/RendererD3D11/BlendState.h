@@ -20,6 +20,8 @@ public:
 
 	ULONG __stdcall Release() override;
 
+	void __stdcall Clear() override;
+
 	void __stdcall Setting() override;
 
 private:

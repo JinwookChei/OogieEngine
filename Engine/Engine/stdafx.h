@@ -55,7 +55,8 @@ extern InputManager* GInputManager;
 extern TimeManager* GTimeManager;
 extern ConstantManager* GConstantManager;
 extern Camera* GCurrentCamera;
-//extern SpotLight* GSpotLight;
+extern IBlendState* GBlendState;
+
 
 
 // юс╫ц.

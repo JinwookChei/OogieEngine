@@ -175,6 +175,7 @@ void Level::OnRender()
 		// Geometry Pass End
 
 		// Light Pass
+		//GBlendState->Setting();
 		GCurrentCamera->LightPassBegin();
 		LINK_ITEM* pLightIter = pLightHead_;
 		while (pLightIter)
@@ -186,6 +187,7 @@ void Level::OnRender()
 			GCurrentCamera->RenderLight();
 		}
 		GCurrentCamera->LightPassEnd();
+		//GBlendState->Clear();
 		// Light Pass End
 	}
 }

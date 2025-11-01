@@ -11,6 +11,7 @@ BlendState::BlendState()
 
 BlendState::~BlendState()
 {
+	CleanUp();
 }
 
 bool BlendState::Init(ID3D11BlendState* pBlendState, float blendFactor[4])
@@ -49,9 +50,15 @@ ULONG __stdcall BlendState::Release()
 	return tmpRefCount;
 }
 
+void __stdcall BlendState::Clear()
+{
+	float blendFactor[4] = { 0.f, 0.f, 0.f, 0.f };
+	GRenderer->DeviceContext()->OMSetBlendState(nullptr, blendFactor, 0xffffffff);
+}
+
 void __stdcall BlendState::Setting()
 {
-	GRenderer->DeviceContext()->OMSetBlendState(pBlendState_, blendFactor_, 0xFFFFFFFF);
+	GRenderer->DeviceContext()->OMSetBlendState(pBlendState_, blendFactor_, 0xffffffff);
 }
 
 void BlendState::CleanUp()

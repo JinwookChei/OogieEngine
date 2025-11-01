@@ -129,6 +129,8 @@ struct IRasterizer : public IUnknown {
 
 struct IBlendState : public IUnknown
 {
+	virtual void __stdcall Clear() = 0;
+
 	virtual void __stdcall Setting() = 0;
 };
 
@@ -173,4 +175,6 @@ struct IRenderer : public IUnknown {
 	virtual IRasterizer* __stdcall  CreateRasterizer(bool frontCounterClockwise, bool backFaceCulling) = 0;
 
 	virtual IRenderTarget* __stdcall CreateRenderTarget(const RenderTargetDesc& desc) = 0;
+
+	virtual IBlendState* __stdcall CreateBlendState(uint32_t srcBlend, uint32_t destBlend, uint32_t srcBlendAlpha, uint32_t destBlendAlpha, float blendFactor[4] = nullptr) = 0;
 };

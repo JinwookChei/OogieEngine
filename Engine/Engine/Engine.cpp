@@ -15,7 +15,7 @@ IRenderer* GRenderer = nullptr;
 TimeManager* GTimeManager = nullptr;
 ConstantManager* GConstantManager = nullptr;
 Camera* GCurrentCamera = nullptr;
-
+IBlendState* GBlendState = nullptr;
 
 Engine::Engine()
 	: pStartUp_(nullptr),
@@ -93,6 +93,12 @@ bool Engine::Initialize
 	}
 
 	if (false == InitializeWorld())
+	{
+		return false;
+	}
+
+	GBlendState = GRenderer->CreateBlendState(2, 2, 2, 2, nullptr);
+	if (nullptr == GBlendState)
 	{
 		return false;
 	}
@@ -306,6 +312,11 @@ void Engine::CleanUp()
 		applicationModule_ = nullptr;
 	}
 
+	if (nullptr != GBlendState)
+	{
+		GBlendState->Release();
+		GBlendState = nullptr;
+	}
 
 	if (nullptr != pRenderer_)
 	{

@@ -20,14 +20,20 @@ public:
 
 	void SetRange(float range);
 
-	float GetAngle() const;		// Radian 리턴
+//	float GetAngle() const;		// Radian 리턴
 
-	void SetAngle(float deg);
+	//void SetAngle(float deg);
 
 private:
 	void CleanUp() override;
 	
 	float range_;
 	
-	float angle_;		// Rad 값.
+	float exponent_;
+	float innerAngle_;
+	float outerAngle_;
+
+	float attenuationConst_;
+	float attenuationLinear_;
+	float attenuationQuad_;
 };

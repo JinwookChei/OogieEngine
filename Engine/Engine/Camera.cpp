@@ -204,7 +204,7 @@ bool Camera::InitLightBuffer()
 {
 	RenderTargetDesc lightBufferDesc(ERenderTechniqueType::Forward);
 	lightBufferDesc.size_ = { DEFAULT_SCREEN_WIDTH , DEFAULT_SCREEN_HEIGHT };
-	lightBufferDesc.clearColor_ = { 1.0f, 1.0f, 0.0f, 0.0f };
+	lightBufferDesc.clearColor_ = { 0.0f, 0.0f, 0.0f, 0.0f };
 	pLightBufferTarget_ = GRenderer->CreateRenderTarget(lightBufferDesc);
 	if (nullptr == pLightBufferTarget_)
 	{

@@ -225,7 +225,6 @@ bool Texture::CreateDepthStencilView()
 	DSVDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
 	DSVDesc.Texture2D.MipSlice = 0;
 
-
 	HRESULT hr = GRenderer->Device()->CreateDepthStencilView(pTexture_, &DSVDesc, &pDepthStencilView_);
 	if (FAILED(hr))
 	{

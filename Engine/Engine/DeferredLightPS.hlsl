@@ -30,8 +30,11 @@ cbuffer CBPerSpotLight : register(b1)
     float3 LightDirection; // Spot, Direction이랑 공유.
     float LightRange;
     float3 LightPosition;
-    float LightAngle;
 
+    float SpotExponent;
+    float InnerAngle;
+    float OuterAngle;
+    
     float AttenuationConst;
     float AttenuationLinear;
     float AttenuationQuad;
@@ -40,6 +43,9 @@ cbuffer CBPerSpotLight : register(b1)
 	// 1 -> SpotLight
 	// 2 -> PointLight
     float LightType;
+    
+    
+    float2 Pad;
 };
 
 
@@ -71,22 +77,22 @@ float4 main(PS_ScreenRect input) : SV_TARGET
     
     // DirectionLight
     if (LightType == 0)
-    {
+    {        
         float3 N = normalize(normal.xyz);
-        float3 L = normalize(-LightDirection); 
-        float3 V = normalize(CamPos.xyz - worldPos.xyz); 
+        float3 L = normalize(-LightDirection);
+        float3 V = normalize(CamPos.xyz - worldPos.xyz);
         float3 R = normalize(reflect(-L, N));
         
         // Diffuse
         float diffuseFactor = saturate(dot(N, L));
+        clip(diffuseFactor - 0.0001f);
         float3 diffuseColor = diffuseFactor * LightDiffuse.rgb * albedo.rgb;
 
         // Specular
         float rDotV = saturate(dot(R, V));
-        float shininessFactor = pow(rDotV, 16);
-
+        float specualrFactor = pow(rDotV, 16);
         float3 materialSpecular = float3(0.7f, 0.7f, 0.7f);
-        float3 specularColor = shininessFactor * LightSpecular.rgb * materialSpecular;
+        float3 specularColor = specualrFactor * LightSpecular.rgb * materialSpecular;
 
         // Ambient
         float3 ambientColor = LightAmbient.rgb * albedo.rgb;
@@ -100,70 +106,81 @@ float4 main(PS_ScreenRect input) : SV_TARGET
     else if (LightType == 1)
     {
         float3 N = normalize(normal.xyz);
-        float3 L = normalize(-LightDirection);
-        float3 V = normalize(CamPos.xyz - worldPos.xyz);
-        float3 R = normalize(reflect(-L, N));
-        float3 S = normalize(LightPosition - worldPos.xyz);
-    
-        // Diffuse
-        float spotCos = dot(L, S);
-        float spotEffect = smoothstep(LightAngle, LightAngle + 0.05, spotCos);
-    
-        float dist = length(LightPosition - worldPos.xyz);
-        float att = saturate(1 - dist / LightRange);
-    
-        float diffuseFactor = saturate(dot(N, L)) * spotEffect * att;
-        float3 diffuseColor = diffuseFactor * LightDiffuse.rgb * albedo.rgb;
-    
-        // Specular
-        float rDotV = saturate(dot(R, V));
-        float shininessFactor = pow(rDotV, 16);
-
-        // 거리/스포트 효과만 곱하기
-        float lightFalloff = spotEffect * att;
+        float3 toEye = normalize(CamPos.xyz - worldPos.xyz);
+        float3 toLight = LightPosition - worldPos.xyz;
+        float dist = length(toLight);
         
-        float3 materialSpecular = float3(0.7f, 0.7f, 0.7f);
-        float3 specularColor = lightFalloff * shininessFactor * LightSpecular.rgb * materialSpecular;
+        clip(LightRange - dist);
+        toLight /= dist;
         
         // Ambient
         float3 ambientColor = LightAmbient.rgb * albedo.rgb;
         
+        // Diffuse
+        float diffuseFactor = dot(toLight, N);
+        clip(diffuseFactor - 0.0001f);
+        float3 diffuseColor = diffuseFactor * LightDiffuse.rgb * albedo.rgb;
+        
+        // Specular
+        float3 R = reflect(-toLight, N);
+        float shineness = 16.0f;
+        float specFactor = pow(max(dot(R, toEye), 0.0f), shineness);
+        
+        float3 materialSpecular = float3(0.7f, 0.7f, 0.7f);
+        float3 specularColor = specFactor * LightSpecular.rgb * materialSpecular;
+        
         // Emissive
         float3 emissiveColor = 0.0f;
         
-        return float4(diffuseColor + specularColor + ambientColor + emissiveColor, 1.0f);
+        //// Att        
+        float innerCone = cos(radians(InnerAngle)); 
+        float outerCone = cos(radians(OuterAngle));
+        float theta = dot(-toLight, LightDirection);
+        float spotIntensity = smoothstep(outerCone, innerCone, theta);
+        float spot = pow(max(spotIntensity, 0.0f), SpotExponent);
+        float3 attCoeffs = float3(AttenuationConst, AttenuationLinear, AttenuationQuad);
+        float attenuation = 1.0f / dot(attCoeffs, float3(1.0f, dist, dist * dist));
+        float att = spot * attenuation;
+        
+        float3 finalColor = float3(diffuseColor + specularColor + ambientColor + emissiveColor) * att;
+        return float4(finalColor, 1.0f);
     }
     // PointLight
     else
     {
-        // Diffuse
         float3 N = normalize(normal.xyz);
-        float3 L = normalize(LightPosition - worldPos.xyz);
-        float3 V = normalize(CamPos.xyz - worldPos.xyz);
-        float3 R = normalize(reflect(-L, N));
+        float3 toEye = normalize(CamPos.xyz - worldPos.xyz);
+        float3 toLight = LightPosition - worldPos.xyz;
+        float3 lightVec = LightPosition - worldPos.xyz;
         
-        float dist = length(LightPosition - worldPos.xyz);
-        float att = 1.0f / (AttenuationConst + AttenuationLinear * dist + AttenuationQuad * dist * dist);
+        float dist = length(lightVec);
+        //clip(LightRange - dist);
+        lightVec /= dist;
         
-        att *= step(dist, LightRange);
-        float diffuseFactor = saturate(dot(N, L)) * att;
+        // Diffuse
+        float diffuseFactor = dot(lightVec, N);
+        //clip(diffuseFactor - 0.0001f);
         float3 diffuseColor = diffuseFactor * LightDiffuse.rgb * albedo.rgb;
         
         // Specular
-        float rDotV = saturate(dot(R, V));
-        float shininessFactor = pow(rDotV, 16); // material shininess
-
+        float3 R = reflect(-lightVec, N);
+        float shineness = 16.0f;
+        float specularFactor = pow(max(dot(R, toEye), 0.0f), shineness);
         float3 materialSpecular = float3(0.7f, 0.7f, 0.7f);
-        float3 specularColor = att * shininessFactor * LightSpecular.rgb * materialSpecular;
+        float specularColor = specularFactor * LightSpecular.rgb * materialSpecular.rgb;
         
         // Ambient
         float3 ambientColor = LightAmbient.rgb * albedo.rgb;
         
+        // 감쇠
+        float3 attCoeffs = float3(AttenuationConst, AttenuationLinear, AttenuationQuad);
+        float att = 1.0f / dot(attCoeffs, float3(1.0f, dist, dist * dist));
+        
         // Emissive
         float3 emissiveColor = 0.0f;
         
-        //return float4(ambientColor, 1.0f);
-        return float4(diffuseColor + specularColor + ambientColor + emissiveColor, 1.0f);
+        float3 finalColor = float3(diffuseColor + specularColor + ambientColor + emissiveColor) * att;
+        return float4(finalColor, 1.0f);
     }
     
     return float4(0.0f, 0.0f, 0.0f, 1.0f);
