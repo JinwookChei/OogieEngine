@@ -63,6 +63,7 @@ void ConstantManager::UpdatePerObejct(CBPerObject* cbPerObject)
 {
 	pPerObjectBuffer_->Update(cbPerObject);
 	pPerObjectBuffer_->VSSetting(1);
+	pPerObjectBuffer_->PSSetting(1);
 }
 
 void ConstantManager::UpdatePerLight(CBPerLight* pCBPerLight)

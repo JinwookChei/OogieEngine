@@ -328,7 +328,7 @@ IMesh* __stdcall Renderer::CreateMesh(void* pVertices, uint32_t vertexSize, uint
 	return nullptr;
 }
 
-IMaterial* __stdcall Renderer::CreateMaterial(const wchar_t* VS, const wchar_t* PS, bool samplerLinear, bool samplerClamp)
+IMaterial* __stdcall Renderer::CreateMaterial(const MaterialDesc& materialDesc)
 {
 	VertexShader* pVertexShader = nullptr;
 	PixelShader* pPixelShader = nullptr;
@@ -337,20 +337,20 @@ IMaterial* __stdcall Renderer::CreateMaterial(const wchar_t* VS, const wchar_t* 
 
 	do
 	{
-		if (nullptr != VS)
+		if (nullptr != materialDesc.VS)
 		{
-			pVertexShader = static_cast<VertexShader*>(CreateShader(EShaderType::Vertex, VS));
+			pVertexShader = static_cast<VertexShader*>(CreateShader(EShaderType::Vertex, materialDesc.VS));
 		}
 
-		if (nullptr != PS)
+		if (nullptr != materialDesc.PS)
 		{
-			pPixelShader = static_cast<PixelShader*>(CreateShader(EShaderType::Pixel, PS));
+			pPixelShader = static_cast<PixelShader*>(CreateShader(EShaderType::Pixel, materialDesc.PS));
 		}
 
-		pSamplerState = static_cast<SamplerState*>(CreateSamplerState(samplerLinear, samplerClamp));
+		pSamplerState = static_cast<SamplerState*>(CreateSamplerState(materialDesc.samplerLinear, materialDesc.samplerClamp));
 
 		pMaterial = new Material;
-		if (false == pMaterial->Init(pVertexShader, pPixelShader, pSamplerState))
+		if (false == pMaterial->Init(pVertexShader, pPixelShader, pSamplerState, materialDesc.shineness, materialDesc.specularColor))
 		{
 			DEBUG_BREAK();
 			break;

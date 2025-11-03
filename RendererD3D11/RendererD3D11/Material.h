@@ -14,7 +14,14 @@ private:
 
 	virtual ~Material();
 
-	bool Init(VertexShader* pVertexShader, PixelShader* pPixelShader, SamplerState* pSamplerState);
+	bool Init
+	(
+		VertexShader* pVertexShader, 
+		PixelShader* pPixelShader, 
+		SamplerState* pSamplerState, 
+		float shineness,
+		Float3 specularColor
+	);
 
 public:
 	HRESULT __stdcall QueryInterface(REFIID riid, _COM_Outptr_ void __RPC_FAR* __RPC_FAR* ppvObject) override;
@@ -27,6 +34,14 @@ public:
 
 	IShader* __stdcall GetVertexShader() override;
 
+	float GetShineness() const override;
+
+	void SetShineness(float shineness) override;
+
+	const Float3& GetSpecularColor() const override;
+
+	void SetSpecularColor(const Float3& specularColor) override;
+
 private:
 	void CleanUp();
 
@@ -37,4 +52,7 @@ private:
 	PixelShader* pPixelShader_;
 
 	SamplerState* pSamplerState_;
+
+	float shineness_;
+	Float3 specularColor_;
 };

@@ -1,6 +1,6 @@
 Texture2D renderTextureAlbedo : register(t0);
 Texture2D renderTextureNormal : register(t1);
-Texture2D renderTextureMaterial : register(t2);
+Texture2D renderTextureSpecular : register(t2);
 Texture2D renderTextureDepth : register(t3);
 SamplerState samplers : register(s0);
 
@@ -59,6 +59,7 @@ float4 main(PS_ScreenRect input) : SV_TARGET
 {
     float4 albedo = renderTextureAlbedo.Sample(samplers, input.uv);
     float4 normal = renderTextureNormal.Sample(samplers, input.uv);
+    float4 specular = renderTextureSpecular.Sample(samplers, input.uv);
     float depth = renderTextureDepth.Sample(samplers, input.uv).r;
     
     clip(normal.w - 0.0001f);
@@ -90,9 +91,9 @@ float4 main(PS_ScreenRect input) : SV_TARGET
 
         // Specular
         float rDotV = saturate(dot(R, V));
-        float specualrFactor = pow(rDotV, 16);
-        float3 materialSpecular = float3(0.7f, 0.7f, 0.7f);
-        float3 specularColor = specualrFactor * LightSpecular.rgb * materialSpecular;
+        float shineness = specular.a;
+        float specualrFactor = pow(rDotV, shineness);
+        float3 specularColor = specualrFactor * LightSpecular.rgb * specular.rgb;
 
         // Ambient
         float3 ambientColor = LightAmbient.rgb * albedo.rgb;
@@ -123,11 +124,9 @@ float4 main(PS_ScreenRect input) : SV_TARGET
         
         // Specular
         float3 R = reflect(-toLight, N);
-        float shineness = 16.0f;
+        float shineness = specular.a;
         float specFactor = pow(max(dot(R, toEye), 0.0f), shineness);
-        
-        float3 materialSpecular = float3(0.7f, 0.7f, 0.7f);
-        float3 specularColor = specFactor * LightSpecular.rgb * materialSpecular;
+        float3 specularColor = specFactor * LightSpecular.rgb * specular.rgb;
         
         // Emissive
         float3 emissiveColor = 0.0f;
@@ -147,7 +146,10 @@ float4 main(PS_ScreenRect input) : SV_TARGET
     }
     // PointLight
     else
-    {
+    {        
+        //return float4(specular.rgb, 1.0f);
+        //return float4(specular.w,0.0f, 0.0f, 1.0f);
+        
         float3 N = normalize(normal.xyz);
         float3 toEye = normalize(CamPos.xyz - worldPos.xyz);
         float3 toLight = LightPosition - worldPos.xyz;
@@ -164,10 +166,10 @@ float4 main(PS_ScreenRect input) : SV_TARGET
         
         // Specular
         float3 R = reflect(-lightVec, N);
-        float shineness = 16.0f;
+        float shineness = pow(2, ((specular.w * 10) - 1));
         float specularFactor = pow(max(dot(R, toEye), 0.0f), shineness);
         float3 materialSpecular = float3(0.7f, 0.7f, 0.7f);
-        float specularColor = specularFactor * LightSpecular.rgb * materialSpecular.rgb;
+        float specularColor = specularFactor * LightSpecular.rgb * specular.rgb;
         
         // Ambient
         float3 ambientColor = LightAmbient.rgb * albedo.rgb;

@@ -30,7 +30,9 @@ public:
 
 	IMesh* __stdcall CreateMesh(void* pVertices, uint32_t vertexSize, uint32_t vertexCount, void* pIndices = nullptr, uint32_t indexTypeSize = 0, uint32_t indexCount = 0) override;
 
-	IMaterial* __stdcall CreateMaterial(const wchar_t* VS, const wchar_t* PS, bool samplerLinear, bool samplerClamp) override;
+	//IMaterial* __stdcall CreateMaterial(const wchar_t* VS, const wchar_t* PS, bool samplerLinear, bool samplerClamp) override;
+
+	IMaterial* __stdcall CreateMaterial(const MaterialDesc& materialDesc) override;
 
 	IConstantBuffer* __stdcall CreateConstantBuffer(uint32_t bufferSize) override;
 

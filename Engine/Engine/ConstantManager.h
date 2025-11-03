@@ -19,6 +19,9 @@ struct CBPerFrame
 struct CBPerObject
 {
 	Float4x4 world;
+
+	Float3 materialSpecular;
+	float materialShineness;
 };
 
 struct CBPerLight

@@ -15,6 +15,9 @@ cbuffer CBPerFrame : register(b0)
 cbuffer CBPerObject : register(b1)
 {
     matrix World;
+    
+    float3 MaterialSpecular;
+    float MaterialShineness;
 };
 
 struct VS_INPUT

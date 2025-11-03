@@ -105,11 +105,29 @@ struct IMesh : public IUnknown
 	virtual bool __stdcall Draw() = 0;
 };
 
+struct MaterialDesc
+{
+	const wchar_t* VS = nullptr;
+	const wchar_t* PS = nullptr;
+	bool samplerLinear = false;
+	bool samplerClamp = false;
+	float shineness = 16.0f;
+	Float3 specularColor = { 0.7f,0.7f ,0.7f };
+};
+
 struct IMaterial : public IUnknown
 {
 	virtual void __stdcall Setting() = 0;
 
 	virtual IShader* __stdcall GetVertexShader() = 0;
+
+	virtual float __stdcall GetShineness() const = 0;
+
+	virtual void __stdcall SetShineness(float shineness) = 0;
+
+	virtual const Float3& __stdcall GetSpecularColor() const = 0;
+
+	virtual void __stdcall SetSpecularColor(const Float3& specularColor) = 0;
 };
 
 struct IConstantBuffer : public IUnknown {
@@ -168,7 +186,8 @@ struct IRenderer : public IUnknown {
 
 	virtual IMesh* __stdcall CreateMesh(void* pVertices, uint32_t vertexSize, uint32_t vertexCount, void* pIndices = nullptr, uint32_t indexTypeSize = 0, uint32_t indexCount = 0) = 0;
 
-	virtual IMaterial* __stdcall CreateMaterial(const wchar_t* VS, const wchar_t* PS, bool samplerLinear, bool samplerClamp) = 0;
+	//virtual IMaterial* __stdcall CreateMaterial(const wchar_t* VS, const wchar_t* PS, bool samplerLinear, bool samplerClamp) = 0;
+	virtual IMaterial* __stdcall CreateMaterial(const MaterialDesc& materialDesc) = 0;
 
 	virtual IConstantBuffer* __stdcall CreateConstantBuffer(uint32_t bufferSize) = 0;
 

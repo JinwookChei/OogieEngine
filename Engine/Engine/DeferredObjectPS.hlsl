@@ -2,6 +2,14 @@ Texture2D g_Texture : register(t0);
 Texture2D g_NormalMap : register(t1);
 SamplerState g_Sampler : register(s0);
 
+cbuffer CBPerObject : register(b1)
+{
+    matrix World;
+    
+    float3 MaterialSpecular;
+    float MaterialShineness;
+};
+
 struct PS_INPUT
 {
     float4 svPos : SV_POSITION;
@@ -29,6 +37,9 @@ PS_OUTPUT main(PS_INPUT input)
     float3 tmpN = N;
     //float3 tmpN = 0.5f * (N + 1.0f);  
     output.rt1 = float4(tmpN, 1.0f);
+    
+    //output.rt2 = float4(MaterialSpecular, MaterialShineness);
+    output.rt2 = float4(MaterialSpecular, MaterialShineness);
     
     return output;
 }

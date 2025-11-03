@@ -9,7 +9,9 @@ Material::Material()
 	: refCount_(1),
 	pVertexShader_(nullptr),
 	pPixelShader_(nullptr),
-	pSamplerState_(nullptr)
+	pSamplerState_(nullptr),
+	shineness_(1.0f),
+	specularColor_(0.7f, 0.7f, 0.7f)
 {
 }
 
@@ -18,7 +20,13 @@ Material::~Material()
 	CleanUp();
 }
 
-bool Material::Init(VertexShader* pVertexShader, PixelShader* pPixelShader, SamplerState* pSamplerState)
+bool Material::Init(
+	VertexShader* pVertexShader, 
+	PixelShader* pPixelShader, 
+	SamplerState* pSamplerState,
+	float shineness,
+	Float3 specularColor
+)
 {
 	if (nullptr != pVertexShader)
 	{
@@ -32,6 +40,9 @@ bool Material::Init(VertexShader* pVertexShader, PixelShader* pPixelShader, Samp
 	{
 		pSamplerState_ = pSamplerState;
 	}
+
+	shineness_ = shineness;
+	specularColor_ = specularColor;
 	
 	return true;
 }
@@ -69,6 +80,26 @@ void __stdcall Material::Setting()
 IShader* __stdcall Material::GetVertexShader()
 {
 	return pVertexShader_;
+}
+
+float Material::GetShineness() const
+{
+	return shineness_;
+}
+
+void Material::SetShineness(float shineness)
+{
+	shineness_ = shineness;
+}
+
+const Float3& Material::GetSpecularColor() const
+{
+	return specularColor_;
+}
+
+void Material::SetSpecularColor(const Float3& specularColor)
+{
+	specularColor_ = specularColor;
 }
 
 void Material::CleanUp()

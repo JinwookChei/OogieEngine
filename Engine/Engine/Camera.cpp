@@ -211,7 +211,13 @@ bool Camera::InitLightBuffer()
 		return false;
 	}
 
-	pLightBufferMaterial_ = GRenderer->CreateMaterial(L"ScreenMergeVS.cso", L"DeferredLightPS.cso", true, false);
+	MaterialDesc matDesc;
+	matDesc.VS = L"ScreenMergeVS.cso";
+	matDesc.PS = L"DeferredLightPS.cso";
+	matDesc.samplerLinear = true;
+	matDesc.samplerClamp = false;
+
+	pLightBufferMaterial_ = GRenderer->CreateMaterial(matDesc);
 	if (nullptr == pLightBufferMaterial_)
 	{
 		return false;
@@ -234,7 +240,12 @@ void Camera::InitScreenRect()
 	pScreenVertex_->AddInputLayout("POSITION", 0, 16, 0, false);
 	pScreenVertex_->AddInputLayout("TEXCOORD", 0, 16, 0, false);
 
-	pScreenMaterial_ = GRenderer->CreateMaterial(L"ScreenMergeVS.cso", L"ScreenMergePS.cso", true, false);
+	MaterialDesc matDesc;
+	matDesc.VS = L"ScreenMergeVS.cso";
+	matDesc.PS = L"ScreenMergePS.cso";
+	matDesc.samplerLinear = true;
+	matDesc.samplerClamp = false;
+	pScreenMaterial_ = GRenderer->CreateMaterial(matDesc);
 
 	pScreenInputLayout_ = GRenderer->CreateLayout(pScreenVertex_, pScreenMaterial_->GetVertexShader());
 
