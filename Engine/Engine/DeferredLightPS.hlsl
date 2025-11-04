@@ -87,7 +87,7 @@ float4 main(PS_ScreenRect input) : SV_TARGET
         
         // Diffuse
         float diffuseFactor = saturate(dot(N, L));
-        //clip(diffuseFactor - 0.0001f);
+        clip(diffuseFactor - 0.0001f);
         float3 diffuseColor = diffuseFactor * LightDiffuse.rgb * albedo.rgb;
 
         // Specular
@@ -111,12 +111,12 @@ float4 main(PS_ScreenRect input) : SV_TARGET
         float3 toLight = LightPosition - worldPos.xyz;
         float dist = length(toLight);
         
-        //clip(LightRange - dist);
+        // clip(LightRange - dist);
         toLight /= dist;
         
         // Diffuse
         float diffuseFactor = dot(toLight, N);
-        //clip(diffuseFactor - 0.0001f);
+        // clip(diffuseFactor - 0.0001f);
         float3 diffuseColor = diffuseFactor * LightDiffuse.rgb * albedo.rgb;
         
         // Specular
@@ -152,12 +152,12 @@ float4 main(PS_ScreenRect input) : SV_TARGET
         float3 lightVec = LightPosition - worldPos.xyz;
         
         float dist = length(lightVec);
-        //clip(LightRange - dist);
+        // clip(LightRange - dist);
         lightVec /= dist;
         
         // Diffuses
         float diffuseFactor = dot(lightVec, N);
-        //clip(diffuseFactor - 0.0001f);
+        // clip(diffuseFactor - 0.0001f);
         float3 diffuseColor = diffuseFactor * LightDiffuse.rgb * albedo.rgb;
         
         // Specular

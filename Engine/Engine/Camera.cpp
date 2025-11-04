@@ -81,7 +81,7 @@ void Camera::RenderLight()
 
 void Camera::LightPassEnd()
 {
-	//pGBufferTarget_->ClearRenderTextureForPS(0);
+	pGBufferTarget_->ClearRenderTextureForPS(0);
 
 	pLightBufferTarget_->EndRenderPass();
 }

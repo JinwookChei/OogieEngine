@@ -181,7 +181,6 @@ bool Engine::LoadApplication
 		return false;
 	}
 
-
 	if (false == pApplication_->InitializeMainWindow(pMainWindowClassName, pMainWindowText))
 	{
 		DEBUG_BREAK();
