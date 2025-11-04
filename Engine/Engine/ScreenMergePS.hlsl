@@ -57,11 +57,12 @@ float4 main(PS_ScreenRect input) : SV_TARGET
 {    
     float4 albedo = renderTextureAlbedo.Sample(samplers, input.uv);
     float4 render = renderTexture.Sample(samplers, input.uv);
-    return /*albedo **/ render;
+    
+    clip(render.w - 0.0001f);
+    return albedo * float4(0.1f, 0.1f, 0.1f, 1.0f) + render;
 }
 
-// Depth Shading
-//float4 main(PS_ScreenRect input) : SV_TARGET
+// Depth Shading//float4 main(PS_ScreenRect input) : SV_TARGET
 //{
 //    float depth = renderTextureDepth.Sample(samplers, input.uv).r;
 //    //// 비선형 → 선형 변환

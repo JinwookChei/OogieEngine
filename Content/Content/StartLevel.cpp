@@ -45,25 +45,23 @@ void StartLevel::BeginPlay()
 	TestActor* pActor3 = SpawnActor<TestActor>(ACTOR_TYPE::NORMAL);
 	pActor3->GetWorldTransform().SetPosition({ 6.0f, 0.0f, 0.0f, 1.0f });
 
-	//DirectionLight* pDirectionLight = SpawnLight<DirectionLight>();
-	//pDirectionLight->GetWorldTransform().SetRotation({ 0.0f, 0.0f, 0.0f, 0.0f });
-	
+	DirectionLight* pDirectionLight = SpawnLight<DirectionLight>();
+	pDirectionLight->GetWorldTransform().SetRotation({ 0.0f, 0.0f, 0.0f, 0.0f });
 
+	SpotLight* pSpotLight = SpawnLight<SpotLight>();
+	pSpotLight->GetWorldTransform().SetPosition({ 3.0f, 0.0f, 3.0f, 1.0f });
+	pSpotLight->GetWorldTransform().SetRotation({ 0.0f, 90.0f, 0.0f, 0.0f });
 
-	//SpotLight* pSpotLight = SpawnLight<SpotLight>();
-	//pSpotLight->GetWorldTransform().SetPosition({ 0.0f, 0.0f, 3.0f, 1.0f });
-	//pSpotLight->GetWorldTransform().SetRotation({ 0.0f, 90.0f, 0.0f, 0.0f });
+	SpotLight* pSpotLight2 = SpawnLight<SpotLight>();
+	pSpotLight2->GetWorldTransform().SetPosition({ -3.0f, 0.0f, 3.0f, 1.0f });
+	pSpotLight2->GetWorldTransform().SetRotation({ 0.0f, 90.0f, 0.0f, 0.0f });
 
-	//SpotLight* pSpotLight2 = SpawnLight<SpotLight>();
-	//pSpotLight2->GetWorldTransform().SetPosition({ 0.0f, -2.0f, 1.0f, 1.0f });
-	//pSpotLight2->GetWorldTransform().SetRotation({ 0.0f, 90.0f, 0.0f, 0.0f });
-
-	//PointLight* pPointLight = SpawnLight<PointLight>();
-	//pPointLight->GetWorldTransform().SetPosition({ 4.0f, 0.0f, 0.0f, 1.0f });
 
 	PointLight* pPointLight = SpawnLight<PointLight>();
-	pPointLight->GetWorldTransform().SetPosition({ 0.0f, 0.0f, 2.0f, 1.0f });
+	pPointLight->GetWorldTransform().SetPosition({ 0.0f, -3.0f, 2.0f, 1.0f });
 
+	PointLight* pPointLight2 = SpawnLight<PointLight>();
+	pPointLight2->GetWorldTransform().SetPosition({ 0.0f, 3.0f, 2.0f, 1.0f });
 }
 
 void StartLevel::Tick(double deltaTime)

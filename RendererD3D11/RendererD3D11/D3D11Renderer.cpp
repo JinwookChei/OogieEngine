@@ -836,8 +836,8 @@ IBlendState* Renderer::CreateBlendState(uint32_t srcBlend, uint32_t destBlend, u
 		blendDesc.RenderTarget[0].BlendEnable = TRUE;
 		blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
 
-		blendDesc.RenderTarget[0].SrcBlend = (D3D11_BLEND)srcBlend; // 소스 알파값 지금 그려질 오브젝트
-		blendDesc.RenderTarget[0].DestBlend = (D3D11_BLEND)destBlend; // 1 - 소스 알파값  // 렌더타켓
+		blendDesc.RenderTarget[0].SrcBlend = (D3D11_BLEND)srcBlend; 
+		blendDesc.RenderTarget[0].DestBlend = (D3D11_BLEND)destBlend;
 		blendDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
 
 		// BlendFactor : 색을 강조하거나, 화면 전체 페이드 같은 특수 효과를 만들 때 사용. ->OMSetBlendState()에서 BlendFactor 값 인자로 넘김.

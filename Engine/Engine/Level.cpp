@@ -175,19 +175,18 @@ void Level::OnRender()
 		// Geometry Pass End
 
 		// Light Pass
-		//GBlendState->Setting();
+		GBlendState->Setting();
 		GCurrentCamera->LightPassBegin();
 		LINK_ITEM* pLightIter = pLightHead_;
 		while (pLightIter)
 		{
 			Light* curLight = static_cast<Light*>(pLightIter->item_);
 			pLightIter = pLightIter->next_;
-
 			curLight->BindLight();
 			GCurrentCamera->RenderLight();
 		}
 		GCurrentCamera->LightPassEnd();
-		//GBlendState->Clear();
+		GBlendState->Clear();
 		// Light Pass End
 	}
 }

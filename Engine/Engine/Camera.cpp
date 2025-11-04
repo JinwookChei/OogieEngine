@@ -81,7 +81,7 @@ void Camera::RenderLight()
 
 void Camera::LightPassEnd()
 {
-	pGBufferTarget_->ClearRenderTextureForPS(0);
+	//pGBufferTarget_->ClearRenderTextureForPS(0);
 
 	pLightBufferTarget_->EndRenderPass();
 }
@@ -205,6 +205,7 @@ bool Camera::InitLightBuffer()
 	RenderTargetDesc lightBufferDesc(ERenderTechniqueType::Forward);
 	lightBufferDesc.size_ = { DEFAULT_SCREEN_WIDTH , DEFAULT_SCREEN_HEIGHT };
 	lightBufferDesc.clearColor_ = { 0.0f, 0.0f, 0.0f, 0.0f };
+	lightBufferDesc.forwardDesc_.useDepthStencil_ = false;						// 라이트 패스에서 여러 라이트를 처리하기 위해서는 Depth는 꺼야함.
 	pLightBufferTarget_ = GRenderer->CreateRenderTarget(lightBufferDesc);
 	if (nullptr == pLightBufferTarget_)
 	{
@@ -216,7 +217,6 @@ bool Camera::InitLightBuffer()
 	matDesc.PS = L"DeferredLightPS.cso";
 	matDesc.samplerLinear = true;
 	matDesc.samplerClamp = false;
-
 	pLightBufferMaterial_ = GRenderer->CreateMaterial(matDesc);
 	if (nullptr == pLightBufferMaterial_)
 	{
