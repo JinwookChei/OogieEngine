@@ -31,12 +31,14 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 }
 
 
-extern "C" __declspec(dllexport) bool __stdcall CreateWindowsApplication(
+extern "C" __declspec(dllexport) bool __stdcall CreateWindowsApplication
+(
 	void** newApplication,
 	HINSTANCE hInstance,
 	PWSTR pCmdLine,
 	int nCmdShow,
-	const wchar_t* iconPath)
+	const wchar_t* iconPath
+)
 {
 	//NEW -> Release In GameMain.cpp
 	IApplication* newApp = new WindowsApplication(hInstance, pCmdLine, nCmdShow, iconPath);

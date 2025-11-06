@@ -6,7 +6,13 @@ class WindowsApplication : public IApplication
 {
 public:
 	WindowsApplication() = delete;
-	WindowsApplication(HINSTANCE hInstance, PWSTR pCmdLine, int nCmdShow, const wchar_t* iconPath);
+	WindowsApplication
+	(
+		HINSTANCE hInstance, 
+		PWSTR pCmdLine, 
+		int nCmdShow, 
+		const wchar_t* iconPath
+	);
 
 	~WindowsApplication();
 
@@ -16,7 +22,7 @@ public:
 
 	ULONG __stdcall Release(void) override;
 
-	bool __stdcall InitializeMainWindow(const wchar_t* className, const wchar_t* windowText) override;
+	bool __stdcall InitializeMainWindow(const wchar_t* className, const wchar_t* windowText, const Float2& windowSize) override;
 
 	void __stdcall WinPumpMessage() override;
 

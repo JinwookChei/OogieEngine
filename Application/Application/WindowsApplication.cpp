@@ -24,11 +24,13 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 }
 
 
-WindowsApplication::WindowsApplication(
+WindowsApplication::WindowsApplication
+(
 	HINSTANCE hInstance,
 	PWSTR pCmdLine,
 	int nCmdShow,
-	const wchar_t* iconPath)
+	const wchar_t* iconPath
+)
 	: hInstance_(hInstance),
 	pCmdLine_(pCmdLine),
 	nCmdShow_(nCmdShow),
@@ -72,9 +74,9 @@ ULONG __stdcall WindowsApplication::Release(void)
 	return tempRefCount;
 }
 
-bool __stdcall WindowsApplication::InitializeMainWindow(const wchar_t* className, const wchar_t* windowText)
+bool __stdcall WindowsApplication::InitializeMainWindow(const wchar_t* className, const wchar_t* windowText, const Float2& windowSize)
 {
-	mainWindow_ = new Window(className, windowText);
+	mainWindow_ = new Window(className, windowText, windowSize);
 	if (nullptr == mainWindow_)
 	{
 		DEBUG_BREAK();
@@ -121,7 +123,6 @@ bool __stdcall WindowsApplication::InitializeMainWindow(const wchar_t* className
 
 void __stdcall WindowsApplication::WinPumpMessage()
 {
-
 	MSG message = {};
 	while (PeekMessage(&message, NULL, 0, 0, PM_REMOVE)) {
 		TranslateMessage(&message);

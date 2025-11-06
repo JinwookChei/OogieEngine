@@ -174,14 +174,22 @@ bool Engine::LoadApplication
 	}
 
 
-	CreateWindowsApplication((void**)&pApplication_, hInstance, pCmdLine, nCmdShow, pIConPath);
+	CreateWindowsApplication
+	(
+		(void**)&pApplication_, 
+		hInstance,
+		pCmdLine, 
+		nCmdShow, 
+		pIConPath
+	);
+
 	if (nullptr == pApplication_)
 	{
 		DEBUG_BREAK();
 		return false;
 	}
 
-	if (false == pApplication_->InitializeMainWindow(pMainWindowClassName, pMainWindowText))
+	if (false == pApplication_->InitializeMainWindow(pMainWindowClassName, pMainWindowText, {DEFAULT_SCREEN_WIDTH , DEFAULT_SCREEN_HEIGHT}))
 	{
 		DEBUG_BREAK();
 		return false;
