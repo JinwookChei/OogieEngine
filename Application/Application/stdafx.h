@@ -31,6 +31,6 @@
 #include <Renderer\IRenderer.h>
 #include <ImguiManager\IImguiManager.h>
 
-#include <ImguiBackend\ImguiManager.h>
+#include <ImguiModule\ImguiManager.h>
 
 extern class WindowsApplication* GApplication;

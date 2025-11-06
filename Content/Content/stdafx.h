@@ -58,6 +58,7 @@
 #include <Utility/LinkedList.h>
 #include <Application/IApplication.h>
 #include <Renderer/IRenderer.h>
+#include <ImguiManager/IImguiManager.h>
 #include <Engine/Engine.h>
 #include <Engine/StartUp.h>
 #include <Engine/Level.h>

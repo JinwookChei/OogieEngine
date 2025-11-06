@@ -45,7 +45,7 @@
 #include <Renderer/IRenderer.h>
 #include <ImguiManager/IImguiManager.h>
 
-#include <ImguiBackend/ImguiManager.h>
+#include <ImguiModule/ImguiManager.h>
 
 #include "InputManager.h"
 #include "TimeManager.h"

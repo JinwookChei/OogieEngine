@@ -150,6 +150,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Interface\Application\IApplication.h" />
+    <ClInclude Include="..\..\Interface\ImguiManager\IImguiManager.h" />
     <ClInclude Include="..\..\Interface\Renderer\IRenderer.h" />
     <ClInclude Include="ContentManager.h" />
     <ClInclude Include="LookAtCamera.h" />
