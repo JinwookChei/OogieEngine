@@ -19,6 +19,10 @@ public:
 
 	bool __stdcall Initialize(void* hWnd, uint32_t width, uint32_t height) override;
 
+	void* __stdcall GetDeviceHandle() override;
+
+	void* __stdcall GetDeviceContextHandle() override;
+
 	void __stdcall RenderBegin() override;
 
 	void __stdcall RenderEnd() override;
@@ -56,14 +60,12 @@ public:
 	ITexture* CreateTexture(const D3D11_TEXTURE2D_DESC& desc);
 
 	ISamplerState*  CreateSamplerState(bool linear, bool clamp);
-	
+
+	void IncrementDrawCall();
 
 	ID3D11Device* Device();
 
 	ID3D11DeviceContext* DeviceContext();
-
-	void IncrementDrawCall();
-
 private:
 	IDXGIAdapter* GetBestAdapter();
 

@@ -5,8 +5,15 @@
 
 WindowsApplication* GApplication = nullptr;
 
+
+
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
+	if (ImguiSystem::GetImguiManager()->WndProcHandler(hwnd, uMsg, wParam, lParam))
+	{
+		return true;
+	}
+
 	switch (uMsg)
 	{
 	case WM_DESTROY:
@@ -162,6 +169,15 @@ void* __stdcall WindowsApplication::GetMainWindowHandle()
 const Float2& __stdcall WindowsApplication::GetMousePosition() const
 {
 	return mousePos_;
+}
+
+void __stdcall WindowsApplication::Quit()
+{
+	if (nullptr == mainWindow_->Handle())
+	{
+		DEBUG_BREAK();
+	}
+	SendMessage(mainWindow_->Handle(), WM_CLOSE, 0, 0);
 }
 
 void WindowsApplication::UpdateMousePosition(const Float2& mousePos)

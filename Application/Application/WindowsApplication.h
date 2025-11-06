@@ -34,6 +34,8 @@ public:
 
 	const Float2& __stdcall GetMousePosition() const override;
 
+	void __stdcall Quit() override;
+
 	void UpdateMousePosition(const Float2& mousePos);
 
 	const HINSTANCE HandleInstance() const;

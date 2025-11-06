@@ -3,7 +3,7 @@
 #ifdef _DEBUG
 #define _CRTDBG_MAP_ALLOC
 #include <crtdbg.h>
-#define new new (_NORMAL_BLOCK, __FILE__, __LINE__)
+//#define new new (_NORMAL_BLOCK, __FILE__, __LINE__)
 #endif  // _DEBUG
 
 #ifdef _DEBUG
@@ -11,7 +11,6 @@
 #else
 #define DEBUG_BREAK
 #endif // DEBUG
-
 
 #define Assert(msg)                                                   \
     do {                                                               \
@@ -23,47 +22,24 @@
         std::abort();                                                  \
     } while(0)
 
-
-#define ENGINE_API __declspec(dllexport)
+#define IMGUI_API __declspec(dllexport)
 #define UTILITY_API __declspec(dllimport)
-#define IMGUI_API __declspec(dllimport)
 
+// Win32
 #include <windows.h>
 #include <stdint.h>
-#include <math.h>
-#include <vector>
-#include <cstdlib>
-#include <cstdio>
 
+// Imgui
+#define IMGUI_DEFINE_MATH_OPERATORS
+#include <Imgui/imgui.h>
+#include <Imgui/imgui_impl_win32.h>
+#include <Imgui/imgui_impl_dx11.h>
+
+// Utility
 #include <Utility/Math.h>
-#include <Utility/LinkedList.h>
-#include <Utility/HashTable.h>
 
-
-
+// Interface
 #include <Application/IApplication.h>
 #include <Renderer/IRenderer.h>
 #include <ImguiManager/IImguiManager.h>
 
-#include <ImguiBackend/ImguiManager.h>
-
-#include "InputManager.h"
-#include "TimeManager.h"
-#include "ConstantManager.h"
-
-#include "Camera.h"
-#include "Light.h"
-#include "SpotLight.h"
-
-extern IApplication* GApplication;
-extern IRenderer* GRenderer;
-extern InputManager* GInputManager;
-extern TimeManager* GTimeManager;
-extern ConstantManager* GConstantManager;
-extern Camera* GCurrentCamera;
-extern IBlendState* GBlendState;
-
-
-// юс╫ц.
-constexpr float DEFAULT_SCREEN_WIDTH = 2560.0f;
-constexpr float DEFAULT_SCREEN_HEIGHT = 1440.0f;

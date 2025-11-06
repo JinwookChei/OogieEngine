@@ -172,9 +172,12 @@ struct IRenderTarget : public IUnknown
 };
 
 
-
 struct IRenderer : public IUnknown {
 	virtual bool __stdcall Initialize(void* hWnd, uint32_t width, uint32_t height) = 0;
+
+	virtual void* __stdcall GetDeviceHandle() = 0;
+
+	virtual void* __stdcall GetDeviceContextHandle() = 0;
 
 	virtual void __stdcall RenderBegin() = 0;
 

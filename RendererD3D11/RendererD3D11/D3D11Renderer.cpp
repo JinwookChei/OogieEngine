@@ -134,6 +134,16 @@ bool __stdcall Renderer::Initialize(void* hWnd, uint32_t width, uint32_t height)
 	return true;
 }
 
+void* __stdcall Renderer::GetDeviceHandle()
+{
+	return Device();
+}
+
+void* __stdcall Renderer::GetDeviceContextHandle()
+{
+	return DeviceContext();
+}
+
 void __stdcall Renderer::RenderBegin()
 {
 	drawCallCount_ = 0;
@@ -882,6 +892,12 @@ IBlendState* Renderer::CreateBlendState(uint32_t srcBlend, uint32_t destBlend, u
 	return nullptr;
 }
 
+void Renderer::IncrementDrawCall()
+{
+	++drawCallCount_;
+}
+
+
 ID3D11Device* Renderer::Device()
 {
 	return pDevice_;
@@ -890,11 +906,6 @@ ID3D11Device* Renderer::Device()
 ID3D11DeviceContext* Renderer::DeviceContext()
 {
 	return pDeviceContext_;
-}
-
-void Renderer::IncrementDrawCall()
-{
-	++drawCallCount_;
 }
 
 IDXGIAdapter* Renderer::GetBestAdapter()

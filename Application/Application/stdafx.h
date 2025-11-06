@@ -1,4 +1,5 @@
 #pragma once
+
 #ifdef _DEBUG
 #define _CRTDBG_MAP_ALLOC
 #include <crtdbg.h>
@@ -18,12 +19,18 @@
 #endif 
 
 #define UTILITY_API __declspec(dllexport)
-
+#define IMGUI_API __declspec(dllimport)
 
 #include <windows.h>
+#include <stdint.h>
 #include <windowsx.h>
-#include <Utility/Math.h>
+#include <Utility\Math.h>
+
 
 #include <Application\IApplication.h>
+#include <Renderer\IRenderer.h>
+#include <ImguiManager\IImguiManager.h>
+
+#include <ImguiBackend\ImguiManager.h>
 
 extern class WindowsApplication* GApplication;

@@ -76,9 +76,6 @@
     <Filter Include="Source Files\Actor\Camera">
       <UniqueIdentifier>{d9fc05ca-5bf2-4814-b2e5-6f954e1800fb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Imgui">
-      <UniqueIdentifier>{e568a132-76f7-4188-98ea-915ed919e564}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -140,6 +137,9 @@
     </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>Source Files\Actor\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Interface\ImguiManager\IImguiManager.h">
+      <Filter>Interface</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
