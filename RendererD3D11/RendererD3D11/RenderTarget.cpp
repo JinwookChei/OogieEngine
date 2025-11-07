@@ -140,6 +140,11 @@ void __stdcall RenderTarget::ClearRenderTextureForPS(uint32_t slot)
 	pRenderTexture_->ClearRenderTextureForPS(slot);
 }
 
+void* __stdcall RenderTarget::GetShaderResourceView(const ERenderTextureType& texureType)
+{
+	return nullptr;
+}
+
 void __stdcall RenderTarget::EndRenderPass()
 {
 	GCurrentSetRenderTarget = nullptr;

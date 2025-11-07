@@ -23,6 +23,8 @@ public:
 
 	ENGINE_API Float2 GetRenderSize() const;
 
+	IRenderTarget* GetGBufferTarget() const;
+
 	void UpdatePerFrameConstant();
 
 	void GeometryPassBegin();

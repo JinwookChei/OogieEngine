@@ -28,6 +28,7 @@
 // Win32
 #include <windows.h>
 #include <stdint.h>
+#include <string>
 
 // Imgui
 #define IMGUI_DEFINE_MATH_OPERATORS
@@ -37,9 +38,10 @@
 
 // Utility
 #include <Utility/Math.h>
+#include <Utility/LinkedList.h>
 
 // Interface
 #include <Application/IApplication.h>
 #include <Renderer/IRenderer.h>
-#include <ImguiManager/IImguiManager.h>
+#include <ImguiModule/IImguiModule.h>
 

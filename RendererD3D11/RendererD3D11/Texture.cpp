@@ -42,6 +42,21 @@ ULONG __stdcall Texture::Release()
 	return tmpRefCount;
 }
 
+ID3D11RenderTargetView* Texture::RenderTargetView() const
+{
+	return pRenderTargetView_;
+}
+
+ID3D11DepthStencilView* Texture::DepthStencilView() const
+{
+	return pDepthStencilView_;
+}
+
+ID3D11ShaderResourceView* Texture::ShaderResourceView() const
+{
+	return pShaderResourceView_;
+}
+
 //Texture* Texture::Create(const Float2& size, DXGI_FORMAT format, uint32_t flag)
 //{
 //	D3D11_TEXTURE2D_DESC desc = { 0, };
@@ -113,21 +128,6 @@ Float2 Texture::Size() const
 	pTexture_->GetDesc(&texDesc);
 
 	return Float2({ (float)texDesc.Width , (float)texDesc.Height });
-}
-
-ID3D11RenderTargetView* Texture::RenderTargetView() const
-{
-	return pRenderTargetView_;
-}
-
-ID3D11DepthStencilView* Texture::DepthStencilView() const
-{
-	return pDepthStencilView_;
-}
-
-ID3D11ShaderResourceView* Texture::ShaderResourceView() const
-{
-	return pShaderResourceView_;
 }
 
 bool Texture::InitTexture(ID3D11Texture2D* pTexture)

@@ -138,7 +138,7 @@
     <ClInclude Include="Camera.h">
       <Filter>Source Files\Actor\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Interface\ImguiManager\IImguiManager.h">
+    <ClInclude Include="..\..\Interface\ImguiModule\IImguiModule.h">
       <Filter>Interface</Filter>
     </ClInclude>
   </ItemGroup>

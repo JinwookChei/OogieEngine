@@ -17,7 +17,7 @@ class DeferredTarget final
 		const RenderTargetDesc& desc,
 		Texture* pRenderTextureAlbedo, 
 		Texture* pRenderTextureNormal, 
-		Texture* pRenderTextureMaterial, 
+		Texture* pRenderTextureSpecular,
 		Texture* pDepthTexture
 	);
 
@@ -44,8 +44,10 @@ public:
 
 	void __stdcall EndRenderPass() override;
 
+	void* __stdcall GetShaderResourceView(const ERenderTextureType& texureType) override;
+
 private:
-	bool SetTexture(Texture* pRenderTextureAlbedo, Texture* pRenderTextureNormal, Texture* pRenderTextureMaterial, Texture* pDepthTexture);
+	bool SetTexture(Texture* pRenderTextureAlbedo, Texture* pRenderTextureNormal, Texture* pRenderTextureSpecular, Texture* pDepthTexture);
 
 	void ClearRenderTexture(Texture* pRenderTexture);
 
@@ -63,7 +65,7 @@ private:
 
 	Texture* pRenderTextureAlbedo_;
 	Texture* pRenderTextureNormal_;
-	Texture* pRenderTextureMaterial_;
+	Texture* pRenderTextureSpecular_;
 	Texture* pDepthTexture_;
 
 	ID3D11RenderTargetView* pRTVs_[RENDER_BUFFER_COUNT];

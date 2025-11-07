@@ -17,6 +17,11 @@ Camera::Camera()
 	screenOffset_({ 0.0f, 0.0f }),
 	screenScale_({ 1.0f, 1.0f })
 {
+	if (nullptr == GMainCamera)
+	{
+		GMainCamera = this;
+	}
+
 	MATH::MatrixIdentity(view_);
 
 	MATH::MatrixIdentity(projection_);
@@ -155,6 +160,11 @@ void Camera::SetScreenPlacement(const Float2& screenOffset, const Float2& screen
 Float2 Camera::GetRenderSize() const
 {
 	return pGBufferTarget_->GetSize();
+}
+
+IRenderTarget* Camera::GetGBufferTarget() const
+{
+	return pGBufferTarget_;
 }
 
 void Camera::UpdatePerFrameConstant()

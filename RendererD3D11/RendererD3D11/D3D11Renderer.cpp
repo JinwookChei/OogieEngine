@@ -11,6 +11,9 @@
 #include "BlendState.h"
 #include "ConstantBuffer.h"
 #include "Rasterizer.h"
+#include "RenderTargetView.h"
+#include "DepthStencilView.h"
+#include "ShaderResourceView.h"
 
 
 Renderer* GRenderer = nullptr;
@@ -824,6 +827,35 @@ ISamplerState* __stdcall Renderer::CreateSamplerState(bool linear, bool clamp)
 
 	return nullptr;
 }
+
+//IView* Renderer::CreateView(const ViewDesc& desc)
+//{
+//	switch (desc.viewType)
+//	{
+//	case EViewType::RenderTargetView:
+//	{
+//		RenderTargetView* pNewRenderTargetView = new RenderTargetView;
+//		pNewRenderTargetView->Init();
+//		return pNewRenderTargetView;
+//	}break;
+//	case EViewType::DepthStencilView:
+//	{
+//		DepthStencilView* pNewDepthStencilView = new DepthStencilView;
+//		pNewDepthStencilView->Init();
+//		return pNewDepthStencilView;
+//	}break;
+//	case EViewType::ShaderResourceView:
+//	{
+//		ShaderResourceView* pNewShaderResourceView = new ShaderResourceView;
+//		pNewShaderResourceView->Init();
+//		return pNewShaderResourceView;
+//	}break;
+//	default:
+//		break;
+//	}
+//
+//	return nullptr;
+//}
 
 IBlendState* Renderer::CreateBlendState(uint32_t srcBlend, uint32_t destBlend, uint32_t srcBlendAlpha, uint32_t destBlendAlpha, float blendFactor[4]/* = nullptr*/)
 {

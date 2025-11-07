@@ -12,8 +12,6 @@ enum class EFillModeType
 	Solid
 };
 
-
-
 enum class ERenderTechniqueType
 {
 	Forward = 0,
@@ -77,6 +75,11 @@ struct RenderTargetDesc
 
 struct ITexture : public IUnknown
 {
+	//virtual ID3D11RenderTargetView* __stdcall RenderTargetView() const = 0;
+
+	//virtual ID3D11DepthStencilView* __stdcall DepthStencilView() const = 0;
+
+	//virtual ID3D11ShaderResourceView* __stdcall ShaderResourceView() const = 0;
 };
 
 
@@ -152,6 +155,32 @@ struct IBlendState : public IUnknown
 	virtual void __stdcall Setting() = 0;
 };
 
+enum class EViewType
+{
+	RenderTargetView =0,
+	DepthStencilView,
+	ShaderResourceView
+};
+
+struct ViewDesc
+{
+	EViewType viewType;
+};
+
+//struct IView : public IUnknown
+//{
+//	virtual void* __stdcall GetView() = 0;
+//};
+
+enum class ERenderTextureType
+{
+	Albedo = 0,
+	Normal,
+	Specular,
+	Depth,
+	MAX,
+};
+
 struct IRenderTarget : public IUnknown
 {
 	virtual void __stdcall Clear() = 0;
@@ -169,6 +198,8 @@ struct IRenderTarget : public IUnknown
 	virtual void __stdcall ClearRenderTextureForPS(uint32_t slot) = 0;
 
 	virtual void __stdcall EndRenderPass() = 0;
+
+	virtual void* __stdcall GetShaderResourceView(const ERenderTextureType& texureType) = 0;
 };
 
 

@@ -55,6 +55,9 @@
     <Filter Include="Source Files\BlendState">
       <UniqueIdentifier>{68b0ed3b-27ae-43f8-ac8a-08b82caddf26}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\View">
+      <UniqueIdentifier>{ad9a3518-5415-4110-870a-57b5cf674286}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -105,6 +108,15 @@
     <ClInclude Include="BlendState.h">
       <Filter>Source Files\BlendState</Filter>
     </ClInclude>
+    <ClInclude Include="RenderTargetView.h">
+      <Filter>Source Files\View</Filter>
+    </ClInclude>
+    <ClInclude Include="DepthStencilView.h">
+      <Filter>Source Files\View</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderResourceView.h">
+      <Filter>Source Files\View</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -154,6 +166,15 @@
     </ClCompile>
     <ClCompile Include="BlendState.cpp">
       <Filter>Source Files\BlendState</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderTargetView.cpp">
+      <Filter>Source Files\View</Filter>
+    </ClCompile>
+    <ClCompile Include="DepthStencilView.cpp">
+      <Filter>Source Files\View</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderResourceView.cpp">
+      <Filter>Source Files\View</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

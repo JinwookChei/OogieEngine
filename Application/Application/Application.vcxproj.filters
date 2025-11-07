@@ -42,7 +42,7 @@
     <ClInclude Include="..\..\Interface\Renderer\IRenderer.h">
       <Filter>Interface</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Interface\ImguiManager\IImguiManager.h">
+    <ClInclude Include="..\..\Interface\ImguiModule\IImguiModule.h">
       <Filter>Interface</Filter>
     </ClInclude>
   </ItemGroup>

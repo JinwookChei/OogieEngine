@@ -23,13 +23,15 @@
 
 #include <windows.h>
 #include <stdint.h>
+#include <string>
 #include <windowsx.h>
-#include <Utility\Math.h>
 
+#include <Utility\Math.h>
+#include <Utility\LinkedList.h>
 
 #include <Application\IApplication.h>
 #include <Renderer\IRenderer.h>
-#include <ImguiManager\IImguiManager.h>
+#include <ImguiModule\IImguiModule.h>
 
 #include <ImguiModule\ImguiManager.h>
 

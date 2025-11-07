@@ -54,7 +54,47 @@ void World::OnBlit()
 void World::CheckChangeLevel()
 {
 	if (nullptr != nextLevel_) {
+		GMainCamera = nullptr;
+
 		nextLevel_->BeginPlay();
+
+		//GMainCamera.
+		if (nullptr == GMainCamera)
+		{
+			DEBUG_BREAK();
+			return;
+		}
+
+		// Albedo
+		ImguiWidgetDesc widgetDesc;
+		IRenderTarget* pMainCamGBuffer = GMainCamera->GetGBufferTarget();
+		void* pAlbedoResourceView = pMainCamGBuffer->GetShaderResourceView(ERenderTextureType::Albedo);
+		widgetDesc.widgetType = EWidgetType::TextureWidget;
+		widgetDesc.text = "AlbedoTexture";
+		widgetDesc.textureResourceView = pAlbedoResourceView;
+		ImguiSystem::GetImguiManager()->CreateWidget(widgetDesc);
+
+		// Normal
+		void* pNormalResourceView = pMainCamGBuffer->GetShaderResourceView(ERenderTextureType::Normal);
+		widgetDesc.widgetType = EWidgetType::TextureWidget;
+		widgetDesc.text = "NormalTexture";
+		widgetDesc.textureResourceView = pNormalResourceView;
+		ImguiSystem::GetImguiManager()->CreateWidget(widgetDesc);
+
+		// Specular
+		void* pSpecularResourceView = pMainCamGBuffer->GetShaderResourceView(ERenderTextureType::Specular);
+		widgetDesc.widgetType = EWidgetType::TextureWidget;
+		widgetDesc.text = "SpecularTexture";
+		widgetDesc.textureResourceView = pSpecularResourceView;
+		ImguiSystem::GetImguiManager()->CreateWidget(widgetDesc);
+
+		// Depth
+		void* pDepthResourceView = pMainCamGBuffer->GetShaderResourceView(ERenderTextureType::Depth);
+		widgetDesc.widgetType = EWidgetType::TextureWidget;
+		widgetDesc.text = "DepthTexture";
+		widgetDesc.textureResourceView = pDepthResourceView;
+		ImguiSystem::GetImguiManager()->CreateWidget(widgetDesc);
+
 
 		if (nullptr != curLevel_) {
 			delete curLevel_;

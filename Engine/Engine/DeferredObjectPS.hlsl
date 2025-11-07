@@ -1,5 +1,5 @@
-Texture2D g_Texture : register(t0);
-Texture2D g_NormalMap : register(t1);
+//Texture2D g_Texture : register(t0);
+//Texture2D g_NormalMap : register(t1);
 SamplerState g_Sampler : register(s0);
 
 cbuffer CBPerObject : register(b1)
@@ -27,6 +27,15 @@ struct PS_OUTPUT
     float4 rt2 : SV_TARGET2;
 };
 
+float3 EncodingNormal(float3 normal)
+{
+    return 0.5f * (normalize(normal) + 1.0f);
+}
+
+float3 DecodingNormal(float3 normal)
+{
+    return normalize(normal * 2.0f - 1.0f);
+}
 
 PS_OUTPUT main(PS_INPUT input)
 {   
@@ -34,11 +43,11 @@ PS_OUTPUT main(PS_INPUT input)
     output.rt0 = input.color;
     
     float3 N = normalize(input.normal);
-    float3 tmpN = N;
-    //float3 tmpN = 0.5f * (N + 1.0f);  
-    output.rt1 = float4(tmpN, 1.0f);
+    output.rt1 = float4(N, 1.0f);
     
-    //output.rt2 = float4(MaterialSpecular, MaterialShineness);
+    //float3 encodingN = EncodingNormal(N);
+    //output.rt1 = float4(encodingN, 1.0f);
+    
     output.rt2 = float4(MaterialSpecular, MaterialShineness);
     
     return output;

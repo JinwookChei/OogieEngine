@@ -32,6 +32,7 @@
 #include <stdint.h>
 #include <math.h>
 #include <vector>
+#include <string>
 #include <cstdlib>
 #include <cstdio>
 
@@ -40,10 +41,9 @@
 #include <Utility/HashTable.h>
 
 
-
 #include <Application/IApplication.h>
 #include <Renderer/IRenderer.h>
-#include <ImguiManager/IImguiManager.h>
+#include <ImguiModule/IImguiModule.h>
 
 #include <ImguiModule/ImguiManager.h>
 
@@ -60,6 +60,7 @@ extern IRenderer* GRenderer;
 extern InputManager* GInputManager;
 extern TimeManager* GTimeManager;
 extern ConstantManager* GConstantManager;
+extern Camera* GMainCamera;
 extern Camera* GCurrentCamera;
 extern IBlendState* GBlendState;
 

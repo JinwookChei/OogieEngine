@@ -19,6 +19,12 @@ public:
 
 	ULONG __stdcall Release() override;
 
+	ID3D11RenderTargetView* RenderTargetView() const;
+
+	ID3D11DepthStencilView* DepthStencilView() const;
+
+	ID3D11ShaderResourceView* ShaderResourceView() const;
+
 	void BindRenderTextureForPS(uint32_t slot);
 
 	void ClearRenderTextureForPS(uint32_t slot);
@@ -26,12 +32,6 @@ public:
 	bool SetTexture(ID3D11Texture2D* pTexture);
 
 	Float2 Size() const;
-
-	ID3D11RenderTargetView* RenderTargetView() const;
-
-	ID3D11DepthStencilView* DepthStencilView() const;
-
-	ID3D11ShaderResourceView* ShaderResourceView() const;
 
 private:
 	bool InitTexture(ID3D11Texture2D* pTexture);

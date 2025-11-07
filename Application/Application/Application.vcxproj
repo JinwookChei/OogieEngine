@@ -144,7 +144,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Interface\Application\IApplication.h" />
-    <ClInclude Include="..\..\Interface\ImguiManager\IImguiManager.h" />
+    <ClInclude Include="..\..\Interface\ImguiModule\IImguiModule.h" />
     <ClInclude Include="..\..\Interface\Renderer\IRenderer.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Window.h" />

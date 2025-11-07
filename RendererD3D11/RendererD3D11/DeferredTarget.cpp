@@ -9,7 +9,7 @@ DeferredTarget::DeferredTarget()
 	desc_(),
 	pRenderTextureAlbedo_(nullptr),
 	pRenderTextureNormal_(nullptr),
-	pRenderTextureMaterial_(nullptr),
+	pRenderTextureSpecular_(nullptr),
 	pDepthTexture_(nullptr),
 	//pRTVs_{ nullptr, nullptr, nullptr },
 	//pSRVs_{nullptr,nullptr, nullptr, nullptr},
@@ -29,13 +29,13 @@ bool DeferredTarget::Init
 	const RenderTargetDesc& desc,
 	Texture* pRenderTextureAlbedo, 
 	Texture* pRenderTextureNormal, 
-	Texture* pRenderTextureMaterial, 
+	Texture* pRenderTextureSpecular,
 	Texture* pDepthTexture)
 {
 	SetClearColor(desc.clearColor_);
 	desc_ = desc.deferredDesc_;
 
-	bool ret = SetTexture(pRenderTextureAlbedo, pRenderTextureNormal, pRenderTextureMaterial, pDepthTexture);
+	bool ret = SetTexture(pRenderTextureAlbedo, pRenderTextureNormal, pRenderTextureSpecular, pDepthTexture);
 	if (false == ret)
 	{
 		Assert("SetTexture() == false");
@@ -44,7 +44,7 @@ bool DeferredTarget::Init
 
 	pRTVs_[0] = pRenderTextureAlbedo->RenderTargetView();
 	pRTVs_[1] = pRenderTextureNormal->RenderTargetView();
-	pRTVs_[2] = pRenderTextureMaterial->RenderTargetView();
+	pRTVs_[2] = pRenderTextureSpecular->RenderTargetView();
 
 	for (int i = 0; i < RENDER_BUFFER_COUNT; ++i)
 	{
@@ -57,7 +57,7 @@ bool DeferredTarget::Init
 
 	pSRVs_[0] = pRenderTextureAlbedo->ShaderResourceView();
 	pSRVs_[1] = pRenderTextureNormal->ShaderResourceView();
-	pSRVs_[2] = pRenderTextureMaterial->ShaderResourceView();
+	pSRVs_[2] = pRenderTextureSpecular->ShaderResourceView();
 	pSRVs_[3] = pDepthTexture_->ShaderResourceView();
 
 	for (int i = 0; i < RESOURCE_BUFFER_COUNT; ++i)
@@ -105,7 +105,7 @@ void __stdcall DeferredTarget::Clear()
 {
 	ClearRenderTexture(pRenderTextureAlbedo_);
 	ClearRenderTexture(pRenderTextureNormal_);
-	ClearRenderTexture(pRenderTextureMaterial_);
+	ClearRenderTexture(pRenderTextureSpecular_);
 
 	ClearDepthTexture(pDepthTexture_);
 }
@@ -161,11 +161,16 @@ void __stdcall DeferredTarget::EndRenderPass()
 	GRenderer->DeviceContext()->OMSetRenderTargets(RENDER_BUFFER_COUNT, nullRTV, nullptr);
 }
 
-bool DeferredTarget::SetTexture(Texture* pRenderTextureAlbedo, Texture* pRenderTextureNormal, Texture* pRenderTextureMaterial, Texture* pDepthTexture)
+void* __stdcall DeferredTarget::GetShaderResourceView(const ERenderTextureType& texureType)
+{
+	return pSRVs_[(int)texureType];
+}
+
+bool DeferredTarget::SetTexture(Texture* pRenderTextureAlbedo, Texture* pRenderTextureNormal, Texture* pRenderTextureSpecular, Texture* pDepthTexture)
 {
 	CleanUp();
 
-	if (nullptr == pRenderTextureAlbedo || nullptr == pRenderTextureNormal || nullptr == pRenderTextureMaterial || nullptr == pDepthTexture)
+	if (nullptr == pRenderTextureAlbedo || nullptr == pRenderTextureNormal || nullptr == pRenderTextureSpecular || nullptr == pDepthTexture)
 	{
 		Assert("SetTexture() = False");
 		return false;
@@ -173,7 +178,7 @@ bool DeferredTarget::SetTexture(Texture* pRenderTextureAlbedo, Texture* pRenderT
 
 	pRenderTextureAlbedo_ = pRenderTextureAlbedo;
 	pRenderTextureNormal_ = pRenderTextureNormal;
-	pRenderTextureMaterial_ = pRenderTextureMaterial;
+	pRenderTextureSpecular_ = pRenderTextureSpecular;
 	pDepthTexture_ = pDepthTexture;
 
 	Float2 textureSize = pRenderTextureAlbedo_->Size();
@@ -229,10 +234,10 @@ void DeferredTarget::CleanUp()
 		pRenderTextureNormal_->Release();
 		pRenderTextureNormal_ = nullptr;
 	}
-	if (nullptr != pRenderTextureMaterial_)
+	if (nullptr != pRenderTextureSpecular_)
 	{
-		pRenderTextureMaterial_->Release();
-		pRenderTextureMaterial_ = nullptr;
+		pRenderTextureSpecular_->Release();
+		pRenderTextureSpecular_ = nullptr;
 	}
 	if (nullptr != pDepthTexture_)
 	{

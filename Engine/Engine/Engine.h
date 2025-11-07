@@ -48,16 +48,6 @@ private:
 
 	void CleanUp();
 
-	// IMGUI
-	float EnableDpiAwareness();
-
-	bool InitImgui(IApplication* pApplication, IRenderer* pRenderer, float dpiScale);
-
-	void CleanUpImgui();
-
-	void RenderImgui();
-	// IMGUI END
-
 	IStartup* pStartUp_;
 
 	HMODULE applicationModule_;
@@ -65,8 +55,6 @@ private:
 
 	HMODULE rendererModule_;
 	IRenderer* pRenderer_;
-
-	IImguiManager* pImguiManager_;
 
 	World* pWorld_;
 };

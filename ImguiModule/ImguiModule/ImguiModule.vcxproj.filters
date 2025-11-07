@@ -28,6 +28,9 @@
     <Filter Include="Source Files\Manager">
       <UniqueIdentifier>{19fae0a5-e7ef-4acf-94a3-f9affe483e03}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\GUI">
+      <UniqueIdentifier>{d5235163-388b-4477-800e-07133b6155ad}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -66,8 +69,14 @@
     <ClInclude Include="ImguiManager.h">
       <Filter>Source Files\Manager</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Interface\ImguiManager\IImguiManager.h">
+    <ClInclude Include="..\..\Interface\ImguiModule\IImguiModule.h">
       <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="ImguiTextureWidget.h">
+      <Filter>Source Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="ImguiWidget.h">
+      <Filter>Source Files\GUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -100,6 +109,12 @@
     </ClCompile>
     <ClCompile Include="ImguiManager.cpp">
       <Filter>Source Files\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="ImguiTextureWidget.cpp">
+      <Filter>Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="ImguiWidget.cpp">
+      <Filter>Source Files\GUI</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

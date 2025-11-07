@@ -59,7 +59,9 @@ public:
 
 	ITexture* CreateTexture(const D3D11_TEXTURE2D_DESC& desc);
 
-	ISamplerState*  CreateSamplerState(bool linear, bool clamp);
+	ISamplerState* CreateSamplerState(bool linear, bool clamp);
+
+	//IView* CreateView(const ViewDesc& desc);
 
 	void IncrementDrawCall();
 
