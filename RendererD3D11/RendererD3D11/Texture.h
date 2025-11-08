@@ -4,7 +4,6 @@ class Texture final :
 	public ITexture {
 private:
 	friend Renderer;
-	//Texture() = delete;
 
 	Texture();
 
@@ -12,12 +11,16 @@ private:
 
 	bool Init(ID3D11Texture2D* pTexture);
 
+	bool Init(ID3D11Texture2D* pTexture, ID3D11ShaderResourceView* pShaderResourceView);
+
 public:
 	HRESULT __stdcall QueryInterface(REFIID riid, _COM_Outptr_ void __RPC_FAR* __RPC_FAR* ppvObject) override;
 
 	ULONG __stdcall AddRef() override;
 
 	ULONG __stdcall Release() override;
+
+	void __stdcall Setting(UINT slot) override;
 
 	ID3D11RenderTargetView* RenderTargetView() const;
 
@@ -53,6 +56,4 @@ private:
 	ID3D11DepthStencilView* pDepthStencilView_;
 
 	ID3D11ShaderResourceView* pShaderResourceView_;
-
-	//D3D11_TEXTURE2D_DESC desc_;
 };

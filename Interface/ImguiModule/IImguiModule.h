@@ -11,7 +11,7 @@ struct ImguiWidgetDesc
 
 	void* textureResourceView;
 
-	std::string text;
+	char* text;
 };
 
 struct IImguiManager : public IUnknown

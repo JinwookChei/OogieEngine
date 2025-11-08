@@ -28,7 +28,9 @@
 // Win32
 #include <windows.h>
 #include <stdint.h>
-#include <string>
+#include <cstdlib>
+#include <cstdio>
+
 
 // Imgui
 #define IMGUI_DEFINE_MATH_OPERATORS

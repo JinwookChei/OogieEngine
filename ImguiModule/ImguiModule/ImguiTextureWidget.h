@@ -5,7 +5,7 @@ class ImguiTextureWidget : public ImguiWidget
 public:
 	ImguiTextureWidget() = delete;
 
-	ImguiTextureWidget(ImTextureID* pSRV, std::string text);
+	ImguiTextureWidget(ImTextureID* pSRV, const char* text);
 
 	~ImguiTextureWidget() override;
 
@@ -17,6 +17,6 @@ private:
 private:
 	ImTextureID* pSRV_;
 
-	std::string text_;
+	const char* text_;
 };
 

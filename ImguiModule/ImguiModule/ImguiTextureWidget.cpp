@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "ImguiTextureWidget.h"
 
-ImguiTextureWidget::ImguiTextureWidget(ImTextureID* pSRV, std::string text)
+ImguiTextureWidget::ImguiTextureWidget(ImTextureID* pSRV, const char* text)
 	: pSRV_(pSRV),
 	text_(text)
 {
@@ -15,7 +15,7 @@ ImguiTextureWidget::~ImguiTextureWidget()
 void ImguiTextureWidget::Render()
 {
 	ImGui::Begin("G-Buffer Viewer");
-	ImGui::Text(text_.c_str());
+	ImGui::Text(text_);
 	ImGui::Image(pSRV_, ImVec2(256, 256));
 	ImGui::End();
 }

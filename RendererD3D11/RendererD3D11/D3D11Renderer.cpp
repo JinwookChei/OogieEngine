@@ -900,7 +900,10 @@ IBlendState* Renderer::CreateBlendState(uint32_t srcBlend, uint32_t destBlend, u
 
 ITexture* __stdcall Renderer::LoadTextureFromDirectXTex(const wchar_t* fileName, bool isNormalMap)
 {
-	ITexture* pNewTexture = nullptr;
+	Texture* pNewTexture = nullptr;
+	ID3D11Texture2D* pTexture = nullptr;
+	ID3D11ShaderResourceView* pSRV = nullptr;
+
 	do 
 	{
 		DirectX::TexMetadata metadata;
@@ -916,7 +919,7 @@ ITexture* __stdcall Renderer::LoadTextureFromDirectXTex(const wchar_t* fileName,
 			}
 		}
 		const DirectX::Image* pImg = scratchImg.GetImage(0, 0, 0);
-
+		
 		DirectX::ScratchImage convImg;
 		if (isNormalMap)
 		{
@@ -961,54 +964,58 @@ ITexture* __stdcall Renderer::LoadTextureFromDirectXTex(const wchar_t* fileName,
 			}
 		}
 
-		pNewTexture = CreateTexture({ (float)metadata.width, (float)metadata.height }, metadata.format, D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE);
-		if (nullptr == pNewTexture)
+		hr = DirectX::CreateTexture(pDevice_, pImg, 1, metadata, (ID3D11Resource**)&pTexture);
+		if (FAILED(hr))
 		{
 			DEBUG_BREAK();
 			break;
 		}
+
+		D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
+		srvDesc.Format = metadata.format;
+		srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+		srvDesc.Texture2D.MipLevels = (UINT)metadata.mipLevels;
+		srvDesc.Texture2D.MostDetailedMip = 0;
+
+		hr = pDevice_->CreateShaderResourceView(pTexture, &srvDesc, &pSRV);
+		if (FAILED(hr))
+		{
+			DEBUG_BREAK();
+			break;
+		}
+
+		pNewTexture = new Texture;
+		if (false == pNewTexture->Init(pTexture, pSRV))
+		{
+			DEBUG_BREAK();
+			break;
+		}
+
 		return pNewTexture;
 
 	} while (true);
 
+
+
+	if (nullptr != pSRV)
+	{
+		pSRV->Release();
+		pSRV = nullptr;
+	}
+
+	if (nullptr != pTexture)
+	{
+		pTexture->Release();
+		pTexture = nullptr;
+	}
+
+	if (nullptr != pNewTexture)
+	{
+		pNewTexture->Release();
+		pNewTexture = nullptr;
+	}
+
 	return nullptr;
-
-	//ITexture* Renderer::CreateTexture(const Float2 & size, DXGI_FORMAT format, uint32_t flag);
-	//pRenderTextureAlbedo = static_cast<Texture*>(
-	// CreateTexture
-	//(
-	// desc.size_, 
-	// (DXGI_FORMAT)deferredDesc.fmtAlbedo_, 
-	// D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET | D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE)
-	// );
-
-
-
-
-
-	//ID3D11Texture2D* pTexture = nullptr;
-	//hr = DirectX::CreateTexture(device, pImg, 1, metadata, (ID3D11Resource**)&pTexture);
-	//if (FAILED(hr))
-	//{
-	//	DEBUG_BREAK();
-	//	return hr;
-	//}
-
-	//D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
-	//srvDesc.Format = metadata.format;
-	//srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
-	//srvDesc.Texture2D.MipLevels = (UINT)metadata.mipLevels;
-	//srvDesc.Texture2D.MostDetailedMip = 0;
-
-	//hr = device->CreateShaderResourceView(pTexture, &srvDesc, outSRV);
-	//pTexture->Release();
-	//if (FAILED(hr))
-	//{
-	//	DEBUG_BREAK();
-	//	return hr;
-	//}
-
-	//return S_OK;
 }
 
 

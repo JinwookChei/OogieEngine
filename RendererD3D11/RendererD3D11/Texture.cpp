@@ -7,7 +7,6 @@ Texture::Texture()
 	pRenderTargetView_(nullptr),
 	pDepthStencilView_(nullptr),
 	pShaderResourceView_(nullptr)
-	//desc_()
 {
 
 }
@@ -20,6 +19,20 @@ Texture::~Texture()
 bool Texture::Init(ID3D11Texture2D* pTexture)
 {
 	return InitTexture(pTexture);
+}
+
+bool Texture::Init(ID3D11Texture2D* pTexture, ID3D11ShaderResourceView* pShaderResourceView)
+{
+	if (nullptr == pTexture || nullptr == pShaderResourceView)
+	{
+		DEBUG_BREAK();
+		return false;
+	}
+	
+	pTexture_ = pTexture;
+	pShaderResourceView_ = pShaderResourceView;
+
+	return true;
 }
 
 HRESULT __stdcall Texture::QueryInterface(REFIID riid, void** ppvObject)
@@ -42,6 +55,17 @@ ULONG __stdcall Texture::Release()
 	return tmpRefCount;
 }
 
+void __stdcall Texture::Setting(UINT slot)
+{
+	if (nullptr == pShaderResourceView_)
+	{
+		DEBUG_BREAK();
+		return;
+	}
+
+	GRenderer->DeviceContext()->PSSetShaderResources(slot, 1, &pShaderResourceView_);
+}
+
 ID3D11RenderTargetView* Texture::RenderTargetView() const
 {
 	return pRenderTargetView_;
@@ -56,46 +80,6 @@ ID3D11ShaderResourceView* Texture::ShaderResourceView() const
 {
 	return pShaderResourceView_;
 }
-
-//Texture* Texture::Create(const Float2& size, DXGI_FORMAT format, uint32_t flag)
-//{
-//	D3D11_TEXTURE2D_DESC desc = { 0, };
-//	desc.ArraySize = 1;
-//	desc.Width = (UINT)size.X;
-//	desc.Height = (UINT)size.Y;
-//	desc.Format = format;
-//	desc.SampleDesc.Count = 1;
-//	desc.SampleDesc.Quality = 0;
-//	desc.MipLevels = 1;
-//	desc.Usage = D3D11_USAGE_DEFAULT;
-//	desc.CPUAccessFlags = 0;
-//	desc.BindFlags = flag;
-//
-//	return Create(desc);
-//}
-
-//Texture* Texture::Create(const D3D11_TEXTURE2D_DESC& desc)
-//{
-//	ID3D11Texture2D* texture;
-//
-//	HRESULT hr = GRenderer->Device()->CreateTexture2D(&desc, nullptr, &texture);
-//	if (FAILED(hr))
-//	{
-//		DEBUG_BREAK();
-//		return nullptr;
-//	}
-//
-//	Texture* newTexture = new Texture;
-//	bool ret = newTexture->SetTexture(texture);
-//	if (ret == false)
-//	{
-//		DEBUG_BREAK();
-//		return nullptr;
-//	}
-//
-//	return newTexture;
-//}
-
 
 void Texture::BindRenderTextureForPS(uint32_t slot)
 {

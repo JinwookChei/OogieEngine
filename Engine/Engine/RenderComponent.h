@@ -35,7 +35,11 @@ private:
 
 	IMaterial* pMaterial_;
 
+	ITexture* pTextureColor_;
+	ITexture* pTextureNormal_;
+
 	IInputLayout* pInputLayout_;
 
 	IRasterizer* pRasterizer_;
+
 };

@@ -8,6 +8,8 @@ RenderComponent::RenderComponent(Actor* pOwner)
 	: pOwner_(pOwner),
 	pMesh_(nullptr),
 	pMaterial_(nullptr),
+	pTextureColor_(nullptr),
+	pTextureNormal_(nullptr),
 	pInputLayout_(nullptr),
 	pRasterizer_(nullptr)
 {
@@ -29,6 +31,8 @@ void RenderComponent::Render()
 
 	pMaterial_->Setting();
 	pMesh_->Setting();
+	pTextureColor_->Setting(0);
+	pTextureNormal_->Setting(1);
 	pInputLayout_->Setting();
 	pRasterizer_->Setting();
 	pMesh_->Draw();
@@ -74,8 +78,13 @@ void RenderComponent::Create(MESH_TYPE meshType)
 	matDesc.samplerClamp = false;
 	matDesc.shineness = 0.7f;
 	matDesc.specularColor = { 0.7f, 0.7f, 0.7f };
-
 	pMaterial_ = GRenderer->CreateMaterial(matDesc);
+
+	const wchar_t* texPath = L"../Resource/Texture/Bricks_2K/Bricks_Color.png";
+	pTextureColor_ = GRenderer->LoadTextureFromDirectXTex(texPath, false);
+	texPath = L"../Resource/Texture/Bricks_2K/Bricks_NormalDX.png";
+	pTextureNormal_ = GRenderer->LoadTextureFromDirectXTex(texPath, true);
+
 	pInputLayout_ = GRenderer->CreateLayout(pMesh_, pMaterial_->GetVertexShader());
 	pRasterizer_ = GRenderer->CreateRasterizer(false, true);
 	pRasterizer_->SetFillMode(EFillModeType::Solid);
@@ -89,6 +98,19 @@ void RenderComponent::CleanUp()
 		pRasterizer_->Release();
 		pRasterizer_ = nullptr;
 	}
+
+	if (nullptr != pTextureColor_)
+	{
+		pTextureColor_->Release();
+		pTextureColor_ = nullptr;
+	}
+
+	if (nullptr != pTextureNormal_)
+	{
+		pTextureNormal_->Release();
+		pTextureNormal_ = nullptr;
+	}
+
 	if (nullptr != pMesh_)
 	{
 		pMesh_->Release();
@@ -105,11 +127,5 @@ void RenderComponent::CleanUp()
 	{
 		pInputLayout_->Release();
 		pInputLayout_ = nullptr;
-	}
-
-	if (nullptr != pRasterizer_)
-	{
-		pRasterizer_->Release();
-		pRasterizer_ = nullptr;
 	}
 }

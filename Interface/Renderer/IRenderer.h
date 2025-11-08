@@ -75,6 +75,8 @@ struct RenderTargetDesc
 
 struct ITexture : public IUnknown
 {
+	virtual void __stdcall Setting(UINT slot) = 0;
+
 	//virtual ID3D11RenderTargetView* __stdcall RenderTargetView() const = 0;
 
 	//virtual ID3D11DepthStencilView* __stdcall DepthStencilView() const = 0;

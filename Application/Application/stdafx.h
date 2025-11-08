@@ -23,7 +23,6 @@
 
 #include <windows.h>
 #include <stdint.h>
-#include <string>
 #include <windowsx.h>
 
 // Utility
