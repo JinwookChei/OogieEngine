@@ -115,7 +115,7 @@
       <PreprocessorDefinitions>_DEBUG;IMGUIBACKEND_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <AdditionalIncludeDirectories>$(SolutionDir)\ImguiModule\;$(SolutionDir)..\Interface\;$(SolutionDir)..\Utility\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\ThirdParty\;$(SolutionDir)..\Interface\;$(SolutionDir)..\Utility\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -133,7 +133,7 @@
       <PreprocessorDefinitions>NDEBUG;IMGUIBACKEND_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <AdditionalIncludeDirectories>$(SolutionDir)\ImguiModule\;$(SolutionDir)..\Interface\;$(SolutionDir)..\Utility\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\ThirdParty\;$(SolutionDir)..\Interface\;$(SolutionDir)..\Utility\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -147,34 +147,34 @@
     <ClInclude Include="..\..\Interface\ImguiBindObject\IImguiBindObject.h" />
     <ClInclude Include="..\..\Interface\ImguiModule\IImguiModule.h" />
     <ClInclude Include="..\..\Interface\Renderer\IRenderer.h" />
+    <ClInclude Include="..\..\ThirdParty\Imgui\imconfig.h" />
+    <ClInclude Include="..\..\ThirdParty\Imgui\imgui.h" />
+    <ClInclude Include="..\..\ThirdParty\Imgui\imgui_impl_dx11.h" />
+    <ClInclude Include="..\..\ThirdParty\Imgui\imgui_impl_win32.h" />
+    <ClInclude Include="..\..\ThirdParty\Imgui\imgui_internal.h" />
+    <ClInclude Include="..\..\ThirdParty\Imgui\imstb_rectpack.h" />
+    <ClInclude Include="..\..\ThirdParty\Imgui\imstb_textedit.h" />
+    <ClInclude Include="..\..\ThirdParty\Imgui\imstb_truetype.h" />
     <ClInclude Include="ExitPopup.h" />
     <ClInclude Include="ImguiManager.h" />
     <ClInclude Include="ImguiWidget.h" />
-    <ClInclude Include="Imgui\imconfig.h" />
-    <ClInclude Include="Imgui\imgui.h" />
-    <ClInclude Include="Imgui\imgui_impl_dx11.h" />
-    <ClInclude Include="Imgui\imgui_impl_win32.h" />
-    <ClInclude Include="Imgui\imgui_internal.h" />
-    <ClInclude Include="Imgui\imstb_rectpack.h" />
-    <ClInclude Include="Imgui\imstb_textedit.h" />
-    <ClInclude Include="Imgui\imstb_truetype.h" />
     <ClInclude Include="GBufferViewer.h" />
     <ClInclude Include="ImguiPanel.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="ImguiTextureWidget.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\ThirdParty\Imgui\imgui.cpp" />
+    <ClCompile Include="..\..\ThirdParty\Imgui\imgui_demo.cpp" />
+    <ClCompile Include="..\..\ThirdParty\Imgui\imgui_draw.cpp" />
+    <ClCompile Include="..\..\ThirdParty\Imgui\imgui_impl_dx11.cpp" />
+    <ClCompile Include="..\..\ThirdParty\Imgui\imgui_impl_win32.cpp" />
+    <ClCompile Include="..\..\ThirdParty\Imgui\imgui_tables.cpp" />
+    <ClCompile Include="..\..\ThirdParty\Imgui\imgui_widgets.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="ExitPopup.cpp" />
     <ClCompile Include="ImguiManager.cpp" />
     <ClCompile Include="ImguiWidget.cpp" />
-    <ClCompile Include="Imgui\imgui.cpp" />
-    <ClCompile Include="Imgui\imgui_demo.cpp" />
-    <ClCompile Include="Imgui\imgui_draw.cpp" />
-    <ClCompile Include="Imgui\imgui_impl_dx11.cpp" />
-    <ClCompile Include="Imgui\imgui_impl_win32.cpp" />
-    <ClCompile Include="Imgui\imgui_tables.cpp" />
-    <ClCompile Include="Imgui\imgui_widgets.cpp" />
     <ClCompile Include="GBufferViewer.cpp" />
     <ClCompile Include="ImguiPanel.cpp" />
     <ClCompile Include="stdafx.cpp">
