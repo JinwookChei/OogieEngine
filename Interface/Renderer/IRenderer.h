@@ -220,7 +220,6 @@ struct IRenderer : public IUnknown {
 
 	virtual IMesh* __stdcall CreateMesh(void* pVertices, uint32_t vertexSize, uint32_t vertexCount, void* pIndices = nullptr, uint32_t indexTypeSize = 0, uint32_t indexCount = 0) = 0;
 
-	//virtual IMaterial* __stdcall CreateMaterial(const wchar_t* VS, const wchar_t* PS, bool samplerLinear, bool samplerClamp) = 0;
 	virtual IMaterial* __stdcall CreateMaterial(const MaterialDesc& materialDesc) = 0;
 
 	virtual IConstantBuffer* __stdcall CreateConstantBuffer(uint32_t bufferSize) = 0;
@@ -230,4 +229,6 @@ struct IRenderer : public IUnknown {
 	virtual IRenderTarget* __stdcall CreateRenderTarget(const RenderTargetDesc& desc) = 0;
 
 	virtual IBlendState* __stdcall CreateBlendState(uint32_t srcBlend, uint32_t destBlend, uint32_t srcBlendAlpha, uint32_t destBlendAlpha, float blendFactor[4] = nullptr) = 0;
+
+	virtual ITexture* __stdcall LoadTextureFromDirectXTex(const wchar_t* fileName, bool isNormalMap) = 0;
 };

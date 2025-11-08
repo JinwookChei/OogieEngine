@@ -58,6 +58,9 @@
     <Filter Include="Source Files\View">
       <UniqueIdentifier>{ad9a3518-5415-4110-870a-57b5cf674286}</UniqueIdentifier>
     </Filter>
+    <Filter Include="DirectXTex">
+      <UniqueIdentifier>{b8a7c758-f17b-4ba4-9261-125c2b007fe1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">

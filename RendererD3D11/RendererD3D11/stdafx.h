@@ -35,18 +35,26 @@
 #include <cstdlib>
 #include <cstdio>
 
+// DirectX 11
 #include <d3d11.h>
 #include <d3dcompiler.h>
 #include <dxgi.h>
 #include <DirectXMath.h>
+#include <DirectXTex/DirectXTex.h>
+#include <DirectXTex/DirectXTex.inl>
 
+// Utility
 #include <Utility/Math.h>
+
+// Interface
 #include <Renderer/IRenderer.h>
 
+// RendererD3D11
 #include "D3D11Renderer.h"
 #include "BaseShader.h"
 
-extern Renderer* GRenderer;
 
+
+extern Renderer* GRenderer;
 extern IRenderTarget* GCurrentSetRenderTarget;
 

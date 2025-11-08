@@ -528,9 +528,10 @@ IRenderTarget* __stdcall Renderer::CreateRenderTarget(const RenderTargetDesc& de
 	default:
 		break;
 	}
+	return nullptr;
 }
 
-IRenderTarget* Renderer::CreateForwardRenderTarget(const RenderTargetDesc& desc)
+IRenderTarget* __stdcall Renderer::CreateForwardRenderTarget(const RenderTargetDesc& desc)
 {
 	Texture* pRenderTexture = nullptr;
 	Texture* pDepthTexture = nullptr;
@@ -581,7 +582,7 @@ IRenderTarget* Renderer::CreateForwardRenderTarget(const RenderTargetDesc& desc)
 	return nullptr;
 }
 
-IRenderTarget* Renderer::CreateDeferredRenderTarget(const RenderTargetDesc& desc)
+IRenderTarget* __stdcall Renderer::CreateDeferredRenderTarget(const RenderTargetDesc& desc)
 {
 	DeferredTarget* pDeferredTarget = nullptr;
 	Texture* pRenderTextureAlbedo = nullptr;
@@ -670,7 +671,7 @@ IRenderTarget* Renderer::CreateDeferredRenderTarget(const RenderTargetDesc& desc
 	return nullptr;
 }
 
-IShader* __stdcall Renderer::CreateShader(EShaderType shaderType, const wchar_t* pPath)
+IShader* Renderer::CreateShader(EShaderType shaderType, const wchar_t* pPath)
 {
 	ID3DBlob* pBlob = nullptr;
 	BaseShader* pShader = nullptr;
@@ -777,6 +778,7 @@ ISamplerState* __stdcall Renderer::CreateSamplerState(bool linear, bool clamp)
 {
 	ID3D11SamplerState* pSamplerState = nullptr;
 	SamplerState* pNewSamplerState = nullptr;
+
 	do
 	{
 		D3D11_SAMPLER_DESC samplerDesc = {};
@@ -828,35 +830,6 @@ ISamplerState* __stdcall Renderer::CreateSamplerState(bool linear, bool clamp)
 	return nullptr;
 }
 
-//IView* Renderer::CreateView(const ViewDesc& desc)
-//{
-//	switch (desc.viewType)
-//	{
-//	case EViewType::RenderTargetView:
-//	{
-//		RenderTargetView* pNewRenderTargetView = new RenderTargetView;
-//		pNewRenderTargetView->Init();
-//		return pNewRenderTargetView;
-//	}break;
-//	case EViewType::DepthStencilView:
-//	{
-//		DepthStencilView* pNewDepthStencilView = new DepthStencilView;
-//		pNewDepthStencilView->Init();
-//		return pNewDepthStencilView;
-//	}break;
-//	case EViewType::ShaderResourceView:
-//	{
-//		ShaderResourceView* pNewShaderResourceView = new ShaderResourceView;
-//		pNewShaderResourceView->Init();
-//		return pNewShaderResourceView;
-//	}break;
-//	default:
-//		break;
-//	}
-//
-//	return nullptr;
-//}
-
 IBlendState* Renderer::CreateBlendState(uint32_t srcBlend, uint32_t destBlend, uint32_t srcBlendAlpha, uint32_t destBlendAlpha, float blendFactor[4]/* = nullptr*/)
 {
 	BlendState* pNewBlendState = nullptr;
@@ -900,7 +873,8 @@ IBlendState* Renderer::CreateBlendState(uint32_t srcBlend, uint32_t destBlend, u
 		}
 
 		pNewBlendState = new BlendState;
-		if (false == pNewBlendState->Init(pBlendState, blendFactor)) {
+		if (false == pNewBlendState->Init(pBlendState, blendFactor)) 
+		{
 			Assert("BlendState Init is FAILED!!!!!");
 			continue;
 		}
@@ -923,6 +897,120 @@ IBlendState* Renderer::CreateBlendState(uint32_t srcBlend, uint32_t destBlend, u
 
 	return nullptr;
 }
+
+ITexture* __stdcall Renderer::LoadTextureFromDirectXTex(const wchar_t* fileName, bool isNormalMap)
+{
+	ITexture* pNewTexture = nullptr;
+	do 
+	{
+		DirectX::TexMetadata metadata;
+		DirectX::ScratchImage scratchImg;
+		HRESULT hr = DirectX::LoadFromWICFile(fileName, DirectX::WIC_FLAGS_NONE, &metadata, scratchImg);
+		if (FAILED(hr))
+		{
+			hr = DirectX::LoadFromDDSFile(fileName, DirectX::DDS_FLAGS_NONE, &metadata, scratchImg);
+			if (FAILED(hr))
+			{
+				DEBUG_BREAK();
+				break;
+			}
+		}
+		const DirectX::Image* pImg = scratchImg.GetImage(0, 0, 0);
+
+		DirectX::ScratchImage convImg;
+		if (isNormalMap)
+		{
+			// Normal Map ¡æ UNORM (Linear)
+			if (metadata.format != DXGI_FORMAT_R8G8B8A8_UNORM)
+			{
+				hr = DirectX::Convert(
+					pImg, 1, metadata,
+					DXGI_FORMAT_R8G8B8A8_UNORM,
+					DirectX::TEX_FILTER_DEFAULT,
+					DirectX::TEX_THRESHOLD_DEFAULT,
+					convImg
+				);
+				if (FAILED(hr))
+				{
+					DEBUG_BREAK();
+					break;
+				}
+				pImg = convImg.GetImage(0, 0, 0);
+				metadata.format = DXGI_FORMAT_R8G8B8A8_UNORM;
+			}
+		}
+		else
+		{
+			if (metadata.format != DXGI_FORMAT_R8G8B8A8_UNORM_SRGB)
+			{
+				hr = DirectX::Convert(
+					pImg, 1, metadata,
+					DXGI_FORMAT_R8G8B8A8_UNORM_SRGB,
+					DirectX::TEX_FILTER_DEFAULT,
+					DirectX::TEX_THRESHOLD_DEFAULT,
+					convImg
+				);
+				if (FAILED(hr))
+				{
+					DEBUG_BREAK();
+					break;
+				}
+
+				pImg = convImg.GetImage(0, 0, 0);
+				metadata.format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
+			}
+		}
+
+		pNewTexture = CreateTexture({ (float)metadata.width, (float)metadata.height }, metadata.format, D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE);
+		if (nullptr == pNewTexture)
+		{
+			DEBUG_BREAK();
+			break;
+		}
+		return pNewTexture;
+
+	} while (true);
+
+	return nullptr;
+
+	//ITexture* Renderer::CreateTexture(const Float2 & size, DXGI_FORMAT format, uint32_t flag);
+	//pRenderTextureAlbedo = static_cast<Texture*>(
+	// CreateTexture
+	//(
+	// desc.size_, 
+	// (DXGI_FORMAT)deferredDesc.fmtAlbedo_, 
+	// D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET | D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE)
+	// );
+
+
+
+
+
+	//ID3D11Texture2D* pTexture = nullptr;
+	//hr = DirectX::CreateTexture(device, pImg, 1, metadata, (ID3D11Resource**)&pTexture);
+	//if (FAILED(hr))
+	//{
+	//	DEBUG_BREAK();
+	//	return hr;
+	//}
+
+	//D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
+	//srvDesc.Format = metadata.format;
+	//srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+	//srvDesc.Texture2D.MipLevels = (UINT)metadata.mipLevels;
+	//srvDesc.Texture2D.MostDetailedMip = 0;
+
+	//hr = device->CreateShaderResourceView(pTexture, &srvDesc, outSRV);
+	//pTexture->Release();
+	//if (FAILED(hr))
+	//{
+	//	DEBUG_BREAK();
+	//	return hr;
+	//}
+
+	//return S_OK;
+}
+
 
 void Renderer::IncrementDrawCall()
 {
