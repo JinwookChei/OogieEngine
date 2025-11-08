@@ -24,7 +24,7 @@
 
 #define ENGINE_API __declspec(dllimport)
 #define UTILITY_API __declspec(dllimport)
-
+#define IMGUI_API __declspec(dllimport)
 
 #ifdef _DEBUG
 #define DEBUG_BREAK __debugbreak
@@ -55,11 +55,23 @@
 #include <cstdio>
 #include <string>
 
+
+
+// Utility
 #include <Utility/Math.h>
 #include <Utility/LinkedList.h>
+
+// Interfavce
 #include <Application/IApplication.h>
 #include <Renderer/IRenderer.h>
+#include <ImguiBindObject/IImguiBindObject.h>
 #include <ImguiModule/IImguiModule.h>
+
+// ImguiModule
+#include <ImguiModule/ImguiManager.h>
+
+
+// Engine
 #include <Engine/Engine.h>
 #include <Engine/StartUp.h>
 #include <Engine/Level.h>
@@ -71,10 +83,9 @@
 #include <Engine/PointLight.h>
 #include <Engine/RenderComponent.h>
 #include <Engine/InputManager.h>
-
-
 #include <Engine/World.h>
-#include "StartLevel.h"
 
+// Content
+#include "StartLevel.h"
 #include "ContentManager.h"
 

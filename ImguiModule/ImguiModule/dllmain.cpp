@@ -11,7 +11,7 @@ BOOL APIENTRY DllMain(HMODULE hModule,
 	{
 #ifdef _DEBUG
 		_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-		//_CrtSetBreakAlloc(352);
+		//_CrtSetBreakAlloc(323);
 #endif  // _DEBUG
 	}break;
 	case DLL_THREAD_ATTACH:

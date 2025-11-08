@@ -144,8 +144,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Interface\Application\IApplication.h" />
+    <ClInclude Include="..\..\Interface\ImguiBindObject\IImguiBindObject.h" />
     <ClInclude Include="..\..\Interface\ImguiModule\IImguiModule.h" />
     <ClInclude Include="..\..\Interface\Renderer\IRenderer.h" />
+    <ClInclude Include="ExitPopup.h" />
     <ClInclude Include="ImguiManager.h" />
     <ClInclude Include="ImguiWidget.h" />
     <ClInclude Include="Imgui\imconfig.h" />
@@ -156,11 +158,14 @@
     <ClInclude Include="Imgui\imstb_rectpack.h" />
     <ClInclude Include="Imgui\imstb_textedit.h" />
     <ClInclude Include="Imgui\imstb_truetype.h" />
+    <ClInclude Include="GBufferViewer.h" />
+    <ClInclude Include="ImguiPanel.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="ImguiTextureWidget.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="ExitPopup.cpp" />
     <ClCompile Include="ImguiManager.cpp" />
     <ClCompile Include="ImguiWidget.cpp" />
     <ClCompile Include="Imgui\imgui.cpp" />
@@ -170,6 +175,8 @@
     <ClCompile Include="Imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="Imgui\imgui_tables.cpp" />
     <ClCompile Include="Imgui\imgui_widgets.cpp" />
+    <ClCompile Include="GBufferViewer.cpp" />
+    <ClCompile Include="ImguiPanel.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>

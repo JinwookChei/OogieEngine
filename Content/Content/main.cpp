@@ -5,7 +5,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine
 {
 #ifdef _DEBUG
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-	//_CrtSetBreakAlloc(352);
+	//_CrtSetBreakAlloc(321);
 #endif  // _DEBUG
 
 	const wchar_t* mainWindowClassName = L"MAIN";

@@ -31,6 +31,9 @@
     <Filter Include="Source Files\GUI">
       <UniqueIdentifier>{d5235163-388b-4477-800e-07133b6155ad}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Panel">
+      <UniqueIdentifier>{0ac76433-0a9a-4676-adb9-95669a8c8a8a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -78,6 +81,18 @@
     <ClInclude Include="ImguiWidget.h">
       <Filter>Source Files\GUI</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Interface\ImguiBindObject\IImguiBindObject.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="GBufferViewer.h">
+      <Filter>Source Files\Panel</Filter>
+    </ClInclude>
+    <ClInclude Include="ImguiPanel.h">
+      <Filter>Source Files\Panel</Filter>
+    </ClInclude>
+    <ClInclude Include="ExitPopup.h">
+      <Filter>Source Files\Panel</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -115,6 +130,15 @@
     </ClCompile>
     <ClCompile Include="ImguiWidget.cpp">
       <Filter>Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="GBufferViewer.cpp">
+      <Filter>Source Files\Panel</Filter>
+    </ClCompile>
+    <ClCompile Include="ImguiPanel.cpp">
+      <Filter>Source Files\Panel</Filter>
+    </ClCompile>
+    <ClCompile Include="ExitPopup.cpp">
+      <Filter>Source Files\Panel</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

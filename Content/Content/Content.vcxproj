@@ -112,7 +112,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\Interface\;$(SolutionDir)..\Engine\;$(SolutionDir)..\Utility\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\ImguiModule\;$(SolutionDir)..\Engine\;$(SolutionDir)..\Interface\;$(SolutionDir)..\Utility\</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
     </ClCompile>
     <Link>
@@ -129,7 +129,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\Interface\;$(SolutionDir)..\Engine\Engine\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\ImguiModule\;$(SolutionDir)..\Engine\;$(SolutionDir)..\Interface\;$(SolutionDir)..\Utility\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -150,7 +150,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Interface\Application\IApplication.h" />
-    <ClInclude Include="..\..\Interface\ImguiManager\IImguiManager.h" />
+    <ClInclude Include="..\..\Interface\ImguiBindObject\IImguiBindObject.h" />
+    <ClInclude Include="..\..\Interface\ImguiModule\IImguiModule.h" />
     <ClInclude Include="..\..\Interface\Renderer\IRenderer.h" />
     <ClInclude Include="ContentManager.h" />
     <ClInclude Include="LookAtCamera.h" />

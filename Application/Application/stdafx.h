@@ -26,13 +26,17 @@
 #include <string>
 #include <windowsx.h>
 
+// Utility
 #include <Utility\Math.h>
 #include <Utility\LinkedList.h>
 
-#include <Application\IApplication.h>
-#include <Renderer\IRenderer.h>
-#include <ImguiModule\IImguiModule.h>
+// Interface
+#include <Application/IApplication.h>
+#include <Renderer/IRenderer.h>
+#include <ImguiBindObject/IImguiBindObject.h>
+#include <ImguiModule/IImguiModule.h>
 
-#include <ImguiModule\ImguiManager.h>
+// ImguiManager
+#include <ImguiModule/ImguiManager.h>
 
 extern class WindowsApplication* GApplication;

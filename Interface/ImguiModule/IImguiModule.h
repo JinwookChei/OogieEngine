@@ -20,17 +20,22 @@ struct IImguiManager : public IUnknown
 
 	virtual bool __stdcall InitImgui(IApplication* pApplication, IRenderer* pRenderer, float dpiScale) = 0;
 
-	virtual bool __stdcall CreateWidget(const ImguiWidgetDesc& desc) = 0;
-
 	virtual  void __stdcall CleanUpImgui() = 0;
 
 	virtual  void __stdcall OnRender() = 0;
 
 	virtual bool __stdcall WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) = 0;
+
+	virtual bool __stdcall BindCamera(IImguiBindCamera* pCamera) = 0;
 };
 
 
 struct IImguiWidget : public IUnknown
+{
+
+};
+
+struct IImguiPanel : public IUnknown
 {
 
 };

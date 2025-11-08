@@ -36,17 +36,21 @@
 #include <cstdlib>
 #include <cstdio>
 
+// Utility
 #include <Utility/Math.h>
 #include <Utility/LinkedList.h>
 #include <Utility/HashTable.h>
 
-
+// Interface
 #include <Application/IApplication.h>
 #include <Renderer/IRenderer.h>
+#include <ImguiBindObject/IImguiBindObject.h>
 #include <ImguiModule/IImguiModule.h>
 
+// ImguiManager
 #include <ImguiModule/ImguiManager.h>
 
+// Engine
 #include "InputManager.h"
 #include "TimeManager.h"
 #include "ConstantManager.h"

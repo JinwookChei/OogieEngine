@@ -1,7 +1,9 @@
 #include "stdafx.h"
 #include "ImguiManager.h"
-#include "ImguiWidget.h"
+#include "GBufferViewer.h"
 #include "ImguiTextureWidget.h"
+#include "ExitPopup.h"
+
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
@@ -24,8 +26,8 @@ ImguiManager::ImguiManager()
 	pApplication_(nullptr),
 	pRenderer_(nullptr),
 	dpiScale_(0.0f),
-	pWidgetHead_(nullptr),
-	pWidgetTail_(nullptr)
+	pExitPopup_(nullptr),
+	pGBufferViewer_(nullptr)
 {
 }
 
@@ -89,31 +91,9 @@ bool __stdcall ImguiManager::InitImgui(IApplication* pApplication, IRenderer* pR
 	pRenderer_ = pRenderer;
 	pRenderer_->AddRef();
 
+
+	pExitPopup_ = ExitPopup::Create(pApplication_);
 	return true;
-}
-
-bool __stdcall ImguiManager::CreateWidget(const ImguiWidgetDesc& desc)
-{
-	switch (desc.widgetType)
-	{
-	case EWidgetType::TextureWidget:
-	{
-		ImTextureID* pSRV = static_cast<ImTextureID*>(desc.textureResourceView);
-		if (nullptr == pSRV)
-		{
-			DEBUG_BREAK();
-			return false;
-		}
-
-		ImguiWidget* pNewWidget = new ImguiTextureWidget(pSRV, desc.text);
-		LinkToLinkedListFIFO(&pWidgetHead_, &pWidgetTail_, pNewWidget->MangerLink());
-	}
-	break;
-	default:
-		break;
-	}
-
-	return false;
 }
 
 void __stdcall ImguiManager::CleanUpImgui()
@@ -129,11 +109,6 @@ void __stdcall ImguiManager::CleanUpImgui()
 	}
 }
 
-bool g_ShowExitPopup = false;
-bool g_bShow_demo_window = true;
-bool g_bShow_another_window = false;
-ImVec4 g_Imgui_Clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
-
 void __stdcall ImguiManager::OnRender()
 {
 	// Start the Dear ImGui frame
@@ -141,50 +116,17 @@ void __stdcall ImguiManager::OnRender()
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
 
-	// ESC 키 감지
-	if (ImGui::IsKeyPressed(ImGuiKey_Escape))
+	if (nullptr != pExitPopup_)
 	{
-		g_ShowExitPopup = true;
-		ImGui::OpenPopup("Exit Program");
-	}
-	// 종료 팝업
-	if (g_ShowExitPopup)
-	{
-		ImGui::SetNextWindowSize(ImVec2(300, 150));
-		if (ImGui::BeginPopupModal("Exit Program", NULL, ImGuiWindowFlags_NoResize))
-		{
-			ImGui::Text(" Do you want to exit the program ? ");
-			ImGui::Spacing();
-			ImGui::Spacing();
-
-			if (ImGui::Button("Quit", ImVec2(120, 0)))
-			{
-				pApplication_->Quit();
-			}
-			ImGui::SameLine();
-			if (ImGui::Button("Cancel", ImVec2(120, 0)))
-			{
-				ImGui::CloseCurrentPopup();
-				g_ShowExitPopup = false;
-			}
-
-			ImGui::EndPopup();
-		}
+		pExitPopup_->Render();
 	}
 
-
-	LINK_ITEM* pWidgetIter = pWidgetHead_;
-	while (pWidgetIter)
+	if (nullptr != pGBufferViewer_)
 	{
-		ImguiWidget* pCurWidget = static_cast<ImguiWidget*>(pWidgetIter->item_);
-		pWidgetIter = pWidgetIter->next_;
-
-		if (pCurWidget->IsActive())
-		{
-			pCurWidget->Render();
-		}
+		pGBufferViewer_->Render();
 	}
 
+	
 	// Rendering
 	ImGui::Render();
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
@@ -198,12 +140,40 @@ bool __stdcall ImguiManager::WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, 
 	}
 }
 
+bool __stdcall ImguiManager::BindCamera(IImguiBindCamera* pCamera)
+{
+	if (nullptr == pCamera)
+	{
+		Assert("Camera is NULL");
+		return false;
+	}
+
+	if (nullptr != pGBufferViewer_)
+	{
+		pGBufferViewer_->Release();
+		pGBufferViewer_ = nullptr;
+	}
+
+	pGBufferViewer_ = GBufferViewer::Create(pCamera);
+	pGBufferViewer_->OnActive();
+
+	return true;
+}
+
 
 
 void ImguiManager::CleanUp()
 {
-	CleanUpWigets();
-
+	if (nullptr != pExitPopup_)
+	{
+		pExitPopup_->Release();
+		pExitPopup_ = nullptr;
+	}
+	if (nullptr != pGBufferViewer_)
+	{
+		pGBufferViewer_->Release();
+		pGBufferViewer_ = nullptr;
+	}
 	if (nullptr != pApplication_)
 	{
 		pApplication_->Release();
@@ -217,17 +187,6 @@ void ImguiManager::CleanUp()
 	}
 }
 
-void ImguiManager::CleanUpWigets()
-{
-	while (pWidgetHead_)
-	{
-		ImguiWidget* pCurWidget = static_cast<ImguiWidget*>(pWidgetHead_->item_);
-		UnLinkFromLinkedList(&pWidgetHead_, &pWidgetTail_, pCurWidget->MangerLink());
-
-		pCurWidget->Release();
-		pCurWidget = nullptr;
-	}
-}
 
 
 // Regacy

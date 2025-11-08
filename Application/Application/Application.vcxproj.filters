@@ -45,6 +45,9 @@
     <ClInclude Include="..\..\Interface\ImguiModule\IImguiModule.h">
       <Filter>Interface</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Interface\ImguiBindObject\IImguiBindObject.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

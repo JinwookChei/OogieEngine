@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include "ImguiWidget.h"
 #include "ImguiTextureWidget.h"
 
 ImguiTextureWidget::ImguiTextureWidget(ImTextureID* pSRV, std::string text)

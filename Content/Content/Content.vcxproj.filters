@@ -83,7 +83,10 @@
     <ClInclude Include="LookAtCamera.h">
       <Filter>Source Files\Game\Actors\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Interface\ImguiManager\IImguiManager.h">
+    <ClInclude Include="..\..\Interface\ImguiBindObject\IImguiBindObject.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Interface\ImguiModule\IImguiModule.h">
       <Filter>Interface</Filter>
     </ClInclude>
   </ItemGroup>
