@@ -80,9 +80,10 @@ void RenderComponent::Create(MESH_TYPE meshType)
 	matDesc.specularColor = { 0.7f, 0.7f, 0.7f };
 	pMaterial_ = GRenderer->CreateMaterial(matDesc);
 
-	const wchar_t* texPath = L"../Resource/Texture/Bricks_2K/Bricks_Color.png";
+	const wchar_t* texPath = L"../Resource/Texture/Bricks_4K/Bricks_Color.png";
+	//const wchar_t* texPath = L"../Resource/Texture/NUGA.jpg";
 	pTextureColor_ = GRenderer->LoadTextureFromDirectXTex(texPath, false);
-	texPath = L"../Resource/Texture/Bricks_2K/Bricks_NormalDX.png";
+	texPath = L"../Resource/Texture/Bricks_4K/Bricks_NormalDX.png";
 	pTextureNormal_ = GRenderer->LoadTextureFromDirectXTex(texPath, true);
 
 	pInputLayout_ = GRenderer->CreateLayout(pMesh_, pMaterial_->GetVertexShader());

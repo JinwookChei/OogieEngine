@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "ImguiTextureWidget.h"
+#include "ImGuiTextureWidget.h"
 #include "GBufferViewer.h"
 
 
@@ -17,7 +17,7 @@ GBufferViewer::~GBufferViewer()
 	CleanUp();
 }
 
-GBufferViewer* GBufferViewer::Create(IImguiBindCamera* pCamera)
+GBufferViewer* GBufferViewer::Create(IImGuiBindCamera* pCamera)
 {
 	GBufferViewer* pNewGBufferViewer = new GBufferViewer;
 
@@ -40,7 +40,7 @@ void GBufferViewer::Render()
 	pDepthWidget_->Render();
 }
 
-void GBufferViewer::BindCamera(IImguiBindCamera* pCamera)
+void GBufferViewer::BindCamera(IImGuiBindCamera* pCamera)
 {
 	if (nullptr == pCamera)
 	{
@@ -49,15 +49,15 @@ void GBufferViewer::BindCamera(IImguiBindCamera* pCamera)
 	}
 
 	pBoundCamera_ = pCamera;
-	IRenderTarget* pGBufferTarget = pBoundCamera_->GetGBufferTargetForImgui();
+	IRenderTarget* pGBufferTarget = pBoundCamera_->GetGBufferTargetForImGui();
 	ImTextureID* pAlbedoTexture = static_cast<ImTextureID*>(pGBufferTarget->GetShaderResourceView(ERenderTextureType::Albedo));
-	pAlbedoWidget_ = new ImguiTextureWidget(pAlbedoTexture, "Albedo");
+	pAlbedoWidget_ = new ImGuiTextureWidget(pAlbedoTexture, "Albedo");
 	ImTextureID* pNormalTexture = static_cast<ImTextureID*>(pGBufferTarget->GetShaderResourceView(ERenderTextureType::Normal));
-	pNormalWidget_ = new ImguiTextureWidget(pNormalTexture, "Normal");
+	pNormalWidget_ = new ImGuiTextureWidget(pNormalTexture, "Normal");
 	ImTextureID* pSpecularTexture = static_cast<ImTextureID*>(pGBufferTarget->GetShaderResourceView(ERenderTextureType::Specular));
-	pSpecularWidget_ = new ImguiTextureWidget(pSpecularTexture, "Specular");
+	pSpecularWidget_ = new ImGuiTextureWidget(pSpecularTexture, "Specular");
 	ImTextureID* pDepthTexture = static_cast<ImTextureID*>(pGBufferTarget->GetShaderResourceView(ERenderTextureType::Depth));
-	pDepthWidget_ = new ImguiTextureWidget(pDepthTexture, "Depth");
+	pDepthWidget_ = new ImGuiTextureWidget(pDepthTexture, "Depth");
 }
 
 void GBufferViewer::CleanUp()

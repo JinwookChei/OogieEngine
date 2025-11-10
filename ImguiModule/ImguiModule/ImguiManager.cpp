@@ -1,27 +1,27 @@
 #include "stdafx.h"
-#include "ImguiManager.h"
 #include "GBufferViewer.h"
-#include "ImguiTextureWidget.h"
+#include "ImGuiTextureWidget.h"
 #include "ExitPopup.h"
+#include "ImGuiManager.h"
 
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
-ImguiManager* GImguiManager = nullptr;
-namespace ImguiSystem
+ImGuiManager* GImGuiManager = nullptr;
+namespace ImGuiSystem
 {
-	IMGUI_API IImguiManager* GetImguiManager()
+	IMGUI_API IImGuiManager* GetImGuiManager()
 	{
-		if (nullptr == GImguiManager)
+		if (nullptr == GImGuiManager)
 		{
-			GImguiManager = new ImguiManager;
+			GImGuiManager = new ImGuiManager;
 		}
-		return GImguiManager;
+		return GImGuiManager;
 	}
 }
 
 
-ImguiManager::ImguiManager()
+ImGuiManager::ImGuiManager()
 	:refCount_(1),
 	pApplication_(nullptr),
 	pRenderer_(nullptr),
@@ -31,22 +31,22 @@ ImguiManager::ImguiManager()
 {
 }
 
-ImguiManager::~ImguiManager()
+ImGuiManager::~ImGuiManager()
 {
 	CleanUp();
 }
 
-HRESULT __stdcall ImguiManager::QueryInterface(REFIID riid, void** ppvObject)
+HRESULT __stdcall ImGuiManager::QueryInterface(REFIID riid, void** ppvObject)
 {
 	return E_NOTIMPL;
 }
 
-ULONG __stdcall ImguiManager::AddRef(void)
+ULONG __stdcall ImGuiManager::AddRef(void)
 {
 	return ++refCount_;
 }
 
-ULONG __stdcall ImguiManager::Release(void)
+ULONG __stdcall ImGuiManager::Release(void)
 {
 	--refCount_;
 	ULONG tempRefCount = refCount_;
@@ -57,14 +57,14 @@ ULONG __stdcall ImguiManager::Release(void)
 	return tempRefCount;
 }
 
-float __stdcall ImguiManager::EnableDpiAwareness()
+float __stdcall ImGuiManager::EnableDpiAwareness()
 {
 	ImGui_ImplWin32_EnableDpiAwareness();
 	float dpiScale = ImGui_ImplWin32_GetDpiScaleForMonitor(::MonitorFromPoint(POINT{ 0, 0 }, MONITOR_DEFAULTTOPRIMARY));
 	return dpiScale;
 }
 
-bool __stdcall ImguiManager::InitImgui(IApplication* pApplication, IRenderer* pRenderer, float dpiScale)
+bool __stdcall ImGuiManager::InitImGui(IApplication* pApplication, IRenderer* pRenderer, float dpiScale)
 {
 	// Setup Dear ImGui context
 	IMGUI_CHECKVERSION();
@@ -96,20 +96,20 @@ bool __stdcall ImguiManager::InitImgui(IApplication* pApplication, IRenderer* pR
 	return true;
 }
 
-void __stdcall ImguiManager::CleanUpImgui()
+void __stdcall ImGuiManager::CleanUpImGui()
 {
 	ImGui_ImplDX11_Shutdown();
 	ImGui_ImplWin32_Shutdown();
 	ImGui::DestroyContext();
 
-	if (nullptr != GImguiManager)
+	if (nullptr != GImGuiManager)
 	{
-		GImguiManager->Release();
-		GImguiManager = nullptr;
+		GImGuiManager->Release();
+		GImGuiManager = nullptr;
 	}
 }
 
-void __stdcall ImguiManager::OnRender()
+void __stdcall ImGuiManager::OnRender()
 {
 	// Start the Dear ImGui frame
 	ImGui_ImplDX11_NewFrame();
@@ -132,7 +132,7 @@ void __stdcall ImguiManager::OnRender()
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 }
 
-bool __stdcall ImguiManager::WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+bool __stdcall ImGuiManager::WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	if (ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam))
 	{
@@ -140,7 +140,7 @@ bool __stdcall ImguiManager::WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, 
 	}
 }
 
-bool __stdcall ImguiManager::BindCamera(IImguiBindCamera* pCamera)
+bool __stdcall ImGuiManager::BindCamera(IImGuiBindCamera* pCamera)
 {
 	if (nullptr == pCamera)
 	{
@@ -162,7 +162,7 @@ bool __stdcall ImguiManager::BindCamera(IImguiBindCamera* pCamera)
 
 
 
-void ImguiManager::CleanUp()
+void ImGuiManager::CleanUp()
 {
 	if (nullptr != pExitPopup_)
 	{

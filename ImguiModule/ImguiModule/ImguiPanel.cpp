@@ -1,28 +1,28 @@
 #include "stdafx.h"
-#include "ImguiPanel.h"
+#include "ImGuiPanel.h"
 
-ImguiPanel::ImguiPanel()
+ImGuiPanel::ImGuiPanel()
 	: refCount_(1),
 	isActive_(true)
 {
 }
 
-ImguiPanel::~ImguiPanel()
+ImGuiPanel::~ImGuiPanel()
 {
 	CleanUp();
 }
 
-HRESULT __stdcall ImguiPanel::QueryInterface(REFIID riid, void** ppvObject)
+HRESULT __stdcall ImGuiPanel::QueryInterface(REFIID riid, void** ppvObject)
 {
 	return E_NOTIMPL;
 }
 
-ULONG __stdcall ImguiPanel::AddRef(void)
+ULONG __stdcall ImGuiPanel::AddRef(void)
 {
 	return ++refCount_;
 }
 
-ULONG __stdcall ImguiPanel::Release(void)
+ULONG __stdcall ImGuiPanel::Release(void)
 {
 	--refCount_;
 	ULONG tempRefCount = refCount_;
@@ -33,22 +33,22 @@ ULONG __stdcall ImguiPanel::Release(void)
 	return tempRefCount;
 }
 
-bool ImguiPanel::IsActive() const
+bool ImGuiPanel::IsActive() const
 {
 	return isActive_;
 }
 
-void ImguiPanel::OnActive()
+void ImGuiPanel::OnActive()
 {
 	isActive_ = true;
 }
 
-void ImguiPanel::OffActive()
+void ImGuiPanel::OffActive()
 {
 	isActive_ = false;
 }
 
-void ImguiPanel::CleanUp()
+void ImGuiPanel::CleanUp()
 {
 
 }

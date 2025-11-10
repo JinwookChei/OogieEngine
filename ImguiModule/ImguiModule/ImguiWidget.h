@@ -1,12 +1,12 @@
 #pragma once
 
 
-class ImguiWidget : public IImguiWidget
+class ImGuiWidget : public IImGuiWidget
 {
 public:
-	ImguiWidget();
+	ImGuiWidget();
 
-	virtual ~ImguiWidget();
+	virtual ~ImGuiWidget();
 
 	HRESULT __stdcall QueryInterface(REFIID riid, _COM_Outptr_ void __RPC_FAR* __RPC_FAR* ppvObject) override;
 

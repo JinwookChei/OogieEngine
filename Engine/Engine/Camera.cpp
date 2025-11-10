@@ -320,7 +320,7 @@ void Camera::CleanUp()
 	}
 }
 
-IRenderTarget* __stdcall Camera::GetGBufferTargetForImgui() const
+IRenderTarget* __stdcall Camera::GetGBufferTargetForImGui() const
 {
 	return pGBufferTarget_;
 }

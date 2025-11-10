@@ -57,6 +57,9 @@
     <ClCompile Include="LookAtCamera.cpp">
       <Filter>Source Files\Game\Actors\Camera</Filter>
     </ClCompile>
+    <ClCompile Include="Sphere.cpp">
+      <Filter>Source Files\Game\Actors</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -83,10 +86,13 @@
     <ClInclude Include="LookAtCamera.h">
       <Filter>Source Files\Game\Actors\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Interface\ImguiBindObject\IImguiBindObject.h">
+    <ClInclude Include="Sphere.h">
+      <Filter>Source Files\Game\Actors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Interface\ImGuiModule\IImGuiModule.h">
       <Filter>Interface</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Interface\ImguiModule\IImguiModule.h">
+    <ClInclude Include="..\..\Interface\ImGuiBindObject\IImGuiBindObject.h">
       <Filter>Interface</Filter>
     </ClInclude>
   </ItemGroup>

@@ -66,7 +66,7 @@ bool Engine::Initialize
 		return false;
 	}
 
-	float dpiSclae = ImguiSystem::GetImguiManager()->EnableDpiAwareness();
+	float dpiSclae = ImGuiSystem::GetImGuiManager()->EnableDpiAwareness();
 
 	if (false == LoadApplication(hInstance, pCmdLine, nCmdShow, pMainWindowClassName, pMainWindowText, pIConPath))
 	{
@@ -78,7 +78,7 @@ bool Engine::Initialize
 		return false;
 	}
 
-	if (false == ImguiSystem::GetImguiManager()->InitImgui(pApplication_, pRenderer_, dpiSclae))
+	if (false == ImGuiSystem::GetImGuiManager()->InitImGui(pApplication_, pRenderer_, dpiSclae))
 	{
 		return false;
 	}
@@ -137,7 +137,7 @@ void Engine::Run()
 
 		pWorld_->OnBlit();
 
-		ImguiSystem::GetImguiManager()->OnRender();
+		ImGuiSystem::GetImGuiManager()->OnRender();
 
 		pRenderer_->RenderEnd();
 		// Blit RenderTarget  End
@@ -285,7 +285,7 @@ bool Engine::InitializeWorld()
 
 void Engine::CleanUp()
 {
-	ImguiSystem::GetImguiManager()->CleanUpImgui();
+	ImGuiSystem::GetImGuiManager()->CleanUpImGui();
 
 	if (nullptr != pWorld_)
 	{

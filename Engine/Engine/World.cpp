@@ -65,7 +65,7 @@ void World::CheckChangeLevel()
 			return;
 		}
 
-		ImguiSystem::GetImguiManager()->BindCamera(GMainCamera);
+		ImGuiSystem::GetImGuiManager()->BindCamera(GMainCamera);
 
 		//// Albedo
 		//ImguiWidgetDesc widgetDesc;

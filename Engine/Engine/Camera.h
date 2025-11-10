@@ -5,7 +5,7 @@ class Transform;
 
 class Camera
 	: public Actor, 
-	public IImguiBindCamera
+	public IImGuiBindCamera
 {
 public:
 	ENGINE_API Camera();
@@ -63,7 +63,7 @@ private:
 
 public:
 	// IImguiBindCamera Area
-	ENGINE_API IRenderTarget* __stdcall GetGBufferTargetForImgui() const override;
+	ENGINE_API IRenderTarget* __stdcall GetGBufferTargetForImGui() const override;
 
 protected:
 	float cameraSensitivity_;

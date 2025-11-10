@@ -32,10 +32,10 @@
 // Interface
 #include <Application/IApplication.h>
 #include <Renderer/IRenderer.h>
-#include <ImguiBindObject/IImguiBindObject.h>
-#include <ImguiModule/IImguiModule.h>
+#include <ImGuiBindObject/IImGuiBindObject.h>
+#include <ImGuiModule/IImGuiModule.h>
 
 // ImguiManager
-#include <ImguiModule/ImguiManager.h>
+#include <ImGuiModule/ImGuiManager.h>
 
 extern class WindowsApplication* GApplication;

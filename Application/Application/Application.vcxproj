@@ -144,8 +144,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Interface\Application\IApplication.h" />
-    <ClInclude Include="..\..\Interface\ImguiBindObject\IImguiBindObject.h" />
-    <ClInclude Include="..\..\Interface\ImguiModule\IImguiModule.h" />
+    <ClInclude Include="..\..\Interface\ImGuiBindObject\IImGuiBindObject.h" />
+    <ClInclude Include="..\..\Interface\ImGuiModule\IImGuiModule.h" />
     <ClInclude Include="..\..\Interface\Renderer\IRenderer.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Window.h" />

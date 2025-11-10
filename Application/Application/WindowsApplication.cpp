@@ -9,7 +9,7 @@ WindowsApplication* GApplication = nullptr;
 
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	if (ImguiSystem::GetImguiManager()->WndProcHandler(hwnd, uMsg, wParam, lParam))
+	if (ImGuiSystem::GetImGuiManager()->WndProcHandler(hwnd, uMsg, wParam, lParam))
 	{
 		return true;
 	}

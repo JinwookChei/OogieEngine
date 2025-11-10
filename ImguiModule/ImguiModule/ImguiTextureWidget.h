@@ -1,13 +1,13 @@
 #pragma once
 
-class ImguiTextureWidget : public ImguiWidget
+class ImGuiTextureWidget : public ImGuiWidget
 {
 public:
-	ImguiTextureWidget() = delete;
+	ImGuiTextureWidget() = delete;
 
-	ImguiTextureWidget(ImTextureID* pSRV, const char* text);
+	ImGuiTextureWidget(ImTextureID* pSRV, const char* text);
 
-	~ImguiTextureWidget() override;
+	~ImGuiTextureWidget() override;
 
 	void Render() override;
 

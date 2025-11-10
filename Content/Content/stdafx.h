@@ -63,10 +63,10 @@
 #include <Application/IApplication.h>
 #include <Renderer/IRenderer.h>
 #include <ImguiBindObject/IImguiBindObject.h>
-#include <ImguiModule/IImguiModule.h>
+#include <ImGuiModule/IImGuiModule.h>
 
 // ImguiModule
-#include <ImguiModule/ImguiManager.h>
+#include <ImGuiModule/ImGuiManager.h>
 
 
 // Engine

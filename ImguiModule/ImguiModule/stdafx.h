@@ -34,9 +34,9 @@
 
 // Imgui
 #define IMGUI_DEFINE_MATH_OPERATORS
-#include <Imgui/imgui.h>
-#include <Imgui/imgui_impl_win32.h>
-#include <Imgui/imgui_impl_dx11.h>
+#include <ImGui/imgui.h>
+#include <ImGui/imgui_impl_win32.h>
+#include <ImGui/imgui_impl_dx11.h>
 
 // Utility
 #include <Utility/Math.h>
@@ -45,9 +45,9 @@
 // Interface
 #include <Application/IApplication.h>
 #include <Renderer/IRenderer.h>
-#include <ImguiBindObject/IImguiBindObject.h>
-#include <ImguiModule/IImguiModule.h>
+#include <ImGuiBindObject/IImGuiBindObject.h>
+#include <ImGuiModule/IImGuiModule.h>
 
 
-#include "ImguiPanel.h"
-#include "ImguiWidget.h"
+#include "ImGuiPanel.h"
+#include "ImGuiWidget.h"

@@ -1,10 +1,10 @@
 #pragma once
 
-class ImguiPanel : public IImguiPanel
+class ImGuiPanel : public IImGuiPanel
 {
 public:
-	ImguiPanel();
-	virtual ~ImguiPanel();
+	ImGuiPanel();
+	virtual ~ImGuiPanel();
 
 	HRESULT __stdcall QueryInterface(REFIID riid, _COM_Outptr_ void __RPC_FAR* __RPC_FAR* ppvObject) override;
 

@@ -22,7 +22,7 @@
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{54a7c54e-a253-4fac-b64f-b8a49c69c6cd}</ProjectGuid>
-    <RootNamespace>ImguiModule</RootNamespace>
+    <RootNamespace>ImGuiModule</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -144,44 +144,44 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Interface\Application\IApplication.h" />
-    <ClInclude Include="..\..\Interface\ImguiBindObject\IImguiBindObject.h" />
-    <ClInclude Include="..\..\Interface\ImguiModule\IImguiModule.h" />
+    <ClInclude Include="..\..\Interface\ImGuiBindObject\IImGuiBindObject.h" />
+    <ClInclude Include="..\..\Interface\ImGuiModule\IImGuiModule.h" />
     <ClInclude Include="..\..\Interface\Renderer\IRenderer.h" />
-    <ClInclude Include="..\..\ThirdParty\Imgui\imconfig.h" />
-    <ClInclude Include="..\..\ThirdParty\Imgui\imgui.h" />
-    <ClInclude Include="..\..\ThirdParty\Imgui\imgui_impl_dx11.h" />
-    <ClInclude Include="..\..\ThirdParty\Imgui\imgui_impl_win32.h" />
-    <ClInclude Include="..\..\ThirdParty\Imgui\imgui_internal.h" />
-    <ClInclude Include="..\..\ThirdParty\Imgui\imstb_rectpack.h" />
-    <ClInclude Include="..\..\ThirdParty\Imgui\imstb_textedit.h" />
-    <ClInclude Include="..\..\ThirdParty\Imgui\imstb_truetype.h" />
+    <ClInclude Include="..\..\ThirdParty\ImGui\imconfig.h" />
+    <ClInclude Include="..\..\ThirdParty\ImGui\imgui.h" />
+    <ClInclude Include="..\..\ThirdParty\ImGui\imgui_impl_dx11.h" />
+    <ClInclude Include="..\..\ThirdParty\ImGui\imgui_impl_win32.h" />
+    <ClInclude Include="..\..\ThirdParty\ImGui\imgui_internal.h" />
+    <ClInclude Include="..\..\ThirdParty\ImGui\imstb_rectpack.h" />
+    <ClInclude Include="..\..\ThirdParty\ImGui\imstb_textedit.h" />
+    <ClInclude Include="..\..\ThirdParty\ImGui\imstb_truetype.h" />
     <ClInclude Include="ExitPopup.h" />
-    <ClInclude Include="ImguiManager.h" />
-    <ClInclude Include="ImguiWidget.h" />
+    <ClInclude Include="ImGuiManager.h" />
+    <ClInclude Include="ImGuiWidget.h" />
     <ClInclude Include="GBufferViewer.h" />
-    <ClInclude Include="ImguiPanel.h" />
+    <ClInclude Include="ImGuiPanel.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="ImguiTextureWidget.h" />
+    <ClInclude Include="ImGuiTextureWidget.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\ThirdParty\Imgui\imgui.cpp" />
-    <ClCompile Include="..\..\ThirdParty\Imgui\imgui_demo.cpp" />
-    <ClCompile Include="..\..\ThirdParty\Imgui\imgui_draw.cpp" />
-    <ClCompile Include="..\..\ThirdParty\Imgui\imgui_impl_dx11.cpp" />
-    <ClCompile Include="..\..\ThirdParty\Imgui\imgui_impl_win32.cpp" />
-    <ClCompile Include="..\..\ThirdParty\Imgui\imgui_tables.cpp" />
-    <ClCompile Include="..\..\ThirdParty\Imgui\imgui_widgets.cpp" />
+    <ClCompile Include="..\..\ThirdParty\ImGui\imgui.cpp" />
+    <ClCompile Include="..\..\ThirdParty\ImGui\imgui_demo.cpp" />
+    <ClCompile Include="..\..\ThirdParty\ImGui\imgui_draw.cpp" />
+    <ClCompile Include="..\..\ThirdParty\ImGui\imgui_impl_dx11.cpp" />
+    <ClCompile Include="..\..\ThirdParty\ImGui\imgui_impl_win32.cpp" />
+    <ClCompile Include="..\..\ThirdParty\ImGui\imgui_tables.cpp" />
+    <ClCompile Include="..\..\ThirdParty\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="ExitPopup.cpp" />
-    <ClCompile Include="ImguiManager.cpp" />
-    <ClCompile Include="ImguiWidget.cpp" />
+    <ClCompile Include="ImGuiManager.cpp" />
+    <ClCompile Include="ImGuiWidget.cpp" />
     <ClCompile Include="GBufferViewer.cpp" />
-    <ClCompile Include="ImguiPanel.cpp" />
+    <ClCompile Include="ImGuiPanel.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="ImguiTextureWidget.cpp" />
+    <ClCompile Include="ImGuiTextureWidget.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

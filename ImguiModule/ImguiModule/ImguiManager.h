@@ -1,19 +1,19 @@
 #pragma once
 
-namespace ImguiSystem
+namespace ImGuiSystem
 {
-	IMGUI_API IImguiManager* GetImguiManager();
+	IMGUI_API IImGuiManager* GetImGuiManager();
 }
 
 class ExitPopup;
 class GBufferViewer;
-class ImguiManager 
-	: public IImguiManager
+class ImGuiManager 
+	: public IImGuiManager
 {
 public:
-	ImguiManager();
+	ImGuiManager();
 
-	virtual ~ImguiManager();
+	virtual ~ImGuiManager();
 
 	HRESULT __stdcall QueryInterface(REFIID riid, _COM_Outptr_ void __RPC_FAR* __RPC_FAR* ppvObject) override;
 
@@ -23,15 +23,15 @@ public:
 
 	float __stdcall EnableDpiAwareness() override;
 
-	bool __stdcall InitImgui(IApplication* pApplication, IRenderer* pRenderer, float dpiScale) override;
+	bool __stdcall InitImGui(IApplication* pApplication, IRenderer* pRenderer, float dpiScale) override;
 
-	void __stdcall CleanUpImgui() override;
+	void __stdcall CleanUpImGui() override;
 
 	void __stdcall OnRender() override; 
 
 	bool __stdcall WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) override;
 
-	bool __stdcall BindCamera(IImguiBindCamera* pCamera) override;
+	bool __stdcall BindCamera(IImGuiBindCamera* pCamera) override;
 	
 private:
 	void CleanUp();

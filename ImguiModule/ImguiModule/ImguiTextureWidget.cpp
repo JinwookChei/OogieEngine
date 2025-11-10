@@ -1,18 +1,18 @@
 #include "stdafx.h"
-#include "ImguiTextureWidget.h"
+#include "ImGuiTextureWidget.h"
 
-ImguiTextureWidget::ImguiTextureWidget(ImTextureID* pSRV, const char* text)
+ImGuiTextureWidget::ImGuiTextureWidget(ImTextureID* pSRV, const char* text)
 	: pSRV_(pSRV),
 	text_(text)
 {
 }
 
-ImguiTextureWidget::~ImguiTextureWidget()
+ImGuiTextureWidget::~ImGuiTextureWidget()
 {
 	CleanUp();
 }
 
-void ImguiTextureWidget::Render()
+void ImGuiTextureWidget::Render()
 {
 	ImGui::Begin("G-Buffer Viewer");
 	ImGui::Text(text_);
@@ -20,6 +20,6 @@ void ImguiTextureWidget::Render()
 	ImGui::End();
 }
 
-void ImguiTextureWidget::CleanUp()
+void ImGuiTextureWidget::CleanUp()
 {
 }

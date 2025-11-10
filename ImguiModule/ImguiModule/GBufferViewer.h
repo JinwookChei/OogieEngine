@@ -1,28 +1,28 @@
 #pragma once
 
-class ImguiTextureWidget;
-class GBufferViewer : public ImguiPanel
+class ImGuiTextureWidget;
+class GBufferViewer : public ImGuiPanel
 {
 private:
-	friend class ImguiManager;
+	friend class ImGuiManager;
 
 	GBufferViewer();
 
 	~GBufferViewer() override;
 
-	static GBufferViewer* Create(IImguiBindCamera* pCamera);
+	static GBufferViewer* Create(IImGuiBindCamera* pCamera);
 
 	void Render() override;
 private:
-	void BindCamera(IImguiBindCamera* pCamera);
+	void BindCamera(IImGuiBindCamera* pCamera);
 
 	void CleanUp() override;
 
 private:
-	IImguiBindCamera* pBoundCamera_;
+	IImGuiBindCamera* pBoundCamera_;
 
-	ImguiTextureWidget* pAlbedoWidget_;
-	ImguiTextureWidget* pNormalWidget_;
-	ImguiTextureWidget* pSpecularWidget_;
-	ImguiTextureWidget* pDepthWidget_;
+	ImGuiTextureWidget* pAlbedoWidget_;
+	ImGuiTextureWidget* pNormalWidget_;
+	ImGuiTextureWidget* pSpecularWidget_;
+	ImGuiTextureWidget* pDepthWidget_;
 };

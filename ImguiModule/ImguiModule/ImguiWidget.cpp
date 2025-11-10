@@ -1,7 +1,7 @@
 #include "stdafx.h"
-#include "ImguiWidget.h"
+#include "ImGuiWidget.h"
 
-ImguiWidget::ImguiWidget()
+ImGuiWidget::ImGuiWidget()
 	:refCount_(1),
 	isActive_(true)
 {
@@ -10,22 +10,22 @@ ImguiWidget::ImguiWidget()
 	managerLink_.item_ = this;
 }
 
-ImguiWidget::~ImguiWidget()
+ImGuiWidget::~ImGuiWidget()
 {
 	CleanUp();
 }
 
-HRESULT __stdcall ImguiWidget::QueryInterface(REFIID riid, void** ppvObject)
+HRESULT __stdcall ImGuiWidget::QueryInterface(REFIID riid, void** ppvObject)
 {
 	return E_NOTIMPL;
 }
 
-ULONG __stdcall ImguiWidget::AddRef(void)
+ULONG __stdcall ImGuiWidget::AddRef(void)
 {
 	return ++refCount_;
 }
 
-ULONG __stdcall ImguiWidget::Release(void)
+ULONG __stdcall ImGuiWidget::Release(void)
 {
 	--refCount_;
 	ULONG tempRefCount = refCount_;
@@ -36,28 +36,28 @@ ULONG __stdcall ImguiWidget::Release(void)
 	return tempRefCount;
 }
 
-bool ImguiWidget::IsActive() const
+bool ImGuiWidget::IsActive() const
 {
 	return isActive_;
 }
 
-void ImguiWidget::OnActive()
+void ImGuiWidget::OnActive()
 {
 	isActive_ = true;
 }
 
-void ImguiWidget::OffActive()
+void ImGuiWidget::OffActive()
 {
 	isActive_ = false;
 }
 
 
-LINK_ITEM* ImguiWidget::MangerLink()
+LINK_ITEM* ImGuiWidget::MangerLink()
 {
 	return &managerLink_;
 }
 
-void ImguiWidget::CleanUp()
+void ImGuiWidget::CleanUp()
 {
 
 }

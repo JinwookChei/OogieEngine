@@ -1,6 +1,6 @@
 #pragma once
 
-struct IImguiBindCamera
+struct IImGuiBindCamera
 {
-	virtual IRenderTarget* __stdcall GetGBufferTargetForImgui() const = 0;
+	virtual IRenderTarget* __stdcall GetGBufferTargetForImGui() const = 0;
 };

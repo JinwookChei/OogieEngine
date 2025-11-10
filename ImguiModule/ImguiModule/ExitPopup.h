@@ -1,8 +1,8 @@
 #pragma once
 
-class ExitPopup : ImguiPanel
+class ExitPopup : ImGuiPanel
 {
-	friend class ImguiManager;
+	friend class ImGuiManager;
 
 	ExitPopup();
 	//ExitPopup(IApplication* pApplication);

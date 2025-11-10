@@ -142,6 +142,7 @@
     <ClCompile Include="LookAtCamera.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MoveCamera.cpp" />
+    <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="StartLevel.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -150,12 +151,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Interface\Application\IApplication.h" />
-    <ClInclude Include="..\..\Interface\ImguiBindObject\IImguiBindObject.h" />
-    <ClInclude Include="..\..\Interface\ImguiModule\IImguiModule.h" />
+    <ClInclude Include="..\..\Interface\ImGuiBindObject\IImGuiBindObject.h" />
+    <ClInclude Include="..\..\Interface\ImGuiModule\IImGuiModule.h" />
     <ClInclude Include="..\..\Interface\Renderer\IRenderer.h" />
     <ClInclude Include="ContentManager.h" />
     <ClInclude Include="LookAtCamera.h" />
     <ClInclude Include="MoveCamera.h" />
+    <ClInclude Include="Sphere.h" />
     <ClInclude Include="StartLevel.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="TestActor.h" />
