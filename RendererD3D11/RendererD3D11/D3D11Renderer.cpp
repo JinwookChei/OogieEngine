@@ -352,12 +352,12 @@ IMaterial* __stdcall Renderer::CreateMaterial(const MaterialDesc& materialDesc)
 	{
 		if (nullptr != materialDesc.VS)
 		{
-			pVertexShader = static_cast<VertexShader*>(CreateShader(EShaderType::Vertex, materialDesc.VS));
+			pVertexShader = static_cast<VertexShader*>(CreateShader(E_SHADER_TYPE::Vertex, materialDesc.VS));
 		}
 
 		if (nullptr != materialDesc.PS)
 		{
-			pPixelShader = static_cast<PixelShader*>(CreateShader(EShaderType::Pixel, materialDesc.PS));
+			pPixelShader = static_cast<PixelShader*>(CreateShader(E_SHADER_TYPE::Pixel, materialDesc.PS));
 		}
 
 		pSamplerState = static_cast<SamplerState*>(CreateSamplerState(materialDesc.samplerLinear, materialDesc.samplerClamp));
@@ -519,10 +519,10 @@ IRenderTarget* __stdcall Renderer::CreateRenderTarget(const RenderTargetDesc& de
 {
 	switch (desc.renderTechniqueType_)
 	{
-	case ERenderTechniqueType::Forward:
+	case E_RENDER_TECHNIQUE_TYPE::Forward:
 		return CreateForwardRenderTarget(desc);
 		break;
-	case ERenderTechniqueType::Deferred:
+	case E_RENDER_TECHNIQUE_TYPE::Deferred:
 		return CreateDeferredRenderTarget(desc);
 		break;
 	default:
@@ -671,7 +671,7 @@ IRenderTarget* __stdcall Renderer::CreateDeferredRenderTarget(const RenderTarget
 	return nullptr;
 }
 
-IShader* Renderer::CreateShader(EShaderType shaderType, const wchar_t* pPath)
+IShader* Renderer::CreateShader(E_SHADER_TYPE shaderType, const wchar_t* pPath)
 {
 	ID3DBlob* pBlob = nullptr;
 	BaseShader* pShader = nullptr;
@@ -687,10 +687,10 @@ IShader* Renderer::CreateShader(EShaderType shaderType, const wchar_t* pPath)
 
 		switch (shaderType)
 		{
-		case EShaderType::Vertex:
+		case E_SHADER_TYPE::Vertex:
 			pShader = new VertexShader;
 			break;
-		case EShaderType::Pixel:
+		case E_SHADER_TYPE::Pixel:
 			pShader = new PixelShader;
 			break;
 		}
@@ -1184,7 +1184,7 @@ bool Renderer::CreateBackBuffer(UINT width, UINT height, const Color& clearColor
 		}
 
 		pBackBuffer_ = new RenderTarget;
-		RenderTargetDesc desc{ ERenderTechniqueType::Forward };
+		RenderTargetDesc desc{ E_RENDER_TECHNIQUE_TYPE::Forward };
 		desc.size_ = { (float)width, (float)height };
 		desc.clearColor_ = clearColor;
 

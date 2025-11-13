@@ -111,7 +111,7 @@ void RenderTarget::Setting()
 
 RenderTargetDesc __stdcall RenderTarget::GetDesc() const
 {
-	RenderTargetDesc desc{ ERenderTechniqueType::Forward };
+	RenderTargetDesc desc{ E_RENDER_TECHNIQUE_TYPE::Forward };
 	desc.clearColor_ = clearColor_;
 	desc.forwardDesc_ = desc_;
 	desc.size_ = pRenderTexture_->Size();
@@ -140,7 +140,7 @@ void __stdcall RenderTarget::ClearRenderTextureForPS(uint32_t slot)
 	pRenderTexture_->ClearRenderTextureForPS(slot);
 }
 
-void* __stdcall RenderTarget::GetShaderResourceView(const ERenderTextureType& texureType)
+void* __stdcall RenderTarget::GetShaderResourceView(const E_RENDER_TEXTURE_TYPE& texureType)
 {
 	return nullptr;
 }

@@ -33,7 +33,7 @@ public:
 
 	void __stdcall ClearRenderTextureForPS(uint32_t slot) override;
 
-	void* __stdcall GetShaderResourceView(const ERenderTextureType& texureType) override;
+	void* __stdcall GetShaderResourceView(const E_RENDER_TEXTURE_TYPE& texureType) override;
 
 	void __stdcall EndRenderPass() override;
 

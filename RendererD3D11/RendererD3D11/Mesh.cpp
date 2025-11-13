@@ -6,6 +6,8 @@ Mesh::Mesh()
 	stride_(0),
 	offset_(0),
 	indexCount_(0),
+	vertices_(),
+	indices_(),
 	pVertexBuffer_(nullptr),
 	pIndexBuffer_(nullptr)
 {

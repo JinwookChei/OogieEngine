@@ -197,7 +197,7 @@ void Camera::UpdatePerFrameConstant()
 
 bool Camera::InitGBuffer()
 {
-	RenderTargetDesc gBufferDesc(ERenderTechniqueType::Deferred);
+	RenderTargetDesc gBufferDesc(E_RENDER_TECHNIQUE_TYPE::Deferred);
 	gBufferDesc.size_ = { DEFAULT_SCREEN_WIDTH , DEFAULT_SCREEN_HEIGHT };
 	gBufferDesc.clearColor_ = { 0.0f, 0.0f, 0.0f, 0.0f };
 	pGBufferTarget_ = GRenderer->CreateRenderTarget(gBufferDesc);
@@ -212,7 +212,7 @@ bool Camera::InitGBuffer()
 
 bool Camera::InitLightBuffer()
 {
-	RenderTargetDesc lightBufferDesc(ERenderTechniqueType::Forward);
+	RenderTargetDesc lightBufferDesc(E_RENDER_TECHNIQUE_TYPE::Forward);
 	lightBufferDesc.size_ = { DEFAULT_SCREEN_WIDTH , DEFAULT_SCREEN_HEIGHT };
 	lightBufferDesc.clearColor_ = { 0.0f, 0.0f, 0.0f, 0.0f };
 	lightBufferDesc.forwardDesc_.useDepthStencil_ = false;						// 라이트 패스에서 여러 라이트를 처리하기 위해서는 Depth는 꺼야함.
@@ -260,7 +260,7 @@ void Camera::InitScreenRect()
 	pScreenInputLayout_ = GRenderer->CreateLayout(pScreenVertex_, pScreenMaterial_->GetVertexShader());
 
 	pScreenRasterizer_ = GRenderer->CreateRasterizer(true, false);
-	pScreenRasterizer_->SetFillMode(EFillModeType::Solid);
+	pScreenRasterizer_->SetFillMode(E_FILLMODE_TYPE::Solid);
 }
 
 void Camera::CameraTransformUpdate()

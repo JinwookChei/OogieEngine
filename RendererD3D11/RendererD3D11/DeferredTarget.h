@@ -44,7 +44,7 @@ public:
 
 	void __stdcall EndRenderPass() override;
 
-	void* __stdcall GetShaderResourceView(const ERenderTextureType& texureType) override;
+	void* __stdcall GetShaderResourceView(const E_RENDER_TEXTURE_TYPE& texureType) override;
 
 private:
 	bool SetTexture(Texture* pRenderTextureAlbedo, Texture* pRenderTextureNormal, Texture* pRenderTextureSpecular, Texture* pDepthTexture);

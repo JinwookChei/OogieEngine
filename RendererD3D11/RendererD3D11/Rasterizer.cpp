@@ -31,7 +31,7 @@ bool Rasterizer::Init(ID3D11RasterizerState* pSolidState, ID3D11RasterizerState*
 	pSolidState_ = pSolidState;
 	pWireframeState_ = pWireframeState;
 
-	SetFillMode(EFillModeType::Solid);
+	SetFillMode(E_FILLMODE_TYPE::Solid);
 	return true;
 }
 
@@ -61,7 +61,7 @@ void __stdcall Rasterizer::Setting()
 	GRenderer->DeviceContext()->RSSetState(pCurrentState_);
 }
 
-void __stdcall Rasterizer::SetFillMode(EFillModeType fillmode)
+void __stdcall Rasterizer::SetFillMode(E_FILLMODE_TYPE fillmode)
 {
 	if (nullptr != pCurrentState_)
 	{
@@ -71,11 +71,11 @@ void __stdcall Rasterizer::SetFillMode(EFillModeType fillmode)
 
 	switch (fillmode)
 	{
-	case EFillModeType::WireFrame:
+	case E_FILLMODE_TYPE::WireFrame:
 		pCurrentState_ = pWireframeState_;
 		pCurrentState_->AddRef();
 		break;
-	case EFillModeType::Solid:
+	case E_FILLMODE_TYPE::Solid:
 		pCurrentState_ = pSolidState_;
 		pCurrentState_->AddRef();
 		break;

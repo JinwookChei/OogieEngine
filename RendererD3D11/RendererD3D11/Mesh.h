@@ -41,6 +41,10 @@ private:
 
 	UINT indexCount_;
 
+	std::vector<SimpleVertex> vertices_;
+
+	std::vector<WORD> indices_;
+
 	ID3D11Buffer* pVertexBuffer_;
 
 	ID3D11Buffer* pIndexBuffer_;

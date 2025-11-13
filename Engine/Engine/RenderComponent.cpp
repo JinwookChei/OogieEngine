@@ -94,7 +94,7 @@ void RenderComponent::Create(E_MESH_TYPE meshType)
 
 	pInputLayout_ = GRenderer->CreateLayout(pMesh_, pMaterial_->GetVertexShader());
 	pRasterizer_ = GRenderer->CreateRasterizer(false, true);
-	pRasterizer_->SetFillMode(EFillModeType::Solid);
+	pRasterizer_->SetFillMode(E_FILLMODE_TYPE::Solid);
 }
 
 

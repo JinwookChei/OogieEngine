@@ -125,7 +125,7 @@ void __stdcall DeferredTarget::Setting()
 
 RenderTargetDesc __stdcall DeferredTarget::GetDesc() const
 {
-	RenderTargetDesc desc{ ERenderTechniqueType::Deferred };
+	RenderTargetDesc desc{ E_RENDER_TECHNIQUE_TYPE::Deferred };
 	desc.clearColor_ = clearColor_;
 	desc.deferredDesc_ = desc_;
 	desc.size_ = pRenderTextureAlbedo_->Size();
@@ -161,7 +161,7 @@ void __stdcall DeferredTarget::EndRenderPass()
 	GRenderer->DeviceContext()->OMSetRenderTargets(RENDER_BUFFER_COUNT, nullRTV, nullptr);
 }
 
-void* __stdcall DeferredTarget::GetShaderResourceView(const ERenderTextureType& texureType)
+void* __stdcall DeferredTarget::GetShaderResourceView(const E_RENDER_TEXTURE_TYPE& texureType)
 {
 	return pSRVs_[(int)texureType];
 }

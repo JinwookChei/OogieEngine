@@ -21,7 +21,7 @@ public:
 
 	void __stdcall Setting() override;
 
-	void __stdcall SetFillMode(EFillModeType fillmode) override;
+	void __stdcall SetFillMode(E_FILLMODE_TYPE fillmode) override;
 
 private:
 	void CleanUp();

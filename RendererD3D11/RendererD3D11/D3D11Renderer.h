@@ -51,7 +51,7 @@ public:
 	ITexture* __stdcall LoadTextureFromDirectXTex(const wchar_t* fileName, bool isNormalMap) override;
 	
 	// ------------------------- 인터페이스 노출안된 Create -----------------------------
-	IShader* CreateShader(EShaderType shaderType, const wchar_t* pPath);
+	IShader* CreateShader(E_SHADER_TYPE shaderType, const wchar_t* pPath);
 
 	ITexture* CreateTexture(const Float2& size, DXGI_FORMAT format, uint32_t flag);
 

@@ -1,18 +1,18 @@
 #pragma once
 
-enum class EShaderType
+enum class E_SHADER_TYPE
 {
 	Vertex = 0,
 	Pixel
 };
 
-enum class EFillModeType
+enum class E_FILLMODE_TYPE
 {
 	WireFrame = 0,
 	Solid
 };
 
-enum class ERenderTechniqueType
+enum class E_RENDER_TECHNIQUE_TYPE
 {
 	Forward = 0,
 	Deferred
@@ -39,7 +39,7 @@ struct RenderTargetDesc
 	Float2 size_{ 0.0f, 0.0f };
 	Color clearColor_{ 0.2f, 0.4f, 0.6f, 1.0f };
 
-	ERenderTechniqueType renderTechniqueType_ = ERenderTechniqueType::Forward;
+	E_RENDER_TECHNIQUE_TYPE renderTechniqueType_ = E_RENDER_TECHNIQUE_TYPE::Forward;
 
 	union
 	{
@@ -49,19 +49,19 @@ struct RenderTargetDesc
 
 	RenderTargetDesc() = delete;
 
-	RenderTargetDesc(ERenderTechniqueType renderTechniqueType = ERenderTechniqueType::Forward)
+	RenderTargetDesc(E_RENDER_TECHNIQUE_TYPE renderTechniqueType = E_RENDER_TECHNIQUE_TYPE::Forward)
 		: size_({ 0.0f, 0.0f }),
 		clearColor_({ 0.2f, 0.4f, 0.6f, 1.0f }), 
 		renderTechniqueType_(renderTechniqueType)
 	{
 		switch (renderTechniqueType_)
 		{
-		case ERenderTechniqueType::Forward:
+		case E_RENDER_TECHNIQUE_TYPE::Forward:
 			forwardDesc_.fmtColor_ = 2;
 			forwardDesc_.fmtDepth_ = 45;
 			forwardDesc_.useDepthStencil_ = true;
 			break;
-		case ERenderTechniqueType::Deferred:
+		case E_RENDER_TECHNIQUE_TYPE::Deferred:
 			deferredDesc_.fmtAlbedo_ = 28;	//DXGI_FORMAT::DXGI_FORMAT_R8G8B8A8_UNORM;
 			deferredDesc_.fmtNormal_ = 10;	//DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT;
 			deferredDesc_.fmtMaterial_ = 28;
@@ -148,7 +148,7 @@ struct IConstantBuffer : public IUnknown {
 struct IRasterizer : public IUnknown {
 	virtual void __stdcall Setting() = 0;
 
-	virtual void __stdcall SetFillMode(EFillModeType fillModeType) = 0;
+	virtual void __stdcall SetFillMode(E_FILLMODE_TYPE fillModeType) = 0;
 };
 
 struct IBlendState : public IUnknown
@@ -158,7 +158,7 @@ struct IBlendState : public IUnknown
 	virtual void __stdcall Setting() = 0;
 };
 
-enum class EViewType
+enum class E_VIEW_TYPE
 {
 	RenderTargetView =0,
 	DepthStencilView,
@@ -167,15 +167,11 @@ enum class EViewType
 
 struct ViewDesc
 {
-	EViewType viewType;
+	E_VIEW_TYPE viewType;
 };
 
-//struct IView : public IUnknown
-//{
-//	virtual void* __stdcall GetView() = 0;
-//};
 
-enum class ERenderTextureType
+enum class E_RENDER_TEXTURE_TYPE
 {
 	Albedo = 0,
 	Normal,
@@ -202,7 +198,7 @@ struct IRenderTarget : public IUnknown
 
 	virtual void __stdcall EndRenderPass() = 0;
 
-	virtual void* __stdcall GetShaderResourceView(const ERenderTextureType& texureType) = 0;
+	virtual void* __stdcall GetShaderResourceView(const E_RENDER_TEXTURE_TYPE& texureType) = 0;
 };
 
 
