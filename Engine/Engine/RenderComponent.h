@@ -9,7 +9,7 @@ class InputLayout;
 class ShaderConstants;
 class Rasterizer;
 
-enum class MESH_TYPE
+enum class E_MESH_TYPE
 {
 	SPHERE = 0,
 	CUBE
@@ -24,7 +24,7 @@ public:
 
 	ENGINE_API void Render();	
 
-	ENGINE_API void Create(MESH_TYPE meshType);
+	ENGINE_API void Create(E_MESH_TYPE meshType);
 
 private:
 	void CleanUp();
@@ -41,5 +41,4 @@ private:
 	IInputLayout* pInputLayout_;
 
 	IRasterizer* pRasterizer_;
-
 };

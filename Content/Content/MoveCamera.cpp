@@ -86,7 +86,7 @@ void MoveCamera::Tick(double deltaTime)
 
 void MoveCamera::BeginPlay()
 {
-	pRenderer_->Create(MESH_TYPE::CUBE);
+	pRenderer_->Create(E_MESH_TYPE::CUBE);
 
 	pTransform_->SetScale({ 1.0f, 1.0f, 1.0f, 0.0f });
 	pTransform_->SetRotation({ 0.0f, 0.0f, 0.0f, 0.0f });

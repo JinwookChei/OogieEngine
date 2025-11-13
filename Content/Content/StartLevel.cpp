@@ -17,27 +17,13 @@ void StartLevel::BeginPlay()
 {
 	MoveCamera* pCamera1 = SpawnCamera<MoveCamera>();
 	pCamera1->SetScreenPlacement({ 0.0f, 0.0f }, {1.0f, 1.0f});
-	
 
-	//MoveCamera* pCamera2 = SpawnCamera<MoveCamera>();
-	//pCamera2->SetClearColor({ 0.0f, 0.0f, 0.6f, 1.0f });
-	//pCamera2->SetScreenPlacement({ -0.5f, 0.0f }, { 0.5f, 1.0f });
-	//pCamera2->GetWorldTransform().AddPosition({0.0f, 0.0f, 0.0f,0.0f});
-	//pCamera2->SetScreenPlacement({ 0.5f, 0.0f }, { 0.5f, 1.0f });
-
-	/*LookAtCamera* pCamera2 = SpawnCamera<LookAtCamera>();
-	pCamera2->SetClearColor({ 0.0f, 0.0f, 0.6f, 1.0f });
-	pCamera2->SetScreenPlacement({ 0.5f, 0.0f }, { 0.5f, 1.0f });
-	pCamera2->SetFocusActor(pCamera1);*/
-	//pCamera2->GetWorldTransform().SetPosition({ 0.0f, 3.0f, 0.0f, 1.0f });
-
+	TestActor* pActor1 = SpawnActor<TestActor>(E_ACTOR_TYPE::NORMAL);
+	pActor1->GetWorldTransform().SetPosition({ 0.0f, 0.0f, 0.0f, 1.0f });
+	pActor1->GetWorldTransform().SetScale({ 10.0f, 10.0f, 1.0f, 0.0f });
 
 	/*DirectionLight* pDirectionLight = SpawnLight<DirectionLight>();
 	pDirectionLight->GetWorldTransform().SetRotation({ 0.0f, 0.0f, 0.0f, 0.0f });*/
-
-	TestActor* pActor1 = SpawnActor<TestActor>(ACTOR_TYPE::NORMAL);
-	pActor1->GetWorldTransform().SetPosition({0.0f, 0.0f, 0.0f, 1.0f});
-	pActor1->GetWorldTransform().SetScale({10.0f, 10.0f, 1.0f, 0.0f});
 
 	SpotLight* pSpotLight = SpawnLight<SpotLight>();
 	pSpotLight->GetWorldTransform().SetPosition({ 1.0f, 1.0f, 5.0f, 1.0f });
@@ -53,11 +39,11 @@ void StartLevel::BeginPlay()
 	PointLight* pPointLight2 = SpawnLight<PointLight>();
 	pPointLight2->GetWorldTransform().SetPosition({ 0.0f, 3.0f, 2.0f, 1.0f });
 
-	Sphere* pSphere1 = SpawnActor<Sphere>(ACTOR_TYPE::NORMAL);
+	Sphere* pSphere1 = SpawnActor<Sphere>(E_ACTOR_TYPE::NORMAL);
 	pSphere1->GetWorldTransform().SetPosition({ 10.0f, 0.0f, 3.0f, 1.0f });
 	pSphere1->GetWorldTransform().SetScale({ 3.0f, 3.0f, 3.0f, 0.0f });
 
-	Sphere* pSphere2 = SpawnActor<Sphere>(ACTOR_TYPE::NORMAL);
+	Sphere* pSphere2 = SpawnActor<Sphere>(E_ACTOR_TYPE::NORMAL);
 	pSphere2->GetWorldTransform().SetPosition({ 10.0f, 5.0f, 3.0f, 1.0f });
 	pSphere2->GetWorldTransform().SetScale({ 3.0f, 3.0f, 3.0f, 0.0f });
 

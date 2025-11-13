@@ -114,6 +114,7 @@ struct MaterialDesc
 {
 	const wchar_t* VS = nullptr;
 	const wchar_t* PS = nullptr;
+	bool useTexture = false;
 	bool samplerLinear = false;
 	bool samplerClamp = false;
 	float shineness = 16.0f;

@@ -97,7 +97,7 @@ float4 main(PS_ScreenRect input) : SV_TARGET
         
         // Diffuse
         float diffuseFactor = saturate(dot(N, L));
-        clip(diffuseFactor - 0.0001f);
+        //clip(diffuseFactor - 0.0001f);
         float3 diffuseColor = diffuseFactor * LightDiffuse.rgb * albedo.rgb;
 
         // Specular
@@ -121,7 +121,7 @@ float4 main(PS_ScreenRect input) : SV_TARGET
         float3 toLight = LightPosition - worldPos.xyz;
         float dist = length(toLight);
         
-        // clip(LightRange - dist);
+        clip(LightRange - dist);
         toLight /= dist;
         
         // Diffuse
@@ -136,9 +136,9 @@ float4 main(PS_ScreenRect input) : SV_TARGET
         float3 specularColor = specFactor * LightSpecular.rgb * specular.rgb;
         
         // Ambient
-         // float3 ambientColor = LightAmbient.rgb * albedo.rgb;
+        // float3 ambientColor = LightAmbient.rgb * albedo.rgb;
         // Emissive
-         // float3 emissiveColor = 0.0f;
+        // float3 emissiveColor = 0.0f;
         
         //// Att        
         float innerCone = cos(radians(InnerAngle));
@@ -150,7 +150,7 @@ float4 main(PS_ScreenRect input) : SV_TARGET
         float attenuation = 1.0f / dot(attCoeffs, float3(1.0f, dist, dist * dist));
         float att = spot * attenuation;
         
-        float3 finalColor = float3(diffuseColor + specularColor /*+ ambientColor + emissiveColor*/) * att;
+        float3 finalColor = float3(diffuseColor + specularColor /*+ ambientColor*/ /*+ emissiveColor*/) * att;
         return float4(finalColor, 1.0f);
     }
     // PointLight
@@ -162,7 +162,7 @@ float4 main(PS_ScreenRect input) : SV_TARGET
         float3 lightVec = LightPosition - worldPos.xyz;
         
         float dist = length(lightVec);
-        // clip(LightRange - dist);
+        //clip(LightRange - dist);
         lightVec /= dist;
         
         // Diffuses

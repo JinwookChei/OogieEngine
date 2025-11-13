@@ -1,5 +1,4 @@
 #pragma once
-#include "GraphicesStructures.h"
 
 class GeometryGenerator final
 {

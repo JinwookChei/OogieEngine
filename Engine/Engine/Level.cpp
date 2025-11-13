@@ -17,7 +17,7 @@ Level::~Level()
 	CleanUp();
 }
 
-void Level::SpawnActorInternal(Actor* pActor, ACTOR_TYPE actorType)
+void Level::SpawnActorInternal(Actor* pActor, E_ACTOR_TYPE actorType)
 {
 	if (nullptr == pActor)
 	{
@@ -54,7 +54,7 @@ void Level::SpawnLightInternal(Light* pLight)
 }
 
 
-void Level::RegisterActor(Actor* pActor, ACTOR_TYPE actorType)
+void Level::RegisterActor(Actor* pActor, E_ACTOR_TYPE actorType)
 {
 	if (nullptr == pActor)
 	{

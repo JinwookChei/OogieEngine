@@ -13,7 +13,7 @@ Sphere::~Sphere()
 
 void Sphere::BeginPlay()
 {
-	pRenderer_->Create(MESH_TYPE::SPHERE);
+	pRenderer_->Create(E_MESH_TYPE::SPHERE);
 	pTransform_->SetScale({ 1.0f, 1.0f, 1.0f, 0.0f });
 	pTransform_->SetRotation({ 0.0f, 0.0f, 0.0f, 0.0f });
 	pTransform_->SetPosition({ 0.0f, 0.0f, 0.0f, 1.0f });

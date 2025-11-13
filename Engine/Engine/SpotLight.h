@@ -36,4 +36,6 @@ private:
 	float attenuationConst_;
 	float attenuationLinear_;
 	float attenuationQuad_;
+
+	RenderComponent* pRenderer_;
 };

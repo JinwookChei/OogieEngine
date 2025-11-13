@@ -58,9 +58,6 @@
     <Filter Include="Source Files\Component\Transform">
       <UniqueIdentifier>{c5f06b07-d3ba-44d5-b5ad-babf8fd96da4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Graphics\Structures">
-      <UniqueIdentifier>{91baee82-f6fb-4aec-9178-74d90e00e4ec}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Graphics\Generator">
       <UniqueIdentifier>{3589f1c8-6e82-43bf-9c5e-254d45268f12}</UniqueIdentifier>
     </Filter>
@@ -75,6 +72,12 @@
     </Filter>
     <Filter Include="Source Files\Actor\Camera">
       <UniqueIdentifier>{d9fc05ca-5bf2-4814-b2e5-6f954e1800fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Manager\GraphicsManager">
+      <UniqueIdentifier>{4f929b8f-e4bb-4425-b02c-a2b4715d3128}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Component\BoundVolume">
+      <UniqueIdentifier>{fda48a9c-d09b-4392-83eb-db9b0658ba8f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -120,12 +123,6 @@
     <ClInclude Include="SpotLight.h">
       <Filter>Source Files\Actor\Light</Filter>
     </ClInclude>
-    <ClInclude Include="ConstantManager.h">
-      <Filter>Source Files\Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="GraphicesStructures.h">
-      <Filter>Source Files\Graphics\Structures</Filter>
-    </ClInclude>
     <ClInclude Include="GeometryGenerator.h">
       <Filter>Source Files\Graphics\Generator</Filter>
     </ClInclude>
@@ -142,6 +139,18 @@
       <Filter>Interface</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Interface\ImGuiModule\IImGuiModule.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstantManager.h">
+      <Filter>Source Files\Manager\GraphicsManager</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshManager.h">
+      <Filter>Source Files\Manager\GraphicsManager</Filter>
+    </ClInclude>
+    <ClInclude Include="BoundVolume.h">
+      <Filter>Source Files\Component\BoundVolume</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Interface\VertexType\IVertexType.h">
       <Filter>Interface</Filter>
     </ClInclude>
   </ItemGroup>
@@ -182,12 +191,6 @@
     <ClCompile Include="SpotLight.cpp">
       <Filter>Source Files\Actor\Light</Filter>
     </ClCompile>
-    <ClCompile Include="ConstantManager.cpp">
-      <Filter>Source Files\Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="GraphicsStructures.cpp">
-      <Filter>Source Files\Graphics\Structures</Filter>
-    </ClCompile>
     <ClCompile Include="GeometryGenerator.cpp">
       <Filter>Source Files\Graphics\Generator</Filter>
     </ClCompile>
@@ -199,6 +202,15 @@
     </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>Source Files\Actor\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="ConstantManager.cpp">
+      <Filter>Source Files\Manager\GraphicsManager</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshManager.cpp">
+      <Filter>Source Files\Manager\GraphicsManager</Filter>
+    </ClCompile>
+    <ClCompile Include="BoundVolume.cpp">
+      <Filter>Source Files\Component\BoundVolume</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -45,6 +45,7 @@
 #include <Renderer/IRenderer.h>
 #include <ImGuiBindObject/IImGuiBindObject.h>
 #include <ImGuiModule/IImGuiModule.h>
+#include <VertexType/IVertexType.h>
 
 // ImguiManager
 #include <ImguiModule/ImguiManager.h>

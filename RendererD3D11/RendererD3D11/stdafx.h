@@ -48,6 +48,7 @@
 
 // Interface
 #include <Renderer/IRenderer.h>
+#include <VertexType/IVertexType.h>
 
 // RendererD3D11
 #include "D3D11Renderer.h"

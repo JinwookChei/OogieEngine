@@ -1,9 +1,5 @@
 #pragma once
 
-struct SimpleVertex {
-	DirectX::XMFLOAT3 position;
-	DirectX::XMFLOAT4 color;
-};
 
 class Mesh
 	: public IMesh

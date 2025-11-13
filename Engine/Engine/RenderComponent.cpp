@@ -39,17 +39,23 @@ void RenderComponent::Render()
 }
 
 
-void RenderComponent::Create(MESH_TYPE meshType)
+void RenderComponent::Create(E_MESH_TYPE meshType)
 {
+	if (nullptr != pMesh_)
+	{
+		pMesh_->Release();
+		pMesh_ = nullptr;
+	}
+
 	std::vector<SimpleVertex> sphereVertices;
 	std::vector<WORD> sphereIndices;
 
 	switch (meshType)
 	{
-	case MESH_TYPE::SPHERE:
+	case E_MESH_TYPE::SPHERE:
 		GeometryGenerator::CreateSphere(&sphereVertices, &sphereIndices);
 		break;
-	case MESH_TYPE::CUBE:
+	case E_MESH_TYPE::CUBE:
 		GeometryGenerator::CreateCube(&sphereVertices, &sphereIndices);
 		break;
 	default:

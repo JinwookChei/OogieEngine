@@ -120,6 +120,9 @@
     <ClInclude Include="ShaderResourceView.h">
       <Filter>Source Files\View</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Interface\VertexType\IVertexType.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
