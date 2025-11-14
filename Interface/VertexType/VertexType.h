@@ -1,6 +1,14 @@
 #pragma once
 
-struct SimpleVertex {
+enum class E_VERTEX_FORMAT
+{
+	SIMPLE,
+	SCREEN_RECT
+};
+
+
+struct SimpleVertex
+{
 	Float3 position;
 	Float4 color;
 	Float3 normal;

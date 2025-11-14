@@ -21,8 +21,6 @@ private:
 
 	void CleanUp() override;
 
-	RenderComponent* pRenderer_;
-
 	Actor* pFocusActor_;
 
 };

@@ -59,8 +59,9 @@
 #include <Utility/Math.h>
 #include <Utility/LinkedList.h>
 
-// Interfavce
+// Interface
 #include <Application/IApplication.h>
+#include <VertexType/VertexType.h>
 #include <Renderer/IRenderer.h>
 #include <ImguiBindObject/IImguiBindObject.h>
 #include <ImGuiModule/IImGuiModule.h>

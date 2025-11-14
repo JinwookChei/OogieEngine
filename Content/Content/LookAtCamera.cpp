@@ -2,8 +2,7 @@
 #include "LookAtCamera.h"
 
 LookAtCamera::LookAtCamera()
-	: pRenderer_(new RenderComponent(this)),
-	pFocusActor_(nullptr)
+	:pFocusActor_(nullptr)
 {
 }
 
@@ -120,9 +119,4 @@ void LookAtCamera::CameraTransformUpdate()
 
 void LookAtCamera::CleanUp()
 {
-	if (nullptr != pRenderer_)
-	{
-		delete pRenderer_;
-		pRenderer_ = nullptr;
-	}
 }

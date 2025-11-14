@@ -2,7 +2,6 @@
 #include "TestActor.h"
 
 TestActor::TestActor()
-	:pRenderer_(new RenderComponent(this))
 {
 }
 
@@ -30,9 +29,4 @@ void TestActor::Render()
 
 void TestActor::CleanUp()
 {
-	if (nullptr != pRenderer_)
-	{
-		delete pRenderer_;
-		pRenderer_ = nullptr;
-	}
 }

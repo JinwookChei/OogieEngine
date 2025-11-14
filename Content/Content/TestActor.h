@@ -19,5 +19,4 @@ protected:
 	void CleanUp() override;
 
 private:
-	RenderComponent* pRenderer_;
 };

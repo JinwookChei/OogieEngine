@@ -17,5 +17,4 @@ public:
 private:
 	void CleanUp() override;
 
-	RenderComponent* pRenderer_;
 };

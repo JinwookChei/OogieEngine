@@ -11,7 +11,8 @@ RenderComponent::RenderComponent(Actor* pOwner)
 	pTextureColor_(nullptr),
 	pTextureNormal_(nullptr),
 	pInputLayout_(nullptr),
-	pRasterizer_(nullptr)
+	pRasterizer_(nullptr),
+	OnMeshLoaded_()
 {
 }
 
@@ -41,11 +42,7 @@ void RenderComponent::Render()
 
 void RenderComponent::Create(E_MESH_TYPE meshType)
 {
-	if (nullptr != pMesh_)
-	{
-		pMesh_->Release();
-		pMesh_ = nullptr;
-	}
+	CleanUp();
 
 	std::vector<SimpleVertex> sphereVertices;
 	std::vector<WORD> sphereIndices;
@@ -63,13 +60,17 @@ void RenderComponent::Create(E_MESH_TYPE meshType)
 	}
 
 	// Mesh
-	pMesh_ = GRenderer->CreateMesh
-	(
-		sphereVertices.data(), (uint32_t)sizeof(SimpleVertex),
-		(uint32_t)sphereVertices.size(), sphereIndices.data(),
-		(uint32_t)sizeof(WORD),
-		(uint32_t)sphereIndices.size()
-	);
+	MeshDesc meshDesc;
+	meshDesc.vertexFormat = E_VERTEX_FORMAT::SIMPLE;
+	meshDesc.vertexFormatSize = sizeof(SimpleVertex);
+	meshDesc.vertexCount = sphereVertices.size();
+	meshDesc.vertices = sphereVertices.data();
+	meshDesc.indexFormatSize = sizeof(WORD);
+	meshDesc.indexCount = sphereIndices.size();
+	meshDesc.indices = sphereIndices.data();
+
+
+	pMesh_ = GRenderer->CreateMesh(meshDesc);
 	pMesh_->AddInputLayout("POSITION", 0, 6, 0, false);
 	pMesh_->AddInputLayout("COLOR", 0, 2, 0, false);
 	pMesh_->AddInputLayout("NORMAL", 0, 6, 0, false);
@@ -95,6 +96,36 @@ void RenderComponent::Create(E_MESH_TYPE meshType)
 	pInputLayout_ = GRenderer->CreateLayout(pMesh_, pMaterial_->GetVertexShader());
 	pRasterizer_ = GRenderer->CreateRasterizer(false, true);
 	pRasterizer_->SetFillMode(E_FILLMODE_TYPE::Solid);
+
+	BroadcastOnMeshLoaded();
+}
+
+IMesh* RenderComponent::GetMesh() const
+{
+	return pMesh_;
+}
+
+void RenderComponent::BindOnMeshLoaded(MeshLoadedDelegate callback)
+{
+	if(!callback)
+	{
+		DEBUG_BREAK();
+		return;
+	}
+	OnMeshLoaded_.push_back(callback);
+}
+
+void RenderComponent::BroadcastOnMeshLoaded()
+{
+	for (const auto& callback : OnMeshLoaded_)
+	{
+		if (!callback)
+		{
+			DEBUG_BREAK();
+			continue;
+		}
+		callback(pMesh_);
+	}
 }
 
 

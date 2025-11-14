@@ -180,7 +180,7 @@ IInputLayout* __stdcall Renderer::CreateLayout(IMesh* pMesh, IShader* pVertexSha
 		}
 
 		Mesh* pMeshImpl = static_cast<Mesh*>(pMesh);
-		const std::vector<D3D11_INPUT_ELEMENT_DESC>& layoutDesc = pMeshImpl->GetDesc();
+		const std::vector<D3D11_INPUT_ELEMENT_DESC>& layoutDesc = pMeshImpl->GetInputDesc();
 
 		VertexShader* pVertexShaderImpl = static_cast<VertexShader*>(pVertexShadr);
 		HRESULT hr = GRenderer->Device()->CreateInputLayout(layoutDesc.data(), (UINT)layoutDesc.size(), pVertexShaderImpl->GetBufferPointer(), pVertexShaderImpl->GetBufferSize(), &pInputLayout);
@@ -222,36 +222,151 @@ IInputLayout* __stdcall Renderer::CreateLayout(IMesh* pMesh, IShader* pVertexSha
 	return nullptr;;
 }
 
-IMesh* __stdcall Renderer::CreateMesh(void* pVertices, uint32_t vertexSize, uint32_t vertexCount, void* pIndices /*= nullptr*/, uint32_t indexTypeSize /*= 0*/, uint32_t indexCount /*= 0*/)
+//IMesh* __stdcall Renderer::CreateMesh(void* pVertices, uint32_t vertexSize, uint32_t vertexCount, void* pIndices /*= nullptr*/, uint32_t indexTypeSize /*= 0*/, uint32_t indexCount /*= 0*/)
+//{
+//	ID3D11Buffer* pVertexBuffer = nullptr;
+//	ID3D11Buffer* pIndexBuffer = nullptr;
+//	Mesh* pNewMesh = nullptr;
+//
+//	do
+//	{
+//		if (nullptr == pVertices)
+//		{
+//			DEBUG_BREAK();
+//			break;
+//		}
+//
+//		if (0 == vertexSize || 0 == vertexCount)
+//		{
+//			DEBUG_BREAK();
+//			break;
+//		}
+//
+//		D3D11_BUFFER_DESC bd;
+//		memset(&bd, 0x00, sizeof(D3D11_BUFFER_DESC));
+//		bd.Usage = D3D11_USAGE_DEFAULT;
+//		bd.ByteWidth = vertexSize * vertexCount;
+//		bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+//		bd.CPUAccessFlags = 0;
+//
+//		D3D11_SUBRESOURCE_DATA InitData;
+//		memset(&InitData, 0x00, sizeof(D3D11_SUBRESOURCE_DATA));
+//		InitData.pSysMem = pVertices;
+//
+//		HRESULT hr = GRenderer->Device()->CreateBuffer(&bd, &InitData, &pVertexBuffer);
+//		if (FAILED(hr))
+//		{
+//			DEBUG_BREAK();
+//			break;
+//		}
+//
+//		// ---------------- 메모리 누수 디버깅용 이름 설정. ----------------------------
+//		const char* debugObjectName = "VertexBuffer::pVertexBuffer_";
+//		pVertexBuffer->SetPrivateData(WKPDID_D3DDebugObjectName, (UINT)strlen(debugObjectName), debugObjectName);
+//		// ---------------------------------------------------------------------------
+//
+//		if (nullptr == pIndices && 0 != indexCount)
+//		{
+//			DEBUG_BREAK();
+//			break;
+//		}
+//
+//		if (nullptr == pIndices)
+//		{
+//			pNewMesh = new Mesh;
+//			if (false == pNewMesh->Init(vertexSize, pVertexBuffer, 0, nullptr))
+//			{
+//				DEBUG_BREAK();
+//				break;
+//			}
+//
+//			return pNewMesh;
+//		}
+//
+//		if (0 == indexCount)
+//		{
+//			DEBUG_BREAK();
+//			break;
+//		}
+//
+//		// 인덱스 버퍼
+//		bd.Usage = D3D11_USAGE_DEFAULT;
+//		bd.ByteWidth = indexTypeSize * indexCount;
+//		bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
+//		bd.CPUAccessFlags = 0;
+//
+//		InitData.pSysMem = pIndices;
+//
+//		hr = GRenderer->Device()->CreateBuffer(&bd, &InitData, &pIndexBuffer);
+//		if (FAILED(hr))
+//		{
+//			DEBUG_BREAK();
+//			break;
+//		}
+//
+//		// ---------------- 메모리 누수 디버깅용 이름 설정. ----------------------------
+//		debugObjectName = "VertexBuffer::pIndexBuffer_";
+//		pIndexBuffer->SetPrivateData(WKPDID_D3DDebugObjectName, (UINT)strlen(debugObjectName), debugObjectName);
+//		// ---------------------------------------------------------------------------
+//
+//		pNewMesh = new Mesh;
+//		if (false == pNewMesh->Init(vertexSize, pVertexBuffer, indexCount, pIndexBuffer))
+//		{
+//			DEBUG_BREAK();
+//			break;
+//		}
+//
+//		return pNewMesh;
+//
+//	} while (false);
+//
+//
+//
+//	if (nullptr != pVertexBuffer)
+//	{
+//		pVertexBuffer->Release();
+//		pVertexBuffer = nullptr;
+//	}
+//	if (nullptr != pIndexBuffer)
+//	{
+//		pIndexBuffer->Release();
+//		pIndexBuffer = nullptr;
+//	}
+//	if (nullptr != pNewMesh)
+//	{
+//		pNewMesh->Release();
+//		pNewMesh = nullptr;
+//	}
+//
+//	return nullptr;
+//}
+
+IMesh* __stdcall Renderer::CreateMesh(const MeshDesc& desc)
 {
 	ID3D11Buffer* pVertexBuffer = nullptr;
 	ID3D11Buffer* pIndexBuffer = nullptr;
 	Mesh* pNewMesh = nullptr;
+	void* copyVertices = nullptr;
+	void* copyIndices = nullptr;
 
 	do
 	{
-		if (nullptr == pVertices)
+		if (nullptr == desc.vertices)
 		{
-			DEBUG_BREAK();
-			break;
-		}
-
-		if (0 == vertexSize || 0 == vertexCount)
-		{
-			DEBUG_BREAK();
+			Assert("DESC::Vertices is NULL");
 			break;
 		}
 
 		D3D11_BUFFER_DESC bd;
 		memset(&bd, 0x00, sizeof(D3D11_BUFFER_DESC));
 		bd.Usage = D3D11_USAGE_DEFAULT;
-		bd.ByteWidth = vertexSize * vertexCount;
+		bd.ByteWidth = desc.vertexFormatSize * desc.vertexCount;
 		bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 		bd.CPUAccessFlags = 0;
 
 		D3D11_SUBRESOURCE_DATA InitData;
 		memset(&InitData, 0x00, sizeof(D3D11_SUBRESOURCE_DATA));
-		InitData.pSysMem = pVertices;
+		InitData.pSysMem = desc.vertices;
 
 		HRESULT hr = GRenderer->Device()->CreateBuffer(&bd, &InitData, &pVertexBuffer);
 		if (FAILED(hr))
@@ -265,37 +380,12 @@ IMesh* __stdcall Renderer::CreateMesh(void* pVertices, uint32_t vertexSize, uint
 		pVertexBuffer->SetPrivateData(WKPDID_D3DDebugObjectName, (UINT)strlen(debugObjectName), debugObjectName);
 		// ---------------------------------------------------------------------------
 
-		if (nullptr == pIndices && 0 != indexCount)
-		{
-			DEBUG_BREAK();
-			break;
-		}
-
-		if (nullptr == pIndices)
-		{
-			pNewMesh = new Mesh;
-			if (false == pNewMesh->Init(vertexSize, pVertexBuffer, 0, nullptr))
-			{
-				DEBUG_BREAK();
-				break;
-			}
-
-			return pNewMesh;
-		}
-
-		if (0 == indexCount)
-		{
-			DEBUG_BREAK();
-			break;
-		}
-
 		// 인덱스 버퍼
 		bd.Usage = D3D11_USAGE_DEFAULT;
-		bd.ByteWidth = indexTypeSize * indexCount;
+		bd.ByteWidth = desc.indexFormatSize * desc.indexCount;
 		bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
 		bd.CPUAccessFlags = 0;
-
-		InitData.pSysMem = pIndices;
+		InitData.pSysMem = desc.indices;
 
 		hr = GRenderer->Device()->CreateBuffer(&bd, &InitData, &pIndexBuffer);
 		if (FAILED(hr))
@@ -309,10 +399,39 @@ IMesh* __stdcall Renderer::CreateMesh(void* pVertices, uint32_t vertexSize, uint
 		pIndexBuffer->SetPrivateData(WKPDID_D3DDebugObjectName, (UINT)strlen(debugObjectName), debugObjectName);
 		// ---------------------------------------------------------------------------
 
-		pNewMesh = new Mesh;
-		if (false == pNewMesh->Init(vertexSize, pVertexBuffer, indexCount, pIndexBuffer))
+
+		// DeepCopy - Vertices 
+		if (desc.vertexCount != 0)
 		{
-			DEBUG_BREAK();
+			size_t dataSize = desc.vertexCount * desc.vertexFormatSize;
+			copyVertices = malloc(dataSize);   // 또는 new char[dataSize];
+			memcpy(copyVertices, desc.vertices, dataSize);
+		}
+
+		// DeepCopy - Indices 
+		if (desc.indexCount != 0)
+		{
+			size_t dataSize = desc.indexCount * desc.indexFormatSize;
+			copyIndices = malloc(dataSize);   // 또는 new char[dataSize];
+			memcpy(copyIndices, desc.indices, dataSize);
+		}
+
+		
+		pNewMesh = new Mesh;
+		if (false == pNewMesh->Init
+		(
+			desc.vertexFormat,
+			desc.vertexFormatSize,
+			desc.vertexCount,
+			copyVertices,
+			pVertexBuffer,
+			desc.indexFormatSize,
+			desc.indexCount,
+			copyIndices,
+			pIndexBuffer
+		))
+		{
+			Assert("Mesh Init Fail !!");
 			break;
 		}
 
@@ -322,6 +441,16 @@ IMesh* __stdcall Renderer::CreateMesh(void* pVertices, uint32_t vertexSize, uint
 
 
 
+	if (nullptr != copyVertices)
+	{
+		free(copyVertices);
+		copyVertices = nullptr;
+	}
+	if (nullptr != copyIndices)
+	{
+		free(copyIndices);
+		copyIndices = nullptr;
+	}
 	if (nullptr != pVertexBuffer)
 	{
 		pVertexBuffer->Release();

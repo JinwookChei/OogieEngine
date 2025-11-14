@@ -3,6 +3,7 @@
 #include "Transform.h"
 
 class RenderComponent;
+class BoundVolume;
 
 class Actor
 {
@@ -27,7 +28,11 @@ protected:
 	ENGINE_API virtual void CleanUp();
 
 protected:
+	RenderComponent* pRenderer_;
+
 	Transform* pTransform_;
+
+	BoundVolume* pBoundVolume;
 
 	LINK_ITEM levelLink_;
 };

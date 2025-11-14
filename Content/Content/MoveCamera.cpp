@@ -2,7 +2,6 @@
 #include "MoveCamera.h"
 
 MoveCamera::MoveCamera()
-	:pRenderer_(new RenderComponent(this))
 {
 }
 
@@ -100,9 +99,9 @@ void MoveCamera::Render()
 
 void MoveCamera::CleanUp()
 {
-	if (nullptr != pRenderer_)
-	{
-		delete pRenderer_;
-		pRenderer_ = nullptr;
-	}
+	//if (nullptr != pRenderer_)
+	//{
+	//	delete pRenderer_;
+	//	pRenderer_ = nullptr;
+	//}
 }

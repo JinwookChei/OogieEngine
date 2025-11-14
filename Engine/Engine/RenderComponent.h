@@ -22,9 +22,22 @@ public:
 
 	ENGINE_API virtual ~RenderComponent();
 
-	ENGINE_API void Render();	
+	ENGINE_API void Render();
 
 	ENGINE_API void Create(E_MESH_TYPE meshType);
+
+	IMesh* GetMesh() const;
+
+
+// MeshLoad Delegate
+public:
+	using MeshLoadedDelegate = std::function<void(IMesh*)>;
+	void BindOnMeshLoaded(MeshLoadedDelegate callback);
+
+private:
+	void BroadcastOnMeshLoaded();
+	std::vector<MeshLoadedDelegate> OnMeshLoaded_;
+// MeshLoad Delegate End	
 
 private:
 	void CleanUp();

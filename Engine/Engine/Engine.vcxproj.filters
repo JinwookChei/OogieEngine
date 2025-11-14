@@ -150,7 +150,7 @@
     <ClInclude Include="BoundVolume.h">
       <Filter>Source Files\Component\BoundVolume</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Interface\VertexType\IVertexType.h">
+    <ClInclude Include="..\..\Interface\VertexType\VertexType.h">
       <Filter>Interface</Filter>
     </ClInclude>
   </ItemGroup>

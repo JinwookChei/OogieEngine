@@ -3,13 +3,17 @@
 
 Mesh::Mesh()
 	: refCount_(1),
-	stride_(0),
 	offset_(0),
-	indexCount_(0),
-	vertices_(),
-	indices_(),
+	vertexFormat_(),
+	vertexStride_(0),
+	vertexCount_(0),
 	pVertexBuffer_(nullptr),
-	pIndexBuffer_(nullptr)
+	pVertices_(nullptr),	
+	indexStride_(0),
+	indexCount_(0),
+	pIndexBuffer_(nullptr),
+	pIndices_(nullptr),
+	inputDesc_()
 {
 }
 
@@ -18,24 +22,31 @@ Mesh::~Mesh()
 	CleanUp();
 }
 
-bool Mesh::Init(UINT stride, ID3D11Buffer* pVertexBuffer, UINT indexCount, ID3D11Buffer* pIndexBuffer)
-{
-	stride_ = stride;
 
+bool Mesh::Init
+(
+	E_VERTEX_FORMAT vertexFormat, 
+	uint32_t vertexFormatSize, 
+	uint32_t vertexCount, 
+	void* pVertices, 
+	ID3D11Buffer* pVertexBuffer, 
+	uint32_t indexFormatSize, 
+	uint32_t indexCount, 
+	void* pIndices, 
+	ID3D11Buffer* pIndexBuffer
+)
+{
 	offset_ = 0;
 
+	vertexFormat_ = vertexFormat;
+	vertexStride_ = vertexFormatSize;
+	vertexCount_ = vertexCount;
+	pVertices_ = pVertices;
 	pVertexBuffer_ = pVertexBuffer;
-	
-	if (0 != indexCount && nullptr == pIndexBuffer)
-	{
-		DEBUG_BREAK();
-		indexCount_ = 0;
-		pIndexBuffer_ = nullptr;
-		return false;
-	}
 
+	indexStride_ = indexFormatSize;
 	indexCount_ = indexCount;
-
+	pIndices_ = pIndices;
 	pIndexBuffer_ = pIndexBuffer;
 
 	return true;
@@ -70,11 +81,11 @@ bool __stdcall Mesh::AddInputLayout(const char* pSemanticName, uint32_t semantic
 	desc.Format = (DXGI_FORMAT)format;
 	desc.InputSlot = (UINT)inputSlot;
 	desc.AlignedByteOffset = offset_;
-	offset_ += FormatSize(desc.Format);
+	offset_ += InputFormatSize(desc.Format);
 	desc.InputSlotClass = isInstanceData ? D3D11_INPUT_PER_INSTANCE_DATA : D3D11_INPUT_PER_VERTEX_DATA;
 	desc.InstanceDataStepRate = isInstanceData ? 1 : 0;
 
-	desc_.push_back(desc);
+	inputDesc_.push_back(desc);
 	return true;
 }
 
@@ -82,7 +93,7 @@ void __stdcall Mesh::Setting()
 {
 	UINT offset = 0;
 
-	GRenderer->DeviceContext()->IASetVertexBuffers(0, 1, &pVertexBuffer_, &stride_, &offset);
+	GRenderer->DeviceContext()->IASetVertexBuffers(0, 1, &pVertexBuffer_, &vertexStride_, &offset);
 
 	GRenderer->DeviceContext()->IASetIndexBuffer(pIndexBuffer_, DXGI_FORMAT_R16_UINT, 0);
 
@@ -97,14 +108,37 @@ bool __stdcall Mesh::Draw()
 	return true;
 }
 
-const std::vector<D3D11_INPUT_ELEMENT_DESC>& Mesh::GetDesc() const
+const std::vector<D3D11_INPUT_ELEMENT_DESC>& Mesh::GetInputDesc() const
 {
-	return desc_;
+	return inputDesc_;
 }
 
+void __stdcall Mesh::GetVerticesData
+(
+	E_VERTEX_FORMAT* pOutFormat, 
+	uint32_t* pOutStride, 
+	uint32_t* pOutCount, 
+	void** ppOutVertices
+) const
+{
+	*pOutFormat = vertexFormat_;
+	*pOutStride = vertexStride_;
+	*pOutCount = vertexCount_;
+	*ppOutVertices = pVertices_;
+}
 
 void Mesh::CleanUp()
 {
+	if (nullptr != pVertices_)
+	{
+		free(pVertices_);
+		pVertices_ = nullptr;
+	}
+	if (nullptr != pIndices_)
+	{
+		free(pIndices_);
+		pIndices_ = nullptr;
+	}
 	if (nullptr != pIndexBuffer_)
 	{
 		pIndexBuffer_->Release();
@@ -117,7 +151,7 @@ void Mesh::CleanUp()
 	}
 }
 
-UINT Mesh::FormatSize(DXGI_FORMAT format)
+UINT Mesh::InputFormatSize(DXGI_FORMAT format)
 {
 	switch (format)
 	{

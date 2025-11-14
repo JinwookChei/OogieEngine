@@ -101,6 +101,20 @@ struct IInputLayout : public IUnknown {
 	virtual void __stdcall Setting() = 0;
 };
 
+
+struct MeshDesc
+{
+	E_VERTEX_FORMAT vertexFormat;
+	uint32_t vertexFormatSize;
+	uint32_t vertexCount;
+	void* vertices;
+
+	uint32_t indexFormatSize;
+	uint32_t indexCount;
+	void* indices;
+};
+
+
 struct IMesh : public IUnknown
 {
 	virtual void __stdcall Setting() = 0;
@@ -108,6 +122,8 @@ struct IMesh : public IUnknown
 	virtual bool __stdcall AddInputLayout(const char* pSemanticName, uint32_t semanticIndex, uint32_t format, uint32_t inputSlot, bool isInstanceData) = 0;
 
 	virtual bool __stdcall Draw() = 0;
+
+	virtual void __stdcall GetVerticesData(E_VERTEX_FORMAT* pOutFormat, uint32_t* pOutStride, uint32_t* pOutCount, void** ppOutVertices) const = 0;
 };
 
 struct MaterialDesc
@@ -217,7 +233,8 @@ struct IRenderer : public IUnknown {
 
 	virtual IInputLayout* __stdcall CreateLayout(IMesh* pVertex, IShader* pVertexShader) = 0;
 
-	virtual IMesh* __stdcall CreateMesh(void* pVertices, uint32_t vertexSize, uint32_t vertexCount, void* pIndices = nullptr, uint32_t indexTypeSize = 0, uint32_t indexCount = 0) = 0;
+	//virtual IMesh* __stdcall CreateMesh(void* pVertices, uint32_t vertexSize, uint32_t vertexCount, void* pIndices = nullptr, uint32_t indexTypeSize = 0, uint32_t indexCount = 0) = 0;
+	virtual IMesh* __stdcall CreateMesh(const MeshDesc& desc) = 0;
 
 	virtual IMaterial* __stdcall CreateMaterial(const MaterialDesc& materialDesc) = 0;
 

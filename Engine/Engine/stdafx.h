@@ -34,6 +34,7 @@
 #include <vector>
 #include <cstdlib>
 #include <cstdio>
+#include <functional>
 
 // Utility
 #include <Utility/Math.h>
@@ -41,11 +42,12 @@
 #include <Utility/HashTable.h>
 
 // Interface
+#include <VertexType/VertexType.h>
 #include <Application/IApplication.h>
 #include <Renderer/IRenderer.h>
 #include <ImGuiBindObject/IImGuiBindObject.h>
 #include <ImGuiModule/IImGuiModule.h>
-#include <VertexType/IVertexType.h>
+
 
 // ImguiManager
 #include <ImguiModule/ImguiManager.h>

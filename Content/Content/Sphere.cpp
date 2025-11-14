@@ -2,7 +2,6 @@
 #include "Sphere.h"
 
 Sphere::Sphere()
-	:pRenderer_(new RenderComponent(this))
 {
 }
 
@@ -30,9 +29,4 @@ void Sphere::Render()
 
 void Sphere::CleanUp()
 {
-	if (nullptr != pRenderer_)
-	{
-		delete pRenderer_;
-		pRenderer_ = nullptr;
-	}
 }

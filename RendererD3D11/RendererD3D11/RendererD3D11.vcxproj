@@ -145,7 +145,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Interface\Renderer\IRenderer.h" />
-    <ClInclude Include="..\..\Interface\VertexType\IVertexType.h" />
+    <ClInclude Include="..\..\Interface\VertexType\VertexType.h" />
     <ClInclude Include="BlendState.h" />
     <ClInclude Include="ConstantBuffer.h" />
     <ClInclude Include="D3D11Renderer.h" />

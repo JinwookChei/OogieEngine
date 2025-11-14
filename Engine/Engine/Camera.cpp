@@ -40,7 +40,6 @@ Camera::~Camera()
 
 void Camera::Tick(double deltaTime)
 {
-
 }
 
 void Camera::BeginPlay()
@@ -241,11 +240,16 @@ void Camera::InitScreenRect()
 	std::vector<ScreenRectVertex> vertices;
 	std::vector<WORD> indices;
 	GeometryGenerator::CreateScreenRect(&vertices, &indices);
-	pScreenVertex_ = GRenderer->CreateMesh
-	(
-		vertices.data(), (uint32_t)sizeof(ScreenRectVertex), (uint32_t)vertices.size(),
-		indices.data(), (uint32_t)sizeof(WORD), (uint32_t)indices.size()
-	);
+
+	MeshDesc meshDesc;
+	meshDesc.vertexFormat = E_VERTEX_FORMAT::SCREEN_RECT;
+	meshDesc.vertexFormatSize = sizeof(ScreenRectVertex);
+	meshDesc.vertexCount = vertices.size();
+	meshDesc.vertices = vertices.data();
+	meshDesc.indexFormatSize = sizeof(WORD);
+	meshDesc.indexCount = indices.size();
+	meshDesc.indices = indices.data();
+	pScreenVertex_ = GRenderer->CreateMesh(meshDesc);
 
 	pScreenVertex_->AddInputLayout("POSITION", 0, 16, 0, false);
 	pScreenVertex_->AddInputLayout("TEXCOORD", 0, 16, 0, false);

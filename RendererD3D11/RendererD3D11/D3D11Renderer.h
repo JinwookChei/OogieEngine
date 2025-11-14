@@ -32,7 +32,9 @@ public:
 	// ------------------------- 인터페이스 노출된 Create -----------------------------
 	IInputLayout* __stdcall CreateLayout(IMesh* pMesh, IShader* pVertexShader) override;
 
-	IMesh* __stdcall CreateMesh(void* pVertices, uint32_t vertexSize, uint32_t vertexCount, void* pIndices = nullptr, uint32_t indexTypeSize = 0, uint32_t indexCount = 0) override;
+	//IMesh* __stdcall CreateMesh(void* pVertices, uint32_t vertexSize, uint32_t vertexCount, void* pIndices = nullptr, uint32_t indexTypeSize = 0, uint32_t indexCount = 0) override;
+
+	IMesh* __stdcall CreateMesh(const MeshDesc& desc) override;
 
 	IMaterial* __stdcall CreateMaterial(const MaterialDesc& materialDesc) override;
 

@@ -1,15 +1,20 @@
 #include "stdafx.h"
-#include "Actor.h"
 #include "RenderComponent.h"
+#include "BoundVolume.h"
+#include "Actor.h"
+
 
 
 Actor::Actor()
-	:pTransform_(new Transform)
-	//pRenderComponent_(new RenderComponent(this)) //TODO
+	: pRenderer_(new RenderComponent(this)),
+	pTransform_(new Transform),
+	pBoundVolume(new BoundVolume)
 {
 	levelLink_.prev_ = nullptr;
 	levelLink_.next_ = nullptr;
 	levelLink_.item_ = this;
+
+	pBoundVolume->Init(pRenderer_);
 }
 
 Actor::~Actor()
@@ -34,9 +39,19 @@ LINK_ITEM* Actor::LevelLink()
 
 void Actor::CleanUp()
 {
+	if (nullptr != pBoundVolume)
+	{
+		delete pBoundVolume;
+		pBoundVolume = nullptr;
+	}
 	if (nullptr != pTransform_)
 	{
 		delete pTransform_;
 		pTransform_ = nullptr;
+	}
+	if (nullptr != pRenderer_)
+	{
+		delete pRenderer_;
+		pRenderer_ = nullptr;
 	}
 }

@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Light.h"
+#include "RenderComponent.h"
 #include "SpotLight.h"
 
 SpotLight::SpotLight()
@@ -10,7 +11,6 @@ SpotLight::SpotLight()
 	attenuationConst_(1.0f),
 	attenuationLinear_(0.09f),
 	attenuationQuad_(0.032f)
-	//angle_(cosf(MATH::ConvertDegToRad(30.0f)))
 {
 	
 }
@@ -22,7 +22,6 @@ SpotLight::~SpotLight()
 
 void SpotLight::Tick(double deltaTime)
 {
-
 }
 
 void SpotLight::BeginPlay()
