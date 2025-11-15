@@ -98,7 +98,7 @@ void Camera::BlitToBackBuffer()
 void Camera::BlitToBackBuffer(const Float2& offset, const Float2& scale)
 {
 	pLightBufferTarget_->BindRenderTextureForPS(4);
-	//pGBufferTarget_->BindRenderTextureForPS(0);
+	pGBufferTarget_->BindRenderTextureForPS(0);
 	
 	pScreenVertex_->Setting();
 	pScreenMaterial_->Setting();
@@ -106,7 +106,7 @@ void Camera::BlitToBackBuffer(const Float2& offset, const Float2& scale)
 	pScreenRasterizer_->Setting();
 	pScreenVertex_->Draw();
 
-	//pGBufferTarget_->ClearRenderTextureForPS(0);
+	pGBufferTarget_->ClearRenderTextureForPS(0);
 	pLightBufferTarget_->ClearRenderTextureForPS(4);
 }
 

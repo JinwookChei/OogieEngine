@@ -217,6 +217,15 @@ struct IRenderTarget : public IUnknown
 	virtual void* __stdcall GetShaderResourceView(const E_RENDER_TEXTURE_TYPE& texureType) = 0;
 };
 
+struct IDebugRenderer : public IUnknown
+{
+	virtual void __stdcall SetViewProj(const Float4x4& view, const Float4x4& proj) = 0;
+	virtual void __stdcall DrawLine(const Float3& a, const Float3& b, const Float4& color) = 0;
+	virtual void __stdcall DrawRay(const Float3& origin, Float3& dir, float length, const Color& color) = 0;
+	virtual void __stdcall RenderAll() = 0;
+	virtual void __stdcall Clear() = 0;
+};
+
 
 struct IRenderer : public IUnknown {
 	virtual bool __stdcall Initialize(void* hWnd, uint32_t width, uint32_t height) = 0;
@@ -247,4 +256,7 @@ struct IRenderer : public IUnknown {
 	virtual IBlendState* __stdcall CreateBlendState(uint32_t srcBlend, uint32_t destBlend, uint32_t srcBlendAlpha, uint32_t destBlendAlpha, float blendFactor[4] = nullptr) = 0;
 
 	virtual ITexture* __stdcall LoadTextureFromDirectXTex(const wchar_t* fileName, bool isNormalMap) = 0;
+
+	virtual IDebugRenderer* __stdcall CreateDebugRenderer() = 0;
 };
+

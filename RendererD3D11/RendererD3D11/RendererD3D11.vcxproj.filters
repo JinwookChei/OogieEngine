@@ -61,6 +61,12 @@
     <Filter Include="DirectXTex">
       <UniqueIdentifier>{b8a7c758-f17b-4ba4-9261-125c2b007fe1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Shader">
+      <UniqueIdentifier>{f5e73942-5123-4c1a-90d1-6f1042e81644}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shader\DebugShader">
+      <UniqueIdentifier>{6c774d14-347b-42ae-8bb0-f675d4174886}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -123,6 +129,9 @@
     <ClInclude Include="..\..\Interface\VertexType\VertexType.h">
       <Filter>Interface</Filter>
     </ClInclude>
+    <ClInclude Include="D3D11DebugRenderer.h">
+      <Filter>Source Files\Renderer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -182,5 +191,16 @@
     <ClCompile Include="ShaderResourceView.cpp">
       <Filter>Source Files\View</Filter>
     </ClCompile>
+    <ClCompile Include="D3D11DebugRenderer.cpp">
+      <Filter>Source Files\Renderer</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="DebugLineVS.hlsl">
+      <Filter>Resource Files\Shader\DebugShader</Filter>
+    </FxCompile>
+    <FxCompile Include="DebugLinePS.hlsl">
+      <Filter>Resource Files\Shader\DebugShader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

@@ -52,10 +52,12 @@
 // ImguiManager
 #include <ImguiModule/ImguiManager.h>
 
+
 // Engine
 #include "InputManager.h"
 #include "TimeManager.h"
 #include "ConstantManager.h"
+#include "ObjectPicker.h"
 
 #include "Camera.h"
 #include "Light.h"
@@ -69,7 +71,8 @@ extern ConstantManager* GConstantManager;
 extern Camera* GMainCamera;
 extern Camera* GCurrentCamera;
 extern IBlendState* GBlendState;
-
+extern ObjectPicker* GObjectPicker;
+extern IDebugRenderer* GDebugRenderer;
 
 // юс╫ц.
 constexpr float DEFAULT_SCREEN_WIDTH = 2560.0f;

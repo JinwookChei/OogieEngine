@@ -232,7 +232,7 @@ namespace MATH
 	UTILITY_API float VectorLength(const Float3& lhs);
 
 	UTILITY_API void VectorToEulerDeg(Float4& out, const Float3& vector);
-	UTILITY_API void ForwardVectorFromEulerDeg(Float4& out, const Float3& deg);
+	//UTILITY_API void ForwardVectorFromEulerDeg(Float4& out, const Float3& deg);
 
 	//UTILITY_API void ForwardVectorFromDeg(Float3& out, const Float3& );
 
@@ -243,6 +243,8 @@ namespace MATH
 
 
 	UTILITY_API void MatrixIdentity(Float4x4& out);
+	UTILITY_API void MatrixMultiply(Float4& out, const Float4x4& lhs, const Float4& rhs);
+	UTILITY_API void MatrixMultiply(Float4x4& out, const Float4x4& lhs, const Float4x4& rhs);
 	UTILITY_API void MatrixTranspose(Float4x4& out, const Float4x4& src);
 	UTILITY_API void MatrixInverse(Float4x4& out, const Float4x4& src);
 	UTILITY_API void MatrixCompose(Float4x4& out, const Float4& scale, const Float4& rotDeg, const Float4& pos);

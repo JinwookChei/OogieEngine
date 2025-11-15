@@ -168,12 +168,19 @@ void Level::OnRender()
 
 		// Geometry Pass
 		GCurrentCamera->GeometryPassBegin();
+
 		OnRenderCameras();
 		OnRenderActors();
 		OnRenderLights();
+
+		GDebugRenderer->SetViewProj(GMainCamera->View(), GMainCamera->Projection());
+		GDebugRenderer->RenderAll();
+		GCurrentCamera->UpdatePerFrameConstant();
+
 		GCurrentCamera->GeometryPassEnd();
 		// Geometry Pass End
 
+		
 		// Light Pass
 		GBlendState->Setting();
 		GCurrentCamera->LightPassBegin();

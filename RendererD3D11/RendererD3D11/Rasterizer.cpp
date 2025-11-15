@@ -21,7 +21,7 @@ bool Rasterizer::Init(ID3D11RasterizerState* pSolidState, ID3D11RasterizerState*
 		DEBUG_BREAK();
 		return false;
 	}
-
+	
 	if (nullptr == pWireframeState)
 	{
 		DEBUG_BREAK();

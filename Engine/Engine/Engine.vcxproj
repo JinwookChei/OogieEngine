@@ -163,6 +163,7 @@
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="MeshManager.h" />
+    <ClInclude Include="ObjectPicker.h" />
     <ClInclude Include="PointLight.h" />
     <ClInclude Include="RenderComponent.h" />
     <ClInclude Include="SpotLight.h" />
@@ -185,6 +186,7 @@
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="MeshManager.cpp" />
+    <ClCompile Include="ObjectPicker.cpp" />
     <ClCompile Include="PointLight.cpp" />
     <ClCompile Include="RenderComponent.cpp" />
     <ClCompile Include="SpotLight.cpp" />
@@ -195,9 +197,6 @@
     <ClCompile Include="TimeManager.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="World.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="cpp.hint" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="DeferredLightPS.hlsl">

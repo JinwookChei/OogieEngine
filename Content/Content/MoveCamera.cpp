@@ -16,13 +16,9 @@ void MoveCamera::Tick(double deltaTime)
 	{
 		const Float2& deltaMouseMove = InputManager::Instance()->GetDeltaMouseMove();
 
-		/*DirectX::XMVECTOR a = pTransform_->UpVector();
+		pTransform_->AddRotaionZ(deltaMouseMove.X * deltaTime * 8.0f);
 
-		DirectX::XMVECTOR b = pTransform_->RightVector();
-
-		pTransform_->RotateAroundAxis(pTransform_->UpVector(), deltaMouseMove.X * cameraSensitivity_);
-
-		pTransform_->RotateAroundAxis(pTransform_->RightVector(), deltaMouseMove.Y * cameraSensitivity_);*/
+		pTransform_->AddRotaionY(deltaMouseMove.Y * deltaTime * 8.0f);
 	}
 
 	if (InputManager::Instance()->IsPress('W'))

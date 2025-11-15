@@ -53,6 +53,8 @@
 #include <cstdint>
 #include <cstdlib>
 #include <cstdio>
+#include <vector>
+#include <functional>
 
 
 // Utility

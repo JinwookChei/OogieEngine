@@ -17,6 +17,8 @@ ConstantManager* GConstantManager = nullptr;
 Camera* GMainCamera = nullptr;
 Camera* GCurrentCamera = nullptr;
 IBlendState* GBlendState = nullptr;
+ObjectPicker* GObjectPicker = nullptr;
+IDebugRenderer* GDebugRenderer = nullptr;
 
 Engine::Engine()
 	: pStartUp_(nullptr),
@@ -78,6 +80,13 @@ bool Engine::Initialize
 		return false;
 	}
 
+	GDebugRenderer = GRenderer->CreateDebugRenderer();
+	if (nullptr == GDebugRenderer)
+	{
+		DEBUG_BREAK();
+		return false;
+	}
+
 	if (false == ImGuiSystem::GetImGuiManager()->InitImGui(pApplication_, pRenderer_, dpiSclae))
 	{
 		return false;
@@ -109,6 +118,8 @@ bool Engine::Initialize
 		return false;
 	}
 
+	GObjectPicker = new ObjectPicker;
+
 	return true;
 }
 
@@ -123,6 +134,8 @@ void Engine::Run()
 
 		// Input Update
 		GInputManager->Tick(deltaTime);
+
+		GObjectPicker->Tick(deltaTime);
 
 		// GameLoop
 		pWorld_->CheckChangeLevel();
@@ -287,6 +300,12 @@ void Engine::CleanUp()
 {
 	ImGuiSystem::GetImGuiManager()->CleanUpImGui();
 
+	if (nullptr != GObjectPicker)
+	{
+		delete GObjectPicker;
+		GObjectPicker = nullptr;
+	}
+
 	if (nullptr != pWorld_)
 	{
 		delete pWorld_;
@@ -333,6 +352,12 @@ void Engine::CleanUp()
 	{
 		GBlendState->Release();
 		GBlendState = nullptr;
+	}
+
+	if (nullptr != GDebugRenderer)
+	{
+		GDebugRenderer->Release();
+		GDebugRenderer = nullptr;
 	}
 
 	if (nullptr != pRenderer_)

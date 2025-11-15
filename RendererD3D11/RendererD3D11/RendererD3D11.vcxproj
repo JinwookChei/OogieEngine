@@ -148,6 +148,7 @@
     <ClInclude Include="..\..\Interface\VertexType\VertexType.h" />
     <ClInclude Include="BlendState.h" />
     <ClInclude Include="ConstantBuffer.h" />
+    <ClInclude Include="D3D11DebugRenderer.h" />
     <ClInclude Include="D3D11Renderer.h" />
     <ClInclude Include="DeferredTarget.h" />
     <ClInclude Include="DepthStencilView.h" />
@@ -168,6 +169,7 @@
   <ItemGroup>
     <ClCompile Include="BlendState.cpp" />
     <ClCompile Include="ConstantBuffer.cpp" />
+    <ClCompile Include="D3D11DebugRenderer.cpp" />
     <ClCompile Include="DepthStencilView.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="D3D11Renderer.cpp" />
@@ -188,6 +190,20 @@
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="VertexShader.cpp" />
     <ClCompile Include="RenderTargetView.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="DebugLinePS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="DebugLineVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

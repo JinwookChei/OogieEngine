@@ -14,6 +14,7 @@
 #include "RenderTargetView.h"
 #include "DepthStencilView.h"
 #include "ShaderResourceView.h"
+#include "D3D11DebugRenderer.h"
 
 
 Renderer* GRenderer = nullptr;
@@ -1145,6 +1146,18 @@ ITexture* __stdcall Renderer::LoadTextureFromDirectXTex(const wchar_t* fileName,
 	}
 
 	return nullptr;
+}
+
+IDebugRenderer* __stdcall Renderer::CreateDebugRenderer()
+{
+	DebugRenderer* pNewDebugRenderer = new DebugRenderer;
+	if (false == pNewDebugRenderer->Initialize(pDevice_, pDeviceContext_))
+	{
+		DEBUG_BREAK();
+		return nullptr;
+	}
+
+	return pNewDebugRenderer;
 }
 
 

@@ -295,6 +295,67 @@ void MATH::MatrixIdentity(Float4x4& out)
 	memcpy_s(&out, sizeof(Float4x4), &matrix, sizeof(DirectX::XMMATRIX));
 }
 
+void MATH::MatrixMultiply(Float4& out, const Float4x4& lhs, const Float4& rhs)
+{
+	// Load vector
+	__m128 v = _mm_load_ps(&rhs.X); // [x y z w]
+
+	// row0
+	__m128 r0 = _mm_load_ps(&lhs.r[0].X);
+	__m128 o0 = _mm_dp_ps(r0, v, 0xF1);  // dot(row0, v)
+	out.X = _mm_cvtss_f32(o0);
+
+	// row1
+	__m128 r1 = _mm_load_ps(&lhs.r[1].X);
+	__m128 o1 = _mm_dp_ps(r1, v, 0xF1);
+	out.Y = _mm_cvtss_f32(o1);
+
+	// row2
+	__m128 r2 = _mm_load_ps(&lhs.r[2].X);
+	__m128 o2 = _mm_dp_ps(r2, v, 0xF1);
+	out.Z = _mm_cvtss_f32(o2);
+
+	// row3
+	__m128 r3 = _mm_load_ps(&lhs.r[3].X);
+	__m128 o3 = _mm_dp_ps(r3, v, 0xF1);
+	out.W = _mm_cvtss_f32(o3);
+}
+
+void MATH::MatrixMultiply(Float4x4& out, const Float4x4& lhs, const Float4x4& rhs)
+{
+	// We'll read rhs columns by loading each row then extracting columns via shuffle,
+	// but an efficient approach is to transpose rhs into columns or compute with broadcasts.
+
+	// Pre-load rhs rows
+	__m128 r0 = _mm_load_ps(&rhs.r[0].X);
+	__m128 r1 = _mm_load_ps(&rhs.r[1].X);
+	__m128 r2 = _mm_load_ps(&rhs.r[2].X);
+	__m128 r3 = _mm_load_ps(&rhs.r[3].X);
+
+	// For each lhs row, compute dot with each column of rhs.
+	for (int i = 0; i < 4; ++i) {
+		__m128 L = _mm_load_ps(&lhs.r[i].X); // lhs row i
+
+		// Broadcast L.x
+		__m128 lx = _mm_shuffle_ps(L, L, _MM_SHUFFLE(0, 0, 0, 0));
+		__m128 ly = _mm_shuffle_ps(L, L, _MM_SHUFFLE(1, 1, 1, 1));
+		__m128 lz = _mm_shuffle_ps(L, L, _MM_SHUFFLE(2, 2, 2, 2));
+		__m128 lw = _mm_shuffle_ps(L, L, _MM_SHUFFLE(3, 3, 3, 3));
+
+		// Multiply broadcasted components with rhs rows, then sum to get row result
+		__m128 t0 = _mm_mul_ps(lx, r0);
+		__m128 t1 = _mm_mul_ps(ly, r1);
+		__m128 t2 = _mm_mul_ps(lz, r2);
+		__m128 t3 = _mm_mul_ps(lw, r3);
+
+		__m128 sum01 = _mm_add_ps(t0, t1);
+		__m128 sum23 = _mm_add_ps(t2, t3);
+		__m128 rowResult = _mm_add_ps(sum01, sum23);
+
+		_mm_store_ps(&out.r[i].X, rowResult);
+	}
+}
+
 void MATH::MatrixTranspose(Float4x4& out, const Float4x4& src)
 {
 	DirectX::XMMATRIX srcMatrix;
