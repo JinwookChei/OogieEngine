@@ -19,7 +19,9 @@ public:
 
 	ULONG __stdcall Release() override;
 
-	void Setting(uint32_t slot);
+	void __stdcall Setting(uint32_t slot) override;
+
+	//void Setting(uint32_t slot);
 
 private:
 	void CleanUp();

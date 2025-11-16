@@ -20,7 +20,6 @@ enum class E_RENDER_TECHNIQUE_TYPE
 
 struct ForwardRenderingDesc
 {
-
 	unsigned int fmtColor_ = 2;		//DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT;
 	unsigned int fmtDepth_ = 45;	//DXGI_FORMAT::DXGI_FORMAT_D24_UNORM_S8_UINT
 	bool useDepthStencil_ = true;
@@ -90,10 +89,31 @@ struct IShader : public IUnknown
 	//virtual void __stdcall Setting() = 0;
 };
 
+struct SamplerStateDesc
+{
+	unsigned int filter = 21; 
+	// D3D11_FILTER_MIN_MAG_MIP_LINEAR = 21
+	// D3D11_FILTER_ANISOTROPIC = 85
+
+	unsigned int addressMethod = 3;
+	// D3D11_TEXTURE_ADDRESS_WRAP = 1,
+	// D3D11_TEXTURE_ADDRESS_MIRROR = 2,
+	// D3D11_TEXTURE_ADDRESS_CLAMP = 3,
+
+	unsigned int maxAnisotropy = 1;	 
+	//D3D11_FILTER_ANISOTROPIC으로 설정된 경우에만 사용
+
+	unsigned int comparisonFunc = 1; 
+	//그림자 맵(Shadow Maps)과 같은 특수 필터링에서 사용
+		
+	float minLOD = -FLT_MAX;
+	float maxLOD = FLT_MAX;
+};
+
 
 struct ISamplerState : public IUnknown
 {
-	//virtual void __stdcall Setting(uint32_t slot) = 0;
+	virtual void __stdcall Setting(uint32_t slot) = 0;
 };
 
 
@@ -131,8 +151,8 @@ struct MaterialDesc
 	const wchar_t* VS = nullptr;
 	const wchar_t* PS = nullptr;
 	bool useTexture = false;
-	bool samplerLinear = false;
-	bool samplerClamp = false;
+	//bool samplerLinear = false;
+	//bool samplerClamp = false;
 	float shineness = 16.0f;
 	Float3 specularColor = { 0.7f,0.7f ,0.7f };
 };
@@ -252,6 +272,8 @@ struct IRenderer : public IUnknown {
 	virtual IRasterizer* __stdcall  CreateRasterizer(bool frontCounterClockwise, bool backFaceCulling) = 0;
 
 	virtual IRenderTarget* __stdcall CreateRenderTarget(const RenderTargetDesc& desc) = 0;
+
+	virtual ISamplerState* __stdcall CreateSamplerState(const SamplerStateDesc& desc) = 0;
 
 	virtual IBlendState* __stdcall CreateBlendState(uint32_t srcBlend, uint32_t destBlend, uint32_t srcBlendAlpha, uint32_t destBlendAlpha, float blendFactor[4] = nullptr) = 0;
 

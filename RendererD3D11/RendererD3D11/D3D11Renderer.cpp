@@ -475,7 +475,7 @@ IMaterial* __stdcall Renderer::CreateMaterial(const MaterialDesc& materialDesc)
 {
 	VertexShader* pVertexShader = nullptr;
 	PixelShader* pPixelShader = nullptr;
-	SamplerState* pSamplerState = nullptr;
+	//SamplerState* pSamplerState = nullptr;
 	Material* pMaterial = nullptr;
 
 	do
@@ -490,10 +490,10 @@ IMaterial* __stdcall Renderer::CreateMaterial(const MaterialDesc& materialDesc)
 			pPixelShader = static_cast<PixelShader*>(CreateShader(E_SHADER_TYPE::Pixel, materialDesc.PS));
 		}
 
-		pSamplerState = static_cast<SamplerState*>(CreateSamplerState(materialDesc.samplerLinear, materialDesc.samplerClamp));
+		//pSamplerState = static_cast<SamplerState*>(CreateSamplerState(materialDesc.samplerLinear, materialDesc.samplerClamp));
 
 		pMaterial = new Material;
-		if (false == pMaterial->Init(pVertexShader, pPixelShader, pSamplerState, materialDesc.shineness, materialDesc.specularColor))
+		if (false == pMaterial->Init(pVertexShader, pPixelShader, materialDesc.shineness, materialDesc.specularColor))
 		{
 			DEBUG_BREAK();
 			break;
@@ -513,11 +513,11 @@ IMaterial* __stdcall Renderer::CreateMaterial(const MaterialDesc& materialDesc)
 		pPixelShader->Release();
 		pPixelShader = nullptr;
 	}
-	if (nullptr != pSamplerState)
-	{
-		pSamplerState->Release();
-		pSamplerState = nullptr;
-	}
+	//if (nullptr != pSamplerState)
+	//{
+	//	pSamplerState->Release();
+	//	pSamplerState = nullptr;
+	//}
 	if (nullptr != pMaterial)
 	{
 		pMaterial->Release();
@@ -904,7 +904,7 @@ ITexture* Renderer::CreateTexture(const D3D11_TEXTURE2D_DESC& desc)
 	return nullptr;
 }
 
-ISamplerState* __stdcall Renderer::CreateSamplerState(bool linear, bool clamp)
+ISamplerState* __stdcall Renderer::CreateSamplerState(const SamplerStateDesc& desc)
 {
 	ID3D11SamplerState* pSamplerState = nullptr;
 	SamplerState* pNewSamplerState = nullptr;
@@ -912,15 +912,15 @@ ISamplerState* __stdcall Renderer::CreateSamplerState(bool linear, bool clamp)
 	do
 	{
 		D3D11_SAMPLER_DESC samplerDesc = {};
-		samplerDesc.Filter = linear ? D3D11_FILTER_MIN_MAG_MIP_LINEAR : D3D11_FILTER_MIN_MAG_MIP_POINT;
-		samplerDesc.AddressU = clamp ? D3D11_TEXTURE_ADDRESS_CLAMP : D3D11_TEXTURE_ADDRESS_WRAP;
-		samplerDesc.AddressV = clamp ? D3D11_TEXTURE_ADDRESS_CLAMP : D3D11_TEXTURE_ADDRESS_WRAP;
-		samplerDesc.AddressW = clamp ? D3D11_TEXTURE_ADDRESS_CLAMP : D3D11_TEXTURE_ADDRESS_WRAP;
+		samplerDesc.Filter = (D3D11_FILTER)desc.filter;
+		samplerDesc.AddressU = (D3D11_TEXTURE_ADDRESS_MODE)desc.addressMethod;
+		samplerDesc.AddressV = (D3D11_TEXTURE_ADDRESS_MODE)desc.addressMethod;
+		samplerDesc.AddressW = (D3D11_TEXTURE_ADDRESS_MODE)desc.addressMethod;
 		samplerDesc.MipLODBias = 0.0f;
-		samplerDesc.MaxAnisotropy = 1;
-		samplerDesc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
-		samplerDesc.MinLOD = FLT_MIN;
-		samplerDesc.MaxLOD = FLT_MAX;
+		samplerDesc.MaxAnisotropy = (UINT)desc.maxAnisotropy;
+		samplerDesc.ComparisonFunc = (D3D11_COMPARISON_FUNC)desc.comparisonFunc;
+		samplerDesc.MinLOD = (FLOAT)desc.minLOD;
+		samplerDesc.MaxLOD = (FLOAT)desc.maxLOD;
 
 		HRESULT hr = GRenderer->Device()->CreateSamplerState(&samplerDesc, &pSamplerState);
 		if (FAILED(hr))
@@ -959,6 +959,7 @@ ISamplerState* __stdcall Renderer::CreateSamplerState(bool linear, bool clamp)
 
 	return nullptr;
 }
+
 
 IBlendState* Renderer::CreateBlendState(uint32_t srcBlend, uint32_t destBlend, uint32_t srcBlendAlpha, uint32_t destBlendAlpha, float blendFactor[4]/* = nullptr*/)
 {

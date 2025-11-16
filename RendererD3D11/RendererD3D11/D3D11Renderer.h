@@ -48,6 +48,8 @@ public:
 
 	IRenderTarget* __stdcall CreateDeferredRenderTarget(const RenderTargetDesc& desc);
 
+	ISamplerState* __stdcall CreateSamplerState(const SamplerStateDesc& desc) override;
+
 	IBlendState* __stdcall CreateBlendState(uint32_t srcBlend, uint32_t destBlend, uint32_t srcBlendAlpha, uint32_t destBlendAlpha, float blendFactor[4] = nullptr) override;
 
 	ITexture* __stdcall LoadTextureFromDirectXTex(const wchar_t* fileName, bool isNormalMap) override;
@@ -61,7 +63,7 @@ public:
 
 	ITexture* CreateTexture(const D3D11_TEXTURE2D_DESC& desc);
 
-	ISamplerState* CreateSamplerState(bool linear, bool clamp);
+	
 
 	void IncrementDrawCall();
 

@@ -97,8 +97,8 @@ void Camera::BlitToBackBuffer()
 
 void Camera::BlitToBackBuffer(const Float2& offset, const Float2& scale)
 {
+	//pGBufferTarget_->BindRenderTextureForPS(0);
 	pLightBufferTarget_->BindRenderTextureForPS(4);
-	pGBufferTarget_->BindRenderTextureForPS(0);
 	
 	pScreenVertex_->Setting();
 	pScreenMaterial_->Setting();
@@ -106,8 +106,8 @@ void Camera::BlitToBackBuffer(const Float2& offset, const Float2& scale)
 	pScreenRasterizer_->Setting();
 	pScreenVertex_->Draw();
 
-	pGBufferTarget_->ClearRenderTextureForPS(0);
 	pLightBufferTarget_->ClearRenderTextureForPS(4);
+	pGBufferTarget_->ClearRenderTextureForPS(0);
 }
 
 const Float4x4& Camera::View() const
@@ -224,8 +224,8 @@ bool Camera::InitLightBuffer()
 	MaterialDesc matDesc;
 	matDesc.VS = L"ScreenMergeVS.cso";
 	matDesc.PS = L"DeferredLightPS.cso";
-	matDesc.samplerLinear = true;
-	matDesc.samplerClamp = false;
+	//matDesc.samplerLinear = true;
+	//matDesc.samplerClamp = false;
 	pLightBufferMaterial_ = GRenderer->CreateMaterial(matDesc);
 	if (nullptr == pLightBufferMaterial_)
 	{
@@ -257,8 +257,8 @@ void Camera::InitScreenRect()
 	MaterialDesc matDesc;
 	matDesc.VS = L"ScreenMergeVS.cso";
 	matDesc.PS = L"ScreenMergePS.cso";
-	matDesc.samplerLinear = true;
-	matDesc.samplerClamp = false;
+	//matDesc.samplerLinear = true;
+	//matDesc.samplerClamp = false;
 	pScreenMaterial_ = GRenderer->CreateMaterial(matDesc);
 
 	pScreenInputLayout_ = GRenderer->CreateLayout(pScreenVertex_, pScreenMaterial_->GetVertexShader());

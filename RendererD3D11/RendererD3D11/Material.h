@@ -18,7 +18,7 @@ private:
 	(
 		VertexShader* pVertexShader, 
 		PixelShader* pPixelShader, 
-		SamplerState* pSamplerState, 
+		//SamplerState* pSamplerState, 
 		float shineness,
 		Float3 specularColor
 	);
@@ -51,8 +51,9 @@ private:
 
 	PixelShader* pPixelShader_;
 
-	SamplerState* pSamplerState_;
+	// SamplerState* pSamplerState_;
 
 	float shineness_;
+
 	Float3 specularColor_;
 };

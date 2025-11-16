@@ -57,7 +57,9 @@
 #include "InputManager.h"
 #include "TimeManager.h"
 #include "ConstantManager.h"
+#include "SamplerManager.h"
 #include "ObjectPicker.h"
+
 
 #include "Camera.h"
 #include "Light.h"
@@ -68,11 +70,13 @@ extern IRenderer* GRenderer;
 extern InputManager* GInputManager;
 extern TimeManager* GTimeManager;
 extern ConstantManager* GConstantManager;
+extern SamplerManager* GSamplerManager;
 extern Camera* GMainCamera;
 extern Camera* GCurrentCamera;
 extern IBlendState* GBlendState;
 extern ObjectPicker* GObjectPicker;
 extern IDebugRenderer* GDebugRenderer;
+
 
 // юс╫ц.
 constexpr float DEFAULT_SCREEN_WIDTH = 2560.0f;

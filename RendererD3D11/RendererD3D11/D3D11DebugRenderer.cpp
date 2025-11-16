@@ -18,6 +18,7 @@ DebugRenderer::DebugRenderer()
 	, pVS_(nullptr)
 	, pPS_(nullptr)
 	, pCBViewProj_(nullptr)
+	, pSamplerState_(nullptr)
 {
 }
 
@@ -58,10 +59,19 @@ bool DebugRenderer::Initialize(ID3D11Device* device, ID3D11DeviceContext* contex
 	pContext_->AddRef();
 
 	if (!CompileShaders())
+	{
 		return false;
+	}
 
 	if (!CreateBuffers())
+	{
 		return false;
+	}
+
+	if (!CreateSamplerState())
+	{
+		return false;
+	}
 
 	return true;
 }
@@ -71,6 +81,12 @@ void DebugRenderer::CleanUp()
 	ReleaseResources();
 
 	lineList_.clear();
+
+	if (nullptr != pSamplerState_)
+	{
+		pSamplerState_->Release();
+		pSamplerState_ = nullptr;
+	}
 
 	if (nullptr != pDevice_)
 	{
@@ -173,15 +189,34 @@ bool DebugRenderer::CreateBuffers()
 	return true;
 }
 
+bool DebugRenderer::CreateSamplerState()
+{
+	D3D11_SAMPLER_DESC samplerDesc;
+	samplerDesc.Filter = D3D11_FILTER::D3D11_FILTER_MIN_MAG_POINT_MIP_LINEAR;
+	samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
+	samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
+	samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
+	samplerDesc.MipLODBias = 0.0f;
+	samplerDesc.MaxAnisotropy = 1;
+	samplerDesc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
+	//samplerDesc.BorderColor[4];
+	samplerDesc.MinLOD = FLT_MIN;
+	samplerDesc.MaxLOD = FLT_MAX;
+
+	HRESULT hr = GRenderer->Device()->CreateSamplerState(&samplerDesc, &pSamplerState_);
+	if (FAILED(hr))
+	{
+		DEBUG_BREAK();
+		return false;
+	}
+
+
+	return true;
+}
+
 void __stdcall DebugRenderer::SetViewProj(const Float4x4& view, const Float4x4& proj)
 {
 	if (!pContext_ || !pCBViewProj_) return;
-
-	// HLSL expects column-major by default; transpose the matrix before uploading
-	//DirectX::XMMATRIX vpT = XMMatrixTranspose(viewProj);
-	//CBViewProj cb;
-	//cb.viewProj = ret;
-	//XMStoreFloat4x4(&cb.viewProj, vpT);
 
 	Float4x4 viewT;
 	MATH::MatrixTranspose(viewT, view);
@@ -242,6 +277,8 @@ void __stdcall DebugRenderer::RenderAll()
 	pContext_->VSSetShader(pVS_, nullptr, 0);
 	pContext_->PSSetShader(pPS_, nullptr, 0);
 	pContext_->VSSetConstantBuffers(0, 1, &pCBViewProj_);
+
+	pContext_->PSSetSamplers(0, 1, &pSamplerState_);
 
 	// Draw (each two vertices = one line)
 	pContext_->Draw(static_cast<UINT>(lineList_.size()), 0);

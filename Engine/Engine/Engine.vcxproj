@@ -166,6 +166,7 @@
     <ClInclude Include="ObjectPicker.h" />
     <ClInclude Include="PointLight.h" />
     <ClInclude Include="RenderComponent.h" />
+    <ClInclude Include="SamplerManager.h" />
     <ClInclude Include="SpotLight.h" />
     <ClInclude Include="StartUp.h" />
     <ClInclude Include="stdafx.h" />
@@ -189,6 +190,7 @@
     <ClCompile Include="ObjectPicker.cpp" />
     <ClCompile Include="PointLight.cpp" />
     <ClCompile Include="RenderComponent.cpp" />
+    <ClCompile Include="SamplerManager.cpp" />
     <ClCompile Include="SpotLight.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

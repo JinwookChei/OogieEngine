@@ -81,8 +81,6 @@ void RenderComponent::Create(E_MESH_TYPE meshType)
 	MaterialDesc matDesc;
 	matDesc.VS = L"ObjectVS.cso";
 	matDesc.PS = L"DeferredObjectPS.cso";
-	matDesc.samplerLinear = true;
-	matDesc.samplerClamp = false;
 	matDesc.shineness = 0.7f;
 	matDesc.specularColor = { 0.7f, 0.7f, 0.7f };
 	pMaterial_ = GRenderer->CreateMaterial(matDesc);

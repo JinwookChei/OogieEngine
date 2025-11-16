@@ -14,6 +14,7 @@ IApplication* GApplication = nullptr;
 IRenderer* GRenderer = nullptr;
 TimeManager* GTimeManager = nullptr;
 ConstantManager* GConstantManager = nullptr;
+SamplerManager* GSamplerManager = nullptr;
 Camera* GMainCamera = nullptr;
 Camera* GCurrentCamera = nullptr;
 IBlendState* GBlendState = nullptr;
@@ -101,6 +102,8 @@ bool Engine::Initialize
 	GTimeManager = new TimeManager;
 
 	GConstantManager = new ConstantManager;
+
+	GSamplerManager = new SamplerManager;
 
 	if (false == InitializeStartUp(pStartup))
 	{
@@ -316,6 +319,12 @@ void Engine::CleanUp()
 	{
 		pStartUp_->Release();
 		pStartUp_ = nullptr;
+	}
+
+	if (nullptr != GSamplerManager)
+	{
+		delete GSamplerManager;
+		GSamplerManager = nullptr;
 	}
 
 	if (nullptr != GConstantManager)

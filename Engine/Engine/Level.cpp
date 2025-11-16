@@ -157,6 +157,8 @@ void Level::OnTickActors(double deltaTime)
 
 void Level::OnRender()
 {
+	SamplerManager::Instance()->Setting(E_SAMPLER_MODE::LINEAR_CLAMP);
+
 	LINK_ITEM* pCameraIter = pCameraHead_;
 	while (pCameraIter)
 	{
@@ -173,10 +175,6 @@ void Level::OnRender()
 		OnRenderActors();
 		OnRenderLights();
 
-		GDebugRenderer->SetViewProj(GMainCamera->View(), GMainCamera->Projection());
-		GDebugRenderer->RenderAll();
-		GCurrentCamera->UpdatePerFrameConstant();
-
 		GCurrentCamera->GeometryPassEnd();
 		// Geometry Pass End
 
@@ -192,6 +190,12 @@ void Level::OnRender()
 			curLight->BindLight();
 			GCurrentCamera->RenderLight();
 		}
+
+
+		//GDebugRenderer->SetViewProj(GCurrentCamera->View(), GCurrentCamera->Projection());
+		//GDebugRenderer->RenderAll();
+		//GCurrentCamera->UpdatePerFrameConstant();
+
 		GCurrentCamera->LightPassEnd();
 		GBlendState->Clear();
 		// Light Pass End

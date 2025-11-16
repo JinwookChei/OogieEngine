@@ -36,16 +36,22 @@ private:
     ID3D11Device* pDevice_;
     ID3D11DeviceContext* pContext_;
 
-    ID3D11Buffer* pVertexBuffer_;
-    ID3D11InputLayout* pInputLayout_;
+    // 머트리얼
     ID3D11VertexShader* pVS_;
     ID3D11PixelShader* pPS_;
+    ID3D11SamplerState* pSamplerState_;
+
+    // 카메라
     ID3D11Buffer* pCBViewProj_; // constant buffer for viewProj
 
+    // 레벨.
     std::vector<DebugLineVertex> lineList_;
+    ID3D11Buffer* pVertexBuffer_; // ->Mesh;
+    ID3D11InputLayout* pInputLayout_;
 
     // 내부 헬퍼
     bool CompileShaders();
     bool CreateBuffers();
+    bool CreateSamplerState();
     void ReleaseResources();
 };
