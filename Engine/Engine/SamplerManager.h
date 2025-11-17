@@ -1,12 +1,6 @@
 #pragma once
 
-enum class E_SAMPLER_MODE
-{
-	LINEAR_CLAMP = 0,
-	LINEAR_WARP,
-	ANISOTROPIC_CLAMP,
-	ANISOTROPIC_WARP
-};
+
 
 class SamplerManager
 {
@@ -18,15 +12,12 @@ private:
 public:
 	static SamplerManager* Instance();
 
-	void Setting(const E_SAMPLER_MODE& samplerMode);
+	//void Setting(const E_SAMPLER_TYPE& samplerMode);
+
+	void Setting(unsigned int slot, const E_SAMPLER_TYPE& samplerMode);
 
 private:
 	void CleanUp();
 
-	ISamplerState** ppCurSampler_;
-
-	ISamplerState* pLinearClamp_;
-	ISamplerState* pLinearWarp_;
-	ISamplerState* pAnisotropicClamp_;
-	ISamplerState* pAnisotropicWarp_;
+	ISamplerState* pCurSampler_;
 };

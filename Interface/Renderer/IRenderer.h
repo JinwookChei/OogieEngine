@@ -8,8 +8,8 @@ enum class E_SHADER_TYPE
 
 enum class E_FILLMODE_TYPE
 {
-	WireFrame = 0,
-	Solid
+	SOLID = 0,
+	WIREFRAME
 };
 
 enum class E_RENDER_TECHNIQUE_TYPE
@@ -89,31 +89,41 @@ struct IShader : public IUnknown
 	//virtual void __stdcall Setting() = 0;
 };
 
-struct SamplerStateDesc
+enum class E_SAMPLER_TYPE
 {
-	unsigned int filter = 21; 
-	// D3D11_FILTER_MIN_MAG_MIP_LINEAR = 21
-	// D3D11_FILTER_ANISOTROPIC = 85
-
-	unsigned int addressMethod = 3;
-	// D3D11_TEXTURE_ADDRESS_WRAP = 1,
-	// D3D11_TEXTURE_ADDRESS_MIRROR = 2,
-	// D3D11_TEXTURE_ADDRESS_CLAMP = 3,
-
-	unsigned int maxAnisotropy = 1;	 
-	//D3D11_FILTER_ANISOTROPIC으로 설정된 경우에만 사용
-
-	unsigned int comparisonFunc = 1; 
-	//그림자 맵(Shadow Maps)과 같은 특수 필터링에서 사용
-		
-	float minLOD = -FLT_MAX;
-	float maxLOD = FLT_MAX;
+	LINEAR_CLAMP = 0,
+	LINEAR_WARP,
+	ANISOTROPIC_CLAMP,
+	ANISOTROPIC_WARP
 };
+
+//struct SamplerStateDesc
+//{
+//	unsigned int filter = 21; 
+//	// D3D11_FILTER_MIN_MAG_MIP_LINEAR = 21
+//	// D3D11_FILTER_ANISOTROPIC = 85
+//
+//	unsigned int addressMethod = 3;
+//	// D3D11_TEXTURE_ADDRESS_WRAP = 1,
+//	// D3D11_TEXTURE_ADDRESS_MIRROR = 2,
+//	// D3D11_TEXTURE_ADDRESS_CLAMP = 3,
+//
+//	unsigned int maxAnisotropy = 1;	 
+//	//D3D11_FILTER_ANISOTROPIC으로 설정된 경우에만 사용
+//
+//	unsigned int comparisonFunc = 1; 
+//	//그림자 맵(Shadow Maps)과 같은 특수 필터링에서 사용
+//		
+//	float minLOD = -FLT_MAX;
+//	float maxLOD = FLT_MAX;
+//};
 
 
 struct ISamplerState : public IUnknown
 {
 	virtual void __stdcall Setting(uint32_t slot) = 0;
+
+	virtual void __stdcall ChangeSampler(E_SAMPLER_TYPE samplerType) = 0;
 };
 
 
@@ -184,7 +194,7 @@ struct IConstantBuffer : public IUnknown {
 struct IRasterizer : public IUnknown {
 	virtual void __stdcall Setting() = 0;
 
-	virtual void __stdcall SetFillMode(E_FILLMODE_TYPE fillModeType) = 0;
+	virtual void __stdcall ChangeFillMode(E_FILLMODE_TYPE fillModeType) = 0;
 };
 
 struct IBlendState : public IUnknown
@@ -273,7 +283,7 @@ struct IRenderer : public IUnknown {
 
 	virtual IRenderTarget* __stdcall CreateRenderTarget(const RenderTargetDesc& desc) = 0;
 
-	virtual ISamplerState* __stdcall CreateSamplerState(const SamplerStateDesc& desc) = 0;
+	virtual ISamplerState* __stdcall CreateSamplerState(float minLOD, float maxLOD, unsigned int maxAnisotropy) = 0;
 
 	virtual IBlendState* __stdcall CreateBlendState(uint32_t srcBlend, uint32_t destBlend, uint32_t srcBlendAlpha, uint32_t destBlendAlpha, float blendFactor[4] = nullptr) = 0;
 

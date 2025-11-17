@@ -88,7 +88,9 @@ private:
 	IMesh* pScreenVertex_;
 	IMaterial* pScreenMaterial_;
 	IInputLayout* pScreenInputLayout_;
-	IRasterizer* pScreenRasterizer_;
+	//IRasterizer* pScreenRasterizer_;
+	//E_FILLMODE_TYPE fillmodeType_;
+
 	Float2 screenOffset_;
 	Float2 screenScale_;
 };

@@ -904,25 +904,59 @@ ITexture* Renderer::CreateTexture(const D3D11_TEXTURE2D_DESC& desc)
 	return nullptr;
 }
 
-ISamplerState* __stdcall Renderer::CreateSamplerState(const SamplerStateDesc& desc)
+ISamplerState* __stdcall Renderer::CreateSamplerState(float minLOD, float maxLOD, unsigned int maxAnisotropy)
 {
-	ID3D11SamplerState* pSamplerState = nullptr;
+	ID3D11SamplerState* pLinearClamp = nullptr;
+	ID3D11SamplerState* pLinearWrap = nullptr;
+	ID3D11SamplerState* pAnisotropicClamp = nullptr;
+	ID3D11SamplerState* pAnisotropicWrap = nullptr;
 	SamplerState* pNewSamplerState = nullptr;
-
 	do
 	{
 		D3D11_SAMPLER_DESC samplerDesc = {};
-		samplerDesc.Filter = (D3D11_FILTER)desc.filter;
-		samplerDesc.AddressU = (D3D11_TEXTURE_ADDRESS_MODE)desc.addressMethod;
-		samplerDesc.AddressV = (D3D11_TEXTURE_ADDRESS_MODE)desc.addressMethod;
-		samplerDesc.AddressW = (D3D11_TEXTURE_ADDRESS_MODE)desc.addressMethod;
+		samplerDesc.Filter = D3D11_FILTER::D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+		samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_MODE::D3D11_TEXTURE_ADDRESS_CLAMP;
+		samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_MODE::D3D11_TEXTURE_ADDRESS_CLAMP;
+		samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_MODE::D3D11_TEXTURE_ADDRESS_CLAMP;
 		samplerDesc.MipLODBias = 0.0f;
-		samplerDesc.MaxAnisotropy = (UINT)desc.maxAnisotropy;
-		samplerDesc.ComparisonFunc = (D3D11_COMPARISON_FUNC)desc.comparisonFunc;
-		samplerDesc.MinLOD = (FLOAT)desc.minLOD;
-		samplerDesc.MaxLOD = (FLOAT)desc.maxLOD;
+		samplerDesc.MaxAnisotropy = (UINT)maxAnisotropy;
+		samplerDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
+		samplerDesc.MinLOD = (FLOAT)minLOD;
+		samplerDesc.MaxLOD = (FLOAT)maxLOD;
+		HRESULT hr = GRenderer->Device()->CreateSamplerState(&samplerDesc, &pLinearClamp);
+		if (FAILED(hr))
+		{
+			DEBUG_BREAK();
+			break;
+		}
 
-		HRESULT hr = GRenderer->Device()->CreateSamplerState(&samplerDesc, &pSamplerState);
+		samplerDesc.Filter = D3D11_FILTER::D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+		samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_MODE::D3D11_TEXTURE_ADDRESS_WRAP;
+		samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_MODE::D3D11_TEXTURE_ADDRESS_WRAP;
+		samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_MODE::D3D11_TEXTURE_ADDRESS_WRAP;
+		hr = GRenderer->Device()->CreateSamplerState(&samplerDesc, &pLinearWrap);
+		if (FAILED(hr))
+		{
+			DEBUG_BREAK();
+			break;
+		}
+
+		samplerDesc.Filter = D3D11_FILTER::D3D11_FILTER_ANISOTROPIC;
+		samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_MODE::D3D11_TEXTURE_ADDRESS_CLAMP;
+		samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_MODE::D3D11_TEXTURE_ADDRESS_CLAMP;
+		samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_MODE::D3D11_TEXTURE_ADDRESS_CLAMP;
+		hr = GRenderer->Device()->CreateSamplerState(&samplerDesc, &pAnisotropicClamp);
+		if (FAILED(hr))
+		{
+			DEBUG_BREAK();
+			break;
+		}
+
+		samplerDesc.Filter = D3D11_FILTER::D3D11_FILTER_ANISOTROPIC;
+		samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_MODE::D3D11_TEXTURE_ADDRESS_WRAP;
+		samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_MODE::D3D11_TEXTURE_ADDRESS_WRAP;
+		samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_MODE::D3D11_TEXTURE_ADDRESS_WRAP;
+		hr = GRenderer->Device()->CreateSamplerState(&samplerDesc, &pAnisotropicWrap);
 		if (FAILED(hr))
 		{
 			DEBUG_BREAK();
@@ -930,12 +964,12 @@ ISamplerState* __stdcall Renderer::CreateSamplerState(const SamplerStateDesc& de
 		}
 
 		// ---------------- 메모리 누수 디버깅용 이름 설정. ----------------------------
-		const char* debugObjectName = "SamplerState::pSamplerState_";
-		pSamplerState->SetPrivateData(WKPDID_D3DDebugObjectName, (UINT)strlen(debugObjectName), debugObjectName);
+		//const char* debugObjectName = "SamplerState::pSamplerState_";
+		//pSamplerState->SetPrivateData(WKPDID_D3DDebugObjectName, (UINT)strlen(debugObjectName), debugObjectName);
 		// ---------------------------------------------------------------------------
 
 		pNewSamplerState = new SamplerState;
-		if (false == pNewSamplerState->Init(pSamplerState))
+		if (false == pNewSamplerState->Init(pLinearClamp, pLinearWrap, pAnisotropicClamp, pAnisotropicWrap))
 		{
 			DEBUG_BREAK();
 			break;
@@ -945,12 +979,27 @@ ISamplerState* __stdcall Renderer::CreateSamplerState(const SamplerStateDesc& de
 
 	} while (false);
 
-
-	if (nullptr != pSamplerState)
+	if (nullptr != pLinearClamp)
 	{
-		pSamplerState->Release();
-		pSamplerState = nullptr;
+		pLinearClamp->Release();
+		pLinearClamp = nullptr;
 	}
+	if (nullptr != pLinearWrap)
+	{
+		pLinearWrap->Release();
+		pLinearWrap = nullptr;
+	}
+	if (nullptr != pAnisotropicClamp)
+	{
+		pAnisotropicClamp->Release();
+		pAnisotropicClamp = nullptr;
+	}
+	if (nullptr != pAnisotropicWrap)
+	{
+		pAnisotropicWrap->Release();
+		pAnisotropicWrap = nullptr;
+	}
+
 	if (nullptr != pNewSamplerState)
 	{
 		pNewSamplerState->Release();

@@ -58,6 +58,7 @@
 #include "TimeManager.h"
 #include "ConstantManager.h"
 #include "SamplerManager.h"
+#include "RasterizerManager.h"
 #include "ObjectPicker.h"
 
 
@@ -69,11 +70,15 @@ extern IApplication* GApplication;
 extern IRenderer* GRenderer;
 extern InputManager* GInputManager;
 extern TimeManager* GTimeManager;
+
 extern ConstantManager* GConstantManager;
 extern SamplerManager* GSamplerManager;
+extern IBlendState* GBlendState;
+extern RasterizerManager* GRasterizerManager;
+
+
 extern Camera* GMainCamera;
 extern Camera* GCurrentCamera;
-extern IBlendState* GBlendState;
 extern ObjectPicker* GObjectPicker;
 extern IDebugRenderer* GDebugRenderer;
 

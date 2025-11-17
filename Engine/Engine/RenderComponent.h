@@ -53,5 +53,5 @@ private:
 
 	IInputLayout* pInputLayout_;
 
-	IRasterizer* pRasterizer_;
+	//IRasterizer* pRasterizer_;
 };

@@ -11,7 +11,6 @@ RenderComponent::RenderComponent(Actor* pOwner)
 	pTextureColor_(nullptr),
 	pTextureNormal_(nullptr),
 	pInputLayout_(nullptr),
-	pRasterizer_(nullptr),
 	OnMeshLoaded_()
 {
 }
@@ -35,7 +34,7 @@ void RenderComponent::Render()
 	pTextureColor_->Setting(0);
 	pTextureNormal_->Setting(1);
 	pInputLayout_->Setting();
-	pRasterizer_->Setting();
+	//pRasterizer_->Setting();
 	pMesh_->Draw();
 }
 
@@ -92,8 +91,8 @@ void RenderComponent::Create(E_MESH_TYPE meshType)
 	pTextureNormal_ = GRenderer->LoadTextureFromDirectXTex(texPath, true);
 
 	pInputLayout_ = GRenderer->CreateLayout(pMesh_, pMaterial_->GetVertexShader());
-	pRasterizer_ = GRenderer->CreateRasterizer(false, true);
-	pRasterizer_->SetFillMode(E_FILLMODE_TYPE::Solid);
+	//pRasterizer_ = GRenderer->CreateRasterizer(false, true);
+	//pRasterizer_->SetFillMode(E_FILLMODE_TYPE::SOLID);
 
 	BroadcastOnMeshLoaded();
 }
@@ -129,12 +128,6 @@ void RenderComponent::BroadcastOnMeshLoaded()
 
 void RenderComponent::CleanUp()
 {
-	if (nullptr != pRasterizer_)
-	{
-		pRasterizer_->Release();
-		pRasterizer_ = nullptr;
-	}
-
 	if (nullptr != pTextureColor_)
 	{
 		pTextureColor_->Release();

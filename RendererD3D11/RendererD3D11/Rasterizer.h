@@ -21,7 +21,7 @@ public:
 
 	void __stdcall Setting() override;
 
-	void __stdcall SetFillMode(E_FILLMODE_TYPE fillmode) override;
+	void __stdcall ChangeFillMode(E_FILLMODE_TYPE fillmode) override;
 
 private:
 	void CleanUp();
@@ -29,8 +29,6 @@ private:
 	ULONG refCount_;
 
 	ID3D11RasterizerState* pCurrentState_;
-
 	ID3D11RasterizerState* pSolidState_;
-
 	ID3D11RasterizerState* pWireframeState_;
 };

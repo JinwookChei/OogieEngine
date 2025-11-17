@@ -10,7 +10,13 @@ private:
 
 	virtual ~SamplerState();
 
-	bool Init(ID3D11SamplerState* pSamplerState);
+	bool Init
+	(
+		ID3D11SamplerState* pLinearClamp,
+		ID3D11SamplerState* pLinearWarp,
+		ID3D11SamplerState* pAnisotropicClamp,
+		ID3D11SamplerState* pAnisotropicWarp
+	);
 
 public:
 	HRESULT __stdcall QueryInterface(REFIID riid, _COM_Outptr_ void __RPC_FAR* __RPC_FAR* ppvObject) override;
@@ -21,12 +27,16 @@ public:
 
 	void __stdcall Setting(uint32_t slot) override;
 
-	//void Setting(uint32_t slot);
+	void __stdcall ChangeSampler(E_SAMPLER_TYPE samplerType) override;
 
 private:
 	void CleanUp();
 
 	ULONG refCount_;
 
-	ID3D11SamplerState* pSamplerState_;
+	ID3D11SamplerState* pCurSampler_;
+	ID3D11SamplerState* pLinearClamp_;
+	ID3D11SamplerState* pLinearWarp_;
+	ID3D11SamplerState* pAnisotropicClamp_;
+	ID3D11SamplerState* pAnisotropicWarp_;
 };

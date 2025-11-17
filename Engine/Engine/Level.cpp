@@ -157,7 +157,8 @@ void Level::OnTickActors(double deltaTime)
 
 void Level::OnRender()
 {
-	SamplerManager::Instance()->Setting(E_SAMPLER_MODE::LINEAR_CLAMP);
+	SamplerManager::Instance()->Setting(0, E_SAMPLER_TYPE::LINEAR_CLAMP);
+	RasterizerManager::Instance()->Setting(E_FILLMODE_TYPE::SOLID);
 
 	LINK_ITEM* pCameraIter = pCameraHead_;
 	while (pCameraIter)

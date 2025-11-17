@@ -48,7 +48,7 @@ public:
 
 	IRenderTarget* __stdcall CreateDeferredRenderTarget(const RenderTargetDesc& desc);
 
-	ISamplerState* __stdcall CreateSamplerState(const SamplerStateDesc& desc) override;
+	ISamplerState* __stdcall CreateSamplerState(float minLOD, float maxLOD, unsigned int maxAnisotropy) override;
 
 	IBlendState* __stdcall CreateBlendState(uint32_t srcBlend, uint32_t destBlend, uint32_t srcBlendAlpha, uint32_t destBlendAlpha, float blendFactor[4] = nullptr) override;
 
@@ -64,7 +64,6 @@ public:
 	ITexture* CreateTexture(const D3D11_TEXTURE2D_DESC& desc);
 
 	
-
 	void IncrementDrawCall();
 
 	ID3D11Device* Device();

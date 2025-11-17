@@ -13,7 +13,7 @@ Camera::Camera()
 	pScreenVertex_(nullptr),
 	pScreenMaterial_(nullptr),
 	pScreenInputLayout_(nullptr),
-	pScreenRasterizer_(nullptr),
+	//pScreenRasterizer_(nullptr),
 	screenOffset_({ 0.0f, 0.0f }),
 	screenScale_({ 1.0f, 1.0f })
 {
@@ -74,7 +74,7 @@ void Camera::LightPassBegin()
 
 	pScreenVertex_->Setting();
 	pScreenInputLayout_->Setting();
-	pScreenRasterizer_->Setting();
+	//pScreenRasterizer_->Setting();
 	pLightBufferMaterial_->Setting();
 }
 
@@ -103,7 +103,7 @@ void Camera::BlitToBackBuffer(const Float2& offset, const Float2& scale)
 	pScreenVertex_->Setting();
 	pScreenMaterial_->Setting();
 	pScreenInputLayout_->Setting();
-	pScreenRasterizer_->Setting();
+	//pScreenRasterizer_->Setting();
 	pScreenVertex_->Draw();
 
 	pLightBufferTarget_->ClearRenderTextureForPS(4);
@@ -263,8 +263,8 @@ void Camera::InitScreenRect()
 
 	pScreenInputLayout_ = GRenderer->CreateLayout(pScreenVertex_, pScreenMaterial_->GetVertexShader());
 
-	pScreenRasterizer_ = GRenderer->CreateRasterizer(true, false);
-	pScreenRasterizer_->SetFillMode(E_FILLMODE_TYPE::Solid);
+	//pScreenRasterizer_ = GRenderer->CreateRasterizer(true, false);
+	//pScreenRasterizer_->SetFillMode(E_FILLMODE_TYPE::SOLID);
 }
 
 void Camera::CameraTransformUpdate()
@@ -284,11 +284,11 @@ void Camera::CameraTransformUpdate()
 
 void Camera::CleanUp()
 {
-	if (nullptr != pScreenRasterizer_)
-	{
-		pScreenRasterizer_->Release();
-		pScreenRasterizer_ = nullptr;
-	}
+	//if (nullptr != pScreenRasterizer_)
+	//{
+	//	pScreenRasterizer_->Release();
+	//	pScreenRasterizer_ = nullptr;
+	//}
 	if (nullptr != pScreenInputLayout_)
 	{
 		pScreenInputLayout_->Release();

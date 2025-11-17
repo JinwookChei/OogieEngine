@@ -13,8 +13,11 @@ InputManager* GInputManager = nullptr;
 IApplication* GApplication = nullptr;
 IRenderer* GRenderer = nullptr;
 TimeManager* GTimeManager = nullptr;
+
 ConstantManager* GConstantManager = nullptr;
 SamplerManager* GSamplerManager = nullptr;
+RasterizerManager* GRasterizerManager = nullptr;
+
 Camera* GMainCamera = nullptr;
 Camera* GCurrentCamera = nullptr;
 IBlendState* GBlendState = nullptr;
@@ -104,6 +107,8 @@ bool Engine::Initialize
 	GConstantManager = new ConstantManager;
 
 	GSamplerManager = new SamplerManager;
+
+	GRasterizerManager = new RasterizerManager;
 
 	if (false == InitializeStartUp(pStartup))
 	{
@@ -319,6 +324,12 @@ void Engine::CleanUp()
 	{
 		pStartUp_->Release();
 		pStartUp_ = nullptr;
+	}
+
+	if (nullptr != GRasterizerManager)
+	{
+		delete GRasterizerManager;
+		GRasterizerManager = nullptr;
 	}
 
 	if (nullptr != GSamplerManager)
