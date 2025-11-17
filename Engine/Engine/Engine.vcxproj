@@ -153,6 +153,7 @@
     <ClInclude Include="..\..\Interface\Renderer\IRenderer.h" />
     <ClInclude Include="..\..\Interface\VertexType\VertexType.h" />
     <ClInclude Include="Actor.h" />
+    <ClInclude Include="BlendStateManager.h" />
     <ClInclude Include="BoundVolume.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ConstantManager.h" />
@@ -177,6 +178,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Actor.cpp" />
+    <ClCompile Include="BlendStateManager.cpp" />
     <ClCompile Include="BoundVolume.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ConstantManager.cpp" />

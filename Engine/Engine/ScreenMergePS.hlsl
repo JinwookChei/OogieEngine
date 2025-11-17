@@ -58,9 +58,9 @@ float4 main(PS_ScreenRect input) : SV_TARGET
     float4 albedo = renderTextureAlbedo.Sample(samplers, input.uv);
     float4 light = renderTextureLight.Sample(samplers, input.uv);
     
-    //clip(light.w - 0.0001f);
+    clip(light.w - 0.0001f);
     
-    return albedo/* * float4(0.1f, 0.1f, 0.1f, 1.0f)*/ + light;
+    return albedo * float4(0.1f, 0.1f, 0.1f, 1.0f) + light;
     
 }
 

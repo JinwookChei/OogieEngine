@@ -16,6 +16,7 @@ TimeManager* GTimeManager = nullptr;
 
 ConstantManager* GConstantManager = nullptr;
 SamplerManager* GSamplerManager = nullptr;
+BlendStateManager* GBlendStateManager = nullptr;
 RasterizerManager* GRasterizerManager = nullptr;
 
 Camera* GMainCamera = nullptr;
@@ -108,6 +109,8 @@ bool Engine::Initialize
 
 	GSamplerManager = new SamplerManager;
 
+	GBlendStateManager = new BlendStateManager;
+
 	GRasterizerManager = new RasterizerManager;
 
 	if (false == InitializeStartUp(pStartup))
@@ -116,12 +119,6 @@ bool Engine::Initialize
 	}
 
 	if (false == InitializeWorld())
-	{
-		return false;
-	}
-
-	GBlendState = GRenderer->CreateBlendState(2, 2, 2, 2, nullptr);
-	if (nullptr == GBlendState)
 	{
 		return false;
 	}
@@ -332,6 +329,11 @@ void Engine::CleanUp()
 		GRasterizerManager = nullptr;
 	}
 
+	if (nullptr != GBlendStateManager)
+	{
+		delete GBlendStateManager;
+		GBlendStateManager = nullptr;
+	}
 	if (nullptr != GSamplerManager)
 	{
 		delete GSamplerManager;

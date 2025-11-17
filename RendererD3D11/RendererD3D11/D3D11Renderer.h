@@ -50,7 +50,7 @@ public:
 
 	ISamplerState* __stdcall CreateSamplerState(float minLOD, float maxLOD, unsigned int maxAnisotropy) override;
 
-	IBlendState* __stdcall CreateBlendState(uint32_t srcBlend, uint32_t destBlend, uint32_t srcBlendAlpha, uint32_t destBlendAlpha, float blendFactor[4] = nullptr) override;
+	IBlendState* __stdcall CreateBlendState() override;
 
 	ITexture* __stdcall LoadTextureFromDirectXTex(const wchar_t* fileName, bool isNormalMap) override;
 	

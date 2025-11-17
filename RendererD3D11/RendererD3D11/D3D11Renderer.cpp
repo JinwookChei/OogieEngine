@@ -1010,10 +1010,12 @@ ISamplerState* __stdcall Renderer::CreateSamplerState(float minLOD, float maxLOD
 }
 
 
-IBlendState* Renderer::CreateBlendState(uint32_t srcBlend, uint32_t destBlend, uint32_t srcBlendAlpha, uint32_t destBlendAlpha, float blendFactor[4]/* = nullptr*/)
+IBlendState* Renderer::CreateBlendState()
 {
 	BlendState* pNewBlendState = nullptr;
-	ID3D11BlendState* pBlendState = nullptr;
+	ID3D11BlendState* pBlendOpaque = nullptr;
+	ID3D11BlendState* pBlendAlpha = nullptr;
+	ID3D11BlendState* pBlendAdditive = nullptr;
 	do
 	{
 		// AlphaToCoverageEnable
@@ -1024,51 +1026,83 @@ IBlendState* Renderer::CreateBlendState(uint32_t srcBlend, uint32_t destBlend, u
 		// 렌더 타깃(Render Target)이 여러 개일 때(OMSetRenderTargets로 MRT 사용 시),
 		// 각각의 렌더 타깃에 대해 블렌딩 설정을 독립적으로 적용할지 여부를 지정합니다.
 
-		D3D11_BLEND_DESC blendDesc = {0};
-		blendDesc.AlphaToCoverageEnable = FALSE;
-		blendDesc.IndependentBlendEnable = FALSE;
-
-		blendDesc.RenderTarget[0].BlendEnable = TRUE;
-		blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
-
-		blendDesc.RenderTarget[0].SrcBlend = (D3D11_BLEND)srcBlend; 
-		blendDesc.RenderTarget[0].DestBlend = (D3D11_BLEND)destBlend;
-		blendDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
-
 		// BlendFactor : 색을 강조하거나, 화면 전체 페이드 같은 특수 효과를 만들 때 사용. ->OMSetBlendState()에서 BlendFactor 값 인자로 넘김.
 		//blendDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_BLEND_FACTOR;
 		//blendDesc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_BLEND_FACTOR; // 1 - BlendFactor  // 렌더타켓
 
-		blendDesc.RenderTarget[0].SrcBlendAlpha = (D3D11_BLEND)srcBlendAlpha;
-		blendDesc.RenderTarget[0].DestBlendAlpha = (D3D11_BLEND)destBlendAlpha;
-		blendDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+		D3D11_BLEND_DESC blendDesc = {0};
+		blendDesc.AlphaToCoverageEnable = FALSE;
+		blendDesc.IndependentBlendEnable = FALSE;
+		blendDesc.RenderTarget[0].BlendEnable = FALSE;
+		blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
 
-		
-
-		HRESULT hr = GRenderer->Device()->CreateBlendState(&blendDesc, &pBlendState);
+		blendDesc.RenderTarget[0].SrcBlend = D3D11_BLEND::D3D11_BLEND_ONE;
+		blendDesc.RenderTarget[0].DestBlend = D3D11_BLEND::D3D11_BLEND_ZERO;
+		blendDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP::D3D11_BLEND_OP_ADD;
+		blendDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND::D3D11_BLEND_ONE;
+		blendDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND::D3D11_BLEND_ZERO;
+		blendDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP::D3D11_BLEND_OP_ADD;
+		HRESULT hr = GRenderer->Device()->CreateBlendState(&blendDesc, &pBlendOpaque);
 		if (FAILED(hr))
 		{
-			Assert("CreateBlendState is FAILED!!!!!");
-			continue;
+			Assert("CreateBlendState(BlendOpaque) is FAILED!!!!!");
+			break;
 		}
 
+		blendDesc.RenderTarget[0].SrcBlend = D3D11_BLEND::D3D11_BLEND_SRC_ALPHA;
+		blendDesc.RenderTarget[0].DestBlend = D3D11_BLEND::D3D11_BLEND_INV_SRC_ALPHA;
+		blendDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP::D3D11_BLEND_OP_ADD;
+		blendDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND::D3D11_BLEND_ONE;
+		blendDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND::D3D11_BLEND_INV_SRC_ALPHA;
+		blendDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP::D3D11_BLEND_OP_ADD;
+		hr = GRenderer->Device()->CreateBlendState(&blendDesc, &pBlendAlpha);
+		if (FAILED(hr))
+		{
+			Assert("CreateBlendState(BlendAlpha) is FAILED!!!!!");
+			break;
+		}
+
+		blendDesc.RenderTarget[0].BlendEnable = TRUE;
+		blendDesc.RenderTarget[0].SrcBlend = D3D11_BLEND::D3D11_BLEND_ONE;
+		blendDesc.RenderTarget[0].DestBlend = D3D11_BLEND::D3D11_BLEND_ONE;
+		blendDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP::D3D11_BLEND_OP_ADD;
+		blendDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND::D3D11_BLEND_ONE;
+		blendDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND::D3D11_BLEND_ONE;
+		blendDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP::D3D11_BLEND_OP_ADD;
+		hr = GRenderer->Device()->CreateBlendState(&blendDesc, &pBlendAdditive);
+		if (FAILED(hr))
+		{
+			Assert("CreateBlendState(BlendAdditive) is FAILED!!!!!");
+			break;
+		}
+
+
 		pNewBlendState = new BlendState;
-		if (false == pNewBlendState->Init(pBlendState, blendFactor)) 
+		if (false == pNewBlendState->Init(pBlendOpaque, pBlendAlpha, pBlendAdditive, NULL))
 		{
 			Assert("BlendState Init is FAILED!!!!!");
-			continue;
+			break;
 		}
 
 		return pNewBlendState;
 
 	} while (false);
 
-	if (nullptr != pBlendState)
+	if (nullptr != pBlendOpaque)
 	{
-		pBlendState->Release();
-		pBlendState = nullptr;
+		pBlendOpaque->Release();
+		pBlendOpaque = nullptr;
 	}
-
+	if (nullptr != pBlendAlpha)
+	{
+		pBlendAlpha->Release();
+		pBlendAlpha = nullptr;
+	}
+	if (nullptr != pBlendAdditive)
+	{
+		pBlendAdditive->Release();
+		pBlendAdditive = nullptr;
+	}
 	if (nullptr != pNewBlendState)
 	{
 		pNewBlendState->Release();

@@ -181,7 +181,7 @@ void Level::OnRender()
 
 		
 		// Light Pass
-		GBlendState->Setting();
+		BlendStateManager::Instance()->Setting(E_BLEND_MODE_TYPE::ADDITIVE_BLEND);
 		GCurrentCamera->LightPassBegin();
 		LINK_ITEM* pLightIter = pLightHead_;
 		while (pLightIter)
@@ -198,7 +198,7 @@ void Level::OnRender()
 		//GCurrentCamera->UpdatePerFrameConstant();
 
 		GCurrentCamera->LightPassEnd();
-		GBlendState->Clear();
+		BlendStateManager::Instance()->Clear();
 		// Light Pass End
 	}
 }

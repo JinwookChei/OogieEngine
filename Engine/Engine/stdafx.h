@@ -58,6 +58,7 @@
 #include "TimeManager.h"
 #include "ConstantManager.h"
 #include "SamplerManager.h"
+#include "BlendStateManager.h"
 #include "RasterizerManager.h"
 #include "ObjectPicker.h"
 
@@ -73,7 +74,7 @@ extern TimeManager* GTimeManager;
 
 extern ConstantManager* GConstantManager;
 extern SamplerManager* GSamplerManager;
-extern IBlendState* GBlendState;
+extern BlendStateManager* GBlendStateManager;
 extern RasterizerManager* GRasterizerManager;
 
 

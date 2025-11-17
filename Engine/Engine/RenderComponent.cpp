@@ -125,7 +125,6 @@ void RenderComponent::BroadcastOnMeshLoaded()
 	}
 }
 
-
 void RenderComponent::CleanUp()
 {
 	if (nullptr != pTextureColor_)

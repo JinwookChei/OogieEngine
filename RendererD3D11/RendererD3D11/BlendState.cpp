@@ -3,9 +3,12 @@
 
 
 BlendState::BlendState()
-	: refCount_(1),
-	pBlendState_(nullptr),
-	blendFactor_(nullptr)
+	: refCount_(1)
+	, pCurBlendMode_(nullptr)
+	, pBlendOpaque_(nullptr)
+	, pBlendAlpha_(nullptr)
+	, pBlendAdditive_(nullptr)
+	, blendFactor_()
 {
 }
 
@@ -14,16 +17,25 @@ BlendState::~BlendState()
 	CleanUp();
 }
 
-bool BlendState::Init(ID3D11BlendState* pBlendState, float blendFactor[4])
+bool BlendState::Init(ID3D11BlendState* pBlendOpaque, ID3D11BlendState* pBlendAlpha, ID3D11BlendState* pBlendAdditive, float blendFactor[4])
 {
-	if (nullptr == pBlendState)
+	if (nullptr == pBlendOpaque)
 	{
-		Assert("BlendState is NULL");
+		Assert("BlendOpaque is NULL");
+		return false;
+	}
+	if (nullptr == pBlendAlpha)
+	{
+		Assert("BlendAlpha is NULL");
+		return false;
+	}
+	if (nullptr == pBlendAdditive)
+	{
+		Assert("BlendAdditive is NULL");
 		return false;
 	}
 
-	pBlendState_ = pBlendState;
-
+	ChangeBlendMode(E_BLEND_MODE_TYPE::OPAQUE_BLEND);
 	blendFactor_ = blendFactor_;
 
 	return true;
@@ -58,14 +70,56 @@ void __stdcall BlendState::Clear()
 
 void __stdcall BlendState::Setting()
 {
-	GRenderer->DeviceContext()->OMSetBlendState(pBlendState_, blendFactor_, 0xffffffff);
+	GRenderer->DeviceContext()->OMSetBlendState(pCurBlendMode_, blendFactor_, 0xffffffff);
+}
+
+void __stdcall BlendState::ChangeBlendMode(const E_BLEND_MODE_TYPE& blendType)
+{
+	if (nullptr != pCurBlendMode_)
+	{
+		pCurBlendMode_->Release();
+		pCurBlendMode_ = nullptr;
+	}
+
+	switch (blendType)
+	{
+	case E_BLEND_MODE_TYPE::OPAQUE_BLEND:
+		pCurBlendMode_ = pBlendOpaque_;
+		pCurBlendMode_->AddRef();
+		break;
+	case E_BLEND_MODE_TYPE::ALPHA_BLEND:
+		pCurBlendMode_ = pBlendAlpha_;
+		pCurBlendMode_->AddRef();
+		break;
+	case E_BLEND_MODE_TYPE::ADDITIVE_BLEND:
+		pCurBlendMode_ = pBlendAdditive_;
+		pCurBlendMode_->AddRef();
+		break;
+	default:
+		break;
+	}
 }
 
 void BlendState::CleanUp()
 {
-	if (nullptr != pBlendState_)
+	if (nullptr != pCurBlendMode_)
 	{
-		pBlendState_->Release();
-		pBlendState_ = nullptr;
+		pCurBlendMode_->Release();
+		pCurBlendMode_ = nullptr;
+	}
+	if (nullptr != pBlendOpaque_)
+	{
+		pBlendOpaque_->Release();
+		pBlendOpaque_ = nullptr;
+	}
+	if (nullptr != pBlendAlpha_)
+	{
+		pBlendAlpha_->Release();
+		pBlendAlpha_ = nullptr;
+	}
+	if (nullptr != pBlendAdditive_)
+	{
+		pBlendAdditive_->Release();
+		pBlendAdditive_ = nullptr;
 	}
 }

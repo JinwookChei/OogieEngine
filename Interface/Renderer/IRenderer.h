@@ -75,18 +75,11 @@ struct RenderTargetDesc
 struct ITexture : public IUnknown
 {
 	virtual void __stdcall Setting(UINT slot) = 0;
-
-	//virtual ID3D11RenderTargetView* __stdcall RenderTargetView() const = 0;
-
-	//virtual ID3D11DepthStencilView* __stdcall DepthStencilView() const = 0;
-
-	//virtual ID3D11ShaderResourceView* __stdcall ShaderResourceView() const = 0;
 };
 
 
 struct IShader : public IUnknown
 {
-	//virtual void __stdcall Setting() = 0;
 };
 
 enum class E_SAMPLER_TYPE
@@ -96,27 +89,6 @@ enum class E_SAMPLER_TYPE
 	ANISOTROPIC_CLAMP,
 	ANISOTROPIC_WARP
 };
-
-//struct SamplerStateDesc
-//{
-//	unsigned int filter = 21; 
-//	// D3D11_FILTER_MIN_MAG_MIP_LINEAR = 21
-//	// D3D11_FILTER_ANISOTROPIC = 85
-//
-//	unsigned int addressMethod = 3;
-//	// D3D11_TEXTURE_ADDRESS_WRAP = 1,
-//	// D3D11_TEXTURE_ADDRESS_MIRROR = 2,
-//	// D3D11_TEXTURE_ADDRESS_CLAMP = 3,
-//
-//	unsigned int maxAnisotropy = 1;	 
-//	//D3D11_FILTER_ANISOTROPIC으로 설정된 경우에만 사용
-//
-//	unsigned int comparisonFunc = 1; 
-//	//그림자 맵(Shadow Maps)과 같은 특수 필터링에서 사용
-//		
-//	float minLOD = -FLT_MAX;
-//	float maxLOD = FLT_MAX;
-//};
 
 
 struct ISamplerState : public IUnknown
@@ -161,8 +133,6 @@ struct MaterialDesc
 	const wchar_t* VS = nullptr;
 	const wchar_t* PS = nullptr;
 	bool useTexture = false;
-	//bool samplerLinear = false;
-	//bool samplerClamp = false;
 	float shineness = 16.0f;
 	Float3 specularColor = { 0.7f,0.7f ,0.7f };
 };
@@ -197,11 +167,21 @@ struct IRasterizer : public IUnknown {
 	virtual void __stdcall ChangeFillMode(E_FILLMODE_TYPE fillModeType) = 0;
 };
 
+
+enum class E_BLEND_MODE_TYPE
+{
+	OPAQUE_BLEND = 0,            // 블렌딩 없음 (불투명)
+	ALPHA_BLEND,				// 일반 알파 블렌딩
+	ADDITIVE_BLEND,					// Additive(가산) 블렌딩
+};
+
 struct IBlendState : public IUnknown
 {
 	virtual void __stdcall Clear() = 0;
 
 	virtual void __stdcall Setting() = 0;
+
+	virtual void __stdcall ChangeBlendMode(const E_BLEND_MODE_TYPE& blendType) = 0;
 };
 
 enum class E_VIEW_TYPE
@@ -285,7 +265,7 @@ struct IRenderer : public IUnknown {
 
 	virtual ISamplerState* __stdcall CreateSamplerState(float minLOD, float maxLOD, unsigned int maxAnisotropy) = 0;
 
-	virtual IBlendState* __stdcall CreateBlendState(uint32_t srcBlend, uint32_t destBlend, uint32_t srcBlendAlpha, uint32_t destBlendAlpha, float blendFactor[4] = nullptr) = 0;
+	virtual IBlendState* __stdcall CreateBlendState() = 0;
 
 	virtual ITexture* __stdcall LoadTextureFromDirectXTex(const wchar_t* fileName, bool isNormalMap) = 0;
 

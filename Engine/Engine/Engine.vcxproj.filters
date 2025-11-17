@@ -168,6 +168,9 @@
     <ClInclude Include="RasterizerManager.h">
       <Filter>Source Files\Manager\GraphicsManager</Filter>
     </ClInclude>
+    <ClInclude Include="BlendStateManager.h">
+      <Filter>Source Files\Manager\GraphicsManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -234,6 +237,9 @@
       <Filter>Source Files\Manager\GraphicsManager</Filter>
     </ClCompile>
     <ClCompile Include="RasterizerManager.cpp">
+      <Filter>Source Files\Manager\GraphicsManager</Filter>
+    </ClCompile>
+    <ClCompile Include="BlendStateManager.cpp">
       <Filter>Source Files\Manager\GraphicsManager</Filter>
     </ClCompile>
   </ItemGroup>
