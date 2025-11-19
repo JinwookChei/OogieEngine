@@ -12,7 +12,7 @@ Actor::Actor()
 {
 	levelLink_.prev_ = nullptr;
 	levelLink_.next_ = nullptr;
-	levelLink_.item_ = this;
+	levelLink_.pItem_ = this;
 
 	pBoundVolume->Init(pRenderer_);
 }
@@ -32,7 +32,7 @@ Transform& Actor::GetWorldTransform() const
 	return *pTransform_;
 }
 
-LINK_ITEM* Actor::LevelLink()
+LINK_NODE* Actor::LevelLink()
 {
 	return &levelLink_;
 }

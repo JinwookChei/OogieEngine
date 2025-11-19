@@ -61,14 +61,16 @@ InputManager::~InputManager() {
     }
 
     HashTableIterator endIter = hashTable_->end();
-    for (auto iter = hashTable_->begin(); iter != endIter;) {
+    for (HashTableIterator iter = hashTable_->begin(); iter != endIter;) {
         InputState* pCur = (InputState*)*iter;
-
-        iter = hashTable_->erase(iter);
+        
+        
+        //iter = hashTable_->erase(iter);
+        hashTable_->Delete();
 
         delete pCur;
     }
-    hashTable_->Cleanup();
+    hashTable_->Clean();
     delete hashTable_;
     hashTable_ = nullptr;
 }

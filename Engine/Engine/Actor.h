@@ -22,7 +22,7 @@ public:
 
 	ENGINE_API Transform& GetWorldTransform() const;
 
-	LINK_ITEM* LevelLink();
+	LINK_NODE* LevelLink();
 
 protected:
 	ENGINE_API virtual void CleanUp();
@@ -34,5 +34,5 @@ protected:
 
 	BoundVolume* pBoundVolume;
 
-	LINK_ITEM levelLink_;
+	LINK_NODE levelLink_;
 };
