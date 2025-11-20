@@ -43,39 +43,26 @@ void RenderComponent::Create(E_MESH_TYPE meshType)
 {
 	CleanUp();
 
-	std::vector<SimpleVertex> sphereVertices;
-	std::vector<WORD> sphereIndices;
-
 	switch (meshType)
 	{
 	case E_MESH_TYPE::SPHERE:
-		GeometryGenerator::CreateSphere(&sphereVertices, &sphereIndices);
+		if (!MeshManager::Instance()->GetMesh(&pMesh_, 2))
+		{
+			DEBUG_BREAK();
+			return;
+		}
 		break;
 	case E_MESH_TYPE::CUBE:
-		GeometryGenerator::CreateCube(&sphereVertices, &sphereIndices);
+		if (!MeshManager::Instance()->GetMesh(&pMesh_, 1))
+		{
+			DEBUG_BREAK();
+			return;
+		}
 		break;
 	default:
 		break;
 	}
-
-	// Mesh
-	MeshDesc meshDesc;
-	meshDesc.vertexFormat = E_VERTEX_FORMAT::SIMPLE;
-	meshDesc.vertexFormatSize = sizeof(SimpleVertex);
-	meshDesc.vertexCount = sphereVertices.size();
-	meshDesc.vertices = sphereVertices.data();
-	meshDesc.indexFormatSize = sizeof(WORD);
-	meshDesc.indexCount = sphereIndices.size();
-	meshDesc.indices = sphereIndices.data();
-
-
-	pMesh_ = GRenderer->CreateMesh(meshDesc);
-	pMesh_->AddInputLayout("POSITION", 0, 6, 0, false);
-	pMesh_->AddInputLayout("COLOR", 0, 2, 0, false);
-	pMesh_->AddInputLayout("NORMAL", 0, 6, 0, false);
-	pMesh_->AddInputLayout("TEXCOORD", 0, 16, 0, false);
-	pMesh_->AddInputLayout("TANGENT", 0, 2, 0, false);
-
+	pMesh_->AddRef();
 
 	MaterialDesc matDesc;
 	matDesc.VS = L"ObjectVS.cso";
@@ -85,14 +72,11 @@ void RenderComponent::Create(E_MESH_TYPE meshType)
 	pMaterial_ = GRenderer->CreateMaterial(matDesc);
 
 	const wchar_t* texPath = L"../Resource/Texture/Bricks_4K/Bricks_Color.png";
-	//const wchar_t* texPath = L"../Resource/Texture/NUGA.jpg";
 	pTextureColor_ = GRenderer->LoadTextureFromDirectXTex(texPath, false);
 	texPath = L"../Resource/Texture/Bricks_4K/Bricks_NormalDX.png";
 	pTextureNormal_ = GRenderer->LoadTextureFromDirectXTex(texPath, true);
 
 	pInputLayout_ = GRenderer->CreateLayout(pMesh_, pMaterial_->GetVertexShader());
-	//pRasterizer_ = GRenderer->CreateRasterizer(false, true);
-	//pRasterizer_->SetFillMode(E_FILLMODE_TYPE::SOLID);
 
 	BroadcastOnMeshLoaded();
 }

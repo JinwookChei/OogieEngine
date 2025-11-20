@@ -56,6 +56,7 @@
 // Engine
 #include "InputManager.h"
 #include "TimeManager.h"
+#include "MeshManager.h"
 #include "ConstantManager.h"
 #include "SamplerManager.h"
 #include "BlendStateManager.h"
@@ -72,6 +73,7 @@ extern IRenderer* GRenderer;
 extern InputManager* GInputManager;
 extern TimeManager* GTimeManager;
 
+extern MeshManager* GMeshManager;
 extern ConstantManager* GConstantManager;
 extern SamplerManager* GSamplerManager;
 extern BlendStateManager* GBlendStateManager;

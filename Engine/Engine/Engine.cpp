@@ -14,6 +14,7 @@ IApplication* GApplication = nullptr;
 IRenderer* GRenderer = nullptr;
 TimeManager* GTimeManager = nullptr;
 
+MeshManager* GMeshManager = nullptr;
 ConstantManager* GConstantManager = nullptr;
 SamplerManager* GSamplerManager = nullptr;
 BlendStateManager* GBlendStateManager = nullptr;
@@ -21,7 +22,6 @@ RasterizerManager* GRasterizerManager = nullptr;
 
 Camera* GMainCamera = nullptr;
 Camera* GCurrentCamera = nullptr;
-//IBlendState* GBlendState = nullptr;
 ObjectPicker* GObjectPicker = nullptr;
 IDebugRenderer* GDebugRenderer = nullptr;
 
@@ -105,6 +105,8 @@ bool Engine::Initialize
 
 	GTimeManager = new TimeManager;
 
+	GMeshManager = new MeshManager;
+
 	GConstantManager = new ConstantManager;
 
 	GSamplerManager = new SamplerManager;
@@ -130,6 +132,9 @@ bool Engine::Initialize
 
 void Engine::Run()
 {
+	// TEMP
+	MeshManager::Instance()->TestLoad();
+
 	while (false == pApplication_->ApplicationQuit()) {
 
 		pApplication_->WinPumpMessage();
@@ -344,6 +349,12 @@ void Engine::CleanUp()
 	{
 		delete GConstantManager;
 		GConstantManager = nullptr;
+	}
+
+	if (nullptr != GMeshManager)
+	{
+		delete GMeshManager;
+		GMeshManager = nullptr;
 	}
 
 	if (nullptr != GTimeManager)

@@ -1,3 +1,4 @@
+#include "MeshManager.h"
 #include "stdafx.h"
 #include "Texture.h"
 #include "RenderTarget.h"
@@ -341,6 +342,7 @@ IInputLayout* __stdcall Renderer::CreateLayout(IMesh* pMesh, IShader* pVertexSha
 //
 //	return nullptr;
 //}
+
 
 IMesh* __stdcall Renderer::CreateMesh(const MeshDesc& desc)
 {
