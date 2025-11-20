@@ -4,20 +4,9 @@ enum class E_ACTOR_TYPE
 {
 	NONE = 0,
 	NORMAL,
-	Light,
+	LIGHT,
 	CAMERA,
 	MAX,
-};
-
-struct ActorGroupContainer
-{
-	E_ACTOR_TYPE actorType_ = E_ACTOR_TYPE::NONE;
-
-	LINK_ITEM groupLink_;
-
-	LINK_ITEM* pActorHead_ = nullptr;
-
-	LINK_ITEM* pActorTail_ = nullptr;
 };
 
 
@@ -77,49 +66,22 @@ private:
 
 	void RegisterActor(Actor* pActor, E_ACTOR_TYPE actorType);
 
-	void RegisterCamera(Camera* pCamera);
-
-	void RegisterLight(Light* pLight);
-
 private:
 	void OnTick(double deltaTime);
 
-	void OnTickCameras(double deltaTime);
-
-	void OnTickLights(double deltaTime);
-
-	void OnTickActors(double deltaTime);
-
 	void OnRender();
 
-	void OnRenderCameras();
-
-	void OnRenderLights();
+	void OnActorTick(double deltaTime);
 
 	void OnRenderActors();
 	
 	void BlitCameraToBackBuffer();
 
 	void CleanUp(); 
+	
+	void CleanUpActors();
 
-	void CleanUpCamera();
-
-	void CleanUpLight();
-
-	void CleanUpActorGroup();
-
-	LINK_ITEM* pCameraHead_;
-
-	LINK_ITEM* pCameraTail_;
-
-	LINK_ITEM* pLightHead_;
-
-	LINK_ITEM* pLightTail_;
-
-	LINK_ITEM* pActorGroupHead_;
-
-	LINK_ITEM* pActorGroupTail_;
-
+	LinkedList* pActorList_;
 };
 
 

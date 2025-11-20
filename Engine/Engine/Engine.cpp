@@ -21,7 +21,7 @@ RasterizerManager* GRasterizerManager = nullptr;
 
 Camera* GMainCamera = nullptr;
 Camera* GCurrentCamera = nullptr;
-IBlendState* GBlendState = nullptr;
+//IBlendState* GBlendState = nullptr;
 ObjectPicker* GObjectPicker = nullptr;
 IDebugRenderer* GDebugRenderer = nullptr;
 
@@ -368,12 +368,6 @@ void Engine::CleanUp()
 	{
 		FreeLibrary(applicationModule_);
 		applicationModule_ = nullptr;
-	}
-
-	if (nullptr != GBlendState)
-	{
-		GBlendState->Release();
-		GBlendState = nullptr;
 	}
 
 	if (nullptr != GDebugRenderer)

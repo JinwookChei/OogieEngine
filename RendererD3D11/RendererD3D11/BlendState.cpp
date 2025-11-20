@@ -35,6 +35,10 @@ bool BlendState::Init(ID3D11BlendState* pBlendOpaque, ID3D11BlendState* pBlendAl
 		return false;
 	}
 
+	pBlendOpaque_ = pBlendOpaque;
+	pBlendAlpha_ = pBlendAlpha;
+	pBlendAdditive_ = pBlendAdditive;
+
 	ChangeBlendMode(E_BLEND_MODE_TYPE::OPAQUE_BLEND);
 	blendFactor_ = blendFactor_;
 

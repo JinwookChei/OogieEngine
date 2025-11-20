@@ -55,22 +55,21 @@ InputManager::InputManager()
 {
 }
 
-InputManager::~InputManager() {
-    if (nullptr == hashTable_) {
+InputManager::~InputManager() 
+{
+    if (nullptr == hashTable_) 
+    {
         return;
     }
 
     HashTableIterator endIter = hashTable_->end();
-    for (HashTableIterator iter = hashTable_->begin(); iter != endIter;) {
+    for (HashTableIterator iter = hashTable_->begin(); iter != endIter;)
+    {
         InputState* pCur = (InputState*)*iter;
-        
-        
-        //iter = hashTable_->erase(iter);
-        hashTable_->Delete();
-
+        iter = hashTable_->Delete(iter);
         delete pCur;
     }
-    hashTable_->Clean();
+    
     delete hashTable_;
     hashTable_ = nullptr;
 }
@@ -93,7 +92,8 @@ bool InputManager::IsAnyKeyPress() const
 bool InputManager::IsDown(int key) 
 {
     InputState* pFind = nullptr;
-    if (0 == hashTable_->Select((void**)&pFind, 1, &key, 4))
+    unsigned int searchedCount;
+    if (false == hashTable_->Search((void**)&pFind, &searchedCount, 1, &key, 4))
     {
         return false;
     }
@@ -104,7 +104,8 @@ bool InputManager::IsDown(int key)
 bool InputManager::IsPress(int key) 
 {
     InputState* pFind = nullptr;
-    if (0 == hashTable_->Select((void**)&pFind, 1, &key, 4))
+    unsigned int searchedCount;
+    if (false == hashTable_->Search((void**)&pFind, &searchedCount, 1, &key, 4))
     {
         return false;
     }
@@ -115,7 +116,8 @@ bool InputManager::IsPress(int key)
 unsigned long long InputManager::PressTime(int key)
 {
     InputState* pFind = nullptr;
-    if (0 == hashTable_->Select((void**)&pFind, 1, &key, 4))
+    unsigned int searchedCount;
+    if (false == hashTable_->Search((void**)&pFind, &searchedCount, 1, &key, 4))
     {
         return 0;
     }
@@ -126,7 +128,8 @@ unsigned long long InputManager::PressTime(int key)
 bool InputManager::IsUp(int key) 
 {
     InputState* pFind = nullptr;
-    if (0 == hashTable_->Select((void**)&pFind, 1, &key, 4))
+    unsigned int searchedCount;
+    if (false == hashTable_->Search((void**)&pFind, &searchedCount, 1, &key, 4))
     {
         return false;
     }
@@ -137,7 +140,8 @@ bool InputManager::IsUp(int key)
 bool InputManager::IsFree(int key)
 {
     InputState* pFind = nullptr;
-    if (0 == hashTable_->Select((void**)&pFind, 1, &key, 4))
+    unsigned int searchedCount;
+    if (false == hashTable_->Search((void**)&pFind, &searchedCount, 1, &key, 4))
     {
         return false;
     }
@@ -148,7 +152,8 @@ bool InputManager::IsFree(int key)
 unsigned long long InputManager::UpTime(int key)
 {
     InputState* pFind = nullptr;
-    if (0 == hashTable_->Select((void**)&pFind, 1, &key, 4))
+    unsigned int searchedCount;
+    if (false == hashTable_->Search((void**)&pFind, &searchedCount, 1, &key, 4))
     {
         return 0;
     }
@@ -173,9 +178,7 @@ const Float2& InputManager::GetDeltaMouseMove() const
 
 bool InputManager::Initialize()
 {
-    hashTable_ = new HashTable;
-
-    hashTable_->Initialize(8, 4);
+    hashTable_ = new HashTable(32, sizeof(int));
 
     InputState* newState = new InputState(VK_LBUTTON);
     hashTable_->Insert(newState, &newState->key_, 4);

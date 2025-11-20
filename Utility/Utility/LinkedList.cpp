@@ -87,7 +87,7 @@ LinkedList::LinkedList()
 
 LinkedList::~LinkedList()
 {
-	Clean();
+	//Clean();
 }
 
 void LinkedList::PushFront(LINK_NODE* pNode)
@@ -200,4 +200,14 @@ void LinkedList::Clean()
 	{
 		Remove(pHead_);
 	}
+}
+
+UTILITY_API LINK_NODE* LinkedList::GetHead() const
+{
+	return pHead_;
+}
+
+UTILITY_API LINK_NODE* LinkedList::GetTail() const
+{
+	return pTail_;
 }

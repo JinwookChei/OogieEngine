@@ -45,10 +45,14 @@ public:
 	UTILITY_API void Remove(LINK_NODE* pNode);
 
 	UTILITY_API void Clean();
+	
+	UTILITY_API LINK_NODE* GetHead() const;
+
+	UTILITY_API LINK_NODE* GetTail() const;
 
 private:
 	unsigned int count_;
-
+	
 	LINK_NODE* pHead_;
 
 	LINK_NODE* pTail_;

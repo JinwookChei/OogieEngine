@@ -136,7 +136,7 @@ public:
 
 	UTILITY_API void* Insert(void* pData, const void* pKeyData, unsigned int keySize);
 
-	UTILITY_API bool Search(void** ppOutSearchedList, int* pOutSearchedCount, unsigned int countToSearch, const void* pKeyData, unsigned int keySize);
+	UTILITY_API bool Search(void** ppOutSearchedList, unsigned int* pOutSearchedCount, unsigned int countToSearch, const void* pKeyData, unsigned int keySize);
 
 	UTILITY_API void Delete(const void* pKeyData, unsigned int keySize);
 

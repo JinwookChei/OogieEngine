@@ -31,6 +31,7 @@
 
 // Interface
 #include <Application/IApplication.h>
+#include <VertexType/VertexType.h>
 #include <Renderer/IRenderer.h>
 #include <ImGuiBindObject/IImGuiBindObject.h>
 #include <ImGuiModule/IImGuiModule.h>
