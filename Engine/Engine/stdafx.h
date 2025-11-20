@@ -57,6 +57,7 @@
 #include "InputManager.h"
 #include "TimeManager.h"
 #include "MeshManager.h"
+#include "MaterialManager.h"
 #include "ConstantManager.h"
 #include "SamplerManager.h"
 #include "BlendStateManager.h"
@@ -74,6 +75,7 @@ extern InputManager* GInputManager;
 extern TimeManager* GTimeManager;
 
 extern MeshManager* GMeshManager;
+extern MaterialManager* GMaterialManager;
 extern ConstantManager* GConstantManager;
 extern SamplerManager* GSamplerManager;
 extern BlendStateManager* GBlendStateManager;

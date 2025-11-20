@@ -64,12 +64,12 @@ void RenderComponent::Create(E_MESH_TYPE meshType)
 	}
 	pMesh_->AddRef();
 
-	MaterialDesc matDesc;
-	matDesc.VS = L"ObjectVS.cso";
-	matDesc.PS = L"DeferredObjectPS.cso";
-	matDesc.shineness = 0.7f;
-	matDesc.specularColor = { 0.7f, 0.7f, 0.7f };
-	pMaterial_ = GRenderer->CreateMaterial(matDesc);
+	if (!MaterialManager::Instance()->GetMaterial(&pMaterial_, 1))
+	{
+		DEBUG_BREAK();
+		return;
+	}
+	pMaterial_->AddRef();
 
 	const wchar_t* texPath = L"../Resource/Texture/Bricks_4K/Bricks_Color.png";
 	pTextureColor_ = GRenderer->LoadTextureFromDirectXTex(texPath, false);

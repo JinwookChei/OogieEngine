@@ -3,7 +3,7 @@
 #include "GeometryGenerator.h"
 
 MeshManager::MeshManager()
-	: meshTable_(8,8)
+	: meshTable_(16,8)
 {
 }
 
