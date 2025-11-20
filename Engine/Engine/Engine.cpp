@@ -16,6 +16,7 @@ TimeManager* GTimeManager = nullptr;
 
 MeshManager* GMeshManager = nullptr;
 MaterialManager* GMaterialManager = nullptr;
+TextureManager* GTextureManager = nullptr;
 ConstantManager* GConstantManager = nullptr;
 SamplerManager* GSamplerManager = nullptr;
 BlendStateManager* GBlendStateManager = nullptr;
@@ -108,6 +109,8 @@ bool Engine::Initialize
 
 	GMeshManager = new MeshManager;
 
+	GTextureManager = new TextureManager;
+
 	GMaterialManager = new MaterialManager;
 
 	GConstantManager = new ConstantManager;
@@ -138,6 +141,7 @@ void Engine::Run()
 	// TEMP
 	MeshManager::Instance()->TestLoad();
 	MaterialManager::Instance()->TestLoad();
+	TextureManager::Instance()->TestLoad();
 
 	while (false == pApplication_->ApplicationQuit()) {
 
@@ -353,6 +357,12 @@ void Engine::CleanUp()
 	{
 		delete GConstantManager;
 		GConstantManager = nullptr;
+	}
+
+	if (nullptr != GTextureManager)
+	{
+		delete GTextureManager;
+		GTextureManager = nullptr;
 	}
 
 	if (nullptr != GMaterialManager)

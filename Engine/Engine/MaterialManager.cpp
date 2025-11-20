@@ -39,9 +39,9 @@ IMaterial* MaterialManager::CreateMaterial(const MaterialDesc& desc, unsigned lo
 bool MaterialManager::GetMaterial(IMaterial** ppOutMaterial, unsigned long long materialTag)
 {
 	unsigned int searchedCount = 0;
-	void* pTmpMesh = nullptr;
+	void* pTmpMaterial = nullptr;
 
-	if (false == materialTable_.Search((void**)&pTmpMesh, &searchedCount, 8, &materialTag, 8))
+	if (false == materialTable_.Search((void**)&pTmpMaterial, &searchedCount, 8, &materialTag, 8))
 	{
 		Assert("Material Search is Fail!!");
 		return false;
@@ -53,7 +53,7 @@ bool MaterialManager::GetMaterial(IMaterial** ppOutMaterial, unsigned long long 
 		return false;
 	}
 
-	*ppOutMaterial = static_cast<IMaterial*>(pTmpMesh);
+	*ppOutMaterial = static_cast<IMaterial*>(pTmpMaterial);
 	return true;
 }
 

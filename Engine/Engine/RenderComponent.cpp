@@ -71,10 +71,20 @@ void RenderComponent::Create(E_MESH_TYPE meshType)
 	}
 	pMaterial_->AddRef();
 
-	const wchar_t* texPath = L"../Resource/Texture/Bricks_4K/Bricks_Color.png";
-	pTextureColor_ = GRenderer->LoadTextureFromDirectXTex(texPath, false);
-	texPath = L"../Resource/Texture/Bricks_4K/Bricks_NormalDX.png";
-	pTextureNormal_ = GRenderer->LoadTextureFromDirectXTex(texPath, true);
+
+	if (!TextureManager::Instance()->GetTexture(&pTextureColor_, 1))
+	{
+		DEBUG_BREAK();
+		return;
+	}
+	pTextureColor_->AddRef();
+
+	if (!TextureManager::Instance()->GetTexture(&pTextureNormal_, 2))
+	{
+		DEBUG_BREAK();
+		return;
+	}
+	pTextureNormal_->AddRef();
 
 	pInputLayout_ = GRenderer->CreateLayout(pMesh_, pMaterial_->GetVertexShader());
 
