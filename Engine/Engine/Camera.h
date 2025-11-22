@@ -55,6 +55,8 @@ private:
 
 	bool InitLightBuffer();
 
+	bool InitDebugBuffer();
+
 	void InitScreenRect();
 
 	virtual ENGINE_API void CameraTransformUpdate();
@@ -64,6 +66,8 @@ private:
 public:
 	// IImguiBindCamera Area
 	ENGINE_API IRenderTarget* __stdcall GetGBufferTargetForImGui() const override;
+
+	ENGINE_API IRenderTarget* __stdcall GetDebugBufferTargetForImGui() const override;
 
 protected:
 	float cameraSensitivity_;
@@ -77,19 +81,22 @@ protected:
 	float far_;
 
 private:
+	friend class Level;
 	// Geometry Pass
 	IRenderTarget* pGBufferTarget_;
-
+	
 	// Light Pass
 	IRenderTarget* pLightBufferTarget_;
 	IMaterial* pLightBufferMaterial_;
+
+	// Debug Pass
+	IRenderTarget* pDebugBufferTarget_;
+	IMaterial* pDebugBufferMaterial_;
 
 	// Blit to Screen
 	IMesh* pScreenVertex_;
 	IMaterial* pScreenMaterial_;
 	IInputLayout* pScreenInputLayout_;
-	//IRasterizer* pScreenRasterizer_;
-	//E_FILLMODE_TYPE fillmodeType_;
 
 	Float2 screenOffset_;
 	Float2 screenScale_;

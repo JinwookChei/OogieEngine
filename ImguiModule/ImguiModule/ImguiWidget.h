@@ -22,7 +22,7 @@ public:
 
 	void OffActive();
 
-	LINK_ITEM* MangerLink();
+	//LINK_ITEM* MangerLink();
 
 private:
 	virtual void CleanUp();
@@ -32,5 +32,5 @@ private:
 
 	bool isActive_;
 
-	LINK_ITEM managerLink_;
+	//LINK_ITEM managerLink_;
 };

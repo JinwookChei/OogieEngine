@@ -1,7 +1,7 @@
-Texture2D renderTextureAlbedo : register(t0);
-Texture2D renderTextureNormal : register(t1);
-Texture2D renderTextureMaterial : register(t2);
-Texture2D renderTextureDepth : register(t3);
+//Texture2D renderTextureAlbedo : register(t0);
+//Texture2D renderTextureNormal : register(t1);
+//Texture2D renderTextureMaterial : register(t2);
+//Texture2D renderTextureDepth : register(t3);
 Texture2D renderTextureLight : register(t4);
 SamplerState samplers : register(s0);
 
@@ -55,13 +55,13 @@ struct PS_ScreenRect
 
 float4 main(PS_ScreenRect input) : SV_TARGET
 {
-    float4 albedo = renderTextureAlbedo.Sample(samplers, input.uv);
+    //float4 albedo = renderTextureAlbedo.Sample(samplers, input.uv);
     float4 light = renderTextureLight.Sample(samplers, input.uv);
     
-    clip(light.w - 0.0001f);
+    //clip(light.w - 0.0001f);    
     
-    return albedo * float4(0.1f, 0.1f, 0.1f, 1.0f) + light;
-    
+    //return albedo * float4(0.1f, 0.1f, 0.1f, 1.0f) + light;
+    return light;
 }
 
 // Depth Shading//float4 main(PS_ScreenRect input) : SV_TARGET

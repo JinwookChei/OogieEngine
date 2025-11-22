@@ -25,4 +25,5 @@ private:
 	ImGuiTextureWidget* pNormalWidget_;
 	ImGuiTextureWidget* pSpecularWidget_;
 	ImGuiTextureWidget* pDepthWidget_;
+	ImGuiTextureWidget* pDebugWidget_;
 };

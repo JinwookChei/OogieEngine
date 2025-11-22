@@ -274,5 +274,8 @@
     <FxCompile Include="DeferredLightPS.hlsl">
       <Filter>Resource Files\Shader\Deferred</Filter>
     </FxCompile>
+    <FxCompile Include="DeferredDebugPS.hlsl">
+      <Filter>Resource Files\Shader\Deferred</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

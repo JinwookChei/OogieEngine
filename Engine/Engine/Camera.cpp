@@ -9,11 +9,14 @@ Camera::Camera()
 	far_(100.0f),
 	cameraSensitivity_(10.0f),
 	cameraSpeed_(2.0f),
+	pGBufferTarget_(nullptr),
 	pLightBufferTarget_(nullptr),
+	pLightBufferMaterial_(nullptr),
+	pDebugBufferTarget_(nullptr),
+	pDebugBufferMaterial_(nullptr),
 	pScreenVertex_(nullptr),
 	pScreenMaterial_(nullptr),
 	pScreenInputLayout_(nullptr),
-	//pScreenRasterizer_(nullptr),
 	screenOffset_({ 0.0f, 0.0f }),
 	screenScale_({ 1.0f, 1.0f })
 {
@@ -29,6 +32,8 @@ Camera::Camera()
 	InitGBuffer();
 
 	InitLightBuffer();
+
+	InitDebugBuffer();
 
 	InitScreenRect();
 }
@@ -74,7 +79,6 @@ void Camera::LightPassBegin()
 
 	pScreenVertex_->Setting();
 	pScreenInputLayout_->Setting();
-	//pScreenRasterizer_->Setting();
 	pLightBufferMaterial_->Setting();
 }
 
@@ -85,7 +89,7 @@ void Camera::RenderLight()
 
 void Camera::LightPassEnd()
 {
-	//pGBufferTarget_->ClearRenderTextureForPS(0);
+	pGBufferTarget_->ClearRenderTextureForPS(0);
 
 	pLightBufferTarget_->EndRenderPass();
 }
@@ -103,11 +107,10 @@ void Camera::BlitToBackBuffer(const Float2& offset, const Float2& scale)
 	pScreenVertex_->Setting();
 	pScreenMaterial_->Setting();
 	pScreenInputLayout_->Setting();
-	//pScreenRasterizer_->Setting();
 	pScreenVertex_->Draw();
 
 	pLightBufferTarget_->ClearRenderTextureForPS(4);
-	pGBufferTarget_->ClearRenderTextureForPS(0);
+	//pGBufferTarget_->ClearRenderTextureForPS(0);
 }
 
 const Float4x4& Camera::View() const
@@ -224,10 +227,33 @@ bool Camera::InitLightBuffer()
 	MaterialDesc matDesc;
 	matDesc.VS = L"ScreenMergeVS.cso";
 	matDesc.PS = L"DeferredLightPS.cso";
-	//matDesc.samplerLinear = true;
-	//matDesc.samplerClamp = false;
 	pLightBufferMaterial_ = GRenderer->CreateMaterial(matDesc);
 	if (nullptr == pLightBufferMaterial_)
+	{
+		return false;
+	}
+
+	return true;
+}
+
+bool Camera::InitDebugBuffer()
+{
+	RenderTargetDesc debugBufferDesc(E_RENDER_TECHNIQUE_TYPE::Forward);
+	debugBufferDesc.size_ = { DEFAULT_SCREEN_WIDTH , DEFAULT_SCREEN_HEIGHT };
+	debugBufferDesc.clearColor_ = { 0.0f, 0.0f, 0.0f, 0.0f };
+	debugBufferDesc.forwardDesc_.useDepthStencil_ = true;
+	pDebugBufferTarget_ = GRenderer->CreateRenderTarget(debugBufferDesc);
+	if (nullptr == pDebugBufferTarget_)
+	{
+		DEBUG_BREAK();
+		return false;
+	}
+
+	MaterialDesc matDesc;
+	matDesc.VS = L"ScreenMergeVS.cso";
+	matDesc.PS = L"DeferredDebugPS.cso";
+	pDebugBufferMaterial_ = GRenderer->CreateMaterial(matDesc);
+	if (nullptr == pDebugBufferMaterial_)
 	{
 		return false;
 	}
@@ -257,14 +283,9 @@ void Camera::InitScreenRect()
 	MaterialDesc matDesc;
 	matDesc.VS = L"ScreenMergeVS.cso";
 	matDesc.PS = L"ScreenMergePS.cso";
-	//matDesc.samplerLinear = true;
-	//matDesc.samplerClamp = false;
 	pScreenMaterial_ = GRenderer->CreateMaterial(matDesc);
 
 	pScreenInputLayout_ = GRenderer->CreateLayout(pScreenVertex_, pScreenMaterial_->GetVertexShader());
-
-	//pScreenRasterizer_ = GRenderer->CreateRasterizer(true, false);
-	//pScreenRasterizer_->SetFillMode(E_FILLMODE_TYPE::SOLID);
 }
 
 void Camera::CameraTransformUpdate()
@@ -284,11 +305,16 @@ void Camera::CameraTransformUpdate()
 
 void Camera::CleanUp()
 {
-	//if (nullptr != pScreenRasterizer_)
-	//{
-	//	pScreenRasterizer_->Release();
-	//	pScreenRasterizer_ = nullptr;
-	//}
+	if (nullptr != pDebugBufferMaterial_)
+	{
+		pDebugBufferMaterial_->Release();
+		pDebugBufferMaterial_ = nullptr;
+	}
+	if (nullptr != pDebugBufferTarget_)
+	{
+		pDebugBufferTarget_->Release();
+		pDebugBufferTarget_ = nullptr;
+	}
 	if (nullptr != pScreenInputLayout_)
 	{
 		pScreenInputLayout_->Release();
@@ -327,5 +353,10 @@ void Camera::CleanUp()
 IRenderTarget* __stdcall Camera::GetGBufferTargetForImGui() const
 {
 	return pGBufferTarget_;
+}
+
+IRenderTarget* __stdcall Camera::GetDebugBufferTargetForImGui() const
+{
+	return pDebugBufferTarget_;
 }
 

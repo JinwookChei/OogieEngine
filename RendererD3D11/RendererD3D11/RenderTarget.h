@@ -43,14 +43,16 @@ private:
 	void CleanUp();
 
 	ULONG refCount_;
+	D3D11_VIEWPORT viewport_;
 
 	Color clearColor_;
-
 	ForwardRenderingDesc desc_;
 
 	Texture* pRenderTexture_;
-
 	Texture* pDepthTexture_;
 
-	D3D11_VIEWPORT viewport_;
+	ID3D11RenderTargetView* pRTV_;
+	ID3D11ShaderResourceView* pSRVs_[2];
+	ID3D11DepthStencilView* pDSV_;
+
 };

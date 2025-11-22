@@ -25,11 +25,9 @@ void ObjectPicker::Tick(double deltaTime)
 		Float3 st = { camPos.X, camPos.Y, camPos.Z };
 		Float4 camDir = GMainCamera->GetWorldTransform().ForwardVector();
 		Float3 dir = { camDir.X, camDir.Y, camDir.Z };
-		GDebugRenderer->DrawRay(st, dir, 20.0f, {1.0f, 0.0f, 0.0f, 1.0f});
-
+		GDebugRenderer->DrawRay(st, dir, 100.0f, {1.0f, 0.0f, 0.0f, 1.0f});
 
 		pickedMousePos_ = InputManager::Instance()->GetCurrentMousePosition();
-		
 		RayCastFromScreen(pickedMousePos_);
 	}
 }

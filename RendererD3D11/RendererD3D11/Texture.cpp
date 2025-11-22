@@ -122,7 +122,6 @@ bool Texture::InitTexture(ID3D11Texture2D* pTexture)
 		return true;
 	}
 
-	//pTexture_->GetDesc(&desc_);
 	D3D11_TEXTURE2D_DESC texDesc;
 	pTexture_->GetDesc(&texDesc);
 

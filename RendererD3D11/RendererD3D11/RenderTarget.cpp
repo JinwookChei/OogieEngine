@@ -5,12 +5,15 @@
 IRenderTarget* GCurrentSetRenderTarget = nullptr;
 
 RenderTarget::RenderTarget()
-	: refCount_(1),
-	clearColor_({ 0.2f, 0.4f, 0.6f, 1.0f }),
-	desc_(),
-	pRenderTexture_(nullptr),
-	pDepthTexture_(nullptr),
-	viewport_()
+	: refCount_(1)
+	, viewport_()
+	, clearColor_({ 0.2f, 0.4f, 0.6f, 1.0f })
+	, desc_()
+	, pRenderTexture_(nullptr)
+	, pDepthTexture_(nullptr)
+	, pRTV_(nullptr)
+	, pSRVs_()
+	, pDSV_(nullptr)
 {
 }
 
@@ -31,6 +34,22 @@ bool RenderTarget::Init(const RenderTargetDesc& desc, Texture* pRenderTexture, T
 		return false;
 	}
 
+	if (!desc_.useDepthStencil_)
+	{
+		pRTV_ = pRenderTexture->RenderTargetView();
+		pDSV_ = nullptr;
+		pSRVs_[0] = pRenderTexture->ShaderResourceView();
+		pSRVs_[1] = nullptr;
+	}
+	else
+	{
+		pRTV_ = pRenderTexture->RenderTargetView();
+		pDSV_ = pDepthTexture_->DepthStencilView();
+		pSRVs_[0] = pRenderTexture->ShaderResourceView();
+		pSRVs_[1] = pDepthTexture_->ShaderResourceView();
+	}
+
+	
 	return true;
 }
 
@@ -61,13 +80,12 @@ void RenderTarget::Clear()
 
 	if (nullptr == pRenderTargetView)
 	{
-		DEBUG_BREAK();
-		return;
+		DEBUG_BREAK(); 
 	}
 
 	GRenderer->DeviceContext()->ClearRenderTargetView(pRenderTargetView, clearColor_.Arr1D);
 
-	if (nullptr == pDepthTexture_)
+	if (!desc_.useDepthStencil_)
 	{
 		// DepthStencil View를 사용하지 않는 경우. DepthStencilView를 Clear 하지 않음.
 		return;
@@ -115,7 +133,7 @@ RenderTargetDesc __stdcall RenderTarget::GetDesc() const
 	desc.clearColor_ = clearColor_;
 	desc.forwardDesc_ = desc_;
 	desc.size_ = pRenderTexture_->Size();
-	
+
 	return desc;
 }
 
@@ -132,17 +150,27 @@ void __stdcall RenderTarget::SetClearColor(const Color& color)
 
 void __stdcall RenderTarget::BindRenderTextureForPS(uint32_t slot)
 {
-	pRenderTexture_->BindRenderTextureForPS(slot);
+	if(!desc_.useDepthStencil_)
+	{
+		pRenderTexture_->BindRenderTextureForPS(slot);
+	}
+	else
+	{
+		GRenderer->DeviceContext()->PSSetShaderResources(slot, 2, pSRVs_);
+	}
 }
 
 void __stdcall RenderTarget::ClearRenderTextureForPS(uint32_t slot)
 {
-	pRenderTexture_->ClearRenderTextureForPS(slot);
-}
-
-void* __stdcall RenderTarget::GetShaderResourceView(const E_RENDER_TEXTURE_TYPE& texureType)
-{
-	return nullptr;
+	if (!desc_.useDepthStencil_)
+	{
+		pRenderTexture_->ClearRenderTextureForPS(slot);
+	}
+	else
+	{
+		ID3D11ShaderResourceView* pNullSrvs[2] = { nullptr, nullptr};
+		GRenderer->DeviceContext()->PSSetShaderResources(slot, 2, pNullSrvs);
+	}
 }
 
 void __stdcall RenderTarget::EndRenderPass()
@@ -152,6 +180,12 @@ void __stdcall RenderTarget::EndRenderPass()
 	ID3D11RenderTargetView* pRTV = nullptr;
 	GRenderer->DeviceContext()->OMSetRenderTargets(1, &pRTV, nullptr);
 }
+
+void* __stdcall RenderTarget::GetShaderResourceView(const E_RENDER_TEXTURE_TYPE& texureType)
+{
+	return pSRVs_[0];
+}
+
 
 bool RenderTarget::SetTexture(Texture* pRenderTexture, Texture* pDepthTexture)
 {
@@ -164,6 +198,17 @@ bool RenderTarget::SetTexture(Texture* pRenderTexture, Texture* pDepthTexture)
 
 	pRenderTexture_ = pRenderTexture;
 
+	if(desc_.useDepthStencil_)
+	{
+		if (nullptr == pDepthTexture)
+		{
+			DEBUG_BREAK();
+			return false;
+		}
+		pDepthTexture_ = pDepthTexture;
+	}
+
+
 	Float2 textureSize = pRenderTexture_->Size();
 	viewport_.TopLeftX = 0.0f;
 	viewport_.TopLeftY = 0.0f;
@@ -171,11 +216,6 @@ bool RenderTarget::SetTexture(Texture* pRenderTexture, Texture* pDepthTexture)
 	viewport_.Height = textureSize.Y;
 	viewport_.MinDepth = 0.0f;
 	viewport_.MaxDepth = 1.0f;
-
-	if (nullptr != pDepthTexture)
-	{
-		pDepthTexture_ = pDepthTexture;
-	}
 
 	return true;
 }
@@ -193,5 +233,5 @@ void RenderTarget::CleanUp()
 		pDepthTexture_->Release();
 		pDepthTexture_ = nullptr;
 	}
-
+	
 }

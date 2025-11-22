@@ -5,9 +5,9 @@ ImGuiWidget::ImGuiWidget()
 	:refCount_(1),
 	isActive_(true)
 {
-	managerLink_.prev_ = nullptr;
-	managerLink_.next_ = nullptr;
-	managerLink_.item_ = this;
+	//managerLink_.prev_ = nullptr;
+	//managerLink_.next_ = nullptr;
+	//managerLink_.item_ = this;
 }
 
 ImGuiWidget::~ImGuiWidget()
@@ -52,10 +52,10 @@ void ImGuiWidget::OffActive()
 }
 
 
-LINK_ITEM* ImGuiWidget::MangerLink()
-{
-	return &managerLink_;
-}
+//LINK_ITEM* ImGuiWidget::MangerLink()
+//{
+//	return &managerLink_;
+//}
 
 void ImGuiWidget::CleanUp()
 {

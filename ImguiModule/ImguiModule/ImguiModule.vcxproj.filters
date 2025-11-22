@@ -93,6 +93,9 @@
     <ClInclude Include="..\..\ThirdParty\ImGui\imstb_truetype.h">
       <Filter>Source Files\ImGui_Impl</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Interface\VertexType\VertexType.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">

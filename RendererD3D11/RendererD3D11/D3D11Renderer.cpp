@@ -419,7 +419,7 @@ IMesh* __stdcall Renderer::CreateMesh(const MeshDesc& desc)
 			memcpy(copyIndices, desc.indices, dataSize);
 		}
 
-		
+
 		pNewMesh = new Mesh;
 		if (false == pNewMesh->Init
 		(
@@ -669,7 +669,20 @@ IRenderTarget* __stdcall Renderer::CreateForwardRenderTarget(const RenderTargetD
 	Texture* pDepthTexture = nullptr;
 	RenderTarget* pRenderTarget = nullptr;
 
-	const ForwardRenderingDesc& forwardDesc = desc.forwardDesc_;
+
+	ForwardRenderingDesc forwardDesc = desc.forwardDesc_;
+	if (true == forwardDesc.useDepthStencil_)
+	{
+		if (forwardDesc.fmtDepth_ == DXGI_FORMAT::DXGI_FORMAT_D24_UNORM_S8_UINT)
+		{
+			forwardDesc.fmtDepth_ = DXGI_FORMAT::DXGI_FORMAT_R24G8_TYPELESS;
+		}
+		else if (forwardDesc.fmtDepth_ == DXGI_FORMAT::DXGI_FORMAT_D32_FLOAT)
+		{
+			forwardDesc.fmtDepth_ = DXGI_FORMAT::DXGI_FORMAT_R32_TYPELESS;
+		}
+	}
+	
 	do
 	{
 		pRenderTexture = static_cast<Texture*>(CreateTexture(desc.size_, (DXGI_FORMAT)forwardDesc.fmtColor_, D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET | D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE));
@@ -681,7 +694,7 @@ IRenderTarget* __stdcall Renderer::CreateForwardRenderTarget(const RenderTargetD
 
 		if (true == forwardDesc.useDepthStencil_)
 		{
-			pDepthTexture = static_cast<Texture*>(CreateTexture(pRenderTexture->Size(), (DXGI_FORMAT)forwardDesc.fmtDepth_, D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL));
+			pDepthTexture = static_cast<Texture*>(CreateTexture(desc.size_, (DXGI_FORMAT)forwardDesc.fmtDepth_, D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL | D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE));
 		}
 
 		pRenderTarget = new RenderTarget;
@@ -1032,7 +1045,7 @@ IBlendState* Renderer::CreateBlendState()
 		//blendDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_BLEND_FACTOR;
 		//blendDesc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_BLEND_FACTOR; // 1 - BlendFactor  // ·»´õÅ¸ÄÏ
 
-		D3D11_BLEND_DESC blendDesc = {0};
+		D3D11_BLEND_DESC blendDesc = { 0 };
 		blendDesc.AlphaToCoverageEnable = FALSE;
 		blendDesc.IndependentBlendEnable = FALSE;
 		blendDesc.RenderTarget[0].BlendEnable = FALSE;
@@ -1120,7 +1133,7 @@ ITexture* __stdcall Renderer::LoadTextureFromDirectXTex(const wchar_t* fileName,
 	ID3D11Texture2D* pTexture = nullptr;
 	ID3D11ShaderResourceView* pSRV = nullptr;
 
-	do 
+	do
 	{
 		DirectX::TexMetadata metadata;
 		DirectX::ScratchImage scratchImg;
@@ -1135,7 +1148,7 @@ ITexture* __stdcall Renderer::LoadTextureFromDirectXTex(const wchar_t* fileName,
 			}
 		}
 		const DirectX::Image* pImg = scratchImg.GetImage(0, 0, 0);
-		
+
 		DirectX::ScratchImage convImg;
 		if (isNormalMap)
 		{
@@ -1404,19 +1417,20 @@ bool Renderer::CreateBackBuffer(UINT width, UINT height, const Color& clearColor
 			break;
 		}
 
-		pDepthTexture = static_cast<Texture*>(CreateTexture(pRenderTexture->Size(), DXGI_FORMAT::DXGI_FORMAT_D24_UNORM_S8_UINT, D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL));
-		if (nullptr == pDepthTexture)
-		{
-			DEBUG_BREAK();
-			break;
-		}
+		//pDepthTexture = static_cast<Texture*>(CreateTexture(pRenderTexture->Size(), DXGI_FORMAT::DXGI_FORMAT_D24_UNORM_S8_UINT, D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL));
+		//if (nullptr == pDepthTexture)
+		//{
+		//	DEBUG_BREAK();
+		//	break;
+		//}
 
 		pBackBuffer_ = new RenderTarget;
 		RenderTargetDesc desc{ E_RENDER_TECHNIQUE_TYPE::Forward };
 		desc.size_ = { (float)width, (float)height };
 		desc.clearColor_ = clearColor;
+		desc.forwardDesc_.useDepthStencil_ = false;
 
-		bool ret = pBackBuffer_->Init(desc, pRenderTexture, pDepthTexture);
+		bool ret = pBackBuffer_->Init(desc, pRenderTexture, nullptr);
 		if (false == ret)
 		{
 			DEBUG_BREAK();

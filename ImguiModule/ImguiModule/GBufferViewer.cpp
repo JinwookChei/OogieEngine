@@ -8,7 +8,8 @@ GBufferViewer::GBufferViewer()
 	pAlbedoWidget_(nullptr),
 	pNormalWidget_(nullptr),
 	pSpecularWidget_(nullptr),
-	pDepthWidget_(nullptr)
+	pDepthWidget_(nullptr),
+	pDebugWidget_(nullptr)
 {
 }
 
@@ -38,6 +39,7 @@ void GBufferViewer::Render()
 	pNormalWidget_->Render();
 	pSpecularWidget_->Render();
 	pDepthWidget_->Render();
+	pDebugWidget_->Render();
 }
 
 void GBufferViewer::BindCamera(IImGuiBindCamera* pCamera)
@@ -50,18 +52,28 @@ void GBufferViewer::BindCamera(IImGuiBindCamera* pCamera)
 
 	pBoundCamera_ = pCamera;
 	IRenderTarget* pGBufferTarget = pBoundCamera_->GetGBufferTargetForImGui();
-	ImTextureID* pAlbedoTexture = static_cast<ImTextureID*>(pGBufferTarget->GetShaderResourceView(ERenderTextureType::Albedo));
+	IRenderTarget* pDebugTarget = pBoundCamera_->GetDebugBufferTargetForImGui();
+	
+	ImTextureID* pAlbedoTexture = static_cast<ImTextureID*>(pGBufferTarget->GetShaderResourceView(E_RENDER_TEXTURE_TYPE::Albedo));
 	pAlbedoWidget_ = new ImGuiTextureWidget(pAlbedoTexture, "Albedo");
-	ImTextureID* pNormalTexture = static_cast<ImTextureID*>(pGBufferTarget->GetShaderResourceView(ERenderTextureType::Normal));
+	ImTextureID* pNormalTexture = static_cast<ImTextureID*>(pGBufferTarget->GetShaderResourceView(E_RENDER_TEXTURE_TYPE::Normal));
 	pNormalWidget_ = new ImGuiTextureWidget(pNormalTexture, "Normal");
-	ImTextureID* pSpecularTexture = static_cast<ImTextureID*>(pGBufferTarget->GetShaderResourceView(ERenderTextureType::Specular));
+	ImTextureID* pSpecularTexture = static_cast<ImTextureID*>(pGBufferTarget->GetShaderResourceView(E_RENDER_TEXTURE_TYPE::Specular));
 	pSpecularWidget_ = new ImGuiTextureWidget(pSpecularTexture, "Specular");
-	ImTextureID* pDepthTexture = static_cast<ImTextureID*>(pGBufferTarget->GetShaderResourceView(ERenderTextureType::Depth));
+	ImTextureID* pDepthTexture = static_cast<ImTextureID*>(pGBufferTarget->GetShaderResourceView(E_RENDER_TEXTURE_TYPE::Depth));
 	pDepthWidget_ = new ImGuiTextureWidget(pDepthTexture, "Depth");
+
+	ImTextureID* pDebugTexture = static_cast<ImTextureID*>(pDebugTarget->GetShaderResourceView(E_RENDER_TEXTURE_TYPE::Albedo));
+	pDebugWidget_ = new ImGuiTextureWidget(pDebugTexture, "Debug");
 }
 
 void GBufferViewer::CleanUp()
 {
+	if (nullptr != pDebugWidget_)
+	{
+		pDebugWidget_->Release();
+		pDebugWidget_ = nullptr;
+	}
 	if (nullptr != pAlbedoWidget_)
 	{
 		pAlbedoWidget_->Release();

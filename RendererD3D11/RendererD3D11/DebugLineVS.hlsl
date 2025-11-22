@@ -18,10 +18,10 @@ struct VSOutput
 
 VSOutput main(VSInput input)
 {
-    VSOutput o;
+    VSOutput output;
             
     float4 viewPos = mul(float4(input.pos, 1.0f), view);
-    o.pos = mul(viewPos, Proj);
-    o.color = input.color;
-    return o;
+    output.pos = mul(viewPos, Proj);
+    output.color = input.color;
+    return output;
 }

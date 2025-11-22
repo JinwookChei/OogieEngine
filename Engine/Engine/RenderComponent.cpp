@@ -34,7 +34,6 @@ void RenderComponent::Render()
 	pTextureColor_->Setting(0);
 	pTextureNormal_->Setting(1);
 	pInputLayout_->Setting();
-	//pRasterizer_->Setting();
 	pMesh_->Draw();
 }
 

@@ -74,6 +74,8 @@ private:
 	void OnActorTick(double deltaTime);
 
 	void OnRenderActors();
+
+	void OnLightPass();
 	
 	void BlitCameraToBackBuffer();
 

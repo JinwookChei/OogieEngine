@@ -72,7 +72,6 @@ void Level::OnRender()
 	SamplerManager::Instance()->Setting(0, E_SAMPLER_TYPE::LINEAR_CLAMP);
 	RasterizerManager::Instance()->Setting(E_FILLMODE_TYPE::SOLID);
 
-
 	LINK_NODE* pCameraIter = pActorList_[(int)E_ACTOR_TYPE::CAMERA].GetHead();
 	while (pCameraIter)
 	{
@@ -88,28 +87,45 @@ void Level::OnRender()
 		GCurrentCamera->GeometryPassEnd();
 		// Geometry Pass End
 
-		
 		// Light Pass
 		BlendStateManager::Instance()->Setting(E_BLEND_MODE_TYPE::ADDITIVE_BLEND);
 		GCurrentCamera->LightPassBegin();
-
-		LINK_NODE* pLightIter = pActorList_[(int)E_ACTOR_TYPE::LIGHT].GetHead();
-		while (pLightIter)
-		{
-			Light* pCurLight = static_cast<Light*>(pLightIter->pItem_);
-			pLightIter = pLightIter->next_;
-			pCurLight->BindLight();
-			GCurrentCamera->RenderLight();
-		}
-
-
-		//GDebugRenderer->SetViewProj(GCurrentCamera->View(), GCurrentCamera->Projection());
-		//GDebugRenderer->RenderAll();
-		//GCurrentCamera->UpdatePerFrameConstant();
-
+		OnLightPass();
 		GCurrentCamera->LightPassEnd();
 		BlendStateManager::Instance()->Clear();
 		// Light Pass End
+
+		////////////////////////////////////////////////////////////////////////////////// 디버깅 임시용 //////////////////////////////////////////////////////////////////////.
+		// DebugRender
+		
+		GCurrentCamera->pDebugBufferTarget_->Clear();
+		GCurrentCamera->pDebugBufferTarget_->Setting();
+		GDebugRenderer->SetViewProj(GCurrentCamera->View(), GCurrentCamera->Projection());
+		GDebugRenderer->RenderAll();
+		GCurrentCamera->pDebugBufferTarget_->EndRenderPass();
+		// DebugRender End
+		
+		BlendStateManager::Instance()->Setting(E_BLEND_MODE_TYPE::OPAQUE_BLEND);
+		GCurrentCamera->pGBufferTarget_->BindRenderTextureForPS(0);
+		GCurrentCamera->pDebugBufferTarget_->BindRenderTextureForPS(4);
+
+		// Begin
+		GCurrentCamera->UpdatePerFrameConstant();
+		GCurrentCamera->pLightBufferTarget_->Setting();
+		GCurrentCamera->pScreenVertex_->Setting();
+		GCurrentCamera->pScreenInputLayout_->Setting();
+		GCurrentCamera->pDebugBufferMaterial_->Setting();
+	
+		// Draw
+		GCurrentCamera->pScreenVertex_->Draw();
+
+		// End
+		GCurrentCamera->pLightBufferTarget_->EndRenderPass();
+		
+		GCurrentCamera->pDebugBufferTarget_->ClearRenderTextureForPS(4);
+		GCurrentCamera->pGBufferTarget_->ClearRenderTextureForPS(0);
+		BlendStateManager::Instance()->Clear();
+		////////////////////////////////////////////////////////////////////////////////// 디버깅 임시용 //////////////////////////////////////////////////////////////////////..
 	}
 }
 
@@ -139,6 +155,18 @@ void Level::OnRenderActors()
 			pActor->Render();
 			pActorIter = pActorIter->next_;
 		}
+	}
+}
+
+void Level::OnLightPass()
+{
+	LINK_NODE* pLightIter = pActorList_[(int)E_ACTOR_TYPE::LIGHT].GetHead();
+	while (pLightIter)
+	{
+		Light* pCurLight = static_cast<Light*>(pLightIter->pItem_);
+		pLightIter = pLightIter->next_;
+		pCurLight->BindLight();
+		GCurrentCamera->RenderLight();
 	}
 }
 
