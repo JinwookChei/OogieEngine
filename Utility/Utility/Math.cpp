@@ -321,6 +321,30 @@ void MATH::MatrixMultiply(Float4& out, const Float4x4& lhs, const Float4& rhs)
 	out.W = _mm_cvtss_f32(o3);
 }
 
+void MATH::MatrixMultiply(Float4& out, const Float4& lhs, const Float4x4& rhs)
+{
+	// lhs 벡터를 로드 
+	__m128 v = _mm_load_ps(&lhs.X); 
+	// [X Y Z W] 결과를 초기화 
+	__m128 result = _mm_setzero_ps(); 
+	// 각 성분에 대해 행렬 열을 곱하고 합산 
+	__m128 col0 = _mm_set1_ps(lhs.X);
+	__m128 col1 = _mm_set1_ps(lhs.Y); 
+	__m128 col2 = _mm_set1_ps(lhs.Z); 
+	__m128 col3 = _mm_set1_ps(lhs.W); 
+	// 행렬 열별 곱셈 
+	__m128 r0 = _mm_load_ps(&rhs.r[0].X);
+	__m128 r1 = _mm_load_ps(&rhs.r[1].X);
+	__m128 r2 = _mm_load_ps(&rhs.r[2].X);
+	__m128 r3 = _mm_load_ps(&rhs.r[3].X);
+	result = _mm_add_ps(result, _mm_mul_ps(col0, r0));
+	result = _mm_add_ps(result, _mm_mul_ps(col1, r1));
+	result = _mm_add_ps(result, _mm_mul_ps(col2, r2)); 
+	result = _mm_add_ps(result, _mm_mul_ps(col3, r3)); 
+	// 결과를 out에 저장 
+	_mm_store_ps(&out.X, result);
+}
+
 void MATH::MatrixMultiply(Float4x4& out, const Float4x4& lhs, const Float4x4& rhs)
 {
 	// We'll read rhs columns by loading each row then extracting columns via shuffle,
@@ -378,7 +402,7 @@ void MATH::MatrixInverse(Float4x4& out, const Float4x4& src)
 		Assert("역행렬이 존재 하지 않습니다.");
 		return;
 	}
-	
+
 	memcpy_s(&out, sizeof(Float4x4), &matrix, sizeof(DirectX::XMMATRIX));
 }
 

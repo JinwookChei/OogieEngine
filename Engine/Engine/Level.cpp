@@ -3,13 +3,24 @@
 #include "Level.h"
 
 Level::Level()
-	: pActorList_(new LinkedList[(int)E_ACTOR_TYPE::MAX])
+	//: pActorList_(new LinkedList[(int)E_ACTOR_TYPE::MAX])
+	: actorList_()
 {
 }
 
 Level::~Level()
 {
 	CleanUp();
+}
+
+//LinkedList* Level::GetActorList() const
+//{
+//	return pActorList_;
+//}
+
+LinkedList* Level::GetActorList(const E_ACTOR_TYPE& actoryType)
+{
+	return &actorList_[(int)actoryType];
 }
 
 void Level::SpawnActorInternal(Actor* pActor, E_ACTOR_TYPE actorType)
@@ -49,6 +60,16 @@ void Level::SpawnLightInternal(Light* pLight)
 }
 
 
+//void Level::RegisterActor(Actor* pActor, E_ACTOR_TYPE actorType)
+//{
+//	if (nullptr == pActor)
+//	{
+//		return;
+//	}
+//
+//	pActorList_[(int)actorType].PushBack(pActor->LevelLink());
+//}
+
 void Level::RegisterActor(Actor* pActor, E_ACTOR_TYPE actorType)
 {
 	if (nullptr == pActor)
@@ -56,7 +77,7 @@ void Level::RegisterActor(Actor* pActor, E_ACTOR_TYPE actorType)
 		return;
 	}
 
-	pActorList_[(int)actorType].PushBack(pActor->LevelLink());
+	actorList_[(int)actorType].PushBack(pActor->LevelLink());
 }
 
 
@@ -72,7 +93,7 @@ void Level::OnRender()
 	SamplerManager::Instance()->Setting(0, E_SAMPLER_TYPE::LINEAR_CLAMP);
 	RasterizerManager::Instance()->Setting(E_FILLMODE_TYPE::SOLID);
 
-	LINK_NODE* pCameraIter = pActorList_[(int)E_ACTOR_TYPE::CAMERA].GetHead();
+	LINK_NODE* pCameraIter = actorList_[(int)E_ACTOR_TYPE::CAMERA].GetHead();
 	while (pCameraIter)
 	{
 		GCurrentCamera = static_cast<Camera*>(pCameraIter->pItem_);
@@ -133,7 +154,7 @@ void Level::OnActorTick(double deltaTime)
 {
 	for (int i = 0; i < (int)E_ACTOR_TYPE::MAX; ++i)
 	{
-		LINK_NODE* pCurLink = pActorList_[i].GetHead();
+		LINK_NODE* pCurLink = actorList_[i].GetHead();
 		while (pCurLink)
 		{
 			Actor* pCurActor = static_cast<Actor*>(pCurLink->pItem_);
@@ -148,7 +169,7 @@ void Level::OnRenderActors()
 {
 	for (int i = 0; i < (int)E_ACTOR_TYPE::MAX; ++i)
 	{
-		LINK_NODE* pActorIter = pActorList_[i].GetHead();
+		LINK_NODE* pActorIter = actorList_[i].GetHead();
 		while (pActorIter)
 		{
 			Actor* pActor = static_cast<Actor*>(pActorIter->pItem_);
@@ -160,7 +181,7 @@ void Level::OnRenderActors()
 
 void Level::OnLightPass()
 {
-	LINK_NODE* pLightIter = pActorList_[(int)E_ACTOR_TYPE::LIGHT].GetHead();
+	LINK_NODE* pLightIter = actorList_[(int)E_ACTOR_TYPE::LIGHT].GetHead();
 	while (pLightIter)
 	{
 		Light* pCurLight = static_cast<Light*>(pLightIter->pItem_);
@@ -172,7 +193,7 @@ void Level::OnLightPass()
 
 void Level::BlitCameraToBackBuffer()
 {
-	LINK_NODE* pCameraIter = pActorList_[(int)E_ACTOR_TYPE::CAMERA].GetHead();
+	LINK_NODE* pCameraIter = actorList_[(int)E_ACTOR_TYPE::CAMERA].GetHead();
 	while (pCameraIter)
 	{
 		Camera* pCurCamera = static_cast<Camera*>(pCameraIter->pItem_);
@@ -191,10 +212,10 @@ void Level::CleanUpActors()
 {
 	for (int i = 0; i < (int)E_ACTOR_TYPE::MAX; ++i)
 	{
-		LINK_NODE* pActorIter = pActorList_[i].GetHead();
+		LINK_NODE* pActorIter = actorList_[i].GetHead();
 		while (pActorIter)
 		{
-			pActorList_[i].Remove(pActorIter);
+			actorList_[i].Remove(pActorIter);
 			Actor* pCurActor = static_cast<Actor*>(pActorIter->pItem_);
 			if (nullptr != pCurActor)
 			{
@@ -202,13 +223,13 @@ void Level::CleanUpActors()
 				pCurActor = nullptr;
 			}
 
-			pActorIter = pActorList_[i].GetHead();
+			pActorIter = actorList_[i].GetHead();
 		}
 	}
 
-	if (nullptr != pActorList_)
+	/*if (nullptr != pActorList_)
 	{
 		delete[] pActorList_;
 		pActorList_ = nullptr;
-	}
+	}*/
 }

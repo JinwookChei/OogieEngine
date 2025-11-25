@@ -24,6 +24,10 @@ public:
 
 	LINK_NODE* LevelLink();
 
+	BoundVolume* GetBoundVolumeTEMP() const;
+
+	//bool CheckBoundVolumeTEMP(const Float3& st, const Float3& dir);
+
 protected:
 	ENGINE_API virtual void CleanUp();
 

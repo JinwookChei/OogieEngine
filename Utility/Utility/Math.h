@@ -131,6 +131,21 @@ struct Float3 {
 
 		return *this;
 	}
+
+	Float3 operator/(const Float3& rhs)
+	{
+		return { this->X / rhs.X, this->Y / rhs.Y, this->Z / rhs.Z };
+	}
+
+	Float3& operator/=(const Float3& rhs)
+	{
+		this->X /= rhs.X;
+		this->Y /= rhs.Y;
+		this->Z /= rhs.Z;
+
+		return *this;
+	}
+
 };
 
 struct Float2 {
@@ -244,6 +259,7 @@ namespace MATH
 
 	UTILITY_API void MatrixIdentity(Float4x4& out);
 	UTILITY_API void MatrixMultiply(Float4& out, const Float4x4& lhs, const Float4& rhs);
+	UTILITY_API void MatrixMultiply(Float4& out, const Float4& lhs, const Float4x4& rhs);
 	UTILITY_API void MatrixMultiply(Float4x4& out, const Float4x4& lhs, const Float4x4& rhs);
 	UTILITY_API void MatrixTranspose(Float4x4& out, const Float4x4& src);
 	UTILITY_API void MatrixInverse(Float4x4& out, const Float4x4& src);

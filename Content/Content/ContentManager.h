@@ -7,7 +7,8 @@ struct IEngineContainer
 
 class ContentManager final
 	: public IStartup,
-	public IEngineContainer {
+	public IEngineContainer
+{
 public:
 	ContentManager();
 
@@ -25,8 +26,8 @@ public:
 
 	bool Initialize
 	(
-		HINSTANCE hInstance, 
-		PWSTR pCmdLine, 
+		HINSTANCE hInstance,
+		PWSTR pCmdLine,
 		int cmdShow,
 		const wchar_t* pMainWindowClassName,
 		const wchar_t* pMainWindowText,

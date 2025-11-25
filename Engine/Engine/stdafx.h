@@ -66,6 +66,7 @@
 #include "ObjectPicker.h"
 
 
+#include "World.h"
 #include "Camera.h"
 #include "Light.h"
 #include "SpotLight.h"
@@ -83,7 +84,7 @@ extern SamplerManager* GSamplerManager;
 extern BlendStateManager* GBlendStateManager;
 extern RasterizerManager* GRasterizerManager;
 
-
+extern World* GWorld;
 extern Camera* GMainCamera;
 extern Camera* GCurrentCamera;
 extern ObjectPicker* GObjectPicker;

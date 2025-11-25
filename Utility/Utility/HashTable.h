@@ -134,6 +134,14 @@ public:
 
 	UTILITY_API ~HashTable();
 
+	/// <summary>
+	/// 중복키가 허용된 해쉬테이블임.
+	/// 안녕하세요
+	/// </summary>
+	/// <param name="pData"></param>
+	/// <param name="pKeyData">keyData</param>
+	/// <param name="keySize"></param>
+	/// <returns></returns>
 	UTILITY_API void* Insert(void* pData, const void* pKeyData, unsigned int keySize);
 
 	UTILITY_API bool Search(void** ppOutSearchedList, unsigned int* pOutSearchedCount, unsigned int countToSearch, const void* pKeyData, unsigned int keySize);

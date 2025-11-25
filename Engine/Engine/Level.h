@@ -57,6 +57,10 @@ public:
 		return newLight;
 	}
 
+	//LinkedList* GetActorList() const;
+
+	LinkedList* GetActorList(const E_ACTOR_TYPE& actoryType);
+
 private:
 	ENGINE_API void SpawnActorInternal(Actor* pActor, E_ACTOR_TYPE actorType);
 
@@ -83,7 +87,8 @@ private:
 	
 	void CleanUpActors();
 
-	LinkedList* pActorList_;
+	//LinkedList* pActorList_;
+	LinkedList actorList_[(int)E_ACTOR_TYPE::MAX];
 };
 
 

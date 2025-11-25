@@ -82,9 +82,6 @@
     <Filter Include="Source Files\ObjectPicker">
       <UniqueIdentifier>{2e754504-9966-4a77-9eb7-3ceb07170912}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\DebugRender">
-      <UniqueIdentifier>{583bb9ca-ad96-4467-8f9f-74ab2effd5ca}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">

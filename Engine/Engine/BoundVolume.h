@@ -19,6 +19,12 @@ public:
 
 	void UpdateBoundVolume(IMesh* pMesh);
 
+	bool CollisionTMP(const Float3& origin, const Float3& dir);
+
+	//bool CollisionTMP(float* pOutDistance, const Float3& origin, const Float3& dir);
+
+	bool IntersectionRayAABB(float* pOutT, const Float3& origin, const Float3& dir);
+
 private:
 	bool CalculateBoundVolume
 	(

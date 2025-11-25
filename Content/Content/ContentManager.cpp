@@ -4,8 +4,8 @@
 //IEngineContainer* GEngineContainer = nullptr;
 
 ContentManager::ContentManager()
-	:refCount_(1),
-	pEngine_(nullptr)
+	: refCount_(1)
+	, pEngine_(nullptr)
 {
 	//GEngineContainer = this;
 }
@@ -92,3 +92,4 @@ Engine* ContentManager::GetEngine()
 {
 	return pEngine_;
 }
+

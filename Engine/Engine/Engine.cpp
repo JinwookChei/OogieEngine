@@ -22,6 +22,7 @@ SamplerManager* GSamplerManager = nullptr;
 BlendStateManager* GBlendStateManager = nullptr;
 RasterizerManager* GRasterizerManager = nullptr;
 
+World* GWorld = nullptr;
 Camera* GMainCamera = nullptr;
 Camera* GCurrentCamera = nullptr;
 ObjectPicker* GObjectPicker = nullptr;
@@ -29,7 +30,6 @@ IDebugRenderer* GDebugRenderer = nullptr;
 
 Engine::Engine()
 	: pStartUp_(nullptr),
-	pWorld_(nullptr),
 	applicationModule_(),
 	pApplication_(nullptr),
 	rendererModule_(),
@@ -126,10 +126,7 @@ bool Engine::Initialize
 		return false;
 	}
 
-	if (false == InitializeWorld())
-	{
-		return false;
-	}
+	GWorld = new World;
 
 	GObjectPicker = new ObjectPicker;
 
@@ -156,17 +153,17 @@ void Engine::Run()
 		GObjectPicker->Tick(deltaTime);
 
 		// GameLoop
-		pWorld_->CheckChangeLevel();
+		GWorld->CheckChangeLevel();
 
-		pWorld_->OnTick(deltaTime);
+		GWorld->OnTick(deltaTime);
 
-		pWorld_->OnRender();
+		GWorld->OnRender();
 		// GameLoop End
 
 		// Blit RenderTarget 
 		pRenderer_->RenderBegin();
 
-		pWorld_->OnBlit();
+		GWorld->OnBlit();
 
 		ImGuiSystem::GetImGuiManager()->OnRender();
 
@@ -177,7 +174,7 @@ void Engine::Run()
 
 World* Engine::GetWorld() const
 {
-	return pWorld_;
+	return GWorld;
 }
 
 bool Engine::LoadApplication
@@ -307,12 +304,6 @@ bool Engine::InitializeStartUp(IStartup* startUp)
 	return true;
 }
 
-bool Engine::InitializeWorld()
-{
-	pWorld_ = new World;
-
-	return true;
-}
 
 void Engine::CleanUp()
 {
@@ -324,10 +315,10 @@ void Engine::CleanUp()
 		GObjectPicker = nullptr;
 	}
 
-	if (nullptr != pWorld_)
+	if (nullptr != GWorld)
 	{
-		delete pWorld_;
-		pWorld_ = nullptr;
+		delete GWorld;
+		GWorld = nullptr;
 	}
 
 	if (nullptr != pStartUp_)

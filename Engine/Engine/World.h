@@ -5,12 +5,15 @@ class Engine;
 
 class World final
 {
-public:
+
 	friend class Engine;
 
 	World();
 
 	virtual ~World();
+
+public:
+	static World* Instance();
 
 	template<typename LevelType>
 	LevelType* ChangeLevel()
@@ -22,6 +25,8 @@ public:
 		return newLevel;
 	}
 
+	Level* GetLevel() const;
+	
 private:
 	ENGINE_API void ChangeLevelInternal(Level* level);
 

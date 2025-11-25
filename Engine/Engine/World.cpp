@@ -13,6 +13,16 @@ World::~World()
 	CleanUp();
 }
 
+World* World::Instance()
+{
+	return GWorld;
+}
+
+Level* World::GetLevel() const
+{
+	return curLevel_;
+}
+
 void World::ChangeLevelInternal(Level* level)
 {
 	if (nullptr == level) {

@@ -86,6 +86,7 @@ float4 main(PS_ScreenRect input) : SV_TARGET
     float4 viewPos = mul(ndcPos, InvProjectTransform);
     viewPos /= viewPos.w;
     float4 worldPos = mul(viewPos, InvViewTransform);
+    worldPos /= worldPos.w;
     
     // DirectionLight
     if (LightType == 0)

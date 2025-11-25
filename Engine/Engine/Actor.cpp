@@ -37,6 +37,11 @@ LINK_NODE* Actor::LevelLink()
 	return &levelLink_;
 }
 
+BoundVolume* Actor::GetBoundVolumeTEMP() const
+{
+	return pBoundVolume;
+}
+
 void Actor::CleanUp()
 {
 	if (nullptr != pBoundVolume)

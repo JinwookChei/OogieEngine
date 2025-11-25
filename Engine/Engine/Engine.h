@@ -44,8 +44,6 @@ private:
 
 	bool InitializeStartUp(IStartup* pStartUp);
 
-	bool InitializeWorld();
-
 	void CleanUp();
 
 	IStartup* pStartUp_;
@@ -55,6 +53,4 @@ private:
 
 	HMODULE rendererModule_;
 	IRenderer* pRenderer_;
-
-	World* pWorld_;
 };
