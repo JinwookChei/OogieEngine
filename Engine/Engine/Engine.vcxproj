@@ -117,7 +117,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;ENGINE_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\Interface\;$(SolutionDir)..\Utility\;$(SolutionDir)..\ImguiModule\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\Interface\;$(SolutionDir)..\Utility\;$(SolutionDir)..\ImguiModule\;$(SolutionDir)..\CoreTypes\</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
     </ClCompile>
     <Link>
@@ -135,7 +135,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;ENGINE_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\Interface\;$(SolutionDir)..\Utility\;$(SolutionDir)..\ImguiModule\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\Interface\;$(SolutionDir)..\Utility\;$(SolutionDir)..\ImguiModule\;$(SolutionDir)..\CoreTypes\</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <PrecompiledHeader>Use</PrecompiledHeader>
     </ClCompile>
@@ -147,11 +147,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\CoreTypes\VertexType\VertexType.h" />
     <ClInclude Include="..\..\Interface\Application\IApplication.h" />
     <ClInclude Include="..\..\Interface\ImGuiBindObject\IImGuiBindObject.h" />
     <ClInclude Include="..\..\Interface\ImGuiModule\IImGuiModule.h" />
     <ClInclude Include="..\..\Interface\Renderer\IRenderer.h" />
-    <ClInclude Include="..\..\Interface\VertexType\VertexType.h" />
     <ClInclude Include="Actor.h" />
     <ClInclude Include="BlendStateManager.h" />
     <ClInclude Include="BoundVolume.h" />

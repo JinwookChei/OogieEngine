@@ -112,7 +112,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\ImguiModule\;$(SolutionDir)..\Engine\;$(SolutionDir)..\Interface\;$(SolutionDir)..\Utility\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\ImguiModule\;$(SolutionDir)..\Engine\;$(SolutionDir)..\Interface\;$(SolutionDir)..\Utility\;$(SolutionDir)..\CoreTypes\</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
     </ClCompile>
     <Link>
@@ -129,7 +129,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\ImguiModule\;$(SolutionDir)..\Engine\;$(SolutionDir)..\Interface\;$(SolutionDir)..\Utility\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\ImguiModule\;$(SolutionDir)..\Engine\;$(SolutionDir)..\Interface\;$(SolutionDir)..\Utility\;$(SolutionDir)..\CoreTypes\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -150,6 +150,7 @@
     <ClCompile Include="TestActor.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\CoreTypes\VertexType\VertexType.h" />
     <ClInclude Include="..\..\Interface\Application\IApplication.h" />
     <ClInclude Include="..\..\Interface\ImGuiBindObject\IImGuiBindObject.h" />
     <ClInclude Include="..\..\Interface\ImGuiModule\IImGuiModule.h" />

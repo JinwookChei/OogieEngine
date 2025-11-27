@@ -6,6 +6,7 @@
 
 ObjectPicker::ObjectPicker()
 	:pPickedActor_(nullptr),
+	curPickedActorDiff_(0.0f),
 	pickedMousePos_({ 0.0f, 0.0f })
 {
 }
@@ -26,17 +27,17 @@ void ObjectPicker::Tick(double deltaTime)
 	{
 		pickedMousePos_ = InputManager::Instance()->GetCurrentMousePosition();
 
-		RayCastFromScreen(pickedMousePos_);		
+		RayCastFromScreen(pickedMousePos_);
 	}
 }
 
 void ObjectPicker::RayCastFromScreen(const Float2& screenPos)
 {
 	Float4x4 invProjection;
-	MATH::MatrixInverse(invProjection, GMainCamera->Projection());
+	MATH::MatrixInverse(invProjection, GCurrentCamera->Projection());
 
 	Float4x4 invView;
-	MATH::MatrixInverse(invView, GMainCamera->View());
+	MATH::MatrixInverse(invView, GCurrentCamera->View());
 
 	float ndc_x = (2.0f * screenPos.X) / DEFAULT_SCREEN_WIDTH - 1.0f;
 	float ndc_y = 1.0f - (2.0f * screenPos.Y) / DEFAULT_SCREEN_HEIGHT;
@@ -44,23 +45,31 @@ void ObjectPicker::RayCastFromScreen(const Float2& screenPos)
 	float ndc_w = 1.0f;
 	Float4 ndcPos = { ndc_x, ndc_y, ndc_z, ndc_w };
 
-	Float4 camSpacePos;
-	MATH::MatrixMultiply(camSpacePos, ndcPos, invProjection);
-	MATH::VectorScale(camSpacePos, camSpacePos, 1 / camSpacePos.W);
+	Float4 clickPos_CamSpace;
+	MATH::MatrixMultiply(clickPos_CamSpace, ndcPos, invProjection);
+	MATH::VectorScale(clickPos_CamSpace, clickPos_CamSpace, 1 / clickPos_CamSpace.W);
 
-	Float4 worldSpacePoint;
-	MATH::MatrixMultiply(worldSpacePoint, camSpacePos, invView);
-	MATH::VectorScale(worldSpacePoint, worldSpacePoint, 1 / worldSpacePoint.W);
+	Float4 clickPos_WorldSpace;
+	MATH::MatrixMultiply(clickPos_WorldSpace, clickPos_CamSpace, invView);
+	MATH::VectorScale(clickPos_WorldSpace, clickPos_WorldSpace, 1 / clickPos_WorldSpace.W);
 
-	Float4 camPos = GMainCamera->GetWorldTransform().GetPosition();
-	Float3 st = { camPos.X, camPos.Y, camPos.Z };
-	Float4 camDir = worldSpacePoint - camPos;
-	Float4 camDirNorm;
-	MATH::VectorNormalize(camDirNorm, camDir);
-	Float3 dir = { camDirNorm.X, camDirNorm.Y, camDirNorm.Z };
+	Float4 camPos_WorldSpace = GCurrentCamera->GetWorldTransform().GetPosition();
 
-	GDebugRenderer->DrawRay(st, dir, 100, { 1.0f, 0.0f, 0.0f, 1.0f });
+	// Debug Ray
+	Float3 rayStart = { camPos_WorldSpace.X, camPos_WorldSpace.Y, camPos_WorldSpace.Z };
+	Float4 rayDir_V4 = clickPos_WorldSpace - camPos_WorldSpace;
+	Float3 rayDir_V3 = { rayDir_V4.X, rayDir_V4.Y, rayDir_V4.Z };
+	Float3 rayDirNorm;
+	MATH::VectorNormalize(rayDirNorm, rayDir_V3);
+	GDebugRenderer->DrawRay(rayStart, rayDirNorm, GCurrentCamera->GetFar(), { 1.0f, 0.0f, 0.0f, 1.0f });
 
+	// Debug Ray End
+
+
+	pPickedActor_ = nullptr;
+	curPickedActorDiff_ = FLT_MAX;
+
+	// Picking ÈÄº¸.
 	Level* pCurLevel = World::Instance()->GetLevel();
 	LinkedList* pActorList = pCurLevel->GetActorList(E_ACTOR_TYPE::NORMAL);
 	LINK_NODE* pActorIter = pActorList->GetHead();
@@ -71,29 +80,34 @@ void ObjectPicker::RayCastFromScreen(const Float2& screenPos)
 		Float4x4 invWorldMat;
 		MATH::MatrixInverse(invWorldMat, pActor->GetWorldTransform().GetWorldMatrix());
 
-		Float4 objSpaceCamPos;
-		MATH::MatrixMultiply(objSpaceCamPos, camPos, invWorldMat);
-		Float3 objSpaceCamPos3 = { objSpaceCamPos.X, objSpaceCamPos.Y, objSpaceCamPos.Z };
+		Float4 camPos_ObjSpace;
+		MATH::MatrixMultiply(camPos_ObjSpace, camPos_WorldSpace, invWorldMat);
+		Float3 camPos_ObjSpace_V3 = { camPos_ObjSpace.X, camPos_ObjSpace.Y, camPos_ObjSpace.Z };
 
-		Float4 objSpaceDir;
-		MATH::MatrixMultiply(objSpaceDir, camDir, invWorldMat);
-		Float3 objSpaceDir3 = { objSpaceDir.X, objSpaceDir.Y, objSpaceDir.Z };
-		MATH::VectorNormalize(objSpaceDir3, objSpaceDir3);
+		Float4 rayDir_ObjSpace;
+		MATH::MatrixMultiply(rayDir_ObjSpace, rayDir_V4, invWorldMat);
+		Float3 rayDir_ObjSpace_V3 = { rayDir_ObjSpace.X, rayDir_ObjSpace.Y, rayDir_ObjSpace.Z };
+		MATH::VectorNormalize(rayDir_ObjSpace_V3, rayDir_ObjSpace_V3);
 
-		//float distance;
-		//if (true == pActor->GetBoundVolumeTEMP()->IntersectionRayAABB(&distance, objSpaceCamPos3, objSpaceDir3))
-		//{
-		//	DEBUG_BREAK();
-		//}
 
-		float t;
-		if (pActor->TEMP_IntersectionRayTriangle(&t, objSpaceCamPos3, objSpaceDir3))
+		float diffVolume;
+		if (true == pActor->GetBoundVolumeTEMP()->IntersectionRayAABB(&diffVolume, camPos_ObjSpace_V3, rayDir_ObjSpace_V3, GCurrentCamera->GetFar()))
 		{
-			DEBUG_BREAK();
+			if (curPickedActorDiff_ > diffVolume)
+			{
+				float diffVertex;
+				if (pActor->TEMP_IntersectionRayTriangle(&diffVertex, camPos_ObjSpace_V3, rayDir_ObjSpace_V3))
+				{
+					if (curPickedActorDiff_ > diffVertex)
+					{
+						curPickedActorDiff_ = diffVertex;
+						pPickedActor_ = pActor;
+					}
+				}
+			}
 		}
-	
-		pActorIter = pActorIter->next_;
 
+		pActorIter = pActorIter->next_;
 	}
 }
 

@@ -82,6 +82,9 @@
     <Filter Include="Source Files\ObjectPicker">
       <UniqueIdentifier>{2e754504-9966-4a77-9eb7-3ceb07170912}</UniqueIdentifier>
     </Filter>
+    <Filter Include="CoreTypes">
+      <UniqueIdentifier>{ef6808b8-b970-469a-8264-744640894f1a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -153,9 +156,6 @@
     <ClInclude Include="BoundVolume.h">
       <Filter>Source Files\Component\BoundVolume</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Interface\VertexType\VertexType.h">
-      <Filter>Interface</Filter>
-    </ClInclude>
     <ClInclude Include="ObjectPicker.h">
       <Filter>Source Files\ObjectPicker</Filter>
     </ClInclude>
@@ -173,6 +173,9 @@
     </ClInclude>
     <ClInclude Include="TextureManager.h">
       <Filter>Source Files\Manager\GraphicsManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\CoreTypes\VertexType\VertexType.h">
+      <Filter>CoreTypes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

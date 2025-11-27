@@ -34,6 +34,9 @@
     <Filter Include="Source Files\Game\Actors\Camera">
       <UniqueIdentifier>{f94cdf62-c46f-4f33-88a4-9c2c7ffefa78}</UniqueIdentifier>
     </Filter>
+    <Filter Include="CoreTypes">
+      <UniqueIdentifier>{8779a39e-25ba-4449-bf38-64a2f9512098}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -94,6 +97,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Interface\ImGuiBindObject\IImGuiBindObject.h">
       <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\CoreTypes\VertexType\VertexType.h">
+      <Filter>CoreTypes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

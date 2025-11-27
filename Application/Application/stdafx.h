@@ -29,12 +29,15 @@
 #include <Utility\Math.h>
 #include <Utility\LinkedList.h>
 
+//CoreTypes
+#include <VertexType/VertexType.h>
+
 // Interface
 #include <Application/IApplication.h>
-#include <VertexType/VertexType.h>
 #include <Renderer/IRenderer.h>
 #include <ImGuiBindObject/IImGuiBindObject.h>
 #include <ImGuiModule/IImGuiModule.h>
+
 
 // ImguiManager
 #include <ImGuiModule/ImGuiManager.h>

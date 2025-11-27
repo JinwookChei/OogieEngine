@@ -34,6 +34,9 @@
     <Filter Include="Source Files\ImGui_Impl">
       <UniqueIdentifier>{ca98001a-c635-403b-986f-517443bd33ad}</UniqueIdentifier>
     </Filter>
+    <Filter Include="CoreTypes">
+      <UniqueIdentifier>{fbda839b-26d8-4800-b288-4aa173c3f174}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -93,8 +96,8 @@
     <ClInclude Include="..\..\ThirdParty\ImGui\imstb_truetype.h">
       <Filter>Source Files\ImGui_Impl</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Interface\VertexType\VertexType.h">
-      <Filter>Interface</Filter>
+    <ClInclude Include="..\..\CoreTypes\VertexType\VertexType.h">
+      <Filter>CoreTypes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

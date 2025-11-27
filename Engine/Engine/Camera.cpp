@@ -4,9 +4,9 @@
 #include "Camera.h"
 
 Camera::Camera()
-	: fov_(60.0f),
-	near_(0.01f),
-	far_(100.0f),
+	: fov_(DEFAULT_FOV),
+	near_(DEFAULT_NEAR),
+	far_(DEFAULT_FAR),
 	cameraSensitivity_(10.0f),
 	cameraSpeed_(2.0f),
 	pGBufferTarget_(nullptr),
@@ -146,6 +146,21 @@ void Camera::SetConfig(float fov, float Near, float Far)
 	fov_ = fov;
 	near_ = Near;
 	far_ = Far;
+}
+
+float Camera::GetFov() const
+{
+	return fov_;
+}
+
+float Camera::GetNear() const
+{
+	return near_;
+}
+
+float Camera::GetFar() const
+{
+	return far_;
 }
 
 void Camera::SetClearColor(const Color& clearColor)

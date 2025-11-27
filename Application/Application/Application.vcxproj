@@ -115,7 +115,7 @@
       <PreprocessorDefinitions>_DEBUG;APPLICATION_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <AdditionalIncludeDirectories>..\..\Interface\;$(SolutionDir)..\ImguiModule\;..\..\Utility\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\Utility\;$(SolutionDir)..\Interface\;$(SolutionDir)..\CoreTypes\;$(SolutionDir)..\ImGuiModule\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -133,7 +133,7 @@
       <PreprocessorDefinitions>NDEBUG;APPLICATION_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <AdditionalIncludeDirectories>..\..\Interface\;$(SolutionDir)..\ImguiModule\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\Utility\;$(SolutionDir)..\Interface\;$(SolutionDir)..\CoreTypes\;$(SolutionDir)..\ImGuiModule\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -143,11 +143,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\CoreTypes\VertexType\VertexType.h" />
     <ClInclude Include="..\..\Interface\Application\IApplication.h" />
     <ClInclude Include="..\..\Interface\ImGuiBindObject\IImGuiBindObject.h" />
     <ClInclude Include="..\..\Interface\ImGuiModule\IImGuiModule.h" />
     <ClInclude Include="..\..\Interface\Renderer\IRenderer.h" />
-    <ClInclude Include="..\..\Interface\VertexType\VertexType.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="WindowsApplication.h" />

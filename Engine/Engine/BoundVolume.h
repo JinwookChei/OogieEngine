@@ -19,7 +19,7 @@ public:
 
 	void UpdateBoundVolume(IMesh* pMesh);
 
-	bool IntersectionRayAABB(float* pOutT, const Float3& origin, const Float3& dir);
+	bool IntersectionRayAABB(float* pOutT, const Float3& origin, const Float3& dir, float maxDistance);
 
 private:
 	bool CalculateBoundVolume

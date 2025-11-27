@@ -46,9 +46,12 @@
 // Utility
 #include <Utility/Math.h>
 
-// Interface
+// CoreTypes
 #include <VertexType/VertexType.h>
+
+// Interface
 #include <Renderer/IRenderer.h>
+
 
 
 // RendererD3D11

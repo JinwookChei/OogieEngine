@@ -67,6 +67,9 @@
     <Filter Include="Resource Files\Shader\DebugShader">
       <UniqueIdentifier>{6c774d14-347b-42ae-8bb0-f675d4174886}</UniqueIdentifier>
     </Filter>
+    <Filter Include="CoreTypes">
+      <UniqueIdentifier>{48720aec-ba2d-431d-881b-0c36d0fe5b3c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -126,11 +129,11 @@
     <ClInclude Include="ShaderResourceView.h">
       <Filter>Source Files\View</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Interface\VertexType\VertexType.h">
-      <Filter>Interface</Filter>
-    </ClInclude>
     <ClInclude Include="D3D11DebugRenderer.h">
       <Filter>Source Files\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\CoreTypes\VertexType\VertexType.h">
+      <Filter>CoreTypes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

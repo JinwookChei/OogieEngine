@@ -41,8 +41,11 @@
 #include <Utility/LinkedList.h>
 #include <Utility/HashTable.h>
 
-// Interface
+
+// CoreTypes
 #include <VertexType/VertexType.h>
+
+// Interface
 #include <Application/IApplication.h>
 #include <Renderer/IRenderer.h>
 #include <ImGuiBindObject/IImGuiBindObject.h>
@@ -94,3 +97,6 @@ extern IDebugRenderer* GDebugRenderer;
 // юс╫ц.
 constexpr float DEFAULT_SCREEN_WIDTH = 2560.0f;
 constexpr float DEFAULT_SCREEN_HEIGHT = 1440.0f;
+constexpr float DEFAULT_NEAR = 0.01f;
+constexpr float DEFAULT_FAR = 100.0f;
+constexpr float DEFAULT_FOV = 60.0f;

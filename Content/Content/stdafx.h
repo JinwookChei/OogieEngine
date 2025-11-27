@@ -62,9 +62,11 @@
 #include <Utility/LinkedList.h>
 #include <Utility/HashTable.h>
 
+// CoreTypes
+#include <VertexType/VertexType.h>
+ 
 // Interface
 #include <Application/IApplication.h>
-#include <VertexType/VertexType.h>
 #include <Renderer/IRenderer.h>
 #include <ImguiBindObject/IImguiBindObject.h>
 #include <ImGuiModule/IImGuiModule.h>

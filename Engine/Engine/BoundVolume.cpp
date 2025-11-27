@@ -52,7 +52,7 @@ void BoundVolume::UpdateBoundVolume(IMesh* pMesh)
 	boundVolume_ = boundVolume;
 }
 
-bool BoundVolume::IntersectionRayAABB(float* pOutT, const Float3& origin, const Float3& dir)
+bool BoundVolume::IntersectionRayAABB(float* pOutT, const Float3& origin, const Float3& dir, float maxDistance)
 {
 	// X축 슬랩(평면)에 대한 진입/진출 t 값 계산
 	float t1 = (boundVolume_.minPos.X - origin.X) / dir.X;
@@ -80,18 +80,28 @@ bool BoundVolume::IntersectionRayAABB(float* pOutT, const Float3& origin, const 
 		return false;
 	}
 	
-	// 충돌 발생. tOut에 가장 가까운 충돌 거리 저장
-	// tMin이 0보다 작으면(레이 시작점이 박스 내부) tMax가 출구, 아니면 tMin이 입구
-	if (tMin < 0.0f)
+	float hitT = (tMin < 0.0f) ? tMax : tMin;
+
+	if (hitT > maxDistance)
 	{
-		*pOutT = tMax;
-	}
-	else
-	{
-		*pOutT = tMin;
+		return false;
 	}
 
+	*pOutT = hitT;
 	return true;
+
+	//// 충돌 발생. tOut에 가장 가까운 충돌 거리 저장
+	//// tMin이 0보다 작으면(레이 시작점이 박스 내부) tMax가 출구, 아니면 tMin이 입구
+	//if (tMin < 0.0f)
+	//{
+	//	*pOutT = tMax;
+	//}
+	//else
+	//{
+	//	*pOutT = tMin;
+	//}
+
+	//return true;
 }
 
 bool BoundVolume::CalculateBoundVolume

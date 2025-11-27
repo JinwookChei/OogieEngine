@@ -25,6 +25,9 @@
     <Filter Include="Source Files\Windows">
       <UniqueIdentifier>{099cc0e8-6ba1-44a4-8339-6441f8faf3d3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="CoreTypes">
+      <UniqueIdentifier>{798580fb-1e54-4170-a2d3-7bf4cd1ca17b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -48,8 +51,8 @@
     <ClInclude Include="..\..\Interface\ImGuiModule\IImGuiModule.h">
       <Filter>Interface</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Interface\VertexType\VertexType.h">
-      <Filter>Interface</Filter>
+    <ClInclude Include="..\..\CoreTypes\VertexType\VertexType.h">
+      <Filter>CoreTypes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

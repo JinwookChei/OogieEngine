@@ -50,6 +50,12 @@ public:
 
 	void SetConfig(float fov, float Near, float Far);
 
+	float GetFov() const;
+
+	float GetNear() const;
+
+	float GetFar() const;
+
 private:
 	bool InitGBuffer();
 
