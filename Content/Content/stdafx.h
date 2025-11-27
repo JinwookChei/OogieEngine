@@ -60,6 +60,7 @@
 // Utility
 #include <Utility/Math.h>
 #include <Utility/LinkedList.h>
+#include <Utility/HashTable.h>
 
 // Interface
 #include <Application/IApplication.h>
@@ -75,6 +76,7 @@
 // Engine
 #include <Engine/Engine.h>
 #include <Engine/StartUp.h>
+#include <Engine/MeshManager.h>
 #include <Engine/Level.h>
 #include <Engine/Actor.h>
 #include <Engine/Camera.h>

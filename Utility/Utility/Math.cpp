@@ -156,64 +156,6 @@ void MATH::VectorToEulerDeg(Float4& out, const Float3& vector)
 }
 
 
-//void VectorToEulerDeg(Float4& out, const Float3& lhs)
-//{
-//	Float3 worldUp = { 0.0f, 0.0f, 1.0f };
-//	Float3 right;
-//	VectorCross(right, lhs, worldUp);
-//
-//	Float3 up;
-//	VectorCross(up, right, lhs);
-//
-//	Float4 zero = { 0.0f, 0.0f, 0.0f, 1.0f };
-//	Float4 dir = { lhs.X, lhs.Y, lhs.Z, 1.0f };
-//	Float4 dirUp = { up.X, up.Y, up.Z, 0.0f };
-//
-//	Float4x4 tmpMat;
-//	MatrixLookToLH(tmpMat, zero, dir, dirUp);
-//
-//
-//	Float4 rotQuat;
-//	MatrixDecomposeFromRotQ(tmpMat, rotQuat);
-//
-//	Float4 rotDegree;
-//	QuaternionToEulerDeg(rotDegree, rotQuat);
-//
-//	out = rotDegree;
-//
-//
-//}
-
-//void ForwardToEulerDeg(Float3& outEulerDeg, const Float3& forward)
-//{
-//	// 월드 Up 벡터 (Z-up)
-//	const Float3 worldUp = { 0.0f, 0.0f, 1.0f };
-//
-//	// Right 벡터 = Forward × Up
-//	Float3 right;
-//	VectorCross(right, forward, worldUp);
-//	VectorNormalize(right, right);
-//
-//	// Up 벡터 = Right × Forward
-//	Float3 up;
-//	VectorCross(up, right, forward);
-//	VectorNormalize(up, up);
-//
-//	// Yaw = Z-up 기준 회전
-//	float yaw = atan2f(forward.Y, forward.X);
-//
-//	// Pitch = Forward 벡터가 XY 평면에서 위/아래로 향하는 각도
-//	float pitch = atan2f(-forward.Z, sqrtf(forward.X * forward.X + forward.Y * forward.Y));
-//
-//	// Roll = Right 벡터와 Up 벡터를 기반으로 계산
-//	float roll = atan2f(right.Z, up.Z);
-//
-//	// rad → deg
-//	outEulerDeg.X = DirectX::XMConvertToDegrees(roll);
-//	outEulerDeg.Y = DirectX::XMConvertToDegrees(pitch);
-//	outEulerDeg.Z = DirectX::XMConvertToDegrees(yaw);
-//}
-
 void MATH::QuaternionToEulerDeg(Float4& out, const Float4& quat)
 {
 	Float4 rad;
@@ -245,49 +187,50 @@ void MATH::QuaternionToEulerRad(Float4& out, const Float4& quat)
 	out.Z = atan2f(sinY_cosP, cosY_cosP);
 }
 
-//void QuaternionToEulerRad(Float4& out, const Float4& Q)
-//{
-//	float sinrCosp = 2.0f * (Q.W * Q.Z + Q.X * Q.Y);
-//	float cosrCosp = 1.0f - 2.0f * (Q.Z * Q.Z + Q.X * Q.X);
-//	out.Z = atan2f(sinrCosp, cosrCosp);
-//
-//	float pitchTest = Q.W * Q.X - Q.Y * Q.Z;
-//	float asinThreshold = 0.4999995f;
-//	float sinp = 2.0f * pitchTest;
-//
-//	if (pitchTest < -asinThreshold)
-//	{
-//		out.X = -(0.5f * MATH::PI);
-//	}
-//	else if (pitchTest > asinThreshold)
-//	{
-//		out.X = (0.5f * MATH::PI);
-//	}
-//	else
-//	{
-//		out.X = asinf(sinp);
-//	}
-//
-//	float sinyCosp = 2.0f * (Q.W * Q.Y + Q.X * Q.Z);
-//	float cosyCosp = 1.0f - 2.0f * (Q.X * Q.X + Q.Y * Q.Y);
-//	out.Y = atan2f(sinyCosp, cosyCosp);
-//}
+void MATH::CreateMatrixFromRows(Float3x3& out, const Float3& row0, const Float3& row1, const Float3& row2)
+{
+	__m128 r0 = _mm_set_ps(0.0f, row0.Z, row0.Y, row0.X);
+	__m128 r1 = _mm_set_ps(0.0f, row1.Z, row1.Y, row1.X);
+	__m128 r2 = _mm_set_ps(0.0f, row2.Z, row2.Y, row2.X);
 
-//void RotationToQuaternion(Float4& outQ, const Float4& rot)
-//{
-//	// DirectXMath 사용
-//	__m128 quat = DirectX::XMQuaternionRotationRollPitchYaw(rot.X, rot.Y, rot.Z);
-//	// 주의: XMQuaternionRotationRollPitchYaw의 매개변수 순서는 pitch, yaw, roll
-//	
-//	// Float4에 저장
-//	_mm_storeu_ps(&outQ.X, quat);
-//}
+	_mm_store_ps(&out.r[0].X, r0);
+	_mm_store_ps(&out.r[1].X, r1);
+	_mm_store_ps(&out.r[2].X, r2);
+}
+void MATH::CreateMatrixFromCols(Float3x3& out, const Float3& col0, const Float3& col1, const Float3& col2)
+{
+	__m128 r0 = _mm_set_ps(0.0f, col2.X, col1.X, col0.X);
+	__m128 r1 = _mm_set_ps(0.0f, col2.Y, col1.Y, col0.Y);
+	__m128 r2 = _mm_set_ps(0.0f, col2.Z, col1.Z, col0.Z);
 
-//void QuaternionRotaionRollPitchYaw(Float4& outQ, const Float4& angle)
-//{
-//	__m128 result = DirectX::XMQuaternionRotationRollPitchYawFromVector(_mm_loadu_ps(&angle.X));
-//	_mm_storeu_ps(&outQ.X, result);
-//}
+	_mm_store_ps(&out.r[0].X, r0);
+	_mm_store_ps(&out.r[1].X, r1);
+	_mm_store_ps(&out.r[2].X, r2);
+}
+void MATH::CreateMatrixFromRows(Float4x4& out, const Float4& row0, const Float4& row1, const Float4& row2, const Float4& row3)
+{
+	__m128 r0 = _mm_set_ps(row0.W, row0.Z, row0.Y, row0.X);
+	__m128 r1 = _mm_set_ps(row1.W, row1.Z, row1.Y, row1.X);
+	__m128 r2 = _mm_set_ps(row2.W, row2.Z, row2.Y, row2.X);
+	__m128 r3 = _mm_set_ps(row3.W, row3.Z, row3.Y, row3.X);
+
+	_mm_store_ps(&out.r[0].X, r0);
+	_mm_store_ps(&out.r[1].X, r1);
+	_mm_store_ps(&out.r[2].X, r2);
+	_mm_store_ps(&out.r[3].X, r3);
+}
+void MATH::CreateMatrixFromCols(Float4x4& out, const Float4& col0, const Float4& col1, const Float4& col2, const Float4& col3)
+{
+	__m128 r0 = _mm_set_ps(col3.X, col2.X, col1.X, col0.X); // 첫 행
+	__m128 r1 = _mm_set_ps(col3.Y, col2.Y, col1.Y, col0.Y); // 두 번째 행
+	__m128 r2 = _mm_set_ps(col3.Z, col2.Z, col1.Z, col0.Z); // 세 번째 행
+	__m128 r3 = _mm_set_ps(col3.W, col2.W, col1.W, col0.W); // 마지막 row W는 패딩
+
+	_mm_store_ps(&out.r[0].X, r0);
+	_mm_store_ps(&out.r[1].X, r1);
+	_mm_store_ps(&out.r[2].X, r2);
+	_mm_store_ps(&out.r[3].X, r3);
+}
 
 void MATH::MatrixIdentity(Float4x4& out)
 {
@@ -324,14 +267,14 @@ void MATH::MatrixMultiply(Float4& out, const Float4x4& lhs, const Float4& rhs)
 void MATH::MatrixMultiply(Float4& out, const Float4& lhs, const Float4x4& rhs)
 {
 	// lhs 벡터를 로드 
-	__m128 v = _mm_load_ps(&lhs.X); 
+	__m128 v = _mm_load_ps(&lhs.X);
 	// [X Y Z W] 결과를 초기화 
-	__m128 result = _mm_setzero_ps(); 
+	__m128 result = _mm_setzero_ps();
 	// 각 성분에 대해 행렬 열을 곱하고 합산 
 	__m128 col0 = _mm_set1_ps(lhs.X);
-	__m128 col1 = _mm_set1_ps(lhs.Y); 
-	__m128 col2 = _mm_set1_ps(lhs.Z); 
-	__m128 col3 = _mm_set1_ps(lhs.W); 
+	__m128 col1 = _mm_set1_ps(lhs.Y);
+	__m128 col2 = _mm_set1_ps(lhs.Z);
+	__m128 col3 = _mm_set1_ps(lhs.W);
 	// 행렬 열별 곱셈 
 	__m128 r0 = _mm_load_ps(&rhs.r[0].X);
 	__m128 r1 = _mm_load_ps(&rhs.r[1].X);
@@ -339,8 +282,8 @@ void MATH::MatrixMultiply(Float4& out, const Float4& lhs, const Float4x4& rhs)
 	__m128 r3 = _mm_load_ps(&rhs.r[3].X);
 	result = _mm_add_ps(result, _mm_mul_ps(col0, r0));
 	result = _mm_add_ps(result, _mm_mul_ps(col1, r1));
-	result = _mm_add_ps(result, _mm_mul_ps(col2, r2)); 
-	result = _mm_add_ps(result, _mm_mul_ps(col3, r3)); 
+	result = _mm_add_ps(result, _mm_mul_ps(col2, r2));
+	result = _mm_add_ps(result, _mm_mul_ps(col3, r3));
 	// 결과를 out에 저장 
 	_mm_store_ps(&out.X, result);
 }
@@ -406,40 +349,99 @@ void MATH::MatrixInverse(Float4x4& out, const Float4x4& src)
 	memcpy_s(&out, sizeof(Float4x4), &matrix, sizeof(DirectX::XMMATRIX));
 }
 
-//void MatrixCompose(Float4x4& out, const Float4& scale, const Float4& rotAngle, const Float4& pos)
-//{
-//	__m128 convertRotAngle = _mm_loadu_ps(&rotAngle.X);
-//	convertRotAngle = _mm_shuffle_ps(convertRotAngle, convertRotAngle, _MM_SHUFFLE(3, 0, 2, 1));
-//	__m128 quaternionVectorOrigin = DirectX::XMQuaternionRotationRollPitchYawFromVector(convertRotAngle);
-//
-//	__m128 rotationVector = _mm_mul_ps(convertRotAngle, _mm_loadu_ps(&MATH::DegToRad.X));
-//	rotationVector = _mm_shuffle_ps(rotationVector, rotationVector, _MM_SHUFFLE(3, 0, 2, 1));
-//	__m128 quaternionVector = DirectX::XMQuaternionRotationRollPitchYawFromVector(rotationVector);
-//
-//	DirectX::XMMATRIX matrix = DirectX::XMMatrixAffineTransformation(_mm_loadu_ps(&scale.X), quaternionVectorOrigin, quaternionVector, _mm_loadu_ps(&pos.X));
-//	memcpy_s(&out, sizeof(Float4x4), &matrix, sizeof(DirectX::XMMATRIX));
-//}
+/// <summary>
+/// 완전 SIMD를 활용한 함수는 아님. 가독성을 위해 간략히 계산. 성능이슈있으면 리팰토링 할 것.
+/// </summary>
+void MATH::MatrixDeterminant(float& out, const Float4x4& src)
+{
+	// 행을 SIMD로 한번에 로드 (정렬 불확실하면 _mm_loadu_ps)
+	__m128 row0 = _mm_loadu_ps(&src.r[0].X); // [r0.x r0.y r0.z r0.w]
+	__m128 row1 = _mm_loadu_ps(&src.r[1].X);
+	__m128 row2 = _mm_loadu_ps(&src.r[2].X);
+	__m128 row3 = _mm_loadu_ps(&src.r[3].X);
 
-//void MatrixCompose(Float4x4& out, const Float4& scale, const Float4& rotAngleDeg, const Float4& pos)
-//{
-//	// degree → radian
-//	__m128 radianAngles = _mm_mul_ps(_mm_loadu_ps(&rotAngleDeg.X), _mm_loadu_ps(&MATH::DegToRad.X));
-//
-//	radianAngles = _mm_shuffle_ps(radianAngles, radianAngles, _MM_SHUFFLE(3, 1, 2, 0));
-//	
-//	
-//	// Pitch, Yaw, Roll 순서로 파라미터를 받음.
-//	__m128 quaternion = DirectX::XMQuaternionRotationRollPitchYawFromVector(radianAngles);
-//
-//	// 원점 기준 affine 변환 행렬
-//	DirectX::XMMATRIX matrix = DirectX::XMMatrixAffineTransformation(
-//		_mm_loadu_ps(&scale.X),
-//		DirectX::g_XMZero,   // 회전 중심 = 원점
-//		quaternion,
-//		_mm_loadu_ps(&pos.X));
-//
-//	memcpy_s(&out, sizeof(Float4x4), &matrix, sizeof(DirectX::XMMATRIX));
-//}
+	// SIMD에서 각 성분을 추출 (간단하고 안전한 방법)
+	float a00 = src.r[0].X, a01 = src.r[0].Y, a02 = src.r[0].Z, a03 = src.r[0].W;
+	float a10 = src.r[1].X, a11 = src.r[1].Y, a12 = src.r[1].Z, a13 = src.r[1].W;
+	float a20 = src.r[2].X, a21 = src.r[2].Y, a22 = src.r[2].Z, a23 = src.r[2].W;
+	float a30 = src.r[3].X, a31 = src.r[3].Y, a32 = src.r[3].Z, a33 = src.r[3].W;
+
+	// 3x3 소행렬식 계산 함수 (명확성 위해 인라인으로 작성)
+	auto det3 = [](float m00, float m01, float m02,
+		float m10, float m11, float m12,
+		float m20, float m21, float m22) -> float
+		{
+			// det = m00*(m11*m22 - m12*m21) - m01*(m10*m22 - m12*m20) + m02*(m10*m21 - m11*m20)
+			return m00 * (m11 * m22 - m12 * m21)
+				- m01 * (m10 * m22 - m12 * m20)
+				+ m02 * (m10 * m21 - m11 * m20);
+		};
+
+	// 첫 번째 행의 각 원소에 대응하는 3x3 소행렬의 행렬식 (첫 행 제거, 각 열 순서로 제외)
+	// minor0 : remove col 0 -> use columns 1,2,3 from rows 1..3
+	float m0 = det3(
+		a11, a12, a13,
+		a21, a22, a23,
+		a31, a32, a33
+	);
+
+	// minor1 : remove col 1 -> use cols 0,2,3
+	float m1 = det3(
+		a10, a12, a13,
+		a20, a22, a23,
+		a30, a32, a33
+	);
+
+	// minor2 : remove col 2 -> use cols 0,1,3
+	float m2 = det3(
+		a10, a11, a13,
+		a20, a21, a23,
+		a30, a31, a33
+	);
+
+	// minor3 : remove col 3 -> use cols 0,1,2
+	float m3 = det3(
+		a10, a11, a12,
+		a20, a21, a22,
+		a30, a31, a32
+	);
+
+	// Laplace expansion along the first row:
+	// det = a00 * m0 - a01 * m1 + a02 * m2 - a03 * m3
+	out = a00 * m0 - a01 * m1 + a02 * m2 - a03 * m3;
+}
+
+void MATH::MatrixDeterminant(float& out, const Float3x3& src)
+{
+	// Load rows (XYZ, W는 패딩)
+	__m128 r0 = _mm_load_ps(&src.r[0].X);
+	__m128 r1 = _mm_load_ps(&src.r[1].X);
+	__m128 r2 = _mm_load_ps(&src.r[2].X);
+
+	// r1.yzxw  (shuffle to [y z x w])
+	__m128 r1_yzx = _mm_shuffle_ps(r1, r1, _MM_SHUFFLE(3, 0, 2, 1));
+	// r2.zxyw  (shuffle to [z x y w])
+	__m128 r2_zxy = _mm_shuffle_ps(r2, r2, _MM_SHUFFLE(3, 1, 0, 2));
+	// r1.zxyw  (shuffle to [z x y w])
+	__m128 r1_zxy = _mm_shuffle_ps(r1, r1, _MM_SHUFFLE(3, 1, 0, 2));
+	// r2.yzxw  (shuffle to [y z x w])
+	__m128 r2_yzx = _mm_shuffle_ps(r2, r2, _MM_SHUFFLE(3, 0, 2, 1));
+
+	// cross = r1 x r2 = (r1_yzx * r2_zxy) - (r1_zxy * r2_yzx)
+	__m128 c0 = _mm_mul_ps(r1_yzx, r2_zxy);
+	__m128 c1 = _mm_mul_ps(r1_zxy, r2_yzx);
+	__m128 cross = _mm_sub_ps(c0, c1);
+
+	// mul = r0 * cross -> [x*cx, y*cy, z*cz, w*cw]
+	__m128 mul = _mm_mul_ps(r0, cross);
+
+	// 안전하고 확실한 방법: 필요한 3요소(x,y,z)만 추출해서 합산
+	float x = _mm_cvtss_f32(mul);                                    // element 0
+	float y = _mm_cvtss_f32(_mm_shuffle_ps(mul, mul, _MM_SHUFFLE(3, 2, 1, 1))); // element 1
+	float z = _mm_cvtss_f32(_mm_shuffle_ps(mul, mul, _MM_SHUFFLE(3, 2, 1, 2))); // element 2
+
+	out = x + y + z;
+}
 
 void MATH::MatrixCompose(Float4x4& out, const Float4& scale, const Float4& rotDeg, const Float4& pos)
 {
@@ -478,13 +480,6 @@ void MATH::MatrixDecompose(Float4& outScale, Float4& outQuat, Float4& outPos, co
 	_mm_storeu_ps(&outPos.X, tmpPos);
 }
 
-//void MatrixDecomposeFromRotQ(const Float4x4& matrx, Float4& rotQ)
-//{
-//	Float4 tmpScale;
-//	Float4 tmpPos;
-//	MatrixDecompose(matrx, tmpScale, rotQ, tmpPos);
-//}
-
 void MATH::MatrixLookAtLH(Float4x4& out, const Float4& eyePos, const Float4& focusPos, const Float4& eyeUp)
 {
 	DirectX::XMMATRIX matrix = DirectX::XMMatrixLookAtLH(
@@ -515,4 +510,53 @@ float MATH::ConvertDegToRad(float deg)
 float MATH::ConvertRadToDeg(float rad)
 {
 	return rad * MATH::RadToDegFloat;
+}
+
+
+bool MATH::Intersection3D_Ray_Triangle
+(
+	float* pOutT,
+	const Float3& rayPos, const Float3& rayDir,
+	const Float3& triA, const Float3& triB, const Float3& triC
+)
+{
+	Float3 AtoC;
+	VectorSub(AtoC, triC, triA);
+
+	Float3 BtoC;
+	VectorSub(BtoC, triC, triB);
+
+	Float3 StoC;
+	VectorSub(StoC, triC, rayPos);
+
+	Float3x3 matDenominator;
+	CreateMatrixFromCols(matDenominator, rayDir, AtoC, BtoC);
+	Float3x3 matT;
+	CreateMatrixFromCols(matT, StoC, AtoC, BtoC);
+	Float3x3 matU;
+	CreateMatrixFromCols(matU, rayDir, StoC, BtoC);
+	Float3x3 matV;
+	CreateMatrixFromCols(matV, rayDir, AtoC, StoC);
+
+
+	float detDenominator;
+	MatrixDeterminant(detDenominator, matDenominator);
+	float detT;
+	MatrixDeterminant(detT, matT);
+	float detU;
+	MatrixDeterminant(detU, matU);
+	float detV;
+	MatrixDeterminant(detV, matV);
+
+	float t = detT / detDenominator;
+	float u = detU / detDenominator;
+	float v = detV / detDenominator;
+
+	if (u >= 0 && v >= 0 && u + v <= 1)
+	{
+		*pOutT = t;
+		return true;
+	}
+
+	return false;
 }

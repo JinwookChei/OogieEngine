@@ -126,6 +126,10 @@ struct IMesh : public IUnknown
 	virtual bool __stdcall Draw() = 0;
 
 	virtual void __stdcall GetVerticesData(E_VERTEX_FORMAT* pOutFormat, uint32_t* pOutStride, uint32_t* pOutCount, void** ppOutVertices) const = 0;
+
+	virtual void __stdcall GetIndicesData(uint32_t* pOutStride, uint32_t* pOutCount, void** ppOutIndices) const = 0;
+
+	//virtual void __stdcall GetMeshData(MeshDesc* pOutDesc) const = 0;
 };
 
 struct MaterialDesc

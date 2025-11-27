@@ -28,7 +28,6 @@ public:
 
 	IMesh* GetMesh() const;
 
-
 // MeshLoad Delegate
 public:
 	using MeshLoadedDelegate = std::function<void(IMesh*)>;
@@ -45,6 +44,7 @@ private:
 	Actor* pOwner_;
 
 	IMesh* pMesh_;
+	//MeshData* pMeshData_;
 
 	IMaterial* pMaterial_;
 

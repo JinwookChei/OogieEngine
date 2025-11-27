@@ -28,6 +28,8 @@ public:
 
 	//bool CheckBoundVolumeTEMP(const Float3& st, const Float3& dir);
 
+	bool TEMP_IntersectionRayTriangle(float* pOutT, const Float3& pos, const Float3& dir);
+
 protected:
 	ENGINE_API virtual void CleanUp();
 

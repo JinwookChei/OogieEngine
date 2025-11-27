@@ -57,6 +57,7 @@ IMesh* MeshManager::CreateMesh(const MeshDesc& desc, unsigned long long meshTag)
 	pMesh->AddInputLayout("TEXCOORD", 0, 16, 0, false);
 	pMesh->AddInputLayout("TANGENT", 0, 2, 0, false);
 
+
 	meshTable_.Insert(pMesh, &meshTag, 8);
 	return pMesh;
 }

@@ -127,6 +127,18 @@ void __stdcall Mesh::GetVerticesData
 	*ppOutVertices = pVertices_;
 }
 
+void __stdcall Mesh::GetIndicesData
+(
+	uint32_t* pOutStride, 
+	uint32_t* pOutCount, 
+	void** ppOutIndices
+) const
+{
+	*pOutStride = indexStride_;
+	*pOutCount = indexCount_;
+	*ppOutIndices = pIndices_;
+}
+
 void Mesh::CleanUp()
 {
 	if (nullptr != pVertices_)

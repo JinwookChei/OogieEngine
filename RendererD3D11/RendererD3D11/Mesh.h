@@ -40,6 +40,10 @@ public:
 
 	void __stdcall GetVerticesData(E_VERTEX_FORMAT* pOutFormat, uint32_t* pOutStride, uint32_t* pOutCount, void** ppOutVertices) const override;
 
+	void __stdcall GetIndicesData(uint32_t* pOutStride, uint32_t* pOutCount, void** ppOutIndices) const override;
+
+	//void __stdcall GetMeshData(MeshDesc* pOutDesc) const override;
+
 private:
 	void CleanUp();
 

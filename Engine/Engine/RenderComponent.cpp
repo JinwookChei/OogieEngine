@@ -6,6 +6,7 @@
 
 RenderComponent::RenderComponent(Actor* pOwner)
 	: pOwner_(pOwner),
+	//pMeshData_(nullptr),
 	pMesh_(nullptr),
 	pMaterial_(nullptr),
 	pTextureColor_(nullptr),
@@ -30,10 +31,12 @@ void RenderComponent::Render()
 	ConstantManager::Instance()->UpdatePerObejct(&cbPerObject);
 
 	pMaterial_->Setting();
+	//pMeshData_->Setting();
 	pMesh_->Setting();
 	pTextureColor_->Setting(0);
 	pTextureNormal_->Setting(1);
 	pInputLayout_->Setting();
+	//pMeshData_->Draw();
 	pMesh_->Draw();
 }
 
