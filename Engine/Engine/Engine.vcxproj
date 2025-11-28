@@ -155,6 +155,7 @@
     <ClInclude Include="..\..\Interface\ImGuiModule\IImGuiModule.h" />
     <ClInclude Include="..\..\Interface\Renderer\IRenderer.h" />
     <ClInclude Include="Actor.h" />
+    <ClInclude Include="ActorPicker.h" />
     <ClInclude Include="BlendStateManager.h" />
     <ClInclude Include="BoundVolume.h" />
     <ClInclude Include="Camera.h" />
@@ -167,7 +168,6 @@
     <ClInclude Include="Level.h" />
     <ClInclude Include="MaterialManager.h" />
     <ClInclude Include="MeshManager.h" />
-    <ClInclude Include="ObjectPicker.h" />
     <ClInclude Include="PointLight.h" />
     <ClInclude Include="RasterizerManager.h" />
     <ClInclude Include="RenderComponent.h" />
@@ -182,6 +182,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Actor.cpp" />
+    <ClCompile Include="ActorPicker.cpp" />
     <ClCompile Include="BlendStateManager.cpp" />
     <ClCompile Include="BoundVolume.cpp" />
     <ClCompile Include="Camera.cpp" />
@@ -195,7 +196,6 @@
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="MaterialManager.cpp" />
     <ClCompile Include="MeshManager.cpp" />
-    <ClCompile Include="ObjectPicker.cpp" />
     <ClCompile Include="PointLight.cpp" />
     <ClCompile Include="RasterizerManager.cpp" />
     <ClCompile Include="RenderComponent.cpp" />

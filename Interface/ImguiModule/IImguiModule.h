@@ -27,6 +27,8 @@ struct IImGuiManager : public IUnknown
 	virtual bool __stdcall WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) = 0;
 
 	virtual bool __stdcall BindCamera(IImGuiBindCamera* pCamera) = 0;
+
+	virtual bool __stdcall BindPickedActor(IImGuiBindPickedActor* pPickedActor) = 0;
 };
 
 

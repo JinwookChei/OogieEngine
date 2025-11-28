@@ -1,13 +1,13 @@
 #pragma once
 
 class Actor;
-class ObjectPicker
+class ActorPicker
 {
 public:
-	ObjectPicker();
-	~ObjectPicker();
+	ActorPicker();
+	~ActorPicker();
 
-	static ObjectPicker* GetInstance();;
+	static ActorPicker* GetInstance();;
 
 	void Tick(double deltaTime);
 

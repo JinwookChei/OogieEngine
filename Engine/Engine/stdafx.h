@@ -72,7 +72,7 @@
 #include "RasterizerManager.h"
 
 
-#include "ObjectPicker.h"
+#include "ActorPicker.h"
 #include "World.h"
 #include "Camera.h"
 #include "Light.h"
@@ -94,7 +94,7 @@ extern RasterizerManager* GRasterizerManager;
 extern World* GWorld;
 extern Camera* GMainCamera;
 extern Camera* GCurrentCamera;
-extern ObjectPicker* GObjectPicker;
+extern ActorPicker* GActorPicker;
 extern IDebugRenderer* GDebugRenderer;
 
 

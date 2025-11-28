@@ -32,6 +32,8 @@ public:
 	bool __stdcall WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) override;
 
 	bool __stdcall BindCamera(IImGuiBindCamera* pCamera) override;
+
+	bool __stdcall BindPickedActor(IImGuiBindPickedActor* pPickedActor) override;
 	
 private:
 	void CleanUp();

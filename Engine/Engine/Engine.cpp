@@ -25,7 +25,7 @@ RasterizerManager* GRasterizerManager = nullptr;
 World* GWorld = nullptr;
 Camera* GMainCamera = nullptr;
 Camera* GCurrentCamera = nullptr;
-ObjectPicker* GObjectPicker = nullptr;
+ActorPicker* GActorPicker = nullptr;
 IDebugRenderer* GDebugRenderer = nullptr;
 
 Engine::Engine()
@@ -128,7 +128,7 @@ bool Engine::Initialize
 
 	GWorld = new World;
 
-	GObjectPicker = new ObjectPicker;
+	GActorPicker = new ActorPicker;
 
 	return true;
 }
@@ -150,7 +150,7 @@ void Engine::Run()
 		// Input Update
 		GInputManager->Tick(deltaTime);
 
-		GObjectPicker->Tick(deltaTime);
+		GActorPicker->Tick(deltaTime);
 
 		// GameLoop
 		GWorld->CheckChangeLevel();
@@ -309,10 +309,10 @@ void Engine::CleanUp()
 {
 	ImGuiSystem::GetImGuiManager()->CleanUpImGui();
 
-	if (nullptr != GObjectPicker)
+	if (nullptr != GActorPicker)
 	{
-		delete GObjectPicker;
-		GObjectPicker = nullptr;
+		delete GActorPicker;
+		GActorPicker = nullptr;
 	}
 
 	if (nullptr != GWorld)

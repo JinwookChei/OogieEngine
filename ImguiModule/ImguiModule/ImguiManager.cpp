@@ -160,6 +160,11 @@ bool __stdcall ImGuiManager::BindCamera(IImGuiBindCamera* pCamera)
 	return true;
 }
 
+bool __stdcall ImGuiManager::BindPickedActor(IImGuiBindPickedActor* pPickedActor)
+{
+	return false;
+}
+
 
 
 void ImGuiManager::CleanUp()

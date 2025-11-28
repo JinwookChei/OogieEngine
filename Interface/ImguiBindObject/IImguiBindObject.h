@@ -6,3 +6,8 @@ struct IImGuiBindCamera
 
 	virtual IRenderTarget* __stdcall GetDebugBufferTargetForImGui() const = 0;
 };
+
+struct IImGuiBindPickedActor
+{
+
+};

@@ -2,28 +2,28 @@
 #include "Level.h"
 #include "BoundVolume.h"
 #include "RenderComponent.h"
-#include "ObjectPicker.h"
+#include "ActorPicker.h"
 
 
 
-ObjectPicker::ObjectPicker()
+ActorPicker::ActorPicker()
 	:pPickedActor_(nullptr),
 	curPickedActorDiff_(0.0f),
 	pickedMousePos_({ 0.0f, 0.0f })
 {
 }
 
-ObjectPicker::~ObjectPicker()
+ActorPicker::~ActorPicker()
 {
 	CleanUp();
 }
 
-ObjectPicker* ObjectPicker::GetInstance()
+ActorPicker* ActorPicker::GetInstance()
 {
-	return GObjectPicker;
+	return GActorPicker;
 }
 
-void ObjectPicker::Tick(double deltaTime)
+void ActorPicker::Tick(double deltaTime)
 {
 	if (InputManager::Instance()->IsDown(VK_LBUTTON))
 	{
@@ -34,6 +34,10 @@ void ObjectPicker::Tick(double deltaTime)
 
 		TryPickObject(ray);
 		
+
+		ImGuiSystem::GetImGuiManager();
+
+
 		// DEBUG
 		Float3 rayPos = { ray.origin_.X, ray.origin_.Y, ray.origin_.Z };
 		Float3 rayDir = { ray.dir_.X, ray.dir_.Y, ray.dir_.Z };
@@ -43,7 +47,7 @@ void ObjectPicker::Tick(double deltaTime)
 }
 
 
-void ObjectPicker::ScreenToWorldRay(Ray* pOutRay, const Float2& screenPos)
+void ActorPicker::ScreenToWorldRay(Ray* pOutRay, const Float2& screenPos)
 {
 	Float4x4 invProjection;
 	MATH::MatrixInverse(invProjection, GCurrentCamera->Projection());
@@ -75,7 +79,7 @@ void ObjectPicker::ScreenToWorldRay(Ray* pOutRay, const Float2& screenPos)
 	pOutRay->maxDistance_ = GCurrentCamera->GetFar();	
 }
 
-bool ObjectPicker::TryPickObject(const Ray& ray)
+bool ActorPicker::TryPickObject(const Ray& ray)
 {
 	pPickedActor_ = nullptr;
 	curPickedActorDiff_ = FLT_MAX;
@@ -149,7 +153,7 @@ bool ObjectPicker::TryPickObject(const Ray& ray)
 }
 
 
-bool ObjectPicker::RaycastBroadPhase(float* pOutDistance, const Ray& ray, Actor* pActor)
+bool ActorPicker::RaycastBroadPhase(float* pOutDistance, const Ray& ray, Actor* pActor)
 {
 	// AABB
 	BoundVolume* pBoundVolume = pActor->GetBoundVolume();
@@ -158,7 +162,7 @@ bool ObjectPicker::RaycastBroadPhase(float* pOutDistance, const Ray& ray, Actor*
 	return MATH::Intersection3D_Ray_AABB(pOutDistance, ray, aabb);
 }
 
-bool ObjectPicker::RaycastNarrowPhase(float* pOutDistance, const Ray& ray, Actor* pActor)
+bool ActorPicker::RaycastNarrowPhase(float* pOutDistance, const Ray& ray, Actor* pActor)
 {
 	RenderComponent* pRenderer = pActor->GetRenderComponent();
 	IMesh* pMesh = pRenderer->GetMesh();
@@ -214,12 +218,12 @@ bool ObjectPicker::RaycastNarrowPhase(float* pOutDistance, const Ray& ray, Actor
 }
 
 
-Actor* ObjectPicker::GetPickedActor() const
+Actor* ActorPicker::GetPickedActor() const
 {
-	return GObjectPicker->pPickedActor_;
+	return GActorPicker->pPickedActor_;
 }
 
-void ObjectPicker::CleanUp()
+void ActorPicker::CleanUp()
 {
 
 }

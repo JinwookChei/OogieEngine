@@ -79,11 +79,11 @@
     <Filter Include="Source Files\Component\BoundVolume">
       <UniqueIdentifier>{fda48a9c-d09b-4392-83eb-db9b0658ba8f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\ObjectPicker">
-      <UniqueIdentifier>{2e754504-9966-4a77-9eb7-3ceb07170912}</UniqueIdentifier>
-    </Filter>
     <Filter Include="CoreTypes">
       <UniqueIdentifier>{ef6808b8-b970-469a-8264-744640894f1a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ActorPicker">
+      <UniqueIdentifier>{2e754504-9966-4a77-9eb7-3ceb07170912}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -156,9 +156,6 @@
     <ClInclude Include="BoundVolume.h">
       <Filter>Source Files\Component\BoundVolume</Filter>
     </ClInclude>
-    <ClInclude Include="ObjectPicker.h">
-      <Filter>Source Files\ObjectPicker</Filter>
-    </ClInclude>
     <ClInclude Include="SamplerManager.h">
       <Filter>Source Files\Manager\GraphicsManager</Filter>
     </ClInclude>
@@ -182,6 +179,9 @@
     </ClInclude>
     <ClInclude Include="..\..\CoreTypes\MathType\MathType.h">
       <Filter>CoreTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="ActorPicker.h">
+      <Filter>Source Files\ActorPicker</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -242,9 +242,6 @@
     <ClCompile Include="BoundVolume.cpp">
       <Filter>Source Files\Component\BoundVolume</Filter>
     </ClCompile>
-    <ClCompile Include="ObjectPicker.cpp">
-      <Filter>Source Files\ObjectPicker</Filter>
-    </ClCompile>
     <ClCompile Include="SamplerManager.cpp">
       <Filter>Source Files\Manager\GraphicsManager</Filter>
     </ClCompile>
@@ -259,6 +256,9 @@
     </ClCompile>
     <ClCompile Include="TextureManager.cpp">
       <Filter>Source Files\Manager\GraphicsManager</Filter>
+    </ClCompile>
+    <ClCompile Include="ActorPicker.cpp">
+      <Filter>Source Files\ActorPicker</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
