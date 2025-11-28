@@ -30,6 +30,16 @@
 #include <cstdio>
 #include <DirectXMath.h>
 
+
+// CoreTypes
+#include <MathType/MathType.h>
+#include <GeometryType/GeometryType.h>
+
+
+// Utility
 #include "LinkedList.h"
 #include "HashTable.h"
+#include "Math.h"
+
+
 

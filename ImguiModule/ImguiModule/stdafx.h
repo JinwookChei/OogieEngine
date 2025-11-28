@@ -38,12 +38,17 @@
 #include <ImGui/imgui_impl_win32.h>
 #include <ImGui/imgui_impl_dx11.h>
 
+
+// CoreTypes
+#include <MathType/MathType.h>
+#include <GeometryType/GeometryType.h>
+#include <VertexType/VertexType.h>
+
+
 // Utility
 #include <Utility/Math.h>
 #include <Utility/LinkedList.h>
 
-// CoreTypes
-#include <VertexType/VertexType.h>
 
 // Interface
 #include <Application/IApplication.h>

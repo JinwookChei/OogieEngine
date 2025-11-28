@@ -150,6 +150,8 @@
     <ClCompile Include="TestActor.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\CoreTypes\GeometryType\GeometryType.h" />
+    <ClInclude Include="..\..\CoreTypes\MathType\MathType.h" />
     <ClInclude Include="..\..\CoreTypes\VertexType\VertexType.h" />
     <ClInclude Include="..\..\Interface\Application\IApplication.h" />
     <ClInclude Include="..\..\Interface\ImGuiBindObject\IImGuiBindObject.h" />

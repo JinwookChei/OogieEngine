@@ -57,13 +57,17 @@
 #include <functional>
 
 
+// CoreTypes
+#include <MathType/MathType.h>
+#include <GeometryType/GeometryType.h>
+#include <VertexType/VertexType.h>
+
+
 // Utility
 #include <Utility/Math.h>
 #include <Utility/LinkedList.h>
 #include <Utility/HashTable.h>
 
-// CoreTypes
-#include <VertexType/VertexType.h>
  
 // Interface
 #include <Application/IApplication.h>

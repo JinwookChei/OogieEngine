@@ -76,10 +76,10 @@ void MATH::VectorNormalize(Float4& out, const Float4& lhs)
 	_mm_storeu_ps(&out.X, result);
 }
 
-float MATH::VectorLength(const Float4& lhs)
+void MATH::VectorLength(float& out, const Float4& lhs)
 {
 	__m128 result = DirectX::XMVector3Length(_mm_loadu_ps(&lhs.X));
-	return result.m128_f32[0];
+	out = result.m128_f32[0];
 }
 
 
@@ -126,10 +126,10 @@ void MATH::VectorNormalize(Float3& out, const Float3& lhs)
 	StoreFloat3(result, out);
 }
 
-float MATH::VectorLength(const Float3& lhs)
+void MATH::VectorLength(float& out, const Float3& lhs)
 {
 	__m128 result = DirectX::XMVector3Length(LoadFloat3(lhs));
-	return result.m128_f32[0];
+	out = result.m128_f32[0];
 }
 
 void MATH::VectorToEulerDeg(Float4& out, const Float3& vector)
@@ -513,34 +513,79 @@ float MATH::ConvertRadToDeg(float rad)
 }
 
 
-bool MATH::Intersection3D_Ray_Triangle
-(
-	float* pOutT,
-	const Float3& rayPos, const Float3& rayDir,
-	const Float3& triA, const Float3& triB, const Float3& triC
-)
+//bool MATH::Intersection3D_Ray_Triangle
+//(
+//	float* pOutT,
+//	const Float3& rayPos, const Float3& rayDir,
+//	const Float3& triA, const Float3& triB, const Float3& triC
+//)
+//{
+//	Float3 AtoC;
+//	VectorSub(AtoC, triC, triA);
+//
+//	Float3 BtoC;
+//	VectorSub(BtoC, triC, triB);
+//
+//	Float3 StoC;
+//	VectorSub(StoC, triC, rayPos);
+//
+//	Float3x3 matDenominator;
+//	CreateMatrixFromCols(matDenominator, rayDir, AtoC, BtoC);
+//	Float3x3 matT;
+//	CreateMatrixFromCols(matT, StoC, AtoC, BtoC);
+//	Float3x3 matU;
+//	CreateMatrixFromCols(matU, rayDir, StoC, BtoC);
+//	Float3x3 matV;
+//	CreateMatrixFromCols(matV, rayDir, AtoC, StoC);
+//
+//
+//	float detDenominator;
+//	MatrixDeterminant(detDenominator, matDenominator);
+//	float detT;
+//	MatrixDeterminant(detT, matT);
+//	float detU;
+//	MatrixDeterminant(detU, matU);
+//	float detV;
+//	MatrixDeterminant(detV, matV);
+//
+//	float t = detT / detDenominator;
+//	float u = detU / detDenominator;
+//	float v = detV / detDenominator;
+//
+//	if (u >= 0 && v >= 0 && u + v <= 1)
+//	{
+//		*pOutT = t;
+//		return true;
+//	}
+//
+//	return false;
+//}
+
+bool MATH::Intersection3D_Ray_Triangle(float* pOutDistance, const Ray& ray, const Triangle& triangle)
 {
-	Float3 AtoC;
-	VectorSub(AtoC, triC, triA);
+	Float3 rayOrigin{ ray.origin_.X,ray.origin_.Y, ray.origin_.Z };
+	Float3 rayDir{ ray.dir_.X ,ray.dir_.Y ,ray.dir_.Z };
 
-	Float3 BtoC;
-	VectorSub(BtoC, triC, triB);
-
-	Float3 StoC;
-	VectorSub(StoC, triC, rayPos);
+	Float3 aToc;
+	VectorSub(aToc, triangle.c_, triangle.a_);
+	Float3 bToc;
+	VectorSub(bToc, triangle.c_, triangle.b_);
+	Float3 sToc;
+	VectorSub(sToc, triangle.c_, rayOrigin);
 
 	Float3x3 matDenominator;
-	CreateMatrixFromCols(matDenominator, rayDir, AtoC, BtoC);
+	CreateMatrixFromCols(matDenominator, rayDir, aToc, bToc);
 	Float3x3 matT;
-	CreateMatrixFromCols(matT, StoC, AtoC, BtoC);
+	CreateMatrixFromCols(matT, sToc, aToc, bToc);
 	Float3x3 matU;
-	CreateMatrixFromCols(matU, rayDir, StoC, BtoC);
+	CreateMatrixFromCols(matU, rayDir, sToc, bToc);
 	Float3x3 matV;
-	CreateMatrixFromCols(matV, rayDir, AtoC, StoC);
-
+	CreateMatrixFromCols(matV, rayDir, aToc, sToc);
 
 	float detDenominator;
 	MatrixDeterminant(detDenominator, matDenominator);
+	if (std::abs(detDenominator) < 1e-6f) return false;		// 0으로 나누는 상황 방지 (레이가 삼각형 평면과 평행할 때)
+
 	float detT;
 	MatrixDeterminant(detT, matT);
 	float detU;
@@ -552,11 +597,57 @@ bool MATH::Intersection3D_Ray_Triangle
 	float u = detU / detDenominator;
 	float v = detV / detDenominator;
 
-	if (u >= 0 && v >= 0 && u + v <= 1)
+	if (t < 0.0f || t > ray.maxDistance_)
 	{
-		*pOutT = t;
-		return true;
+		return false;
+	}
+	else
+	{
+		if (u >= 0.0f && v >= 0.0f && u + v <= 1.0f)
+		{
+			*pOutDistance = t;
+			return true;
+		}
 	}
 
 	return false;
+}
+
+bool MATH::Intersection3D_Ray_AABB(float* pOutDistance, const Ray& ray, const AABB& aabb)
+{
+	// X축 슬랩(평면)에 대한 진입/진출 t 값 계산
+	float t1 = (aabb.minPos_.X - ray.origin_.X) / ray.dir_.X;
+	float t2 = (aabb.maxPos_.X - ray.origin_.X) / ray.dir_.X;
+	// tmin은 항상 작은 값, tmax는 항상 큰 값이 되도록 설정
+	float tMin = min(t1, t2);
+	float tMax = max(t1, t2);
+
+	// Y축 슬랩 검사
+	float t3 = (aabb.minPos_.Y - ray.origin_.Y) / ray.dir_.Y;
+	float t4 = (aabb.maxPos_.Y - ray.origin_.Y) / ray.dir_.Y;
+	tMin = max(tMin, min(t3, t4));
+	tMax = min(tMax, max(t3, t4));
+
+	// Z축 슬랩 검사
+	float t5 = (aabb.minPos_.Z - ray.origin_.Z) / ray.dir_.Z;
+	float t6 = (aabb.maxPos_.Z - ray.origin_.Z) / ray.dir_.Z;
+	tMin = max(tMin, min(t5, t6));
+	tMax = min(tMax, max(t5, t6));
+
+	// 충돌 조건 확인
+	// 1. tMax < tMin: 슬랩들의 교차 구간이 없음 (빗나감)
+	// 2. tMax < 0: AABB가 레이의 뒤쪽에 있음
+	if (tMax < tMin || tMax < 0.0f) {
+		return false;
+	}
+
+	float hitT = (tMin < 0.0f) ? tMax : tMin;
+
+	if (hitT > ray.maxDistance_)
+	{
+		return false;
+	}
+
+	*pOutDistance = hitT;
+	return true;
 }

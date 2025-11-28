@@ -21,6 +21,7 @@ void StartLevel::BeginPlay()
 	TestActor* pActor1 = SpawnActor<TestActor>(E_ACTOR_TYPE::NORMAL);
 	pActor1->GetWorldTransform().SetPosition({ 0.0f, 0.0f, 0.0f, 1.0f });
 	pActor1->GetWorldTransform().SetScale({ 10.0f, 10.0f, 1.0f, 0.0f });
+	//pActor1->GetWorldTransform().SetScale({ 1.0f, 1.0f, 1.0f, 0.0f });
 	//pActor1->GetWorldTransform().AddRotaionZ(90.0f);
 
 	/*DirectionLight* pDirectionLight = SpawnLight<DirectionLight>();

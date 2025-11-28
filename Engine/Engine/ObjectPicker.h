@@ -11,8 +11,14 @@ public:
 
 	void Tick(double deltaTime);
 
-	//void RayCastFromScreen(Float4* pOutPos, Float4* pOutDir, const Float2& screenPos);
-	void RayCastFromScreen(const Float2& screenPos);
+	void ScreenToWorldRay(Ray* pOutRay, const Float2& screenPos);
+
+	bool TryPickObject(const Ray& ray);
+	
+	bool RaycastBroadPhase(float* pOutDistance, const Ray& ray, Actor* pActor);
+
+	bool RaycastNarrowPhase(float* pOutDistance, const Ray& ray, Actor* pActor);
+
 
 	Actor* GetPickedActor() const;
 

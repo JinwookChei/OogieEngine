@@ -101,5 +101,11 @@
     <ClInclude Include="..\..\CoreTypes\VertexType\VertexType.h">
       <Filter>CoreTypes</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\CoreTypes\GeometryType\GeometryType.h">
+      <Filter>CoreTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\CoreTypes\MathType\MathType.h">
+      <Filter>CoreTypes</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

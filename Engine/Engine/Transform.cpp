@@ -123,10 +123,35 @@ Float4 Transform::UpVector() const
 	return normal;
 }
 
+void Transform::BindOnTransformUpdateLoaded(TransformUpdateDelegate callback)
+{
+	if (!callback)
+	{
+		DEBUG_BREAK();
+		return;
+	}
+	OnTransformUpdateLoaded_.push_back(callback);
+}
+
+void Transform::BroadcastOnTransformUpdate()
+{
+	for (const auto& callback : OnTransformUpdateLoaded_)
+	{
+		if (!callback)
+		{
+			DEBUG_BREAK();
+			continue;
+		}
+
+		callback();
+	}
+}
+
 void Transform::TransformUpdate()
 {
 	MATH::MatrixCompose(worldMatrix_, scale_, rotation_, position_);
 
 	MATH::MatrixDecompose(scale_, quaternion_, position_, worldMatrix_);
 
+	BroadcastOnTransformUpdate();
 }

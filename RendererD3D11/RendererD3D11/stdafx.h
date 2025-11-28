@@ -43,11 +43,15 @@
 #include <DirectXTex/DirectXTex.h>
 #include <DirectXTex/DirectXTex.inl>
 
-// Utility
-#include <Utility/Math.h>
 
 // CoreTypes
+#include <MathType/MathType.h>
+#include <GeometryType/GeometryType.h>
 #include <VertexType/VertexType.h>
+
+
+// Utility
+#include <Utility/Math.h>
 
 // Interface
 #include <Renderer/IRenderer.h>

@@ -39,6 +39,17 @@ public:
 	ENGINE_API Float4 __stdcall RightVector() const;
 	ENGINE_API Float4 __stdcall UpVector() const;
 
+
+	// MeshLoad Delegate
+public:
+	using TransformUpdateDelegate = std::function<void()>;
+	void BindOnTransformUpdateLoaded(TransformUpdateDelegate callback);
+
+private:
+	void BroadcastOnTransformUpdate();
+	std::vector<TransformUpdateDelegate> OnTransformUpdateLoaded_;
+	// MeshLoad Delegate End	
+
 private:
 	void TransformUpdate();
 

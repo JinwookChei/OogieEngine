@@ -33,6 +33,8 @@ void MeshManager::TestLoad()
 	unsigned long long meshTag_1 = 1;
 	CreateMesh(meshDesc_1, meshTag_1);
 
+
+
 	std::vector<SimpleVertex> sphereVertices;
 	std::vector<WORD> sphereIndices;
 	GeometryGenerator::CreateSphere(&sphereVertices, &sphereIndices);

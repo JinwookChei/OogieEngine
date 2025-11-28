@@ -1,12 +1,7 @@
 #pragma once
 
-struct BoundVolume_AABB
-{
-	Float3 minPos = { -1.0f, -1.0f ,-1.0f };
-	Float3 maxPos = { 1.0f, 1.0f ,1.0f };;
-};
-
 class RenderComponent;
+class Transform;
 
 class BoundVolume
 {
@@ -15,16 +10,16 @@ public:
 
 	~BoundVolume();
 
-	bool Init(RenderComponent* pRenderComponent);
+	bool Init(RenderComponent* pRenderComponent, Transform* pTransform);
 
 	void UpdateBoundVolume(IMesh* pMesh);
 
-	bool IntersectionRayAABB(float* pOutT, const Float3& origin, const Float3& dir, float maxDistance);
+	const AABB& GetAABB() const;
 
 private:
-	bool CalculateBoundVolume
+	bool CalculateAABB
 	(
-		BoundVolume_AABB* pOutBoundVolume,
+		AABB* pOutAABB,
 		E_VERTEX_FORMAT vertexFormat,
 		uint32_t vertexStride,
 		uint32_t vertexCount,
@@ -35,5 +30,5 @@ private:
 
 	IMesh* pMesh_;
 
-	BoundVolume_AABB boundVolume_;
+	AABB aabb_;
 };

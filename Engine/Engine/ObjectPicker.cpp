@@ -1,7 +1,9 @@
 #include "stdafx.h"
 #include "Level.h"
 #include "BoundVolume.h"
+#include "RenderComponent.h"
 #include "ObjectPicker.h"
+
 
 
 ObjectPicker::ObjectPicker()
@@ -27,11 +29,21 @@ void ObjectPicker::Tick(double deltaTime)
 	{
 		pickedMousePos_ = InputManager::Instance()->GetCurrentMousePosition();
 
-		RayCastFromScreen(pickedMousePos_);
+		Ray ray;
+		ScreenToWorldRay(&ray, pickedMousePos_);
+
+		TryPickObject(ray);
+		
+		// DEBUG
+		Float3 rayPos = { ray.origin_.X, ray.origin_.Y, ray.origin_.Z };
+		Float3 rayDir = { ray.dir_.X, ray.dir_.Y, ray.dir_.Z };
+		MATH::VectorNormalize(rayDir, rayDir);
+		GDebugRenderer->DrawRay(rayPos, rayDir, GCurrentCamera->GetFar(), { 1.0f, 0.0f, 0.0f, 1.0f });
 	}
 }
 
-void ObjectPicker::RayCastFromScreen(const Float2& screenPos)
+
+void ObjectPicker::ScreenToWorldRay(Ray* pOutRay, const Float2& screenPos)
 {
 	Float4x4 invProjection;
 	MATH::MatrixInverse(invProjection, GCurrentCamera->Projection());
@@ -54,22 +66,20 @@ void ObjectPicker::RayCastFromScreen(const Float2& screenPos)
 	MATH::VectorScale(clickPos_WorldSpace, clickPos_WorldSpace, 1 / clickPos_WorldSpace.W);
 
 	Float4 camPos_WorldSpace = GCurrentCamera->GetWorldTransform().GetPosition();
+	Float4 rayDir = clickPos_WorldSpace - camPos_WorldSpace;
+	rayDir.W = 0;
+	MATH::VectorNormalize(rayDir, rayDir);
 
-	// Debug Ray
-	Float3 rayStart = { camPos_WorldSpace.X, camPos_WorldSpace.Y, camPos_WorldSpace.Z };
-	Float4 rayDir_V4 = clickPos_WorldSpace - camPos_WorldSpace;
-	Float3 rayDir_V3 = { rayDir_V4.X, rayDir_V4.Y, rayDir_V4.Z };
-	Float3 rayDirNorm;
-	MATH::VectorNormalize(rayDirNorm, rayDir_V3);
-	GDebugRenderer->DrawRay(rayStart, rayDirNorm, GCurrentCamera->GetFar(), { 1.0f, 0.0f, 0.0f, 1.0f });
+	pOutRay->origin_ = clickPos_WorldSpace;
+	pOutRay->dir_ = rayDir;
+	pOutRay->maxDistance_ = GCurrentCamera->GetFar();	
+}
 
-	// Debug Ray End
-
-
+bool ObjectPicker::TryPickObject(const Ray& ray)
+{
 	pPickedActor_ = nullptr;
 	curPickedActorDiff_ = FLT_MAX;
 
-	// Picking 후보.
 	Level* pCurLevel = World::Instance()->GetLevel();
 	LinkedList* pActorList = pCurLevel->GetActorList(E_ACTOR_TYPE::NORMAL);
 	LINK_NODE* pActorIter = pActorList->GetHead();
@@ -80,27 +90,52 @@ void ObjectPicker::RayCastFromScreen(const Float2& screenPos)
 		Float4x4 invWorldMat;
 		MATH::MatrixInverse(invWorldMat, pActor->GetWorldTransform().GetWorldMatrix());
 
-		Float4 camPos_ObjSpace;
-		MATH::MatrixMultiply(camPos_ObjSpace, camPos_WorldSpace, invWorldMat);
-		Float3 camPos_ObjSpace_V3 = { camPos_ObjSpace.X, camPos_ObjSpace.Y, camPos_ObjSpace.Z };
+		Float4 rayOrigin_ObjSpace;
+		MATH::MatrixMultiply(rayOrigin_ObjSpace, ray.origin_, invWorldMat);
+		Float3 rayOrigin_ObjSpace_V3 = { rayOrigin_ObjSpace.X, rayOrigin_ObjSpace.Y, rayOrigin_ObjSpace.Z };
 
 		Float4 rayDir_ObjSpace;
-		MATH::MatrixMultiply(rayDir_ObjSpace, rayDir_V4, invWorldMat);
+		MATH::MatrixMultiply(rayDir_ObjSpace, ray.dir_, invWorldMat);
 		Float3 rayDir_ObjSpace_V3 = { rayDir_ObjSpace.X, rayDir_ObjSpace.Y, rayDir_ObjSpace.Z };
 		MATH::VectorNormalize(rayDir_ObjSpace_V3, rayDir_ObjSpace_V3);
+		
+		// 이거 필요없음!!!
+		// 이미 Normalize된 Dir을 오브젝트 공간으로 변환했기때문에, distance가 적용되었음.
+		// ObjectSpace에서 RayDistance 계산.
+		//Float4 rayEndPoint_WorldSpace;
+		//rayEndPoint_WorldSpace.X = ray.origin_.X + ray.dir_.X * ray.maxDistance_;
+		//rayEndPoint_WorldSpace.Y = ray.origin_.Y + ray.dir_.Y * ray.maxDistance_;
+		//rayEndPoint_WorldSpace.Z = ray.origin_.Z + ray.dir_.Z * ray.maxDistance_;
+		//rayEndPoint_WorldSpace.W = 1.0f;
+		//Float4 rayEndPoint_ObjSpace;
+		//MATH::MatrixMultiply(rayEndPoint_ObjSpace, rayEndPoint_WorldSpace, invWorldMat);
+		//Float3 rayEndPoint_ObjSpace_V3 = { rayEndPoint_ObjSpace.X, rayEndPoint_ObjSpace.Y, rayEndPoint_ObjSpace.Z };
+		//Float3 originToEnd_ObjSpace;
+		//MATH::VectorSub(originToEnd_ObjSpace, rayEndPoint_ObjSpace_V3, rayOrigin_ObjSpace_V3);
+		//float maxDistance_ObjSpace;
+		//MATH::VectorLength(maxDistance_ObjSpace, originToEnd_ObjSpace);
 
 
-		float diffVolume;
-		if (true == pActor->GetBoundVolumeTEMP()->IntersectionRayAABB(&diffVolume, camPos_ObjSpace_V3, rayDir_ObjSpace_V3, GCurrentCamera->GetFar()))
+		// ObjectSapce Ray
+		Ray ray_ObjSpace;
+		ray_ObjSpace.origin_ = rayOrigin_ObjSpace;
+		ray_ObjSpace.dir_ = rayDir_ObjSpace;
+		ray_ObjSpace.maxDistance_ = ray.maxDistance_;
+
+
+		float diffToVolume;
+		if (RaycastBroadPhase(&diffToVolume, ray_ObjSpace, pActor))
 		{
-			if (curPickedActorDiff_ > diffVolume)
+			DEBUG_BREAK();
+			if (curPickedActorDiff_ > diffToVolume)
 			{
-				float diffVertex;
-				if (pActor->TEMP_IntersectionRayTriangle(&diffVertex, camPos_ObjSpace_V3, rayDir_ObjSpace_V3))
+				float diffToVertex;
+				if (RaycastNarrowPhase(&diffToVertex, ray_ObjSpace, pActor))
 				{
-					if (curPickedActorDiff_ > diffVertex)
+					DEBUG_BREAK();
+					if (curPickedActorDiff_ > diffToVertex)
 					{
-						curPickedActorDiff_ = diffVertex;
+						curPickedActorDiff_ = diffToVertex;
 						pPickedActor_ = pActor;
 					}
 				}
@@ -109,7 +144,75 @@ void ObjectPicker::RayCastFromScreen(const Float2& screenPos)
 
 		pActorIter = pActorIter->next_;
 	}
+
+	return nullptr != pPickedActor_;
 }
+
+
+bool ObjectPicker::RaycastBroadPhase(float* pOutDistance, const Ray& ray, Actor* pActor)
+{
+	// AABB
+	BoundVolume* pBoundVolume = pActor->GetBoundVolume();
+	const AABB& aabb = pBoundVolume->GetAABB();
+
+	return MATH::Intersection3D_Ray_AABB(pOutDistance, ray, aabb);
+}
+
+bool ObjectPicker::RaycastNarrowPhase(float* pOutDistance, const Ray& ray, Actor* pActor)
+{
+	RenderComponent* pRenderer = pActor->GetRenderComponent();
+	IMesh* pMesh = pRenderer->GetMesh();
+
+	E_VERTEX_FORMAT vertexFormat;
+	uint32_t vertexStride;
+	uint32_t vertexCount;
+	void* pVertices;
+	pMesh->GetVerticesData(&vertexFormat, &vertexStride, &vertexCount, &pVertices);
+
+	uint32_t indexStride;
+	uint32_t indexCount;
+	void* pIndices;
+	pMesh->GetIndicesData(&indexStride, &indexCount, &pIndices);
+
+
+	SimpleVertex* pVerticesSimple = static_cast<SimpleVertex*>(pVertices);
+	WORD* pIndicesWORD = static_cast<WORD*>(pIndices);
+
+
+	float minDistance = FLT_MAX;
+	bool finalRet = false;
+	for (int i = 0; i < indexCount; i += 3)
+	{
+		WORD idxA = pIndicesWORD[i];
+		WORD idxB = pIndicesWORD[i + 1];
+		WORD idxC = pIndicesWORD[i + 2];
+
+		const SimpleVertex& vertexA = pVerticesSimple[idxA];
+		const SimpleVertex& vertexB = pVerticesSimple[idxB];
+		const SimpleVertex& vertexC = pVerticesSimple[idxC];
+
+		Triangle triangle;
+		triangle.a_ = vertexA.position;
+		triangle.b_ = vertexB.position;
+		triangle.c_ = vertexC.position;
+
+		float distance;
+		if(MATH::Intersection3D_Ray_Triangle(&distance, ray, triangle))
+		{
+			minDistance = min(minDistance, distance);
+			finalRet = true;
+		}
+	}
+
+	if (finalRet)
+	{
+		*pOutDistance = minDistance;
+		return true;
+	}
+
+	return false;
+}
+
 
 Actor* ObjectPicker::GetPickedActor() const
 {

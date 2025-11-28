@@ -44,7 +44,6 @@ private:
 	Actor* pOwner_;
 
 	IMesh* pMesh_;
-	//MeshData* pMeshData_;
 
 	IMaterial* pMaterial_;
 
@@ -52,6 +51,4 @@ private:
 	ITexture* pTextureNormal_;
 
 	IInputLayout* pInputLayout_;
-
-	//IRasterizer* pRasterizer_;
 };

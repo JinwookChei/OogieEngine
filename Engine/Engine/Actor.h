@@ -24,11 +24,9 @@ public:
 
 	LINK_NODE* LevelLink();
 
-	BoundVolume* GetBoundVolumeTEMP() const;
+	BoundVolume* GetBoundVolume() const;
 
-	//bool CheckBoundVolumeTEMP(const Float3& st, const Float3& dir);
-
-	bool TEMP_IntersectionRayTriangle(float* pOutT, const Float3& pos, const Float3& dir);
+	RenderComponent* GetRenderComponent() const;
 
 protected:
 	ENGINE_API virtual void CleanUp();

@@ -144,6 +144,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\CoreTypes\GeometryType\GeometryType.h" />
+    <ClInclude Include="..\..\CoreTypes\MathType\MathType.h" />
     <ClInclude Include="..\..\CoreTypes\VertexType\VertexType.h" />
     <ClInclude Include="..\..\Interface\Renderer\IRenderer.h" />
     <ClInclude Include="BlendState.h" />
