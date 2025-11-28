@@ -65,3 +65,8 @@ void Actor::CleanUp()
 		pRenderer_ = nullptr;
 	}
 }
+
+//Float4x4& __stdcall Actor::GetActorTransformForImGui() const
+//{
+//	return const_cast<Float4x4&>(pTransform_->GetWorldMatrix());
+//}

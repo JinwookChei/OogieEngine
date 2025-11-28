@@ -10,10 +10,13 @@ private:
 
 	~GBufferViewer() override;
 
-	static GBufferViewer* Create(IImGuiBindCamera* pCamera);
+	static GBufferViewer* Create();
+
+	bool Init();
 
 	void Render() override;
 private:
+
 	void BindCamera(IImGuiBindCamera* pCamera);
 
 	void CleanUp() override;

@@ -7,6 +7,7 @@ namespace ImGuiSystem
 
 class ExitPopup;
 class GBufferViewer;
+class Inspector;
 class ImGuiManager 
 	: public IImGuiManager
 {
@@ -50,6 +51,8 @@ private:
 	ExitPopup* pExitPopup_;
 
 	GBufferViewer* pGBufferViewer_;
+
+	Inspector* pInspector_;
 	// Panel End
 };
 

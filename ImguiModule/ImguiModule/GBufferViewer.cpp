@@ -4,12 +4,12 @@
 
 
 GBufferViewer::GBufferViewer()
-	:pBoundCamera_(nullptr),
-	pAlbedoWidget_(nullptr),
-	pNormalWidget_(nullptr),
-	pSpecularWidget_(nullptr),
-	pDepthWidget_(nullptr),
-	pDebugWidget_(nullptr)
+	:pBoundCamera_(nullptr)
+	, pAlbedoWidget_(nullptr)
+	, pNormalWidget_(nullptr)
+	, pSpecularWidget_(nullptr)
+	, pDepthWidget_(nullptr)
+	, pDebugWidget_(nullptr)
 {
 }
 
@@ -18,19 +18,28 @@ GBufferViewer::~GBufferViewer()
 	CleanUp();
 }
 
-GBufferViewer* GBufferViewer::Create(IImGuiBindCamera* pCamera)
+GBufferViewer* GBufferViewer::Create()
 {
 	GBufferViewer* pNewGBufferViewer = new GBufferViewer;
-
-	pNewGBufferViewer->BindCamera(pCamera);
+	pNewGBufferViewer->Init();
 
 	return pNewGBufferViewer;
 }
 
+bool GBufferViewer::Init()
+{
+	pAlbedoWidget_ = new ImGuiTextureWidget("Albedo");
+	pNormalWidget_ = new ImGuiTextureWidget("Normal");
+	pSpecularWidget_ = new ImGuiTextureWidget("Specular");
+	pDepthWidget_ = new ImGuiTextureWidget("Depth");
+	pDebugWidget_ = new ImGuiTextureWidget("Debug");
+
+	return true;
+}
 
 void GBufferViewer::Render()
 {
-	if (false == IsActive())
+	if (!IsActive())
 	{
 		return;
 	}
@@ -41,6 +50,8 @@ void GBufferViewer::Render()
 	pDepthWidget_->Render();
 	pDebugWidget_->Render();
 }
+
+
 
 void GBufferViewer::BindCamera(IImGuiBindCamera* pCamera)
 {
@@ -53,18 +64,17 @@ void GBufferViewer::BindCamera(IImGuiBindCamera* pCamera)
 	pBoundCamera_ = pCamera;
 	IRenderTarget* pGBufferTarget = pBoundCamera_->GetGBufferTargetForImGui();
 	IRenderTarget* pDebugTarget = pBoundCamera_->GetDebugBufferTargetForImGui();
-	
-	ImTextureID* pAlbedoTexture = static_cast<ImTextureID*>(pGBufferTarget->GetShaderResourceView(E_RENDER_TEXTURE_TYPE::Albedo));
-	pAlbedoWidget_ = new ImGuiTextureWidget(pAlbedoTexture, "Albedo");
-	ImTextureID* pNormalTexture = static_cast<ImTextureID*>(pGBufferTarget->GetShaderResourceView(E_RENDER_TEXTURE_TYPE::Normal));
-	pNormalWidget_ = new ImGuiTextureWidget(pNormalTexture, "Normal");
-	ImTextureID* pSpecularTexture = static_cast<ImTextureID*>(pGBufferTarget->GetShaderResourceView(E_RENDER_TEXTURE_TYPE::Specular));
-	pSpecularWidget_ = new ImGuiTextureWidget(pSpecularTexture, "Specular");
-	ImTextureID* pDepthTexture = static_cast<ImTextureID*>(pGBufferTarget->GetShaderResourceView(E_RENDER_TEXTURE_TYPE::Depth));
-	pDepthWidget_ = new ImGuiTextureWidget(pDepthTexture, "Depth");
 
+	ImTextureID* pAlbedoTexture = static_cast<ImTextureID*>(pGBufferTarget->GetShaderResourceView(E_RENDER_TEXTURE_TYPE::Albedo));
+	pAlbedoWidget_->BindTexture(pAlbedoTexture);
+	ImTextureID* pNormalTexture = static_cast<ImTextureID*>(pGBufferTarget->GetShaderResourceView(E_RENDER_TEXTURE_TYPE::Normal));
+	pNormalWidget_->BindTexture(pNormalTexture);
+	ImTextureID* pSpecularTexture = static_cast<ImTextureID*>(pGBufferTarget->GetShaderResourceView(E_RENDER_TEXTURE_TYPE::Specular));
+	pSpecularWidget_->BindTexture(pSpecularTexture);
+	ImTextureID* pDepthTexture = static_cast<ImTextureID*>(pGBufferTarget->GetShaderResourceView(E_RENDER_TEXTURE_TYPE::Depth));
+	pDepthWidget_->BindTexture(pDepthTexture);
 	ImTextureID* pDebugTexture = static_cast<ImTextureID*>(pDebugTarget->GetShaderResourceView(E_RENDER_TEXTURE_TYPE::Albedo));
-	pDebugWidget_ = new ImGuiTextureWidget(pDebugTexture, "Debug");
+	pDebugWidget_->BindTexture(pDebugTexture);
 }
 
 void GBufferViewer::CleanUp()

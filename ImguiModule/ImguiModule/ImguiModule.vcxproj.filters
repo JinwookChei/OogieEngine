@@ -105,6 +105,12 @@
     <ClInclude Include="..\..\CoreTypes\GeometryType\GeometryType.h">
       <Filter>CoreTypes</Filter>
     </ClInclude>
+    <ClInclude Include="Inspector.h">
+      <Filter>Source Files\Panel</Filter>
+    </ClInclude>
+    <ClInclude Include="TransformWidget.h">
+      <Filter>Source Files\Widget</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -151,6 +157,12 @@
     </ClCompile>
     <ClCompile Include="..\..\ThirdParty\ImGui\imgui_widgets.cpp">
       <Filter>Source Files\ImGui_Impl</Filter>
+    </ClCompile>
+    <ClCompile Include="Inspector.cpp">
+      <Filter>Source Files\Panel</Filter>
+    </ClCompile>
+    <ClCompile Include="TransformWidget.cpp">
+      <Filter>Source Files\Widget</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

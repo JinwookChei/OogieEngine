@@ -160,9 +160,11 @@
     <ClInclude Include="..\..\ThirdParty\ImGui\imstb_truetype.h" />
     <ClInclude Include="ExitPopup.h" />
     <ClInclude Include="ImGuiManager.h" />
+    <ClInclude Include="TransformWidget.h" />
     <ClInclude Include="ImGuiWidget.h" />
     <ClInclude Include="GBufferViewer.h" />
     <ClInclude Include="ImGuiPanel.h" />
+    <ClInclude Include="Inspector.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="ImGuiTextureWidget.h" />
   </ItemGroup>
@@ -177,9 +179,11 @@
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="ExitPopup.cpp" />
     <ClCompile Include="ImGuiManager.cpp" />
+    <ClCompile Include="TransformWidget.cpp" />
     <ClCompile Include="ImGuiWidget.cpp" />
     <ClCompile Include="GBufferViewer.cpp" />
     <ClCompile Include="ImGuiPanel.cpp" />
+    <ClCompile Include="Inspector.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>

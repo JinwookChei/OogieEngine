@@ -6,6 +6,7 @@ class RenderComponent;
 class BoundVolume;
 
 class Actor
+	//: public IImGuiBindPickedActor
 {
 public:
 	friend class Level;
@@ -39,4 +40,7 @@ protected:
 	BoundVolume* pBoundVolume;
 
 	LINK_NODE levelLink_;
+
+public:
+	//Float4x4& __stdcall GetActorTransformForImGui() const override;
 };

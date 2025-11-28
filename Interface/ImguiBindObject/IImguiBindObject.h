@@ -9,5 +9,5 @@ struct IImGuiBindCamera
 
 struct IImGuiBindPickedActor
 {
-
+	virtual Float4x4& __stdcall GetActorTransformForImGui() const = 0;
 };

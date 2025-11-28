@@ -33,9 +33,9 @@ void ActorPicker::Tick(double deltaTime)
 		ScreenToWorldRay(&ray, pickedMousePos_);
 
 		TryPickObject(ray);
-		
 
-		ImGuiSystem::GetImGuiManager();
+		//ImGuiSystem::GetImGuiManager()->BindPickedActor(pPickedActor_);
+
 
 
 		// DEBUG
@@ -130,13 +130,13 @@ bool ActorPicker::TryPickObject(const Ray& ray)
 		float diffToVolume;
 		if (RaycastBroadPhase(&diffToVolume, ray_ObjSpace, pActor))
 		{
-			DEBUG_BREAK();
+			//DEBUG_BREAK();
 			if (curPickedActorDiff_ > diffToVolume)
 			{
 				float diffToVertex;
 				if (RaycastNarrowPhase(&diffToVertex, ray_ObjSpace, pActor))
 				{
-					DEBUG_BREAK();
+					//DEBUG_BREAK();
 					if (curPickedActorDiff_ > diffToVertex)
 					{
 						curPickedActorDiff_ = diffToVertex;

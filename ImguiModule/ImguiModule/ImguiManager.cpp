@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "GBufferViewer.h"
 #include "ImGuiTextureWidget.h"
+#include "Inspector.h"
 #include "ExitPopup.h"
 #include "ImGuiManager.h"
 
@@ -22,12 +23,13 @@ namespace ImGuiSystem
 
 
 ImGuiManager::ImGuiManager()
-	:refCount_(1),
-	pApplication_(nullptr),
-	pRenderer_(nullptr),
-	dpiScale_(0.0f),
-	pExitPopup_(nullptr),
-	pGBufferViewer_(nullptr)
+	: refCount_(1)
+	, pApplication_(nullptr)
+	, pRenderer_(nullptr)
+	, dpiScale_(0.0f)
+	, pExitPopup_(nullptr)
+	, pGBufferViewer_(nullptr)
+	, pInspector_(nullptr)
 {
 }
 
@@ -93,6 +95,8 @@ bool __stdcall ImGuiManager::InitImGui(IApplication* pApplication, IRenderer* pR
 
 
 	pExitPopup_ = ExitPopup::Create(pApplication_);
+	pGBufferViewer_ = GBufferViewer::Create();
+
 	return true;
 }
 
@@ -116,17 +120,12 @@ void __stdcall ImGuiManager::OnRender()
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
 
-	if (nullptr != pExitPopup_)
-	{
-		pExitPopup_->Render();
-	}
+	pExitPopup_->Render();
+	pGBufferViewer_->Render();
 
-	if (nullptr != pGBufferViewer_)
-	{
-		pGBufferViewer_->Render();
-	}
-
+	//if (pInspector_->IsActive()) pInspector_->Render();
 	
+
 	// Rendering
 	ImGui::Render();
 	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
@@ -148,13 +147,7 @@ bool __stdcall ImGuiManager::BindCamera(IImGuiBindCamera* pCamera)
 		return false;
 	}
 
-	if (nullptr != pGBufferViewer_)
-	{
-		pGBufferViewer_->Release();
-		pGBufferViewer_ = nullptr;
-	}
-
-	pGBufferViewer_ = GBufferViewer::Create(pCamera);
+	pGBufferViewer_->BindCamera(pCamera);
 	pGBufferViewer_->OnActive();
 
 	return true;
@@ -169,15 +162,20 @@ bool __stdcall ImGuiManager::BindPickedActor(IImGuiBindPickedActor* pPickedActor
 
 void ImGuiManager::CleanUp()
 {
-	if (nullptr != pExitPopup_)
+	if (nullptr != pInspector_)
 	{
-		pExitPopup_->Release();
-		pExitPopup_ = nullptr;
+		pInspector_->Release();
+		pInspector_ = nullptr;
 	}
 	if (nullptr != pGBufferViewer_)
 	{
 		pGBufferViewer_->Release();
 		pGBufferViewer_ = nullptr;
+	}
+	if (nullptr != pExitPopup_)
+	{
+		pExitPopup_->Release();
+		pExitPopup_ = nullptr;
 	}
 	if (nullptr != pApplication_)
 	{
