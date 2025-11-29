@@ -9,12 +9,11 @@ public:
 
 	void Render() override;
 
+	void BindPickedActor(IImGuiBindPickedActor* pPickedActor);
 
 private:
 	void CleanUp() override;
 
-private:
-	ULONG refCount_;
-
-	bool isActive_;
+	//Float4x4* pTransform_;
+	IImGuiBindPickedActor* pPickedActor_;
 };

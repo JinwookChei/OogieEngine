@@ -97,6 +97,21 @@ const Float4x4 Transform::GetWorldMatrixTranspose() const
 	return ret;
 }
 
+ENGINE_API const Float4& __stdcall Transform::GetScale() const
+{
+	return scale_;
+}
+
+ENGINE_API const Float4& __stdcall Transform::GetRotation() const
+{
+	return rotation_;
+}
+
+ENGINE_API const Float4& __stdcall Transform::GetQuaternion() const
+{
+	return quaternion_;
+}
+
 const Float4& Transform::GetPosition() const
 {
 	return position_;
@@ -154,4 +169,29 @@ void Transform::TransformUpdate()
 	MATH::MatrixDecompose(scale_, quaternion_, position_, worldMatrix_);
 
 	BroadcastOnTransformUpdate();
+}
+
+Float4* __stdcall Transform::GetActorScaleForImGui()
+{
+	return &scale_;
+}
+
+Float4* __stdcall Transform::GetActorRotationForImGui() 
+{
+	return &rotation_;
+}
+
+Float4* __stdcall Transform::GetActorQuaternionForImGui() 
+{
+	return &quaternion_;
+}
+
+Float4* __stdcall Transform::GetActorPositionForImGui() 
+{
+	return &position_;
+}
+
+void __stdcall Transform::TransformUpdateForImGui()
+{
+	TransformUpdate();
 }

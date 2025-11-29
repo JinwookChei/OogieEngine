@@ -72,6 +72,7 @@
 #include "RasterizerManager.h"
 
 
+#include "Transform.h"
 #include "ActorPicker.h"
 #include "World.h"
 #include "Camera.h"

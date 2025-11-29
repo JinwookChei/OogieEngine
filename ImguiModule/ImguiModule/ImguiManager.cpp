@@ -93,9 +93,9 @@ bool __stdcall ImGuiManager::InitImGui(IApplication* pApplication, IRenderer* pR
 	pRenderer_ = pRenderer;
 	pRenderer_->AddRef();
 
-
 	pExitPopup_ = ExitPopup::Create(pApplication_);
 	pGBufferViewer_ = GBufferViewer::Create();
+	pInspector_ = Inspector::Create();
 
 	return true;
 }
@@ -120,11 +120,11 @@ void __stdcall ImGuiManager::OnRender()
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
 
+
 	pExitPopup_->Render();
 	pGBufferViewer_->Render();
+	pInspector_->Render();
 
-	//if (pInspector_->IsActive()) pInspector_->Render();
-	
 
 	// Rendering
 	ImGui::Render();
@@ -155,9 +155,11 @@ bool __stdcall ImGuiManager::BindCamera(IImGuiBindCamera* pCamera)
 
 bool __stdcall ImGuiManager::BindPickedActor(IImGuiBindPickedActor* pPickedActor)
 {
-	return false;
-}
+	// pPickedActor -> Null °¡´É
+	pInspector_->BindPickedActor(pPickedActor);
 
+	return true;
+}
 
 
 void ImGuiManager::CleanUp()

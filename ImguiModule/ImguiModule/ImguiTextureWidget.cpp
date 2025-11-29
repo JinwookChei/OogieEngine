@@ -36,4 +36,8 @@ bool ImGuiTextureWidget::BindTexture(ImTextureID* pSRV)
 
 void ImGuiTextureWidget::CleanUp()
 {
+	if (nullptr != pSRV_)
+	{
+		pSRV_ = nullptr;
+	}
 }

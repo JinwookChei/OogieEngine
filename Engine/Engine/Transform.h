@@ -1,7 +1,8 @@
 #pragma once
 
-
-class Transform final {
+class Transform final 
+	: public IImGuiBindTransform 
+{
 public:
 	Transform();
 
@@ -32,6 +33,12 @@ public:
 	ENGINE_API const Float4x4& __stdcall GetWorldMatrix() const;
 
 	ENGINE_API const Float4x4 __stdcall GetWorldMatrixTranspose() const;
+	
+	ENGINE_API const Float4& __stdcall GetScale() const;
+
+	ENGINE_API const Float4& __stdcall GetRotation() const;
+
+	ENGINE_API const Float4& __stdcall GetQuaternion() const;
 
 	ENGINE_API const Float4& __stdcall GetPosition() const;
 
@@ -57,9 +64,18 @@ private:
 	Float4 rotation_;
 	Float4 quaternion_;
 	Float4 position_;
+	
 
 	Float4x4 scaleMatrix_;
 	Float4x4 rotationMatrix_;
 	Float4x4 positionMatrix_;
 	Float4x4 worldMatrix_;
+
+public:
+	Float4* __stdcall GetActorScaleForImGui() override;
+	Float4* __stdcall GetActorRotationForImGui() override;
+	Float4* __stdcall GetActorQuaternionForImGui() override;
+	Float4* __stdcall GetActorPositionForImGui() override;
+
+	void __stdcall TransformUpdateForImGui() override;
 };

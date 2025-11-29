@@ -66,7 +66,7 @@ void Actor::CleanUp()
 	}
 }
 
-//Float4x4& __stdcall Actor::GetActorTransformForImGui() const
-//{
-//	return const_cast<Float4x4&>(pTransform_->GetWorldMatrix());
-//}
+ENGINE_API IImGuiBindTransform* __stdcall Actor::GetTransformForImGui() const
+{
+	return pTransform_;
+}

@@ -2,7 +2,7 @@
 
 
 class LookAtCamera
-	:public Camera
+	: public Camera
 {
 public:
 	LookAtCamera();

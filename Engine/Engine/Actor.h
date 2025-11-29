@@ -1,12 +1,10 @@
 #pragma once
 
-#include "Transform.h"
-
 class RenderComponent;
 class BoundVolume;
 
 class Actor
-	//: public IImGuiBindPickedActor
+	: public IImGuiBindPickedActor
 {
 public:
 	friend class Level;
@@ -42,5 +40,5 @@ protected:
 	LINK_NODE levelLink_;
 
 public:
-	//Float4x4& __stdcall GetActorTransformForImGui() const override;
+	ENGINE_API IImGuiBindTransform* __stdcall GetTransformForImGui() const override;
 };

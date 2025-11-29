@@ -3,17 +3,21 @@
 class TransformWidget;
 class Inspector : public ImGuiPanel
 {
-public:
+private:
+	friend class ImGuiManager;
 	Inspector();
 
 	~Inspector() override;
 
-	static Inspector* Create(IImGuiBindPickedActor* pPickedActor);
+	static Inspector* Create();
 
-	void Render() override;
-private:
+	bool Init();
+
 	void BindPickedActor(IImGuiBindPickedActor* pPickedActor);
 
+	void Render() override;
+
+private:
 	void CleanUp() override;
 
 private:

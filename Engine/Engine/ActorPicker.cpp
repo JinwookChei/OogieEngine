@@ -34,7 +34,7 @@ void ActorPicker::Tick(double deltaTime)
 
 		TryPickObject(ray);
 
-		//ImGuiSystem::GetImGuiManager()->BindPickedActor(pPickedActor_);
+		ImGuiSystem::GetImGuiManager()->BindPickedActor(pPickedActor_);
 
 
 
@@ -102,23 +102,6 @@ bool ActorPicker::TryPickObject(const Ray& ray)
 		MATH::MatrixMultiply(rayDir_ObjSpace, ray.dir_, invWorldMat);
 		Float3 rayDir_ObjSpace_V3 = { rayDir_ObjSpace.X, rayDir_ObjSpace.Y, rayDir_ObjSpace.Z };
 		MATH::VectorNormalize(rayDir_ObjSpace_V3, rayDir_ObjSpace_V3);
-		
-		// 이거 필요없음!!!
-		// 이미 Normalize된 Dir을 오브젝트 공간으로 변환했기때문에, distance가 적용되었음.
-		// ObjectSpace에서 RayDistance 계산.
-		//Float4 rayEndPoint_WorldSpace;
-		//rayEndPoint_WorldSpace.X = ray.origin_.X + ray.dir_.X * ray.maxDistance_;
-		//rayEndPoint_WorldSpace.Y = ray.origin_.Y + ray.dir_.Y * ray.maxDistance_;
-		//rayEndPoint_WorldSpace.Z = ray.origin_.Z + ray.dir_.Z * ray.maxDistance_;
-		//rayEndPoint_WorldSpace.W = 1.0f;
-		//Float4 rayEndPoint_ObjSpace;
-		//MATH::MatrixMultiply(rayEndPoint_ObjSpace, rayEndPoint_WorldSpace, invWorldMat);
-		//Float3 rayEndPoint_ObjSpace_V3 = { rayEndPoint_ObjSpace.X, rayEndPoint_ObjSpace.Y, rayEndPoint_ObjSpace.Z };
-		//Float3 originToEnd_ObjSpace;
-		//MATH::VectorSub(originToEnd_ObjSpace, rayEndPoint_ObjSpace_V3, rayOrigin_ObjSpace_V3);
-		//float maxDistance_ObjSpace;
-		//MATH::VectorLength(maxDistance_ObjSpace, originToEnd_ObjSpace);
-
 
 		// ObjectSapce Ray
 		Ray ray_ObjSpace;
@@ -130,13 +113,11 @@ bool ActorPicker::TryPickObject(const Ray& ray)
 		float diffToVolume;
 		if (RaycastBroadPhase(&diffToVolume, ray_ObjSpace, pActor))
 		{
-			//DEBUG_BREAK();
 			if (curPickedActorDiff_ > diffToVolume)
 			{
 				float diffToVertex;
 				if (RaycastNarrowPhase(&diffToVertex, ray_ObjSpace, pActor))
 				{
-					//DEBUG_BREAK();
 					if (curPickedActorDiff_ > diffToVertex)
 					{
 						curPickedActorDiff_ = diffToVertex;
