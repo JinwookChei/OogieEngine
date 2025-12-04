@@ -28,9 +28,6 @@
     <Filter Include="Source Files\Renderer">
       <UniqueIdentifier>{b5546a92-9c00-44dc-9845-3e1340611cb8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Layout">
-      <UniqueIdentifier>{cbef7a77-735f-429f-a047-cd0d15e1677b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Shader">
       <UniqueIdentifier>{7c5da77f-27f9-4527-90da-9f3b73ab0602}</UniqueIdentifier>
     </Filter>
@@ -87,18 +84,6 @@
     <ClInclude Include="Mesh.h">
       <Filter>Source Files\Mesh</Filter>
     </ClInclude>
-    <ClInclude Include="BaseShader.h">
-      <Filter>Source Files\Shader</Filter>
-    </ClInclude>
-    <ClInclude Include="VertexShader.h">
-      <Filter>Source Files\Shader</Filter>
-    </ClInclude>
-    <ClInclude Include="PixelShader.h">
-      <Filter>Source Files\Shader</Filter>
-    </ClInclude>
-    <ClInclude Include="InputLayout.h">
-      <Filter>Source Files\Layout</Filter>
-    </ClInclude>
     <ClInclude Include="SamplerState.h">
       <Filter>Source Files\SamplerState</Filter>
     </ClInclude>
@@ -141,6 +126,9 @@
     <ClInclude Include="..\..\CoreTypes\GeometryType\GeometryType.h">
       <Filter>CoreTypes</Filter>
     </ClInclude>
+    <ClInclude Include="BaseShader.h">
+      <Filter>Source Files\Shader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -157,18 +145,6 @@
     </ClCompile>
     <ClCompile Include="Mesh.cpp">
       <Filter>Source Files\Mesh</Filter>
-    </ClCompile>
-    <ClCompile Include="BaseShader.cpp">
-      <Filter>Source Files\Shader</Filter>
-    </ClCompile>
-    <ClCompile Include="VertexShader.cpp">
-      <Filter>Source Files\Shader</Filter>
-    </ClCompile>
-    <ClCompile Include="PixelShader.cpp">
-      <Filter>Source Files\Shader</Filter>
-    </ClCompile>
-    <ClCompile Include="InputLayout.cpp">
-      <Filter>Source Files\Layout</Filter>
     </ClCompile>
     <ClCompile Include="SamplerState.cpp">
       <Filter>Source Files\SamplerState</Filter>
@@ -202,6 +178,9 @@
     </ClCompile>
     <ClCompile Include="D3D11DebugRenderer.cpp">
       <Filter>Source Files\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseShader.cpp">
+      <Filter>Source Files\Shader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

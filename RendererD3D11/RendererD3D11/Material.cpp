@@ -1,16 +1,9 @@
-#include "SamplerManager.h"
 #include "stdafx.h"
-#include "VertexShader.h"
-#include "PixelShader.h"
-//#include "SamplerState.h"
 #include "Material.h"
 
 
 Material::Material()
 	: refCount_(1),
-	pVertexShader_(nullptr),
-	pPixelShader_(nullptr),
-	//pSamplerState_(nullptr),
 	shineness_(1.0f),
 	specularColor_(0.7f, 0.7f, 0.7f)
 {
@@ -21,27 +14,8 @@ Material::~Material()
 	CleanUp();
 }
 
-bool Material::Init(
-	VertexShader* pVertexShader, 
-	PixelShader* pPixelShader, 
-	/*SamplerState* pSamplerState,*/
-	float shineness,
-	Float3 specularColor
-)
+bool Material::Init(float shineness,Float3 specularColor)
 {
-	if (nullptr != pVertexShader)
-	{
-		pVertexShader_ = pVertexShader;
-	}
-	if (nullptr != pPixelShader)
-	{
-		pPixelShader_ = pPixelShader;
-	}
-	//if (nullptr != pSamplerState)
-	//{
-	//	pSamplerState_ = pSamplerState;
-	//}
-
 	shineness_ = shineness;
 	specularColor_ = specularColor;
 	
@@ -71,16 +45,7 @@ ULONG __stdcall Material::Release()
 
 void __stdcall Material::Setting()
 {
-	pVertexShader_->Setting();
 
-	pPixelShader_->Setting();
-
-	//pSamplerState_->Setting(0);
-}
-
-IShader* __stdcall Material::GetVertexShader()
-{
-	return pVertexShader_;
 }
 
 float Material::GetShineness() const
@@ -105,19 +70,4 @@ void Material::SetSpecularColor(const Float3& specularColor)
 
 void Material::CleanUp()
 {
-	if (nullptr != pVertexShader_)
-	{
-		pVertexShader_->Release();
-		pVertexShader_ = nullptr;
-	}
-	if (nullptr != pPixelShader_)
-	{
-		pPixelShader_->Release();
-		pPixelShader_ = nullptr;
-	}
-	//if (nullptr != pSamplerState_)
-	//{
-	//	pSamplerState_->Release();
-	//	pSamplerState_ = nullptr;
-	//}
 }

@@ -1,13 +1,9 @@
-#include "MeshManager.h"
 #include "stdafx.h"
 #include "Texture.h"
 #include "RenderTarget.h"
 #include "DeferredTarget.h"
 #include "Mesh.h"
 #include "Material.h"
-#include "VertexShader.h"
-#include "PixelShader.h"
-#include "InputLayout.h"
 #include "SamplerState.h"
 #include "BlendState.h"
 #include "ConstantBuffer.h"
@@ -168,182 +164,6 @@ uint64_t __stdcall Renderer::DrawCallCount()
 	return drawCallCount_;
 }
 
-IInputLayout* __stdcall Renderer::CreateLayout(IMesh* pMesh, IShader* pVertexShadr)
-{
-	ID3D11InputLayout* pInputLayout = nullptr;
-	InputLayout* pNewInputLayout = nullptr;
-
-	do
-	{
-		if (nullptr == pMesh || nullptr == pVertexShadr)
-		{
-			DEBUG_BREAK();
-			break;
-		}
-
-		Mesh* pMeshImpl = static_cast<Mesh*>(pMesh);
-		const std::vector<D3D11_INPUT_ELEMENT_DESC>& layoutDesc = pMeshImpl->GetInputDesc();
-
-		VertexShader* pVertexShaderImpl = static_cast<VertexShader*>(pVertexShadr);
-		HRESULT hr = GRenderer->Device()->CreateInputLayout(layoutDesc.data(), (UINT)layoutDesc.size(), pVertexShaderImpl->GetBufferPointer(), pVertexShaderImpl->GetBufferSize(), &pInputLayout);
-		if (FAILED(hr))
-		{
-			DEBUG_BREAK();
-			break;
-		}
-
-		// ---------------- 메모리 누수 디버깅용 이름 설정. ----------------------------
-		const char* debugObjectName = "InputLayout::pInputLayout_";
-		pInputLayout->SetPrivateData(WKPDID_D3DDebugObjectName, (UINT)strlen(debugObjectName), debugObjectName);
-		// ---------------------------------------------------------------------------
-
-
-		pNewInputLayout = new InputLayout;
-		if (false == pNewInputLayout->Init(pInputLayout))
-		{
-			DEBUG_BREAK();
-			break;
-		}
-
-		return pNewInputLayout;
-
-	} while (false);
-
-
-	if (nullptr != pInputLayout)
-	{
-		pInputLayout->Release();
-		pInputLayout = nullptr;
-	}
-	if (nullptr != pNewInputLayout)
-	{
-		pNewInputLayout->Release();
-		pNewInputLayout = nullptr;
-	}
-
-	return nullptr;;
-}
-
-//IMesh* __stdcall Renderer::CreateMesh(void* pVertices, uint32_t vertexSize, uint32_t vertexCount, void* pIndices /*= nullptr*/, uint32_t indexTypeSize /*= 0*/, uint32_t indexCount /*= 0*/)
-//{
-//	ID3D11Buffer* pVertexBuffer = nullptr;
-//	ID3D11Buffer* pIndexBuffer = nullptr;
-//	Mesh* pNewMesh = nullptr;
-//
-//	do
-//	{
-//		if (nullptr == pVertices)
-//		{
-//			DEBUG_BREAK();
-//			break;
-//		}
-//
-//		if (0 == vertexSize || 0 == vertexCount)
-//		{
-//			DEBUG_BREAK();
-//			break;
-//		}
-//
-//		D3D11_BUFFER_DESC bd;
-//		memset(&bd, 0x00, sizeof(D3D11_BUFFER_DESC));
-//		bd.Usage = D3D11_USAGE_DEFAULT;
-//		bd.ByteWidth = vertexSize * vertexCount;
-//		bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-//		bd.CPUAccessFlags = 0;
-//
-//		D3D11_SUBRESOURCE_DATA InitData;
-//		memset(&InitData, 0x00, sizeof(D3D11_SUBRESOURCE_DATA));
-//		InitData.pSysMem = pVertices;
-//
-//		HRESULT hr = GRenderer->Device()->CreateBuffer(&bd, &InitData, &pVertexBuffer);
-//		if (FAILED(hr))
-//		{
-//			DEBUG_BREAK();
-//			break;
-//		}
-//
-//		// ---------------- 메모리 누수 디버깅용 이름 설정. ----------------------------
-//		const char* debugObjectName = "VertexBuffer::pVertexBuffer_";
-//		pVertexBuffer->SetPrivateData(WKPDID_D3DDebugObjectName, (UINT)strlen(debugObjectName), debugObjectName);
-//		// ---------------------------------------------------------------------------
-//
-//		if (nullptr == pIndices && 0 != indexCount)
-//		{
-//			DEBUG_BREAK();
-//			break;
-//		}
-//
-//		if (nullptr == pIndices)
-//		{
-//			pNewMesh = new Mesh;
-//			if (false == pNewMesh->Init(vertexSize, pVertexBuffer, 0, nullptr))
-//			{
-//				DEBUG_BREAK();
-//				break;
-//			}
-//
-//			return pNewMesh;
-//		}
-//
-//		if (0 == indexCount)
-//		{
-//			DEBUG_BREAK();
-//			break;
-//		}
-//
-//		// 인덱스 버퍼
-//		bd.Usage = D3D11_USAGE_DEFAULT;
-//		bd.ByteWidth = indexTypeSize * indexCount;
-//		bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
-//		bd.CPUAccessFlags = 0;
-//
-//		InitData.pSysMem = pIndices;
-//
-//		hr = GRenderer->Device()->CreateBuffer(&bd, &InitData, &pIndexBuffer);
-//		if (FAILED(hr))
-//		{
-//			DEBUG_BREAK();
-//			break;
-//		}
-//
-//		// ---------------- 메모리 누수 디버깅용 이름 설정. ----------------------------
-//		debugObjectName = "VertexBuffer::pIndexBuffer_";
-//		pIndexBuffer->SetPrivateData(WKPDID_D3DDebugObjectName, (UINT)strlen(debugObjectName), debugObjectName);
-//		// ---------------------------------------------------------------------------
-//
-//		pNewMesh = new Mesh;
-//		if (false == pNewMesh->Init(vertexSize, pVertexBuffer, indexCount, pIndexBuffer))
-//		{
-//			DEBUG_BREAK();
-//			break;
-//		}
-//
-//		return pNewMesh;
-//
-//	} while (false);
-//
-//
-//
-//	if (nullptr != pVertexBuffer)
-//	{
-//		pVertexBuffer->Release();
-//		pVertexBuffer = nullptr;
-//	}
-//	if (nullptr != pIndexBuffer)
-//	{
-//		pIndexBuffer->Release();
-//		pIndexBuffer = nullptr;
-//	}
-//	if (nullptr != pNewMesh)
-//	{
-//		pNewMesh->Release();
-//		pNewMesh = nullptr;
-//	}
-//
-//	return nullptr;
-//}
-
-
 IMesh* __stdcall Renderer::CreateMesh(const MeshDesc& desc)
 {
 	ID3D11Buffer* pVertexBuffer = nullptr;
@@ -473,29 +293,26 @@ IMesh* __stdcall Renderer::CreateMesh(const MeshDesc& desc)
 	return nullptr;
 }
 
+IShader* __stdcall Renderer::CreateShader(const ShaderDesc& desc)
+{
+	IShader* pShader = BaseShader::Create(desc);
+	if (nullptr == pShader)
+	{
+		DEBUG_BREAK();
+		return nullptr;
+	}
+
+	return pShader;
+}
+
 IMaterial* __stdcall Renderer::CreateMaterial(const MaterialDesc& materialDesc)
 {
-	VertexShader* pVertexShader = nullptr;
-	PixelShader* pPixelShader = nullptr;
-	//SamplerState* pSamplerState = nullptr;
+	
 	Material* pMaterial = nullptr;
-
 	do
 	{
-		if (nullptr != materialDesc.VS)
-		{
-			pVertexShader = static_cast<VertexShader*>(CreateShader(E_SHADER_TYPE::Vertex, materialDesc.VS));
-		}
-
-		if (nullptr != materialDesc.PS)
-		{
-			pPixelShader = static_cast<PixelShader*>(CreateShader(E_SHADER_TYPE::Pixel, materialDesc.PS));
-		}
-
-		//pSamplerState = static_cast<SamplerState*>(CreateSamplerState(materialDesc.samplerLinear, materialDesc.samplerClamp));
-
 		pMaterial = new Material;
-		if (false == pMaterial->Init(pVertexShader, pPixelShader, materialDesc.shineness, materialDesc.specularColor))
+		if (false == pMaterial->Init(materialDesc.shineness, materialDesc.specularColor))
 		{
 			DEBUG_BREAK();
 			break;
@@ -505,21 +322,6 @@ IMaterial* __stdcall Renderer::CreateMaterial(const MaterialDesc& materialDesc)
 
 	} while (false);
 
-	if (nullptr != pVertexShader)
-	{
-		pVertexShader->Release();
-		pVertexShader = nullptr;
-	}
-	if (nullptr != pPixelShader)
-	{
-		pPixelShader->Release();
-		pPixelShader = nullptr;
-	}
-	//if (nullptr != pSamplerState)
-	//{
-	//	pSamplerState->Release();
-	//	pSamplerState = nullptr;
-	//}
 	if (nullptr != pMaterial)
 	{
 		pMaterial->Release();
@@ -811,54 +613,6 @@ IRenderTarget* __stdcall Renderer::CreateDeferredRenderTarget(const RenderTarget
 	{
 		pDepthTexture_->Release();
 		pDepthTexture_ = nullptr;
-	}
-
-	return nullptr;
-}
-
-IShader* Renderer::CreateShader(E_SHADER_TYPE shaderType, const wchar_t* pPath)
-{
-	ID3DBlob* pBlob = nullptr;
-	BaseShader* pShader = nullptr;
-	do
-	{
-		pBlob = nullptr;
-		HRESULT hr = D3DReadFileToBlob(pPath, &pBlob);
-		if (FAILED(hr))
-		{
-			DEBUG_BREAK();
-			break;
-		}
-
-		switch (shaderType)
-		{
-		case E_SHADER_TYPE::Vertex:
-			pShader = new VertexShader;
-			break;
-		case E_SHADER_TYPE::Pixel:
-			pShader = new PixelShader;
-			break;
-		}
-
-		if (false == pShader->Init(pBlob))
-		{
-			DEBUG_BREAK();
-			break;
-		}
-
-		return pShader;
-
-	} while (false);
-
-	if (nullptr != pBlob)
-	{
-		pBlob->Release();
-		pBlob = nullptr;
-	}
-	if (nullptr != pShader)
-	{
-		pShader->Release();
-		pShader = nullptr;
 	}
 
 	return nullptr;
@@ -1416,13 +1170,6 @@ bool Renderer::CreateBackBuffer(UINT width, UINT height, const Color& clearColor
 			DEBUG_BREAK();
 			break;
 		}
-
-		//pDepthTexture = static_cast<Texture*>(CreateTexture(pRenderTexture->Size(), DXGI_FORMAT::DXGI_FORMAT_D24_UNORM_S8_UINT, D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL));
-		//if (nullptr == pDepthTexture)
-		//{
-		//	DEBUG_BREAK();
-		//	break;
-		//}
 
 		pBackBuffer_ = new RenderTarget;
 		RenderTargetDesc desc{ E_RENDER_TECHNIQUE_TYPE::Forward };

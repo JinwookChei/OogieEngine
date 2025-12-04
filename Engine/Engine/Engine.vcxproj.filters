@@ -85,6 +85,9 @@
     <Filter Include="Source Files\ActorPicker">
       <UniqueIdentifier>{2e754504-9966-4a77-9eb7-3ceb07170912}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Component\ParticleSystem">
+      <UniqueIdentifier>{6664351a-eda3-48a0-b64d-a19e62e97f5a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -183,6 +186,12 @@
     <ClInclude Include="ActorPicker.h">
       <Filter>Source Files\ActorPicker</Filter>
     </ClInclude>
+    <ClInclude Include="ParticleComponent.h">
+      <Filter>Source Files\Component\ParticleSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderManager.h">
+      <Filter>Source Files\Manager\GraphicsManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -259,6 +268,12 @@
     </ClCompile>
     <ClCompile Include="ActorPicker.cpp">
       <Filter>Source Files\ActorPicker</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleComponent.cpp">
+      <Filter>Source Files\Component\ParticleSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderManager.cpp">
+      <Filter>Source Files\Manager\GraphicsManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

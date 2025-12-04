@@ -11,12 +11,11 @@ Camera::Camera()
 	cameraSpeed_(2.0f),
 	pGBufferTarget_(nullptr),
 	pLightBufferTarget_(nullptr),
-	pLightBufferMaterial_(nullptr),
+	pLightPassShader_(nullptr),
 	pDebugBufferTarget_(nullptr),
-	pDebugBufferMaterial_(nullptr),
+	pDebugPassShader_(nullptr),
 	pScreenVertex_(nullptr),
-	pScreenMaterial_(nullptr),
-	pScreenInputLayout_(nullptr),
+	pScreenPassShader_(nullptr),
 	screenOffset_({ 0.0f, 0.0f }),
 	screenScale_({ 1.0f, 1.0f })
 {
@@ -78,8 +77,7 @@ void Camera::LightPassBegin()
 	pGBufferTarget_->BindRenderTextureForPS(0);
 
 	pScreenVertex_->Setting();
-	pScreenInputLayout_->Setting();
-	pLightBufferMaterial_->Setting();
+	pLightPassShader_->Bind();
 }
 
 void Camera::RenderLight()
@@ -90,7 +88,6 @@ void Camera::RenderLight()
 void Camera::LightPassEnd()
 {
 	pGBufferTarget_->ClearRenderTextureForPS(0);
-
 	pLightBufferTarget_->EndRenderPass();
 }
 
@@ -105,8 +102,7 @@ void Camera::BlitToBackBuffer(const Float2& offset, const Float2& scale)
 	pLightBufferTarget_->BindRenderTextureForPS(4);
 	
 	pScreenVertex_->Setting();
-	pScreenMaterial_->Setting();
-	pScreenInputLayout_->Setting();
+	pScreenPassShader_->Bind();
 	pScreenVertex_->Draw();
 
 	pLightBufferTarget_->ClearRenderTextureForPS(4);
@@ -239,14 +235,13 @@ bool Camera::InitLightBuffer()
 		return false;
 	}
 
-	MaterialDesc matDesc;
-	matDesc.VS = L"ScreenMergeVS.cso";
-	matDesc.PS = L"DeferredLightPS.cso";
-	pLightBufferMaterial_ = GRenderer->CreateMaterial(matDesc);
-	if (nullptr == pLightBufferMaterial_)
+	if (!ShaderManager::Instance()->GetShader(&pLightPassShader_, 2))
 	{
+		DEBUG_BREAK();
 		return false;
 	}
+	pLightPassShader_->AddRef();
+	
 
 	return true;
 }
@@ -264,19 +259,17 @@ bool Camera::InitDebugBuffer()
 		return false;
 	}
 
-	MaterialDesc matDesc;
-	matDesc.VS = L"ScreenMergeVS.cso";
-	matDesc.PS = L"DeferredDebugPS.cso";
-	pDebugBufferMaterial_ = GRenderer->CreateMaterial(matDesc);
-	if (nullptr == pDebugBufferMaterial_)
+	if (!ShaderManager::Instance()->GetShader(&pDebugPassShader_, 3))
 	{
+		DEBUG_BREAK();
 		return false;
 	}
+	pDebugPassShader_->AddRef();
 
 	return true;
 }
 
-void Camera::InitScreenRect()
+bool Camera::InitScreenRect()
 {
 	std::vector<ScreenRectVertex> vertices;
 	std::vector<WORD> indices;
@@ -292,15 +285,13 @@ void Camera::InitScreenRect()
 	meshDesc.indices = indices.data();
 	pScreenVertex_ = GRenderer->CreateMesh(meshDesc);
 
-	pScreenVertex_->AddInputLayout("POSITION", 0, 16, 0, false);
-	pScreenVertex_->AddInputLayout("TEXCOORD", 0, 16, 0, false);
 
-	MaterialDesc matDesc;
-	matDesc.VS = L"ScreenMergeVS.cso";
-	matDesc.PS = L"ScreenMergePS.cso";
-	pScreenMaterial_ = GRenderer->CreateMaterial(matDesc);
-
-	pScreenInputLayout_ = GRenderer->CreateLayout(pScreenVertex_, pScreenMaterial_->GetVertexShader());
+	if (!ShaderManager::Instance()->GetShader(&pScreenPassShader_, 4))
+	{
+		DEBUG_BREAK();
+		return false;
+	}
+	pScreenPassShader_->AddRef();
 }
 
 void Camera::CameraTransformUpdate()
@@ -320,38 +311,31 @@ void Camera::CameraTransformUpdate()
 
 void Camera::CleanUp()
 {
-	if (nullptr != pDebugBufferMaterial_)
+	if (nullptr != pDebugPassShader_)
 	{
-		pDebugBufferMaterial_->Release();
-		pDebugBufferMaterial_ = nullptr;
+		pDebugPassShader_->Release();
+		pDebugPassShader_ = nullptr;
 	}
 	if (nullptr != pDebugBufferTarget_)
 	{
 		pDebugBufferTarget_->Release();
 		pDebugBufferTarget_ = nullptr;
 	}
-	if (nullptr != pScreenInputLayout_)
+	if (nullptr != pScreenPassShader_)
 	{
-		pScreenInputLayout_->Release();
-		pScreenInputLayout_ = nullptr;
-	}
-	if (nullptr != pScreenMaterial_)
-	{
-		pScreenMaterial_->Release();
-		pScreenMaterial_ = nullptr;
+		pScreenPassShader_->Release();
+		pScreenPassShader_ = nullptr;
 	}
 	if (nullptr != pScreenVertex_)
 	{
 		pScreenVertex_->Release();
 		pScreenVertex_ = nullptr;
 	}
-
-	if (nullptr != pLightBufferMaterial_)
+	if (nullptr != pLightPassShader_)
 	{
-		pLightBufferMaterial_->Release();
-		pLightBufferMaterial_ = nullptr;
+		pLightPassShader_->Release();
+		pLightPassShader_ = nullptr;
 	}
-
 	if (nullptr != pLightBufferTarget_)
 	{
 		pLightBufferTarget_->Release();

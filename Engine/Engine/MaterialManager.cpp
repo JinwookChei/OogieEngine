@@ -20,8 +20,8 @@ MaterialManager* MaterialManager::Instance()
 void MaterialManager::TestLoad()
 {
 	MaterialDesc matDesc;
-	matDesc.VS = L"ObjectVS.cso";
-	matDesc.PS = L"DeferredObjectPS.cso";
+	//matDesc.VS = L"ObjectVS.cso";
+	//matDesc.PS = L"DeferredObjectPS.cso";
 	matDesc.shineness = 0.7f;
 	matDesc.specularColor = { 0.7f, 0.7f, 0.7f };
 	

@@ -5,14 +5,13 @@
 #include "RenderComponent.h"
 
 RenderComponent::RenderComponent(Actor* pOwner)
-	: pOwner_(pOwner),
-	//pMeshData_(nullptr),
-	pMesh_(nullptr),
-	pMaterial_(nullptr),
-	pTextureColor_(nullptr),
-	pTextureNormal_(nullptr),
-	pInputLayout_(nullptr),
-	OnMeshLoaded_()
+	: pOwner_(pOwner)
+	, pMesh_(nullptr)
+	, pMaterial_(nullptr)
+	, pShader_(nullptr)
+	, pTextureColor_(nullptr)
+	, pTextureNormal_(nullptr)
+	, OnMeshLoaded_()
 {
 }
 
@@ -30,13 +29,12 @@ void RenderComponent::Render()
 
 	ConstantManager::Instance()->UpdatePerObejct(&cbPerObject);
 
+	pShader_->Bind();
 	pMaterial_->Setting();
-	//pMeshData_->Setting();
 	pMesh_->Setting();
+	pShader_->Bind();
 	pTextureColor_->Setting(0);
 	pTextureNormal_->Setting(1);
-	pInputLayout_->Setting();
-	//pMeshData_->Draw();
 	pMesh_->Draw();
 }
 
@@ -66,6 +64,13 @@ void RenderComponent::Create(E_MESH_TYPE meshType)
 	}
 	pMesh_->AddRef();
 
+	if (!ShaderManager::Instance()->GetShader(&pShader_, 1))
+	{
+		DEBUG_BREAK();
+		return;
+	}
+	pShader_->AddRef();
+
 	if (!MaterialManager::Instance()->GetMaterial(&pMaterial_, 1))
 	{
 		DEBUG_BREAK();
@@ -88,7 +93,6 @@ void RenderComponent::Create(E_MESH_TYPE meshType)
 	}
 	pTextureNormal_->AddRef();
 
-	pInputLayout_ = GRenderer->CreateLayout(pMesh_, pMaterial_->GetVertexShader());
 
 	BroadcastOnMeshLoaded();
 }
@@ -100,7 +104,7 @@ IMesh* RenderComponent::GetMesh() const
 
 void RenderComponent::BindOnMeshLoaded(MeshLoadedDelegate callback)
 {
-	if(!callback)
+	if (!callback)
 	{
 		DEBUG_BREAK();
 		return;
@@ -141,15 +145,15 @@ void RenderComponent::CleanUp()
 		pMesh_ = nullptr;
 	}
 
+	if (nullptr != pShader_)
+	{
+		pShader_->Release();
+		pShader_ = nullptr;
+	}
+	
 	if (nullptr != pMaterial_)
 	{
 		pMaterial_->Release();
 		pMaterial_ = nullptr;
-	}
-
-	if (nullptr != pInputLayout_)
-	{
-		pInputLayout_->Release();
-		pInputLayout_ = nullptr;
 	}
 }

@@ -25,6 +25,8 @@ ActorPicker* ActorPicker::GetInstance()
 
 void ActorPicker::Tick(double deltaTime)
 {
+	//if (pPickedActor_ != nullptr) return;
+
 	if (InputManager::Instance()->IsDown(VK_LBUTTON))
 	{
 		pickedMousePos_ = InputManager::Instance()->GetCurrentMousePosition();
@@ -35,7 +37,6 @@ void ActorPicker::Tick(double deltaTime)
 		TryPickObject(ray);
 
 		ImGuiSystem::GetImGuiManager()->BindPickedActor(pPickedActor_);
-
 
 
 		// DEBUG

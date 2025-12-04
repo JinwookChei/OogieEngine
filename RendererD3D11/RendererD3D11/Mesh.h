@@ -30,28 +30,18 @@ public:
 
 	ULONG __stdcall Release() override;
 
-	bool __stdcall AddInputLayout(const char* pSemanticName, uint32_t semanticIndex, uint32_t format, uint32_t inputSlot, bool isInstanceData) override;
-
 	void __stdcall Setting() override;
 
 	bool __stdcall Draw() override;
-
-	const std::vector<D3D11_INPUT_ELEMENT_DESC>& GetInputDesc() const;
 
 	void __stdcall GetVerticesData(E_VERTEX_FORMAT* pOutFormat, uint32_t* pOutStride, uint32_t* pOutCount, void** ppOutVertices) const override;
 
 	void __stdcall GetIndicesData(uint32_t* pOutStride, uint32_t* pOutCount, void** ppOutIndices) const override;
 
-	//void __stdcall GetMeshData(MeshDesc* pOutDesc) const override;
-
 private:
 	void CleanUp();
 
-	UINT InputFormatSize(DXGI_FORMAT format);
-
 	ULONG refCount_;
-
-	UINT offset_;
 
 	E_VERTEX_FORMAT vertexFormat_;
 	UINT vertexStride_;
@@ -63,6 +53,4 @@ private:
 	UINT indexCount_;
 	void* pIndices_;
 	ID3D11Buffer* pIndexBuffer_;
-
-	std::vector<D3D11_INPUT_ELEMENT_DESC> inputDesc_;
 };

@@ -134,8 +134,9 @@ void Level::OnRender()
 		GCurrentCamera->UpdatePerFrameConstant();
 		GCurrentCamera->pLightBufferTarget_->Setting();
 		GCurrentCamera->pScreenVertex_->Setting();
-		GCurrentCamera->pScreenInputLayout_->Setting();
-		GCurrentCamera->pDebugBufferMaterial_->Setting();
+		GCurrentCamera->pDebugPassShader_->Bind();
+		//GCurrentCamera->pScreenInputLayout_->Setting();
+		//GCurrentCamera->pDebugBufferMaterial_->Setting();
 	
 		// Draw
 		GCurrentCamera->pScreenVertex_->Draw();

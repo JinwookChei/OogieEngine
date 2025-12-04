@@ -168,10 +168,12 @@
     <ClInclude Include="Level.h" />
     <ClInclude Include="MaterialManager.h" />
     <ClInclude Include="MeshManager.h" />
+    <ClInclude Include="ParticleComponent.h" />
     <ClInclude Include="PointLight.h" />
     <ClInclude Include="RasterizerManager.h" />
     <ClInclude Include="RenderComponent.h" />
     <ClInclude Include="SamplerManager.h" />
+    <ClInclude Include="ShaderManager.h" />
     <ClInclude Include="SpotLight.h" />
     <ClInclude Include="StartUp.h" />
     <ClInclude Include="stdafx.h" />
@@ -196,10 +198,12 @@
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="MaterialManager.cpp" />
     <ClCompile Include="MeshManager.cpp" />
+    <ClCompile Include="ParticleComponent.cpp" />
     <ClCompile Include="PointLight.cpp" />
     <ClCompile Include="RasterizerManager.cpp" />
     <ClCompile Include="RenderComponent.cpp" />
     <ClCompile Include="SamplerManager.cpp" />
+    <ClCompile Include="ShaderManager.cpp" />
     <ClCompile Include="SpotLight.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

@@ -1,9 +1,5 @@
 #pragma once
 
-class VertexShader;
-class PixelShader;
-class SamplerState;
-
 class Material
 	: public IMaterial
 {
@@ -16,9 +12,6 @@ private:
 
 	bool Init
 	(
-		VertexShader* pVertexShader, 
-		PixelShader* pPixelShader, 
-		//SamplerState* pSamplerState, 
 		float shineness,
 		Float3 specularColor
 	);
@@ -32,8 +25,6 @@ public:
 
 	void __stdcall Setting() override;
 
-	IShader* __stdcall GetVertexShader() override;
-
 	float GetShineness() const override;
 
 	void SetShineness(float shineness) override;
@@ -46,12 +37,6 @@ private:
 	void CleanUp();
 
 	ULONG refCount_;
-
-	VertexShader* pVertexShader_;
-
-	PixelShader* pPixelShader_;
-
-	// SamplerState* pSamplerState_;
 
 	float shineness_;
 

@@ -44,11 +44,10 @@ private:
 	Actor* pOwner_;
 
 	IMesh* pMesh_;
-
 	IMaterial* pMaterial_;
+	IShader* pShader_;
+
 
 	ITexture* pTextureColor_;
 	ITexture* pTextureNormal_;
-
-	IInputLayout* pInputLayout_;
 };

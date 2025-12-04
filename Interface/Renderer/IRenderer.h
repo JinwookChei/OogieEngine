@@ -1,11 +1,5 @@
 #pragma once
 
-enum class E_SHADER_TYPE
-{
-	Vertex = 0,
-	Pixel
-};
-
 enum class E_FILLMODE_TYPE
 {
 	SOLID = 0,
@@ -78,8 +72,36 @@ struct ITexture : public IUnknown
 };
 
 
+enum class E_SHADER_TYPE
+{
+	MATERIAL_SHADER = 0,
+	PARTICLE_SHADER,
+	QUAD_SCREEN_SHADER
+};
+
+struct InputDesc
+{
+	const char* semanticName_;
+	uint32_t semanticIndex_;
+	uint32_t format_;
+	uint32_t inputSlot_;
+	bool isInstanceData_;
+};
+
+struct ShaderDesc
+{
+	std::vector<InputDesc> inputDesc_;
+	E_SHADER_TYPE type_;
+	const wchar_t* pathCS_ = nullptr;
+	const wchar_t* pathVS_ = nullptr;
+	const wchar_t* pathGS_ = nullptr;
+	const wchar_t* pathPS_ = nullptr;
+};
+
+
 struct IShader : public IUnknown
 {
+	virtual void Setting() = 0;
 };
 
 enum class E_SAMPLER_TYPE
@@ -96,11 +118,6 @@ struct ISamplerState : public IUnknown
 	virtual void __stdcall Setting(uint32_t slot) = 0;
 
 	virtual void __stdcall ChangeSampler(E_SAMPLER_TYPE samplerType) = 0;
-};
-
-
-struct IInputLayout : public IUnknown {
-	virtual void __stdcall Setting() = 0;
 };
 
 
@@ -121,21 +138,15 @@ struct IMesh : public IUnknown
 {
 	virtual void __stdcall Setting() = 0;
 
-	virtual bool __stdcall AddInputLayout(const char* pSemanticName, uint32_t semanticIndex, uint32_t format, uint32_t inputSlot, bool isInstanceData) = 0;
-
 	virtual bool __stdcall Draw() = 0;
 
 	virtual void __stdcall GetVerticesData(E_VERTEX_FORMAT* pOutFormat, uint32_t* pOutStride, uint32_t* pOutCount, void** ppOutVertices) const = 0;
 
 	virtual void __stdcall GetIndicesData(uint32_t* pOutStride, uint32_t* pOutCount, void** ppOutIndices) const = 0;
-
-	//virtual void __stdcall GetMeshData(MeshDesc* pOutDesc) const = 0;
 };
 
 struct MaterialDesc
 {
-	const wchar_t* VS = nullptr;
-	const wchar_t* PS = nullptr;
 	bool useTexture = false;
 	float shineness = 16.0f;
 	Float3 specularColor = { 0.7f,0.7f ,0.7f };
@@ -144,8 +155,6 @@ struct MaterialDesc
 struct IMaterial : public IUnknown
 {
 	virtual void __stdcall Setting() = 0;
-
-	virtual IShader* __stdcall GetVertexShader() = 0;
 
 	virtual float __stdcall GetShineness() const = 0;
 
@@ -254,10 +263,9 @@ struct IRenderer : public IUnknown {
 
 	virtual uint64_t __stdcall DrawCallCount() = 0;
 
-	virtual IInputLayout* __stdcall CreateLayout(IMesh* pVertex, IShader* pVertexShader) = 0;
-
-	//virtual IMesh* __stdcall CreateMesh(void* pVertices, uint32_t vertexSize, uint32_t vertexCount, void* pIndices = nullptr, uint32_t indexTypeSize = 0, uint32_t indexCount = 0) = 0;
 	virtual IMesh* __stdcall CreateMesh(const MeshDesc& desc) = 0;
+
+	virtual IShader* __stdcall CreateShader(const ShaderDesc& desc) = 0;
 
 	virtual IMaterial* __stdcall CreateMaterial(const MaterialDesc& materialDesc) = 0;
 

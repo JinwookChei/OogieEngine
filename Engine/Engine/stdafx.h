@@ -64,6 +64,7 @@
 #include "InputManager.h"
 #include "TimeManager.h"
 #include "MeshManager.h"
+#include "ShaderManager.h"
 #include "MaterialManager.h"
 #include "TextureManager.h"
 #include "ConstantManager.h"
@@ -85,6 +86,7 @@ extern InputManager* GInputManager;
 extern TimeManager* GTimeManager;
 
 extern MeshManager* GMeshManager;
+extern ShaderManager* GShaderManager;
 extern MaterialManager* GMaterialManager;
 extern TextureManager* GTextureManager;
 extern ConstantManager* GConstantManager;

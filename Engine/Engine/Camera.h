@@ -63,7 +63,7 @@ private:
 
 	bool InitDebugBuffer();
 
-	void InitScreenRect();
+	bool InitScreenRect();
 
 	virtual ENGINE_API void CameraTransformUpdate();
 
@@ -93,16 +93,15 @@ private:
 	
 	// Light Pass
 	IRenderTarget* pLightBufferTarget_;
-	IMaterial* pLightBufferMaterial_;
+	IShader* pLightPassShader_;
 
 	// Debug Pass
 	IRenderTarget* pDebugBufferTarget_;
-	IMaterial* pDebugBufferMaterial_;
+	IShader* pDebugPassShader_;
 
 	// Blit to Screen
 	IMesh* pScreenVertex_;
-	IMaterial* pScreenMaterial_;
-	IInputLayout* pScreenInputLayout_;
+	IShader* pScreenPassShader_;
 
 	Float2 screenOffset_;
 	Float2 screenScale_;

@@ -30,11 +30,13 @@ public:
 	uint64_t __stdcall DrawCallCount() override;
 
 	// ------------------------- 인터페이스 노출된 Create -----------------------------
-	IInputLayout* __stdcall CreateLayout(IMesh* pMesh, IShader* pVertexShader) override;
+	//IInputLayout* __stdcall CreateLayout(IMesh* pMesh, IShader* pVertexShader) override;
 
 	//IMesh* __stdcall CreateMesh(void* pVertices, uint32_t vertexSize, uint32_t vertexCount, void* pIndices = nullptr, uint32_t indexTypeSize = 0, uint32_t indexCount = 0) override;
 
 	IMesh* __stdcall CreateMesh(const MeshDesc& desc) override;
+
+	IShader* __stdcall CreateShader(const ShaderDesc& desc) override;
 
 	IMaterial* __stdcall CreateMaterial(const MaterialDesc& materialDesc) override;
 
@@ -57,12 +59,10 @@ public:
 	IDebugRenderer* __stdcall CreateDebugRenderer() override;
 
 	// ------------------------- 인터페이스 노출안된 Create -----------------------------
-	IShader* CreateShader(E_SHADER_TYPE shaderType, const wchar_t* pPath);
 
 	ITexture* CreateTexture(const Float2& size, DXGI_FORMAT format, uint32_t flag);
 
 	ITexture* CreateTexture(const D3D11_TEXTURE2D_DESC& desc);
-
 	
 	void IncrementDrawCall();
 

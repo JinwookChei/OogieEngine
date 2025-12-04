@@ -15,6 +15,7 @@ IRenderer* GRenderer = nullptr;
 TimeManager* GTimeManager = nullptr;
 
 MeshManager* GMeshManager = nullptr;
+ShaderManager* GShaderManager = nullptr;
 MaterialManager* GMaterialManager = nullptr;
 TextureManager* GTextureManager = nullptr;
 ConstantManager* GConstantManager = nullptr;
@@ -109,6 +110,8 @@ bool Engine::Initialize
 
 	GMeshManager = new MeshManager;
 
+	GShaderManager = new ShaderManager;
+
 	GTextureManager = new TextureManager;
 
 	GMaterialManager = new MaterialManager;
@@ -137,6 +140,7 @@ void Engine::Run()
 {
 	// TEMP
 	MeshManager::Instance()->TestLoad();
+	ShaderManager::Instance()->TestLoad();
 	MaterialManager::Instance()->TestLoad();
 	TextureManager::Instance()->TestLoad();
 
@@ -360,6 +364,11 @@ void Engine::CleanUp()
 	{
 		delete GMaterialManager;
 		GMaterialManager = nullptr;
+	}
+	if (nullptr != GShaderManager)
+	{
+		delete GShaderManager;
+		GShaderManager = nullptr;
 	}
 
 	if (nullptr != GMeshManager)
