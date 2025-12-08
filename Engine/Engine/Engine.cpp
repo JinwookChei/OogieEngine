@@ -29,6 +29,8 @@ Camera* GCurrentCamera = nullptr;
 ActorPicker* GActorPicker = nullptr;
 IDebugRenderer* GDebugRenderer = nullptr;
 
+IParticleRenderer* GParticle = nullptr;
+
 Engine::Engine()
 	: pStartUp_(nullptr),
 	applicationModule_(),
@@ -144,6 +146,8 @@ void Engine::Run()
 	MaterialManager::Instance()->TestLoad();
 	TextureManager::Instance()->TestLoad();
 
+	GParticle = GRenderer->CreateParticleRenderer();
+
 	while (false == pApplication_->ApplicationQuit()) {
 
 		pApplication_->WinPumpMessage();
@@ -155,6 +159,8 @@ void Engine::Run()
 		GInputManager->Tick(deltaTime);
 
 		GActorPicker->Tick(deltaTime);
+
+		GParticle->OnTick(deltaTime);
 
 		// GameLoop
 		GWorld->CheckChangeLevel();
@@ -312,6 +318,13 @@ bool Engine::InitializeStartUp(IStartup* startUp)
 void Engine::CleanUp()
 {
 	ImGuiSystem::GetImGuiManager()->CleanUpImGui();
+
+	if (nullptr != GParticle)
+	{
+		GParticle->Release();
+		GParticle = nullptr;
+	}
+
 
 	if (nullptr != GActorPicker)
 	{

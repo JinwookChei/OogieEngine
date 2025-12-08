@@ -116,9 +116,29 @@ void Level::OnRender()
 		BlendStateManager::Instance()->Clear();
 		// Light Pass End
 
+
+		// Particle Pass
+		GCurrentCamera->pParticleBufferTarget_->Setting();
+		GCurrentCamera->pParticleBufferTarget_->Clear();
+
+		DirectX::XMVECTOR eye = DirectX::XMVectorSet(0.0f, 0.0f, -10.0f, 1.0f);
+		DirectX::XMVECTOR at = DirectX::XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
+		DirectX::XMVECTOR up = DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+		float aspect = (float)DEFAULT_SCREEN_WIDTH / (float)DEFAULT_SCREEN_HEIGHT;
+		DirectX::XMMATRIX proj = DirectX::XMMatrixPerspectiveFovLH(DirectX::XM_PIDIV4, aspect, 0.1f, 1000.0f);
+		DirectX::XMMATRIX view = DirectX::XMMatrixLookToLH(eye, at, up);
+		DirectX::XMMATRIX viewProj = view * proj;
+		DirectX::XMFLOAT4X4 viewM;
+		DirectX::XMStoreFloat4x4(&viewM, view);
+		DirectX::XMFLOAT3 cameraRight(viewM._11, viewM._12, viewM._13);
+		DirectX::XMFLOAT3 cameraUp(viewM._21, viewM._22, viewM._23);
+		GParticle->OnRender(viewProj, cameraRight, cameraUp);
+
+		//GCurrentCamera->pParticleBufferTarget_->EndRenderPass();
+		// Particle Pass End
+
 		////////////////////////////////////////////////////////////////////////////////// 디버깅 임시용 //////////////////////////////////////////////////////////////////////.
 		// DebugRender
-		
 		GCurrentCamera->pDebugBufferTarget_->Clear();
 		GCurrentCamera->pDebugBufferTarget_->Setting();
 		GDebugRenderer->SetViewProj(GCurrentCamera->View(), GCurrentCamera->Projection());
@@ -134,7 +154,7 @@ void Level::OnRender()
 		GCurrentCamera->UpdatePerFrameConstant();
 		GCurrentCamera->pLightBufferTarget_->Setting();
 		GCurrentCamera->pScreenVertex_->Setting();
-		GCurrentCamera->pDebugPassShader_->Bind();
+		GCurrentCamera->pDebugPassShader_->Setting();
 		//GCurrentCamera->pScreenInputLayout_->Setting();
 		//GCurrentCamera->pDebugBufferMaterial_->Setting();
 	

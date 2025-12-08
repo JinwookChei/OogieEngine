@@ -9,6 +9,6 @@ public:
 	~ParticleComponent();
 
 private:
-
+	//void CleanUp();
 
 };

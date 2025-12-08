@@ -36,6 +36,8 @@
 #include <cstdio>
 #include <functional>
 
+// Temp
+#include <DirectXMath.h>
 
 // CoreTypes
 #include <MathType/MathType.h>
@@ -99,6 +101,9 @@ extern Camera* GMainCamera;
 extern Camera* GCurrentCamera;
 extern ActorPicker* GActorPicker;
 extern IDebugRenderer* GDebugRenderer;
+
+
+extern IParticleRenderer* GParticle;
 
 
 // юс╫ц.

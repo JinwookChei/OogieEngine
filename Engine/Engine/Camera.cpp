@@ -32,6 +32,8 @@ Camera::Camera()
 
 	InitLightBuffer();
 
+	InitParticleBuffer();
+
 	InitDebugBuffer();
 
 	InitScreenRect();
@@ -77,7 +79,7 @@ void Camera::LightPassBegin()
 	pGBufferTarget_->BindRenderTextureForPS(0);
 
 	pScreenVertex_->Setting();
-	pLightPassShader_->Bind();
+	pLightPassShader_->Setting();
 }
 
 void Camera::RenderLight()
@@ -102,7 +104,7 @@ void Camera::BlitToBackBuffer(const Float2& offset, const Float2& scale)
 	pLightBufferTarget_->BindRenderTextureForPS(4);
 	
 	pScreenVertex_->Setting();
-	pScreenPassShader_->Bind();
+	pScreenPassShader_->Setting();
 	pScreenVertex_->Draw();
 
 	pLightBufferTarget_->ClearRenderTextureForPS(4);
@@ -246,6 +248,29 @@ bool Camera::InitLightBuffer()
 	return true;
 }
 
+bool Camera::InitParticleBuffer()
+{
+	RenderTargetDesc particleBufferDesc(E_RENDER_TECHNIQUE_TYPE::Forward);
+	particleBufferDesc.size_ = { DEFAULT_SCREEN_WIDTH , DEFAULT_SCREEN_HEIGHT };
+	particleBufferDesc.clearColor_ = { 0.0f, 0.0f, 0.0f, 0.0f };
+	particleBufferDesc.forwardDesc_.useDepthStencil_ = true;
+	pParticleBufferTarget_ = GRenderer->CreateRenderTarget(particleBufferDesc);
+	if (nullptr == pParticleBufferTarget_)
+	{
+		DEBUG_BREAK();
+		return false;
+	}
+
+	//if (!ShaderManager::Instance()->GetShader(&pDebugPassShader_, 3))
+	//{
+	//	DEBUG_BREAK();
+	//	return false;
+	//}
+	//pDebugPassShader_->AddRef();
+
+	return true;
+}
+
 bool Camera::InitDebugBuffer()
 {
 	RenderTargetDesc debugBufferDesc(E_RENDER_TECHNIQUE_TYPE::Forward);
@@ -331,6 +356,11 @@ void Camera::CleanUp()
 		pScreenVertex_->Release();
 		pScreenVertex_ = nullptr;
 	}
+	if (nullptr != pParticleBufferTarget_)
+	{
+		pParticleBufferTarget_->Release();
+		pParticleBufferTarget_ = nullptr;
+	}
 	if (nullptr != pLightPassShader_)
 	{
 		pLightPassShader_->Release();
@@ -352,6 +382,11 @@ void Camera::CleanUp()
 IRenderTarget* __stdcall Camera::GetGBufferTargetForImGui() const
 {
 	return pGBufferTarget_;
+}
+
+ENGINE_API IRenderTarget* __stdcall Camera::GetParticleBufferTargetForImGui() const
+{
+	return pParticleBufferTarget_;
 }
 
 IRenderTarget* __stdcall Camera::GetDebugBufferTargetForImGui() const

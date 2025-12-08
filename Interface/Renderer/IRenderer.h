@@ -250,6 +250,16 @@ struct IDebugRenderer : public IUnknown
 };
 
 
+
+struct IParticleRenderer : public IUnknown
+{
+	virtual void __stdcall OnTick(double deltaTime) = 0;
+
+	virtual void __stdcall OnRender(const DirectX::XMMATRIX& viewProj, const DirectX::XMFLOAT3& cameraRight, const DirectX::XMFLOAT3& cameraUp) = 0;
+};
+
+
+
 struct IRenderer : public IUnknown {
 	virtual bool __stdcall Initialize(void* hWnd, uint32_t width, uint32_t height) = 0;
 
@@ -282,5 +292,7 @@ struct IRenderer : public IUnknown {
 	virtual ITexture* __stdcall LoadTextureFromDirectXTex(const wchar_t* fileName, bool isNormalMap) = 0;
 
 	virtual IDebugRenderer* __stdcall CreateDebugRenderer() = 0;
+
+	virtual IParticleRenderer* __stdcall CreateParticleRenderer() = 0;
 };
 

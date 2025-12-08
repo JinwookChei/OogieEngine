@@ -8,11 +8,8 @@
 #include "BlendState.h"
 #include "ConstantBuffer.h"
 #include "Rasterizer.h"
-#include "RenderTargetView.h"
-#include "DepthStencilView.h"
-#include "ShaderResourceView.h"
 #include "D3D11DebugRenderer.h"
-
+#include "D3D11ParticleRenderer.h"
 
 Renderer* GRenderer = nullptr;
 
@@ -1011,6 +1008,57 @@ IDebugRenderer* __stdcall Renderer::CreateDebugRenderer()
 	}
 
 	return pNewDebugRenderer;
+}
+
+ID3D11ShaderResourceView* CreateWhiteTextureSRV(ID3D11Device* device)
+{
+	UINT color = 0xFFFFFFFF;
+
+	D3D11_TEXTURE2D_DESC td = {};
+	td.Width = 1;
+	td.Height = 1;
+	td.MipLevels = 1;
+	td.ArraySize = 1;
+	td.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+	td.SampleDesc.Count = 1;
+	td.Usage = D3D11_USAGE_DEFAULT;
+	td.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+
+	D3D11_SUBRESOURCE_DATA initData = {};
+	initData.pSysMem = &color;
+	initData.SysMemPitch = sizeof(UINT);
+
+	ID3D11Texture2D* tex = nullptr;
+	if (FAILED(device->CreateTexture2D(&td, &initData, &tex)))
+	{
+		DEBUG_BREAK();
+		return nullptr;
+	}
+
+	ID3D11ShaderResourceView* srv = nullptr;
+	if (FAILED(device->CreateShaderResourceView(tex, nullptr, &srv)))
+	{
+		DEBUG_BREAK();
+		tex->Release();
+		return nullptr;
+	}
+
+	tex->Release();
+	return srv;
+}
+
+IParticleRenderer* __stdcall Renderer::CreateParticleRenderer()
+{
+	ID3D11ShaderResourceView* pParticleTexSRV = CreateWhiteTextureSRV(GRenderer->Device());
+
+	ParticleSystemGPU* pNewParticleRenderer = new ParticleSystemGPU;
+	if (false == pNewParticleRenderer->Init(GRenderer->Device(), 1000, pParticleTexSRV))
+	{
+		DEBUG_BREAK();
+		return nullptr;
+	}
+
+	return pNewParticleRenderer;
 }
 
 

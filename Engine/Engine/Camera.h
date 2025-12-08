@@ -61,6 +61,8 @@ private:
 
 	bool InitLightBuffer();
 
+	bool InitParticleBuffer();
+
 	bool InitDebugBuffer();
 
 	bool InitScreenRect();
@@ -72,6 +74,8 @@ private:
 public:
 	// IImguiBindCamera Area
 	ENGINE_API IRenderTarget* __stdcall GetGBufferTargetForImGui() const override;
+
+	ENGINE_API IRenderTarget* __stdcall GetParticleBufferTargetForImGui() const override;
 
 	ENGINE_API IRenderTarget* __stdcall GetDebugBufferTargetForImGui() const override;
 
@@ -94,6 +98,9 @@ private:
 	// Light Pass
 	IRenderTarget* pLightBufferTarget_;
 	IShader* pLightPassShader_;
+
+	// Particle Pass
+	IRenderTarget* pParticleBufferTarget_;
 
 	// Debug Pass
 	IRenderTarget* pDebugBufferTarget_;

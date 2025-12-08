@@ -58,6 +58,8 @@ public:
 	
 	IDebugRenderer* __stdcall CreateDebugRenderer() override;
 
+	IParticleRenderer* __stdcall CreateParticleRenderer() override;
+
 	// ------------------------- 인터페이스 노출안된 Create -----------------------------
 
 	ITexture* CreateTexture(const Float2& size, DXGI_FORMAT format, uint32_t flag);

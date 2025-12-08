@@ -30,7 +30,9 @@
 #include <stdint.h>
 #include <cstdlib>
 #include <cstdio>
+#include <vector>
 
+#include <DirectXMath.h>
 
 // Imgui
 #define IMGUI_DEFINE_MATH_OPERATORS

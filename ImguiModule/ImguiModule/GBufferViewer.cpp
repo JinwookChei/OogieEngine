@@ -8,7 +8,8 @@ GBufferViewer::GBufferViewer()
 	, pAlbedoWidget_(nullptr)
 	, pNormalWidget_(nullptr)
 	, pSpecularWidget_(nullptr)
-	, pDepthWidget_(nullptr)
+	//, pDepthWidget_(nullptr)
+	, pParticleWidget_(nullptr)
 	, pDebugWidget_(nullptr)
 {
 }
@@ -31,7 +32,8 @@ bool GBufferViewer::Init()
 	pAlbedoWidget_ = new ImGuiTextureWidget("Albedo");
 	pNormalWidget_ = new ImGuiTextureWidget("Normal");
 	pSpecularWidget_ = new ImGuiTextureWidget("Specular");
-	pDepthWidget_ = new ImGuiTextureWidget("Depth");
+	//pDepthWidget_ = new ImGuiTextureWidget("Depth");
+	pParticleWidget_ = new ImGuiTextureWidget("Particle");
 	pDebugWidget_ = new ImGuiTextureWidget("Debug");
 
 	return true;
@@ -47,7 +49,8 @@ void GBufferViewer::Render()
 	pAlbedoWidget_->Render();
 	pNormalWidget_->Render();
 	pSpecularWidget_->Render();
-	pDepthWidget_->Render();
+	//pDepthWidget_->Render();
+	pParticleWidget_->Render();
 	pDebugWidget_->Render();
 }
 
@@ -63,6 +66,7 @@ void GBufferViewer::BindCamera(IImGuiBindCamera* pCamera)
 
 	pBoundCamera_ = pCamera;
 	IRenderTarget* pGBufferTarget = pBoundCamera_->GetGBufferTargetForImGui();
+	IRenderTarget* pParticleTarget = pBoundCamera_->GetParticleBufferTargetForImGui();
 	IRenderTarget* pDebugTarget = pBoundCamera_->GetDebugBufferTargetForImGui();
 
 	ImTextureID* pAlbedoTexture = static_cast<ImTextureID*>(pGBufferTarget->GetShaderResourceView(E_RENDER_TEXTURE_TYPE::Albedo));
@@ -71,8 +75,10 @@ void GBufferViewer::BindCamera(IImGuiBindCamera* pCamera)
 	pNormalWidget_->BindTexture(pNormalTexture);
 	ImTextureID* pSpecularTexture = static_cast<ImTextureID*>(pGBufferTarget->GetShaderResourceView(E_RENDER_TEXTURE_TYPE::Specular));
 	pSpecularWidget_->BindTexture(pSpecularTexture);
-	ImTextureID* pDepthTexture = static_cast<ImTextureID*>(pGBufferTarget->GetShaderResourceView(E_RENDER_TEXTURE_TYPE::Depth));
-	pDepthWidget_->BindTexture(pDepthTexture);
+	/*ImTextureID* pDepthTexture = static_cast<ImTextureID*>(pGBufferTarget->GetShaderResourceView(E_RENDER_TEXTURE_TYPE::Depth));
+	pDepthWidget_->BindTexture(pDepthTexture);*/
+	ImTextureID* pParticleTexture = static_cast<ImTextureID*>(pParticleTarget->GetShaderResourceView(E_RENDER_TEXTURE_TYPE::Albedo));
+	pParticleWidget_->BindTexture(pParticleTexture);
 	ImTextureID* pDebugTexture = static_cast<ImTextureID*>(pDebugTarget->GetShaderResourceView(E_RENDER_TEXTURE_TYPE::Albedo));
 	pDebugWidget_->BindTexture(pDebugTexture);
 }
@@ -99,10 +105,15 @@ void GBufferViewer::CleanUp()
 		pSpecularWidget_->Release();
 		pSpecularWidget_ = nullptr;
 	}
-	if (nullptr != pDepthWidget_)
+	//if (nullptr != pDepthWidget_)
+	//{
+	//	pDepthWidget_->Release();
+	//	pDepthWidget_ = nullptr;
+	//}
+	if (nullptr != pParticleWidget_)
 	{
-		pDepthWidget_->Release();
-		pDepthWidget_ = nullptr;
+		pParticleWidget_->Release();
+		pParticleWidget_ = nullptr;
 	}
 	if (nullptr != pBoundCamera_)
 	{

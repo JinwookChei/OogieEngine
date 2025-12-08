@@ -52,9 +52,6 @@
     <Filter Include="Source Files\BlendState">
       <UniqueIdentifier>{68b0ed3b-27ae-43f8-ac8a-08b82caddf26}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\View">
-      <UniqueIdentifier>{ad9a3518-5415-4110-870a-57b5cf674286}</UniqueIdentifier>
-    </Filter>
     <Filter Include="DirectXTex">
       <UniqueIdentifier>{b8a7c758-f17b-4ba4-9261-125c2b007fe1}</UniqueIdentifier>
     </Filter>
@@ -66,6 +63,9 @@
     </Filter>
     <Filter Include="CoreTypes">
       <UniqueIdentifier>{48720aec-ba2d-431d-881b-0c36d0fe5b3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shader\PaticleShader">
+      <UniqueIdentifier>{6b0e954b-8b65-4103-93fc-add79e68067f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -105,15 +105,6 @@
     <ClInclude Include="BlendState.h">
       <Filter>Source Files\BlendState</Filter>
     </ClInclude>
-    <ClInclude Include="RenderTargetView.h">
-      <Filter>Source Files\View</Filter>
-    </ClInclude>
-    <ClInclude Include="DepthStencilView.h">
-      <Filter>Source Files\View</Filter>
-    </ClInclude>
-    <ClInclude Include="ShaderResourceView.h">
-      <Filter>Source Files\View</Filter>
-    </ClInclude>
     <ClInclude Include="D3D11DebugRenderer.h">
       <Filter>Source Files\Renderer</Filter>
     </ClInclude>
@@ -128,6 +119,9 @@
     </ClInclude>
     <ClInclude Include="BaseShader.h">
       <Filter>Source Files\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="D3D11ParticleRenderer.h">
+      <Filter>Source Files\Renderer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -167,20 +161,14 @@
     <ClCompile Include="BlendState.cpp">
       <Filter>Source Files\BlendState</Filter>
     </ClCompile>
-    <ClCompile Include="RenderTargetView.cpp">
-      <Filter>Source Files\View</Filter>
-    </ClCompile>
-    <ClCompile Include="DepthStencilView.cpp">
-      <Filter>Source Files\View</Filter>
-    </ClCompile>
-    <ClCompile Include="ShaderResourceView.cpp">
-      <Filter>Source Files\View</Filter>
-    </ClCompile>
     <ClCompile Include="D3D11DebugRenderer.cpp">
       <Filter>Source Files\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="BaseShader.cpp">
       <Filter>Source Files\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="D3D11ParticleRenderer.cpp">
+      <Filter>Source Files\Renderer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -189,6 +177,18 @@
     </FxCompile>
     <FxCompile Include="DebugLinePS.hlsl">
       <Filter>Resource Files\Shader\DebugShader</Filter>
+    </FxCompile>
+    <FxCompile Include="ParticleVS.hlsl">
+      <Filter>Resource Files\Shader\PaticleShader</Filter>
+    </FxCompile>
+    <FxCompile Include="ParticleGS.hlsl">
+      <Filter>Resource Files\Shader\PaticleShader</Filter>
+    </FxCompile>
+    <FxCompile Include="ParticleCS.hlsl">
+      <Filter>Resource Files\Shader\PaticleShader</Filter>
+    </FxCompile>
+    <FxCompile Include="ParticlePS.hlsl">
+      <Filter>Resource Files\Shader\PaticleShader</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

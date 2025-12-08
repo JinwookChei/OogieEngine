@@ -56,6 +56,7 @@
 #include <vector>
 #include <functional>
 
+#include <DirectXMath.h>
 
 // CoreTypes
 #include <MathType/MathType.h>

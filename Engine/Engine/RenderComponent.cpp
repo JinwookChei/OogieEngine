@@ -29,10 +29,10 @@ void RenderComponent::Render()
 
 	ConstantManager::Instance()->UpdatePerObejct(&cbPerObject);
 
-	pShader_->Bind();
+	pShader_->Setting();
 	pMaterial_->Setting();
 	pMesh_->Setting();
-	pShader_->Bind();
+	pShader_->Setting();
 	pTextureColor_->Setting(0);
 	pTextureNormal_->Setting(1);
 	pMesh_->Draw();
