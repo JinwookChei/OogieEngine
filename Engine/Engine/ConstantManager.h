@@ -82,8 +82,6 @@ public:
 
 	void UpdatePerFrame(CBPerFrame* pCBPerFrame);
 
-	//void UpdatePerMergeFrame(CBPerMergeFrame* pCBPerMergeFrame);
-
 	void UpdatePerObejct(CBPerObject* pCBPerObject);
 
 	void UpdatePerLight(CBPerLight* pCBPerLight);
@@ -92,8 +90,6 @@ private:
 	void CleanUp();
 
 	IConstantBuffer* pPerFrameBuffer_;
-
-	//IConstantBuffer* pPerMergeFrameBuffer_;
 
 	IConstantBuffer* pPerObjectBuffer_;
 

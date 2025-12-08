@@ -55,7 +55,7 @@ void __stdcall ParticleSystemGPU::OnTick(double deltaTime)
 	Tick(GRenderer->DeviceContext(), deltaTime);
 }
 
-void __stdcall ParticleSystemGPU::OnRender(const DirectX::XMMATRIX& viewProj, const DirectX::XMFLOAT3& cameraRight, const DirectX::XMFLOAT3& cameraUp)
+void __stdcall ParticleSystemGPU::OnRender(const Float4x4& viewProj, const Float3& cameraRight, const Float3& cameraUp)
 {
 	Render(GRenderer->DeviceContext(), viewProj, cameraRight, cameraUp);
 }
@@ -127,16 +127,24 @@ void ParticleSystemGPU::Tick(ID3D11DeviceContext* pDeviceContext, float deltaTim
 	pDeviceContext->CSSetShader(nullptr, nullptr, 0);
 }
 
-void ParticleSystemGPU::Render(ID3D11DeviceContext* pDeviceContext, const DirectX::XMMATRIX& viewProj, const DirectX::XMFLOAT3& cameraRight, const DirectX::XMFLOAT3& cameraUp)
+void ParticleSystemGPU::Render(ID3D11DeviceContext* pDeviceContext, const Float4x4& viewProj, const Float3& cameraRight, const Float3& cameraUp)
 {
+	Float4 scale = { 1.0f, 1.0f, 1.0f, 0.0f };
+	Float4 rotation = { 0.0f, 0.0f, 0.0f , 0.0f };
+	Float4 position = { 0.0f, 0.0f, 0.0f , 1.0f };
+	Float4x4 world;
+	MATH::MatrixCompose(world, scale, rotation, position);
+
+
 	CBParticle cb = {};
-	DirectX::XMStoreFloat4x4(&cb.viewProj_, DirectX::XMMatrixTranspose(viewProj));
+	MATH::MatrixTranspose(cb.world_, world);
+	MATH::MatrixTranspose(cb.viewProj_, viewProj);
 	cb.cameraRight_ = cameraRight;
 	cb.startSize_ = 0.5f;
 	cb.cameraUp_ = cameraUp;
 	cb.endSize_ = 0.1f;
-	cb.startColor_ = DirectX::XMFLOAT4(0.1f, 0.6f, 1.0f, 1.0f);
-	cb.endColor_ = DirectX::XMFLOAT4(0.1f, 0.1f, 1.0f, 0.0f);
+	cb.startColor_ = { 0.1f, 0.6f, 1.0f, 1.0f };
+	cb.endColor_ = { 0.1f, 0.1f, 1.0f, 0.0f };
 	pDeviceContext->UpdateSubresource(pConstantBuffer_, 0, nullptr, &cb, 0, 0);
 
 	pDeviceContext->IASetInputLayout(nullptr);
@@ -178,8 +186,8 @@ bool ParticleSystemGPU::InitParticleBuffer(ID3D11Device* pDevice, unsigned int m
 	std::vector<ParticleGPU> initData(maxParticleCnt_);
 	for (ParticleGPU& particle : initData)
 	{
-		particle.position_ = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
-		particle.velocity_ = DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f);
+		particle.position_ = { 0.0f, 0.0f, 0.0f };
+		particle.velocity_ = { 0.0f, 0.0f, 0.0f };
 		particle.lifeTime_ = 1.0f;
 		particle.age_ = 1.0f;
 	}

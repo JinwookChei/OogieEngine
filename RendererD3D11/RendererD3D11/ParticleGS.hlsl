@@ -1,6 +1,9 @@
 cbuffer constantBuffer : register(b0)
 {
+    float4x4 gWorld;
+    
     float4x4 gViewProj;
+    
     float3 gCameraRight;
     float gStartSize;
     
@@ -29,6 +32,9 @@ struct GS_OUTPUT
 void main(point VS_OUTPUT input[1], inout TriangleStream<GS_OUTPUT> output)
 {
     float3 pos = input[0].pos;
+    //float4 worldPos = mul(float4(input[0].pos, 1.0f), gWorld);
+    //float3 pos = worldPos.xyz;
+    
     float age = input[0].age;
     
     float size = lerp(gStartSize, gEndSize, age);

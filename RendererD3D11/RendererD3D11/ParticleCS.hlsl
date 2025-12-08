@@ -31,8 +31,8 @@ void SpawnParticle(inout ParticleData p, uint idx)
     p.pos = float3(0, 0, 0);
     p.vel = float3(
     (r1 - 0.5f) * 2.0f,
-    5.0f + r2 * 2.0f,
-    (r3 - 0.5f) * 2.0f);
+    (r2 - 0.5f) * 2.0f,
+    5.0f + r3 * 2.0f);
     
     p.lifeTime = 2.0f;
     p.age = 0.0f;
@@ -83,7 +83,7 @@ void main(uint3 dispatchThreadId : SV_DispatchThreadID)
         {
             p.age = ageSec / life;
             p.pos += p.vel * gDeltaTime;
-            p.vel.y -= 9.8f * 0.5f * gDeltaTime;
+            p.vel.z -= 9.8f * 0.5f * gDeltaTime;
         }
     }
     

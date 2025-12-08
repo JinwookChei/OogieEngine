@@ -10,13 +10,6 @@ ConstantManager::ConstantManager()
 		return;
 	}
 
-	//pPerMergeFrameBuffer_ = GRenderer->CreateConstantBuffer((uint32_t)sizeof(CBPerMergeFrame));
-	//if (nullptr == pPerMergeFrameBuffer_)
-	//{
-	//	Assert("PerMergeFrameBuffer_ is NULL!");
-	//	return;
-	//}
-
 	pPerObjectBuffer_ = GRenderer->CreateConstantBuffer((uint32_t)sizeof(CBPerObject));
 	if (nullptr == pPerObjectBuffer_)
 	{
@@ -49,15 +42,6 @@ void ConstantManager::UpdatePerFrame(CBPerFrame* pCBPerFrame)
 	pPerFrameBuffer_->PSSetting(0);
 }
 
-
-//void ConstantManager::UpdatePerMergeFrame(CBPerMergeFrame* pCBPerMergeFrame)
-//{
-//	pPerMergeFrameBuffer_->Update(pCBPerMergeFrame);
-//	pPerMergeFrameBuffer_->VSSetting(0);
-//	pPerMergeFrameBuffer_->PSSetting(0);
-//}
-
-
 void ConstantManager::UpdatePerObejct(CBPerObject* cbPerObject)
 {
 	pPerObjectBuffer_->Update(cbPerObject);
@@ -79,12 +63,6 @@ void ConstantManager::CleanUp()
 		pPerFrameBuffer_->Release();
 		pPerFrameBuffer_ = nullptr;
 	}
-
-	//if (nullptr != pPerMergeFrameBuffer_)
-	//{
-	//	pPerMergeFrameBuffer_->Release();
-	//	pPerMergeFrameBuffer_ = nullptr;
-	//}
 
 	if (nullptr != pPerObjectBuffer_)
 	{

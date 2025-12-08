@@ -328,7 +328,7 @@ void Camera::CameraTransformUpdate()
 
 	MATH::MatrixLookToLH(view_, eyePos, eyeDir, eyeUp);
 
-	float fovRad = MATH::ConvertDegToRad(fov_);
+	//float fovRad = MATH::ConvertDegToRad(fov_);
 
 	const Float2& size = GetRenderSize();
 	MATH::MatrixPerspectiveFovLH(projection_, fov_, (size.X / size.Y), near_, far_);

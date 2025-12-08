@@ -2,20 +2,21 @@
 
 struct CBParticle
 {
-	DirectX::XMFLOAT4X4 viewProj_;
-	DirectX::XMFLOAT3 cameraRight_;
+	Float4x4 world_;
+	Float4x4 viewProj_;
+	Float3 cameraRight_;
 	float startSize_;
-	DirectX::XMFLOAT3 cameraUp_;
+	Float3 cameraUp_;
 	float endSize_;
-	DirectX::XMFLOAT4 startColor_;
-	DirectX::XMFLOAT4 endColor_;
+	Float4 startColor_;
+	Float4 endColor_;
 };
 
 struct ParticleGPU
 {
-	DirectX::XMFLOAT3 position_;
+	Float3 position_;
 	float age_;
-	DirectX::XMFLOAT3 velocity_;
+	Float3 velocity_;
 	float lifeTime_;
 };
 
@@ -44,13 +45,13 @@ public:
 
 	void __stdcall OnTick(double deltaTime) override;
 
-	void __stdcall OnRender(const DirectX::XMMATRIX& viewProj, const DirectX::XMFLOAT3& cameraRight, const DirectX::XMFLOAT3& cameraUp) override;
+	void __stdcall OnRender(const Float4x4& viewProj, const Float3& cameraRight, const Float3& cameraUp) override;
 
 	bool Init(ID3D11Device* pDevice, unsigned int maxParticleCnt, ID3D11ShaderResourceView* pTextureSRV);
 
 	void Tick(ID3D11DeviceContext* pDeviceContext, float deltaTime);
 
-	void Render(ID3D11DeviceContext* pDeviceContext, const DirectX::XMMATRIX& viewProj, const DirectX::XMFLOAT3& cameraRight, const DirectX::XMFLOAT3& cameraUp);
+	void Render(ID3D11DeviceContext* pDeviceContext, const Float4x4& viewProj, const Float3& cameraRight, const Float3& cameraUp);
 
 private:
 	bool InitParticleBuffer(ID3D11Device* pDevice, unsigned int maxParticleCnt);

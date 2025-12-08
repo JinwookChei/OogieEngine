@@ -3,7 +3,10 @@ SamplerState gSampler : register(s0);
 
 cbuffer constantBuffer : register(b0)
 {
+    float4x4 gWorld;
+    
     float4x4 gViewProj;
+    
     float3 gCameraRight;
     float gStartSize;
     

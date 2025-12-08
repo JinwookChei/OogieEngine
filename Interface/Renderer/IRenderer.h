@@ -255,7 +255,7 @@ struct IParticleRenderer : public IUnknown
 {
 	virtual void __stdcall OnTick(double deltaTime) = 0;
 
-	virtual void __stdcall OnRender(const DirectX::XMMATRIX& viewProj, const DirectX::XMFLOAT3& cameraRight, const DirectX::XMFLOAT3& cameraUp) = 0;
+	virtual void __stdcall OnRender(const Float4x4& viewProj, const Float3& cameraRight, const Float3& cameraUp) = 0;
 };
 
 

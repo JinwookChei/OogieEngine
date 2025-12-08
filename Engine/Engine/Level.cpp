@@ -120,21 +120,46 @@ void Level::OnRender()
 		// Particle Pass
 		GCurrentCamera->pParticleBufferTarget_->Setting();
 		GCurrentCamera->pParticleBufferTarget_->Clear();
+		
+		const Transform& worldForm = GCurrentCamera->GetWorldTransform();
+		Vector eye = worldForm.GetPosition();
+		Vector to = worldForm.ForwardVector();
+		Vector right = worldForm.RightVector();
+		Vector up = worldForm.UpVector();
 
-		DirectX::XMVECTOR eye = DirectX::XMVectorSet(0.0f, 0.0f, -10.0f, 1.0f);
-		DirectX::XMVECTOR at = DirectX::XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
-		DirectX::XMVECTOR up = DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+		const Float2& size = GCurrentCamera->GetRenderSize();
 		float aspect = (float)DEFAULT_SCREEN_WIDTH / (float)DEFAULT_SCREEN_HEIGHT;
-		DirectX::XMMATRIX proj = DirectX::XMMatrixPerspectiveFovLH(DirectX::XM_PIDIV4, aspect, 0.1f, 1000.0f);
-		DirectX::XMMATRIX view = DirectX::XMMatrixLookToLH(eye, at, up);
-		DirectX::XMMATRIX viewProj = view * proj;
-		DirectX::XMFLOAT4X4 viewM;
-		DirectX::XMStoreFloat4x4(&viewM, view);
-		DirectX::XMFLOAT3 cameraRight(viewM._11, viewM._12, viewM._13);
-		DirectX::XMFLOAT3 cameraUp(viewM._21, viewM._22, viewM._23);
+		Float4x4 proj;
+		MATH::MatrixPerspectiveFovLH(proj, GCurrentCamera->GetFov(), (size.X / size.Y), GCurrentCamera->GetNear(), GCurrentCamera->GetFar());
+		Float4x4 view;
+		MATH::MatrixLookToLH(view, eye, to, up);
+		Float4x4 viewProj;
+		MATH::MatrixMultiply(viewProj, view, proj);
+		Float3 cameraRight(right.X, right.Y, right.Z);
+		Float3 cameraUp(up.X, up.Y, up.Z);
 		GParticle->OnRender(viewProj, cameraRight, cameraUp);
+		GCurrentCamera->pParticleBufferTarget_->EndRenderPass();
 
-		//GCurrentCamera->pParticleBufferTarget_->EndRenderPass();
+
+		BlendStateManager::Instance()->Setting(E_BLEND_MODE_TYPE::OPAQUE_BLEND);
+		GCurrentCamera->pGBufferTarget_->BindRenderTextureForPS(0);
+		GCurrentCamera->pParticleBufferTarget_->BindRenderTextureForPS(4);
+		// Begin
+		GCurrentCamera->UpdatePerFrameConstant();
+		GCurrentCamera->pLightBufferTarget_->Setting();
+		GCurrentCamera->pScreenVertex_->Setting();
+		GCurrentCamera->pDebugPassShader_->Setting();
+		//GCurrentCamera->pScreenInputLayout_->Setting();
+		//GCurrentCamera->pDebugBufferMaterial_->Setting();
+		// Draw
+		GCurrentCamera->pScreenVertex_->Draw();
+		// End
+		GCurrentCamera->pLightBufferTarget_->EndRenderPass();
+		GCurrentCamera->pParticleBufferTarget_->ClearRenderTextureForPS(4);
+		GCurrentCamera->pGBufferTarget_->ClearRenderTextureForPS(0);
+		BlendStateManager::Instance()->Clear();
+
+
 		// Particle Pass End
 
 		////////////////////////////////////////////////////////////////////////////////// 디버깅 임시용 //////////////////////////////////////////////////////////////////////.
