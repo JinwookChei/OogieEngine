@@ -231,11 +231,26 @@ ULONG __stdcall BaseShader::Release()
 
 void BaseShader::Setting()
 {
-	GRenderer->DeviceContext()->IASetInputLayout(pInputLayout_);
-	GRenderer->DeviceContext()->CSSetShader(pCS_, nullptr, 0);
-	GRenderer->DeviceContext()->VSSetShader(pVS_, nullptr, 0);
-	GRenderer->DeviceContext()->GSSetShader(pGS_, nullptr, 0);
-	GRenderer->DeviceContext()->PSSetShader(pPS_, nullptr, 0);
+	if(nullptr != pInputLayout_)
+	{
+		GRenderer->DeviceContext()->IASetInputLayout(pInputLayout_);
+	}
+	if (nullptr != pCS_)
+	{
+		GRenderer->DeviceContext()->CSSetShader(pCS_, nullptr, 0);
+	}
+	if (nullptr != pVS_)
+	{
+		GRenderer->DeviceContext()->VSSetShader(pVS_, nullptr, 0);
+	}
+	if (nullptr != pGS_)
+	{
+		GRenderer->DeviceContext()->GSSetShader(pGS_, nullptr, 0);
+	}
+	if (nullptr != pPS_)
+	{
+		GRenderer->DeviceContext()->PSSetShader(pPS_, nullptr, 0);
+	}
 }
 
 //void BaseShader::UnBind()

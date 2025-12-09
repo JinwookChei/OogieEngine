@@ -31,9 +31,8 @@ struct GS_OUTPUT
 [maxvertexcount(4)]
 void main(point VS_OUTPUT input[1], inout TriangleStream<GS_OUTPUT> output)
 {
-    float3 pos = input[0].pos;
-    //float4 worldPos = mul(float4(input[0].pos, 1.0f), gWorld);
-    //float3 pos = worldPos.xyz;
+    float4 worldPos = mul(float4(input[0].pos, 1.0f), gWorld);
+    float3 pos = worldPos.xyz;
     
     float age = input[0].age;
     

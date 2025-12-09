@@ -102,9 +102,11 @@ extern Camera* GCurrentCamera;
 extern ActorPicker* GActorPicker;
 extern IDebugRenderer* GDebugRenderer;
 
+extern IParticleRenderer* GParticleRenderer;
+extern IParticle* GParticle_1;
 
-extern IParticleRenderer* GParticle;
-
+/*LINK_NODE;
+particleList.PushBack();*/
 
 // юс╫ц.
 constexpr float DEFAULT_SCREEN_WIDTH = 2560.0f;

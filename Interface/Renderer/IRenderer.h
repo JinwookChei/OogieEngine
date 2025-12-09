@@ -66,6 +66,16 @@ struct RenderTargetDesc
 	}
 };
 
+
+struct TextureDesc
+{
+	Float2 size_;
+
+	UINT colorData_;
+	//void* initData_;
+	//uint32_t initMemSize_;
+};
+
 struct ITexture : public IUnknown
 {
 	virtual void __stdcall Setting(UINT slot) = 0;
@@ -250,12 +260,38 @@ struct IDebugRenderer : public IUnknown
 };
 
 
+enum class E_PARTICLE_PATTERN_TYPE
+{
+	EXPLOSION = 0,
+	FUME
+};
+
+//struct ParticleData
+//{
+//	Float4x4 world_;
+//	ITexture* pTexture_;
+//	E_PARTICLE_PATTERN_TYPE patternType_;
+//};
+
+struct ParticleDesc
+{
+	unsigned int maxNum_;
+
+	E_PARTICLE_PATTERN_TYPE patternType_;
+
+	ITexture* pTexture_;
+};
+
+struct IParticle : public IUnknown
+{
+
+};
 
 struct IParticleRenderer : public IUnknown
 {
-	virtual void __stdcall OnTick(double deltaTime) = 0;
+	virtual void __stdcall OnTick(IParticle* pParticle, double deltaTime) = 0;
 
-	virtual void __stdcall OnRender(const Float4x4& viewProj, const Float3& cameraRight, const Float3& cameraUp) = 0;
+	virtual void __stdcall OnRender(IParticle* pParticle, const Float4x4& viewProj, const Float3& cameraRight, const Float3& cameraUp) = 0;
 };
 
 
@@ -289,7 +325,11 @@ struct IRenderer : public IUnknown {
 
 	virtual IBlendState* __stdcall CreateBlendState() = 0;
 
+	virtual IParticle* __stdcall CreateParticle(const ParticleDesc& desc) = 0;
+
 	virtual ITexture* __stdcall LoadTextureFromDirectXTex(const wchar_t* fileName, bool isNormalMap) = 0;
+
+	virtual ITexture* __stdcall CreateTexture(const TextureDesc& desc) = 0;
 
 	virtual IDebugRenderer* __stdcall CreateDebugRenderer() = 0;
 

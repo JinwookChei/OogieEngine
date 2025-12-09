@@ -54,17 +54,25 @@ public:
 
 	IBlendState* __stdcall CreateBlendState() override;
 
+	IParticle* __stdcall CreateParticle(const ParticleDesc& desc) override;
+
 	ITexture* __stdcall LoadTextureFromDirectXTex(const wchar_t* fileName, bool isNormalMap) override;
 	
+	ITexture* __stdcall CreateTexture(const TextureDesc& desc) override;
+
+	ITexture* CreateTexture(const Float2& size, DXGI_FORMAT format, uint32_t flag);
+
+	ITexture* CreateTexture(const D3D11_TEXTURE2D_DESC& desc);
+
 	IDebugRenderer* __stdcall CreateDebugRenderer() override;
 
 	IParticleRenderer* __stdcall CreateParticleRenderer() override;
 
 	// ------------------------- 인터페이스 노출안된 Create -----------------------------
 
-	ITexture* CreateTexture(const Float2& size, DXGI_FORMAT format, uint32_t flag);
+	
 
-	ITexture* CreateTexture(const D3D11_TEXTURE2D_DESC& desc);
+
 	
 	void IncrementDrawCall();
 

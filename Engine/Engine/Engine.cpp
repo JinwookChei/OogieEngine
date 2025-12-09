@@ -29,7 +29,9 @@ Camera* GCurrentCamera = nullptr;
 ActorPicker* GActorPicker = nullptr;
 IDebugRenderer* GDebugRenderer = nullptr;
 
-IParticleRenderer* GParticle = nullptr;
+IParticleRenderer* GParticleRenderer = nullptr;
+IParticle* GParticle_1 = nullptr;
+
 
 Engine::Engine()
 	: pStartUp_(nullptr),
@@ -146,7 +148,16 @@ void Engine::Run()
 	MaterialManager::Instance()->TestLoad();
 	TextureManager::Instance()->TestLoad();
 
-	GParticle = GRenderer->CreateParticleRenderer();
+	GParticleRenderer = GRenderer->CreateParticleRenderer();
+
+
+	//LinkedList particleList;
+	ParticleDesc particleDesc;
+	particleDesc.maxNum_ = 100;
+	particleDesc.patternType_ = E_PARTICLE_PATTERN_TYPE::EXPLOSION;
+	TextureManager::Instance()->GetTexture(&particleDesc.pTexture_, 3);
+	GParticle_1 = GRenderer->CreateParticle(particleDesc);
+
 
 	while (false == pApplication_->ApplicationQuit()) {
 
@@ -160,7 +171,7 @@ void Engine::Run()
 
 		GActorPicker->Tick(deltaTime);
 
-		GParticle->OnTick(deltaTime);
+		GParticleRenderer->OnTick(GParticle_1, deltaTime);
 
 		// GameLoop
 		GWorld->CheckChangeLevel();
@@ -319,12 +330,16 @@ void Engine::CleanUp()
 {
 	ImGuiSystem::GetImGuiManager()->CleanUpImGui();
 
-	if (nullptr != GParticle)
+	if (nullptr != GParticleRenderer)
 	{
-		GParticle->Release();
-		GParticle = nullptr;
+		GParticleRenderer->Release();
+		GParticleRenderer = nullptr;
 	}
-
+	if (nullptr != GParticle_1)
+	{
+		GParticle_1->Release();
+		GParticle_1 = nullptr;
+	}
 
 	if (nullptr != GActorPicker)
 	{

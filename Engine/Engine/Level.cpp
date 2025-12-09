@@ -137,7 +137,7 @@ void Level::OnRender()
 		MATH::MatrixMultiply(viewProj, view, proj);
 		Float3 cameraRight(right.X, right.Y, right.Z);
 		Float3 cameraUp(up.X, up.Y, up.Z);
-		GParticle->OnRender(viewProj, cameraRight, cameraUp);
+		GParticleRenderer->OnRender(GParticle_1, viewProj, cameraRight, cameraUp);
 		GCurrentCamera->pParticleBufferTarget_->EndRenderPass();
 
 
@@ -149,8 +149,6 @@ void Level::OnRender()
 		GCurrentCamera->pLightBufferTarget_->Setting();
 		GCurrentCamera->pScreenVertex_->Setting();
 		GCurrentCamera->pDebugPassShader_->Setting();
-		//GCurrentCamera->pScreenInputLayout_->Setting();
-		//GCurrentCamera->pDebugBufferMaterial_->Setting();
 		// Draw
 		GCurrentCamera->pScreenVertex_->Draw();
 		// End

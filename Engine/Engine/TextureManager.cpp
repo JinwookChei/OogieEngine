@@ -22,12 +22,17 @@ void TextureManager::TestLoad()
 {
 	const wchar_t* colorTexPath = L"../Resource/Texture/Bricks_4K/Bricks_Color.png";
 	CreateTexture(colorTexPath, false, 1);
-	//pTextureColor_ = GRenderer->LoadTextureFromDirectXTex(texPath, false);
 
 	const wchar_t* normalTexPath = L"../Resource/Texture/Bricks_4K/Bricks_NormalDX.png";
 	CreateTexture(normalTexPath, true, 2);
 
-	//pTextureNormal_ = GRenderer->LoadTextureFromDirectXTex(texPath, true);
+
+	TextureDesc whiteTextureDesc;
+	whiteTextureDesc.colorData_ = 0xFFFFFFFF;
+	whiteTextureDesc.size_ = { 1.0f, 1.0f };
+	ITexture* whiteTexture = GRenderer->CreateTexture(whiteTextureDesc);
+	unsigned long long whiteTexTag = 3;
+	textureTable_.Insert(whiteTexture, &whiteTexTag, 8);
 }
 
 ITexture* TextureManager::CreateTexture(const wchar_t* fileName, bool isNormalMap, unsigned long long textureTag)

@@ -4,6 +4,7 @@
 #include "DeferredTarget.h"
 #include "Mesh.h"
 #include "Material.h"
+#include "Particle.h"
 #include "SamplerState.h"
 #include "BlendState.h"
 #include "ConstantBuffer.h"
@@ -615,61 +616,6 @@ IRenderTarget* __stdcall Renderer::CreateDeferredRenderTarget(const RenderTarget
 	return nullptr;
 }
 
-ITexture* Renderer::CreateTexture(const Float2& size, DXGI_FORMAT format, uint32_t flag)
-{
-	D3D11_TEXTURE2D_DESC desc = { 0, };
-	desc.ArraySize = 1;
-	desc.Width = (UINT)size.X;
-	desc.Height = (UINT)size.Y;
-	desc.Format = format;
-	desc.SampleDesc.Count = 1;
-	desc.SampleDesc.Quality = 0;
-	desc.MipLevels = 1;
-	desc.Usage = D3D11_USAGE_DEFAULT;
-	desc.CPUAccessFlags = 0;
-	desc.BindFlags = flag;
-
-	return CreateTexture(desc);
-}
-
-ITexture* Renderer::CreateTexture(const D3D11_TEXTURE2D_DESC& desc)
-{
-	ID3D11Texture2D* pTexture = nullptr;
-	Texture* pNewTexture = nullptr;
-	do
-	{
-		HRESULT hr = GRenderer->Device()->CreateTexture2D(&desc, nullptr, &pTexture);
-		if (FAILED(hr))
-		{
-			DEBUG_BREAK();
-			break;
-		}
-
-		pNewTexture = new Texture;
-		if (false == pNewTexture->Init(pTexture))
-		{
-			DEBUG_BREAK();
-			break;
-		}
-
-		return pNewTexture;
-
-	} while (false);
-
-	if (nullptr != pTexture)
-	{
-		pTexture->Release();
-		pTexture = nullptr;
-	}
-	if (nullptr != pNewTexture)
-	{
-		pNewTexture->Release();
-		pNewTexture = nullptr;
-	}
-
-	return nullptr;
-}
-
 ISamplerState* __stdcall Renderer::CreateSamplerState(float minLOD, float maxLOD, unsigned int maxAnisotropy)
 {
 	ID3D11SamplerState* pLinearClamp = nullptr;
@@ -878,6 +824,12 @@ IBlendState* Renderer::CreateBlendState()
 	return nullptr;
 }
 
+IParticle* __stdcall Renderer::CreateParticle(const ParticleDesc& desc)
+{
+	IParticle* pParticle = Particle::Create(desc);
+	return pParticle;
+}
+
 ITexture* __stdcall Renderer::LoadTextureFromDirectXTex(const wchar_t* fileName, bool isNormalMap)
 {
 	Texture* pNewTexture = nullptr;
@@ -998,6 +950,119 @@ ITexture* __stdcall Renderer::LoadTextureFromDirectXTex(const wchar_t* fileName,
 	return nullptr;
 }
 
+ITexture* __stdcall Renderer::CreateTexture(const TextureDesc& desc)
+{
+	HRESULT hr;
+	Texture* pNewTexture = nullptr;
+	ID3D11Texture2D* pTexture2D = nullptr;
+
+	do
+	{
+		D3D11_TEXTURE2D_DESC textureDesc = {};
+		textureDesc.Width = desc.size_.X;
+		textureDesc.Height = desc.size_.Y;
+		textureDesc.MipLevels = 1;
+		textureDesc.ArraySize = 1;
+		textureDesc.Format = DXGI_FORMAT::DXGI_FORMAT_R8G8B8A8_UNORM;
+		textureDesc.SampleDesc.Count = 1;
+		textureDesc.SampleDesc.Quality = 0;
+		textureDesc.Usage = D3D11_USAGE::D3D11_USAGE_DEFAULT;
+		textureDesc.BindFlags = D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE;
+		textureDesc.CPUAccessFlags = 0;
+		textureDesc.MiscFlags = 0;
+
+		D3D11_SUBRESOURCE_DATA initData = {};
+		initData.pSysMem = &desc.colorData_;
+		initData.SysMemPitch = sizeof(desc.colorData_);
+
+		hr = GRenderer->Device()->CreateTexture2D(&textureDesc, &initData, &pTexture2D);
+		if (FAILED(hr))
+		{
+			Assert("CreateTexter2D is FAIL!!");
+			break;
+		}
+
+		pNewTexture = new Texture;
+		if (false == pNewTexture->Init(pTexture2D))
+		{
+			Assert("Texture Init() is FAIL!!");
+			break;
+		}
+
+		return pNewTexture;
+	} while (false);
+
+
+	if (nullptr == pTexture2D)
+	{
+		pTexture2D->Release();
+		pTexture2D = nullptr;
+	}
+	if (nullptr == pNewTexture)
+	{
+		pNewTexture->Release();
+		pNewTexture = nullptr;
+	}
+
+	return nullptr;
+}
+
+
+ITexture* Renderer::CreateTexture(const Float2& size, DXGI_FORMAT format, uint32_t flag)
+{
+	D3D11_TEXTURE2D_DESC desc = { 0, };
+	desc.ArraySize = 1;
+	desc.Width = (UINT)size.X;
+	desc.Height = (UINT)size.Y;
+	desc.Format = format;
+	desc.SampleDesc.Count = 1;
+	desc.SampleDesc.Quality = 0;
+	desc.MipLevels = 1;
+	desc.Usage = D3D11_USAGE_DEFAULT;
+	desc.CPUAccessFlags = 0;
+	desc.BindFlags = flag;
+
+	return CreateTexture(desc);
+}
+
+ITexture* Renderer::CreateTexture(const D3D11_TEXTURE2D_DESC& desc)
+{
+	ID3D11Texture2D* pTexture = nullptr;
+	Texture* pNewTexture = nullptr;
+	do
+	{
+		HRESULT hr = GRenderer->Device()->CreateTexture2D(&desc, nullptr, &pTexture);
+		if (FAILED(hr))
+		{
+			DEBUG_BREAK();
+			break;
+		}
+
+		pNewTexture = new Texture;
+		if (false == pNewTexture->Init(pTexture))
+		{
+			DEBUG_BREAK();
+			break;
+		}
+
+		return pNewTexture;
+
+	} while (false);
+
+	if (nullptr != pTexture)
+	{
+		pTexture->Release();
+		pTexture = nullptr;
+	}
+	if (nullptr != pNewTexture)
+	{
+		pNewTexture->Release();
+		pNewTexture = nullptr;
+	}
+
+	return nullptr;
+}
+
 IDebugRenderer* __stdcall Renderer::CreateDebugRenderer()
 {
 	DebugRenderer* pNewDebugRenderer = new DebugRenderer;
@@ -1049,10 +1114,8 @@ ID3D11ShaderResourceView* CreateWhiteTextureSRV(ID3D11Device* device)
 
 IParticleRenderer* __stdcall Renderer::CreateParticleRenderer()
 {
-	ID3D11ShaderResourceView* pParticleTexSRV = CreateWhiteTextureSRV(GRenderer->Device());
-
 	ParticleSystemGPU* pNewParticleRenderer = new ParticleSystemGPU;
-	if (false == pNewParticleRenderer->Init(GRenderer->Device(), 1000, pParticleTexSRV))
+	if (false == pNewParticleRenderer->Init())
 	{
 		DEBUG_BREAK();
 		return nullptr;
