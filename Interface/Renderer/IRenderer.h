@@ -79,48 +79,6 @@ struct ITexture : public IUnknown
 	virtual void __stdcall Setting(UINT slot) = 0;
 };
 
-//struct InputDesc
-//{
-//	const char* semanticName_;
-//	uint32_t semanticIndex_;
-//	uint32_t format_;
-//	uint32_t inputSlot_;
-//	bool isInstanceData_;
-//};
-
-//struct ShaderDesc
-//{
-//	std::vector<InputDesc> inputDesc_;
-//	//E_SHADER_TYPE type_;
-//	const wchar_t* pathCS_ = nullptr;
-//	const wchar_t* pathVS_ = nullptr;
-//	const wchar_t* pathGS_ = nullptr;
-//	const wchar_t* pathPS_ = nullptr;
-//};
-
-
-struct IShader : public IUnknown
-{
-	virtual void Bind() = 0;
-};
-
-enum class E_SAMPLER_TYPE
-{
-	LINEAR_CLAMP = 0,
-	LINEAR_WARP,
-	ANISOTROPIC_CLAMP,
-	ANISOTROPIC_WARP
-};
-
-
-struct ISamplerState : public IUnknown
-{
-	virtual void __stdcall Setting(uint32_t slot) = 0;
-
-	virtual void __stdcall ChangeSampler(E_SAMPLER_TYPE samplerType) = 0;
-};
-
-
 struct MeshDesc
 {
 	E_VERTEX_FORMAT vertexFormat;
@@ -136,10 +94,6 @@ struct MeshDesc
 
 struct IMesh : public IUnknown
 {
-	virtual void __stdcall Setting() = 0;
-
-	virtual bool __stdcall Draw() = 0;
-
 	virtual void __stdcall GetVerticesData(E_VERTEX_FORMAT* pOutFormat, uint32_t* pOutStride, uint32_t* pOutCount, void** ppOutVertices) const = 0;
 
 	virtual void __stdcall GetIndicesData(uint32_t* pOutStride, uint32_t* pOutCount, void** ppOutIndices) const = 0;
@@ -154,8 +108,6 @@ struct MaterialDesc
 
 struct IMaterial : public IUnknown
 {
-	virtual void __stdcall Setting() = 0;
-
 	virtual float __stdcall GetShineness() const = 0;
 
 	virtual void __stdcall SetShineness(float shineness) = 0;
@@ -165,50 +117,12 @@ struct IMaterial : public IUnknown
 	virtual void __stdcall SetSpecularColor(const Float3& specularColor) = 0;
 };
 
-struct IConstantBuffer : public IUnknown {
-	virtual void __stdcall Update(void* pSrcData) = 0;
-
-	virtual void __stdcall VSSetting(uint32_t slot) = 0;
-
-	virtual void __stdcall PSSetting(uint32_t slot) = 0;
-};
-
 
 struct IRasterizer : public IUnknown {
 	virtual void __stdcall Setting() = 0;
 
 	virtual void __stdcall ChangeFillMode(E_FILLMODE_TYPE fillModeType) = 0;
 };
-
-
-enum class E_BLEND_MODE_TYPE
-{
-	OPAQUE_BLEND = 0,            // 블렌딩 없음 (불투명)
-	ALPHA_BLEND,				// 일반 알파 블렌딩
-	ADDITIVE_BLEND,					// Additive(가산) 블렌딩
-};
-
-struct IBlendState : public IUnknown
-{
-	virtual void __stdcall Clear() = 0;
-
-	virtual void __stdcall Setting() = 0;
-
-	virtual void __stdcall ChangeBlendMode(const E_BLEND_MODE_TYPE& blendType) = 0;
-};
-
-enum class E_VIEW_TYPE
-{
-	RenderTargetView =0,
-	DepthStencilView,
-	ShaderResourceView
-};
-
-struct ViewDesc
-{
-	E_VIEW_TYPE viewType;
-};
-
 
 enum class E_RENDER_TEXTURE_TYPE
 {
@@ -221,11 +135,9 @@ enum class E_RENDER_TEXTURE_TYPE
 
 struct IRenderTarget : public IUnknown
 {
-	virtual void __stdcall Clear() = 0;
-
-	virtual void __stdcall Setting() = 0;
-
 	virtual void __stdcall Bind() = 0;
+
+	virtual void __stdcall Clear() = 0;
 
 	virtual RenderTargetDesc __stdcall GetDesc() const = 0;
 
@@ -242,28 +154,12 @@ struct IRenderTarget : public IUnknown
 	virtual void* __stdcall GetShaderResourceView(const E_RENDER_TEXTURE_TYPE& texureType) = 0;
 };
 
-//struct IDebugRenderer : public IUnknown
-//{
-//	virtual void __stdcall SetViewProj(const Float4x4& view, const Float4x4& proj) = 0;
-//	virtual void __stdcall DrawLine(const Float3& a, const Float3& b, const Float4& color) = 0;
-//	virtual void __stdcall DrawRay(const Float3& origin, Float3& dir, float length, const Color& color) = 0;
-//	virtual void __stdcall RenderAll() = 0;
-//	virtual void __stdcall Clear() = 0;
-//};
-
 
 enum class E_PARTICLE_PATTERN_TYPE
 {
 	EXPLOSION = 0,
 	FUME
 };
-
-//struct ParticleData
-//{
-//	Float4x4 world_;
-//	ITexture* pTexture_;
-//	E_PARTICLE_PATTERN_TYPE patternType_;
-//};
 
 struct ParticleDesc
 {
@@ -279,20 +175,10 @@ struct IParticle : public IUnknown
 
 };
 
-//struct IParticleRenderer : public IUnknown
-//{
-//	virtual void __stdcall OnTick(IParticle* pParticle, double deltaTime) = 0;
-//
-//	virtual void __stdcall OnRender(IParticle* pParticle, const Float4x4& viewProj, const Float3& cameraRight, const Float3& cameraUp) = 0;
-//};
-
 struct CameraFrameData
 {
 	Float4x4 view;
 	Float4x4 projection;
-
-	//Float4x4 inverseView;
-	//Float4x4 inverseProjection;
 
 	Float2 screenOffset;
 	Float2 screenScale;
@@ -380,28 +266,16 @@ struct IRenderer : public IUnknown {
 
 	virtual IMesh* __stdcall CreateMesh(const MeshDesc& desc) = 0;
 
-	//virtual IShader* __stdcall CreateShader(const ShaderDesc& desc) = 0;
-
 	virtual IMaterial* __stdcall CreateMaterial(const MaterialDesc& materialDesc) = 0;
-
-	virtual IConstantBuffer* __stdcall CreateConstantBuffer(uint32_t bufferSize) = 0;
 
 	virtual IRasterizer* __stdcall  CreateRasterizer(bool frontCounterClockwise, bool backFaceCulling) = 0;
 
 	virtual IRenderTarget* __stdcall CreateRenderTarget(const RenderTargetDesc& desc) = 0;
-
-	virtual ISamplerState* __stdcall CreateSamplerState(float minLOD, float maxLOD, unsigned int maxAnisotropy) = 0;
-
-	virtual IBlendState* __stdcall CreateBlendState() = 0;
 
 	virtual IParticle* __stdcall CreateParticle(const ParticleDesc& desc) = 0;
 
 	virtual ITexture* __stdcall LoadTextureFromDirectXTex(const wchar_t* fileName, bool isNormalMap) = 0;
 
 	virtual ITexture* __stdcall CreateTexture(const TextureDesc& desc) = 0;
-
-	//virtual IDebugRenderer* __stdcall CreateDebugRenderer() = 0;
-
-	//virtual IParticleRenderer* __stdcall CreateParticleRenderer() = 0;
 };
 

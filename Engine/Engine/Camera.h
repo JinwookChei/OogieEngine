@@ -34,8 +34,6 @@ public:
 
 	void LightPassBegin();
 
-	void RenderLight();
-
 	void LightPassEnd();
 
 	void ParticlePassBegin();
@@ -43,8 +41,6 @@ public:
 	void ParticlePassEnd();
 
 	void BlitToBackBuffer();
-
-	//void BlitToBackBuffer(const Float2& offset, const Float2& scale);
 
 	const Float4x4& View() const;
 
@@ -69,8 +65,6 @@ private:
 
 	bool InitDebugBuffer();
 
-	bool InitScreenRect();
-
 	virtual ENGINE_API void CameraTransformUpdate();
 
 	ENGINE_API void CleanUp() override;
@@ -94,6 +88,9 @@ protected:
 	float near_;
 	float far_;
 
+	Float2 screenOffset_;
+	Float2 screenScale_;
+
 private:
 	friend class Level;
 	// Geometry Pass
@@ -102,19 +99,10 @@ private:
 	IRenderTarget* pFinalRenderTarget;
 
 	// Light Pass
-	//IShader* pLightPassShader_;
 
 	// Particle Pass
 	IRenderTarget* pParticleRenderTarget_;
 
 	// Debug Pass
 	IRenderTarget* pDebugRenderTarget_;
-	//IShader* pDebugPassShader_;
-
-	// Blit to Screen
-	IMesh* pScreenVertex_;
-	IShader* pScreenPassShader_;
-
-	Float2 screenOffset_;
-	Float2 screenScale_;
 };

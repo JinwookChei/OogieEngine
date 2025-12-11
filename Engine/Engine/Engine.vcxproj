@@ -156,10 +156,8 @@
     <ClInclude Include="..\..\Interface\Renderer\IRenderer.h" />
     <ClInclude Include="Actor.h" />
     <ClInclude Include="ActorPicker.h" />
-    <ClInclude Include="BlendStateManager.h" />
     <ClInclude Include="BoundVolume.h" />
     <ClInclude Include="Camera.h" />
-    <ClInclude Include="ConstantManager.h" />
     <ClInclude Include="DirectionLight.h" />
     <ClInclude Include="GeometryGenerator.h" />
     <ClInclude Include="Light.h" />
@@ -172,8 +170,6 @@
     <ClInclude Include="PointLight.h" />
     <ClInclude Include="RasterizerManager.h" />
     <ClInclude Include="RenderComponent.h" />
-    <ClInclude Include="SamplerManager.h" />
-    <ClInclude Include="ShaderManager.h" />
     <ClInclude Include="SpotLight.h" />
     <ClInclude Include="StartUp.h" />
     <ClInclude Include="stdafx.h" />
@@ -185,10 +181,8 @@
   <ItemGroup>
     <ClCompile Include="Actor.cpp" />
     <ClCompile Include="ActorPicker.cpp" />
-    <ClCompile Include="BlendStateManager.cpp" />
     <ClCompile Include="BoundVolume.cpp" />
     <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="ConstantManager.cpp" />
     <ClCompile Include="DirectionLight.cpp" />
     <ClCompile Include="GeometryGenerator.cpp" />
     <ClCompile Include="Light.cpp" />
@@ -202,8 +196,6 @@
     <ClCompile Include="PointLight.cpp" />
     <ClCompile Include="RasterizerManager.cpp" />
     <ClCompile Include="RenderComponent.cpp" />
-    <ClCompile Include="SamplerManager.cpp" />
-    <ClCompile Include="ShaderManager.cpp" />
     <ClCompile Include="SpotLight.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

@@ -79,6 +79,6 @@ private:
 	//ConstantBuffer* pCBPerObject_;
 	Mesh* pScreenQuad_;
 
-	SamplerStateT* pSamplerState_;
-	BlendStateT* pBlendState_;
+	SamplerState* pSamplerState_;
+	BlendState* pBlendState_;
 };

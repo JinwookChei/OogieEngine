@@ -2,7 +2,7 @@
 
 class Shader;
 class ConstantBuffer;
-class SamplerStateT;
+class SamplerState;
 class BlendStateT;
 
 struct CBPerComputeParticle
@@ -66,6 +66,6 @@ private:
 	ConstantBuffer* pCBPerComputeParticle;
 	ConstantBuffer* pCBPerParticle_;
 
-	SamplerStateT* pSamplerState_;
-	BlendStateT* pBlendState_;
+	SamplerState* pSamplerState_;
+	BlendState* pBlendState_;
 };

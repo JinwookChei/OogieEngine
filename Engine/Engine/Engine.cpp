@@ -15,21 +15,16 @@ IRenderer* GRenderer = nullptr;
 TimeManager* GTimeManager = nullptr;
 
 MeshManager* GMeshManager = nullptr;
-//ShaderManager* GShaderManager = nullptr;
 MaterialManager* GMaterialManager = nullptr;
 TextureManager* GTextureManager = nullptr;
-ConstantManager* GConstantManager = nullptr;
-SamplerManager* GSamplerManager = nullptr;
-BlendStateManager* GBlendStateManager = nullptr;
 RasterizerManager* GRasterizerManager = nullptr;
 
 World* GWorld = nullptr;
 Camera* GMainCamera = nullptr;
 Camera* GCurrentCamera = nullptr;
 ActorPicker* GActorPicker = nullptr;
-//IDebugRenderer* GDebugRenderer = nullptr;
 
-//IParticleRenderer* GParticleRenderer = nullptr;
+
 IParticle* GParticle_1 = nullptr;
 
 
@@ -92,12 +87,6 @@ bool Engine::Initialize
 		return false;
 	}
 
-	//GDebugRenderer = GRenderer->CreateDebugRenderer();
-	//if (nullptr == GDebugRenderer)
-	//{
-	//	DEBUG_BREAK();
-	//	return false;
-	//}
 
 	if (false == ImGuiSystem::GetImGuiManager()->InitImGui(pApplication_, pRenderer_, dpiSclae))
 	{
@@ -114,17 +103,9 @@ bool Engine::Initialize
 
 	GMeshManager = new MeshManager;
 
-	//GShaderManager = new ShaderManager;
-
 	GTextureManager = new TextureManager;
 
 	GMaterialManager = new MaterialManager;
-
-	GConstantManager = new ConstantManager;
-
-	GSamplerManager = new SamplerManager;
-
-	GBlendStateManager = new BlendStateManager;
 
 	GRasterizerManager = new RasterizerManager;
 
@@ -144,12 +125,10 @@ void Engine::Run()
 {
 	// TEMP
 	MeshManager::Instance()->TestLoad();
-	//ShaderManager::Instance()->TestLoad();
 	MaterialManager::Instance()->TestLoad();
 	TextureManager::Instance()->TestLoad();
 
 
-	//LinkedList particleList;
 	ParticleDesc particleDesc;
 	particleDesc.maxNum_ = 1000;
 	particleDesc.patternType_ = E_PARTICLE_PATTERN_TYPE::EXPLOSION;
@@ -328,11 +307,6 @@ void Engine::CleanUp()
 {
 	ImGuiSystem::GetImGuiManager()->CleanUpImGui();
 
-	//if (nullptr != GParticleRenderer)
-	//{
-	//	GParticleRenderer->Release();
-	//	GParticleRenderer = nullptr;
-	//}
 	if (nullptr != GParticle_1)
 	{
 		GParticle_1->Release();
@@ -363,23 +337,6 @@ void Engine::CleanUp()
 		GRasterizerManager = nullptr;
 	}
 
-	if (nullptr != GBlendStateManager)
-	{
-		delete GBlendStateManager;
-		GBlendStateManager = nullptr;
-	}
-	if (nullptr != GSamplerManager)
-	{
-		delete GSamplerManager;
-		GSamplerManager = nullptr;
-	}
-
-	if (nullptr != GConstantManager)
-	{
-		delete GConstantManager;
-		GConstantManager = nullptr;
-	}
-
 	if (nullptr != GTextureManager)
 	{
 		delete GTextureManager;
@@ -391,11 +348,6 @@ void Engine::CleanUp()
 		delete GMaterialManager;
 		GMaterialManager = nullptr;
 	}
-	//if (nullptr != GShaderManager)
-	//{
-	//	delete GShaderManager;
-	//	GShaderManager = nullptr;
-	//}
 
 	if (nullptr != GMeshManager)
 	{
@@ -426,12 +378,6 @@ void Engine::CleanUp()
 		FreeLibrary(applicationModule_);
 		applicationModule_ = nullptr;
 	}
-
-	//if (nullptr != GDebugRenderer)
-	//{
-	//	GDebugRenderer->Release();
-	//	GDebugRenderer = nullptr;
-	//}
 
 	if (nullptr != pRenderer_)
 	{

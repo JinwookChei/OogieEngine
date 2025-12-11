@@ -43,10 +43,10 @@ ULONG __stdcall Material::Release()
 	return tmpRefCount;
 }
 
-void __stdcall Material::Setting()
-{
-
-}
+//void __stdcall Material::Setting()
+//{
+//
+//}
 
 float Material::GetShineness() const
 {

@@ -2,7 +2,7 @@
 
 class Shader;
 class ConstantBuffer;
-class SamplerStateT;
+class SamplerState;
 class BlendStateT;
 
 
@@ -43,6 +43,6 @@ private:
 
 	Mesh* pScreenQuad_;
 
-	SamplerStateT* pSamplerState_;
-	BlendStateT* pBlendState_;
+	SamplerState* pSamplerState_;
+	BlendState* pBlendState_;
 };

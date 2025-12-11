@@ -172,7 +172,7 @@ bool GeometryPass::InitConstantBuffer()
 
 bool GeometryPass::InitBlendState()
 {
-	pBlendState_ = BlendStateT::Create(E_BLEND_MODE::ALPHA_BLEND);
+	pBlendState_ = BlendState::Create(E_BLEND_MODE::ALPHA_BLEND);
 
 	if (nullptr == pBlendState_)
 	{
@@ -185,7 +185,7 @@ bool GeometryPass::InitBlendState()
 
 bool GeometryPass::InitSamplerState()
 {
-	pSamplerState_ = SamplerStateT::Create(E_SAMPLER_TYPE_T::LINEAR_CLAMP, 0, D3D11_FLOAT32_MAX, 1);
+	pSamplerState_ = SamplerState::Create(E_SAMPLER_TYPE::LINEAR_CLAMP, 0, D3D11_FLOAT32_MAX, 1);
 	if (nullptr == pSamplerState_)
 	{
 		DEBUG_BREAK();

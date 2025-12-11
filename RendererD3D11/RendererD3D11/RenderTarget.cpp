@@ -74,6 +74,33 @@ ULONG __stdcall RenderTarget::Release()
 	return tmpRefCount;
 }
 
+
+void __stdcall RenderTarget::Bind()
+{
+	if (GCurrentSetRenderTarget == this)
+	{
+		return;
+	}
+
+	ID3D11RenderTargetView* pRenderTargetView = pRenderTexture_->RenderTargetView();
+	if (nullptr == pRenderTargetView)
+	{
+		DEBUG_BREAK();
+		return;
+	}
+
+	ID3D11DepthStencilView* pDepthStencilView = nullptr;
+	if (nullptr != pDepthTexture_)
+	{
+		pDepthStencilView = pDepthTexture_->DepthStencilView();
+	}
+
+	GCurrentSetRenderTarget = this;
+
+	GRenderer->DeviceContext()->OMSetRenderTargets(1, &pRenderTargetView, pDepthStencilView);
+	GRenderer->DeviceContext()->RSSetViewports(1, &viewport_);
+}
+
 void RenderTarget::Clear()
 {
 	ID3D11RenderTargetView* pRenderTargetView = pRenderTexture_->RenderTargetView();
@@ -101,57 +128,7 @@ void RenderTarget::Clear()
 	GRenderer->DeviceContext()->ClearDepthStencilView(pDepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 }
 
-void RenderTarget::Setting()
-{
-	if (GCurrentSetRenderTarget == this)
-	{
-		return;
-	}
 
-	ID3D11RenderTargetView* pRenderTargetView = pRenderTexture_->RenderTargetView();
-	if (nullptr == pRenderTargetView)
-	{
-		DEBUG_BREAK();
-		return;
-	}
-
-	ID3D11DepthStencilView* pDepthStencilView = nullptr;
-	if (nullptr != pDepthTexture_)
-	{
-		pDepthStencilView = pDepthTexture_->DepthStencilView();
-	}
-
-	GCurrentSetRenderTarget = this;
-
-	GRenderer->DeviceContext()->OMSetRenderTargets(1, &pRenderTargetView, pDepthStencilView);
-	GRenderer->DeviceContext()->RSSetViewports(1, &viewport_);
-}
-
-void __stdcall RenderTarget::Bind()
-{
-	if (GCurrentSetRenderTarget == this)
-	{
-		return;
-	}
-
-	ID3D11RenderTargetView* pRenderTargetView = pRenderTexture_->RenderTargetView();
-	if (nullptr == pRenderTargetView)
-	{
-		DEBUG_BREAK();
-		return;
-	}
-
-	ID3D11DepthStencilView* pDepthStencilView = nullptr;
-	if (nullptr != pDepthTexture_)
-	{
-		pDepthStencilView = pDepthTexture_->DepthStencilView();
-	}
-
-	GCurrentSetRenderTarget = this;
-
-	GRenderer->DeviceContext()->OMSetRenderTargets(1, &pRenderTargetView, pDepthStencilView);
-	GRenderer->DeviceContext()->RSSetViewports(1, &viewport_);
-}
 
 RenderTargetDesc __stdcall RenderTarget::GetDesc() const
 {

@@ -69,17 +69,6 @@ ULONG __stdcall Mesh::Release()
 	return tmpRefCount;
 }
 
-void __stdcall Mesh::Setting()
-{
-	UINT offset = 0;
-
-	GRenderer->DeviceContext()->IASetVertexBuffers(0, 1, &pVertexBuffer_, &vertexStride_, &offset);
-
-	GRenderer->DeviceContext()->IASetIndexBuffer(pIndexBuffer_, DXGI_FORMAT_R16_UINT, 0);
-
-	GRenderer->DeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-}
-
 void Mesh::Bind() const
 {
 	UINT offset = 0;
@@ -89,14 +78,6 @@ void Mesh::Bind() const
 	GRenderer->DeviceContext()->IASetIndexBuffer(pIndexBuffer_, DXGI_FORMAT_R16_UINT, 0);
 
 	GRenderer->DeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-}
-
-bool __stdcall Mesh::Draw()
-{
-	GRenderer->DeviceContext()->DrawIndexed(indexCount_, 0, 0);
-
-	GRenderer->IncrementDrawCall();
-	return true;
 }
 
 

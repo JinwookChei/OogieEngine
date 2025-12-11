@@ -239,7 +239,7 @@ void __stdcall Renderer::RenderBegin()
 
 	pBackBuffer_->Clear();
 
-	pBackBuffer_->Setting();
+	pBackBuffer_->Bind();
 }
 
 void __stdcall Renderer::RenderFinal(IRenderTarget* pSrcTarget)
@@ -386,18 +386,6 @@ IMesh* __stdcall Renderer::CreateMesh(const MeshDesc& desc)
 	return nullptr;
 }
 
-//IShader* __stdcall Renderer::CreateShader(const ShaderDesc& desc)
-//{
-//	IShader* pShader = Shader::Create(desc);
-//	if (nullptr == pShader)
-//	{
-//		DEBUG_BREAK();
-//		return nullptr;
-//	}
-//
-//	return pShader;
-//}
-
 IMaterial* __stdcall Renderer::CreateMaterial(const MaterialDesc& materialDesc)
 {
 
@@ -424,57 +412,6 @@ IMaterial* __stdcall Renderer::CreateMaterial(const MaterialDesc& materialDesc)
 	return nullptr;
 }
 
-IConstantBuffer* __stdcall Renderer::CreateConstantBuffer(uint32_t bufferSize)
-{
-	ID3D11Buffer* pBuffer = nullptr;
-	ConstantBuffer* pNewContantBuffer = nullptr;
-
-	do
-	{
-		D3D11_BUFFER_DESC desc{};
-		memset(&desc, 0x00, sizeof(D3D11_BUFFER_DESC));
-		desc.Usage = D3D11_USAGE_DEFAULT;
-		desc.ByteWidth = bufferSize;
-		desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-		desc.CPUAccessFlags = 0;
-
-		HRESULT hr = GRenderer->Device()->CreateBuffer(&desc, nullptr, &pBuffer);
-		if (FAILED(hr))
-		{
-			DEBUG_BREAK();
-			break;
-		}
-
-		// ---------------- 메모리 누수 디버깅용 이름 설정. ----------------------------
-		const char* debugObjectName = "ConstantBuffer::pBuffer_";
-		pBuffer->SetPrivateData(WKPDID_D3DDebugObjectName, (UINT)strlen(debugObjectName), debugObjectName);
-		// ---------------------------------------------------------------------------
-
-		pNewContantBuffer = new ConstantBuffer;
-		if (false == pNewContantBuffer->Init(pBuffer))
-		{
-			DEBUG_BREAK();
-			break;
-		}
-
-		return pNewContantBuffer;
-
-	} while (false);
-
-
-	if (nullptr != pBuffer)
-	{
-		pBuffer->Release();
-		pBuffer = nullptr;
-	}
-	if (nullptr != pNewContantBuffer)
-	{
-		pNewContantBuffer->Release();
-		pNewContantBuffer = nullptr;
-	}
-
-	return nullptr;
-}
 
 IRasterizer* __stdcall Renderer::CreateRasterizer(bool frontCounterClockwise, bool backFaceCulling)
 {
@@ -706,214 +643,6 @@ IRenderTarget* __stdcall Renderer::CreateDeferredRenderTarget(const RenderTarget
 	{
 		pDepthTexture_->Release();
 		pDepthTexture_ = nullptr;
-	}
-
-	return nullptr;
-}
-
-ISamplerState* __stdcall Renderer::CreateSamplerState(float minLOD, float maxLOD, unsigned int maxAnisotropy)
-{
-	ID3D11SamplerState* pLinearClamp = nullptr;
-	ID3D11SamplerState* pLinearWrap = nullptr;
-	ID3D11SamplerState* pAnisotropicClamp = nullptr;
-	ID3D11SamplerState* pAnisotropicWrap = nullptr;
-	SamplerState* pNewSamplerState = nullptr;
-	do
-	{
-		D3D11_SAMPLER_DESC samplerDesc = {};
-		samplerDesc.Filter = D3D11_FILTER::D3D11_FILTER_MIN_MAG_MIP_LINEAR;
-		samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_MODE::D3D11_TEXTURE_ADDRESS_CLAMP;
-		samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_MODE::D3D11_TEXTURE_ADDRESS_CLAMP;
-		samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_MODE::D3D11_TEXTURE_ADDRESS_CLAMP;
-		samplerDesc.MipLODBias = 0.0f;
-		samplerDesc.MaxAnisotropy = (UINT)maxAnisotropy;
-		samplerDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
-		samplerDesc.MinLOD = (FLOAT)minLOD;
-		samplerDesc.MaxLOD = (FLOAT)maxLOD;
-		HRESULT hr = GRenderer->Device()->CreateSamplerState(&samplerDesc, &pLinearClamp);
-		if (FAILED(hr))
-		{
-			DEBUG_BREAK();
-			break;
-		}
-
-		samplerDesc.Filter = D3D11_FILTER::D3D11_FILTER_MIN_MAG_MIP_LINEAR;
-		samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_MODE::D3D11_TEXTURE_ADDRESS_WRAP;
-		samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_MODE::D3D11_TEXTURE_ADDRESS_WRAP;
-		samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_MODE::D3D11_TEXTURE_ADDRESS_WRAP;
-		hr = GRenderer->Device()->CreateSamplerState(&samplerDesc, &pLinearWrap);
-		if (FAILED(hr))
-		{
-			DEBUG_BREAK();
-			break;
-		}
-
-		samplerDesc.Filter = D3D11_FILTER::D3D11_FILTER_ANISOTROPIC;
-		samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_MODE::D3D11_TEXTURE_ADDRESS_CLAMP;
-		samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_MODE::D3D11_TEXTURE_ADDRESS_CLAMP;
-		samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_MODE::D3D11_TEXTURE_ADDRESS_CLAMP;
-		hr = GRenderer->Device()->CreateSamplerState(&samplerDesc, &pAnisotropicClamp);
-		if (FAILED(hr))
-		{
-			DEBUG_BREAK();
-			break;
-		}
-
-		samplerDesc.Filter = D3D11_FILTER::D3D11_FILTER_ANISOTROPIC;
-		samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_MODE::D3D11_TEXTURE_ADDRESS_WRAP;
-		samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_MODE::D3D11_TEXTURE_ADDRESS_WRAP;
-		samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_MODE::D3D11_TEXTURE_ADDRESS_WRAP;
-		hr = GRenderer->Device()->CreateSamplerState(&samplerDesc, &pAnisotropicWrap);
-		if (FAILED(hr))
-		{
-			DEBUG_BREAK();
-			break;
-		}
-
-		// ---------------- 메모리 누수 디버깅용 이름 설정. ----------------------------
-		//const char* debugObjectName = "SamplerState::pSamplerState_";
-		//pSamplerState->SetPrivateData(WKPDID_D3DDebugObjectName, (UINT)strlen(debugObjectName), debugObjectName);
-		// ---------------------------------------------------------------------------
-
-		pNewSamplerState = new SamplerState;
-		if (false == pNewSamplerState->Init(pLinearClamp, pLinearWrap, pAnisotropicClamp, pAnisotropicWrap))
-		{
-			DEBUG_BREAK();
-			break;
-		}
-
-		return pNewSamplerState;
-
-	} while (false);
-
-	if (nullptr != pLinearClamp)
-	{
-		pLinearClamp->Release();
-		pLinearClamp = nullptr;
-	}
-	if (nullptr != pLinearWrap)
-	{
-		pLinearWrap->Release();
-		pLinearWrap = nullptr;
-	}
-	if (nullptr != pAnisotropicClamp)
-	{
-		pAnisotropicClamp->Release();
-		pAnisotropicClamp = nullptr;
-	}
-	if (nullptr != pAnisotropicWrap)
-	{
-		pAnisotropicWrap->Release();
-		pAnisotropicWrap = nullptr;
-	}
-
-	if (nullptr != pNewSamplerState)
-	{
-		pNewSamplerState->Release();
-		pNewSamplerState = nullptr;
-	}
-
-	return nullptr;
-}
-
-
-IBlendState* Renderer::CreateBlendState()
-{
-	BlendState* pNewBlendState = nullptr;
-	ID3D11BlendState* pBlendOpaque = nullptr;
-	ID3D11BlendState* pBlendAlpha = nullptr;
-	ID3D11BlendState* pBlendAdditive = nullptr;
-	do
-	{
-		// AlphaToCoverageEnable
-		// 멀티샘플링(MSAA, Multi-Sample Anti-Aliasing)과 알파 블렌딩(Alpha blending) 을 결합하기 위한 기능이에요.
-		// 즉, 반투명 오브젝트(예: 잎사귀 텍스처, 머리카락 등) 를 안티에일리어싱 처리할 때 자연스럽게 보이도록 도와줍니다.
-
-		// IndependentBlendEnable
-		// 렌더 타깃(Render Target)이 여러 개일 때(OMSetRenderTargets로 MRT 사용 시),
-		// 각각의 렌더 타깃에 대해 블렌딩 설정을 독립적으로 적용할지 여부를 지정합니다.
-
-		// BlendFactor : 색을 강조하거나, 화면 전체 페이드 같은 특수 효과를 만들 때 사용. ->OMSetBlendState()에서 BlendFactor 값 인자로 넘김.
-		//blendDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_BLEND_FACTOR;
-		//blendDesc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_BLEND_FACTOR; // 1 - BlendFactor  // 렌더타켓
-
-		D3D11_BLEND_DESC blendDesc = { 0 };
-		blendDesc.AlphaToCoverageEnable = FALSE;
-		blendDesc.IndependentBlendEnable = FALSE;
-		blendDesc.RenderTarget[0].BlendEnable = FALSE;
-		blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
-
-		blendDesc.RenderTarget[0].SrcBlend = D3D11_BLEND::D3D11_BLEND_ONE;
-		blendDesc.RenderTarget[0].DestBlend = D3D11_BLEND::D3D11_BLEND_ZERO;
-		blendDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP::D3D11_BLEND_OP_ADD;
-		blendDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND::D3D11_BLEND_ONE;
-		blendDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND::D3D11_BLEND_ZERO;
-		blendDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP::D3D11_BLEND_OP_ADD;
-		HRESULT hr = GRenderer->Device()->CreateBlendState(&blendDesc, &pBlendOpaque);
-		if (FAILED(hr))
-		{
-			Assert("CreateBlendState(BlendOpaque) is FAILED!!!!!");
-			break;
-		}
-
-		blendDesc.RenderTarget[0].SrcBlend = D3D11_BLEND::D3D11_BLEND_SRC_ALPHA;
-		blendDesc.RenderTarget[0].DestBlend = D3D11_BLEND::D3D11_BLEND_INV_SRC_ALPHA;
-		blendDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP::D3D11_BLEND_OP_ADD;
-		blendDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND::D3D11_BLEND_ONE;
-		blendDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND::D3D11_BLEND_INV_SRC_ALPHA;
-		blendDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP::D3D11_BLEND_OP_ADD;
-		hr = GRenderer->Device()->CreateBlendState(&blendDesc, &pBlendAlpha);
-		if (FAILED(hr))
-		{
-			Assert("CreateBlendState(BlendAlpha) is FAILED!!!!!");
-			break;
-		}
-
-		blendDesc.RenderTarget[0].BlendEnable = TRUE;
-		blendDesc.RenderTarget[0].SrcBlend = D3D11_BLEND::D3D11_BLEND_ONE;
-		blendDesc.RenderTarget[0].DestBlend = D3D11_BLEND::D3D11_BLEND_ONE;
-		blendDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP::D3D11_BLEND_OP_ADD;
-		blendDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND::D3D11_BLEND_ONE;
-		blendDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND::D3D11_BLEND_ONE;
-		blendDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP::D3D11_BLEND_OP_ADD;
-		hr = GRenderer->Device()->CreateBlendState(&blendDesc, &pBlendAdditive);
-		if (FAILED(hr))
-		{
-			Assert("CreateBlendState(BlendAdditive) is FAILED!!!!!");
-			break;
-		}
-
-
-		pNewBlendState = new BlendState;
-		if (false == pNewBlendState->Init(pBlendOpaque, pBlendAlpha, pBlendAdditive, NULL))
-		{
-			Assert("BlendState Init is FAILED!!!!!");
-			break;
-		}
-
-		return pNewBlendState;
-
-	} while (false);
-
-	if (nullptr != pBlendOpaque)
-	{
-		pBlendOpaque->Release();
-		pBlendOpaque = nullptr;
-	}
-	if (nullptr != pBlendAlpha)
-	{
-		pBlendAlpha->Release();
-		pBlendAlpha = nullptr;
-	}
-	if (nullptr != pBlendAdditive)
-	{
-		pBlendAdditive->Release();
-		pBlendAdditive = nullptr;
-	}
-	if (nullptr != pNewBlendState)
-	{
-		pNewBlendState->Release();
-		pNewBlendState = nullptr;
 	}
 
 	return nullptr;
@@ -1158,18 +887,6 @@ ITexture* Renderer::CreateTexture(const D3D11_TEXTURE2D_DESC& desc)
 	return nullptr;
 }
 
-//IDebugRenderer* __stdcall Renderer::CreateDebugRenderer()
-//{
-//	DebugRenderer* pNewDebugRenderer = new DebugRenderer;
-//	if (false == pNewDebugRenderer->Initialize(pDevice_, pDeviceContext_))
-//	{
-//		DEBUG_BREAK();
-//		return nullptr;
-//	}
-//
-//	return pNewDebugRenderer;
-//}
-
 ID3D11ShaderResourceView* CreateWhiteTextureSRV(ID3D11Device* device)
 {
 	UINT color = 0xFFFFFFFF;
@@ -1206,18 +923,6 @@ ID3D11ShaderResourceView* CreateWhiteTextureSRV(ID3D11Device* device)
 	tex->Release();
 	return srv;
 }
-
-//IParticleRenderer* __stdcall Renderer::CreateParticleRenderer()
-//{
-//	ParticlePass* pNewParticlePass = new ParticlePass;
-//	if (false == pNewParticlePass->Init())
-//	{
-//		DEBUG_BREAK();
-//		return nullptr;
-//	}
-//
-//	return pNewParticlePass;
-//}
 
 
 void Renderer::Draw(UINT count, bool useIndex)

@@ -29,8 +29,6 @@ public:
 
 	void* __stdcall GetDeviceContextHandle() override;
 
-	//void __stdcall UpdateCameraFrame(const CBPerFrame& cameraFrame) override;
-
 	void __stdcall UpdateCameraFrame(const CameraFrameData& cameraFrameData) override;
 
 	void __stdcall RenderGBuffer(const ObjectRenderData& objectData) override;
@@ -56,17 +54,9 @@ public:
 	uint64_t __stdcall DrawCallCount() override;
 
 	// ------------------------- 인터페이스 노출된 Create -----------------------------
-	//IInputLayout* __stdcall CreateLayout(IMesh* pMesh, IShader* pVertexShader) override;
-
-	//IMesh* __stdcall CreateMesh(void* pVertices, uint32_t vertexSize, uint32_t vertexCount, void* pIndices = nullptr, uint32_t indexTypeSize = 0, uint32_t indexCount = 0) override;
-
 	IMesh* __stdcall CreateMesh(const MeshDesc& desc) override;
 
-	//IShader* __stdcall CreateShader(const ShaderDesc& desc) override;
-
 	IMaterial* __stdcall CreateMaterial(const MaterialDesc& materialDesc) override;
-
-	IConstantBuffer* __stdcall CreateConstantBuffer(uint32_t bufferSize) override;
 
 	IRasterizer* __stdcall  CreateRasterizer(bool frontCounterClockwise, bool backFaceCulling) override;
 
@@ -75,10 +65,6 @@ public:
 	IRenderTarget* __stdcall CreateForwardRenderTarget(const RenderTargetDesc& desc);
 
 	IRenderTarget* __stdcall CreateDeferredRenderTarget(const RenderTargetDesc& desc);
-
-	ISamplerState* __stdcall CreateSamplerState(float minLOD, float maxLOD, unsigned int maxAnisotropy) override;
-
-	IBlendState* __stdcall CreateBlendState() override;
 
 	IParticle* __stdcall CreateParticle(const ParticleDesc& desc) override;
 
@@ -90,14 +76,7 @@ public:
 
 	ITexture* CreateTexture(const D3D11_TEXTURE2D_DESC& desc);
 
-	//IDebugRenderer* __stdcall CreateDebugRenderer() override;
-
-	//IParticleRenderer* __stdcall CreateParticleRenderer() override;
-
 	// ------------------------- 인터페이스 노출안된 Create -----------------------------
-
-	
-
 	void Draw(UINT count, bool useIndex);
 	
 	void IncrementDrawCall();

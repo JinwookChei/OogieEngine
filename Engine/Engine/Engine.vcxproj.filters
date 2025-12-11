@@ -150,22 +150,13 @@
     <ClInclude Include="..\..\Interface\ImGuiModule\IImGuiModule.h">
       <Filter>Interface</Filter>
     </ClInclude>
-    <ClInclude Include="ConstantManager.h">
-      <Filter>Source Files\Manager\GraphicsManager</Filter>
-    </ClInclude>
     <ClInclude Include="MeshManager.h">
       <Filter>Source Files\Manager\GraphicsManager</Filter>
     </ClInclude>
     <ClInclude Include="BoundVolume.h">
       <Filter>Source Files\Component\BoundVolume</Filter>
     </ClInclude>
-    <ClInclude Include="SamplerManager.h">
-      <Filter>Source Files\Manager\GraphicsManager</Filter>
-    </ClInclude>
     <ClInclude Include="RasterizerManager.h">
-      <Filter>Source Files\Manager\GraphicsManager</Filter>
-    </ClInclude>
-    <ClInclude Include="BlendStateManager.h">
       <Filter>Source Files\Manager\GraphicsManager</Filter>
     </ClInclude>
     <ClInclude Include="MaterialManager.h">
@@ -188,9 +179,6 @@
     </ClInclude>
     <ClInclude Include="ParticleComponent.h">
       <Filter>Source Files\Component\ParticleSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="ShaderManager.h">
-      <Filter>Source Files\Manager\GraphicsManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -242,22 +230,13 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Source Files\Actor\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="ConstantManager.cpp">
-      <Filter>Source Files\Manager\GraphicsManager</Filter>
-    </ClCompile>
     <ClCompile Include="MeshManager.cpp">
       <Filter>Source Files\Manager\GraphicsManager</Filter>
     </ClCompile>
     <ClCompile Include="BoundVolume.cpp">
       <Filter>Source Files\Component\BoundVolume</Filter>
     </ClCompile>
-    <ClCompile Include="SamplerManager.cpp">
-      <Filter>Source Files\Manager\GraphicsManager</Filter>
-    </ClCompile>
     <ClCompile Include="RasterizerManager.cpp">
-      <Filter>Source Files\Manager\GraphicsManager</Filter>
-    </ClCompile>
-    <ClCompile Include="BlendStateManager.cpp">
       <Filter>Source Files\Manager\GraphicsManager</Filter>
     </ClCompile>
     <ClCompile Include="MaterialManager.cpp">
@@ -271,9 +250,6 @@
     </ClCompile>
     <ClCompile Include="ParticleComponent.cpp">
       <Filter>Source Files\Component\ParticleSystem</Filter>
-    </ClCompile>
-    <ClCompile Include="ShaderManager.cpp">
-      <Filter>Source Files\Manager\GraphicsManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

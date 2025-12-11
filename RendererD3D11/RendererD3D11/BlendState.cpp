@@ -3,12 +3,9 @@
 
 
 BlendState::BlendState()
-	: refCount_(1)
-	, pCurBlendMode_(nullptr)
-	, pBlendOpaque_(nullptr)
-	, pBlendAlpha_(nullptr)
-	, pBlendAdditive_(nullptr)
-	, blendFactor_()
+	:refCount_(1)
+	, blendFactor_{ 0.0f, 0.0f, 0.0f, 0.0f }
+	, pBlendState_(nullptr)
 {
 }
 
@@ -17,139 +14,7 @@ BlendState::~BlendState()
 	CleanUp();
 }
 
-bool BlendState::Init(ID3D11BlendState* pBlendOpaque, ID3D11BlendState* pBlendAlpha, ID3D11BlendState* pBlendAdditive, float blendFactor[4])
-{
-	if (nullptr == pBlendOpaque)
-	{
-		Assert("BlendOpaque is NULL");
-		return false;
-	}
-	if (nullptr == pBlendAlpha)
-	{
-		Assert("BlendAlpha is NULL");
-		return false;
-	}
-	if (nullptr == pBlendAdditive)
-	{
-		Assert("BlendAdditive is NULL");
-		return false;
-	}
-
-	pBlendOpaque_ = pBlendOpaque;
-	pBlendAlpha_ = pBlendAlpha;
-	pBlendAdditive_ = pBlendAdditive;
-
-	ChangeBlendMode(E_BLEND_MODE_TYPE::OPAQUE_BLEND);
-	blendFactor_ = blendFactor_;
-
-	return true;
-}
-
-HRESULT __stdcall BlendState::QueryInterface(REFIID riid, void** ppvObject)
-{
-	return E_NOTIMPL;
-}
-
-ULONG __stdcall BlendState::AddRef()
-{
-	return ++refCount_;
-}
-
-ULONG __stdcall BlendState::Release()
-{
-	--refCount_;
-	ULONG tmpRefCount = refCount_;
-	if (0 == refCount_) {
-		delete this;
-	}
-
-	return tmpRefCount;
-}
-
-void __stdcall BlendState::Clear()
-{
-	float blendFactor[4] = { 0.f, 0.f, 0.f, 0.f };
-	GRenderer->DeviceContext()->OMSetBlendState(nullptr, blendFactor, 0xffffffff);
-}
-
-void __stdcall BlendState::Setting()
-{
-	GRenderer->DeviceContext()->OMSetBlendState(pCurBlendMode_, blendFactor_, 0xffffffff);
-}
-
-void __stdcall BlendState::ChangeBlendMode(const E_BLEND_MODE_TYPE& blendType)
-{
-	if (nullptr != pCurBlendMode_)
-	{
-		pCurBlendMode_->Release();
-		pCurBlendMode_ = nullptr;
-	}
-
-	switch (blendType)
-	{
-	case E_BLEND_MODE_TYPE::OPAQUE_BLEND:
-		pCurBlendMode_ = pBlendOpaque_;
-		pCurBlendMode_->AddRef();
-		break;
-	case E_BLEND_MODE_TYPE::ALPHA_BLEND:
-		pCurBlendMode_ = pBlendAlpha_;
-		pCurBlendMode_->AddRef();
-		break;
-	case E_BLEND_MODE_TYPE::ADDITIVE_BLEND:
-		pCurBlendMode_ = pBlendAdditive_;
-		pCurBlendMode_->AddRef();
-		break;
-	default:
-		break;
-	}
-}
-
-void BlendState::CleanUp()
-{
-	if (nullptr != pCurBlendMode_)
-	{
-		pCurBlendMode_->Release();
-		pCurBlendMode_ = nullptr;
-	}
-	if (nullptr != pBlendOpaque_)
-	{
-		pBlendOpaque_->Release();
-		pBlendOpaque_ = nullptr;
-	}
-	if (nullptr != pBlendAlpha_)
-	{
-		pBlendAlpha_->Release();
-		pBlendAlpha_ = nullptr;
-	}
-	if (nullptr != pBlendAdditive_)
-	{
-		pBlendAdditive_->Release();
-		pBlendAdditive_ = nullptr;
-	}
-}
-
-
-
-
-
-
-
-
-
-
-BlendStateT::BlendStateT()
-	:refCount_(1)
-	, blendFactor_{ 0.0f, 0.0f, 0.0f, 0.0f }
-	, pBlendState_(nullptr)
-{
-}
-
-BlendStateT::~BlendStateT()
-{
-	CleanUp();
-}
-
-bool BlendStateT::Init(const E_BLEND_MODE& blendMode)
+bool BlendState::Init(const E_BLEND_MODE& blendMode)
 {
 	ID3D11BlendState* pBlendState = nullptr;
 	D3D11_BLEND_DESC blendDesc = { 0 };
@@ -206,17 +71,17 @@ bool BlendStateT::Init(const E_BLEND_MODE& blendMode)
 	return true;
 }
 
-HRESULT __stdcall BlendStateT::QueryInterface(REFIID riid, void** ppvObject)
+HRESULT __stdcall BlendState::QueryInterface(REFIID riid, void** ppvObject)
 {
 	return E_NOTIMPL;
 }
 
-ULONG __stdcall BlendStateT::AddRef()
+ULONG __stdcall BlendState::AddRef()
 {
 	return ++refCount_;
 }
 
-ULONG __stdcall BlendStateT::Release()
+ULONG __stdcall BlendState::Release()
 {
 	--refCount_;
 	ULONG tmpRefCount = refCount_;
@@ -227,9 +92,9 @@ ULONG __stdcall BlendStateT::Release()
 	return tmpRefCount;
 }
 
-BlendStateT* BlendStateT::Create(const E_BLEND_MODE& blendMode)
+BlendState* BlendState::Create(const E_BLEND_MODE& blendMode)
 {
-	BlendStateT* pNewBlendState = new BlendStateT;
+	BlendState* pNewBlendState = new BlendState;
 	if (false == pNewBlendState->Init(blendMode))
 	{
 		pNewBlendState->Release();
@@ -239,19 +104,19 @@ BlendStateT* BlendStateT::Create(const E_BLEND_MODE& blendMode)
 	return pNewBlendState;
 }
 
-void BlendStateT::Bind()
+void BlendState::Bind()
 {
 	UINT samplerMask = 0xffffffff;
 	GRenderer->DeviceContext()->OMSetBlendState(pBlendState_, blendFactor_, samplerMask);
 }
 
-void BlendStateT::UnBind()
+void BlendState::UnBind()
 {
 	UINT samplerMask = 0xffffffff;
 	GRenderer->DeviceContext()->OMSetBlendState(nullptr, blendFactor_, samplerMask);
 }
 
-void BlendStateT::CleanUp()
+void BlendState::CleanUp()
 {
 	if (nullptr != pBlendState_)
 	{

@@ -95,7 +95,7 @@ ConstantBuffer* ConstantBuffer::Create(uint32_t bufferSize)
 	return pNewConstantBuffer;
 }
 
-void __stdcall ConstantBuffer::Update(void* pSrcData)
+void ConstantBuffer::Update(void* pSrcData)
 {
 	GRenderer->DeviceContext()->UpdateSubresource(pBuffer_, 0, nullptr, pSrcData, 0, 0);
 }
@@ -116,16 +116,6 @@ void ConstantBuffer::BindConstantBufferGS(UINT slot)
 }
 
 void ConstantBuffer::BindConstantBufferPS(UINT slot)
-{
-	GRenderer->DeviceContext()->PSSetConstantBuffers(slot, 1, &pBuffer_);
-}
-
-void __stdcall ConstantBuffer::VSSetting(uint32_t slot)
-{
-	GRenderer->DeviceContext()->VSSetConstantBuffers(slot, 1, &pBuffer_);
-}
-
-void __stdcall ConstantBuffer::PSSetting(uint32_t slot)
 {
 	GRenderer->DeviceContext()->PSSetConstantBuffers(slot, 1, &pBuffer_);
 }

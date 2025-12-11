@@ -12,7 +12,7 @@ public:
 
 	void BeginPlay() override;
 
-	void BindLight() override;
+	//void BindLight() override;
 
 	LightRenderData GetData() override;
 

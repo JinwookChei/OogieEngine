@@ -4,20 +4,16 @@
 #include "Camera.h"
 
 Camera::Camera()
-	: fov_(DEFAULT_FOV),
-	near_(DEFAULT_NEAR),
-	far_(DEFAULT_FAR),
-	cameraSensitivity_(10.0f),
-	cameraSpeed_(2.0f),
-	pGBufferRenderTarget_(nullptr),
-	pFinalRenderTarget(nullptr),
-	//pLightPassShader_(nullptr),
-	pDebugRenderTarget_(nullptr),
-	//pDebugPassShader_(nullptr),
-	pScreenVertex_(nullptr),
-	pScreenPassShader_(nullptr),
-	screenOffset_({ 0.0f, 0.0f }),
-	screenScale_({ 1.0f, 1.0f })
+	: fov_(DEFAULT_FOV)
+	, near_(DEFAULT_NEAR)
+	, far_(DEFAULT_FAR)
+	, cameraSensitivity_(10.0f)
+	, cameraSpeed_(2.0f)
+	, screenOffset_({ 0.0f, 0.0f })
+	, screenScale_({ 1.0f, 1.0f })
+	, pGBufferRenderTarget_(nullptr)
+	, pFinalRenderTarget(nullptr)
+	, pDebugRenderTarget_(nullptr)
 {
 	if (nullptr == GMainCamera)
 	{
@@ -35,8 +31,6 @@ Camera::Camera()
 	InitParticleBuffer();
 
 	InitDebugBuffer();
-
-	InitScreenRect();
 }
 
 Camera::~Camera()
@@ -63,7 +57,7 @@ void Camera::Render()
 void Camera::GeometryPassBegin()
 {
 	pGBufferRenderTarget_->Clear();
-	pGBufferRenderTarget_->Setting();
+	pGBufferRenderTarget_->Bind();
 }
 
 void Camera::GeometryPassEnd()
@@ -74,28 +68,17 @@ void Camera::GeometryPassEnd()
 void Camera::LightPassBegin()
 {
 	pFinalRenderTarget->Clear();
-	pFinalRenderTarget->Setting();
-
-	//pGBufferRenderTarget_->BindRenderTexturePS(0);
-	//pScreenVertex_->Setting();
-	//pLightPassShader_->Bind();
+	pFinalRenderTarget->Bind();
 }
-
-void Camera::RenderLight()
-{
-	pScreenVertex_->Draw();
-}
-
 void Camera::LightPassEnd()
 {
-	//pGBufferRenderTarget_->UnBindRenderTexturePS(0);
 	pFinalRenderTarget->EndRenderPass();
 }
 
 void Camera::ParticlePassBegin()
 {
 	pParticleRenderTarget_->Clear();
-	pParticleRenderTarget_->Setting();
+	pParticleRenderTarget_->Bind();
 }
 
 void Camera::ParticlePassEnd()
@@ -106,21 +89,7 @@ void Camera::ParticlePassEnd()
 void Camera::BlitToBackBuffer()
 {
 	GRenderer->RenderFinal(pFinalRenderTarget);
-	//BlitToBackBuffer(screenOffset_, screenScale_);
 }
-
-//void Camera::BlitToBackBuffer(const Float2& offset, const Float2& scale)
-//{
-//	//pGBufferTarget_->BindRenderTextureForPS(0);
-//	pFinalRenderTarget->BindRenderTexturePS(4);
-//	
-//	pScreenVertex_->Setting();
-//	pScreenPassShader_->Bind();
-//	pScreenVertex_->Draw();
-//
-//	pFinalRenderTarget->UnBindRenderTexturePS(4);
-//	//pGBufferTarget_->ClearRenderTextureForPS(0);
-//}
 
 const Float4x4& Camera::View() const
 {
@@ -206,29 +175,6 @@ void Camera::UpdatePerFrameConstant()
 	frameData.camPos = pTransform_->GetPosition();
 
 	GRenderer->UpdateCameraFrame(frameData);
-
-	//Float4x4 viewTrans;
-	//MATH::MatrixTranspose(viewTrans, view_);
-	//Float4x4 projectionTrans;
-	//MATH::MatrixTranspose(projectionTrans, projection_);
-	//Float4x4 invViewTrans;
-	//MATH::MatrixInverse(invViewTrans, view_);
-	//MATH::MatrixTranspose(invViewTrans, invViewTrans);
-	//Float4x4 invProjectionTrans;
-	//MATH::MatrixInverse(invProjectionTrans, projection_);
-	//MATH::MatrixTranspose(invProjectionTrans, invProjectionTrans);
-
-	//CBPerFrame cbPerFrame;
-	//cbPerFrame.camPos = pTransform_->GetPosition();
-	//cbPerFrame.view = viewTrans;
-	//cbPerFrame.projection = projectionTrans;
-	//cbPerFrame.inverseView = invViewTrans;
-	//cbPerFrame.inverseProjection = invProjectionTrans;
-	//cbPerFrame.screenOffset = screenOffset_;
-	//cbPerFrame.screenScale = screenScale_;
-	//cbPerFrame.screenResolution = pGBufferRenderTarget_->GetSize();
-
-	//ConstantManager::Instance()->UpdatePerFrame(&cbPerFrame);
 }
 
 bool Camera::InitGBuffer()
@@ -258,14 +204,6 @@ bool Camera::InitLightBuffer()
 		return false;
 	}
 
-	//if (!ShaderManager::Instance()->GetShader(&pLightPassShader_, 2))
-	//{
-	//	DEBUG_BREAK();
-	//	return false;
-	//}
-	//pLightPassShader_->AddRef();
-	
-
 	return true;
 }
 
@@ -281,13 +219,6 @@ bool Camera::InitParticleBuffer()
 		DEBUG_BREAK();
 		return false;
 	}
-
-	//if (!ShaderManager::Instance()->GetShader(&pDebugPassShader_, 3))
-	//{
-	//	DEBUG_BREAK();
-	//	return false;
-	//}
-	//pDebugPassShader_->AddRef();
 
 	return true;
 }
@@ -305,40 +236,7 @@ bool Camera::InitDebugBuffer()
 		return false;
 	}
 
-	//if (!ShaderManager::Instance()->GetShader(&pDebugPassShader_, 3))
-	//{
-	//	DEBUG_BREAK();
-	//	return false;
-	//}
-	//pDebugPassShader_->AddRef();
-
 	return true;
-}
-
-bool Camera::InitScreenRect()
-{
-	std::vector<ScreenRectVertex> vertices;
-	std::vector<WORD> indices;
-	GeometryGenerator::CreateScreenRect(&vertices, &indices);
-
-	MeshDesc meshDesc;
-	meshDesc.vertexFormat = E_VERTEX_FORMAT::SCREEN_RECT;
-	meshDesc.vertexFormatSize = sizeof(ScreenRectVertex);
-	meshDesc.vertexCount = vertices.size();
-	meshDesc.vertices = vertices.data();
-	meshDesc.indexFormatSize = sizeof(WORD);
-	meshDesc.indexCount = indices.size();
-	meshDesc.indices = indices.data();
-	pScreenVertex_ = GRenderer->CreateMesh(meshDesc);
-
-	return true;
-
-	//if (!ShaderManager::Instance()->GetShader(&pScreenPassShader_, 4))
-	//{
-	//	DEBUG_BREAK();
-	//	return false;
-	//}
-	//pScreenPassShader_->AddRef();
 }
 
 void Camera::CameraTransformUpdate()
@@ -358,36 +256,16 @@ void Camera::CameraTransformUpdate()
 
 void Camera::CleanUp()
 {
-	//if (nullptr != pDebugPassShader_)
-	//{
-	//	pDebugPassShader_->Release();
-	//	pDebugPassShader_ = nullptr;
-	//}
 	if (nullptr != pDebugRenderTarget_)
 	{
 		pDebugRenderTarget_->Release();
 		pDebugRenderTarget_ = nullptr;
-	}
-	if (nullptr != pScreenPassShader_)
-	{
-		pScreenPassShader_->Release();
-		pScreenPassShader_ = nullptr;
-	}
-	if (nullptr != pScreenVertex_)
-	{
-		pScreenVertex_->Release();
-		pScreenVertex_ = nullptr;
 	}
 	if (nullptr != pParticleRenderTarget_)
 	{
 		pParticleRenderTarget_->Release();
 		pParticleRenderTarget_ = nullptr;
 	}
-	//if (nullptr != pLightPassShader_)
-	//{
-	//	pLightPassShader_->Release();
-	//	pLightPassShader_ = nullptr;
-	//}
 	if (nullptr != pFinalRenderTarget)
 	{
 		pFinalRenderTarget->Release();

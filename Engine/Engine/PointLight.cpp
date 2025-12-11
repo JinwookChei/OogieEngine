@@ -22,23 +22,6 @@ void PointLight::BeginPlay()
 {
 }
 
-void PointLight::BindLight()
-{
-	CBPerLight cbPerLight;
-	cbPerLight.lightDiffuse = DiffuseColor();
-	cbPerLight.lightSpecular = SpecularColor();
-	cbPerLight.lightAmbient = AmbientColor();
-	const Float4& worldPos = GetWorldTransform().GetPosition();
-	cbPerLight.position_S_P = { worldPos.X, worldPos.Y, worldPos.Z };
-	cbPerLight.range_S_P = range_;
-	cbPerLight.attenuationConst_S_P = attenuationConst_;
-	cbPerLight.attenuationLinear_S_P = attenuationLinear_;
-	cbPerLight.attenuationQuad_S_P = attenuationQuad_;
-	
-	cbPerLight.lightType = (float)ELightType::PointLight;
-	ConstantManager::Instance()->UpdatePerLight(&cbPerLight);
-}
-
 LightRenderData PointLight::GetData()
 {
 	LightRenderData data = {};

@@ -66,12 +66,8 @@
 #include "InputManager.h"
 #include "TimeManager.h"
 #include "MeshManager.h"
-#include "ShaderManager.h"
 #include "MaterialManager.h"
 #include "TextureManager.h"
-#include "ConstantManager.h"
-#include "SamplerManager.h"
-#include "BlendStateManager.h"
 #include "RasterizerManager.h"
 
 
@@ -88,25 +84,17 @@ extern InputManager* GInputManager;
 extern TimeManager* GTimeManager;
 
 extern MeshManager* GMeshManager;
-//extern ShaderManager* GShaderManager;
 extern MaterialManager* GMaterialManager;
 extern TextureManager* GTextureManager;
-extern ConstantManager* GConstantManager;
-extern SamplerManager* GSamplerManager;
-extern BlendStateManager* GBlendStateManager;
 extern RasterizerManager* GRasterizerManager;
 
 extern World* GWorld;
 extern Camera* GMainCamera;
 extern Camera* GCurrentCamera;
 extern ActorPicker* GActorPicker;
-//extern IDebugRenderer* GDebugRenderer;
 
-//extern IParticleRenderer* GParticleRenderer;
+
 extern IParticle* GParticle_1;
-
-/*LINK_NODE;
-particleList.PushBack();*/
 
 // юс╫ц.
 constexpr float DEFAULT_SCREEN_WIDTH = 2560.0f;

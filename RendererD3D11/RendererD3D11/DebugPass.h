@@ -54,7 +54,7 @@ private:
 
     Shader* pShader_;
     //SamplerStateT* pSamplerState_;
-    BlendStateT* pBlendState_;
+    BlendState* pBlendState_;
 
     
 

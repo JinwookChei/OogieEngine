@@ -101,28 +101,6 @@ ULONG __stdcall DeferredTarget::Release()
 	return tmpRefCount;
 }
 
-void __stdcall DeferredTarget::Clear()
-{
-	ClearRenderTexture(pRenderTextureAlbedo_);
-	ClearRenderTexture(pRenderTextureNormal_);
-	ClearRenderTexture(pRenderTextureSpecular_);
-
-	ClearDepthTexture(pDepthTexture_);
-}
-
-void __stdcall DeferredTarget::Setting()
-{
-	if (GCurrentSetRenderTarget == this)
-	{
-		return;
-	}
-
-	GCurrentSetRenderTarget = this;
-
-	GRenderer->DeviceContext()->OMSetRenderTargets(RENDER_BUFFER_COUNT, pRTVs_, pDSV_);
-	GRenderer->DeviceContext()->RSSetViewports(1, &viewport_);
-}
-
 void __stdcall DeferredTarget::Bind()
 {
 	if (GCurrentSetRenderTarget == this)
@@ -134,7 +112,17 @@ void __stdcall DeferredTarget::Bind()
 
 	GRenderer->DeviceContext()->OMSetRenderTargets(RENDER_BUFFER_COUNT, pRTVs_, pDSV_);
 	GRenderer->DeviceContext()->RSSetViewports(1, &viewport_);
+
 }
+void __stdcall DeferredTarget::Clear()
+{
+	ClearRenderTexture(pRenderTextureAlbedo_);
+	ClearRenderTexture(pRenderTextureNormal_);
+	ClearRenderTexture(pRenderTextureSpecular_);
+
+	ClearDepthTexture(pDepthTexture_);
+}
+
 
 RenderTargetDesc __stdcall DeferredTarget::GetDesc() const
 {

@@ -1,7 +1,7 @@
 #pragma once
 
 class ConstantBuffer final
-	: public IConstantBuffer
+	: public IUnknown
 {
 private:
 	friend Renderer;
@@ -23,16 +23,12 @@ public:
 
 	static ConstantBuffer* Create(uint32_t bufferSize);
 
-	void __stdcall Update(void* pSrcData) override;
+	void Update(void* pSrcData);
 
 	void BindConstantBufferCS(UINT slot);
 	void BindConstantBufferVS(UINT slot);
 	void BindConstantBufferGS(UINT slot);
 	void BindConstantBufferPS(UINT slot);
-
-	void __stdcall VSSetting(uint32_t slot) override;
-
-	void __stdcall PSSetting(uint32_t slot) override;
 
 private:
 	void CleanUp();

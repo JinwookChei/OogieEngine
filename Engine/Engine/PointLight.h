@@ -12,8 +12,6 @@ public:
 
 	void BeginPlay() override;
 
-	void BindLight() override;
-
 	LightRenderData GetData() override;
 
 	float GetRange() const;

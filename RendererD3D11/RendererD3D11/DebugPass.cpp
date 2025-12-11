@@ -301,7 +301,7 @@ bool DebugPass::InitShaders()
 
 bool DebugPass::InitBlendState()
 {
-	pBlendState_ = BlendStateT::Create(E_BLEND_MODE::OPAQUE_BLEND);
+	pBlendState_ = BlendState::Create(E_BLEND_MODE::OPAQUE_BLEND);
 
 	if (nullptr == pBlendState_)
 	{

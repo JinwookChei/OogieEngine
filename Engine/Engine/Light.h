@@ -14,7 +14,7 @@ public:
 
 	~Light() override;
 
-	virtual void BindLight() = 0;
+	//virtual void BindLight() = 0;
 
 	virtual LightRenderData GetData() = 0;
 

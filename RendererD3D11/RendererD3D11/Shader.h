@@ -1,7 +1,7 @@
 #pragma once
 
 class InputLayout;
-class Shader : public IShader
+class Shader : public IUnknown
 {
 private:
 	friend class Renderer;
@@ -20,7 +20,7 @@ public:
 
 	static Shader* Create(const ShaderDesc& desc);
 
-	void Bind() override;
+	void Bind();
 
 	void UnBind();
 
@@ -31,8 +31,6 @@ private:
 
 private:
 	ULONG refCount_;
-
-	//E_SHADER_TYPE shaderType_;
 
 	ID3D11InputLayout* pInputLayout_;
 	ID3D11ComputeShader* pCS_;

@@ -27,32 +27,32 @@ void SpotLight::Tick(double deltaTime)
 void SpotLight::BeginPlay()
 {
 }
-
-void SpotLight::BindLight()
-{
-	CBPerLight cbPerLight;
-	cbPerLight.lightDiffuse = DiffuseColor();
-	cbPerLight.lightSpecular = SpecularColor();
-	cbPerLight.lightAmbient = AmbientColor();
-
-	
-	const Float4& worldPos = GetWorldTransform().GetPosition();
-	cbPerLight.position_S_P = { worldPos.X,worldPos.Y, worldPos.Z };
-	cbPerLight.direction_D_S = Direction();
-	cbPerLight.range_S_P = range_;
-
-	cbPerLight.exponent_S = exponent_;
-	cbPerLight.innerAngle_S = innerAngle_;
-	cbPerLight.outerAngle_S = outerAngle_;
-
-	cbPerLight.attenuationConst_S_P = attenuationConst_;
-	cbPerLight.attenuationLinear_S_P = attenuationLinear_;
-	cbPerLight.attenuationQuad_S_P = attenuationQuad_;
-	
-	cbPerLight.lightType = (float)ELightType::SpotLight;
-
-	ConstantManager::Instance()->UpdatePerLight(&cbPerLight);
-}
+//
+//void SpotLight::BindLight()
+//{
+//	CBPerLight cbPerLight;
+//	cbPerLight.lightDiffuse = DiffuseColor();
+//	cbPerLight.lightSpecular = SpecularColor();
+//	cbPerLight.lightAmbient = AmbientColor();
+//
+//	
+//	const Float4& worldPos = GetWorldTransform().GetPosition();
+//	cbPerLight.position_S_P = { worldPos.X,worldPos.Y, worldPos.Z };
+//	cbPerLight.direction_D_S = Direction();
+//	cbPerLight.range_S_P = range_;
+//
+//	cbPerLight.exponent_S = exponent_;
+//	cbPerLight.innerAngle_S = innerAngle_;
+//	cbPerLight.outerAngle_S = outerAngle_;
+//
+//	cbPerLight.attenuationConst_S_P = attenuationConst_;
+//	cbPerLight.attenuationLinear_S_P = attenuationLinear_;
+//	cbPerLight.attenuationQuad_S_P = attenuationQuad_;
+//	
+//	cbPerLight.lightType = (float)ELightType::SpotLight;
+//
+//	ConstantManager::Instance()->UpdatePerLight(&cbPerLight);
+//}
 
 LightRenderData SpotLight::GetData()
 {

@@ -90,7 +90,7 @@ void Level::OnTick(double deltaTime)
 
 void Level::OnRender()
 {
-	SamplerManager::Instance()->Setting(0, E_SAMPLER_TYPE::LINEAR_CLAMP);
+	//SamplerManager::Instance()->Setting(0, E_SAMPLER_TYPE::LINEAR_CLAMP);
 	RasterizerManager::Instance()->Setting(E_FILLMODE_TYPE::SOLID);
 
 	LINK_NODE* pCameraIter = actorList_[(int)E_ACTOR_TYPE::CAMERA].GetHead();
@@ -123,7 +123,7 @@ void Level::OnRender()
 		GCurrentCamera->ParticlePassEnd();
 
 
-		GCurrentCamera->pFinalRenderTarget->Setting();
+		GCurrentCamera->pFinalRenderTarget->Bind();
 		GCurrentCamera->UpdatePerFrameConstant();
 		GRenderer->RenderMerge(GCurrentCamera->pGBufferRenderTarget_, GCurrentCamera->pParticleRenderTarget_);
 		GCurrentCamera->pFinalRenderTarget->EndRenderPass();
@@ -131,13 +131,13 @@ void Level::OnRender()
 
 		// DebugRender
 		GCurrentCamera->pDebugRenderTarget_->Clear();
-		GCurrentCamera->pDebugRenderTarget_->Setting();
+		GCurrentCamera->pDebugRenderTarget_->Bind();
 		GRenderer->RenderDebug();
 		GCurrentCamera->pDebugRenderTarget_->EndRenderPass();
 		// DebugRender End
 		
 
-		GCurrentCamera->pFinalRenderTarget->Setting();
+		GCurrentCamera->pFinalRenderTarget->Bind();
 		GCurrentCamera->UpdatePerFrameConstant();
 		GRenderer->RenderMerge(GCurrentCamera->pGBufferRenderTarget_, GCurrentCamera->pDebugRenderTarget_);
 		GCurrentCamera->pFinalRenderTarget->EndRenderPass();

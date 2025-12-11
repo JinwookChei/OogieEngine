@@ -19,11 +19,9 @@ public:
 
 	ULONG __stdcall Release() override;
 
-	void __stdcall Clear() override;
-
-	void __stdcall Setting() override;
-
 	void __stdcall Bind() override;
+
+	void __stdcall Clear() override;
 
 	RenderTargetDesc __stdcall GetDesc() const override;
 

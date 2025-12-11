@@ -30,11 +30,7 @@ public:
 
 	ULONG __stdcall Release() override;
 
-	void __stdcall Setting() override;
-
 	void Bind() const;
-
-	bool __stdcall Draw() override;
 
 	void __stdcall GetVerticesData(E_VERTEX_FORMAT* pOutFormat, uint32_t* pOutStride, uint32_t* pOutCount, void** ppOutVertices) const override;
 

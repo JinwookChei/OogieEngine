@@ -18,16 +18,16 @@ void DirectionLight::BeginPlay()
 {
 }
 
-void DirectionLight::BindLight()
-{
-	CBPerLight cbPerLight;
-	cbPerLight.lightDiffuse = DiffuseColor();
-	cbPerLight.lightSpecular = SpecularColor();
-	cbPerLight.lightAmbient = AmbientColor();
-	cbPerLight.direction_D_S = Direction();
-	cbPerLight.lightType = (float)ELightType::DirectionLight;
-	ConstantManager::Instance()->UpdatePerLight(&cbPerLight);
-}
+//void DirectionLight::BindLight()
+//{
+//	CBPerLight cbPerLight;
+//	cbPerLight.lightDiffuse = DiffuseColor();
+//	cbPerLight.lightSpecular = SpecularColor();
+//	cbPerLight.lightAmbient = AmbientColor();
+//	cbPerLight.direction_D_S = Direction();
+//	cbPerLight.lightType = (float)ELightType::DirectionLight;
+//	ConstantManager::Instance()->UpdatePerLight(&cbPerLight);
+//}
 
 LightRenderData DirectionLight::GetData()
 {
