@@ -99,20 +99,20 @@ void ParticlePass::Tick(IParticle* pParticle,  float deltaTime)
 	pComputeShader_->UnBind();
 }
 
-void ParticlePass::Render(IParticle* pParticle, const Float4x4& viewProj, const Float3& cameraRight, const Float3& cameraUp)
+void ParticlePass::Render(IParticle* pParticle, const Float4x4 worldTransform,  const Float4x4& viewProj, const Float3& cameraRight, const Float3& cameraUp)
 {
 	Particle* pParticleImpl = (Particle*)pParticle;
 
 	pBlendState_->Bind();
 
-	Float4 scale = { 1.0f, 1.0f, 1.0f, 0.0f };
-	Float4 rotation = { 0.0f, 0.0f, 0.0f , 0.0f };
-	Float4 position = { 0.0f, 0.0f, 0.0f , 1.0f };
-	Float4x4 world;
-	MATH::MatrixCompose(world, scale, rotation, position);
+	//Float4 scale = { 1.0f, 1.0f, 1.0f, 0.0f };
+	//Float4 rotation = { 0.0f, 0.0f, 0.0f , 0.0f };
+	//Float4 position = { 0.0f, 0.0f, 0.0f , 1.0f };
+	//Float4x4 world;
+	//MATH::MatrixCompose(world, scale, rotation, position);
 
 	CBPerParticle cb = {};
-	MATH::MatrixTranspose(cb.world_, world);
+	MATH::MatrixTranspose(cb.world_, worldTransform);
 	MATH::MatrixTranspose(cb.viewProj_, viewProj);
 	cb.cameraRight_ = cameraRight;
 	cb.startSize_ = 0.5f;
@@ -193,7 +193,7 @@ bool ParticlePass::InitConstantBuffer()
 
 bool ParticlePass::InitBlendState()
 {
-	pBlendState_ = BlendState::Create(E_BLEND_MODE::ALPHA_BLEND);
+	pBlendState_ = BlendState::Create(E_BLEND_MODE::ADDITIVE_BLEND);
 	
 	if (nullptr == pBlendState_)
 	{

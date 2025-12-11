@@ -204,8 +204,20 @@ void Level::OnRenderParticles()
 	Float3 cameraRight(right.X, right.Y, right.Z);
 	Float3 cameraUp(up.X, up.Y, up.Z);
 
+	
+	Float4 scale1 = { 1.0f, 1.0f, 1.0f, 0.0f };
+	Float4 rotation1 = { 0.0f, 0.0f, 0.0f , 0.0f };
+	Float4 position1 = { 0.0f, 0.0f, 0.0f , 1.0f };
+	Float4x4 world1;
+	MATH::MatrixCompose(world1, scale1, rotation1, position1);
+	GRenderer->RenderParticles(GParticle_1, world1, viewProj, cameraRight, cameraUp);
 
-	GRenderer->RenderParticles(GParticle_1, viewProj, cameraRight, cameraUp);
+	Float4 scale2 = { 1.0f, 1.0f, 1.0f, 0.0f };
+	Float4 rotation2 = { 45.0f, 0.0f, 45.0f , 0.0f };
+	Float4 position2 = { 0.0f, 5.0f, 5.0f , 1.0f };
+	Float4x4 world2;
+	MATH::MatrixCompose(world2, scale2, rotation2, position2);
+	GRenderer->RenderParticles(GParticle_2, world2,  viewProj, cameraRight, cameraUp);
 }
 
 

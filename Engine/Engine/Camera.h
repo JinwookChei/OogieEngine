@@ -96,9 +96,8 @@ private:
 	// Geometry Pass
 	IRenderTarget* pGBufferRenderTarget_;
 	
-	IRenderTarget* pFinalRenderTarget;
-
 	// Light Pass
+	IRenderTarget* pFinalRenderTarget;
 
 	// Particle Pass
 	IRenderTarget* pParticleRenderTarget_;

@@ -44,7 +44,7 @@ public:
 
 	void Tick(IParticle* pParticle, float deltaTime);
 
-	void Render(IParticle* pParticle, const Float4x4& viewProj, const Float3& cameraRight, const Float3& cameraUp);
+	void Render(IParticle* pParticle, const Float4x4 worldTransform, const Float4x4& viewProj, const Float3& cameraRight, const Float3& cameraUp);
 
 private:
 

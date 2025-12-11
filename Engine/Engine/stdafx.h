@@ -95,6 +95,7 @@ extern ActorPicker* GActorPicker;
 
 
 extern IParticle* GParticle_1;
+extern IParticle* GParticle_2;
 
 // юс╫ц.
 constexpr float DEFAULT_SCREEN_WIDTH = 2560.0f;

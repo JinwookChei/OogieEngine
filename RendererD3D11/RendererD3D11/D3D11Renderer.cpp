@@ -208,9 +208,9 @@ void __stdcall Renderer::UpdateParticles(IParticle* pParticle, double deltaTime)
 	pParticlePass_->Tick(pParticle, deltaTime);
 }
 
-void __stdcall Renderer::RenderParticles(IParticle* pParticle, const Float4x4& viewProj, const Float3& cameraRight, const Float3& cameraUp)
+void __stdcall Renderer::RenderParticles(IParticle* pParticle, const Float4x4 worldTransform, const Float4x4& viewProj, const Float3& cameraRight, const Float3& cameraUp)
 {
-	pParticlePass_->Render(pParticle, viewProj, cameraRight, cameraUp);
+	pParticlePass_->Render(pParticle, worldTransform, viewProj, cameraRight, cameraUp);
 }
 
 void __stdcall Renderer::DrawDebugLine(const Float3& start, const Float3& end, const Float4& color)

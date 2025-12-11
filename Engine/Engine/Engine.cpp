@@ -26,6 +26,7 @@ ActorPicker* GActorPicker = nullptr;
 
 
 IParticle* GParticle_1 = nullptr;
+IParticle* GParticle_2 = nullptr;
 
 
 Engine::Engine()
@@ -135,6 +136,12 @@ void Engine::Run()
 	TextureManager::Instance()->GetTexture(&particleDesc.pTexture_, 3);
 	GParticle_1 = GRenderer->CreateParticle(particleDesc);
 
+	ParticleDesc particleDesc2;
+	particleDesc2.maxNum_ = 1000;
+	particleDesc2.patternType_ = E_PARTICLE_PATTERN_TYPE::FUME;
+	TextureManager::Instance()->GetTexture(&particleDesc2.pTexture_, 3);
+	GParticle_2 = GRenderer->CreateParticle(particleDesc2);
+	
 
 	while (false == pApplication_->ApplicationQuit()) {
 
@@ -149,7 +156,8 @@ void Engine::Run()
 		GActorPicker->Tick(deltaTime);
 
 		GRenderer->UpdateParticles(GParticle_1, deltaTime);
-
+		GRenderer->UpdateParticles(GParticle_2, deltaTime);
+		
 		// GameLoop
 		GWorld->CheckChangeLevel();
 
@@ -311,6 +319,11 @@ void Engine::CleanUp()
 	{
 		GParticle_1->Release();
 		GParticle_1 = nullptr;
+	}
+	if (nullptr != GParticle_2)
+	{
+		GParticle_2->Release();
+		GParticle_2 = nullptr;
 	}
 
 	if (nullptr != GActorPicker)
