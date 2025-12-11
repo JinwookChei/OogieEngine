@@ -24,7 +24,8 @@ IParticle* Particle::Create(const ParticleDesc& desc)
 	Particle* pNewParticle = new Particle;
 	if (false == pNewParticle->Init(desc))
 	{
-		Assert("Particle Init is FAIL!!");
+		pNewParticle->Release();
+		pNewParticle = nullptr;
 		return nullptr;
 	}
 
@@ -89,16 +90,58 @@ void Particle::AddAccTime(double deltaTime)
 	accTime_ += deltaTime;
 }
 
-ID3D11ShaderResourceView* Particle::GetParticlesSRV() const
+void Particle::BindUnorderedAccessViewCS(UINT slot)
 {
-	return pParticlesSRV_;
+	GRenderer->DeviceContext()->CSSetUnorderedAccessViews(slot, 1, &pParticlesUAV_, nullptr);
 }
 
-ID3D11UnorderedAccessView* Particle::GetParticlesUAV() const
+void Particle::UnBindUnorderedAccessViewCS(UINT slot)
 {
-	return pParticlesUAV_;
+	ID3D11UnorderedAccessView* pNullUAV = nullptr;
+	GRenderer->DeviceContext()->CSSetUnorderedAccessViews(slot, 1, &pNullUAV, nullptr);
 }
 
+void Particle::BindShaderResourceViewVS(UINT slot)
+{
+	GRenderer->DeviceContext()->VSSetShaderResources(slot, 1, &pParticlesSRV_);
+}
+
+void Particle::UnBindShaderResourceViewVS(UINT slot)
+{
+	ID3D11ShaderResourceView* pNullSRV = nullptr;
+	GRenderer->DeviceContext()->VSSetShaderResources(slot, 1, &pNullSRV);
+}
+
+void Particle::BindShaderResourceViewPS(UINT slot)
+{
+	GRenderer->DeviceContext()->PSSetShaderResources(slot, 1, &pParticlesSRV_);
+}
+
+void Particle::UnBindShaderResourceViewPS(UINT slot)
+{
+	ID3D11ShaderResourceView* pNullSRV = nullptr;
+	GRenderer->DeviceContext()->PSSetShaderResources(slot, 1, &pNullSRV);
+}
+
+//void Particle::BindUnorderedAccessViewCS(UINT slot)
+//{
+//	GRenderer->DeviceContext()->CSSetUnorderedAccessViews(slot, 1, &pParticlesUAV_, nullptr);
+//}
+
+//void Particle::UnBindUnorderedAccessViewCS()
+//{
+//}
+
+//ID3D11ShaderResourceView* Particle::GetParticlesSRV() const
+//{
+//	return pParticlesSRV_;
+//}
+//
+//ID3D11UnorderedAccessView* Particle::GetParticlesUAV() const
+//{
+//	return pParticlesUAV_;
+//}
+//
 Texture* Particle::GetTexture() const
 {
 	return pTexture_;

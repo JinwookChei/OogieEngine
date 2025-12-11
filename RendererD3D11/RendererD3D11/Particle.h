@@ -36,9 +36,25 @@ public:
 
 	void AddAccTime(double deltaTime);
 
-	ID3D11ShaderResourceView* GetParticlesSRV() const;
+	void BindUnorderedAccessViewCS(UINT slot);
 
-	ID3D11UnorderedAccessView* GetParticlesUAV() const;
+	void UnBindUnorderedAccessViewCS(UINT slot);
+
+	void BindShaderResourceViewVS(UINT slot);
+
+	void UnBindShaderResourceViewVS(UINT slot);
+
+	void BindShaderResourceViewPS(UINT slot);
+
+	void UnBindShaderResourceViewPS(UINT slot);
+
+	//void UnBindUnorderedAccessViewCS();
+
+	
+
+	//ID3D11ShaderResourceView* GetParticlesSRV() const;
+
+	//ID3D11UnorderedAccessView* GetParticlesUAV() const;
 
 	Texture* GetTexture() const;
 

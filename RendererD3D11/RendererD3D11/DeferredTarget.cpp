@@ -123,6 +123,19 @@ void __stdcall DeferredTarget::Setting()
 	GRenderer->DeviceContext()->RSSetViewports(1, &viewport_);
 }
 
+void __stdcall DeferredTarget::Bind()
+{
+	if (GCurrentSetRenderTarget == this)
+	{
+		return;
+	}
+
+	GCurrentSetRenderTarget = this;
+
+	GRenderer->DeviceContext()->OMSetRenderTargets(RENDER_BUFFER_COUNT, pRTVs_, pDSV_);
+	GRenderer->DeviceContext()->RSSetViewports(1, &viewport_);
+}
+
 RenderTargetDesc __stdcall DeferredTarget::GetDesc() const
 {
 	RenderTargetDesc desc{ E_RENDER_TECHNIQUE_TYPE::Deferred };
@@ -143,12 +156,12 @@ void __stdcall DeferredTarget::SetClearColor(const Color& color)
 	clearColor_ = color;
 }
 
-void __stdcall DeferredTarget::BindRenderTextureForPS(uint32_t slot)
+void __stdcall DeferredTarget::BindRenderTexturePS(uint32_t slot)
 {
 	GRenderer->DeviceContext()->PSSetShaderResources(slot, RESOURCE_BUFFER_COUNT, pSRVs_);
 }
 
-void __stdcall DeferredTarget::ClearRenderTextureForPS(uint32_t slot)
+void __stdcall DeferredTarget::UnBindRenderTexturePS(uint32_t slot)
 {
 	ID3D11ShaderResourceView* pNullSrvs[RESOURCE_BUFFER_COUNT] = { nullptr, nullptr, nullptr, nullptr };
 	GRenderer->DeviceContext()->PSSetShaderResources(slot, RESOURCE_BUFFER_COUNT, pNullSrvs);

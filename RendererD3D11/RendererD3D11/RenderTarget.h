@@ -23,15 +23,17 @@ public:
 
 	void __stdcall Setting() override;
 
+	void __stdcall Bind() override;
+
 	RenderTargetDesc __stdcall GetDesc() const override;
 
 	Float2 __stdcall GetSize() const override;
 
 	void __stdcall SetClearColor(const Color& color) override;
 
-	void __stdcall BindRenderTextureForPS(uint32_t slot) override;
+	void __stdcall BindRenderTexturePS(uint32_t slot) override;
 
-	void __stdcall ClearRenderTextureForPS(uint32_t slot) override;
+	void __stdcall UnBindRenderTexturePS(uint32_t slot) override;
 
 	void* __stdcall GetShaderResourceView(const E_RENDER_TEXTURE_TYPE& texureType) override;
 

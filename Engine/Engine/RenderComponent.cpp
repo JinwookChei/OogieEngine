@@ -8,7 +8,7 @@ RenderComponent::RenderComponent(Actor* pOwner)
 	: pOwner_(pOwner)
 	, pMesh_(nullptr)
 	, pMaterial_(nullptr)
-	, pShader_(nullptr)
+	//, pShader_(nullptr)
 	, pTextureColor_(nullptr)
 	, pTextureNormal_(nullptr)
 	, OnMeshLoaded_()
@@ -22,20 +22,27 @@ RenderComponent::~RenderComponent()
 
 void RenderComponent::Render()
 {
-	CBPerObject cbPerObject;
-	cbPerObject.world = pOwner_->GetWorldTransform().GetWorldMatrixTranspose();
-	cbPerObject.materialSpecular = pMaterial_->GetSpecularColor();
-	cbPerObject.materialShineness = pMaterial_->GetShineness();
+	ObjectRenderData objectData;
+	objectData.world = pOwner_->GetWorldTransform().GetWorldMatrix();
+	objectData.pMesh = pMesh_;
+	objectData.pMaterial = pMaterial_;
+	objectData.albedo_ = pTextureColor_;
+	objectData.normal_ = pTextureNormal_;
+	GRenderer->RenderGBuffer(objectData);
 
-	ConstantManager::Instance()->UpdatePerObejct(&cbPerObject);
+	//CBPerObject cbPerObject;
+	//cbPerObject.world = pOwner_->GetWorldTransform().GetWorldMatrixTranspose();
+	//cbPerObject.materialSpecular = pMaterial_->GetSpecularColor();
+	//cbPerObject.materialShineness = pMaterial_->GetShineness();
 
-	pShader_->Setting();
-	pMaterial_->Setting();
-	pMesh_->Setting();
-	pShader_->Setting();
-	pTextureColor_->Setting(0);
-	pTextureNormal_->Setting(1);
-	pMesh_->Draw();
+	//ConstantManager::Instance()->UpdatePerObejct(&cbPerObject);
+
+	//pShader_->Bind();
+	//pMaterial_->Setting();
+	//pMesh_->Setting();
+	//pTextureColor_->Setting(0);
+	//pTextureNormal_->Setting(1);
+	//pMesh_->Draw();
 }
 
 
@@ -64,12 +71,12 @@ void RenderComponent::Create(E_MESH_TYPE meshType)
 	}
 	pMesh_->AddRef();
 
-	if (!ShaderManager::Instance()->GetShader(&pShader_, 1))
-	{
-		DEBUG_BREAK();
-		return;
-	}
-	pShader_->AddRef();
+	//if (!ShaderManager::Instance()->GetShader(&pShader_, 1))
+	//{
+	//	DEBUG_BREAK();
+	//	return;
+	//}
+	//pShader_->AddRef();
 
 	if (!MaterialManager::Instance()->GetMaterial(&pMaterial_, 1))
 	{
@@ -145,11 +152,11 @@ void RenderComponent::CleanUp()
 		pMesh_ = nullptr;
 	}
 
-	if (nullptr != pShader_)
-	{
-		pShader_->Release();
-		pShader_ = nullptr;
-	}
+	//if (nullptr != pShader_)
+	//{
+	//	pShader_->Release();
+	//	pShader_ = nullptr;
+	//}
 	
 	if (nullptr != pMaterial_)
 	{

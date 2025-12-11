@@ -2,7 +2,7 @@
 
 
 class BlendState
-	: IBlendState
+	: public IBlendState
 {
 private:
 	friend Renderer;
@@ -44,4 +44,43 @@ private:
 
 	//Float[4]
 	float* blendFactor_;
+};
+
+
+enum class E_BLEND_MODE
+{
+	OPAQUE_BLEND = 0,				// 블렌딩 없음 (불투명)
+	ALPHA_BLEND,					// 일반 알파 블렌딩
+	ADDITIVE_BLEND,					// Additive(가산) 블렌딩
+};
+
+class BlendStateT : public IUnknown
+{
+private:
+
+	BlendStateT();
+	virtual ~BlendStateT();
+
+	bool Init(const E_BLEND_MODE& blendMode);
+
+public:
+	HRESULT __stdcall QueryInterface(REFIID riid, _COM_Outptr_ void __RPC_FAR* __RPC_FAR* ppvObject) override;
+
+	ULONG __stdcall AddRef() override;
+
+	ULONG __stdcall Release() override;
+
+	static BlendStateT* Create(const E_BLEND_MODE& blendMode);
+
+	void Bind();
+
+	void UnBind();
+
+private:
+	void CleanUp();
+
+	ULONG refCount_;
+
+	float blendFactor_[4];
+	ID3D11BlendState* pBlendState_;
 };

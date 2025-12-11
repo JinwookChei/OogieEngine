@@ -72,8 +72,6 @@ struct TextureDesc
 	Float2 size_;
 
 	UINT colorData_;
-	//void* initData_;
-	//uint32_t initMemSize_;
 };
 
 struct ITexture : public IUnknown
@@ -81,37 +79,29 @@ struct ITexture : public IUnknown
 	virtual void __stdcall Setting(UINT slot) = 0;
 };
 
+//struct InputDesc
+//{
+//	const char* semanticName_;
+//	uint32_t semanticIndex_;
+//	uint32_t format_;
+//	uint32_t inputSlot_;
+//	bool isInstanceData_;
+//};
 
-enum class E_SHADER_TYPE
-{
-	MATERIAL_SHADER = 0,
-	PARTICLE_SHADER,
-	QUAD_SCREEN_SHADER
-};
-
-struct InputDesc
-{
-	const char* semanticName_;
-	uint32_t semanticIndex_;
-	uint32_t format_;
-	uint32_t inputSlot_;
-	bool isInstanceData_;
-};
-
-struct ShaderDesc
-{
-	std::vector<InputDesc> inputDesc_;
-	E_SHADER_TYPE type_;
-	const wchar_t* pathCS_ = nullptr;
-	const wchar_t* pathVS_ = nullptr;
-	const wchar_t* pathGS_ = nullptr;
-	const wchar_t* pathPS_ = nullptr;
-};
+//struct ShaderDesc
+//{
+//	std::vector<InputDesc> inputDesc_;
+//	//E_SHADER_TYPE type_;
+//	const wchar_t* pathCS_ = nullptr;
+//	const wchar_t* pathVS_ = nullptr;
+//	const wchar_t* pathGS_ = nullptr;
+//	const wchar_t* pathPS_ = nullptr;
+//};
 
 
 struct IShader : public IUnknown
 {
-	virtual void Setting() = 0;
+	virtual void Bind() = 0;
 };
 
 enum class E_SAMPLER_TYPE
@@ -235,29 +225,31 @@ struct IRenderTarget : public IUnknown
 
 	virtual void __stdcall Setting() = 0;
 
+	virtual void __stdcall Bind() = 0;
+
 	virtual RenderTargetDesc __stdcall GetDesc() const = 0;
 
 	virtual Float2 __stdcall GetSize() const = 0;
 
 	virtual void __stdcall SetClearColor(const Color& color) = 0;
 
-	virtual void __stdcall BindRenderTextureForPS(uint32_t slot) = 0;
+	virtual void __stdcall BindRenderTexturePS(uint32_t slot) = 0;
 
-	virtual void __stdcall ClearRenderTextureForPS(uint32_t slot) = 0;
+	virtual void __stdcall UnBindRenderTexturePS(uint32_t slot) = 0;
 
 	virtual void __stdcall EndRenderPass() = 0;
 
 	virtual void* __stdcall GetShaderResourceView(const E_RENDER_TEXTURE_TYPE& texureType) = 0;
 };
 
-struct IDebugRenderer : public IUnknown
-{
-	virtual void __stdcall SetViewProj(const Float4x4& view, const Float4x4& proj) = 0;
-	virtual void __stdcall DrawLine(const Float3& a, const Float3& b, const Float4& color) = 0;
-	virtual void __stdcall DrawRay(const Float3& origin, Float3& dir, float length, const Color& color) = 0;
-	virtual void __stdcall RenderAll() = 0;
-	virtual void __stdcall Clear() = 0;
-};
+//struct IDebugRenderer : public IUnknown
+//{
+//	virtual void __stdcall SetViewProj(const Float4x4& view, const Float4x4& proj) = 0;
+//	virtual void __stdcall DrawLine(const Float3& a, const Float3& b, const Float4& color) = 0;
+//	virtual void __stdcall DrawRay(const Float3& origin, Float3& dir, float length, const Color& color) = 0;
+//	virtual void __stdcall RenderAll() = 0;
+//	virtual void __stdcall Clear() = 0;
+//};
 
 
 enum class E_PARTICLE_PATTERN_TYPE
@@ -287,14 +279,67 @@ struct IParticle : public IUnknown
 
 };
 
-struct IParticleRenderer : public IUnknown
-{
-	virtual void __stdcall OnTick(IParticle* pParticle, double deltaTime) = 0;
+//struct IParticleRenderer : public IUnknown
+//{
+//	virtual void __stdcall OnTick(IParticle* pParticle, double deltaTime) = 0;
+//
+//	virtual void __stdcall OnRender(IParticle* pParticle, const Float4x4& viewProj, const Float3& cameraRight, const Float3& cameraUp) = 0;
+//};
 
-	virtual void __stdcall OnRender(IParticle* pParticle, const Float4x4& viewProj, const Float3& cameraRight, const Float3& cameraUp) = 0;
+struct CameraFrameData
+{
+	Float4x4 view;
+	Float4x4 projection;
+
+	//Float4x4 inverseView;
+	//Float4x4 inverseProjection;
+
+	Float2 screenOffset;
+	Float2 screenScale;
+	Float2 screenResolution;
+	Float2 pad0;
+
+	Float4 camPos;
 };
 
 
+struct ObjectRenderData
+{
+	Float4x4 world;
+
+	IMesh* pMesh;
+
+	IMaterial* pMaterial;
+
+	ITexture* albedo_;
+	ITexture* normal_;
+};
+
+struct LightRenderData
+{
+	Color lightDiffuse;
+	Color lightSpecular;
+	Color lightAmbient;
+
+	Float3 direction_D_S; // Spot, DirectionÀÌ¶û °øÀ¯.
+	float range_S_P;
+	Float3 position_S_P;
+
+	float exponent_S;
+	float innerAngle_S;
+	float outerAngle_S;
+
+	float attenuationConst_S_P;
+	float attenuationLinear_S_P;
+	float attenuationQuad_S_P;
+
+	// 0 -> DirectionLight
+	// 1 -> SpotLight
+	// 2 -> PointLight
+	float lightType;
+
+	Float2 pad;
+};
 
 struct IRenderer : public IUnknown {
 	virtual bool __stdcall Initialize(void* hWnd, uint32_t width, uint32_t height) = 0;
@@ -303,7 +348,31 @@ struct IRenderer : public IUnknown {
 
 	virtual void* __stdcall GetDeviceContextHandle() = 0;
 
+	virtual void __stdcall UpdateCameraFrame(const CameraFrameData& cameraFrameData) = 0;
+
+	virtual void __stdcall RenderGBuffer(const ObjectRenderData& objectData) = 0;
+
+	virtual void __stdcall RenderLightBegin(IRenderTarget* pGBufferTarget) = 0;
+
+	virtual void __stdcall RenderLight(const LightRenderData& lightData) = 0;
+
+	virtual void __stdcall RenderLightEnd(IRenderTarget* pGBufferTarget) = 0;
+
+	virtual void __stdcall UpdateParticles(IParticle* pParticle, double deltaTime) = 0;
+
+	virtual void __stdcall RenderParticles(IParticle* pParticle, const Float4x4& viewProj, const Float3& cameraRight, const Float3& cameraUp) = 0;
+
+	virtual void __stdcall DrawDebugLine(const Float3& start, const Float3& end, const Float4& color) = 0;
+
+	virtual void __stdcall DrawDebugRay(const Float3& origin, Float3& dir, float length, const Color& color) = 0;
+
+	virtual void __stdcall RenderDebug() = 0;
+
+	virtual void __stdcall RenderMerge(IRenderTarget* pDepthTarget, IRenderTarget* pSrcTarget) = 0;
+
 	virtual void __stdcall RenderBegin() = 0;
+
+	virtual void __stdcall RenderFinal(IRenderTarget* pSrcTarget) = 0;
 
 	virtual void __stdcall RenderEnd() = 0;
 
@@ -311,7 +380,7 @@ struct IRenderer : public IUnknown {
 
 	virtual IMesh* __stdcall CreateMesh(const MeshDesc& desc) = 0;
 
-	virtual IShader* __stdcall CreateShader(const ShaderDesc& desc) = 0;
+	//virtual IShader* __stdcall CreateShader(const ShaderDesc& desc) = 0;
 
 	virtual IMaterial* __stdcall CreateMaterial(const MaterialDesc& materialDesc) = 0;
 
@@ -331,8 +400,8 @@ struct IRenderer : public IUnknown {
 
 	virtual ITexture* __stdcall CreateTexture(const TextureDesc& desc) = 0;
 
-	virtual IDebugRenderer* __stdcall CreateDebugRenderer() = 0;
+	//virtual IDebugRenderer* __stdcall CreateDebugRenderer() = 0;
 
-	virtual IParticleRenderer* __stdcall CreateParticleRenderer() = 0;
+	//virtual IParticleRenderer* __stdcall CreateParticleRenderer() = 0;
 };
 

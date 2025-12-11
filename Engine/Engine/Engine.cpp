@@ -15,7 +15,7 @@ IRenderer* GRenderer = nullptr;
 TimeManager* GTimeManager = nullptr;
 
 MeshManager* GMeshManager = nullptr;
-ShaderManager* GShaderManager = nullptr;
+//ShaderManager* GShaderManager = nullptr;
 MaterialManager* GMaterialManager = nullptr;
 TextureManager* GTextureManager = nullptr;
 ConstantManager* GConstantManager = nullptr;
@@ -27,9 +27,9 @@ World* GWorld = nullptr;
 Camera* GMainCamera = nullptr;
 Camera* GCurrentCamera = nullptr;
 ActorPicker* GActorPicker = nullptr;
-IDebugRenderer* GDebugRenderer = nullptr;
+//IDebugRenderer* GDebugRenderer = nullptr;
 
-IParticleRenderer* GParticleRenderer = nullptr;
+//IParticleRenderer* GParticleRenderer = nullptr;
 IParticle* GParticle_1 = nullptr;
 
 
@@ -92,12 +92,12 @@ bool Engine::Initialize
 		return false;
 	}
 
-	GDebugRenderer = GRenderer->CreateDebugRenderer();
-	if (nullptr == GDebugRenderer)
-	{
-		DEBUG_BREAK();
-		return false;
-	}
+	//GDebugRenderer = GRenderer->CreateDebugRenderer();
+	//if (nullptr == GDebugRenderer)
+	//{
+	//	DEBUG_BREAK();
+	//	return false;
+	//}
 
 	if (false == ImGuiSystem::GetImGuiManager()->InitImGui(pApplication_, pRenderer_, dpiSclae))
 	{
@@ -114,7 +114,7 @@ bool Engine::Initialize
 
 	GMeshManager = new MeshManager;
 
-	GShaderManager = new ShaderManager;
+	//GShaderManager = new ShaderManager;
 
 	GTextureManager = new TextureManager;
 
@@ -144,16 +144,14 @@ void Engine::Run()
 {
 	// TEMP
 	MeshManager::Instance()->TestLoad();
-	ShaderManager::Instance()->TestLoad();
+	//ShaderManager::Instance()->TestLoad();
 	MaterialManager::Instance()->TestLoad();
 	TextureManager::Instance()->TestLoad();
-
-	GParticleRenderer = GRenderer->CreateParticleRenderer();
 
 
 	//LinkedList particleList;
 	ParticleDesc particleDesc;
-	particleDesc.maxNum_ = 100;
+	particleDesc.maxNum_ = 1000;
 	particleDesc.patternType_ = E_PARTICLE_PATTERN_TYPE::EXPLOSION;
 	TextureManager::Instance()->GetTexture(&particleDesc.pTexture_, 3);
 	GParticle_1 = GRenderer->CreateParticle(particleDesc);
@@ -171,7 +169,7 @@ void Engine::Run()
 
 		GActorPicker->Tick(deltaTime);
 
-		GParticleRenderer->OnTick(GParticle_1, deltaTime);
+		GRenderer->UpdateParticles(GParticle_1, deltaTime);
 
 		// GameLoop
 		GWorld->CheckChangeLevel();
@@ -182,13 +180,13 @@ void Engine::Run()
 		// GameLoop End
 
 		// Blit RenderTarget 
-		pRenderer_->RenderBegin();
+		GRenderer->RenderBegin();
 
 		GWorld->OnBlit();
 
 		ImGuiSystem::GetImGuiManager()->OnRender();
 
-		pRenderer_->RenderEnd();
+		GRenderer->RenderEnd();
 		// Blit RenderTarget  End
 	}
 }
@@ -330,11 +328,11 @@ void Engine::CleanUp()
 {
 	ImGuiSystem::GetImGuiManager()->CleanUpImGui();
 
-	if (nullptr != GParticleRenderer)
-	{
-		GParticleRenderer->Release();
-		GParticleRenderer = nullptr;
-	}
+	//if (nullptr != GParticleRenderer)
+	//{
+	//	GParticleRenderer->Release();
+	//	GParticleRenderer = nullptr;
+	//}
 	if (nullptr != GParticle_1)
 	{
 		GParticle_1->Release();
@@ -393,11 +391,11 @@ void Engine::CleanUp()
 		delete GMaterialManager;
 		GMaterialManager = nullptr;
 	}
-	if (nullptr != GShaderManager)
-	{
-		delete GShaderManager;
-		GShaderManager = nullptr;
-	}
+	//if (nullptr != GShaderManager)
+	//{
+	//	delete GShaderManager;
+	//	GShaderManager = nullptr;
+	//}
 
 	if (nullptr != GMeshManager)
 	{
@@ -429,11 +427,11 @@ void Engine::CleanUp()
 		applicationModule_ = nullptr;
 	}
 
-	if (nullptr != GDebugRenderer)
-	{
-		GDebugRenderer->Release();
-		GDebugRenderer = nullptr;
-	}
+	//if (nullptr != GDebugRenderer)
+	//{
+	//	GDebugRenderer->Release();
+	//	GDebugRenderer = nullptr;
+	//}
 
 	if (nullptr != pRenderer_)
 	{

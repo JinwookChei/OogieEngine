@@ -127,6 +127,32 @@ void RenderTarget::Setting()
 	GRenderer->DeviceContext()->RSSetViewports(1, &viewport_);
 }
 
+void __stdcall RenderTarget::Bind()
+{
+	if (GCurrentSetRenderTarget == this)
+	{
+		return;
+	}
+
+	ID3D11RenderTargetView* pRenderTargetView = pRenderTexture_->RenderTargetView();
+	if (nullptr == pRenderTargetView)
+	{
+		DEBUG_BREAK();
+		return;
+	}
+
+	ID3D11DepthStencilView* pDepthStencilView = nullptr;
+	if (nullptr != pDepthTexture_)
+	{
+		pDepthStencilView = pDepthTexture_->DepthStencilView();
+	}
+
+	GCurrentSetRenderTarget = this;
+
+	GRenderer->DeviceContext()->OMSetRenderTargets(1, &pRenderTargetView, pDepthStencilView);
+	GRenderer->DeviceContext()->RSSetViewports(1, &viewport_);
+}
+
 RenderTargetDesc __stdcall RenderTarget::GetDesc() const
 {
 	RenderTargetDesc desc{ E_RENDER_TECHNIQUE_TYPE::Forward };
@@ -148,7 +174,7 @@ void __stdcall RenderTarget::SetClearColor(const Color& color)
 }
 
 
-void __stdcall RenderTarget::BindRenderTextureForPS(uint32_t slot)
+void __stdcall RenderTarget::BindRenderTexturePS(uint32_t slot)
 {
 	if(!desc_.useDepthStencil_)
 	{
@@ -160,7 +186,7 @@ void __stdcall RenderTarget::BindRenderTextureForPS(uint32_t slot)
 	}
 }
 
-void __stdcall RenderTarget::ClearRenderTextureForPS(uint32_t slot)
+void __stdcall RenderTarget::UnBindRenderTexturePS(uint32_t slot)
 {
 	if (!desc_.useDepthStencil_)
 	{

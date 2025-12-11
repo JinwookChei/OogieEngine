@@ -88,7 +88,7 @@ extern InputManager* GInputManager;
 extern TimeManager* GTimeManager;
 
 extern MeshManager* GMeshManager;
-extern ShaderManager* GShaderManager;
+//extern ShaderManager* GShaderManager;
 extern MaterialManager* GMaterialManager;
 extern TextureManager* GTextureManager;
 extern ConstantManager* GConstantManager;
@@ -100,9 +100,9 @@ extern World* GWorld;
 extern Camera* GMainCamera;
 extern Camera* GCurrentCamera;
 extern ActorPicker* GActorPicker;
-extern IDebugRenderer* GDebugRenderer;
+//extern IDebugRenderer* GDebugRenderer;
 
-extern IParticleRenderer* GParticleRenderer;
+//extern IParticleRenderer* GParticleRenderer;
 extern IParticle* GParticle_1;
 
 /*LINK_NODE;

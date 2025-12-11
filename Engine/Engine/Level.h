@@ -79,7 +79,9 @@ private:
 
 	void OnRenderActors();
 
-	void OnLightPass();
+	void OnRenderLights();
+
+	void OnRenderParticles();
 	
 	void BlitCameraToBackBuffer();
 

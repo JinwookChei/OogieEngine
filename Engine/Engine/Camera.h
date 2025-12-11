@@ -38,9 +38,13 @@ public:
 
 	void LightPassEnd();
 
+	void ParticlePassBegin();
+
+	void ParticlePassEnd();
+
 	void BlitToBackBuffer();
 
-	void BlitToBackBuffer(const Float2& offset, const Float2& scale);
+	//void BlitToBackBuffer(const Float2& offset, const Float2& scale);
 
 	const Float4x4& View() const;
 
@@ -73,11 +77,11 @@ private:
 
 public:
 	// IImguiBindCamera Area
-	ENGINE_API IRenderTarget* __stdcall GetGBufferTargetForImGui() const override;
+	ENGINE_API IRenderTarget* __stdcall GetGBufferRenderTargetForImGui() const override;
 
-	ENGINE_API IRenderTarget* __stdcall GetParticleBufferTargetForImGui() const override;
+	ENGINE_API IRenderTarget* __stdcall GetParticleRenderTargetForImGui() const override;
 
-	ENGINE_API IRenderTarget* __stdcall GetDebugBufferTargetForImGui() const override;
+	ENGINE_API IRenderTarget* __stdcall GetDebugRenderTargetForImGui() const override;
 
 protected:
 	float cameraSensitivity_;
@@ -93,18 +97,19 @@ protected:
 private:
 	friend class Level;
 	// Geometry Pass
-	IRenderTarget* pGBufferTarget_;
+	IRenderTarget* pGBufferRenderTarget_;
 	
+	IRenderTarget* pFinalRenderTarget;
+
 	// Light Pass
-	IRenderTarget* pLightBufferTarget_;
-	IShader* pLightPassShader_;
+	//IShader* pLightPassShader_;
 
 	// Particle Pass
-	IRenderTarget* pParticleBufferTarget_;
+	IRenderTarget* pParticleRenderTarget_;
 
 	// Debug Pass
-	IRenderTarget* pDebugBufferTarget_;
-	IShader* pDebugPassShader_;
+	IRenderTarget* pDebugRenderTarget_;
+	//IShader* pDebugPassShader_;
 
 	// Blit to Screen
 	IMesh* pScreenVertex_;

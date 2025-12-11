@@ -148,11 +148,15 @@
     <ClInclude Include="..\..\CoreTypes\MathType\MathType.h" />
     <ClInclude Include="..\..\CoreTypes\VertexType\VertexType.h" />
     <ClInclude Include="..\..\Interface\Renderer\IRenderer.h" />
-    <ClInclude Include="BaseShader.h" />
+    <ClInclude Include="FinalPass.h" />
+    <ClInclude Include="GeometryPass.h" />
+    <ClInclude Include="LightPass.h" />
+    <ClInclude Include="MergePass.h" />
+    <ClInclude Include="Shader.h" />
     <ClInclude Include="BlendState.h" />
     <ClInclude Include="ConstantBuffer.h" />
-    <ClInclude Include="D3D11DebugRenderer.h" />
-    <ClInclude Include="D3D11ParticleRenderer.h" />
+    <ClInclude Include="DebugPass.h" />
+    <ClInclude Include="ParticlePass.h" />
     <ClInclude Include="D3D11Renderer.h" />
     <ClInclude Include="DeferredTarget.h" />
     <ClInclude Include="Material.h" />
@@ -165,11 +169,15 @@
     <ClInclude Include="Mesh.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BaseShader.cpp" />
+    <ClCompile Include="FinalPass.cpp" />
+    <ClCompile Include="GeometryPass.cpp" />
+    <ClCompile Include="LightPass.cpp" />
+    <ClCompile Include="MergePass.cpp" />
+    <ClCompile Include="Shader.cpp" />
     <ClCompile Include="BlendState.cpp" />
     <ClCompile Include="ConstantBuffer.cpp" />
-    <ClCompile Include="D3D11DebugRenderer.cpp" />
-    <ClCompile Include="D3D11ParticleRenderer.cpp" />
+    <ClCompile Include="DebugPass.cpp" />
+    <ClCompile Include="ParticlePass.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="D3D11Renderer.cpp" />
     <ClCompile Include="DeferredTarget.cpp" />
@@ -193,6 +201,54 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </FxCompile>
     <FxCompile Include="DebugLineVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="FinalPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="FinalVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="GeometryPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="GeometryVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="LightPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="LightVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="MergePS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="MergeVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>

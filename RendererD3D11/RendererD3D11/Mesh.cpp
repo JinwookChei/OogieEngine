@@ -80,6 +80,17 @@ void __stdcall Mesh::Setting()
 	GRenderer->DeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
 
+void Mesh::Bind() const
+{
+	UINT offset = 0;
+
+	GRenderer->DeviceContext()->IASetVertexBuffers(0, 1, &pVertexBuffer_, &vertexStride_, &offset);
+
+	GRenderer->DeviceContext()->IASetIndexBuffer(pIndexBuffer_, DXGI_FORMAT_R16_UINT, 0);
+
+	GRenderer->DeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+}
+
 bool __stdcall Mesh::Draw()
 {
 	GRenderer->DeviceContext()->DrawIndexed(indexCount_, 0, 0);
@@ -101,6 +112,11 @@ void __stdcall Mesh::GetVerticesData
 	*pOutStride = vertexStride_;
 	*pOutCount = vertexCount_;
 	*ppOutVertices = pVertices_;
+}
+
+ULONG Mesh::GetIndexCount() const
+{
+	return indexCount_;
 }
 
 void __stdcall Mesh::GetIndicesData

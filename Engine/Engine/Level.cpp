@@ -109,88 +109,38 @@ void Level::OnRender()
 		// Geometry Pass End
 
 		// Light Pass
-		BlendStateManager::Instance()->Setting(E_BLEND_MODE_TYPE::ADDITIVE_BLEND);
 		GCurrentCamera->LightPassBegin();
-		OnLightPass();
+		GRenderer->RenderLightBegin(GCurrentCamera->GetGBufferTarget());
+		OnRenderLights();
+		GRenderer->RenderLightEnd(GCurrentCamera->GetGBufferTarget());
 		GCurrentCamera->LightPassEnd();
-		BlendStateManager::Instance()->Clear();
 		// Light Pass End
 
 
-		// Particle Pass
-		GCurrentCamera->pParticleBufferTarget_->Setting();
-		GCurrentCamera->pParticleBufferTarget_->Clear();
-		
-		const Transform& worldForm = GCurrentCamera->GetWorldTransform();
-		Vector eye = worldForm.GetPosition();
-		Vector to = worldForm.ForwardVector();
-		Vector right = worldForm.RightVector();
-		Vector up = worldForm.UpVector();
-
-		const Float2& size = GCurrentCamera->GetRenderSize();
-		float aspect = (float)DEFAULT_SCREEN_WIDTH / (float)DEFAULT_SCREEN_HEIGHT;
-		Float4x4 proj;
-		MATH::MatrixPerspectiveFovLH(proj, GCurrentCamera->GetFov(), (size.X / size.Y), GCurrentCamera->GetNear(), GCurrentCamera->GetFar());
-		Float4x4 view;
-		MATH::MatrixLookToLH(view, eye, to, up);
-		Float4x4 viewProj;
-		MATH::MatrixMultiply(viewProj, view, proj);
-		Float3 cameraRight(right.X, right.Y, right.Z);
-		Float3 cameraUp(up.X, up.Y, up.Z);
-		GParticleRenderer->OnRender(GParticle_1, viewProj, cameraRight, cameraUp);
-		GCurrentCamera->pParticleBufferTarget_->EndRenderPass();
+		// Particle Pass Begin
+		GCurrentCamera->ParticlePassBegin();
+		OnRenderParticles();
+		GCurrentCamera->ParticlePassEnd();
 
 
-		BlendStateManager::Instance()->Setting(E_BLEND_MODE_TYPE::OPAQUE_BLEND);
-		GCurrentCamera->pGBufferTarget_->BindRenderTextureForPS(0);
-		GCurrentCamera->pParticleBufferTarget_->BindRenderTextureForPS(4);
-		// Begin
+		GCurrentCamera->pFinalRenderTarget->Setting();
 		GCurrentCamera->UpdatePerFrameConstant();
-		GCurrentCamera->pLightBufferTarget_->Setting();
-		GCurrentCamera->pScreenVertex_->Setting();
-		GCurrentCamera->pDebugPassShader_->Setting();
-		// Draw
-		GCurrentCamera->pScreenVertex_->Draw();
-		// End
-		GCurrentCamera->pLightBufferTarget_->EndRenderPass();
-		GCurrentCamera->pParticleBufferTarget_->ClearRenderTextureForPS(4);
-		GCurrentCamera->pGBufferTarget_->ClearRenderTextureForPS(0);
-		BlendStateManager::Instance()->Clear();
+		GRenderer->RenderMerge(GCurrentCamera->pGBufferRenderTarget_, GCurrentCamera->pParticleRenderTarget_);
+		GCurrentCamera->pFinalRenderTarget->EndRenderPass();
 
 
-		// Particle Pass End
-
-		////////////////////////////////////////////////////////////////////////////////// 디버깅 임시용 //////////////////////////////////////////////////////////////////////.
 		// DebugRender
-		GCurrentCamera->pDebugBufferTarget_->Clear();
-		GCurrentCamera->pDebugBufferTarget_->Setting();
-		GDebugRenderer->SetViewProj(GCurrentCamera->View(), GCurrentCamera->Projection());
-		GDebugRenderer->RenderAll();
-		GCurrentCamera->pDebugBufferTarget_->EndRenderPass();
+		GCurrentCamera->pDebugRenderTarget_->Clear();
+		GCurrentCamera->pDebugRenderTarget_->Setting();
+		GRenderer->RenderDebug();
+		GCurrentCamera->pDebugRenderTarget_->EndRenderPass();
 		// DebugRender End
 		
-		BlendStateManager::Instance()->Setting(E_BLEND_MODE_TYPE::OPAQUE_BLEND);
-		GCurrentCamera->pGBufferTarget_->BindRenderTextureForPS(0);
-		GCurrentCamera->pDebugBufferTarget_->BindRenderTextureForPS(4);
 
-		// Begin
+		GCurrentCamera->pFinalRenderTarget->Setting();
 		GCurrentCamera->UpdatePerFrameConstant();
-		GCurrentCamera->pLightBufferTarget_->Setting();
-		GCurrentCamera->pScreenVertex_->Setting();
-		GCurrentCamera->pDebugPassShader_->Setting();
-		//GCurrentCamera->pScreenInputLayout_->Setting();
-		//GCurrentCamera->pDebugBufferMaterial_->Setting();
-	
-		// Draw
-		GCurrentCamera->pScreenVertex_->Draw();
-
-		// End
-		GCurrentCamera->pLightBufferTarget_->EndRenderPass();
-		
-		GCurrentCamera->pDebugBufferTarget_->ClearRenderTextureForPS(4);
-		GCurrentCamera->pGBufferTarget_->ClearRenderTextureForPS(0);
-		BlendStateManager::Instance()->Clear();
-		////////////////////////////////////////////////////////////////////////////////// 디버깅 임시용 //////////////////////////////////////////////////////////////////////..
+		GRenderer->RenderMerge(GCurrentCamera->pGBufferRenderTarget_, GCurrentCamera->pDebugRenderTarget_);
+		GCurrentCamera->pFinalRenderTarget->EndRenderPass();
 	}
 }
 
@@ -223,17 +173,41 @@ void Level::OnRenderActors()
 	}
 }
 
-void Level::OnLightPass()
+void Level::OnRenderLights()
 {
 	LINK_NODE* pLightIter = actorList_[(int)E_ACTOR_TYPE::LIGHT].GetHead();
 	while (pLightIter)
 	{
 		Light* pCurLight = static_cast<Light*>(pLightIter->pItem_);
 		pLightIter = pLightIter->next_;
-		pCurLight->BindLight();
-		GCurrentCamera->RenderLight();
+		GRenderer->RenderLight(pCurLight->GetData());
+		//pCurLight->BindLight();
+		//GCurrentCamera->RenderLight();
 	}
 }
+
+void Level::OnRenderParticles()
+{
+	const Transform& worldForm = GCurrentCamera->GetWorldTransform();
+	Vector eye = worldForm.GetPosition();
+	Vector to = worldForm.ForwardVector();
+	Vector right = worldForm.RightVector();
+	Vector up = worldForm.UpVector();
+
+	const Float2& size = GCurrentCamera->GetRenderSize();
+	Float4x4 proj;
+	MATH::MatrixPerspectiveFovLH(proj, GCurrentCamera->GetFov(), (size.X / size.Y), GCurrentCamera->GetNear(), GCurrentCamera->GetFar());
+	Float4x4 view;
+	MATH::MatrixLookToLH(view, eye, to, up);
+	Float4x4 viewProj;
+	MATH::MatrixMultiply(viewProj, view, proj);
+	Float3 cameraRight(right.X, right.Y, right.Z);
+	Float3 cameraUp(up.X, up.Y, up.Z);
+
+
+	GRenderer->RenderParticles(GParticle_1, viewProj, cameraRight, cameraUp);
+}
+
 
 void Level::BlitCameraToBackBuffer()
 {

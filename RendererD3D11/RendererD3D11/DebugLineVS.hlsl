@@ -1,7 +1,15 @@
 cbuffer CBViewProj : register(b0)
 {
-    matrix view;
-    matrix Proj;
+    matrix View;
+    matrix Projection;
+    
+    matrix InvViewTransform;
+    matrix InvProjectTransform;
+    
+    float2 ScreenOffset;
+    float2 ScreenScale;
+    
+    float4 CamPos;
 };
 
 struct VSInput
@@ -20,8 +28,8 @@ VSOutput main(VSInput input)
 {
     VSOutput output;
             
-    float4 viewPos = mul(float4(input.pos, 1.0f), view);
-    output.pos = mul(viewPos, Proj);
+    float4 viewPos = mul(float4(input.pos, 1.0f), View);
+    output.pos = mul(viewPos, Projection);
     output.color = input.color;
     return output;
 }

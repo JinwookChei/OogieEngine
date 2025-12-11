@@ -1,10 +1,9 @@
 #include "stdafx.h"
-#include "BaseShader.h"
+#include "Shader.h"
 
 
-BaseShader::BaseShader()
+Shader::Shader()
 	: refCount_(1)
-	, shaderType_(E_SHADER_TYPE::MATERIAL_SHADER)
 	, pInputLayout_(nullptr)
 	, pCS_(nullptr)
 	, pVS_(nullptr)
@@ -13,12 +12,12 @@ BaseShader::BaseShader()
 {
 }
 
-BaseShader::~BaseShader()
+Shader::~Shader()
 {
 	CleanUp();
 }
 
-bool BaseShader::Init(const ShaderDesc& desc)
+bool Shader::Init(const ShaderDesc& desc)
 {
 	ID3DBlob* pBlobCS = nullptr;
 	ID3DBlob* pBlobVS = nullptr;
@@ -27,7 +26,7 @@ bool BaseShader::Init(const ShaderDesc& desc)
 	HRESULT hr;
 	do
 	{
-		shaderType_ = desc.type_;
+		//shaderType_ = desc.type_;
 
 		if (desc.pathCS_)
 		{
@@ -62,27 +61,30 @@ bool BaseShader::Init(const ShaderDesc& desc)
 				break;
 			}
 
-			UINT offset = 0;
-			std::vector<D3D11_INPUT_ELEMENT_DESC> inputDesc;
-			for (int i = 0; i < desc.inputDesc_.size(); ++i)
+			if (desc.inputDesc_.size() > 0)
 			{
-				D3D11_INPUT_ELEMENT_DESC elem = { 0 };
-				elem.SemanticName = desc.inputDesc_[i].semanticName_;
-				elem.SemanticIndex = (UINT)desc.inputDesc_[i].semanticIndex_;
-				elem.Format = (DXGI_FORMAT)desc.inputDesc_[i].format_;
-				elem.InputSlot = (UINT)desc.inputDesc_[i].inputSlot_;
-				elem.AlignedByteOffset = offset;
-				offset += InputFormatSize(elem.Format);
-				elem.InputSlotClass = desc.inputDesc_[i].isInstanceData_ ? D3D11_INPUT_PER_INSTANCE_DATA : D3D11_INPUT_PER_VERTEX_DATA;
-				elem.InstanceDataStepRate = desc.inputDesc_[i].isInstanceData_ ? 1 : 0;
-				inputDesc.push_back(elem);
-			}
+				UINT offset = 0;
+				std::vector<D3D11_INPUT_ELEMENT_DESC> inputDesc;
+				for (int i = 0; i < desc.inputDesc_.size(); ++i)
+				{
+					D3D11_INPUT_ELEMENT_DESC elem = { 0 };
+					elem.SemanticName = desc.inputDesc_[i].semanticName_;
+					elem.SemanticIndex = (UINT)desc.inputDesc_[i].semanticIndex_;
+					elem.Format = (DXGI_FORMAT)desc.inputDesc_[i].format_;
+					elem.InputSlot = (UINT)desc.inputDesc_[i].inputSlot_;
+					elem.AlignedByteOffset = offset;
+					offset += InputFormatSize(elem.Format);
+					elem.InputSlotClass = desc.inputDesc_[i].isInstanceData_ ? D3D11_INPUT_PER_INSTANCE_DATA : D3D11_INPUT_PER_VERTEX_DATA;
+					elem.InstanceDataStepRate = desc.inputDesc_[i].isInstanceData_ ? 1 : 0;
+					inputDesc.push_back(elem);
+				}
 
-			hr = GRenderer->Device()->CreateInputLayout(inputDesc.data(), (UINT)inputDesc.size(), pBlobVS->GetBufferPointer(), pBlobVS->GetBufferSize(), &pInputLayout_);
-			if (FAILED(hr))
-			{
-				DEBUG_BREAK();
-				break;
+				hr = GRenderer->Device()->CreateInputLayout(inputDesc.data(), (UINT)inputDesc.size(), pBlobVS->GetBufferPointer(), pBlobVS->GetBufferSize(), &pInputLayout_);
+				if (FAILED(hr))
+				{
+					DEBUG_BREAK();
+					break;
+				}
 			}
 		}
 
@@ -194,9 +196,9 @@ bool BaseShader::Init(const ShaderDesc& desc)
 	return false;
 }
 
-BaseShader* BaseShader::Create(const ShaderDesc& desc)
+Shader* Shader::Create(const ShaderDesc& desc)
 {
-	BaseShader* pNewShader = new BaseShader;
+	Shader* pNewShader = new Shader;
 	if (false == pNewShader->Init(desc))
 	{
 		pNewShader->Release();
@@ -208,17 +210,17 @@ BaseShader* BaseShader::Create(const ShaderDesc& desc)
 
 
 
-HRESULT __stdcall BaseShader::QueryInterface(REFIID riid, void** ppvObject)
+HRESULT __stdcall Shader::QueryInterface(REFIID riid, void** ppvObject)
 {
 	return E_NOTIMPL;
 }
 
-ULONG __stdcall BaseShader::AddRef()
+ULONG __stdcall Shader::AddRef()
 {
 	return ++refCount_;
 }
 
-ULONG __stdcall BaseShader::Release()
+ULONG __stdcall Shader::Release()
 {
 	--refCount_;
 	ULONG tmpRefCount = refCount_;
@@ -229,40 +231,25 @@ ULONG __stdcall BaseShader::Release()
 	return tmpRefCount;
 }
 
-void BaseShader::Setting()
+void Shader::Bind()
 {
-	if(nullptr != pInputLayout_)
-	{
-		GRenderer->DeviceContext()->IASetInputLayout(pInputLayout_);
-	}
-	if (nullptr != pCS_)
-	{
-		GRenderer->DeviceContext()->CSSetShader(pCS_, nullptr, 0);
-	}
-	if (nullptr != pVS_)
-	{
-		GRenderer->DeviceContext()->VSSetShader(pVS_, nullptr, 0);
-	}
-	if (nullptr != pGS_)
-	{
-		GRenderer->DeviceContext()->GSSetShader(pGS_, nullptr, 0);
-	}
-	if (nullptr != pPS_)
-	{
-		GRenderer->DeviceContext()->PSSetShader(pPS_, nullptr, 0);
-	}
+	GRenderer->DeviceContext()->IASetInputLayout(pInputLayout_);
+	GRenderer->DeviceContext()->CSSetShader(pCS_, nullptr, 0);
+	GRenderer->DeviceContext()->VSSetShader(pVS_, nullptr, 0);
+	GRenderer->DeviceContext()->GSSetShader(pGS_, nullptr, 0);
+	GRenderer->DeviceContext()->PSSetShader(pPS_, nullptr, 0);
 }
 
-//void BaseShader::UnBind()
-//{
-//	GRenderer->DeviceContext()->IASetInputLayout(nullptr);
-//	GRenderer->DeviceContext()->CSSetShader(nullptr, nullptr, 0);
-//	GRenderer->DeviceContext()->VSSetShader(nullptr, nullptr, 0);
-//	GRenderer->DeviceContext()->GSSetShader(nullptr, nullptr, 0);
-//	GRenderer->DeviceContext()->PSSetShader(nullptr, nullptr, 0);
-//}
+void Shader::UnBind()
+{
+	GRenderer->DeviceContext()->IASetInputLayout(nullptr);
+	GRenderer->DeviceContext()->CSSetShader(nullptr, nullptr, 0);
+	GRenderer->DeviceContext()->VSSetShader(nullptr, nullptr, 0);
+	GRenderer->DeviceContext()->GSSetShader(nullptr, nullptr, 0);
+	GRenderer->DeviceContext()->PSSetShader(nullptr, nullptr, 0);
+}
 
-UINT BaseShader::InputFormatSize(DXGI_FORMAT format)
+UINT Shader::InputFormatSize(DXGI_FORMAT format)
 {
 	switch (format)
 	{
@@ -457,7 +444,7 @@ UINT BaseShader::InputFormatSize(DXGI_FORMAT format)
 	return -1;
 }
 
-void BaseShader::CleanUp()
+void Shader::CleanUp()
 {
 	if (nullptr != pInputLayout_)
 	{

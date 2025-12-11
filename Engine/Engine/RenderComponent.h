@@ -45,7 +45,7 @@ private:
 
 	IMesh* pMesh_;
 	IMaterial* pMaterial_;
-	IShader* pShader_;
+	//IShader* pShader_;
 
 
 	ITexture* pTextureColor_;

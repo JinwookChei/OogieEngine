@@ -14,6 +14,8 @@ public:
 
 	void BindLight() override;
 
+	LightRenderData GetData() override;
+
 	float GetRange() const;
 
 	void SetRange(float range);

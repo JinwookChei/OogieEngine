@@ -2,6 +2,12 @@
 
 class RenderTarget;
 class BlendState;
+class GeometryPass;
+class LightPass;
+class ParticlePass;
+class DebugPass;
+class MergePass;
+class FinalPass;
 
 class Renderer final
 	: public IRenderer
@@ -23,8 +29,28 @@ public:
 
 	void* __stdcall GetDeviceContextHandle() override;
 
-	void __stdcall RenderBegin() override;
+	//void __stdcall UpdateCameraFrame(const CBPerFrame& cameraFrame) override;
 
+	void __stdcall UpdateCameraFrame(const CameraFrameData& cameraFrameData) override;
+
+	void __stdcall RenderGBuffer(const ObjectRenderData& objectData) override;
+
+	void __stdcall RenderLightBegin(IRenderTarget* pGBufferTarget) override;
+	void __stdcall RenderLight(const LightRenderData& lightData) override;
+	void __stdcall RenderLightEnd(IRenderTarget* pGBufferTarget) override;
+
+	void __stdcall UpdateParticles(IParticle* pParticle, double deltaTime) override;
+
+	void __stdcall RenderParticles(IParticle* pParticle, const Float4x4& viewProj, const Float3& cameraRight, const Float3& cameraUp) override;	
+
+	void __stdcall DrawDebugLine(const Float3& start, const Float3& end, const Float4& color) override;
+	void __stdcall DrawDebugRay(const Float3& origin, Float3& dir, float length, const Color& color) override;
+	void __stdcall RenderDebug() override;
+
+	void __stdcall RenderMerge(IRenderTarget* pDepthTarget, IRenderTarget* pSrcTarget) override;
+
+	void __stdcall RenderBegin() override;
+	void __stdcall RenderFinal(IRenderTarget* pSrcTarget) override;
 	void __stdcall RenderEnd() override;
 
 	uint64_t __stdcall DrawCallCount() override;
@@ -36,7 +62,7 @@ public:
 
 	IMesh* __stdcall CreateMesh(const MeshDesc& desc) override;
 
-	IShader* __stdcall CreateShader(const ShaderDesc& desc) override;
+	//IShader* __stdcall CreateShader(const ShaderDesc& desc) override;
 
 	IMaterial* __stdcall CreateMaterial(const MaterialDesc& materialDesc) override;
 
@@ -64,15 +90,15 @@ public:
 
 	ITexture* CreateTexture(const D3D11_TEXTURE2D_DESC& desc);
 
-	IDebugRenderer* __stdcall CreateDebugRenderer() override;
+	//IDebugRenderer* __stdcall CreateDebugRenderer() override;
 
-	IParticleRenderer* __stdcall CreateParticleRenderer() override;
+	//IParticleRenderer* __stdcall CreateParticleRenderer() override;
 
 	// ------------------------- 인터페이스 노출안된 Create -----------------------------
 
 	
 
-
+	void Draw(UINT count, bool useIndex);
 	
 	void IncrementDrawCall();
 
@@ -83,9 +109,21 @@ private:
 
 	IDXGIAdapter* GetBestAdapter();
 
-	bool CreateSwapChain(UINT width, UINT height);
+	bool InitSwapChain(UINT width, UINT height);
 
-	bool CreateBackBuffer(UINT width, UINT height, const Color& clearColor);
+	bool InitBackBuffer(UINT width, UINT height, const Color& clearColor);
+
+	bool InitGeometryPass();
+
+	bool InitLightPass();
+
+	bool InitParticlePass();
+
+	bool InitDebugPass();
+
+	bool InitMergePass();
+
+	bool InitFinalPass();
 
 	void CleanUp();
 
@@ -104,4 +142,16 @@ private:
 	IDXGISwapChain* pSwapChain_;
 
 	RenderTarget* pBackBuffer_;
+
+	GeometryPass* pGeometryPass_;
+
+	LightPass* pLightPass_;
+
+	ParticlePass* pParticlePass_;
+
+	DebugPass* pDebugPass_;
+
+	MergePass* pMergePass_;
+
+	FinalPass* pFinalPass_;
 };

@@ -9,11 +9,11 @@ Camera::Camera()
 	far_(DEFAULT_FAR),
 	cameraSensitivity_(10.0f),
 	cameraSpeed_(2.0f),
-	pGBufferTarget_(nullptr),
-	pLightBufferTarget_(nullptr),
-	pLightPassShader_(nullptr),
-	pDebugBufferTarget_(nullptr),
-	pDebugPassShader_(nullptr),
+	pGBufferRenderTarget_(nullptr),
+	pFinalRenderTarget(nullptr),
+	//pLightPassShader_(nullptr),
+	pDebugRenderTarget_(nullptr),
+	//pDebugPassShader_(nullptr),
 	pScreenVertex_(nullptr),
 	pScreenPassShader_(nullptr),
 	screenOffset_({ 0.0f, 0.0f }),
@@ -62,24 +62,23 @@ void Camera::Render()
 
 void Camera::GeometryPassBegin()
 {
-	pGBufferTarget_->Clear();
-	pGBufferTarget_->Setting();
+	pGBufferRenderTarget_->Clear();
+	pGBufferRenderTarget_->Setting();
 }
 
 void Camera::GeometryPassEnd()
 {
-	pGBufferTarget_->EndRenderPass();
+	pGBufferRenderTarget_->EndRenderPass();
 }
 
 void Camera::LightPassBegin()
 {
-	pLightBufferTarget_->Clear();
-	pLightBufferTarget_->Setting();
+	pFinalRenderTarget->Clear();
+	pFinalRenderTarget->Setting();
 
-	pGBufferTarget_->BindRenderTextureForPS(0);
-
-	pScreenVertex_->Setting();
-	pLightPassShader_->Setting();
+	//pGBufferRenderTarget_->BindRenderTexturePS(0);
+	//pScreenVertex_->Setting();
+	//pLightPassShader_->Bind();
 }
 
 void Camera::RenderLight()
@@ -89,27 +88,39 @@ void Camera::RenderLight()
 
 void Camera::LightPassEnd()
 {
-	pGBufferTarget_->ClearRenderTextureForPS(0);
-	pLightBufferTarget_->EndRenderPass();
+	//pGBufferRenderTarget_->UnBindRenderTexturePS(0);
+	pFinalRenderTarget->EndRenderPass();
+}
+
+void Camera::ParticlePassBegin()
+{
+	pParticleRenderTarget_->Clear();
+	pParticleRenderTarget_->Setting();
+}
+
+void Camera::ParticlePassEnd()
+{
+	pParticleRenderTarget_->EndRenderPass();
 }
 
 void Camera::BlitToBackBuffer()
 {
-	BlitToBackBuffer(screenOffset_, screenScale_);
+	GRenderer->RenderFinal(pFinalRenderTarget);
+	//BlitToBackBuffer(screenOffset_, screenScale_);
 }
 
-void Camera::BlitToBackBuffer(const Float2& offset, const Float2& scale)
-{
-	//pGBufferTarget_->BindRenderTextureForPS(0);
-	pLightBufferTarget_->BindRenderTextureForPS(4);
-	
-	pScreenVertex_->Setting();
-	pScreenPassShader_->Setting();
-	pScreenVertex_->Draw();
-
-	pLightBufferTarget_->ClearRenderTextureForPS(4);
-	//pGBufferTarget_->ClearRenderTextureForPS(0);
-}
+//void Camera::BlitToBackBuffer(const Float2& offset, const Float2& scale)
+//{
+//	//pGBufferTarget_->BindRenderTextureForPS(0);
+//	pFinalRenderTarget->BindRenderTexturePS(4);
+//	
+//	pScreenVertex_->Setting();
+//	pScreenPassShader_->Bind();
+//	pScreenVertex_->Draw();
+//
+//	pFinalRenderTarget->UnBindRenderTexturePS(4);
+//	//pGBufferTarget_->ClearRenderTextureForPS(0);
+//}
 
 const Float4x4& Camera::View() const
 {
@@ -124,18 +135,18 @@ const Float4x4& Camera::Projection() const
 void Camera::SetSize(const Float2& size)
 {
 	// 주의!! SetSize하는데 렌더 타겟이 없으면 크래쉬 발생유도.
-	if (nullptr == pGBufferTarget_)
+	if (nullptr == pGBufferRenderTarget_)
 	{
 		Assert("pGBufferTarget_ == NULL!");
 		return;
 	}
 
-	RenderTargetDesc desc = pGBufferTarget_->GetDesc();
-	pGBufferTarget_->Release();
-	pGBufferTarget_ = nullptr;
+	RenderTargetDesc desc = pGBufferRenderTarget_->GetDesc();
+	pGBufferRenderTarget_->Release();
+	pGBufferRenderTarget_ = nullptr;
 
 	desc.size_ = size;
-	pGBufferTarget_ = GRenderer->CreateRenderTarget(desc);
+	pGBufferRenderTarget_ = GRenderer->CreateRenderTarget(desc);
 }
 
 
@@ -163,7 +174,7 @@ float Camera::GetFar() const
 
 void Camera::SetClearColor(const Color& clearColor)
 {
-	pGBufferTarget_->SetClearColor(clearColor);
+	pGBufferRenderTarget_->SetClearColor(clearColor);
 }
 
 void Camera::SetScreenPlacement(const Float2& screenOffset, const Float2& screenScale)
@@ -174,40 +185,50 @@ void Camera::SetScreenPlacement(const Float2& screenOffset, const Float2& screen
 
 Float2 Camera::GetRenderSize() const
 {
-	return pGBufferTarget_->GetSize();
+	return pGBufferRenderTarget_->GetSize();
 }
 
 IRenderTarget* Camera::GetGBufferTarget() const
 {
-	return pGBufferTarget_;
+	return pGBufferRenderTarget_;
 }
 
 void Camera::UpdatePerFrameConstant()
 {
 	CameraTransformUpdate();
 
-	Float4x4 viewTrans;
-	MATH::MatrixTranspose(viewTrans, view_);
-	Float4x4 projectionTrans;
-	MATH::MatrixTranspose(projectionTrans, projection_);
-	Float4x4 invViewTrans;
-	MATH::MatrixInverse(invViewTrans, view_);
-	MATH::MatrixTranspose(invViewTrans, invViewTrans);
-	Float4x4 invProjectionTrans;
-	MATH::MatrixInverse(invProjectionTrans, projection_);
-	MATH::MatrixTranspose(invProjectionTrans, invProjectionTrans);
+	CameraFrameData frameData;
+	frameData.view = view_;
+	frameData.projection = projection_;
+	frameData.screenOffset = screenOffset_;
+	frameData.screenScale = screenScale_;
+	frameData.screenResolution = pGBufferRenderTarget_->GetSize();
+	frameData.camPos = pTransform_->GetPosition();
 
-	CBPerFrame cbPerFrame;
-	cbPerFrame.camPos = pTransform_->GetPosition();
-	cbPerFrame.view = viewTrans;
-	cbPerFrame.projection = projectionTrans;
-	cbPerFrame.inverseView = invViewTrans;
-	cbPerFrame.inverseProjection = invProjectionTrans;
-	cbPerFrame.screenOffset = screenOffset_;
-	cbPerFrame.screenScale = screenScale_;
-	cbPerFrame.screenResolution = pGBufferTarget_->GetSize();
+	GRenderer->UpdateCameraFrame(frameData);
 
-	ConstantManager::Instance()->UpdatePerFrame(&cbPerFrame);
+	//Float4x4 viewTrans;
+	//MATH::MatrixTranspose(viewTrans, view_);
+	//Float4x4 projectionTrans;
+	//MATH::MatrixTranspose(projectionTrans, projection_);
+	//Float4x4 invViewTrans;
+	//MATH::MatrixInverse(invViewTrans, view_);
+	//MATH::MatrixTranspose(invViewTrans, invViewTrans);
+	//Float4x4 invProjectionTrans;
+	//MATH::MatrixInverse(invProjectionTrans, projection_);
+	//MATH::MatrixTranspose(invProjectionTrans, invProjectionTrans);
+
+	//CBPerFrame cbPerFrame;
+	//cbPerFrame.camPos = pTransform_->GetPosition();
+	//cbPerFrame.view = viewTrans;
+	//cbPerFrame.projection = projectionTrans;
+	//cbPerFrame.inverseView = invViewTrans;
+	//cbPerFrame.inverseProjection = invProjectionTrans;
+	//cbPerFrame.screenOffset = screenOffset_;
+	//cbPerFrame.screenScale = screenScale_;
+	//cbPerFrame.screenResolution = pGBufferRenderTarget_->GetSize();
+
+	//ConstantManager::Instance()->UpdatePerFrame(&cbPerFrame);
 }
 
 bool Camera::InitGBuffer()
@@ -215,9 +236,9 @@ bool Camera::InitGBuffer()
 	RenderTargetDesc gBufferDesc(E_RENDER_TECHNIQUE_TYPE::Deferred);
 	gBufferDesc.size_ = { DEFAULT_SCREEN_WIDTH , DEFAULT_SCREEN_HEIGHT };
 	gBufferDesc.clearColor_ = { 0.0f, 0.0f, 0.0f, 0.0f };
-	pGBufferTarget_ = GRenderer->CreateRenderTarget(gBufferDesc);
+	pGBufferRenderTarget_ = GRenderer->CreateRenderTarget(gBufferDesc);
 
-	if (nullptr == pGBufferTarget_)
+	if (nullptr == pGBufferRenderTarget_)
 	{
 		return false;
 	}
@@ -231,18 +252,18 @@ bool Camera::InitLightBuffer()
 	lightBufferDesc.size_ = { DEFAULT_SCREEN_WIDTH , DEFAULT_SCREEN_HEIGHT };
 	lightBufferDesc.clearColor_ = { 0.0f, 0.0f, 0.0f, 0.0f };
 	lightBufferDesc.forwardDesc_.useDepthStencil_ = false;						// 라이트 패스에서 여러 라이트를 처리하기 위해서는 Depth는 꺼야함.
-	pLightBufferTarget_ = GRenderer->CreateRenderTarget(lightBufferDesc);
-	if (nullptr == pLightBufferTarget_)
+	pFinalRenderTarget = GRenderer->CreateRenderTarget(lightBufferDesc);
+	if (nullptr == pFinalRenderTarget)
 	{
 		return false;
 	}
 
-	if (!ShaderManager::Instance()->GetShader(&pLightPassShader_, 2))
-	{
-		DEBUG_BREAK();
-		return false;
-	}
-	pLightPassShader_->AddRef();
+	//if (!ShaderManager::Instance()->GetShader(&pLightPassShader_, 2))
+	//{
+	//	DEBUG_BREAK();
+	//	return false;
+	//}
+	//pLightPassShader_->AddRef();
 	
 
 	return true;
@@ -250,12 +271,12 @@ bool Camera::InitLightBuffer()
 
 bool Camera::InitParticleBuffer()
 {
-	RenderTargetDesc particleBufferDesc(E_RENDER_TECHNIQUE_TYPE::Forward);
-	particleBufferDesc.size_ = { DEFAULT_SCREEN_WIDTH , DEFAULT_SCREEN_HEIGHT };
-	particleBufferDesc.clearColor_ = { 0.0f, 0.0f, 0.0f, 0.0f };
-	particleBufferDesc.forwardDesc_.useDepthStencil_ = true;
-	pParticleBufferTarget_ = GRenderer->CreateRenderTarget(particleBufferDesc);
-	if (nullptr == pParticleBufferTarget_)
+	RenderTargetDesc particleRenderTargetDesc(E_RENDER_TECHNIQUE_TYPE::Forward);
+	particleRenderTargetDesc.size_ = { DEFAULT_SCREEN_WIDTH , DEFAULT_SCREEN_HEIGHT };
+	particleRenderTargetDesc.clearColor_ = { 0.0f, 0.0f, 0.0f, 0.0f };
+	particleRenderTargetDesc.forwardDesc_.useDepthStencil_ = true;
+	pParticleRenderTarget_ = GRenderer->CreateRenderTarget(particleRenderTargetDesc);
+	if (nullptr == pParticleRenderTarget_)
 	{
 		DEBUG_BREAK();
 		return false;
@@ -273,23 +294,23 @@ bool Camera::InitParticleBuffer()
 
 bool Camera::InitDebugBuffer()
 {
-	RenderTargetDesc debugBufferDesc(E_RENDER_TECHNIQUE_TYPE::Forward);
-	debugBufferDesc.size_ = { DEFAULT_SCREEN_WIDTH , DEFAULT_SCREEN_HEIGHT };
-	debugBufferDesc.clearColor_ = { 0.0f, 0.0f, 0.0f, 0.0f };
-	debugBufferDesc.forwardDesc_.useDepthStencil_ = true;
-	pDebugBufferTarget_ = GRenderer->CreateRenderTarget(debugBufferDesc);
-	if (nullptr == pDebugBufferTarget_)
+	RenderTargetDesc debugRenderTargeetDesc(E_RENDER_TECHNIQUE_TYPE::Forward);
+	debugRenderTargeetDesc.size_ = { DEFAULT_SCREEN_WIDTH , DEFAULT_SCREEN_HEIGHT };
+	debugRenderTargeetDesc.clearColor_ = { 0.0f, 0.0f, 0.0f, 0.0f };
+	debugRenderTargeetDesc.forwardDesc_.useDepthStencil_ = true;
+	pDebugRenderTarget_ = GRenderer->CreateRenderTarget(debugRenderTargeetDesc);
+	if (nullptr == pDebugRenderTarget_)
 	{
 		DEBUG_BREAK();
 		return false;
 	}
 
-	if (!ShaderManager::Instance()->GetShader(&pDebugPassShader_, 3))
-	{
-		DEBUG_BREAK();
-		return false;
-	}
-	pDebugPassShader_->AddRef();
+	//if (!ShaderManager::Instance()->GetShader(&pDebugPassShader_, 3))
+	//{
+	//	DEBUG_BREAK();
+	//	return false;
+	//}
+	//pDebugPassShader_->AddRef();
 
 	return true;
 }
@@ -310,13 +331,14 @@ bool Camera::InitScreenRect()
 	meshDesc.indices = indices.data();
 	pScreenVertex_ = GRenderer->CreateMesh(meshDesc);
 
+	return true;
 
-	if (!ShaderManager::Instance()->GetShader(&pScreenPassShader_, 4))
-	{
-		DEBUG_BREAK();
-		return false;
-	}
-	pScreenPassShader_->AddRef();
+	//if (!ShaderManager::Instance()->GetShader(&pScreenPassShader_, 4))
+	//{
+	//	DEBUG_BREAK();
+	//	return false;
+	//}
+	//pScreenPassShader_->AddRef();
 }
 
 void Camera::CameraTransformUpdate()
@@ -336,15 +358,15 @@ void Camera::CameraTransformUpdate()
 
 void Camera::CleanUp()
 {
-	if (nullptr != pDebugPassShader_)
+	//if (nullptr != pDebugPassShader_)
+	//{
+	//	pDebugPassShader_->Release();
+	//	pDebugPassShader_ = nullptr;
+	//}
+	if (nullptr != pDebugRenderTarget_)
 	{
-		pDebugPassShader_->Release();
-		pDebugPassShader_ = nullptr;
-	}
-	if (nullptr != pDebugBufferTarget_)
-	{
-		pDebugBufferTarget_->Release();
-		pDebugBufferTarget_ = nullptr;
+		pDebugRenderTarget_->Release();
+		pDebugRenderTarget_ = nullptr;
 	}
 	if (nullptr != pScreenPassShader_)
 	{
@@ -356,41 +378,41 @@ void Camera::CleanUp()
 		pScreenVertex_->Release();
 		pScreenVertex_ = nullptr;
 	}
-	if (nullptr != pParticleBufferTarget_)
+	if (nullptr != pParticleRenderTarget_)
 	{
-		pParticleBufferTarget_->Release();
-		pParticleBufferTarget_ = nullptr;
+		pParticleRenderTarget_->Release();
+		pParticleRenderTarget_ = nullptr;
 	}
-	if (nullptr != pLightPassShader_)
+	//if (nullptr != pLightPassShader_)
+	//{
+	//	pLightPassShader_->Release();
+	//	pLightPassShader_ = nullptr;
+	//}
+	if (nullptr != pFinalRenderTarget)
 	{
-		pLightPassShader_->Release();
-		pLightPassShader_ = nullptr;
-	}
-	if (nullptr != pLightBufferTarget_)
-	{
-		pLightBufferTarget_->Release();
-		pLightBufferTarget_ = nullptr;
+		pFinalRenderTarget->Release();
+		pFinalRenderTarget = nullptr;
 	}
 
-	if (nullptr != pGBufferTarget_)
+	if (nullptr != pGBufferRenderTarget_)
 	{
-		pGBufferTarget_->Release();
-		pGBufferTarget_ = nullptr;
+		pGBufferRenderTarget_->Release();
+		pGBufferRenderTarget_ = nullptr;
 	}
 }
 
-IRenderTarget* __stdcall Camera::GetGBufferTargetForImGui() const
+IRenderTarget* __stdcall Camera::GetGBufferRenderTargetForImGui() const
 {
-	return pGBufferTarget_;
+	return pGBufferRenderTarget_;
 }
 
-ENGINE_API IRenderTarget* __stdcall Camera::GetParticleBufferTargetForImGui() const
+ENGINE_API IRenderTarget* __stdcall Camera::GetParticleRenderTargetForImGui() const
 {
-	return pParticleBufferTarget_;
+	return pParticleRenderTarget_;
 }
 
-IRenderTarget* __stdcall Camera::GetDebugBufferTargetForImGui() const
+IRenderTarget* __stdcall Camera::GetDebugRenderTargetForImGui() const
 {
-	return pDebugBufferTarget_;
+	return pDebugRenderTarget_;
 }
 

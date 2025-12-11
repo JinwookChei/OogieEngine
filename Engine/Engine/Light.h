@@ -16,6 +16,8 @@ public:
 
 	virtual void BindLight() = 0;
 
+	virtual LightRenderData GetData() = 0;
+
 	const Color& DiffuseColor() const;
 
 	const Color& SpecularColor() const;

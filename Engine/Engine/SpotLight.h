@@ -14,6 +14,8 @@ public:
 
 	void BindLight() override;
 
+	LightRenderData GetData() override;
+
 	Float3 Direction() const;
 
 	float GetRange() const;

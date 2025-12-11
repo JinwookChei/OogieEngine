@@ -1,19 +1,16 @@
 #pragma once
 
 class InputLayout;
-class BaseShader : public IShader
+class Shader : public IShader
 {
 private:
 	friend class Renderer;
 
-	BaseShader();
+	Shader();
 
-	virtual ~BaseShader();
+	virtual ~Shader();
 
 	bool Init(const ShaderDesc& desc);
-
-	static BaseShader* Create(const ShaderDesc& desc);
-
 public:
 	HRESULT __stdcall QueryInterface(REFIID riid, _COM_Outptr_ void __RPC_FAR* __RPC_FAR* ppvObject) override;
 
@@ -21,9 +18,11 @@ public:
 
 	ULONG __stdcall Release() override;
 
-	void Setting() override;
+	static Shader* Create(const ShaderDesc& desc);
 
-	//void UnBind() override;
+	void Bind() override;
+
+	void UnBind();
 
 private:
 	UINT InputFormatSize(DXGI_FORMAT format);
@@ -33,7 +32,7 @@ private:
 private:
 	ULONG refCount_;
 
-	E_SHADER_TYPE shaderType_;
+	//E_SHADER_TYPE shaderType_;
 
 	ID3D11InputLayout* pInputLayout_;
 	ID3D11ComputeShader* pCS_;

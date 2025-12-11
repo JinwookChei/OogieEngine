@@ -2,6 +2,7 @@
 #include "Texture.h"
 #include "RenderTarget.h"
 #include "DeferredTarget.h"
+#include "Shader.h"
 #include "Mesh.h"
 #include "Material.h"
 #include "Particle.h"
@@ -9,20 +10,30 @@
 #include "BlendState.h"
 #include "ConstantBuffer.h"
 #include "Rasterizer.h"
-#include "D3D11DebugRenderer.h"
-#include "D3D11ParticleRenderer.h"
+#include "DebugPass.h"
+#include "GeometryPass.h"
+#include "LightPass.h"
+#include "ParticlePass.h"
+#include "MergePass.h"
+#include "FinalPass.h"
 
 Renderer* GRenderer = nullptr;
 
 Renderer::Renderer()
-	: coInit_(false),
-	refCount_(1),
-	drawCallCount_(0),
-	hWnd_(nullptr),
-	pDevice_(nullptr),
-	pDeviceContext_(nullptr),
-	pSwapChain_(nullptr),
-	pBackBuffer_(nullptr)
+	: coInit_(false)
+	, refCount_(1)
+	, drawCallCount_(0)
+	, hWnd_(nullptr)
+	, pDevice_(nullptr)
+	, pDeviceContext_(nullptr)
+	, pSwapChain_(nullptr)
+	, pBackBuffer_(nullptr)
+	, pGeometryPass_(nullptr)
+	, pLightPass_(nullptr)
+	, pParticlePass_(nullptr)
+	, pDebugPass_(nullptr)
+	, pMergePass_(nullptr)
+	, pFinalPass_(nullptr)
 {
 	GRenderer = this;
 }
@@ -120,12 +131,36 @@ bool __stdcall Renderer::Initialize(void* hWnd, uint32_t width, uint32_t height)
 		return false;
 	}
 
-	if (false == CreateSwapChain(width, height))
+	if (false == InitSwapChain(width, height))
 	{
 		return false;
 	}
 
-	if (false == CreateBackBuffer(width, height, { 0.0f, 0.0f, 0.3f, 1.0f }))
+	if (false == InitBackBuffer(width, height, { 0.0f, 0.0f, 0.3f, 1.0f }))
+	{
+		return false;
+	}
+	if (false == InitGeometryPass())
+	{
+		return false;
+	}
+	if (false == InitLightPass())
+	{
+		return false;
+	}
+	if (false == InitParticlePass())
+	{
+		return false;
+	}
+	if (false == InitDebugPass())
+	{
+		return false;
+	}
+	if (false == InitMergePass())
+	{
+		return false;
+	}
+	if (false == InitFinalPass())
 	{
 		return false;
 	}
@@ -143,6 +178,61 @@ void* __stdcall Renderer::GetDeviceContextHandle()
 	return DeviceContext();
 }
 
+void __stdcall Renderer::UpdateCameraFrame(const CameraFrameData& cameraFrameData)
+{
+	pGeometryPass_->UpdatePerFrameConstant(cameraFrameData);
+}
+
+void __stdcall Renderer::RenderGBuffer(const ObjectRenderData& objectData)
+{
+	pGeometryPass_->Render(objectData);
+}
+
+void __stdcall Renderer::RenderLightBegin(IRenderTarget* pGBufferTarget)
+{
+	pLightPass_->RenderBegin(pGBufferTarget);
+}
+
+void __stdcall Renderer::RenderLight(const LightRenderData& lightData)
+{
+	pLightPass_->Render(lightData);
+}
+
+void __stdcall Renderer::RenderLightEnd(IRenderTarget* pGBufferTarget)
+{
+	pLightPass_->RenderEnd(pGBufferTarget);
+}
+
+void __stdcall Renderer::UpdateParticles(IParticle* pParticle, double deltaTime)
+{
+	pParticlePass_->Tick(pParticle, deltaTime);
+}
+
+void __stdcall Renderer::RenderParticles(IParticle* pParticle, const Float4x4& viewProj, const Float3& cameraRight, const Float3& cameraUp)
+{
+	pParticlePass_->Render(pParticle, viewProj, cameraRight, cameraUp);
+}
+
+void __stdcall Renderer::DrawDebugLine(const Float3& start, const Float3& end, const Float4& color)
+{
+	pDebugPass_->DrawLine(start, end, color);
+}
+
+void __stdcall Renderer::DrawDebugRay(const Float3& origin, Float3& dir, float length, const Color& color)
+{
+	pDebugPass_->DrawRay(origin, dir, length, color);
+}
+
+void __stdcall Renderer::RenderDebug()
+{
+	pDebugPass_->Render();
+}
+
+void __stdcall Renderer::RenderMerge(IRenderTarget* pDepthTarget, IRenderTarget* pSrcTarget)
+{
+	pMergePass_->Render(pDepthTarget, pSrcTarget);
+}
+
 void __stdcall Renderer::RenderBegin()
 {
 	drawCallCount_ = 0;
@@ -150,6 +240,11 @@ void __stdcall Renderer::RenderBegin()
 	pBackBuffer_->Clear();
 
 	pBackBuffer_->Setting();
+}
+
+void __stdcall Renderer::RenderFinal(IRenderTarget* pSrcTarget)
+{
+	pFinalPass_->Render(pSrcTarget);
 }
 
 void __stdcall Renderer::RenderEnd()
@@ -291,21 +386,21 @@ IMesh* __stdcall Renderer::CreateMesh(const MeshDesc& desc)
 	return nullptr;
 }
 
-IShader* __stdcall Renderer::CreateShader(const ShaderDesc& desc)
-{
-	IShader* pShader = BaseShader::Create(desc);
-	if (nullptr == pShader)
-	{
-		DEBUG_BREAK();
-		return nullptr;
-	}
-
-	return pShader;
-}
+//IShader* __stdcall Renderer::CreateShader(const ShaderDesc& desc)
+//{
+//	IShader* pShader = Shader::Create(desc);
+//	if (nullptr == pShader)
+//	{
+//		DEBUG_BREAK();
+//		return nullptr;
+//	}
+//
+//	return pShader;
+//}
 
 IMaterial* __stdcall Renderer::CreateMaterial(const MaterialDesc& materialDesc)
 {
-	
+
 	Material* pMaterial = nullptr;
 	do
 	{
@@ -482,7 +577,7 @@ IRenderTarget* __stdcall Renderer::CreateForwardRenderTarget(const RenderTargetD
 			forwardDesc.fmtDepth_ = DXGI_FORMAT::DXGI_FORMAT_R32_TYPELESS;
 		}
 	}
-	
+
 	do
 	{
 		pRenderTexture = static_cast<Texture*>(CreateTexture(desc.size_, (DXGI_FORMAT)forwardDesc.fmtColor_, D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET | D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE));
@@ -1063,17 +1158,17 @@ ITexture* Renderer::CreateTexture(const D3D11_TEXTURE2D_DESC& desc)
 	return nullptr;
 }
 
-IDebugRenderer* __stdcall Renderer::CreateDebugRenderer()
-{
-	DebugRenderer* pNewDebugRenderer = new DebugRenderer;
-	if (false == pNewDebugRenderer->Initialize(pDevice_, pDeviceContext_))
-	{
-		DEBUG_BREAK();
-		return nullptr;
-	}
-
-	return pNewDebugRenderer;
-}
+//IDebugRenderer* __stdcall Renderer::CreateDebugRenderer()
+//{
+//	DebugRenderer* pNewDebugRenderer = new DebugRenderer;
+//	if (false == pNewDebugRenderer->Initialize(pDevice_, pDeviceContext_))
+//	{
+//		DEBUG_BREAK();
+//		return nullptr;
+//	}
+//
+//	return pNewDebugRenderer;
+//}
 
 ID3D11ShaderResourceView* CreateWhiteTextureSRV(ID3D11Device* device)
 {
@@ -1112,18 +1207,32 @@ ID3D11ShaderResourceView* CreateWhiteTextureSRV(ID3D11Device* device)
 	return srv;
 }
 
-IParticleRenderer* __stdcall Renderer::CreateParticleRenderer()
+//IParticleRenderer* __stdcall Renderer::CreateParticleRenderer()
+//{
+//	ParticlePass* pNewParticlePass = new ParticlePass;
+//	if (false == pNewParticlePass->Init())
+//	{
+//		DEBUG_BREAK();
+//		return nullptr;
+//	}
+//
+//	return pNewParticlePass;
+//}
+
+
+void Renderer::Draw(UINT count, bool useIndex)
 {
-	ParticleSystemGPU* pNewParticleRenderer = new ParticleSystemGPU;
-	if (false == pNewParticleRenderer->Init())
+	if(useIndex)
 	{
-		DEBUG_BREAK();
-		return nullptr;
+		GRenderer->DeviceContext()->DrawIndexed(count, 0, 0);
+	}
+	else
+	{
+		GRenderer->DeviceContext()->Draw(count, 0);
 	}
 
-	return pNewParticleRenderer;
+	GRenderer->IncrementDrawCall();
 }
-
 
 void Renderer::IncrementDrawCall()
 {
@@ -1179,7 +1288,7 @@ IDXGIAdapter* Renderer::GetBestAdapter()
 	return pBestAdapter;
 }
 
-bool Renderer::CreateSwapChain(UINT width, UINT height)
+bool Renderer::InitSwapChain(UINT width, UINT height)
 {
 	DXGI_SWAP_CHAIN_DESC sd;
 	memset(&sd, 0x00, sizeof(sd));
@@ -1255,7 +1364,7 @@ lb_return:
 	return true;
 }
 
-bool Renderer::CreateBackBuffer(UINT width, UINT height, const Color& clearColor)
+bool Renderer::InitBackBuffer(UINT width, UINT height, const Color& clearColor)
 {
 	ID3D11Texture2D* pBackBufferTexture = nullptr;
 	Texture* pRenderTexture = nullptr;
@@ -1322,8 +1431,125 @@ bool Renderer::CreateBackBuffer(UINT width, UINT height, const Color& clearColor
 	return false;
 }
 
+bool Renderer::InitGeometryPass()
+{
+	pGeometryPass_ = new GeometryPass;
+	if (false == pGeometryPass_->Init())
+	{
+		DEBUG_BREAK();
+		pGeometryPass_->Release();
+		pGeometryPass_ = nullptr;
+		return false;
+	}
+
+	return true;
+}
+
+bool Renderer::InitLightPass()
+{
+	pLightPass_ = new LightPass;
+	if (false == pLightPass_->Init())
+	{
+		DEBUG_BREAK();
+		pLightPass_->Release();
+		pLightPass_ = nullptr;
+		return false;
+	}
+
+	return true;
+}
+
+bool Renderer::InitParticlePass()
+{
+	pParticlePass_ = new ParticlePass;
+	if (false == pParticlePass_->Init())
+	{
+		DEBUG_BREAK();
+		pParticlePass_->Release();
+		pParticlePass_ = nullptr;
+		return false;
+	}
+
+	return true;
+}
+
+bool Renderer::InitDebugPass()
+{
+	pDebugPass_ = new DebugPass;
+	if (false == pDebugPass_->Init())
+	{
+		DEBUG_BREAK();
+		pDebugPass_->Release();
+		pDebugPass_ = nullptr;
+		return false;
+	}
+
+	return true;
+}
+
+bool Renderer::InitMergePass()
+{
+	pMergePass_ = new MergePass;
+	if (false == pMergePass_->Init())
+	{
+		DEBUG_BREAK();
+		pMergePass_->Release();
+		pMergePass_ = nullptr;
+		return false;
+	}
+
+	return true;
+}
+
+bool Renderer::InitFinalPass()
+{
+	pFinalPass_ = new FinalPass;
+	if (false == pFinalPass_->Init())
+	{
+		DEBUG_BREAK();
+		pFinalPass_->Release();
+		pFinalPass_ = nullptr;
+		return false;
+	}
+
+	return true;
+}
+
 void Renderer::CleanUp()
 {
+	if (nullptr != pFinalPass_)
+	{
+		pFinalPass_->Release();
+		pFinalPass_ = nullptr;
+	}
+	if (nullptr != pMergePass_)
+	{
+		pMergePass_->Release();
+		pMergePass_ = nullptr;
+	}
+	if (nullptr != pDebugPass_)
+	{
+		pDebugPass_->Release();
+		pDebugPass_ = nullptr;
+	}
+	if (nullptr != pParticlePass_)
+	{
+		pParticlePass_->Release();
+		pParticlePass_ = nullptr;
+	}
+
+
+	if (nullptr != pLightPass_)
+	{
+		pLightPass_->Release();
+		pLightPass_ = nullptr;
+	}
+
+	if (nullptr != pGeometryPass_)
+	{
+		pGeometryPass_->Release();
+		pGeometryPass_ = nullptr;
+	}
 
 	if (nullptr != pDeviceContext_)
 	{

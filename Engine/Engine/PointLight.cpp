@@ -39,6 +39,22 @@ void PointLight::BindLight()
 	ConstantManager::Instance()->UpdatePerLight(&cbPerLight);
 }
 
+LightRenderData PointLight::GetData()
+{
+	LightRenderData data = {};
+	data.lightDiffuse = DiffuseColor();
+	data.lightSpecular = SpecularColor();
+	data.lightAmbient = AmbientColor();
+	data.range_S_P = range_;
+	const Float4& worldPos = GetWorldTransform().GetPosition();
+	data.position_S_P = { worldPos.X, worldPos.Y, worldPos.Z };
+	data.attenuationConst_S_P = attenuationConst_;
+	data.attenuationLinear_S_P = attenuationLinear_;
+	data.attenuationQuad_S_P = attenuationQuad_;
+	data.lightType = (float)ELightType::PointLight;
+	return data;
+}
+
 float PointLight::GetRange() const
 {
 	return range_;

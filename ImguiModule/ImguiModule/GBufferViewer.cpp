@@ -65,9 +65,9 @@ void GBufferViewer::BindCamera(IImGuiBindCamera* pCamera)
 	}
 
 	pBoundCamera_ = pCamera;
-	IRenderTarget* pGBufferTarget = pBoundCamera_->GetGBufferTargetForImGui();
-	IRenderTarget* pParticleTarget = pBoundCamera_->GetParticleBufferTargetForImGui();
-	IRenderTarget* pDebugTarget = pBoundCamera_->GetDebugBufferTargetForImGui();
+	IRenderTarget* pGBufferTarget = pBoundCamera_->GetGBufferRenderTargetForImGui();
+	IRenderTarget* pParticleTarget = pBoundCamera_->GetParticleRenderTargetForImGui();
+	IRenderTarget* pDebugTarget = pBoundCamera_->GetDebugRenderTargetForImGui();
 
 	ImTextureID* pAlbedoTexture = static_cast<ImTextureID*>(pGBufferTarget->GetShaderResourceView(E_RENDER_TEXTURE_TYPE::Albedo));
 	pAlbedoWidget_->BindTexture(pAlbedoTexture);
