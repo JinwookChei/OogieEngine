@@ -114,9 +114,10 @@ void GeometryPass::Render(const ObjectRenderData& objectData)
 	cbObject.materialSpecular = objectData.pMaterial->GetSpecularColor();
 	cbObject.materialShineness = objectData.pMaterial->GetShineness();
 	pCBPerObject_->Update(&cbObject);
-
+	
 
 	pShader_->Bind();
+	pSamplerState_->BindPS(0);
 
 	pCBPerFrame_->BindConstantBufferVS(0);
 	pCBPerFrame_->BindConstantBufferPS(0);

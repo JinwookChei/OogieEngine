@@ -29,11 +29,8 @@ public:
 
     void Render();
 
-    // 렌더링 절차
-    //void SetViewProj(const Float4x4& view, const Float4x4& proj);
     void DrawLine(const Float3& start, const Float3& end, const Float4& color);
     void DrawRay(const Float3& origin, Float3& dir, float length, const Color& color);
-    //void RenderAll();
     void Clear();
 
 private:
@@ -43,8 +40,6 @@ private:
 
     bool InitBlendState();
 
-    //bool InitSamplerState();
-
     void CleanUp();
 
     ULONG refCount_;
@@ -53,33 +48,5 @@ private:
     ID3D11Buffer* pVertexBuffer_; // -> LIne
 
     Shader* pShader_;
-    //SamplerStateT* pSamplerState_;
     BlendState* pBlendState_;
-
-    
-
-
-
-
-
-
-
-    //ID3D11Device* pDevice_;
-//ID3D11DeviceContext* pContext_;
-
-    // 머트리얼
-//ID3D11VertexShader* pVS_;
-//ID3D11PixelShader* pPS_;
-    //ID3D11SamplerState* pSamplerState_;
-    //ID3D11InputLayout* pInputLayout_;
-
-    // 카메라
-//ID3D11Buffer* pCBViewProj_; // constant buffer for viewProj
-// 
-// 
-    // 내부 헬퍼
-    //bool CompileShaders();
-    //bool CreateBuffers();
-    //bool CreateSamplerState();
-    //void ReleaseResources();
 };

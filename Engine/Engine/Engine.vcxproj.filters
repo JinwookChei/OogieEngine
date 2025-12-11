@@ -28,9 +28,6 @@
     <Filter Include="Source Files\Manager">
       <UniqueIdentifier>{e5ff74fd-18a0-4e03-bc41-989682524065}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\Shader">
-      <UniqueIdentifier>{58bbbbf2-bf6b-4326-9f6b-6c9e74b5ffb1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\World">
       <UniqueIdentifier>{15538eef-6d16-4b39-9048-f205560dc95c}</UniqueIdentifier>
     </Filter>
@@ -60,15 +57,6 @@
     </Filter>
     <Filter Include="Source Files\Graphics\Generator">
       <UniqueIdentifier>{3589f1c8-6e82-43bf-9c5e-254d45268f12}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Shader\Deferred">
-      <UniqueIdentifier>{3df7eb9b-626f-4854-8428-8bd0f591e6d7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Shader\ScreenMerge">
-      <UniqueIdentifier>{efb687ac-e933-4f94-a244-86aef18f5f92}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Shader\Forward">
-      <UniqueIdentifier>{c346e3ef-7de6-4cfa-8352-65d800c5be1b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Actor\Camera">
       <UniqueIdentifier>{d9fc05ca-5bf2-4814-b2e5-6f954e1800fb}</UniqueIdentifier>
@@ -251,28 +239,5 @@
     <ClCompile Include="ParticleComponent.cpp">
       <Filter>Source Files\Component\ParticleSystem</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="ScreenMergeVS.hlsl">
-      <Filter>Resource Files\Shader\ScreenMerge</Filter>
-    </FxCompile>
-    <FxCompile Include="ObjectVS.hlsl">
-      <Filter>Resource Files\Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="FowardPS.hlsl">
-      <Filter>Resource Files\Shader\Forward</Filter>
-    </FxCompile>
-    <FxCompile Include="DeferredObjectPS.hlsl">
-      <Filter>Resource Files\Shader\Deferred</Filter>
-    </FxCompile>
-    <FxCompile Include="ScreenMergePS.hlsl">
-      <Filter>Resource Files\Shader\ScreenMerge</Filter>
-    </FxCompile>
-    <FxCompile Include="DeferredLightPS.hlsl">
-      <Filter>Resource Files\Shader\Deferred</Filter>
-    </FxCompile>
-    <FxCompile Include="DeferredDebugPS.hlsl">
-      <Filter>Resource Files\Shader\Deferred</Filter>
-    </FxCompile>
   </ItemGroup>
 </Project>
