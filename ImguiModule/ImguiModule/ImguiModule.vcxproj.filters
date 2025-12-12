@@ -31,11 +31,11 @@
     <Filter Include="Source Files\Widget">
       <UniqueIdentifier>{d5235163-388b-4477-800e-07133b6155ad}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\ImGui_Impl">
-      <UniqueIdentifier>{ca98001a-c635-403b-986f-517443bd33ad}</UniqueIdentifier>
-    </Filter>
     <Filter Include="CoreTypes">
       <UniqueIdentifier>{fbda839b-26d8-4800-b288-4aa173c3f174}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ImGuiSource">
+      <UniqueIdentifier>{ca98001a-c635-403b-986f-517443bd33ad}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -72,30 +72,6 @@
     <ClInclude Include="..\..\Interface\ImGuiModule\IImGuiModule.h">
       <Filter>Interface</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\ThirdParty\ImGui\imconfig.h">
-      <Filter>Source Files\ImGui_Impl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\ThirdParty\ImGui\imgui.h">
-      <Filter>Source Files\ImGui_Impl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\ThirdParty\ImGui\imgui_impl_dx11.h">
-      <Filter>Source Files\ImGui_Impl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\ThirdParty\ImGui\imgui_impl_win32.h">
-      <Filter>Source Files\ImGui_Impl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\ThirdParty\ImGui\imgui_internal.h">
-      <Filter>Source Files\ImGui_Impl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\ThirdParty\ImGui\imstb_rectpack.h">
-      <Filter>Source Files\ImGui_Impl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\ThirdParty\ImGui\imstb_textedit.h">
-      <Filter>Source Files\ImGui_Impl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\ThirdParty\ImGui\imstb_truetype.h">
-      <Filter>Source Files\ImGui_Impl</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\CoreTypes\VertexType\VertexType.h">
       <Filter>CoreTypes</Filter>
     </ClInclude>
@@ -110,6 +86,30 @@
     </ClInclude>
     <ClInclude Include="TransformWidget.h">
       <Filter>Source Files\Widget</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ThirdParty\Imgui\imconfig.h">
+      <Filter>Source Files\ImGuiSource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ThirdParty\Imgui\imgui.h">
+      <Filter>Source Files\ImGuiSource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ThirdParty\Imgui\imgui_impl_dx11.h">
+      <Filter>Source Files\ImGuiSource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ThirdParty\Imgui\imgui_impl_win32.h">
+      <Filter>Source Files\ImGuiSource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ThirdParty\Imgui\imgui_internal.h">
+      <Filter>Source Files\ImGuiSource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ThirdParty\Imgui\imstb_rectpack.h">
+      <Filter>Source Files\ImGuiSource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ThirdParty\Imgui\imstb_textedit.h">
+      <Filter>Source Files\ImGuiSource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\ThirdParty\Imgui\imstb_truetype.h">
+      <Filter>Source Files\ImGuiSource</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -137,32 +137,32 @@
     <ClCompile Include="ExitPopup.cpp">
       <Filter>Source Files\Panel</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\ThirdParty\ImGui\imgui.cpp">
-      <Filter>Source Files\ImGui_Impl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\ThirdParty\ImGui\imgui_demo.cpp">
-      <Filter>Source Files\ImGui_Impl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\ThirdParty\ImGui\imgui_draw.cpp">
-      <Filter>Source Files\ImGui_Impl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\ThirdParty\ImGui\imgui_impl_dx11.cpp">
-      <Filter>Source Files\ImGui_Impl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\ThirdParty\ImGui\imgui_impl_win32.cpp">
-      <Filter>Source Files\ImGui_Impl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\ThirdParty\ImGui\imgui_tables.cpp">
-      <Filter>Source Files\ImGui_Impl</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\ThirdParty\ImGui\imgui_widgets.cpp">
-      <Filter>Source Files\ImGui_Impl</Filter>
-    </ClCompile>
     <ClCompile Include="Inspector.cpp">
       <Filter>Source Files\Panel</Filter>
     </ClCompile>
     <ClCompile Include="TransformWidget.cpp">
       <Filter>Source Files\Widget</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\Imgui\imgui.cpp">
+      <Filter>Source Files\ImGuiSource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\Imgui\imgui_demo.cpp">
+      <Filter>Source Files\ImGuiSource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\Imgui\imgui_draw.cpp">
+      <Filter>Source Files\ImGuiSource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\Imgui\imgui_impl_dx11.cpp">
+      <Filter>Source Files\ImGuiSource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\Imgui\imgui_impl_win32.cpp">
+      <Filter>Source Files\ImGuiSource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\Imgui\imgui_tables.cpp">
+      <Filter>Source Files\ImGuiSource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\Imgui\imgui_widgets.cpp">
+      <Filter>Source Files\ImGuiSource</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

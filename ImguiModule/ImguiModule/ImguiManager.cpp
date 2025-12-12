@@ -73,6 +73,7 @@ bool __stdcall ImGuiManager::InitImGui(IApplication* pApplication, IRenderer* pR
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO();
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Control
+	//io.ConfigFlags |= ;
 	io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\malgun.ttf", 24.0f, nullptr, io.Fonts->GetGlyphRangesKorean());
 	ImGui::StyleColorsDark();
 	ImGuiStyle& style = ImGui::GetStyle();

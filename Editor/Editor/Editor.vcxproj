@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{54a7c54e-a253-4fac-b64f-b8a49c69c6cd}</ProjectGuid>
-    <RootNamespace>ImGuiModule</RootNamespace>
+    <ProjectGuid>{f89d9d67-7058-42a0-8154-2ba180c684e5}</ProjectGuid>
+    <RootNamespace>Editor</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -80,11 +80,14 @@
     <IntDir>$(SolutionDir)..\tmp\$(ProjectName)\$(Configuration)\</IntDir>
     <TargetName>$(ProjectName)_$(PlatformTarget)_$(Configuration)</TargetName>
   </PropertyGroup>
+  <PropertyGroup Label="Vcpkg">
+    <VcpkgEnabled>false</VcpkgEnabled>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;IMGUIBACKEND_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;EDITOR_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
@@ -99,7 +102,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;IMGUIBACKEND_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;EDITOR_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
@@ -112,7 +115,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;IMGUIBACKEND_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;EDITOR_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <AdditionalIncludeDirectories>$(SolutionDir)..\ThirdParty\;$(SolutionDir)..\Interface\;$(SolutionDir)..\Utility\;$(SolutionDir)..\CoreTypes\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -130,7 +133,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;IMGUIBACKEND_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;EDITOR_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <AdditionalIncludeDirectories>$(SolutionDir)..\ThirdParty\;$(SolutionDir)..\Interface\;$(SolutionDir)..\Utility\;$(SolutionDir)..\CoreTypes\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -147,48 +150,58 @@
     <ClInclude Include="..\..\CoreTypes\MathType\MathType.h" />
     <ClInclude Include="..\..\CoreTypes\VertexType\VertexType.h" />
     <ClInclude Include="..\..\Interface\Application\IApplication.h" />
-    <ClInclude Include="..\..\Interface\ImGuiBindObject\IImGuiBindObject.h" />
-    <ClInclude Include="..\..\Interface\ImGuiModule\IImGuiModule.h" />
+    <ClInclude Include="..\..\Interface\ImguiBindObject\IImguiBindObject.h" />
+    <ClInclude Include="..\..\Interface\ImguiModule\IImguiModule.h" />
     <ClInclude Include="..\..\Interface\Renderer\IRenderer.h" />
-    <ClInclude Include="..\..\ThirdParty\Imgui\imconfig.h" />
-    <ClInclude Include="..\..\ThirdParty\Imgui\imgui.h" />
-    <ClInclude Include="..\..\ThirdParty\Imgui\imgui_impl_dx11.h" />
-    <ClInclude Include="..\..\ThirdParty\Imgui\imgui_impl_win32.h" />
-    <ClInclude Include="..\..\ThirdParty\Imgui\imgui_internal.h" />
-    <ClInclude Include="..\..\ThirdParty\Imgui\imstb_rectpack.h" />
-    <ClInclude Include="..\..\ThirdParty\Imgui\imstb_textedit.h" />
-    <ClInclude Include="..\..\ThirdParty\Imgui\imstb_truetype.h" />
-    <ClInclude Include="ExitPopup.h" />
-    <ClInclude Include="ImGuiManager.h" />
-    <ClInclude Include="TransformWidget.h" />
-    <ClInclude Include="ImGuiWidget.h" />
-    <ClInclude Include="GBufferViewer.h" />
-    <ClInclude Include="ImGuiPanel.h" />
-    <ClInclude Include="Inspector.h" />
+    <ClInclude Include="..\..\ThirdParty\Imgui2\imconfig.h" />
+    <ClInclude Include="..\..\ThirdParty\Imgui2\imgui.h" />
+    <ClInclude Include="..\..\ThirdParty\Imgui2\imgui_impl_dx11.h" />
+    <ClInclude Include="..\..\ThirdParty\Imgui2\imgui_impl_win32.h" />
+    <ClInclude Include="..\..\ThirdParty\Imgui2\imgui_internal.h" />
+    <ClInclude Include="..\..\ThirdParty\Imgui2\imstb_rectpack.h" />
+    <ClInclude Include="..\..\ThirdParty\Imgui2\imstb_textedit.h" />
+    <ClInclude Include="..\..\ThirdParty\Imgui2\imstb_truetype.h" />
+    <ClInclude Include="..\..\ThirdParty\ImguiGizmo\GraphEditor.h" />
+    <ClInclude Include="..\..\ThirdParty\ImguiGizmo\ImCurveEdit.h" />
+    <ClInclude Include="..\..\ThirdParty\ImguiGizmo\ImGradient.h" />
+    <ClInclude Include="..\..\ThirdParty\ImguiGizmo\ImGuizmo.h" />
+    <ClInclude Include="..\..\ThirdParty\ImguiGizmo\ImSequencer.h" />
+    <ClInclude Include="..\..\ThirdParty\ImguiGizmo\ImZoomSlider.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="ImGuiTextureWidget.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\ThirdParty\Imgui\imgui.cpp" />
-    <ClCompile Include="..\..\ThirdParty\Imgui\imgui_demo.cpp" />
-    <ClCompile Include="..\..\ThirdParty\Imgui\imgui_draw.cpp" />
-    <ClCompile Include="..\..\ThirdParty\Imgui\imgui_impl_dx11.cpp" />
-    <ClCompile Include="..\..\ThirdParty\Imgui\imgui_impl_win32.cpp" />
-    <ClCompile Include="..\..\ThirdParty\Imgui\imgui_tables.cpp" />
-    <ClCompile Include="..\..\ThirdParty\Imgui\imgui_widgets.cpp" />
+    <ClCompile Include="..\..\ThirdParty\Imgui2\imgui.cpp" />
+    <ClCompile Include="..\..\ThirdParty\Imgui2\imgui_demo.cpp" />
+    <ClCompile Include="..\..\ThirdParty\Imgui2\imgui_draw.cpp" />
+    <ClCompile Include="..\..\ThirdParty\Imgui2\imgui_impl_dx11.cpp" />
+    <ClCompile Include="..\..\ThirdParty\Imgui2\imgui_impl_win32.cpp" />
+    <ClCompile Include="..\..\ThirdParty\Imgui2\imgui_tables.cpp" />
+    <ClCompile Include="..\..\ThirdParty\Imgui2\imgui_widgets.cpp" />
+    <ClCompile Include="..\..\ThirdParty\ImguiGizmo\GraphEditor.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\ImguiGizmo\ImCurveEdit.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\ImguiGizmo\ImGradient.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\ImguiGizmo\ImGuizmo.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\ThirdParty\ImguiGizmo\ImSequencer.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="dllmain.cpp" />
-    <ClCompile Include="ExitPopup.cpp" />
-    <ClCompile Include="ImGuiManager.cpp" />
-    <ClCompile Include="TransformWidget.cpp" />
-    <ClCompile Include="ImGuiWidget.cpp" />
-    <ClCompile Include="GBufferViewer.cpp" />
-    <ClCompile Include="ImGuiPanel.cpp" />
-    <ClCompile Include="Inspector.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="ImGuiTextureWidget.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
