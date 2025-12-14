@@ -119,6 +119,7 @@ void GeometryPass::Render(const ObjectRenderData& objectData)
 	pShader_->Bind();
 	pSamplerState_->BindPS(0);
 
+
 	pCBPerFrame_->BindConstantBufferVS(0);
 	pCBPerFrame_->BindConstantBufferPS(0);
 	pCBPerObject_->BindConstantBufferVS(1);

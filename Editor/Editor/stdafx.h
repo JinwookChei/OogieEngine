@@ -33,17 +33,25 @@
 #include <cstdlib>
 #include <cstdio>
 #include <vector>
+#include <string>
+#include <map>
 
-#include <DirectXMath.h>
+//#include <DirectXMath.h>
 
 // Imgui
 #define IMGUI_DEFINE_MATH_OPERATORS
-
 #include <Imgui2/imgui.h>
 #include <Imgui2/imgui_impl_win32.h>
 #include <Imgui2/imgui_impl_dx11.h>
 
+#include <ImguiGizmo/ImGuizmo.h>
+#include <ImguiGizmo/ImSequencer.h>
+#include <ImguiGizmo/ImZoomSlider.h>
+#include <ImguiGizmo/ImCurveEdit.h>
+#include <ImguiGizmo/GraphEditor.h>
 
+// Editor
+#include "Label.h"
 
 
 // CoreTypes
@@ -60,5 +68,12 @@
 // Interface
 #include <Application/IApplication.h>
 #include <Renderer/IRenderer.h>
-#include <ImGuiBindObject/IImGuiBindObject.h>
-#include <ImGuiModule/IImGuiModule.h>
+#include <EditorBindObject/IEditorBindObject.h>
+#include <Editor/IEditor.h>
+//#include <ImGuiBindObject/IImGuiBindObject.h>
+//#include <ImGuiModule/IImGuiModule.h>
+
+
+
+constexpr float DEFAULT_SCREEN_WIDTH = 2560.0f;
+constexpr float DEFAULT_SCREEN_HEIGHT = 1440.0f;

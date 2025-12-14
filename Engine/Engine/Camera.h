@@ -4,8 +4,8 @@
 class Transform;
 
 class Camera
-	: public Actor, 
-	public IImGuiBindCamera
+	: public Actor
+	, public IEditorBindCamera
 {
 public:
 	ENGINE_API Camera();
@@ -71,11 +71,13 @@ private:
 
 public:
 	// IImguiBindCamera Area
-	ENGINE_API IRenderTarget* __stdcall GetGBufferRenderTargetForImGui() const override;
+	ENGINE_API IRenderTarget* __stdcall GetGBufferRenderTargetForEditor() const override;
 
-	ENGINE_API IRenderTarget* __stdcall GetParticleRenderTargetForImGui() const override;
+	ENGINE_API IRenderTarget* __stdcall GetParticleRenderTargetForEditor() const override;
 
-	ENGINE_API IRenderTarget* __stdcall GetDebugRenderTargetForImGui() const override;
+	ENGINE_API IRenderTarget* __stdcall GetDebugRenderTargetForEditor() const override;
+
+	ENGINE_API IRenderTarget* __stdcall GetFinalRenderTargetForEditor() const override;
 
 protected:
 	float cameraSensitivity_;
@@ -97,7 +99,7 @@ private:
 	IRenderTarget* pGBufferRenderTarget_;
 	
 	// Light Pass
-	IRenderTarget* pFinalRenderTarget;
+	IRenderTarget* pFinalRenderTarget_;
 
 	// Particle Pass
 	IRenderTarget* pParticleRenderTarget_;

@@ -66,7 +66,7 @@ void Actor::CleanUp()
 	}
 }
 
-ENGINE_API IImGuiBindTransform* __stdcall Actor::GetTransformForImGui() const
+ENGINE_API IEditorBindTransform* __stdcall Actor::GetTransformForEditor() const
 {
 	return pTransform_;
 }

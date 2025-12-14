@@ -132,12 +132,6 @@
     <ClInclude Include="Camera.h">
       <Filter>Source Files\Actor\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Interface\ImGuiBindObject\IImGuiBindObject.h">
-      <Filter>Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Interface\ImGuiModule\IImGuiModule.h">
-      <Filter>Interface</Filter>
-    </ClInclude>
     <ClInclude Include="MeshManager.h">
       <Filter>Source Files\Manager\GraphicsManager</Filter>
     </ClInclude>
@@ -167,6 +161,12 @@
     </ClInclude>
     <ClInclude Include="ParticleComponent.h">
       <Filter>Source Files\Component\ParticleSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Interface\Editor\IEditor.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Interface\EditorBindObject\IEditorBindObject.h">
+      <Filter>Interface</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

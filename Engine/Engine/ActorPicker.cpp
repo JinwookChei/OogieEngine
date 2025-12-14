@@ -36,7 +36,7 @@ void ActorPicker::Tick(double deltaTime)
 
 		TryPickObject(ray);
 
-		ImGuiSystem::GetImGuiManager()->BindPickedActor(pPickedActor_);
+		//ImGuiSystem::GetImGuiManager()->BindPickedActor(pPickedActor_);
 
 
 		// DEBUG

@@ -6,13 +6,18 @@
 WindowsApplication* GApplication = nullptr;
 
 
-
 LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	if (ImGuiSystem::GetImGuiManager()->WndProcHandler(hwnd, uMsg, wParam, lParam))
+	if (Editor::GetEditor()->WndProcHandler(hwnd, uMsg, wParam, lParam))
+	{
+		return true;	
+	}
+	
+	/*if (ImGuiSystem::GetImGuiManager()->WndProcHandler(hwnd, uMsg, wParam, lParam))
 	{
 		return true;
-	}
+	}*/
+
 
 	switch (uMsg)
 	{

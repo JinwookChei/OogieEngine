@@ -4,7 +4,7 @@ class RenderComponent;
 class BoundVolume;
 
 class Actor
-	: public IImGuiBindPickedActor
+	: public IEditorBindPickedActor
 {
 public:
 	friend class Level;
@@ -40,5 +40,5 @@ protected:
 	LINK_NODE levelLink_;
 
 public:
-	ENGINE_API IImGuiBindTransform* __stdcall GetTransformForImGui() const override;
+	ENGINE_API IEditorBindTransform* __stdcall GetTransformForEditor() const override;
 };

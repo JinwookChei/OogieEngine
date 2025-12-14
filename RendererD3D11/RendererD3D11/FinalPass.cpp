@@ -70,6 +70,11 @@ ULONG __stdcall FinalPass::Release()
 
 void FinalPass::Render(IRenderTarget* pSrcTarget)
 {
+	if (nullptr == pSrcTarget)
+	{
+		DEBUG_BREAK();
+	}
+
 	pSrcTarget->BindRenderTexturePS(4);
 
 	pSamplerState_->BindPS(0);

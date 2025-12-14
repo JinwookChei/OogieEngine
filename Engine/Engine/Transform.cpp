@@ -171,27 +171,27 @@ void Transform::TransformUpdate()
 	BroadcastOnTransformUpdate();
 }
 
-Float4* __stdcall Transform::GetActorScaleForImGui()
+Float4* __stdcall Transform::GetActorScaleForEditor()
 {
 	return &scale_;
 }
 
-Float4* __stdcall Transform::GetActorRotationForImGui() 
+Float4* __stdcall Transform::GetActorRotationForEditor()
 {
 	return &rotation_;
 }
 
-Float4* __stdcall Transform::GetActorQuaternionForImGui() 
+Float4* __stdcall Transform::GetActorQuaternionForEditor()
 {
 	return &quaternion_;
 }
 
-Float4* __stdcall Transform::GetActorPositionForImGui() 
+Float4* __stdcall Transform::GetActorPositionForEditor()
 {
 	return &position_;
 }
 
-void __stdcall Transform::TransformUpdateForImGui()
+void __stdcall Transform::TransformUpdateForEditor()
 {
 	TransformUpdate();
 }

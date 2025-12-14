@@ -150,8 +150,8 @@
     <ClInclude Include="..\..\CoreTypes\MathType\MathType.h" />
     <ClInclude Include="..\..\CoreTypes\VertexType\VertexType.h" />
     <ClInclude Include="..\..\Interface\Application\IApplication.h" />
-    <ClInclude Include="..\..\Interface\ImguiBindObject\IImguiBindObject.h" />
-    <ClInclude Include="..\..\Interface\ImguiModule\IImguiModule.h" />
+    <ClInclude Include="..\..\Interface\EditorBindObject\IEditorBindObject.h" />
+    <ClInclude Include="..\..\Interface\Editor\IEditor.h" />
     <ClInclude Include="..\..\Interface\Renderer\IRenderer.h" />
     <ClInclude Include="..\..\ThirdParty\Imgui2\imconfig.h" />
     <ClInclude Include="..\..\ThirdParty\Imgui2\imgui.h" />
@@ -167,6 +167,13 @@
     <ClInclude Include="..\..\ThirdParty\ImguiGizmo\ImGuizmo.h" />
     <ClInclude Include="..\..\ThirdParty\ImguiGizmo\ImSequencer.h" />
     <ClInclude Include="..\..\ThirdParty\ImguiGizmo\ImZoomSlider.h" />
+    <ClInclude Include="EditorContext.h" />
+    <ClInclude Include="EditorWidget.h" />
+    <ClInclude Include="EditorWindow.h" />
+    <ClInclude Include="EditorCore.h" />
+    <ClInclude Include="InspectorWindow.h" />
+    <ClInclude Include="Label.h" />
+    <ClInclude Include="SceneWindow.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
@@ -198,6 +205,13 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="EditorContext.cpp" />
+    <ClCompile Include="EditorWidget.cpp" />
+    <ClCompile Include="EditorWindow.cpp" />
+    <ClCompile Include="EditorCore.cpp" />
+    <ClCompile Include="InspectorWindow.cpp" />
+    <ClCompile Include="Label.cpp" />
+    <ClCompile Include="SceneWindow.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>

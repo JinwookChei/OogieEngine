@@ -12,7 +12,7 @@ Camera::Camera()
 	, screenOffset_({ 0.0f, 0.0f })
 	, screenScale_({ 1.0f, 1.0f })
 	, pGBufferRenderTarget_(nullptr)
-	, pFinalRenderTarget(nullptr)
+	, pFinalRenderTarget_(nullptr)
 	, pDebugRenderTarget_(nullptr)
 {
 	if (nullptr == GMainCamera)
@@ -67,12 +67,12 @@ void Camera::GeometryPassEnd()
 
 void Camera::LightPassBegin()
 {
-	pFinalRenderTarget->Clear();
-	pFinalRenderTarget->Bind();
+	pFinalRenderTarget_->Clear();
+	pFinalRenderTarget_->Bind();
 }
 void Camera::LightPassEnd()
 {
-	pFinalRenderTarget->EndRenderPass();
+	pFinalRenderTarget_->EndRenderPass();
 }
 
 void Camera::ParticlePassBegin()
@@ -88,7 +88,7 @@ void Camera::ParticlePassEnd()
 
 void Camera::BlitToBackBuffer()
 {
-	GRenderer->RenderFinal(pFinalRenderTarget);
+	GRenderer->RenderFinal(pParticleRenderTarget_);
 }
 
 const Float4x4& Camera::View() const
@@ -198,8 +198,8 @@ bool Camera::InitLightBuffer()
 	lightBufferDesc.size_ = { DEFAULT_SCREEN_WIDTH , DEFAULT_SCREEN_HEIGHT };
 	lightBufferDesc.clearColor_ = { 0.0f, 0.0f, 0.0f, 0.0f };
 	lightBufferDesc.forwardDesc_.useDepthStencil_ = false;						// 라이트 패스에서 여러 라이트를 처리하기 위해서는 Depth는 꺼야함.
-	pFinalRenderTarget = GRenderer->CreateRenderTarget(lightBufferDesc);
-	if (nullptr == pFinalRenderTarget)
+	pFinalRenderTarget_ = GRenderer->CreateRenderTarget(lightBufferDesc);
+	if (nullptr == pFinalRenderTarget_)
 	{
 		return false;
 	}
@@ -266,10 +266,10 @@ void Camera::CleanUp()
 		pParticleRenderTarget_->Release();
 		pParticleRenderTarget_ = nullptr;
 	}
-	if (nullptr != pFinalRenderTarget)
+	if (nullptr != pFinalRenderTarget_)
 	{
-		pFinalRenderTarget->Release();
-		pFinalRenderTarget = nullptr;
+		pFinalRenderTarget_->Release();
+		pFinalRenderTarget_ = nullptr;
 	}
 
 	if (nullptr != pGBufferRenderTarget_)
@@ -279,18 +279,23 @@ void Camera::CleanUp()
 	}
 }
 
-IRenderTarget* __stdcall Camera::GetGBufferRenderTargetForImGui() const
+IRenderTarget* __stdcall Camera::GetGBufferRenderTargetForEditor() const
 {
 	return pGBufferRenderTarget_;
 }
 
-ENGINE_API IRenderTarget* __stdcall Camera::GetParticleRenderTargetForImGui() const
+ENGINE_API IRenderTarget* __stdcall Camera::GetParticleRenderTargetForEditor() const
 {
 	return pParticleRenderTarget_;
 }
 
-IRenderTarget* __stdcall Camera::GetDebugRenderTargetForImGui() const
+IRenderTarget* __stdcall Camera::GetDebugRenderTargetForEditor() const
 {
 	return pDebugRenderTarget_;
+}
+
+ENGINE_API IRenderTarget* __stdcall Camera::GetFinalRenderTargetForEditor() const
+{
+	return pFinalRenderTarget_;
 }
 

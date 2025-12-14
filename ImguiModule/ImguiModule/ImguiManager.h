@@ -4,7 +4,7 @@ namespace ImGuiSystem
 {
 	IMGUI_API IImGuiManager* GetImGuiManager();
 }
-
+d
 class ExitPopup;
 class GBufferViewer;
 class Inspector;

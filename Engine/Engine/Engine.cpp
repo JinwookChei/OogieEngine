@@ -76,7 +76,8 @@ bool Engine::Initialize
 		return false;
 	}
 
-	float dpiSclae = ImGuiSystem::GetImGuiManager()->EnableDpiAwareness();
+	float dpiSclae = Editor::GetEditor()->EnableDpiAwareness();
+	//float dpiSclae = ImGuiSystem::GetImGuiManager()->EnableDpiAwareness();
 
 	if (false == LoadApplication(hInstance, pCmdLine, nCmdShow, pMainWindowClassName, pMainWindowText, pIConPath))
 	{
@@ -88,11 +89,14 @@ bool Engine::Initialize
 		return false;
 	}
 
-
-	if (false == ImGuiSystem::GetImGuiManager()->InitImGui(pApplication_, pRenderer_, dpiSclae))
+	if (false == Editor::GetEditor()->Init(pApplication_, pRenderer_, dpiSclae))
 	{
 		return false;
 	}
+	//if (false == ImGuiSystem::GetImGuiManager()->InitImGui(pApplication_, pRenderer_, dpiSclae))
+	//{
+	//	return false;
+	//}
 
 	GInputManager = new InputManager;
 	if (false == GInputManager->Initialize())
@@ -137,7 +141,7 @@ void Engine::Run()
 	GParticle_1 = GRenderer->CreateParticle(particleDesc);
 
 	ParticleDesc particleDesc2;
-	particleDesc2.maxNum_ = 1000;
+	particleDesc2.maxNum_ = 10000;
 	particleDesc2.patternType_ = E_PARTICLE_PATTERN_TYPE::FUME;
 	TextureManager::Instance()->GetTexture(&particleDesc2.pTexture_, 3);
 	GParticle_2 = GRenderer->CreateParticle(particleDesc2);
@@ -166,13 +170,12 @@ void Engine::Run()
 		GWorld->OnRender();
 		// GameLoop End
 
+		
+
 		// Blit RenderTarget 
 		GRenderer->RenderBegin();
-
-		GWorld->OnBlit();
-
-		ImGuiSystem::GetImGuiManager()->OnRender();
-
+		 //GWorld->OnBlit(); 
+		Editor::GetEditor()->OnRender();
 		GRenderer->RenderEnd();
 		// Blit RenderTarget  End
 	}
@@ -313,7 +316,7 @@ bool Engine::InitializeStartUp(IStartup* startUp)
 
 void Engine::CleanUp()
 {
-	ImGuiSystem::GetImGuiManager()->CleanUpImGui();
+	Editor::GetEditor()->Release();
 
 	if (nullptr != GParticle_1)
 	{

@@ -24,7 +24,8 @@
 
 #define ENGINE_API __declspec(dllimport)
 #define UTILITY_API __declspec(dllimport)
-#define IMGUI_API __declspec(dllimport)
+#define EDITOR_API __declspec(dllimport)
+//#define IMGUI_API __declspec(dllimport)
 
 #ifdef _DEBUG
 #define DEBUG_BREAK __debugbreak
@@ -54,6 +55,8 @@
 #include <cstdlib>
 #include <cstdio>
 #include <vector>
+#include <map>
+#include <string>
 #include <functional>
 
 #include <DirectXMath.h>
@@ -67,8 +70,10 @@
 // Interface
 #include <Application/IApplication.h>
 #include <Renderer/IRenderer.h>
-#include <ImGuiBindObject/IImguiBindObject.h>
-#include <ImGuiModule/IImGuiModule.h>
+#include <EditorBindObject/IEditorBindObject.h>
+#include <Editor/IEditor.h>
+//#include <ImGuiBindObject/IImguiBindObject.h>
+//#include <ImGuiModule/IImGuiModule.h>
 
 
 // Utility
@@ -78,7 +83,8 @@
  
 
 // ImguiModule
-#include <ImGuiModule/ImGuiManager.h>
+#include <Editor/EditorCore.h>
+//#include <ImGuiModule/ImGuiManager.h>
 
 
 // Engine

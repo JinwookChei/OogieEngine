@@ -6268,6 +6268,7 @@ void ImGui::EndFrame()
     CallContextHooks(&g, ImGuiContextHookType_EndFramePost);
 }
 
+
 // Prepare the data for rendering so you can call GetDrawData()
 // (As with anything within the ImGui:: namespace this doesn't touch your GPU or graphics API at all:
 // it is the role of the ImGui_ImplXXXX_RenderDrawData() function provided by the renderer backend)
@@ -24098,6 +24099,7 @@ void ImGui::ShowFontSelector(const char* label)
 // Prefer just including imgui_internal.h from your code rather than using this define. If a declaration is missing from imgui_internal.h add it or request it on the github.
 #ifdef IMGUI_INCLUDE_IMGUI_USER_INL
 #include "imgui_user.inl"
+#include "ImGuiEditor.h"
 #endif
 
 //-----------------------------------------------------------------------------

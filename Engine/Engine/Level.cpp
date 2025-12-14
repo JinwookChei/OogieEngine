@@ -123,10 +123,10 @@ void Level::OnRender()
 		GCurrentCamera->ParticlePassEnd();
 
 
-		GCurrentCamera->pFinalRenderTarget->Bind();
+		GCurrentCamera->pFinalRenderTarget_->Bind();
 		GCurrentCamera->UpdatePerFrameConstant();
 		GRenderer->RenderMerge(GCurrentCamera->pGBufferRenderTarget_, GCurrentCamera->pParticleRenderTarget_);
-		GCurrentCamera->pFinalRenderTarget->EndRenderPass();
+		GCurrentCamera->pFinalRenderTarget_->EndRenderPass();
 
 
 		// DebugRender
@@ -137,10 +137,10 @@ void Level::OnRender()
 		// DebugRender End
 		
 
-		GCurrentCamera->pFinalRenderTarget->Bind();
+		GCurrentCamera->pFinalRenderTarget_->Bind();
 		GCurrentCamera->UpdatePerFrameConstant();
 		GRenderer->RenderMerge(GCurrentCamera->pGBufferRenderTarget_, GCurrentCamera->pDebugRenderTarget_);
-		GCurrentCamera->pFinalRenderTarget->EndRenderPass();
+		GCurrentCamera->pFinalRenderTarget_->EndRenderPass();
 	}
 }
 
@@ -210,10 +210,10 @@ void Level::OnRenderParticles()
 	Float4 position1 = { 0.0f, 0.0f, 0.0f , 1.0f };
 	Float4x4 world1;
 	MATH::MatrixCompose(world1, scale1, rotation1, position1);
-	GRenderer->RenderParticles(GParticle_1, world1, viewProj, cameraRight, cameraUp);
+	//GRenderer->RenderParticles(GParticle_1, world1, viewProj, cameraRight, cameraUp);
 
 	Float4 scale2 = { 1.0f, 1.0f, 1.0f, 0.0f };
-	Float4 rotation2 = { 45.0f, 0.0f, 45.0f , 0.0f };
+	Float4 rotation2 = { 0.0f, 0.0f, 0.0f , 0.0f };
 	Float4 position2 = { 0.0f, 5.0f, 5.0f , 1.0f };
 	Float4x4 world2;
 	MATH::MatrixCompose(world2, scale2, rotation2, position2);

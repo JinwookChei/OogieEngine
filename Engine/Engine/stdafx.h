@@ -26,12 +26,16 @@
 
 #define ENGINE_API __declspec(dllexport)
 #define UTILITY_API __declspec(dllimport)
-#define IMGUI_API __declspec(dllimport)
+//#define IMGUI_API __declspec(dllimport)
+#define EDITOR_API __declspec(dllimport)
+
 
 #include <windows.h>
 #include <stdint.h>
 #include <math.h>
+#include <string>
 #include <vector>
+#include <map>
 #include <cstdlib>
 #include <cstdio>
 #include <functional>
@@ -54,12 +58,17 @@
 // Interface
 #include <Application/IApplication.h>
 #include <Renderer/IRenderer.h>
-#include <ImGuiBindObject/IImGuiBindObject.h>
-#include <ImGuiModule/IImGuiModule.h>
+#include <EditorBindObject/IEditorBindObject.h>
+#include <Editor/IEditor.h>
+//#include <ImGuiBindObject/IImGuiBindObject.h>
+//#include <ImGuiModule/IImGuiModule.h>
 
 
 // ImguiManager
-#include <ImguiModule/ImguiManager.h>
+//#include <ImguiModule/ImguiManager.h>
+
+// Editor
+#include <Editor/EditorCore.h>
 
 
 // Engine

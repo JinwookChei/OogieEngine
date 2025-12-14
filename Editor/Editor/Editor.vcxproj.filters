@@ -31,18 +31,33 @@
     <Filter Include="EditSource\ImGui">
       <UniqueIdentifier>{6fe50b87-e016-4125-831c-6ffc62db153e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Main">
+      <UniqueIdentifier>{969c25bb-10d2-43f4-8d76-85097268a2eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\FF">
+      <UniqueIdentifier>{e0015cb8-30fb-4d97-9a64-d65222f8bb6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Label">
+      <UniqueIdentifier>{3fd66fcc-0f1e-41ef-bb39-73a71fb585e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\EditorCore">
+      <UniqueIdentifier>{c965b0bf-6f76-46ea-8749-092da09d9cf1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\EditorCore\EditorWindow">
+      <UniqueIdentifier>{60193d21-0461-4ea1-af01-ace073ad7865}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\EditorCore\EditorWindow\EditorWidget">
+      <UniqueIdentifier>{e8301c84-6779-4a92-b6d2-2d47ebf909f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\EditorCore\EditorContext">
+      <UniqueIdentifier>{1963a738-abe9-4f8e-96f9-502c5d8565f0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
       <Filter>Precompiled Header</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Interface\Application\IApplication.h">
-      <Filter>Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Interface\ImguiBindObject\IImguiBindObject.h">
-      <Filter>Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Interface\ImguiModule\IImguiModule.h">
       <Filter>Interface</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Interface\Renderer\IRenderer.h">
@@ -99,11 +114,35 @@
     <ClInclude Include="..\..\ThirdParty\ImguiGizmo\ImZoomSlider.h">
       <Filter>EditSource\ImGuizmo</Filter>
     </ClInclude>
+    <ClInclude Include="EditorCore.h">
+      <Filter>Source Files\EditorCore</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Interface\Editor\IEditor.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Interface\EditorBindObject\IEditorBindObject.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorWindow.h">
+      <Filter>Source Files\EditorCore\EditorWindow</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorWidget.h">
+      <Filter>Source Files\EditorCore\EditorWindow\EditorWidget</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorContext.h">
+      <Filter>Source Files\EditorCore\EditorContext</Filter>
+    </ClInclude>
+    <ClInclude Include="InspectorWindow.h">
+      <Filter>Source Files\FF</Filter>
+    </ClInclude>
+    <ClInclude Include="Label.h">
+      <Filter>Source Files\Label</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneWindow.h">
+      <Filter>Source Files\FF</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="dllmain.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Precompiled Header</Filter>
     </ClCompile>
@@ -142,6 +181,30 @@
     </ClCompile>
     <ClCompile Include="..\..\ThirdParty\ImguiGizmo\ImSequencer.cpp">
       <Filter>EditSource\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="dllmain.cpp">
+      <Filter>Source Files\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="EditorCore.cpp">
+      <Filter>Source Files\EditorCore</Filter>
+    </ClCompile>
+    <ClCompile Include="EditorWindow.cpp">
+      <Filter>Source Files\EditorCore\EditorWindow</Filter>
+    </ClCompile>
+    <ClCompile Include="EditorWidget.cpp">
+      <Filter>Source Files\EditorCore\EditorWindow\EditorWidget</Filter>
+    </ClCompile>
+    <ClCompile Include="EditorContext.cpp">
+      <Filter>Source Files\EditorCore\EditorContext</Filter>
+    </ClCompile>
+    <ClCompile Include="InspectorWindow.cpp">
+      <Filter>Source Files\FF</Filter>
+    </ClCompile>
+    <ClCompile Include="Label.cpp">
+      <Filter>Source Files\Label</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneWindow.cpp">
+      <Filter>Source Files\FF</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -19,11 +19,15 @@
 #endif 
 
 #define UTILITY_API __declspec(dllexport)
-#define IMGUI_API __declspec(dllimport)
+#define EDITOR_API __declspec(dllimport)
 
 #include <windows.h>
 #include <stdint.h>
 #include <windowsx.h>
+
+// STL
+#include <string>
+#include <map>
 
 //CoreTypes
 #include <MathType/MathType.h>
@@ -39,11 +43,18 @@
 // Interface
 #include <Application/IApplication.h>
 #include <Renderer/IRenderer.h>
-#include <ImGuiBindObject/IImGuiBindObject.h>
-#include <ImGuiModule/IImGuiModule.h>
+#include <EditorBindObject/IEditorBindObject.h>
+#include <Editor/IEditor.h>
+//#include <ImGuiBindObject/IImGuiBindObject.h>
+//#include <ImGuiModule/IImGuiModule.h>
 
 
 // ImguiManager
-#include <ImGuiModule/ImGuiManager.h>
+//#include <ImGuiModule/ImGuiManager.h>
+
+// Editor
+#include <Editor/EditorCore.h>
+//#include <Editor/ImGuiEditor.h>
+//#include <Editor/ImGuiEditor.h>
 
 extern class WindowsApplication* GApplication;

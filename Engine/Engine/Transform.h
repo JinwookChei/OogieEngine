@@ -1,7 +1,7 @@
 #pragma once
 
 class Transform final 
-	: public IImGuiBindTransform 
+	: public IEditorBindTransform 
 {
 public:
 	Transform();
@@ -72,10 +72,10 @@ private:
 	Float4x4 worldMatrix_;
 
 public:
-	Float4* __stdcall GetActorScaleForImGui() override;
-	Float4* __stdcall GetActorRotationForImGui() override;
-	Float4* __stdcall GetActorQuaternionForImGui() override;
-	Float4* __stdcall GetActorPositionForImGui() override;
+	Float4* __stdcall GetActorScaleForEditor() override;
+	Float4* __stdcall GetActorRotationForEditor() override;
+	Float4* __stdcall GetActorQuaternionForEditor() override;
+	Float4* __stdcall GetActorPositionForEditor() override;
 
-	void __stdcall TransformUpdateForImGui() override;
+	void __stdcall TransformUpdateForEditor() override;
 };

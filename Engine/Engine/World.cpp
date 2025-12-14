@@ -75,7 +75,7 @@ void World::CheckChangeLevel()
 			return;
 		}
 
-		ImGuiSystem::GetImGuiManager()->BindCamera(GMainCamera);
+		Editor::GetEditor()->BindCamera(GMainCamera);
 
 		if (nullptr != curLevel_) {
 			delete curLevel_;
