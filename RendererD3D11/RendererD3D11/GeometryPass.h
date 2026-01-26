@@ -1,10 +1,5 @@
 #pragma once
 
-class Shader;
-class ConstantBuffer;
-class SamplerState;
-class BlendStateT;
-
 struct CBPerFrame
 {
 	Float4x4 view;
@@ -62,6 +57,8 @@ private:
 
 	bool InitSamplerState();
 
+	bool InitDepthState();
+
 	void CleanUp();
 
 	ULONG refCount_;
@@ -73,4 +70,5 @@ private:
 
 	SamplerState* pSamplerState_;
 	BlendState* pBlendState_;
+	DepthState* pDepthState_;
 };

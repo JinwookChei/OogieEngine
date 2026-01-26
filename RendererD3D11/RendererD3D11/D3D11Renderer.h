@@ -2,6 +2,7 @@
 
 class RenderTarget;
 class BlendState;
+class DepthState;
 class GeometryPass;
 class LightPass;
 class ParticlePass;

@@ -90,7 +90,12 @@ ULONG __stdcall ConstantBuffer::Release()
 ConstantBuffer* ConstantBuffer::Create(uint32_t bufferSize)
 {
 	ConstantBuffer* pNewConstantBuffer = new ConstantBuffer;
-	pNewConstantBuffer->Init(bufferSize);
+	if (false == pNewConstantBuffer->Init(bufferSize))
+	{
+		DEBUG_BREAK();
+		pNewConstantBuffer->Release();
+		pNewConstantBuffer = nullptr;
+	}
 
 	return pNewConstantBuffer;
 }

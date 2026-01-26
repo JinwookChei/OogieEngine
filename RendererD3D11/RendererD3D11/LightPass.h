@@ -1,11 +1,6 @@
 #pragma once
 
 
-class Shader;
-class ConstantBuffer;
-class SamplerStateT;
-class BlendStateT;
-
 
 struct CBPerLight
 {

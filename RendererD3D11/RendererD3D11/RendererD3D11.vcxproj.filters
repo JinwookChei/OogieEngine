@@ -43,9 +43,6 @@
     <Filter Include="Source Files\Material">
       <UniqueIdentifier>{5d59ba40-a1c0-4293-b587-76dfaa2ae70c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\SamplerState">
-      <UniqueIdentifier>{68e458d7-76d0-45f3-9723-5f9b775c9690}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\RenderTarget">
       <UniqueIdentifier>{847b08a2-6ad4-4ffc-93a7-e335bfa0c95f}</UniqueIdentifier>
     </Filter>
@@ -85,6 +82,9 @@
     <Filter Include="Resource Files\Shader\FinalPassShader">
       <UniqueIdentifier>{d9b002f4-b7c2-49d9-a07c-7a4c22ba2f79}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\State">
+      <UniqueIdentifier>{68e458d7-76d0-45f3-9723-5f9b775c9690}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -103,7 +103,7 @@
       <Filter>Source Files\Mesh</Filter>
     </ClInclude>
     <ClInclude Include="SamplerState.h">
-      <Filter>Source Files\SamplerState</Filter>
+      <Filter>Source Files\State</Filter>
     </ClInclude>
     <ClInclude Include="Rasterizer.h">
       <Filter>Source Files\Rasterizer</Filter>
@@ -156,6 +156,9 @@
     <ClInclude Include="FinalPass.h">
       <Filter>Source Files\Renderer\RenderPass</Filter>
     </ClInclude>
+    <ClInclude Include="DepthState.h">
+      <Filter>Source Files\State</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -174,7 +177,7 @@
       <Filter>Source Files\Mesh</Filter>
     </ClCompile>
     <ClCompile Include="SamplerState.cpp">
-      <Filter>Source Files\SamplerState</Filter>
+      <Filter>Source Files\State</Filter>
     </ClCompile>
     <ClCompile Include="Rasterizer.cpp">
       <Filter>Source Files\Rasterizer</Filter>
@@ -217,6 +220,9 @@
     </ClCompile>
     <ClCompile Include="FinalPass.cpp">
       <Filter>Source Files\Renderer\RenderPass</Filter>
+    </ClCompile>
+    <ClCompile Include="DepthState.cpp">
+      <Filter>Source Files\State</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

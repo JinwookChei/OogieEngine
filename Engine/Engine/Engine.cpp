@@ -133,7 +133,6 @@ void Engine::Run()
 	MaterialManager::Instance()->TestLoad();
 	TextureManager::Instance()->TestLoad();
 
-
 	ParticleDesc particleDesc;
 	particleDesc.maxNum_ = 1000;
 	particleDesc.patternType_ = E_PARTICLE_PATTERN_TYPE::EXPLOSION;
@@ -170,11 +169,9 @@ void Engine::Run()
 		GWorld->OnRender();
 		// GameLoop End
 
-		
-
 		// Blit RenderTarget 
 		GRenderer->RenderBegin();
-		 //GWorld->OnBlit(); 
+		//GWorld->OnBlit(); 
 		Editor::GetEditor()->OnRender();
 		GRenderer->RenderEnd();
 		// Blit RenderTarget  End

@@ -16,7 +16,7 @@ struct ForwardRenderingDesc
 {
 	unsigned int fmtColor_ = 2;		//DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT;
 	unsigned int fmtDepth_ = 45;	//DXGI_FORMAT::DXGI_FORMAT_D24_UNORM_S8_UINT
-	bool useDepthStencil_ = true;
+	//bool useDepthStencil_ = true;
 };
  
 struct DeferredRenderingDesc
@@ -31,16 +31,15 @@ struct RenderTargetDesc
 {
 	Float2 size_{ 0.0f, 0.0f };
 	Color clearColor_{ 0.2f, 0.4f, 0.6f, 1.0f };
-
+	bool useDepthStencil_ = true;
 	E_RENDER_TECHNIQUE_TYPE renderTechniqueType_ = E_RENDER_TECHNIQUE_TYPE::Forward;
-
 	union
 	{
 		ForwardRenderingDesc forwardDesc_;
 		DeferredRenderingDesc deferredDesc_;
 	};
 
-	RenderTargetDesc() = delete;
+	//RenderTargetDesc();
 
 	RenderTargetDesc(E_RENDER_TECHNIQUE_TYPE renderTechniqueType = E_RENDER_TECHNIQUE_TYPE::Forward)
 		: size_({ 0.0f, 0.0f }),
@@ -52,7 +51,7 @@ struct RenderTargetDesc
 		case E_RENDER_TECHNIQUE_TYPE::Forward:
 			forwardDesc_.fmtColor_ = 2;
 			forwardDesc_.fmtDepth_ = 45;
-			forwardDesc_.useDepthStencil_ = true;
+			//forwardDesc_.useDepthStencil_ = true;
 			break;
 		case E_RENDER_TECHNIQUE_TYPE::Deferred:
 			deferredDesc_.fmtAlbedo_ = 28;	//DXGI_FORMAT::DXGI_FORMAT_R8G8B8A8_UNORM;

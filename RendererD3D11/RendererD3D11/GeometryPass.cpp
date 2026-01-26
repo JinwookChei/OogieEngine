@@ -5,6 +5,7 @@
 #include "Texture.h"	
 #include "ConstantBuffer.h"
 #include "BlendState.h"
+#include "DepthState.h"
 #include "SamplerState.h"
 #include "GeometryPass.h"
 #include "LightPass.h"
@@ -16,6 +17,7 @@ GeometryPass::GeometryPass()
 	, pCBPerObject_(nullptr)
 	, pBlendState_(nullptr)
 	, pSamplerState_(nullptr)
+	, pDepthState_(nullptr)
 {
 }
 
@@ -70,6 +72,11 @@ bool GeometryPass::Init()
 		DEBUG_BREAK();
 		return false;
 	}
+	if (false == InitDepthState())
+	{
+		DEBUG_BREAK();
+		return false;
+	}
 
 	return true;
 }
@@ -118,7 +125,7 @@ void GeometryPass::Render(const ObjectRenderData& objectData)
 
 	pShader_->Bind();
 	pSamplerState_->BindPS(0);
-
+	pDepthState_->Bind();
 
 	pCBPerFrame_->BindConstantBufferVS(0);
 	pCBPerFrame_->BindConstantBufferPS(0);
@@ -131,6 +138,8 @@ void GeometryPass::Render(const ObjectRenderData& objectData)
 	pNormalImpl->BindRenderTextureForPS(1);
 
 	GRenderer->Draw(pMeshImpl->GetIndexCount(), true);
+
+	pDepthState_->UnBind();
 }
 
 bool GeometryPass::InitShaders()
@@ -197,8 +206,24 @@ bool GeometryPass::InitSamplerState()
 	return true;
 }
 
+bool GeometryPass::InitDepthState()
+{
+	pDepthState_ = DepthState::Create(true, true);
+	if (nullptr == pDepthState_)
+	{
+		DEBUG_BREAK();
+		return false;
+	}
+	return true;
+}
+
 void GeometryPass::CleanUp()
 {
+	if (nullptr != pDepthState_)
+	{
+		pDepthState_->Release();
+		pDepthState_ = nullptr;
+	}
 	if (nullptr != pSamplerState_)
 	{
 		pSamplerState_->Release();

@@ -148,6 +148,7 @@
     <ClInclude Include="..\..\CoreTypes\MathType\MathType.h" />
     <ClInclude Include="..\..\CoreTypes\VertexType\VertexType.h" />
     <ClInclude Include="..\..\Interface\Renderer\IRenderer.h" />
+    <ClInclude Include="DepthState.h" />
     <ClInclude Include="FinalPass.h" />
     <ClInclude Include="GeometryPass.h" />
     <ClInclude Include="LightPass.h" />
@@ -169,6 +170,7 @@
     <ClInclude Include="Mesh.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DepthState.cpp" />
     <ClCompile Include="FinalPass.cpp" />
     <ClCompile Include="GeometryPass.cpp" />
     <ClCompile Include="LightPass.cpp" />

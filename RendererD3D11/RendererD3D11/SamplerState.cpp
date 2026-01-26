@@ -103,6 +103,7 @@ SamplerState* SamplerState::Create(const E_SAMPLER_TYPE& samplerType, float minL
 	SamplerState* pNewSamplerState = new SamplerState;
 	if (false == pNewSamplerState->Init(samplerType, minLOD, maxLOD, maxAnisotropy))
 	{
+		DEBUG_BREAK();
 		pNewSamplerState->Release();
 		pNewSamplerState = nullptr;
 	}

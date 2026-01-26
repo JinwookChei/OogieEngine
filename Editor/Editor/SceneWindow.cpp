@@ -62,6 +62,7 @@ void SceneWindow::End()
 	
 	EditorCore* pEditorCore = (EditorCore*)Editor::GetEditor();
 	void* pSRV = pEditorCore->pBoundCamera_->GetFinalRenderTargetForEditor()->GetShaderResourceView(E_RENDER_TEXTURE_TYPE::Albedo);
+	//void* pSRV = pEditorCore->pBoundCamera_->GetParticleRenderTargetForEditor()->GetShaderResourceView(E_RENDER_TEXTURE_TYPE::Albedo);
 	ImGui::Image
 	(
 		(ImTextureID)pSRV,

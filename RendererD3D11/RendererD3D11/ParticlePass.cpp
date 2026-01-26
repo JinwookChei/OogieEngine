@@ -5,16 +5,18 @@
 #include "ConstantBuffer.h"
 #include "BlendState.h"
 #include "SamplerState.h"
+#include "DepthState.h"
 #include "ParticlePass.h"
 
 ParticlePass::ParticlePass()
 	: refCount_(1)
 	, pComputeShader_(nullptr)
 	, pRenderShader_(nullptr)
-	, pCBPerComputeParticle(nullptr)
+	, pCBPerComputeParticle_(nullptr)
 	, pCBPerParticle_(nullptr)
 	, pBlendState_(nullptr)
 	, pSamplerState_(nullptr)
+	, pDepthState_(nullptr)
 {
 }
 
@@ -46,29 +48,26 @@ ULONG __stdcall ParticlePass::Release()
 
 bool ParticlePass::Init()
 {
-	if (false == InitShaders())
-	{
-		DEBUG_BREAK();
-		return false;
-	}
+	const wchar_t* pCSPath = L"ParticleCS.cso";
+	const wchar_t* pVSPath = L"ParticleVS.cso";
+	const wchar_t* pGSPath = L"ParticleGS.cso";
+	const wchar_t* pPSPath = L"ParticlePS.cso";
 
-	if (false == InitConstantBuffer())
-	{
-		DEBUG_BREAK();
-		return false;
-	}
+	ShaderDesc computeShaderDesc;
+	computeShaderDesc.pathCS_ = pCSPath;
+	
+	ShaderDesc renderShaderDesc;
+	renderShaderDesc.pathVS_ = pVSPath;
+	renderShaderDesc.pathGS_ = pGSPath;
+	renderShaderDesc.pathPS_ = pPSPath;
 
-	if (false == InitBlendState())
-	{
-		DEBUG_BREAK();
-		return false;
-	}
-
-	if (false == InitSamplerState())
-	{
-		DEBUG_BREAK();
-		return false;
-	}
+	pComputeShader_ = Shader::Create(computeShaderDesc);
+	pRenderShader_ = Shader::Create(renderShaderDesc);
+	pCBPerComputeParticle_ = ConstantBuffer::Create(sizeof(CBPerComputeParticle));
+	pCBPerParticle_ = ConstantBuffer::Create(sizeof(CBPerParticle));
+	pBlendState_ = BlendState::Create(E_BLEND_MODE::ALPHA_BLEND);
+	pSamplerState_ = SamplerState::Create(E_SAMPLER_TYPE::LINEAR_CLAMP, 0, D3D11_FLOAT32_MAX, 1);
+	pDepthState_ = DepthState::Create(true, true);
 
 	return true;
 }
@@ -83,11 +82,11 @@ void ParticlePass::Tick(IParticle* pParticle,  float deltaTime)
 	ccBuffer.maxParticleNum_ = (UINT)pParticleImpl->GetMaxNumber();
 	ccBuffer.accTime_ = pParticleImpl->GetAccTime();
 	ccBuffer.patternType_ = (unsigned int)pParticleImpl->GetPatternType();
-	pCBPerComputeParticle->Update(&ccBuffer);
+	pCBPerComputeParticle_->Update(&ccBuffer);
 
 
 	pComputeShader_->Bind();
-	pCBPerComputeParticle->BindConstantBufferCS(1);
+	pCBPerComputeParticle_->BindConstantBufferCS(1);
 	pParticleImpl->BindUnorderedAccessViewCS(0);
 
 
@@ -104,12 +103,7 @@ void ParticlePass::Render(IParticle* pParticle, const Float4x4 worldTransform,  
 	Particle* pParticleImpl = (Particle*)pParticle;
 
 	pBlendState_->Bind();
-
-	//Float4 scale = { 1.0f, 1.0f, 1.0f, 0.0f };
-	//Float4 rotation = { 0.0f, 0.0f, 0.0f , 0.0f };
-	//Float4 position = { 0.0f, 0.0f, 0.0f , 1.0f };
-	//Float4x4 world;
-	//MATH::MatrixCompose(world, scale, rotation, position);
+	pDepthState_->Bind();
 
 	CBPerParticle cb = {};
 	MATH::MatrixTranspose(cb.world_, worldTransform);
@@ -123,8 +117,6 @@ void ParticlePass::Render(IParticle* pParticle, const Float4x4 worldTransform,  
 	pCBPerParticle_->Update(&cb);
 
 	
-
-
 	GRenderer->DeviceContext()->IASetInputLayout(nullptr);
 	UINT stride = 0;
 	UINT offset = 0;
@@ -142,82 +134,22 @@ void ParticlePass::Render(IParticle* pParticle, const Float4x4 worldTransform,  
 
 
 	pSamplerState_->BindPS(0);
-
+	
 	GRenderer->DeviceContext()->Draw(pParticleImpl->GetMaxNumber(), 0);
 
 	pRenderShader_->UnBind();
+	pDepthState_->UnBind();
 	pParticleImpl->UnBindShaderResourceViewVS(1);
 }
 
 
-bool ParticlePass::InitShaders()
-{
-	const wchar_t* pCSPath = L"ParticleCS.cso";
-	const wchar_t* pVSPath = L"ParticleVS.cso";
-	const wchar_t* pGSPath = L"ParticleGS.cso";
-	const wchar_t* pPSPath = L"ParticlePS.cso";
-	
-	ShaderDesc computeShaderDesc;
-	computeShaderDesc.pathCS_ = pCSPath;
-	pComputeShader_ = Shader::Create(computeShaderDesc);
-
-	ShaderDesc renderShaderDesc;
-	renderShaderDesc.pathVS_ = pVSPath;
-	renderShaderDesc.pathGS_ = pGSPath;
-	renderShaderDesc.pathPS_ = pPSPath;
-	pRenderShader_ = Shader::Create(renderShaderDesc);
-
-	if (nullptr == pComputeShader_ || nullptr == pRenderShader_)
-	{
-		DEBUG_BREAK();
-		return false;
-	}
-
-	return true;
-}
-
-bool ParticlePass::InitConstantBuffer()
-{
-	pCBPerComputeParticle = ConstantBuffer::Create(sizeof(CBPerComputeParticle));
-
-	pCBPerParticle_ = ConstantBuffer::Create(sizeof(CBPerParticle));
-
-	if (nullptr == pCBPerComputeParticle || nullptr == pCBPerParticle_)
-	{
-		DEBUG_BREAK();
-		return false;
-	}
-
-	return true;
-}
-
-bool ParticlePass::InitBlendState()
-{
-	pBlendState_ = BlendState::Create(E_BLEND_MODE::ALPHA_BLEND);
-	
-	if (nullptr == pBlendState_)
-	{
-		DEBUG_BREAK();
-		return false;
-	}
-
-	return true;
-}
-
-bool ParticlePass::InitSamplerState()
-{
-	pSamplerState_ = SamplerState::Create(E_SAMPLER_TYPE::LINEAR_CLAMP, 0, D3D11_FLOAT32_MAX, 1);
-	if (nullptr == pSamplerState_)
-	{
-		DEBUG_BREAK();
-		return false;
-	}
-
-	return true;
-}
-
 void ParticlePass::CleanUp()
 {
+	if (nullptr != pDepthState_)
+	{
+		pDepthState_->Release();
+		pDepthState_ = nullptr;
+	}
 	if (nullptr != pSamplerState_)
 	{
 		pSamplerState_->Release();
@@ -246,10 +178,10 @@ void ParticlePass::CleanUp()
 		pRenderShader_ = nullptr;
 	}
 
-	if (nullptr != pCBPerComputeParticle)
+	if (nullptr != pCBPerComputeParticle_)
 	{
-		pCBPerComputeParticle->Release();
-		pCBPerComputeParticle = nullptr;
+		pCBPerComputeParticle_->Release();
+		pCBPerComputeParticle_ = nullptr;
 	}
 
 	if (nullptr != pCBPerParticle_)

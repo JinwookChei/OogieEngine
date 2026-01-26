@@ -1,9 +1,5 @@
 #pragma once
 
-class Shader;
-class ConstantBuffer;
-class SamplerState;
-class BlendStateT;
 
 struct CBPerComputeParticle
 {
@@ -48,14 +44,6 @@ public:
 
 private:
 
-	bool InitShaders();
-
-	bool InitConstantBuffer();
-
-	bool InitBlendState();
-
-	bool InitSamplerState();
-
 	void CleanUp();
 	
 	ULONG refCount_;
@@ -63,9 +51,10 @@ private:
 	Shader* pComputeShader_;
 	Shader* pRenderShader_;
 
-	ConstantBuffer* pCBPerComputeParticle;
+	ConstantBuffer* pCBPerComputeParticle_;
 	ConstantBuffer* pCBPerParticle_;
 
 	SamplerState* pSamplerState_;
 	BlendState* pBlendState_;
+	DepthState* pDepthState_;
 };

@@ -201,6 +201,7 @@ Shader* Shader::Create(const ShaderDesc& desc)
 	Shader* pNewShader = new Shader;
 	if (false == pNewShader->Init(desc))
 	{
+		DEBUG_BREAK();
 		pNewShader->Release();
 		pNewShader = nullptr;
 	}
