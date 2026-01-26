@@ -502,7 +502,7 @@ IRenderTarget* __stdcall Renderer::CreateForwardRenderTarget(const RenderTargetD
 	RenderTarget* pRenderTarget = nullptr;
 
 	ForwardRenderingDesc forwardDesc = desc.forwardDesc_;
-	if (true == desc.useDepthStencil_)
+	if (true == forwardDesc.useDepthStencil_)
 	{
 		if (forwardDesc.fmtDepth_ == DXGI_FORMAT::DXGI_FORMAT_D24_UNORM_S8_UINT)
 		{
@@ -523,7 +523,7 @@ IRenderTarget* __stdcall Renderer::CreateForwardRenderTarget(const RenderTargetD
 			break;
 		}
 
-		if (true == desc.useDepthStencil_)
+		if (true == forwardDesc.useDepthStencil_)
 		{
 			pDepthTexture = static_cast<Texture*>(CreateTexture(desc.size_, (DXGI_FORMAT)forwardDesc.fmtDepth_, D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL | D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE));
 		}
@@ -1099,7 +1099,7 @@ bool Renderer::InitBackBuffer(UINT width, UINT height, const Color& clearColor)
 		RenderTargetDesc desc{ E_RENDER_TECHNIQUE_TYPE::Forward };
 		desc.size_ = { (float)width, (float)height };
 		desc.clearColor_ = clearColor;
-		desc.useDepthStencil_ = false;
+		desc.forwardDesc_.useDepthStencil_ = false;
 
 		bool ret = pBackBuffer_->Init(desc, pRenderTexture, nullptr);
 		if (false == ret)

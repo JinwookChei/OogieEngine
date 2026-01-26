@@ -183,7 +183,6 @@ bool Camera::InitGBuffer()
 	gBufferDesc.size_ = { DEFAULT_SCREEN_WIDTH , DEFAULT_SCREEN_HEIGHT };
 	gBufferDesc.clearColor_ = { 0.0f, 0.0f, 0.0f, 0.0f };
 	pGBufferRenderTarget_ = GRenderer->CreateRenderTarget(gBufferDesc);
-
 	if (nullptr == pGBufferRenderTarget_)
 	{
 		return false;
@@ -197,7 +196,7 @@ bool Camera::InitLightBuffer()
 	RenderTargetDesc lightBufferDesc(E_RENDER_TECHNIQUE_TYPE::Forward);
 	lightBufferDesc.size_ = { DEFAULT_SCREEN_WIDTH , DEFAULT_SCREEN_HEIGHT };
 	lightBufferDesc.clearColor_ = { 0.0f, 0.0f, 0.0f, 0.0f };
-	lightBufferDesc.useDepthStencil_ = false;						// 라이트 패스에서 여러 라이트를 처리하기 위해서는 Depth는 꺼야함.
+	lightBufferDesc.forwardDesc_.useDepthStencil_ = false;						// 라이트 패스에서 여러 라이트를 처리하기 위해서는 Depth는 꺼야함.
 	pFinalRenderTarget_ = GRenderer->CreateRenderTarget(lightBufferDesc);
 	if (nullptr == pFinalRenderTarget_)
 	{
@@ -212,7 +211,7 @@ bool Camera::InitParticleBuffer()
 	RenderTargetDesc particleRenderTargetDesc(E_RENDER_TECHNIQUE_TYPE::Forward);
 	particleRenderTargetDesc.size_ = { DEFAULT_SCREEN_WIDTH , DEFAULT_SCREEN_HEIGHT };
 	particleRenderTargetDesc.clearColor_ = { 0.0f, 0.0f, 0.0f, 0.0f };
-	particleRenderTargetDesc.useDepthStencil_ = true;
+	particleRenderTargetDesc.forwardDesc_.useDepthStencil_ = true;
 	pParticleRenderTarget_ = GRenderer->CreateRenderTarget(particleRenderTargetDesc);
 	if (nullptr == pParticleRenderTarget_)
 	{
@@ -228,7 +227,7 @@ bool Camera::InitDebugBuffer()
 	RenderTargetDesc debugRenderTargeetDesc(E_RENDER_TECHNIQUE_TYPE::Forward);
 	debugRenderTargeetDesc.size_ = { DEFAULT_SCREEN_WIDTH , DEFAULT_SCREEN_HEIGHT };
 	debugRenderTargeetDesc.clearColor_ = { 0.0f, 0.0f, 0.0f, 0.0f };
-	debugRenderTargeetDesc.useDepthStencil_ = true;
+	debugRenderTargeetDesc.forwardDesc_.useDepthStencil_ = true;
 	pDebugRenderTarget_ = GRenderer->CreateRenderTarget(debugRenderTargeetDesc);
 	if (nullptr == pDebugRenderTarget_)
 	{

@@ -46,8 +46,7 @@ private:
 	D3D11_VIEWPORT viewport_;
 
 	Color clearColor_;
-	//ForwardRenderingDesc desc_;
-	RenderTargetDesc desc_;
+	ForwardRenderingDesc desc_;
 
 	Texture* pRenderTexture_;
 	Texture* pDepthTexture_;

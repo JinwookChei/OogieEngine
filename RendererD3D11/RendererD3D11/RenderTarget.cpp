@@ -25,7 +25,7 @@ RenderTarget::~RenderTarget()
 bool RenderTarget::Init(const RenderTargetDesc& desc, Texture* pRenderTexture, Texture* pDepthTexture)
 {
 	SetClearColor(desc.clearColor_);
-	desc_ = desc;
+	desc_ = desc.forwardDesc_;
 	
 	bool ret = SetTexture(pRenderTexture, pDepthTexture);
 	if (false == ret)
@@ -34,7 +34,7 @@ bool RenderTarget::Init(const RenderTargetDesc& desc, Texture* pRenderTexture, T
 		return false;
 	}
 
-	if (!desc.useDepthStencil_)
+	if (!desc_.useDepthStencil_)
 	{
 		pRTV_ = pRenderTexture->RenderTargetView();
 		pDSV_ = nullptr;
@@ -132,12 +132,12 @@ void RenderTarget::Clear()
 
 RenderTargetDesc __stdcall RenderTarget::GetDesc() const
 {
-	//RenderTargetDesc desc{ E_RENDER_TECHNIQUE_TYPE::Forward };
-	//desc.clearColor_ = clearColor_;
-	//desc.forwardDesc_ = desc_;
-	//desc.size_ = pRenderTexture_->Size();
+	RenderTargetDesc desc{ E_RENDER_TECHNIQUE_TYPE::Forward };
+	desc.clearColor_ = clearColor_;
+	desc.forwardDesc_ = desc_;
+	desc.size_ = pRenderTexture_->Size();
 
-	return desc_;
+	return desc;
 }
 
 Float2 __stdcall RenderTarget::GetSize() const
