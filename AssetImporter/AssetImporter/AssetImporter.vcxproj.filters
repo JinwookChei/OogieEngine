@@ -19,10 +19,19 @@
     <Filter Include="Source Files\Main">
       <UniqueIdentifier>{9fc7896c-03f9-4606-8ffb-dcf5738df231}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Interface">
+      <UniqueIdentifier>{a8f0fb1c-3b5a-44b9-8efa-4c49ee7befee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\NewFilter1">
+      <UniqueIdentifier>{3e28b7fe-defc-41f1-b1b2-17af2cc80701}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
       <Filter>Precompiled Header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Interface\Asset\IAssetImporter.h">
+      <Filter>Interface</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

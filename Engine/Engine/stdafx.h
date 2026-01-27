@@ -44,22 +44,22 @@
 #include <DirectXMath.h>
 
 // CoreTypes
-#include <MathType/MathType.h>
-#include <GeometryType/GeometryType.h>
-#include <VertexType/VertexType.h>
+#include <CoreTypes/MathType/MathType.h>
+#include <CoreTypes/GeometryType/GeometryType.h>
+#include <CoreTypes/VertexType/VertexType.h>
 
 
 // Utility
-#include <Utility/Math.h>
-#include <Utility/LinkedList.h>
-#include <Utility/HashTable.h>
+#include <Utility/Utility/Math.h>
+#include <Utility/Utility/LinkedList.h>
+#include <Utility/Utility/HashTable.h>
 
 
 // Interface
-#include <Application/IApplication.h>
-#include <Renderer/IRenderer.h>
-#include <EditorBindObject/IEditorBindObject.h>
-#include <Editor/IEditor.h>
+#include <Interface/Application/IApplication.h>
+#include <Interface/Renderer/IRenderer.h>
+#include <Interface/EditorBindObject/IEditorBindObject.h>
+#include <Interface/Editor/IEditor.h>
 //#include <ImGuiBindObject/IImGuiBindObject.h>
 //#include <ImGuiModule/IImGuiModule.h>
 
@@ -68,7 +68,7 @@
 //#include <ImguiModule/ImguiManager.h>
 
 // Editor
-#include <Editor/EditorCore.h>
+#include <Editor/Editor/EditorCore.h>
 
 
 // Engine

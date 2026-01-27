@@ -62,46 +62,46 @@
 #include <DirectXMath.h>
 
 // CoreTypes
-#include <MathType/MathType.h>
-#include <GeometryType/GeometryType.h>
-#include <VertexType/VertexType.h>
+#include <CoreTypes/MathType/MathType.h>
+#include <CoreTypes/GeometryType/GeometryType.h>
+#include <CoreTypes/VertexType/VertexType.h>
 
 
 // Interface
-#include <Application/IApplication.h>
-#include <Renderer/IRenderer.h>
-#include <EditorBindObject/IEditorBindObject.h>
-#include <Editor/IEditor.h>
+#include <Interface/Application/IApplication.h>
+#include <Interface/Renderer/IRenderer.h>
+#include <Interface/EditorBindObject/IEditorBindObject.h>
+#include <Interface/Editor/IEditor.h>
 //#include <ImGuiBindObject/IImguiBindObject.h>
 //#include <ImGuiModule/IImGuiModule.h>
 
 
 // Utility
-#include <Utility/Math.h>
-#include <Utility/LinkedList.h>
-#include <Utility/HashTable.h>
+#include <Utility/Utility/Math.h>
+#include <Utility/Utility/LinkedList.h>
+#include <Utility/Utility/HashTable.h>
  
 
 // ImguiModule
-#include <Editor/EditorCore.h>
+#include <Editor/Editor/EditorCore.h>
 //#include <ImGuiModule/ImGuiManager.h>
 
 
 // Engine
-#include <Engine/Engine.h>
-#include <Engine/StartUp.h>
-#include <Engine/MeshManager.h>
-#include <Engine/Transform.h>
-#include <Engine/Level.h>
-#include <Engine/Actor.h>
-#include <Engine/Camera.h>
-#include <Engine/Light.h>
-#include <Engine/DirectionLight.h>
-#include <Engine/SpotLight.h>
-#include <Engine/PointLight.h>
-#include <Engine/RenderComponent.h>
-#include <Engine/InputManager.h>
-#include <Engine/World.h>
+#include <Engine/Engine/Engine.h>
+#include <Engine/Engine/StartUp.h>
+#include <Engine/Engine/MeshManager.h>
+#include <Engine/Engine/Transform.h>
+#include <Engine/Engine/Level.h>
+#include <Engine/Engine/Actor.h>
+#include <Engine/Engine/Camera.h>
+#include <Engine/Engine/Light.h>
+#include <Engine/Engine/DirectionLight.h>
+#include <Engine/Engine/SpotLight.h>
+#include <Engine/Engine/PointLight.h>
+#include <Engine/Engine/RenderComponent.h>
+#include <Engine/Engine/InputManager.h>
+#include <Engine/Engine/World.h>
 
 // Content
 #include "StartLevel.h"

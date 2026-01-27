@@ -32,8 +32,8 @@
 
 
 // CoreTypes
-#include <MathType/MathType.h>
-#include <GeometryType/GeometryType.h>
+#include <CoreTypes/MathType/MathType.h>
+#include <CoreTypes/GeometryType/GeometryType.h>
 
 
 // Utility

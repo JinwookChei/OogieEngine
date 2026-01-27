@@ -21,14 +21,13 @@
         std::abort();                                                  \
     } while(0)
 
-
-
 #include <Windows.h>
+#include <fbxsdk.h>
 
-
-//#include <fbxsdk.h>
 // FBX
 #pragma comment(lib, "alembic-md")
 #pragma comment(lib, "libfbxsdk-md")
 #pragma comment(lib, "libxml2-md")
 #pragma comment(lib, "zlib-md")
+
+#include <Interface/Asset/IAssetImporter.h>

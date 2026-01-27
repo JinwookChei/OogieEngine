@@ -40,36 +40,35 @@
 
 // Imgui
 #define IMGUI_DEFINE_MATH_OPERATORS
-#include <Imgui2/imgui.h>
-#include <Imgui2/imgui_impl_win32.h>
-#include <Imgui2/imgui_impl_dx11.h>
+#include <ThirdParty/Imgui2/imgui.h>
+#include <ThirdParty/Imgui2/imgui_impl_win32.h>
+#include <ThirdParty/Imgui2/imgui_impl_dx11.h>
 
-#include <ImguiGizmo/ImGuizmo.h>
-#include <ImguiGizmo/ImSequencer.h>
-#include <ImguiGizmo/ImZoomSlider.h>
-#include <ImguiGizmo/ImCurveEdit.h>
-#include <ImguiGizmo/GraphEditor.h>
+#include <ThirdParty/ImguiGizmo/ImGuizmo.h>
+#include <ThirdParty/ImguiGizmo/ImSequencer.h>
+#include <ThirdParty/ImguiGizmo/ImZoomSlider.h>
+#include <ThirdParty/ImguiGizmo/ImCurveEdit.h>
+#include <ThirdParty/ImguiGizmo/GraphEditor.h>
 
 // Editor
 #include "Label.h"
 
-
 // CoreTypes
-#include <MathType/MathType.h>
-#include <GeometryType/GeometryType.h>
-#include <VertexType/VertexType.h>
+#include <CoreTypes/MathType/MathType.h>
+#include <CoreTypes/GeometryType/GeometryType.h>
+#include <CoreTypes/VertexType/VertexType.h>
 
 
 // Utility
-#include <Utility/Math.h>
-#include <Utility/LinkedList.h>
+#include <Utility/Utility/Math.h>
+#include <Utility/Utility/LinkedList.h>
 
 
 // Interface
-#include <Application/IApplication.h>
-#include <Renderer/IRenderer.h>
-#include <EditorBindObject/IEditorBindObject.h>
-#include <Editor/IEditor.h>
+#include <Interface/Application/IApplication.h>
+#include <Interface/Renderer/IRenderer.h>
+#include <Interface/EditorBindObject/IEditorBindObject.h>
+#include <Interface/Editor/IEditor.h>
 //#include <ImGuiBindObject/IImGuiBindObject.h>
 //#include <ImGuiModule/IImGuiModule.h>
 

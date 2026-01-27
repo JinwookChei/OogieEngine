@@ -45,21 +45,21 @@
 #include <d3dcompiler.h>
 #include <dxgi.h>
 #include <DirectXMath.h>
-#include <DirectXTex/DirectXTex.h>
-#include <DirectXTex/DirectXTex.inl>
+#include <ThirdParty/DirectXTex/DirectXTex.h>
+#include <ThirdParty/DirectXTex/DirectXTex.inl>
 
 
 // CoreTypes
-#include <MathType/MathType.h>
-#include <GeometryType/GeometryType.h>
-#include <VertexType/VertexType.h>
+#include <CoreTypes/MathType/MathType.h>
+#include <CoreTypes/GeometryType/GeometryType.h>
+#include <CoreTypes/VertexType/VertexType.h>
 
 
 // Utility
-#include <Utility/Math.h>
+#include <Utility/Utility/Math.h>
 
 // Interface
-#include <Renderer/IRenderer.h>
+#include <Interface/Renderer/IRenderer.h>
 
 
 // RendererD3D11
