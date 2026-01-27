@@ -122,7 +122,6 @@ void GeometryPass::Render(const ObjectRenderData& objectData)
 	cbObject.materialShineness = objectData.pMaterial->GetShineness();
 	pCBPerObject_->Update(&cbObject);
 	
-
 	pShader_->Bind();
 	pSamplerState_->BindPS(0);
 	pDepthState_->Bind();
@@ -131,7 +130,6 @@ void GeometryPass::Render(const ObjectRenderData& objectData)
 	pCBPerFrame_->BindConstantBufferPS(0);
 	pCBPerObject_->BindConstantBufferVS(1);
 	pCBPerObject_->BindConstantBufferPS(1);
-	
 
 	pMeshImpl->Bind();
 	pAlbedoImpl->BindRenderTextureForPS(0);

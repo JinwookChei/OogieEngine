@@ -66,12 +66,6 @@
     <ClInclude Include="ExitPopup.h">
       <Filter>Source Files\Panel</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Interface\ImGuiBindObject\IImGuiBindObject.h">
-      <Filter>Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Interface\ImGuiModule\IImGuiModule.h">
-      <Filter>Interface</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\CoreTypes\VertexType\VertexType.h">
       <Filter>CoreTypes</Filter>
     </ClInclude>
@@ -110,6 +104,12 @@
     </ClInclude>
     <ClInclude Include="..\..\ThirdParty\Imgui\imstb_truetype.h">
       <Filter>Source Files\ImGuiSource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Interface\EditorBindObject\IEditorBindObject.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Interface\Editor\IEditor.h">
+      <Filter>Interface</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

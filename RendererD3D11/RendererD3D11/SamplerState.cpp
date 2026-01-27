@@ -18,7 +18,8 @@ bool SamplerState::Init(const E_SAMPLER_TYPE& samplerType, float minLOD, float m
 	samplerDesc.MinLOD = (FLOAT)minLOD;
 	samplerDesc.MaxLOD = (FLOAT)maxLOD;
 	samplerDesc.MipLODBias = 0.0f;
-	samplerDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
+	//samplerDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
+	samplerDesc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
 	
 
 	switch (samplerType)

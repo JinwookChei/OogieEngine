@@ -40,6 +40,10 @@ public:
 
 	void ParticlePassEnd();
 
+	void DebugPassBegin();
+
+	void DebugPassEnd();
+
 	void BlitToBackBuffer();
 
 	const Float4x4& View() const;

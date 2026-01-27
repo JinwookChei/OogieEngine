@@ -30,6 +30,8 @@ public:
 
 	void __stdcall Bind() override;
 
+	void __stdcall Bind(ITexture* pDepthTexture) override;
+
 	void __stdcall Clear() override;
 
 	RenderTargetDesc __stdcall GetDesc() const override;
@@ -45,6 +47,8 @@ public:
 	void __stdcall EndRenderPass() override;
 
 	void* __stdcall GetShaderResourceView(const E_RENDER_TEXTURE_TYPE& texureType) override;
+
+	ITexture* __stdcall GetDepthTexture() override;
 
 private:
 	bool SetTexture(Texture* pRenderTextureAlbedo, Texture* pRenderTextureNormal, Texture* pRenderTextureSpecular, Texture* pDepthTexture);

@@ -135,6 +135,8 @@ struct IRenderTarget : public IUnknown
 {
 	virtual void __stdcall Bind() = 0;
 
+	virtual void __stdcall Bind(ITexture* pDepthTexture) = 0;
+
 	virtual void __stdcall Clear() = 0;
 
 	virtual RenderTargetDesc __stdcall GetDesc() const = 0;
@@ -150,6 +152,8 @@ struct IRenderTarget : public IUnknown
 	virtual void __stdcall EndRenderPass() = 0;
 
 	virtual void* __stdcall GetShaderResourceView(const E_RENDER_TEXTURE_TYPE& texureType) = 0;
+
+	virtual ITexture* __stdcall GetDepthTexture() = 0;
 };
 
 
@@ -252,7 +256,8 @@ struct IRenderer : public IUnknown {
 
 	virtual void __stdcall RenderDebug() = 0;
 
-	virtual void __stdcall RenderMerge(IRenderTarget* pDepthTarget, IRenderTarget* pSrcTarget) = 0;
+	virtual void __stdcall RenderMerge(IRenderTarget* pSrcTarget) = 0;
+	//virtual void __stdcall RenderMerge(IRenderTarget* pDepthTarget, IRenderTarget* pSrcTarget) = 0;
 
 	virtual void __stdcall RenderBegin() = 0;
 

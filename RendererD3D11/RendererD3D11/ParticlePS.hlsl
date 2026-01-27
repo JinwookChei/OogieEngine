@@ -33,4 +33,8 @@ float4 main(GS_OUTPUT input) : SV_TARGET
     color.a *= alpha;
 
     return texColor * color;
+    //return color;
+    
+    //float4 tempColor = { input.age, 0.0f, 0.0f, 1.0f };
+    //return tempColor;
 }

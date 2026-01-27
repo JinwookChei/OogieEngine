@@ -39,8 +39,8 @@ bool DepthState::Init(bool useDepthTest, bool wirteDepth)
 {
 	D3D11_DEPTH_STENCIL_DESC pDepthStateDesc = {};
 	pDepthStateDesc.DepthEnable = useDepthTest ? TRUE : FALSE;
-	pDepthStateDesc.DepthWriteMask = wirteDepth ? D3D11_DEPTH_WRITE_MASK_ALL : D3D11_DEPTH_WRITE_MASK_ZERO;
 	pDepthStateDesc.DepthFunc = useDepthTest ? D3D11_COMPARISON_LESS_EQUAL : D3D11_COMPARISON_ALWAYS;
+	pDepthStateDesc.DepthWriteMask = wirteDepth ? D3D11_DEPTH_WRITE_MASK_ALL : D3D11_DEPTH_WRITE_MASK_ZERO;
 	pDepthStateDesc.StencilEnable = FALSE;
 
 	HRESULT hr = GRenderer->Device()->CreateDepthStencilState(&pDepthStateDesc, &pDepthState_);

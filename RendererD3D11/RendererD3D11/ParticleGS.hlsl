@@ -33,8 +33,8 @@ void main(point VS_OUTPUT input[1], inout TriangleStream<GS_OUTPUT> output)
 {
     float4 worldPos = mul(float4(input[0].pos, 1.0f), gWorld);
     float3 pos = worldPos.xyz;
-    
     float age = input[0].age;
+    
     if (age >= 1.0f)
     {
         return;

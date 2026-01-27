@@ -45,7 +45,8 @@ public:
 	void __stdcall DrawDebugRay(const Float3& origin, Float3& dir, float length, const Color& color) override;
 	void __stdcall RenderDebug() override;
 
-	void __stdcall RenderMerge(IRenderTarget* pDepthTarget, IRenderTarget* pSrcTarget) override;
+	void __stdcall RenderMerge(IRenderTarget* pSrcTarget) override;
+	//void __stdcall RenderMerge(IRenderTarget* pDepthTarget, IRenderTarget* pSrcTarget) override;
 
 	void __stdcall RenderBegin() override;
 	void __stdcall RenderFinal(IRenderTarget* pSrcTarget) override;

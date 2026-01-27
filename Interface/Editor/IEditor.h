@@ -33,7 +33,7 @@ struct IEditor : public IUnknown
 	virtual bool __stdcall BindPickedActor(IEditorBindPickedActor* pPickedActor) = 0;
 };
 
-
+//
 //struct IImGuiWidget : public IUnknown
 //{
 //

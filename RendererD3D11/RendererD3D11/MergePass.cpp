@@ -68,11 +68,27 @@ ULONG __stdcall MergePass::Release()
 	return tmpRefCount;
 }
 
-void MergePass::Render(IRenderTarget* pDepthTarget, IRenderTarget* pSrcTarget)
-{
-	pDepthTarget->BindRenderTexturePS(0);
-	pSrcTarget->BindRenderTexturePS(4);
+//void MergePass::Render(IRenderTarget* pDepthTarget, IRenderTarget* pSrcTarget)
+//{
+//	pDepthTarget->BindRenderTexturePS(0);
+//	pSrcTarget->BindRenderTexturePS(4);
+//
+//
+//	pSamplerState_->BindPS(0);
+//	pBlendState_->Bind();
+//	pShader_->Bind();
+//	pScreenQuad_->Bind();
+//	GRenderer->Draw(pScreenQuad_->GetIndexCount(), true);
+//
+//
+//	pSrcTarget->UnBindRenderTexturePS(4);
+//	pDepthTarget->UnBindRenderTexturePS(0);
+//}
 
+
+void MergePass::Render(IRenderTarget* pSrcTarget)
+{
+	pSrcTarget->BindRenderTexturePS(0);
 
 	pSamplerState_->BindPS(0);
 	pBlendState_->Bind();
@@ -80,10 +96,9 @@ void MergePass::Render(IRenderTarget* pDepthTarget, IRenderTarget* pSrcTarget)
 	pScreenQuad_->Bind();
 	GRenderer->Draw(pScreenQuad_->GetIndexCount(), true);
 
-
-	pSrcTarget->UnBindRenderTexturePS(4);
-	pDepthTarget->UnBindRenderTexturePS(0);
+	pSrcTarget->UnBindRenderTexturePS(0);
 }
+
 
 bool MergePass::Init()
 {
@@ -163,7 +178,7 @@ bool MergePass::InitShaders()
 
 bool MergePass::InitBlendState()
 {
-	pBlendState_ = BlendState::Create(E_BLEND_MODE::OPAQUE_BLEND);
+	pBlendState_ = BlendState::Create(E_BLEND_MODE::ALPHA_BLEND);
 
 	if (nullptr == pBlendState_)
 	{

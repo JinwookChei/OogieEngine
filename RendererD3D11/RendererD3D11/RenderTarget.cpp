@@ -101,6 +101,40 @@ void __stdcall RenderTarget::Bind()
 	GRenderer->DeviceContext()->RSSetViewports(1, &viewport_);
 }
 
+void __stdcall RenderTarget::Bind(ITexture* pDepthTexture)
+{
+	if (nullptr == pDepthTexture)
+	{
+		DEBUG_BREAK();
+		return;
+	}
+
+	if (GCurrentSetRenderTarget == this)
+	{
+		return;
+	}
+
+	ID3D11RenderTargetView* pRenderTargetView = pRenderTexture_->RenderTargetView();
+	if (nullptr == pRenderTargetView)
+	{
+		DEBUG_BREAK();
+		return;
+	}
+
+
+	Texture* pDepthTexturea = static_cast<Texture*>(pDepthTexture);
+	ID3D11DepthStencilView* pDepthStencilView = pDepthTexturea->DepthStencilView();
+	if (nullptr == pDepthStencilView)
+	{
+		DEBUG_BREAK();
+		return;
+	}
+
+	GCurrentSetRenderTarget = this;
+	GRenderer->DeviceContext()->OMSetRenderTargets(1, &pRenderTargetView, pDepthStencilView);
+	GRenderer->DeviceContext()->RSSetViewports(1, &viewport_);
+}
+
 void RenderTarget::Clear()
 {
 	ID3D11RenderTargetView* pRenderTargetView = pRenderTexture_->RenderTargetView();
@@ -187,6 +221,11 @@ void __stdcall RenderTarget::EndRenderPass()
 void* __stdcall RenderTarget::GetShaderResourceView(const E_RENDER_TEXTURE_TYPE& texureType)
 {
 	return pSRVs_[0];
+}
+
+ITexture* __stdcall RenderTarget::GetDepthTexture()
+{
+	return pDepthTexture_;
 }
 
 

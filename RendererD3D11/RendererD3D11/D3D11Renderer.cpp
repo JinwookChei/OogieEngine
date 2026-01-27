@@ -228,10 +228,16 @@ void __stdcall Renderer::RenderDebug()
 	pDebugPass_->Render();
 }
 
-void __stdcall Renderer::RenderMerge(IRenderTarget* pDepthTarget, IRenderTarget* pSrcTarget)
+void __stdcall Renderer::RenderMerge(IRenderTarget* pSrcTarget)
 {
-	pMergePass_->Render(pDepthTarget, pSrcTarget);
+	pMergePass_->Render(pSrcTarget);
 }
+
+//void __stdcall Renderer::RenderMerge(IRenderTarget* pDepthTarget, IRenderTarget* pSrcTarget)
+//{
+//	pMergePass_->Render(pSrcTarget);
+//	//pMergePass_->Render(pDepthTarget, pSrcTarget);
+//}
 
 void __stdcall Renderer::RenderBegin()
 {

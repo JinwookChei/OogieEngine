@@ -55,8 +55,8 @@
 // Interface
 #include <Application/IApplication.h>
 #include <Renderer/IRenderer.h>
-#include <ImGuiBindObject/IImGuiBindObject.h>
-#include <ImGuiModule/IImGuiModule.h>
+#include <EditorBindObject/IEditorBindObject.h>
+#include <Editor/IEditor.h>
 
 
 #include "ImGuiPanel.h"

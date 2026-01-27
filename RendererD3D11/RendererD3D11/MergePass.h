@@ -24,7 +24,8 @@ public:
 
 	ULONG __stdcall Release() override;
 
-	void Render(IRenderTarget* pDepthTarget, IRenderTarget* pSrcTarget);
+	//void Render(IRenderTarget* pDepthTarget, IRenderTarget* pSrcTarget);
+	void Render(IRenderTarget* pSrcTarget);
 
 private:
 	bool InitScreenQuad();

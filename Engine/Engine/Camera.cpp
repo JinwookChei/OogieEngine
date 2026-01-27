@@ -77,13 +77,37 @@ void Camera::LightPassEnd()
 
 void Camera::ParticlePassBegin()
 {
+	ITexture* pDepthTexture= pGBufferRenderTarget_->GetDepthTexture();
+	if (nullptr == pDepthTexture)
+	{
+		DEBUG_BREAK();
+	}
+
 	pParticleRenderTarget_->Clear();
-	pParticleRenderTarget_->Bind();
+	pParticleRenderTarget_->Bind(pDepthTexture);
+	//pParticleRenderTarget_->Bind();
 }
 
 void Camera::ParticlePassEnd()
 {
 	pParticleRenderTarget_->EndRenderPass();
+}
+
+void Camera::DebugPassBegin()
+{
+	ITexture* pDepthTexture = pGBufferRenderTarget_->GetDepthTexture();
+	if (nullptr == pDepthTexture)
+	{
+		DEBUG_BREAK();
+	}
+
+	pDebugRenderTarget_->Clear();
+	pDebugRenderTarget_->Bind(pDepthTexture);
+}
+
+void Camera::DebugPassEnd()
+{
+	pDebugRenderTarget_->EndRenderPass();
 }
 
 void Camera::BlitToBackBuffer()
@@ -211,7 +235,7 @@ bool Camera::InitParticleBuffer()
 	RenderTargetDesc particleRenderTargetDesc(E_RENDER_TECHNIQUE_TYPE::Forward);
 	particleRenderTargetDesc.size_ = { DEFAULT_SCREEN_WIDTH , DEFAULT_SCREEN_HEIGHT };
 	particleRenderTargetDesc.clearColor_ = { 0.0f, 0.0f, 0.0f, 0.0f };
-	particleRenderTargetDesc.forwardDesc_.useDepthStencil_ = true;
+	particleRenderTargetDesc.forwardDesc_.useDepthStencil_ = false;
 	pParticleRenderTarget_ = GRenderer->CreateRenderTarget(particleRenderTargetDesc);
 	if (nullptr == pParticleRenderTarget_)
 	{
@@ -227,7 +251,7 @@ bool Camera::InitDebugBuffer()
 	RenderTargetDesc debugRenderTargeetDesc(E_RENDER_TECHNIQUE_TYPE::Forward);
 	debugRenderTargeetDesc.size_ = { DEFAULT_SCREEN_WIDTH , DEFAULT_SCREEN_HEIGHT };
 	debugRenderTargeetDesc.clearColor_ = { 0.0f, 0.0f, 0.0f, 0.0f };
-	debugRenderTargeetDesc.forwardDesc_.useDepthStencil_ = true;
+	debugRenderTargeetDesc.forwardDesc_.useDepthStencil_ = false;
 	pDebugRenderTarget_ = GRenderer->CreateRenderTarget(debugRenderTargeetDesc);
 	if (nullptr == pDebugRenderTarget_)
 	{

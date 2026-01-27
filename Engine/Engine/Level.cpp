@@ -121,25 +121,28 @@ void Level::OnRender()
 		GCurrentCamera->ParticlePassBegin();
 		OnRenderParticles();
 		GCurrentCamera->ParticlePassEnd();
-
+		// Particle Pass End
 
 		GCurrentCamera->pFinalRenderTarget_->Bind();
 		GCurrentCamera->UpdatePerFrameConstant();
-		GRenderer->RenderMerge(GCurrentCamera->pGBufferRenderTarget_, GCurrentCamera->pParticleRenderTarget_);
+		GRenderer->RenderMerge(GCurrentCamera->pParticleRenderTarget_);
+		//GRenderer->RenderMerge(GCurrentCamera->pGBufferRenderTarget_, GCurrentCamera->pParticleRenderTarget_);
 		GCurrentCamera->pFinalRenderTarget_->EndRenderPass();
 
 
 		// DebugRender
-		GCurrentCamera->pDebugRenderTarget_->Clear();
-		GCurrentCamera->pDebugRenderTarget_->Bind();
+		GCurrentCamera->DebugPassBegin();
+		//GCurrentCamera->pDebugRenderTarget_->Clear();
+		//GCurrentCamera->pDebugRenderTarget_->Bind();
 		GRenderer->RenderDebug();
-		GCurrentCamera->pDebugRenderTarget_->EndRenderPass();
+		GCurrentCamera->DebugPassEnd();
 		// DebugRender End
 		
 
 		GCurrentCamera->pFinalRenderTarget_->Bind();
 		GCurrentCamera->UpdatePerFrameConstant();
-		GRenderer->RenderMerge(GCurrentCamera->pGBufferRenderTarget_, GCurrentCamera->pDebugRenderTarget_);
+		GRenderer->RenderMerge(GCurrentCamera->pDebugRenderTarget_);
+		//GRenderer->RenderMerge(GCurrentCamera->pGBufferRenderTarget_, GCurrentCamera->pDebugRenderTarget_);
 		GCurrentCamera->pFinalRenderTarget_->EndRenderPass();
 	}
 }

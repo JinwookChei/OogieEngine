@@ -114,6 +114,12 @@ void __stdcall DeferredTarget::Bind()
 	GRenderer->DeviceContext()->RSSetViewports(1, &viewport_);
 
 }
+
+void __stdcall DeferredTarget::Bind(ITexture* pDepthTexture)
+{
+	// 아직 DeferredTarget에는 외부 DepthStencilView를 사용하는 경우는 없기 때문에 임시로 비워둠.
+}
+
 void __stdcall DeferredTarget::Clear()
 {
 	ClearRenderTexture(pRenderTextureAlbedo_);
@@ -165,6 +171,11 @@ void __stdcall DeferredTarget::EndRenderPass()
 void* __stdcall DeferredTarget::GetShaderResourceView(const E_RENDER_TEXTURE_TYPE& texureType)
 {
 	return pSRVs_[(int)texureType];
+}
+
+ITexture* __stdcall DeferredTarget::GetDepthTexture()
+{
+	return pDepthTexture_;
 }
 
 bool DeferredTarget::SetTexture(Texture* pRenderTextureAlbedo, Texture* pRenderTextureNormal, Texture* pRenderTextureSpecular, Texture* pDepthTexture)

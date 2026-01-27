@@ -93,10 +93,6 @@ bool Engine::Initialize
 	{
 		return false;
 	}
-	//if (false == ImGuiSystem::GetImGuiManager()->InitImGui(pApplication_, pRenderer_, dpiSclae))
-	//{
-	//	return false;
-	//}
 
 	GInputManager = new InputManager;
 	if (false == GInputManager->Initialize())
@@ -134,7 +130,7 @@ void Engine::Run()
 	TextureManager::Instance()->TestLoad();
 
 	ParticleDesc particleDesc;
-	particleDesc.maxNum_ = 1000;
+	particleDesc.maxNum_ = 10000;
 	particleDesc.patternType_ = E_PARTICLE_PATTERN_TYPE::EXPLOSION;
 	TextureManager::Instance()->GetTexture(&particleDesc.pTexture_, 3);
 	GParticle_1 = GRenderer->CreateParticle(particleDesc);
