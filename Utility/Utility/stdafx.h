@@ -31,9 +31,9 @@
 #include <DirectXMath.h>
 
 
-// CoreTypes
-#include <CoreTypes/MathType/MathType.h>
-#include <CoreTypes/GeometryType/GeometryType.h>
+// Common
+#include <Common/MathType/MathType.h>
+#include <Common/GeometryType/GeometryType.h>
 
 
 // Utility

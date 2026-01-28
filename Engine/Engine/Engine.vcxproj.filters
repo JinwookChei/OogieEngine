@@ -67,14 +67,14 @@
     <Filter Include="Source Files\Component\BoundVolume">
       <UniqueIdentifier>{fda48a9c-d09b-4392-83eb-db9b0658ba8f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="CoreTypes">
-      <UniqueIdentifier>{ef6808b8-b970-469a-8264-744640894f1a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\ActorPicker">
       <UniqueIdentifier>{2e754504-9966-4a77-9eb7-3ceb07170912}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Component\ParticleSystem">
       <UniqueIdentifier>{6664351a-eda3-48a0-b64d-a19e62e97f5a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common">
+      <UniqueIdentifier>{ef6808b8-b970-469a-8264-744640894f1a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -147,15 +147,6 @@
     <ClInclude Include="TextureManager.h">
       <Filter>Source Files\Manager\GraphicsManager</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\CoreTypes\VertexType\VertexType.h">
-      <Filter>CoreTypes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\CoreTypes\GeometryType\GeometryType.h">
-      <Filter>CoreTypes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\CoreTypes\MathType\MathType.h">
-      <Filter>CoreTypes</Filter>
-    </ClInclude>
     <ClInclude Include="ActorPicker.h">
       <Filter>Source Files\ActorPicker</Filter>
     </ClInclude>
@@ -167,6 +158,15 @@
     </ClInclude>
     <ClInclude Include="..\..\Interface\EditorBindObject\IEditorBindObject.h">
       <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\GeometryType\GeometryType.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\MathType\MathType.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\VertexType\VertexType.h">
+      <Filter>Common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

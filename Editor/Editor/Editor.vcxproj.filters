@@ -16,9 +16,6 @@
     <Filter Include="Precompiled Header">
       <UniqueIdentifier>{2df436e1-5715-41b9-b58f-f1e80c412588}</UniqueIdentifier>
     </Filter>
-    <Filter Include="CoreTypes">
-      <UniqueIdentifier>{8d9c511e-226a-4257-899e-831095a02690}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Interface">
       <UniqueIdentifier>{34cbf8f8-30f3-47ca-8a2a-cc3c43527b43}</UniqueIdentifier>
     </Filter>
@@ -52,6 +49,9 @@
     <Filter Include="Source Files\EditorCore\EditorContext">
       <UniqueIdentifier>{1963a738-abe9-4f8e-96f9-502c5d8565f0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Common">
+      <UniqueIdentifier>{8d9c511e-226a-4257-899e-831095a02690}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -62,15 +62,6 @@
     </ClInclude>
     <ClInclude Include="..\..\Interface\Renderer\IRenderer.h">
       <Filter>Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\CoreTypes\GeometryType\GeometryType.h">
-      <Filter>CoreTypes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\CoreTypes\MathType\MathType.h">
-      <Filter>CoreTypes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\CoreTypes\VertexType\VertexType.h">
-      <Filter>CoreTypes</Filter>
     </ClInclude>
     <ClInclude Include="..\..\ThirdParty\Imgui2\imconfig.h">
       <Filter>EditSource\ImGui</Filter>
@@ -140,6 +131,15 @@
     </ClInclude>
     <ClInclude Include="SceneWindow.h">
       <Filter>Source Files\FF</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\VertexType\VertexType.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\MathType\MathType.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\GeometryType\GeometryType.h">
+      <Filter>Common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

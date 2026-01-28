@@ -144,9 +144,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\CoreTypes\GeometryType\GeometryType.h" />
-    <ClInclude Include="..\..\CoreTypes\MathType\MathType.h" />
-    <ClInclude Include="..\..\CoreTypes\VertexType\VertexType.h" />
+    <ClInclude Include="..\..\Common\GeometryType\GeometryType.h" />
+    <ClInclude Include="..\..\Common\MathType\MathType.h" />
+    <ClInclude Include="..\..\Common\VertexType\VertexType.h" />
     <ClInclude Include="..\..\Interface\Renderer\IRenderer.h" />
     <ClInclude Include="DepthState.h" />
     <ClInclude Include="FinalPass.h" />

@@ -30,9 +30,9 @@
 #include <map>
 
 //CoreTypes
-#include <CoreTypes/MathType/MathType.h>
-#include <CoreTypes/GeometryType/GeometryType.h>
-#include <CoreTypes/VertexType/VertexType.h>
+#include <Common/MathType/MathType.h>
+#include <Common/GeometryType/GeometryType.h>
+#include <Common/VertexType/VertexType.h>
 
 
 // Utility

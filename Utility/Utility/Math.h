@@ -1,4 +1,7 @@
 #pragma once
+#include <Common/MathType/MathType.h>
+#include <Common/GeometryType/GeometryType.h>
+
 namespace MATH
 {
 	const static float PI = 3.141592654f;
@@ -32,6 +35,16 @@ namespace MATH
 	UTILITY_API void VectorNormalize(Float3& out, const Float3& lhs);
 	UTILITY_API void VectorLength(float& out, const Float3& lhs);
 	UTILITY_API void VectorToEulerDeg(Float4& out, const Float3& vector);
+
+
+	UTILITY_API void VectorDot(float& out, const Float2& lhs, const Float2& rhs);
+	//UTILITY_API void VectorCross(Float2& out, const Float2& lhs, const Float2& rhs);
+	UTILITY_API void VectorAdd(Float2& out, const Float2& lhs, const Float2& rhs);
+	UTILITY_API void VectorSub(Float2& out, const Float2& lhs, const Float2& rhs);
+	UTILITY_API void VectorMultiply(Float2& out, const Float2& lhs, const Float2& rhs);
+	UTILITY_API void VectorScale(Float2& out, const Float2& lhs, float scale);
+	UTILITY_API void VectorNormalize(Float2& out, const Float2& lhs);
+	UTILITY_API void VectorLength(float& out, const Float2& lhs);
 
 
 
@@ -71,6 +84,5 @@ namespace MATH
 	//);
 
 	UTILITY_API bool Intersection3D_Ray_Triangle(float* pOutDistance, const Ray& ray, const Triangle& triangle);
-
 	UTILITY_API bool Intersection3D_Ray_AABB(float* pOutDistance, const Ray& ray, const AABB& aabb);
 }

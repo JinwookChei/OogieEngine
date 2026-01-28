@@ -22,8 +22,14 @@
     <Filter Include="Interface">
       <UniqueIdentifier>{a8f0fb1c-3b5a-44b9-8efa-4c49ee7befee}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\NewFilter1">
+    <Filter Include="Source Files\Importer">
       <UniqueIdentifier>{3e28b7fe-defc-41f1-b1b2-17af2cc80701}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\SceneInfo">
+      <UniqueIdentifier>{457d136a-b8bf-4d6c-a438-1884362358b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common">
+      <UniqueIdentifier>{b529b116-f42a-4bef-b361-5beb1d8ed7ba}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -33,6 +39,24 @@
     <ClInclude Include="..\..\Interface\Asset\IAssetImporter.h">
       <Filter>Interface</Filter>
     </ClInclude>
+    <ClInclude Include="AssetImporter.h">
+      <Filter>Source Files\Importer</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneAxisInfo.h">
+      <Filter>Source Files\SceneInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Asset\Model.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Asset\Animation.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\MathType\MathType.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\GeometryType\GeometryType.h">
+      <Filter>Common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -40,6 +64,12 @@
     </ClCompile>
     <ClCompile Include="dllmain.cpp">
       <Filter>Source Files\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetImporter.cpp">
+      <Filter>Source Files\Importer</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneAxisInfo.cpp">
+      <Filter>Source Files\SceneInfo</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

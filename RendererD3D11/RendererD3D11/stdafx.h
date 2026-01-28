@@ -49,10 +49,10 @@
 #include <ThirdParty/DirectXTex/DirectXTex.inl>
 
 
-// CoreTypes
-#include <CoreTypes/MathType/MathType.h>
-#include <CoreTypes/GeometryType/GeometryType.h>
-#include <CoreTypes/VertexType/VertexType.h>
+// Common
+#include <Common/MathType/MathType.h>
+#include <Common/GeometryType/GeometryType.h>
+#include <Common/VertexType/VertexType.h>
 
 
 // Utility

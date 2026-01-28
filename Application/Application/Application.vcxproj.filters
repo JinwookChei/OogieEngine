@@ -25,7 +25,7 @@
     <Filter Include="Source Files\Windows">
       <UniqueIdentifier>{099cc0e8-6ba1-44a4-8339-6441f8faf3d3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="CoreTypes">
+    <Filter Include="Common">
       <UniqueIdentifier>{798580fb-1e54-4170-a2d3-7bf4cd1ca17b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -45,20 +45,20 @@
     <ClInclude Include="..\..\Interface\Renderer\IRenderer.h">
       <Filter>Interface</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\CoreTypes\VertexType\VertexType.h">
-      <Filter>CoreTypes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\CoreTypes\MathType\MathType.h">
-      <Filter>CoreTypes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\CoreTypes\GeometryType\GeometryType.h">
-      <Filter>CoreTypes</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Interface\Editor\IEditor.h">
       <Filter>Interface</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Interface\EditorBindObject\IEditorBindObject.h">
       <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\GeometryType\GeometryType.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\MathType\MathType.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\VertexType\VertexType.h">
+      <Filter>Common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -25,7 +25,7 @@
     <Filter Include="Source Files\Container">
       <UniqueIdentifier>{81d9f3ef-3bb6-4c2a-afc7-11f6e3600a76}</UniqueIdentifier>
     </Filter>
-    <Filter Include="CoreTypes">
+    <Filter Include="Common">
       <UniqueIdentifier>{72526a19-73a4-4342-a579-f2c8d064a94b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -42,11 +42,11 @@
     <ClInclude Include="HashTable.h">
       <Filter>Source Files\Container</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\CoreTypes\GeometryType\GeometryType.h">
-      <Filter>CoreTypes</Filter>
+    <ClInclude Include="..\..\Common\MathType\MathType.h">
+      <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\CoreTypes\MathType\MathType.h">
-      <Filter>CoreTypes</Filter>
+    <ClInclude Include="..\..\Common\GeometryType\GeometryType.h">
+      <Filter>Common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -65,5 +65,8 @@
     <ClCompile Include="dllmain.cpp">
       <Filter>Source Files\Main</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
   </ItemGroup>
 </Project>

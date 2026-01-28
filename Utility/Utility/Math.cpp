@@ -1,4 +1,6 @@
 #include "stdafx.h"
+#include <xmmintrin.h>   // SSE
+#include <smmintrin.h>   // SSE4.1 (있으면 더 좋음)
 #include "Math.h"
 
 static __m128 LoadFloat3(const Float3& value)
@@ -153,6 +155,158 @@ void MATH::VectorToEulerDeg(Float4& out, const Float3& vector)
 
 	// 5. W는 사용하지 않거나 1로 설정
 	out.W = 1.0f;
+}
+
+
+void MATH::VectorDot(float& out, const Float2& lhs, const Float2& rhs)
+{
+	// 아직 검증 안됨. 사용 할 일 있으면 검증 해서 사용.
+	// 디버그 봉인 씰
+	DEBUG_BREAK();
+
+	// [ x, y, 0, 0 ]
+	__m128 a = _mm_set_ps(0.0f, 0.0f, lhs.Y, lhs.X);
+	__m128 b = _mm_set_ps(0.0f, 0.0f, rhs.Y, rhs.X);
+
+#if defined(__SSE4_1__)
+	// SSE4.1 전용: dot 명령어 한 방
+	__m128 dot = _mm_dp_ps(a, b, 0x31); // x,y만 곱하고 x에 결과
+	out = _mm_cvtss_f32(dot);
+#else
+	// SSE2 호환 버전
+	__m128 mul = _mm_mul_ps(a, b);      // [x*x, y*y, 0, 0]
+	__m128 shuf = _mm_shuffle_ps(mul, mul, _MM_SHUFFLE(2, 3, 0, 1));
+	__m128 sum = _mm_add_ss(mul, shuf); // x*x + y*y
+	out = _mm_cvtss_f32(sum);
+#endif
+}
+
+//void MATH::VectorCross(Float2& out, const Float2& lhs, const Float2& rhs)
+//{
+//}
+
+void MATH::VectorAdd(Float2& out, const Float2& lhs, const Float2& rhs)
+{
+	// 아직 검증 안됨. 사용 할 일 있으면 검증 해서 사용.
+	// 디버그 봉인 씰
+	DEBUG_BREAK();
+
+	// [ x, y, 0, 0 ]
+	__m128 a = _mm_set_ps(0.0f, 0.0f, lhs.Y, lhs.X);
+	__m128 b = _mm_set_ps(0.0f, 0.0f, rhs.Y, rhs.X)	;
+
+	__m128 sum = _mm_add_ps(a, b);
+
+	out.X = _mm_cvtss_f32(sum);
+	out.Y = _mm_cvtss_f32(_mm_shuffle_ps(sum, sum, _MM_SHUFFLE(3, 2, 1, 1)));
+}
+
+void MATH::VectorSub(Float2& out, const Float2& lhs, const Float2& rhs)
+{
+	// 아직 검증 안됨. 사용 할 일 있으면 검증 해서 사용.
+	// 디버그 봉인 씰
+	DEBUG_BREAK();
+
+	// [ x, y, 0, 0 ]
+	__m128 a = _mm_set_ps(0.0f, 0.0f, lhs.Y, lhs.X);
+	__m128 b = _mm_set_ps(0.0f, 0.0f, rhs.Y, rhs.X);
+
+	__m128 diff = _mm_sub_ps(a, b);
+
+	out.X = _mm_cvtss_f32(diff);
+	out.Y = _mm_cvtss_f32(_mm_shuffle_ps(diff, diff, _MM_SHUFFLE(3, 2, 1, 1)));
+}
+
+void MATH::VectorMultiply(Float2& out, const Float2& lhs, const Float2& rhs)
+{
+	// 아직 검증 안됨. 사용 할 일 있으면 검증 해서 사용.
+	// 디버그 봉인 씰
+	DEBUG_BREAK();
+
+	// [ x, y, 0, 0 ]
+	__m128 a = _mm_set_ps(0.0f, 0.0f, lhs.Y, lhs.X);
+	__m128 b = _mm_set_ps(0.0f, 0.0f, rhs.Y, rhs.X);
+
+	__m128 mul = _mm_mul_ps(a, b);
+
+	out.X = _mm_cvtss_f32(mul);
+	out.Y = _mm_cvtss_f32(_mm_shuffle_ps(mul, mul, _MM_SHUFFLE(3, 2, 1, 1)));
+}
+
+void MATH::VectorScale(Float2& out, const Float2& lhs, float scale)
+{
+	// 아직 검증 안됨. 사용 할 일 있으면 검증 해서 사용.
+	// 디버그 봉인 씰
+	DEBUG_BREAK();
+
+	// [ x, y, 0, 0 ]
+	__m128 v = _mm_set_ps(0.0f, 0.0f, lhs.Y, lhs.X);
+
+	// [ scale, scale, scale, scale ]
+	__m128 s = _mm_set1_ps(scale);
+
+	__m128 mul = _mm_mul_ps(v, s);
+
+	out.X = _mm_cvtss_f32(mul);
+	out.Y = _mm_cvtss_f32(_mm_shuffle_ps(mul, mul, _MM_SHUFFLE(3, 2, 1, 1)));
+}
+
+void MATH::VectorNormalize(Float2& out, const Float2& lhs)
+{
+	// 아직 검증 안됨. 사용 할 일 있으면 검증 해서 사용.
+	// 디버그 봉인 씰
+	DEBUG_BREAK();
+
+	// [ x, y, 0, 0 ]
+	__m128 v = _mm_set_ps(0.0f, 0.0f, lhs.Y, lhs.X);
+
+	// length^2 = x*x + y*y
+	__m128 mul = _mm_mul_ps(v, v); // [x^2, y^2, 0, 0]
+	__m128 shuf = _mm_shuffle_ps(mul, mul, _MM_SHUFFLE(3, 2, 0, 1));
+	__m128 lenSq = _mm_add_ss(mul, shuf);
+
+	// length = sqrt(length^2)
+	__m128 len = _mm_sqrt_ss(lenSq);
+
+	// 0 벡터 체크
+	float length = _mm_cvtss_f32(len);
+	if (length <= 0.000001f)
+	{
+		out.X = 0.0f;
+		out.Y = 0.0f;
+		return;
+	}
+
+	// v / length
+	__m128 invLen = _mm_div_ss(_mm_set_ss(1.0f), len);
+	invLen = _mm_shuffle_ps(invLen, invLen, _MM_SHUFFLE(0, 0, 0, 0));
+
+	__m128 norm = _mm_mul_ps(v, invLen);
+
+	out.X = _mm_cvtss_f32(norm);
+	out.Y = _mm_cvtss_f32(_mm_shuffle_ps(norm, norm, _MM_SHUFFLE(3, 2, 1, 1)));
+}
+
+void MATH::VectorLength(float& out, const Float2& lhs)
+{
+	// 아직 검증 안됨. 사용 할 일 있으면 검증 해서 사용.
+	// 디버그 봉인 씰
+	DEBUG_BREAK();
+
+	// [ x, y, 0, 0 ]
+	__m128 v = _mm_set_ps(0.0f, 0.0f, lhs.Y, lhs.X);
+
+	// x^2, y^2
+	__m128 mul = _mm_mul_ps(v, v); // [x^2, y^2, 0, 0]
+
+	// x^2 + y^2
+	__m128 shuf = _mm_shuffle_ps(mul, mul, _MM_SHUFFLE(3, 2, 0, 1));
+	__m128 lenSq = _mm_add_ss(mul, shuf);
+
+	// sqrt
+	__m128 len = _mm_sqrt_ss(lenSq);
+
+	out = _mm_cvtss_f32(len);
 }
 
 
