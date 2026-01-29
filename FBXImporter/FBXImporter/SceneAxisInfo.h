@@ -3,7 +3,8 @@
 class SceneAxisInfo
 {
 public:
-    friend class AssetImporter;
+    friend class FBXImporter;
+
     SceneAxisInfo();
     ~SceneAxisInfo();
 

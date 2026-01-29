@@ -24,17 +24,16 @@ Camera* GMainCamera = nullptr;
 Camera* GCurrentCamera = nullptr;
 ActorPicker* GActorPicker = nullptr;
 
-
 IParticle* GParticle_1 = nullptr;
 IParticle* GParticle_2 = nullptr;
 
 
 Engine::Engine()
-	: pStartUp_(nullptr),
-	applicationModule_(),
-	pApplication_(nullptr),
-	rendererModule_(),
-	pRenderer_(nullptr)
+	: pStartUp_(nullptr)
+	, applicationModule_()
+	, pApplication_(nullptr)
+	, rendererModule_()
+	, pRenderer_(nullptr)
 {
 }
 
@@ -77,26 +76,35 @@ bool Engine::Initialize
 	}
 
 	float dpiSclae = Editor::GetEditor()->EnableDpiAwareness();
-	//float dpiSclae = ImGuiSystem::GetImGuiManager()->EnableDpiAwareness();
 
 	if (false == LoadApplication(hInstance, pCmdLine, nCmdShow, pMainWindowClassName, pMainWindowText, pIConPath))
 	{
+		DEBUG_BREAK();
 		return false;
 	}
 
 	if (false == LoadRenderer())
 	{
+		DEBUG_BREAK();
+		return false;
+	}
+
+	if (false == FBXSystem::Init())
+	{
+		DEBUG_BREAK();
 		return false;
 	}
 
 	if (false == Editor::GetEditor()->Init(pApplication_, pRenderer_, dpiSclae))
 	{
+		DEBUG_BREAK();
 		return false;
 	}
 
 	GInputManager = new InputManager;
 	if (false == GInputManager->Initialize())
 	{
+		DEBUG_BREAK();
 		return false;
 	}
 
@@ -112,6 +120,7 @@ bool Engine::Initialize
 
 	if (false == InitializeStartUp(pStartup))
 	{
+		DEBUG_BREAK();
 		return false;
 	}
 
@@ -128,6 +137,8 @@ void Engine::Run()
 	MeshManager::Instance()->TestLoad();
 	MaterialManager::Instance()->TestLoad();
 	TextureManager::Instance()->TestLoad();
+	FBXSystem::GetImporter();
+
 
 	ParticleDesc particleDesc;
 	particleDesc.maxNum_ = 10000;
@@ -196,7 +207,12 @@ bool Engine::LoadApplication
 		pApplication_ = nullptr;
 	}
 
+#ifdef _DEBUG
 	LPCWSTR libFileName = L"Application_x64_Debug.dll";
+#else
+	LPCWSTR libFileName = L"Application_x64_Release.dll";
+#endif
+
 	applicationModule_ = LoadLibrary(libFileName);
 	if (!applicationModule_)
 	{
@@ -253,7 +269,12 @@ bool Engine::LoadRenderer()
 		pRenderer_ = nullptr;
 	}
 
+#ifdef _DEBUG
 	LPCWSTR libFileName = L"RendererD3D11_x64_Debug.dll";
+#else
+	LPCWSTR libFileName = L"RendererD3D11_x64_Release.dll";
+#endif
+	
 	rendererModule_ = LoadLibrary(libFileName);
 	if (!rendererModule_)
 	{
@@ -285,6 +306,7 @@ bool Engine::LoadRenderer()
 	GRenderer = pRenderer_;
 	return true;
 }
+
 
 bool Engine::InitializeStartUp(IStartup* startUp)
 {
@@ -375,6 +397,8 @@ void Engine::CleanUp()
 		delete GInputManager;
 		GInputManager = nullptr;
 	}
+
+	FBXSystem::CleanUp();
 
 	if (nullptr != pApplication_)
 	{

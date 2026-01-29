@@ -1,24 +1,44 @@
 #include "stdafx.h"
-#include <unordered_map>
-#include <vector>
 #include "SceneAxisInfo.h"
-#include "AssetImporter.h"
+#include "FBXImporter.h"
 
 
-AssetImporter::AssetImporter()
-	: pManager_(nullptr)
+FBXImporter::FBXImporter()
+	: refCount_(1)
+	, pManager_(nullptr)
 	, pIOSetting_(nullptr)
 	, pImporter_(nullptr)
 	, pScene_(nullptr)
 {
 }
 
-AssetImporter::~AssetImporter()
+FBXImporter::~FBXImporter()
 {
 	CleanUp();
 }
 
-bool AssetImporter::Init(const std::string& file)
+HRESULT __stdcall FBXImporter::QueryInterface(REFIID riid, void** ppvObject)
+{
+	return E_NOTIMPL;
+}
+
+ULONG __stdcall FBXImporter::AddRef()
+{
+	return ++refCount_;
+}
+
+ULONG __stdcall FBXImporter::Release()
+{
+	--refCount_;
+	ULONG tmpRefCount = refCount_;
+	if (0 == refCount_)
+	{
+		delete this;
+	}
+	return tmpRefCount;
+}
+
+bool FBXImporter::Init(const std::string& file)
 {
 	CleanUp();
 
@@ -60,7 +80,7 @@ bool AssetImporter::Init(const std::string& file)
 	return true;
 }
 
-bool AssetImporter::ImportModel(Model* pOutModel, const std::string& file)
+bool FBXImporter::ImportModel(Model* pOutModel, const std::string& file)
 {
 	if (!Init(file))
 	{
@@ -102,7 +122,7 @@ bool AssetImporter::ImportModel(Model* pOutModel, const std::string& file)
 	vertexCpIndexCache.reserve(polygonCount * 3);
 
 
-	bool isExistTangent;
+	bool isExistTangent = false;
 	int polygonVertexCounter = 0;
 	for (int poly = 0; poly < polygonCount; ++poly)
 	{
@@ -180,7 +200,7 @@ bool AssetImporter::ImportModel(Model* pOutModel, const std::string& file)
 	return true;
 }
 
-fbxsdk::FbxMesh* AssetImporter::FindMesh(fbxsdk::FbxNode* pNode)
+fbxsdk::FbxMesh* FBXImporter::FindMesh(fbxsdk::FbxNode* pNode)
 {
 	if (nullptr == pNode)
 	{
@@ -204,7 +224,7 @@ fbxsdk::FbxMesh* AssetImporter::FindMesh(fbxsdk::FbxNode* pNode)
 	return nullptr;
 }
 
-bool AssetImporter::ExtractNormal(Float3* pOutNormal, fbxsdk::FbxMesh* pMesh, int cpIndex, int polygonVertexIndex)
+bool FBXImporter::ExtractNormal(Float3* pOutNormal, fbxsdk::FbxMesh* pMesh, int cpIndex, int polygonVertexIndex)
 {
 	fbxsdk::FbxGeometryElementNormal* element = pMesh->GetElementNormal();
 	if (!element)
@@ -256,13 +276,13 @@ bool AssetImporter::ExtractNormal(Float3* pOutNormal, fbxsdk::FbxMesh* pMesh, in
 	return true;
 }
 
-bool AssetImporter::ExtractTangent(Float4* pOutTangent, bool* pOutExistTangent, fbxsdk::FbxMesh* pMesh, int cpIndex, int polygonVertexIndex)
+bool FBXImporter::ExtractTangent(Float4* pOutTangent, bool* pOutExistTangent, fbxsdk::FbxMesh* pMesh, int cpIndex, int polygonVertexIndex)
 {
 	fbxsdk::FbxGeometryElementTangent* element = pMesh->GetElementTangent();
 	if (nullptr == element)
 	{
 		*pOutExistTangent = false;
-		return false;
+		return true;
 	}
 	else
 	{
@@ -314,7 +334,7 @@ bool AssetImporter::ExtractTangent(Float4* pOutTangent, bool* pOutExistTangent, 
 	return true;
 }
 
-bool AssetImporter::ExtractUV(Float2* pOutUV, fbxsdk::FbxMesh* pMesh, int polyIndex, int vertexIndex)
+bool FBXImporter::ExtractUV(Float2* pOutUV, fbxsdk::FbxMesh* pMesh, int polyIndex, int vertexIndex)
 {
 	int uvElementCnt = pMesh->GetElementUVCount();
 	if (uvElementCnt != 1)
@@ -345,7 +365,7 @@ bool AssetImporter::ExtractUV(Float2* pOutUV, fbxsdk::FbxMesh* pMesh, int polyIn
 	return true;
 }
 
-bool AssetImporter::ExtractColor(Float4* pOutColor, fbxsdk::FbxMesh* pMesh, int cpIndex, int polygonVertexIndex)
+bool FBXImporter::ExtractColor(Float4* pOutColor, fbxsdk::FbxMesh* pMesh, int cpIndex, int polygonVertexIndex)
 {
 	if (pMesh->GetElementVertexColorCount() == 0)
 	{
@@ -417,7 +437,7 @@ bool AssetImporter::ExtractColor(Float4* pOutColor, fbxsdk::FbxMesh* pMesh, int 
 	return true;
 }
 
-void AssetImporter::CalculateTangent(std::vector<SkinnedMeshVertex>* pVertices, const std::vector<uint16_t>& indices)
+void FBXImporter::CalculateTangent(std::vector<SkinnedMeshVertex>* pVertices, const std::vector<uint16_t>& indices)
 {
 	const size_t vertexCount = pVertices->size();
 
@@ -568,7 +588,7 @@ void AssetImporter::CalculateTangent(std::vector<SkinnedMeshVertex>* pVertices, 
 }
 
 
-int AssetImporter::CountMeshes(fbxsdk::FbxNode* node)
+int FBXImporter::CountMeshes(fbxsdk::FbxNode* node)
 {
 	int count = 0;
 
@@ -585,7 +605,7 @@ int AssetImporter::CountMeshes(fbxsdk::FbxNode* node)
 }
 
 
-SceneAxisInfo AssetImporter::GetSceneAxisInfo(fbxsdk::FbxScene* pScene)
+SceneAxisInfo FBXImporter::GetSceneAxisInfo(fbxsdk::FbxScene* pScene)
 {
 	SceneAxisInfo axisInfo{};
 
@@ -611,7 +631,7 @@ SceneAxisInfo AssetImporter::GetSceneAxisInfo(fbxsdk::FbxScene* pScene)
 }
 
 
-void AssetImporter::CleanUp()
+void FBXImporter::CleanUp()
 {
 	if (pScene_)
 	{

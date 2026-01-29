@@ -147,18 +147,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Common\Asset\Animation.h" />
+    <ClInclude Include="..\..\Common\Asset\Model.h" />
     <ClInclude Include="..\..\Common\GeometryType\GeometryType.h" />
     <ClInclude Include="..\..\Common\MathType\MathType.h" />
     <ClInclude Include="..\..\Common\VertexType\VertexType.h" />
     <ClInclude Include="..\..\Interface\Application\IApplication.h" />
     <ClInclude Include="..\..\Interface\EditorBindObject\IEditorBindObject.h" />
     <ClInclude Include="..\..\Interface\Editor\IEditor.h" />
+    <ClInclude Include="..\..\Interface\FBXImporter\IFBXImporter.h" />
     <ClInclude Include="..\..\Interface\Renderer\IRenderer.h" />
     <ClInclude Include="Actor.h" />
     <ClInclude Include="ActorPicker.h" />
     <ClInclude Include="BoundVolume.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="DirectionLight.h" />
+    <ClInclude Include="FBXSystem.h" />
     <ClInclude Include="GeometryGenerator.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="Engine.h" />
@@ -184,6 +188,7 @@
     <ClCompile Include="BoundVolume.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="DirectionLight.cpp" />
+    <ClCompile Include="FBXSystem.cpp" />
     <ClCompile Include="GeometryGenerator.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="dllmain.cpp" />

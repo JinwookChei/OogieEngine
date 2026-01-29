@@ -76,6 +76,9 @@
     <Filter Include="Common">
       <UniqueIdentifier>{ef6808b8-b970-469a-8264-744640894f1a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\FBXSystem">
+      <UniqueIdentifier>{8b09a7ae-7e33-4c1f-9062-ec68c9bec508}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -168,6 +171,18 @@
     <ClInclude Include="..\..\Common\VertexType\VertexType.h">
       <Filter>Common</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Common\Asset\Model.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Asset\Animation.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Interface\FBXImporter\IFBXImporter.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="FBXSystem.h">
+      <Filter>Source Files\FBXSystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -238,6 +253,9 @@
     </ClCompile>
     <ClCompile Include="ParticleComponent.cpp">
       <Filter>Source Files\Component\ParticleSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="FBXSystem.cpp">
+      <Filter>Source Files\FBXSystem</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

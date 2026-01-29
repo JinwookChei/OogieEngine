@@ -1,7 +1,4 @@
 #include "stdafx.h"
-#include <string>
-#include <sstream>
-#include <string_view>
 #include "SceneAxisInfo.h"
 
 SceneAxisInfo::SceneAxisInfo()

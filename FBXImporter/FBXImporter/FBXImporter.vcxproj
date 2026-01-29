@@ -22,7 +22,7 @@
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{858ce059-9c3c-40b0-b71d-900e93a7a635}</ProjectGuid>
-    <RootNamespace>AssetLoader</RootNamespace>
+    <RootNamespace>FBXImporter</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -156,13 +156,13 @@
     <ClInclude Include="..\..\Common\Asset\Model.h" />
     <ClInclude Include="..\..\Common\GeometryType\GeometryType.h" />
     <ClInclude Include="..\..\Common\MathType\MathType.h" />
-    <ClInclude Include="..\..\Interface\Asset\IAssetImporter.h" />
-    <ClInclude Include="AssetImporter.h" />
+    <ClInclude Include="..\..\Interface\FBXImporter\IFBXImporter.h" />
+    <ClInclude Include="FBXImporter.h" />
     <ClInclude Include="SceneAxisInfo.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AssetImporter.cpp" />
+    <ClCompile Include="FBXImporter.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="SceneAxisInfo.cpp" />
     <ClCompile Include="stdafx.cpp">

@@ -36,10 +36,7 @@
     <ClInclude Include="stdafx.h">
       <Filter>Precompiled Header</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Interface\Asset\IAssetImporter.h">
-      <Filter>Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="AssetImporter.h">
+    <ClInclude Include="FBXImporter.h">
       <Filter>Source Files\Importer</Filter>
     </ClInclude>
     <ClInclude Include="SceneAxisInfo.h">
@@ -57,6 +54,9 @@
     <ClInclude Include="..\..\Common\GeometryType\GeometryType.h">
       <Filter>Common</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Interface\FBXImporter\IFBXImporter.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -65,7 +65,7 @@
     <ClCompile Include="dllmain.cpp">
       <Filter>Source Files\Main</Filter>
     </ClCompile>
-    <ClCompile Include="AssetImporter.cpp">
+    <ClCompile Include="FBXImporter.cpp">
       <Filter>Source Files\Importer</Filter>
     </ClCompile>
     <ClCompile Include="SceneAxisInfo.cpp">

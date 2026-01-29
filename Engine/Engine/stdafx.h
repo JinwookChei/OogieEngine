@@ -26,7 +26,6 @@
 
 #define ENGINE_API __declspec(dllexport)
 #define UTILITY_API __declspec(dllimport)
-//#define IMGUI_API __declspec(dllimport)
 #define EDITOR_API __declspec(dllimport)
 
 
@@ -43,10 +42,12 @@
 // Temp
 #include <DirectXMath.h>
 
-// CoreTypes
+// Common
 #include <Common/MathType/MathType.h>
 #include <Common/GeometryType/GeometryType.h>
 #include <Common/VertexType/VertexType.h>
+#include <Common/Asset/Animation.h>
+#include <Common/Asset/Model.h>
 
 
 // Utility
@@ -60,26 +61,21 @@
 #include <Interface/Renderer/IRenderer.h>
 #include <Interface/EditorBindObject/IEditorBindObject.h>
 #include <Interface/Editor/IEditor.h>
-//#include <ImGuiBindObject/IImGuiBindObject.h>
-//#include <ImGuiModule/IImGuiModule.h>
+#include <Interface/FBXImporter/IFBXImporter.h>
 
-
-// ImguiManager
-//#include <ImguiModule/ImguiManager.h>
 
 // Editor
 #include <Editor/Editor/EditorCore.h>
 
 
 // Engine
+#include "FBXSystem.h"
 #include "InputManager.h"
 #include "TimeManager.h"
 #include "MeshManager.h"
 #include "MaterialManager.h"
 #include "TextureManager.h"
 #include "RasterizerManager.h"
-
-
 #include "Transform.h"
 #include "ActorPicker.h"
 #include "World.h"

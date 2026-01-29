@@ -32,21 +32,30 @@
 #pragma comment(lib, "libxml2-md")
 #pragma comment(lib, "zlib-md")
 
+#define FBX_IMPORTER_API __declspec(dllexport)
+#define UTILITY_API __declspec(dllimport)
 
 // Common
 #include <Common/Asset/Model.h>
 #include <Common/Asset/Animation.h>
 #include <Common/MathType/MathType.h>
 
+// Interface
+#include <Interface/FBXImporter/IFBXImporter.h>
+
+
 // Utility
-#define UTILITY_API __declspec(dllimport)
 #include <Utility/Utility/Math.h>
 #include <Utility/Utility/LinkedList.h>
 #include <Utility/Utility/HashTable.h>
 
 
+// AssetImporter
+#include "FBXImporter.h"
 
-// Interface
-#include <Interface/Asset/IAssetImporter.h>
 
-
+#include <unordered_map>
+#include <vector>
+#include <string>
+#include <sstream>
+#include <string_view>

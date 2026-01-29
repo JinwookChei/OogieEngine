@@ -2,6 +2,7 @@
 #include <cstdint>
 #include <string>
 #include <vector>
+#include <map>
 #include <Common/MathType/MathType.h>
 
 
@@ -76,15 +77,15 @@ struct std::hash<SkinnedMeshVertex>
 };
 
 
-//
+
 //struct Bone
 //{
-//	std::string name;
-//	int parentIndex;                // 부모 본 인덱스 (-1이면 루트)
-//
-//	FbxAMatrix   meshBindPose;       // Mesh Bind Global
-//	FbxAMatrix   boneBindPose;       // Bone Bind Global
+//	std::string name_;
+//	int parentIndex_;                // 부모 본 인덱스 (-1이면 루트)
+//	Float4x4   meshBindPose_;       // Mesh Bind Global
+//	Float4x4   boneBindPose_;       // Bone Bind Global
 //};
+//
 
 
 struct Model
@@ -92,30 +93,14 @@ struct Model
 	std::vector<SkinnedMeshVertex> vertices_;
 	std::vector<uint16_t> indices_;
 
-	//ID3D11Buffer* pVertexBuffer;
-	//ID3D11Buffer* pIndexBuffer;
-
 	Model()
 		: vertices_()
 		, indices_()
-		//, pVertexBuffer(nullptr)
-		//, pIndexBuffer(nullptr)
 	{
 	}
 	~Model()
 	{
 		CleanUp();
-		//if (pVertexBuffer)
-		//{
-		//	pVertexBuffer->Release();
-		//	pVertexBuffer = nullptr;
-		//}
-
-		//if (pIndexBuffer)
-		//{
-		//	pIndexBuffer->Release();
-		//	pIndexBuffer = nullptr;
-		//}
 	}
 
 	void CleanUp()
