@@ -9,6 +9,7 @@ private:
 	static IFBXImporter* GFbxImporter;
 	static bool Init();
 	static bool LoadFBXImporter();
+	static void TestImportFBX();
 
 public:
 	static IFBXImporter* GetImporter();

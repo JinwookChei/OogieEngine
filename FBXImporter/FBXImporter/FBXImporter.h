@@ -13,9 +13,9 @@ public:
 	ULONG __stdcall Release() override;
 
 private:
-	bool Init(const std::string& file);
+	bool ImportModel(Model* pOutModel, const std::string& file) override;
 
-	bool ImportModel(Model* pOutModel, const std::string& file);
+	bool Init(const std::string& file);
 	fbxsdk::FbxMesh* FindMesh(fbxsdk::FbxNode* pNode);
 
 	bool ExtractNormal(Float3* pOutNormal, fbxsdk::FbxMesh* pMesh, int cpIndex, int polygonVertexIndex);

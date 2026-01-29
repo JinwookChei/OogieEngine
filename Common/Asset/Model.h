@@ -105,6 +105,7 @@ struct Model
 
 	void CleanUp()
 	{
+
 		vertices_.clear();
 		indices_.clear();
 	}

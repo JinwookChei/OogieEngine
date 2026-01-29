@@ -137,7 +137,7 @@ void Engine::Run()
 	MeshManager::Instance()->TestLoad();
 	MaterialManager::Instance()->TestLoad();
 	TextureManager::Instance()->TestLoad();
-	FBXSystem::GetImporter();
+	FBXSystem::TestImportFBX();
 
 
 	ParticleDesc particleDesc;

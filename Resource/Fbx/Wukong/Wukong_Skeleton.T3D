@@ -1,0 +1,308 @@
+Begin Object Class=/Script/Engine.Skeleton Name="Wukong_Skeleton" ExportPath="/Script/Engine.Skeleton'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton'"
+   Begin Object Class=/Script/Engine.SkeletalMeshSocket Name="SkeletalMeshSocket_0" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_0'"
+   End Object
+   Begin Object Class=/Script/Engine.SkeletalMeshSocket Name="SkeletalMeshSocket_1" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_1'"
+   End Object
+   Begin Object Class=/Script/Engine.SkeletalMeshSocket Name="SkeletalMeshSocket_10" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_10'"
+   End Object
+   Begin Object Class=/Script/Engine.SkeletalMeshSocket Name="SkeletalMeshSocket_11" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_11'"
+   End Object
+   Begin Object Class=/Script/Engine.SkeletalMeshSocket Name="SkeletalMeshSocket_12" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_12'"
+   End Object
+   Begin Object Class=/Script/Engine.SkeletalMeshSocket Name="SkeletalMeshSocket_13" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_13'"
+   End Object
+   Begin Object Class=/Script/Engine.SkeletalMeshSocket Name="SkeletalMeshSocket_14" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_14'"
+   End Object
+   Begin Object Class=/Script/Engine.SkeletalMeshSocket Name="SkeletalMeshSocket_15" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_15'"
+   End Object
+   Begin Object Class=/Script/Engine.SkeletalMeshSocket Name="SkeletalMeshSocket_16" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_16'"
+   End Object
+   Begin Object Class=/Script/Engine.SkeletalMeshSocket Name="SkeletalMeshSocket_17" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_17'"
+   End Object
+   Begin Object Class=/Script/Engine.SkeletalMeshSocket Name="SkeletalMeshSocket_18" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_18'"
+   End Object
+   Begin Object Class=/Script/Engine.SkeletalMeshSocket Name="SkeletalMeshSocket_19" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_19'"
+   End Object
+   Begin Object Class=/Script/Engine.SkeletalMeshSocket Name="SkeletalMeshSocket_2" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_2'"
+   End Object
+   Begin Object Class=/Script/Engine.SkeletalMeshSocket Name="SkeletalMeshSocket_20" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_20'"
+   End Object
+   Begin Object Class=/Script/Engine.SkeletalMeshSocket Name="SkeletalMeshSocket_21" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_21'"
+   End Object
+   Begin Object Class=/Script/Engine.SkeletalMeshSocket Name="SkeletalMeshSocket_22" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_22'"
+   End Object
+   Begin Object Class=/Script/Engine.SkeletalMeshSocket Name="SkeletalMeshSocket_23" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_23'"
+   End Object
+   Begin Object Class=/Script/Engine.SkeletalMeshSocket Name="SkeletalMeshSocket_24" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_24'"
+   End Object
+   Begin Object Class=/Script/Engine.SkeletalMeshSocket Name="SkeletalMeshSocket_25" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_25'"
+   End Object
+   Begin Object Class=/Script/Engine.SkeletalMeshSocket Name="SkeletalMeshSocket_26" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_26'"
+   End Object
+   Begin Object Class=/Script/Engine.SkeletalMeshSocket Name="SkeletalMeshSocket_27" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_27'"
+   End Object
+   Begin Object Class=/Script/Engine.SkeletalMeshSocket Name="SkeletalMeshSocket_28" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_28'"
+   End Object
+   Begin Object Class=/Script/Engine.SkeletalMeshSocket Name="SkeletalMeshSocket_29" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_29'"
+   End Object
+   Begin Object Class=/Script/Engine.SkeletalMeshSocket Name="SkeletalMeshSocket_3" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_3'"
+   End Object
+   Begin Object Class=/Script/Engine.SkeletalMeshSocket Name="SkeletalMeshSocket_30" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_30'"
+   End Object
+   Begin Object Class=/Script/Engine.SkeletalMeshSocket Name="SkeletalMeshSocket_31" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_31'"
+   End Object
+   Begin Object Class=/Script/Engine.SkeletalMeshSocket Name="SkeletalMeshSocket_32" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_32'"
+   End Object
+   Begin Object Class=/Script/Engine.SkeletalMeshSocket Name="SkeletalMeshSocket_33" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_33'"
+   End Object
+   Begin Object Class=/Script/Engine.SkeletalMeshSocket Name="SkeletalMeshSocket_4" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_4'"
+   End Object
+   Begin Object Class=/Script/Engine.SkeletalMeshSocket Name="SkeletalMeshSocket_5" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_5'"
+   End Object
+   Begin Object Class=/Script/Engine.SkeletalMeshSocket Name="SkeletalMeshSocket_6" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_6'"
+   End Object
+   Begin Object Class=/Script/Engine.SkeletalMeshSocket Name="SkeletalMeshSocket_7" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_7'"
+   End Object
+   Begin Object Class=/Script/Engine.SkeletalMeshSocket Name="SkeletalMeshSocket_8" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_8'"
+   End Object
+   Begin Object Class=/Script/Engine.SkeletalMeshSocket Name="SkeletalMeshSocket_9" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_9'"
+   End Object
+   Begin Object Class=/Script/Engine.AnimCurveMetaData Name="AnimCurveMetaData_0" ExportPath="/Script/Engine.AnimCurveMetaData'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:AnimCurveMetaData_0'"
+   End Object
+   Begin Object Name="SkeletalMeshSocket_0" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_0'"
+      SocketName="FX_Staff_Mid"
+      BoneName="weapon_r"
+      RelativeRotation=(Pitch=0.000000,Yaw=-90.000000,Roll=190.000000)
+   End Object
+   Begin Object Name="SkeletalMeshSocket_1" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_1'"
+      SocketName="FX_Staff_TrailEnd_A"
+      BoneName="weapon_r"
+      RelativeLocation=(X=-0.000034,Y=-8.661726,Z=-0.000000)
+      RelativeRotation=(Pitch=0.000000,Yaw=-90.000000,Roll=180.000000)
+   End Object
+   Begin Object Name="SkeletalMeshSocket_10" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_10'"
+      SocketName="FX_Leg_L"
+      BoneName="calf_l"
+      RelativeRotation=(Pitch=-0.000765,Yaw=179.999954,Roll=179.999954)
+   End Object
+   Begin Object Name="SkeletalMeshSocket_11" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_11'"
+      SocketName="FX_Staff_Tip_A"
+      BoneName="weapon_r"
+      RelativeLocation=(X=0.000000,Y=-112.000000,Z=0.000000)
+      RelativeRotation=(Pitch=0.000000,Yaw=-90.000000,Roll=180.000000)
+   End Object
+   Begin Object Name="SkeletalMeshSocket_12" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_12'"
+      SocketName="FX_Staff_Telescope_B"
+      BoneName="weapon_B_r"
+      RelativeLocation=(X=-0.259121,Y=41.508762,Z=0.580365)
+      RelativeRotation=(Pitch=0.000000,Yaw=-90.000000,Roll=0.000000)
+   End Object
+   Begin Object Name="SkeletalMeshSocket_13" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_13'"
+      SocketName="Muzzle_01"
+      BoneName="hand_r"
+      RelativeLocation=(X=-22.000000,Y=0.000000,Z=0.000000)
+      RelativeRotation=(Pitch=-0.000014,Yaw=-179.998779,Roll=89.998184)
+   End Object
+   Begin Object Name="SkeletalMeshSocket_14" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_14'"
+      SocketName="FX_Staff_Telescope_C"
+      BoneName="weapon_C_r"
+      RelativeLocation=(X=-0.068613,Y=28.554735,Z=0.153878)
+      RelativeRotation=(Pitch=0.000000,Yaw=-90.000000,Roll=0.000000)
+   End Object
+   Begin Object Name="SkeletalMeshSocket_15" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_15'"
+      SocketName="FX_Trail_R_01"
+      BoneName="lowerarm_r"
+      RelativeRotation=(Pitch=0.000000,Yaw=179.999359,Roll=179.999893)
+   End Object
+   Begin Object Name="SkeletalMeshSocket_16" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_16'"
+      SocketName="FX_Trail_R_02"
+      BoneName="lowerarm_r"
+      RelativeLocation=(X=-40.000000,Y=0.000000,Z=0.000000)
+      RelativeRotation=(Pitch=0.000000,Yaw=179.999359,Roll=179.999893)
+   End Object
+   Begin Object Name="SkeletalMeshSocket_17" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_17'"
+      SocketName="FX_Head"
+      BoneName="head"
+      RelativeLocation=(X=4.454239,Y=5.494304,Z=0.000030)
+      RelativeRotation=(Pitch=0.000000,Yaw=-0.000013,Roll=89.999489)
+   End Object
+   Begin Object Name="SkeletalMeshSocket_18" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_18'"
+      SocketName="Chest"
+      BoneName="spine_03"
+      RelativeLocation=(X=3.887815,Y=15.930880,Z=0.000230)
+      RelativeRotation=(Pitch=0.001011,Yaw=89.998322,Roll=-89.998055)
+   End Object
+   Begin Object Name="SkeletalMeshSocket_19" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_19'"
+      SocketName="Aim_Target"
+      BoneName="spine_03"
+      RelativeLocation=(X=-10.256015,Y=15.931289,Z=0.000633)
+      RelativeRotation=(Pitch=0.001011,Yaw=89.998322,Roll=-89.998055)
+   End Object
+   Begin Object Name="SkeletalMeshSocket_2" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_2'"
+      SocketName="FX_Staff_Tip_B"
+      BoneName="weapon_r"
+      RelativeLocation=(X=0.000000,Y=112.000000,Z=0.000000)
+      RelativeRotation=(Pitch=0.000000,Yaw=90.000000,Roll=180.000000)
+   End Object
+   Begin Object Name="SkeletalMeshSocket_20" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_20'"
+      SocketName="Impact"
+      BoneName="spine_03"
+      RelativeLocation=(X=-1.868311,Y=14.903470,Z=0.001301)
+      RelativeRotation=(Pitch=0.001011,Yaw=89.998322,Roll=-89.998055)
+   End Object
+   Begin Object Name="SkeletalMeshSocket_21" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_21'"
+      SocketName="Status"
+      BoneName="spine_03"
+      RelativeLocation=(X=18.973183,Y=-10.452972,Z=0.001436)
+      RelativeRotation=(Pitch=0.000738,Yaw=-89.998192,Roll=89.997986)
+   End Object
+   Begin Object Name="SkeletalMeshSocket_22" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_22'"
+      SocketName="Muzzle_03"
+      BoneName="spine_01"
+      RelativeLocation=(X=-101.790123,Y=13.153112,Z=0.000000)
+   End Object
+   Begin Object Name="SkeletalMeshSocket_23" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_23'"
+      SocketName="Foot_L"
+      BoneName="foot_l"
+      RelativeLocation=(X=-13.000000,Y=0.000000,Z=0.000000)
+      RelativeRotation=(Pitch=0.000738,Yaw=89.998390,Roll=-89.998062)
+   End Object
+   Begin Object Name="SkeletalMeshSocket_24" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_24'"
+      SocketName="Toe_L"
+      BoneName="ball_l"
+      RelativeLocation=(X=0.042560,Y=1.294128,Z=-0.000015)
+      RelativeRotation=(Pitch=0.000014,Yaw=-0.000001,Roll=-90.000008)
+   End Object
+   Begin Object Name="SkeletalMeshSocket_25" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_25'"
+      SocketName="Toe_R"
+      BoneName="ball_r"
+      RelativeLocation=(X=0.000001,Y=-1.303353,Z=-0.000040)
+      RelativeRotation=(Pitch=0.002274,Yaw=-179.999939,Roll=-89.999817)
+   End Object
+   Begin Object Name="SkeletalMeshSocket_26" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_26'"
+      SocketName="Foot_R"
+      BoneName="foot_r"
+      RelativeLocation=(X=13.284063,Y=0.000000,Z=-0.000141)
+      RelativeRotation=(Pitch=-0.000710,Yaw=-89.999481,Roll=-89.999229)
+   End Object
+   Begin Object Name="SkeletalMeshSocket_27" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_27'"
+      SocketName="FX_Root"
+      BoneName="root"
+      RelativeRotation=(Pitch=-0.000007,Yaw=90.000046,Roll=-0.000353)
+   End Object
+   Begin Object Name="SkeletalMeshSocket_28" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_28'"
+      SocketName="Root"
+      BoneName="root"
+   End Object
+   Begin Object Name="SkeletalMeshSocket_29" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_29'"
+      SocketName="HealthBar"
+      BoneName="root"
+      RelativeLocation=(X=0.000000,Y=-0.000702,Z=166.151627)
+   End Object
+   Begin Object Name="SkeletalMeshSocket_3" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_3'"
+      SocketName="FX_Eye_R"
+      BoneName="head"
+      RelativeLocation=(X=5.116985,Y=7.850025,Z=-3.416466)
+      RelativeRotation=(Pitch=0.000000,Yaw=90.000000,Roll=-90.000000)
+   End Object
+   Begin Object Name="SkeletalMeshSocket_30" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_30'"
+      SocketName="Muzzle_02"
+      BoneName="hand_l"
+      RelativeLocation=(X=22.000000,Y=0.000000,Z=0.000000)
+      RelativeRotation=(Pitch=0.000000,Yaw=-0.000000,Roll=89.998184)
+   End Object
+   Begin Object Name="SkeletalMeshSocket_31" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_31'"
+      SocketName="HoverAttachPoint"
+      BoneName="root"
+      RelativeLocation=(X=0.000000,Y=-0.000702,Z=166.151627)
+   End Object
+   Begin Object Name="SkeletalMeshSocket_32" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_32'"
+      SocketName="FX_Staff_Telescope_D"
+      BoneName="weapon_D_r"
+      RelativeLocation=(X=-0.059804,Y=17.657171,Z=0.133227)
+      RelativeRotation=(Pitch=0.000000,Yaw=-90.000000,Roll=0.000000)
+   End Object
+   Begin Object Name="SkeletalMeshSocket_33" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_33'"
+      SocketName="FX_Hand_R"
+      BoneName="hand_r"
+      RelativeLocation=(X=-6.366167,Y=3.683130,Z=0.000160)
+      RelativeRotation=(Pitch=0.000212,Yaw=-160.001755,Roll=89.999519)
+   End Object
+   Begin Object Name="SkeletalMeshSocket_4" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_4'"
+      SocketName="FX_Eye_L"
+      BoneName="head"
+      RelativeLocation=(X=5.116985,Y=7.850025,Z=3.416466)
+      RelativeRotation=(Pitch=0.000000,Yaw=90.000000,Roll=-90.000000)
+   End Object
+   Begin Object Name="SkeletalMeshSocket_5" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_5'"
+      SocketName="FX_Clavicle_L"
+      BoneName="clavicle_l"
+      RelativeLocation=(X=3.975260,Y=-0.000131,Z=10.024786)
+   End Object
+   Begin Object Name="SkeletalMeshSocket_6" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_6'"
+      SocketName="FX_Clavicle_R"
+      BoneName="clavicle_r"
+      RelativeLocation=(X=-1.870632,Y=-0.000081,Z=-10.151277)
+      RelativeRotation=(Pitch=0.002766,Yaw=-179.999893,Roll=179.999893)
+   End Object
+   Begin Object Name="SkeletalMeshSocket_7" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_7'"
+      SocketName="FX_Leg_R"
+      BoneName="calf_r"
+   End Object
+   Begin Object Name="SkeletalMeshSocket_8" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_8'"
+      SocketName="FX_Trail_L_01"
+      BoneName="lowerarm_l"
+   End Object
+   Begin Object Name="SkeletalMeshSocket_9" ExportPath="/Script/Engine.SkeletalMeshSocket'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:SkeletalMeshSocket_9'"
+      SocketName="FX_Trail_L_02"
+      BoneName="lowerarm_l"
+      RelativeLocation=(X=40.000000,Y=0.000000,Z=0.000000)
+   End Object
+   Begin Object Name="AnimCurveMetaData_0" ExportPath="/Script/Engine.AnimCurveMetaData'/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong_Skeleton.Wukong_Skeleton:AnimCurveMetaData_0'"
+      CurveMetaData=(("DistanceCurve", ()),("blendOrient1", ()),("mask_geo", (Type=(bMorphtarget=True))),("DisableSpeedWarping", ()),("DistanceToApex", ()),("helmet_geo_emote", ()),("head_geo_emote", ()),("eye_shadow_geo_emote", ()),("bicep_straps_geo_shoulders_down_l", ()),("bicep_straps_geo_shoulders_down_r", ()),("bicep_straps_geo_shoulders_up_l", ()),("bicep_straps_geo_shoulders_up_r", ()),("bicep_straps_geo_elbows_bent_l", ()),("bicep_straps_geo_elbows_bent_r", ()),("shoulders_geo_shoulders_down_l", ()),("shoulders_geo_shoulders_down_r", ()),("shoulders_geo_shoulders_up_l", ()),("shoulders_geo_shoulders_up_r", ()),("shoulders_geo_elbows_bent_l", ()),("shoulders_geo_elbows_bent_r", ()),("NewAnim", ()),("missle_geo_extend_fins", ()),("missle_geo_extend_front", ()),("jetfoot_l_geo_open", ()),("NoIkTilt", ()),("MeleeTwist", ()),("Disable_IK", ()),("ECM", ()),("geo_base_weapon_staff01morph_LOD0", (Type=(bMorphtarget=True))),("geo_base_weapon_staff02morph_LOD0", (Type=(bMorphtarget=True))),("geo_base_weapon_staff03morph_LOD0", (Type=(bMorphtarget=True))),("geo_base_weapon_staff04morph_LOD0", (Type=(bMorphtarget=True))),("Weapon World", ()),("Fullbody_Acting", ()),("DisableAimOffset", ()),("StaffPlant", ()),("DisableSlopeWarping", ()),("lashes_morph", (Type=(bMorphtarget=True))),("EyeWet_Morph", (Type=(bMorphtarget=True))),("Face_Morph", (Type=(bMorphtarget=True))),("Mesh", (Type=(bMorphtarget=True))),("SculptPoseLashes", (Type=(bMorphtarget=True))),("SculptPose", (Type=(bMorphtarget=True))),("Lashes_Marketing", (Type=(bMorphtarget=True))),("EyeWet_Marketing", (Type=(bMorphtarget=True))),("Face_Marketing", (Type=(bMorphtarget=True))),("FullBody", ()))
+   End Object
+   BoneTree(192)=()
+   VirtualBoneGuid=381DAA0C46BF6C7E791BE59E3245773F
+   Sockets(0)="/Script/Engine.SkeletalMeshSocket'SkeletalMeshSocket_28'"
+   Sockets(1)="/Script/Engine.SkeletalMeshSocket'SkeletalMeshSocket_30'"
+   Sockets(2)="/Script/Engine.SkeletalMeshSocket'SkeletalMeshSocket_13'"
+   Sockets(3)="/Script/Engine.SkeletalMeshSocket'SkeletalMeshSocket_23'"
+   Sockets(4)="/Script/Engine.SkeletalMeshSocket'SkeletalMeshSocket_26'"
+   Sockets(5)="/Script/Engine.SkeletalMeshSocket'SkeletalMeshSocket_17'"
+   Sockets(6)="/Script/Engine.SkeletalMeshSocket'SkeletalMeshSocket_18'"
+   Sockets(7)="/Script/Engine.SkeletalMeshSocket'SkeletalMeshSocket_19'"
+   Sockets(8)="/Script/Engine.SkeletalMeshSocket'SkeletalMeshSocket_20'"
+   Sockets(9)="/Script/Engine.SkeletalMeshSocket'SkeletalMeshSocket_15'"
+   Sockets(10)="/Script/Engine.SkeletalMeshSocket'SkeletalMeshSocket_16'"
+   Sockets(11)="/Script/Engine.SkeletalMeshSocket'SkeletalMeshSocket_8'"
+   Sockets(12)="/Script/Engine.SkeletalMeshSocket'SkeletalMeshSocket_9'"
+   Sockets(13)="/Script/Engine.SkeletalMeshSocket'SkeletalMeshSocket_21'"
+   Sockets(14)="/Script/Engine.SkeletalMeshSocket'SkeletalMeshSocket_22'"
+   Sockets(15)="/Script/Engine.SkeletalMeshSocket'SkeletalMeshSocket_27'"
+   Sockets(16)="/Script/Engine.SkeletalMeshSocket'SkeletalMeshSocket_24'"
+   Sockets(17)="/Script/Engine.SkeletalMeshSocket'SkeletalMeshSocket_25'"
+   Sockets(18)="/Script/Engine.SkeletalMeshSocket'SkeletalMeshSocket_31'"
+   Sockets(19)="/Script/Engine.SkeletalMeshSocket'SkeletalMeshSocket_29'"
+   Sockets(20)="/Script/Engine.SkeletalMeshSocket'SkeletalMeshSocket_11'"
+   Sockets(21)="/Script/Engine.SkeletalMeshSocket'SkeletalMeshSocket_2'"
+   Sockets(22)="/Script/Engine.SkeletalMeshSocket'SkeletalMeshSocket_0'"
+   Sockets(23)="/Script/Engine.SkeletalMeshSocket'SkeletalMeshSocket_3'"
+   Sockets(24)="/Script/Engine.SkeletalMeshSocket'SkeletalMeshSocket_4'"
+   Sockets(25)="/Script/Engine.SkeletalMeshSocket'SkeletalMeshSocket_5'"
+   Sockets(26)="/Script/Engine.SkeletalMeshSocket'SkeletalMeshSocket_6'"
+   Sockets(27)="/Script/Engine.SkeletalMeshSocket'SkeletalMeshSocket_7'"
+   Sockets(28)="/Script/Engine.SkeletalMeshSocket'SkeletalMeshSocket_10'"
+   Sockets(29)="/Script/Engine.SkeletalMeshSocket'SkeletalMeshSocket_1'"
+   Sockets(30)="/Script/Engine.SkeletalMeshSocket'SkeletalMeshSocket_12'"
+   Sockets(31)="/Script/Engine.SkeletalMeshSocket'SkeletalMeshSocket_14'"
+   Sockets(32)="/Script/Engine.SkeletalMeshSocket'SkeletalMeshSocket_32'"
+   Sockets(33)="/Script/Engine.SkeletalMeshSocket'SkeletalMeshSocket_33'"
+   SlotGroups(0)=(SlotNames=("FullBody_YawAdjust","FullBody_OnGround","UpperBody_MeshSpaceAdditive","ArmsAndHead","FullBody_InAir","FullBody","UpperBody","FullBody_InPlace","UpperBody_InMotion","DefaultSlot","ArmsAndHead_Up","ArmsAndHead_Down"))
+   PreviewSkeletalMesh="/Game/ParagonSunWukong/Characters/Heroes/Wukong/Meshes/Wukong.Wukong"
+   AnimationNotifies(0)="MeleeFullBody"
+   AnimationNotifies(1)="MeleeUpperBody"
+   AnimationNotifies(2)="OrionFootstep"
+   AnimationNotifies(3)="ResetCombo"
+   AnimationNotifies(4)="SaveAttack"
+   AssetUserData(0)="/Script/Engine.AnimCurveMetaData'AnimCurveMetaData_0'"
+End Object

@@ -38,47 +38,6 @@ ULONG __stdcall FBXImporter::Release()
 	return tmpRefCount;
 }
 
-bool FBXImporter::Init(const std::string& file)
-{
-	CleanUp();
-
-	pManager_ = fbxsdk::FbxManager::Create();
-	if (nullptr == pManager_)
-	{
-		DEBUG_BREAK();
-		return false;
-	}
-
-	pIOSetting_ = fbxsdk::FbxIOSettings::Create(pManager_, IOSROOT);
-	pManager_->SetIOSettings(pIOSetting_);
-
-	pImporter_ = fbxsdk::FbxImporter::Create(pManager_, "fbxImporter");
-	bool status = pImporter_->Initialize(file.c_str(), -1, pManager_->GetIOSettings());
-	if (false == status)
-	{
-		DEBUG_BREAK();
-		return false;
-	}
-
-	pScene_ = fbxsdk::FbxScene::Create(pManager_, "fbxScene");
-
-	pImporter_->Import(pScene_);
-
-
-	//fbxsdk::FbxAxisSystem engineAxis
-	//(
-	//	fbxsdk::FbxAxisSystem::eZAxis, fbxsdk::FbxAxisSystem::eParityEven, fbxsdk::FbxAxisSystem::eLeftHanded
-	//);
-	//engineAxis.ConvertScene(pScene_);
-
-
-	sceneAxisInfo_ = GetSceneAxisInfo(pScene_);
-
-	fbxsdk::FbxGeometryConverter geomConv(pManager_);
-	geomConv.Triangulate(pScene_, true);
-
-	return true;
-}
 
 bool FBXImporter::ImportModel(Model* pOutModel, const std::string& file)
 {
@@ -100,7 +59,7 @@ bool FBXImporter::ImportModel(Model* pOutModel, const std::string& file)
 	int totalMeshCount = CountMeshes(pRootNode);
 	if (1 != totalMeshCount)
 	{
-		DEBUG_BREAK();
+		// DEBUG_BREAK();
 	}
 
 	fbxsdk::FbxMesh* pMesh = FindMesh(pRootNode);
@@ -148,6 +107,7 @@ bool FBXImporter::ImportModel(Model* pOutModel, const std::string& file)
 				DEBUG_BREAK();
 				return false;
 			}
+
 			bool res2 = ExtractUV(&v.uv, pMesh, cpIndex, polygonVertexCounter);
 			if (false == res2)
 			{
@@ -166,7 +126,7 @@ bool FBXImporter::ImportModel(Model* pOutModel, const std::string& file)
 				DEBUG_BREAK();
 				return false;
 			}
-			
+
 			polygonVertexCounter++;
 
 
@@ -199,6 +159,50 @@ bool FBXImporter::ImportModel(Model* pOutModel, const std::string& file)
 
 	return true;
 }
+
+
+bool FBXImporter::Init(const std::string& file)
+{
+	CleanUp();
+
+	pManager_ = fbxsdk::FbxManager::Create();
+	if (nullptr == pManager_)
+	{
+		DEBUG_BREAK();
+		return false;
+	}
+
+	pIOSetting_ = fbxsdk::FbxIOSettings::Create(pManager_, IOSROOT);
+	pManager_->SetIOSettings(pIOSetting_);
+
+	pImporter_ = fbxsdk::FbxImporter::Create(pManager_, "fbxImporter");
+	bool status = pImporter_->Initialize(file.c_str(), -1, pManager_->GetIOSettings());
+	if (false == status)
+	{
+		DEBUG_BREAK();
+		return false;
+	}
+
+	pScene_ = fbxsdk::FbxScene::Create(pManager_, "fbxScene");
+
+	pImporter_->Import(pScene_);
+
+
+	//fbxsdk::FbxAxisSystem engineAxis
+	//(
+	//	fbxsdk::FbxAxisSystem::eZAxis, fbxsdk::FbxAxisSystem::eParityEven, fbxsdk::FbxAxisSystem::eLeftHanded
+	//);
+	//engineAxis.ConvertScene(pScene_);
+
+
+	sceneAxisInfo_ = GetSceneAxisInfo(pScene_);
+
+	fbxsdk::FbxGeometryConverter geomConv(pManager_);
+	geomConv.Triangulate(pScene_, true);
+
+	return true;
+}
+
 
 fbxsdk::FbxMesh* FBXImporter::FindMesh(fbxsdk::FbxNode* pNode)
 {
@@ -339,8 +343,8 @@ bool FBXImporter::ExtractUV(Float2* pOutUV, fbxsdk::FbxMesh* pMesh, int polyInde
 	int uvElementCnt = pMesh->GetElementUVCount();
 	if (uvElementCnt != 1)
 	{
-		DEBUG_BREAK();
-		return false;
+		//DEBUG_BREAK();
+		//return false;
 	}
 
 	fbxsdk::FbxGeometryElementUV* element = pMesh->GetElementUV(0);
@@ -355,8 +359,10 @@ bool FBXImporter::ExtractUV(Float2* pOutUV, fbxsdk::FbxMesh* pMesh, int polyInde
 	bool res = pMesh->GetPolygonVertexUV(polyIndex, vertexIndex, uvSetName, uv, unMapped);
 	if (false == res)
 	{
-		DEBUG_BREAK();
-		return false;
+		// uvSetName에 매칭되는 uv값이 없는 경우.
+		// uvElement는 여러개 일 수도 있음.
+		uv[0] = 0.0;
+		uv[1] = 0.0;
 	}
 
 	pOutUV->X = uv[0];

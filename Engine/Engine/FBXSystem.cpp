@@ -49,6 +49,16 @@ bool FBXSystem::LoadFBXImporter()
 	return true;
 }
 
+void FBXSystem::TestImportFBX()
+{
+	Model* pModel = new Model;
+	if (false == FBXSystem::GetImporter()->ImportModel(pModel, "..\\Resource\\Fbx\\Wukong\\Wukong.FBX"))
+	{
+		DEBUG_BREAK();
+		return;
+	}
+}
+
 IFBXImporter* FBXSystem::GetImporter()
 {
 	if (nullptr == GFbxImporter)
