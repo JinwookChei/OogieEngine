@@ -100,7 +100,6 @@ void RenderComponent::Create(E_MESH_TYPE meshType)
 	}
 	pTextureNormal_->AddRef();
 
-
 	BroadcastOnMeshLoaded();
 }
 

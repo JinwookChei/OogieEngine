@@ -72,8 +72,6 @@
 #include <Interface/Renderer/IRenderer.h>
 #include <Interface/EditorBindObject/IEditorBindObject.h>
 #include <Interface/Editor/IEditor.h>
-//#include <ImGuiBindObject/IImguiBindObject.h>
-//#include <ImGuiModule/IImGuiModule.h>
 
 
 // Utility
@@ -84,7 +82,6 @@
 
 // ImguiModule
 #include <Editor/Editor/EditorCore.h>
-//#include <ImGuiModule/ImGuiManager.h>
 
 
 // Engine
@@ -94,6 +91,7 @@
 #include <Engine/Engine/Transform.h>
 #include <Engine/Engine/Level.h>
 #include <Engine/Engine/Actor.h>
+#include <Engine/Engine/Player.h>
 #include <Engine/Engine/Camera.h>
 #include <Engine/Engine/Light.h>
 #include <Engine/Engine/DirectionLight.h>

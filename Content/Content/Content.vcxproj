@@ -148,6 +148,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="TestActor.cpp" />
+    <ClCompile Include="TestPlayer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Common\GeometryType\GeometryType.h" />
@@ -164,6 +165,7 @@
     <ClInclude Include="StartLevel.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="TestActor.h" />
+    <ClInclude Include="TestPlayer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

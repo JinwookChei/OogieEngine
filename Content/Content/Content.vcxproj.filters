@@ -37,6 +37,9 @@
     <Filter Include="Common">
       <UniqueIdentifier>{8779a39e-25ba-4449-bf38-64a2f9512098}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Game\Actors\Player">
+      <UniqueIdentifier>{bc34bcd1-d4f1-45e7-a820-ab3b7703bf00}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -62,6 +65,9 @@
     </ClCompile>
     <ClCompile Include="Sphere.cpp">
       <Filter>Source Files\Game\Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="TestPlayer.cpp">
+      <Filter>Source Files\Game\Actors\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -106,6 +112,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Common\VertexType\VertexType.h">
       <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="TestPlayer.h">
+      <Filter>Source Files\Game\Actors\Player</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

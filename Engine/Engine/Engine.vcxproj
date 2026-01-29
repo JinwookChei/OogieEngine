@@ -171,6 +171,7 @@
     <ClInclude Include="MaterialManager.h" />
     <ClInclude Include="MeshManager.h" />
     <ClInclude Include="ParticleComponent.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="PointLight.h" />
     <ClInclude Include="RasterizerManager.h" />
     <ClInclude Include="RenderComponent.h" />
@@ -198,6 +199,7 @@
     <ClCompile Include="MaterialManager.cpp" />
     <ClCompile Include="MeshManager.cpp" />
     <ClCompile Include="ParticleComponent.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="PointLight.cpp" />
     <ClCompile Include="RasterizerManager.cpp" />
     <ClCompile Include="RenderComponent.cpp" />

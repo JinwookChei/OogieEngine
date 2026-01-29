@@ -79,6 +79,9 @@
     <Filter Include="Source Files\FBXSystem">
       <UniqueIdentifier>{8b09a7ae-7e33-4c1f-9062-ec68c9bec508}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Actor\Player">
+      <UniqueIdentifier>{d2fb2290-0889-4ddd-9d08-d3088fb95279}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -183,6 +186,9 @@
     <ClInclude Include="FBXSystem.h">
       <Filter>Source Files\FBXSystem</Filter>
     </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Source Files\Actor\Player</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -256,6 +262,9 @@
     </ClCompile>
     <ClCompile Include="FBXSystem.cpp">
       <Filter>Source Files\FBXSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source Files\Actor\Player</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
