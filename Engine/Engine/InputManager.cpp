@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "InputManager.h"
 
+InputManager* InputManager::GInputManager = nullptr;
 
 InputManager::InputState::InputState() 
 {
@@ -74,26 +75,48 @@ InputManager::~InputManager()
     hashTable_ = nullptr;
 }
 
-InputManager* InputManager::Instance()
+bool InputManager::Init()
 {
-    return GInputManager;
+    if (nullptr != GInputManager)
+    {
+        DEBUG_BREAK();
+        return false;
+    }
+
+    GInputManager = new InputManager;
+    if (false == GInputManager->KeySetting())
+    {
+        DEBUG_BREAK();
+        return false;
+    }
+
+    return true;
 }
 
-bool InputManager::IsAnyKeyDown() const
+void InputManager::CleanUp()
 {
-    return isAnyKeyDown_;
+    if (nullptr != GInputManager)
+    {
+        delete GInputManager;
+        GInputManager = nullptr;
+    }
 }
 
-bool InputManager::IsAnyKeyPress() const
+bool InputManager::IsAnyKeyDown()
 {
-    return isAnyKeyPress_;
+    return GInputManager->isAnyKeyDown_;
+}
+
+bool InputManager::IsAnyKeyPress()
+{
+    return GInputManager->isAnyKeyPress_;
 }
 
 bool InputManager::IsDown(int key) 
 {
     InputState* pFind = nullptr;
     unsigned int searchedCount;
-    if (false == hashTable_->Search((void**)&pFind, &searchedCount, 1, &key, 4))
+    if (false == GInputManager->hashTable_->Search((void**)&pFind, &searchedCount, 1, &key, 4))
     {
         return false;
     }
@@ -105,7 +128,7 @@ bool InputManager::IsPress(int key)
 {
     InputState* pFind = nullptr;
     unsigned int searchedCount;
-    if (false == hashTable_->Search((void**)&pFind, &searchedCount, 1, &key, 4))
+    if (false == GInputManager->hashTable_->Search((void**)&pFind, &searchedCount, 1, &key, 4))
     {
         return false;
     }
@@ -117,7 +140,7 @@ unsigned long long InputManager::PressTime(int key)
 {
     InputState* pFind = nullptr;
     unsigned int searchedCount;
-    if (false == hashTable_->Search((void**)&pFind, &searchedCount, 1, &key, 4))
+    if (false == GInputManager->hashTable_->Search((void**)&pFind, &searchedCount, 1, &key, 4))
     {
         return 0;
     }
@@ -129,7 +152,7 @@ bool InputManager::IsUp(int key)
 {
     InputState* pFind = nullptr;
     unsigned int searchedCount;
-    if (false == hashTable_->Search((void**)&pFind, &searchedCount, 1, &key, 4))
+    if (false == GInputManager->hashTable_->Search((void**)&pFind, &searchedCount, 1, &key, 4))
     {
         return false;
     }
@@ -141,7 +164,7 @@ bool InputManager::IsFree(int key)
 {
     InputState* pFind = nullptr;
     unsigned int searchedCount;
-    if (false == hashTable_->Search((void**)&pFind, &searchedCount, 1, &key, 4))
+    if (false == GInputManager->hashTable_->Search((void**)&pFind, &searchedCount, 1, &key, 4))
     {
         return false;
     }
@@ -153,7 +176,7 @@ unsigned long long InputManager::UpTime(int key)
 {
     InputState* pFind = nullptr;
     unsigned int searchedCount;
-    if (false == hashTable_->Search((void**)&pFind, &searchedCount, 1, &key, 4))
+    if (false == GInputManager->hashTable_->Search((void**)&pFind, &searchedCount, 1, &key, 4))
     {
         return 0;
     }
@@ -161,22 +184,22 @@ unsigned long long InputManager::UpTime(int key)
     return pFind->upTime_;
 }
 
-const Float2& InputManager::GetPrevMousePosition() const
+const Float2& InputManager::GetPrevMousePosition()
 {
-    return prevMousePos_;
+    return GInputManager->prevMousePos_;
 }
 
-const Float2& InputManager::GetCurrentMousePosition() const
+const Float2& InputManager::GetCurrentMousePosition() 
 {
-    return curMousePos_;
+    return GInputManager->curMousePos_;
 }
 
-const Float2& InputManager::GetDeltaMouseMove() const
+const Float2& InputManager::GetDeltaMouseMove()
 {
-    return deltaMouseMove_;
+    return GInputManager->deltaMouseMove_;
 }
 
-bool InputManager::Initialize()
+bool InputManager::KeySetting()
 {
     hashTable_ = new HashTable(32, sizeof(int));
 
@@ -229,9 +252,8 @@ bool InputManager::Initialize()
 
 void InputManager::Tick(double deltaTime)
 {
-    UpdateInputState(deltaTime);
-
-    UpdateMouseMove();
+    GInputManager->UpdateInputState(deltaTime);
+    GInputManager->UpdateMouseMove();
 }
 
 void InputManager::UpdateInputState(double deltaTime)

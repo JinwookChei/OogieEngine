@@ -27,9 +27,9 @@ void ActorPicker::Tick(double deltaTime)
 {
 	//if (pPickedActor_ != nullptr) return;
 
-	if (InputManager::Instance()->IsDown(VK_LBUTTON))
+	if (InputManager::IsDown(VK_LBUTTON))
 	{
-		pickedMousePos_ = InputManager::Instance()->GetCurrentMousePosition();
+		pickedMousePos_ = InputManager::GetCurrentMousePosition();
 
 		Ray ray;
 		ScreenToWorldRay(&ray, pickedMousePos_);

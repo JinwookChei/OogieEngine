@@ -12,16 +12,16 @@ MoveCamera::~MoveCamera()
 
 void MoveCamera::Tick(double deltaTime)
 {
-	if (InputManager::Instance()->IsPress(VK_RBUTTON))
+	if (InputManager::IsPress(VK_RBUTTON))
 	{
-		const Float2& deltaMouseMove = InputManager::Instance()->GetDeltaMouseMove();
+		const Float2& deltaMouseMove = InputManager::GetDeltaMouseMove();
 
 		pTransform_->AddRotaionZ(deltaMouseMove.X * deltaTime * 8.0f);
 
 		pTransform_->AddRotaionY(deltaMouseMove.Y * deltaTime * 8.0f);
 	}
 
-	if (InputManager::Instance()->IsPress('W'))
+	if (InputManager::IsPress('W'))
 	{
 		Float4 forwardVector = pTransform_->ForwardVector();
 
@@ -31,7 +31,7 @@ void MoveCamera::Tick(double deltaTime)
 
 		pTransform_->AddPosition(offset);
 	}
-	if (InputManager::Instance()->IsPress('S'))
+	if (InputManager::IsPress('S'))
 	{
 		Float4 forwardVector = pTransform_->ForwardVector();
 
@@ -41,7 +41,7 @@ void MoveCamera::Tick(double deltaTime)
 
 		pTransform_->AddPosition(offset);
 	}
-	if (InputManager::Instance()->IsPress('A'))
+	if (InputManager::IsPress('A'))
 	{
 		Float4 rightVector = pTransform_->RightVector();
 
@@ -51,7 +51,7 @@ void MoveCamera::Tick(double deltaTime)
 
 		pTransform_->AddPosition(offset);
 	}
-	if (InputManager::Instance()->IsPress('D'))
+	if (InputManager::IsPress('D'))
 	{
 		Float4 rightVector = pTransform_->RightVector();
 
@@ -61,19 +61,19 @@ void MoveCamera::Tick(double deltaTime)
 
 		pTransform_->AddPosition(offset);
 	}
-	if (InputManager::Instance()->IsPress('F'))
+	if (InputManager::IsPress('F'))
 	{
 		pTransform_->AddRotaionY(1.0f);
 	}
-	if (InputManager::Instance()->IsPress('R'))
+	if (InputManager::IsPress('R'))
 	{
 		pTransform_->AddRotaionY(-1.0f);
 	}
-	if (InputManager::Instance()->IsPress('Q'))
+	if (InputManager::IsPress('Q'))
 	{
 		pTransform_->AddRotaionZ(-50 * deltaTime);
 	}
-	if (InputManager::Instance()->IsPress('E'))
+	if (InputManager::IsPress('E'))
 	{
 		pTransform_->AddRotaionZ(50 * deltaTime);
 	}
@@ -95,9 +95,5 @@ void MoveCamera::Render()
 
 void MoveCamera::CleanUp()
 {
-	//if (nullptr != pRenderer_)
-	//{
-	//	delete pRenderer_;
-	//	pRenderer_ = nullptr;
-	//}
+
 }

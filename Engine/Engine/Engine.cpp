@@ -9,10 +9,8 @@ typedef bool (*DLL_FUNCTION_ARG1)(void**);
 typedef bool (*DLL_FUNCTION_ARG5)(void**, HINSTANCE, PWSTR, int, const wchar_t*);
 
 
-InputManager* GInputManager = nullptr;
 IApplication* GApplication = nullptr;
 IRenderer* GRenderer = nullptr;
-TimeManager* GTimeManager = nullptr;
 
 MeshManager* GMeshManager = nullptr;
 MaterialManager* GMaterialManager = nullptr;
@@ -100,15 +98,26 @@ bool Engine::Initialize
 		DEBUG_BREAK();
 		return false;
 	}
-
-	GInputManager = new InputManager;
-	if (false == GInputManager->Initialize())
+	
+	if (false == InputManager::Init())
 	{
 		DEBUG_BREAK();
 		return false;
 	}
 
-	GTimeManager = new TimeManager;
+
+	//GInputManager = new InputManager;
+	//if (false == GInputManager->Initialize())
+	//{
+	//	DEBUG_BREAK();
+	//	return false;
+	//}
+
+	//GTimeManager = new TimeManager;
+	if (false == TimeManager::Init())
+	{
+		return false;
+	}
 
 	GMeshManager = new MeshManager;
 
@@ -158,11 +167,10 @@ void Engine::Run()
 		pApplication_->WinPumpMessage();
 
 		// Calc DeltaTime
-		double deltaTime = GTimeManager->CalcDeltaTime();
+		double deltaTime = TimeManager::CalcDeltaTime();
 
 		// Input Update
-		GInputManager->Tick(deltaTime);
-
+		InputManager::Tick(deltaTime);
 		GActorPicker->Tick(deltaTime);
 
 		GRenderer->UpdateParticles(GParticle_1, deltaTime);
@@ -170,9 +178,7 @@ void Engine::Run()
 		
 		// GameLoop
 		GWorld->CheckChangeLevel();
-
 		GWorld->OnTick(deltaTime);
-
 		GWorld->OnRender();
 		// GameLoop End
 
@@ -386,17 +392,19 @@ void Engine::CleanUp()
 		GMeshManager = nullptr;
 	}
 
-	if (nullptr != GTimeManager)
-	{
-		delete GTimeManager;
-		GTimeManager = nullptr;
-	}
-
-	if (nullptr != GInputManager)
-	{
-		delete GInputManager;
-		GInputManager = nullptr;
-	}
+	//if (nullptr != GTimeManager)
+	//{
+	//	delete GTimeManager;
+	//	GTimeManager = nullptr;
+	//}
+	TimeManager::CleanUp();
+	
+	InputManager::CleanUp();
+	//if (nullptr != GInputManager)
+	//{
+	//	delete GInputManager;
+	//	GInputManager = nullptr;
+	//}
 
 	FBXSystem::CleanUp();
 

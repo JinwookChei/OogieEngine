@@ -85,8 +85,6 @@
 
 extern IApplication* GApplication;
 extern IRenderer* GRenderer;
-extern InputManager* GInputManager;
-extern TimeManager* GTimeManager;
 
 extern MeshManager* GMeshManager;
 extern MaterialManager* GMaterialManager;
