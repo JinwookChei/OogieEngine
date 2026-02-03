@@ -33,7 +33,6 @@ void ActorPicker::Tick(double deltaTime)
 
 		Ray ray;
 		ScreenToWorldRay(&ray, pickedMousePos_);
-
 		TryPickObject(ray);
 
 		//ImGuiSystem::GetImGuiManager()->BindPickedActor(pPickedActor_);

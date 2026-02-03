@@ -150,14 +150,27 @@ bool FBXImporter::ImportModel(Model* pOutModel, const std::string& file)
 			{
 				// cache에 이미 존재.
 				vertexIndex = iter->second;
-				pOutModel->indices_.push_back(vertexIndex);
+				unsigned int matIndex = v.materialIndex;
+				if (matIndex >= 20)
+				{
+					DEBUG_BREAK();
+				}
+				pOutModel->indices_[matIndex].push_back(vertexIndex);
+				//pOutModel->indices_.push_back(vertexIndex);
 			}
 			else
 			{
 				// cache에 존재 하지 않음.
 				vertexIndex = pOutModel->vertices_.size();
 				pOutModel->vertices_.push_back(v);
-				pOutModel->indices_.push_back(vertexIndex);
+
+				unsigned int matIndex = v.materialIndex;
+				if (matIndex >= 20)
+				{
+					DEBUG_BREAK();
+				}
+				pOutModel->indices_[matIndex].push_back(vertexIndex);
+
 
 				vertexCpIndexCache.push_back(cpIndex);
 				vertexCache[v] = vertexIndex;
@@ -170,6 +183,8 @@ bool FBXImporter::ImportModel(Model* pOutModel, const std::string& file)
 		CalculateTangent(&pOutModel->vertices_, pOutModel->indices_);
 	}
 
+
+	int k = 10;
 
 	// TEMP
 	//fbxsdk::FbxNode* pMeshNode = pMesh->GetNode();
@@ -332,18 +347,18 @@ bool FBXImporter::ExtractNormal(Float3* pOutNormal, fbxsdk::FbxMesh* pMesh, int 
 	{
 		normal = element->GetDirectArray().GetAt(index);
 		break;
-	} 
+	}
 	case FbxGeometryElement::eIndexToDirect:
 	{
 		int directIndex = element->GetIndexArray().GetAt(index);
 		normal = element->GetDirectArray().GetAt(directIndex);
 		break;
-	} 
+	}
 	default:
 		DEBUG_BREAK();
 		return false;
 	}
-	
+
 	pOutNormal->X = normal[0];
 	pOutNormal->Y = normal[1];
 	pOutNormal->Z = normal[2];
@@ -689,7 +704,7 @@ bool FBXImporter::ExtractMaterialIndex(unsigned int* pOutIndex, fbxsdk::FbxMesh*
 	return false;
 }
 
-void FBXImporter::CalculateTangent(std::vector<SkinnedMeshVertex>* pVertices, const std::vector<uint16_t>& indices)
+void FBXImporter::CalculateTangent(std::vector<SkinnedMeshVertex>* pVertices, const std::vector<std::vector<uint16_t>>& indices)
 {
 	const size_t vertexCount = pVertices->size();
 
@@ -697,97 +712,99 @@ void FBXImporter::CalculateTangent(std::vector<SkinnedMeshVertex>* pVertices, co
 	std::vector<Float4> bitanSum(vertexCount, { 0.0f,0.0f, 0.0f, 0.0f });
 
 	// 1. 삼각형 단위 누적
-	for (size_t i = 0; i < indices.size(); i += 3)
+
+	for (size_t j = 0; j < indices.size(); ++j)
 	{
-		uint32_t i0 = indices[i + 0];
-		uint32_t i1 = indices[i + 1];
-		uint32_t i2 = indices[i + 2];
+		for (size_t i = 0; i < indices[j].size(); i += 3)
+		{
+			uint32_t i0 = indices[j][i + 0];
+			uint32_t i1 = indices[j][i + 1];
+			uint32_t i2 = indices[j][i + 2];
 
-		const SkinnedMeshVertex& v0 = (*pVertices)[i0];
-		const SkinnedMeshVertex& v1 = (*pVertices)[i1];
-		const SkinnedMeshVertex& v2 = (*pVertices)[i2];
+			const SkinnedMeshVertex& v0 = (*pVertices)[i0];
+			const SkinnedMeshVertex& v1 = (*pVertices)[i1];
+			const SkinnedMeshVertex& v2 = (*pVertices)[i2];
 
-		Float4 P0;
-		P0.X = v0.position.X;
-		P0.Y = v0.position.Y;
-		P0.Z = v0.position.Z;
-		P0.W = 0.0f;
+			Float4 P0;
+			P0.X = v0.position.X;
+			P0.Y = v0.position.Y;
+			P0.Z = v0.position.Z;
+			P0.W = 0.0f;
 
-		Float4 P1;
-		P1.X = v1.position.X;
-		P1.Y = v1.position.Y;
-		P1.Z = v1.position.Z;
-		P1.W = 0.0f;
+			Float4 P1;
+			P1.X = v1.position.X;
+			P1.Y = v1.position.Y;
+			P1.Z = v1.position.Z;
+			P1.W = 0.0f;
 
-		Float4 P2;
-		P2.X = v2.position.X;
-		P2.Y = v2.position.Y;
-		P2.Z = v2.position.Z;
-		P2.W = 0.0f;
+			Float4 P2;
+			P2.X = v2.position.X;
+			P2.Y = v2.position.Y;
+			P2.Z = v2.position.Z;
+			P2.W = 0.0f;
 
-		Float4 UV0;
-		UV0.X = v0.uv.X;
-		UV0.Y = v0.uv.Y;
-		UV0.Z = 0.0f;
-		UV0.W = 0.0f;
+			Float4 UV0;
+			UV0.X = v0.uv.X;
+			UV0.Y = v0.uv.Y;
+			UV0.Z = 0.0f;
+			UV0.W = 0.0f;
 
-		Float4 UV1;
-		UV1.X = v1.uv.X;
-		UV1.Y = v1.uv.Y;
-		UV1.Z = 0.0f;
-		UV1.W = 0.0f;
+			Float4 UV1;
+			UV1.X = v1.uv.X;
+			UV1.Y = v1.uv.Y;
+			UV1.Z = 0.0f;
+			UV1.W = 0.0f;
 
-		Float4 UV2;
-		UV2.X = v2.uv.X;
-		UV2.Y = v2.uv.Y;
-		UV2.Z = 0.0f;
-		UV2.W = 0.0f;
-
-
-		Float4 P0_to_P1;
-		MATH::VectorSub(P0_to_P1, P1, P0);
-		Float4 P0_to_P2;
-		MATH::VectorSub(P0_to_P2, P2, P0);
-
-		Float4 UV0_to_UV1;
-		MATH::VectorSub(UV0_to_UV1, UV1, UV0);
-		Float4 UV0_to_UV2;
-		MATH::VectorSub(UV0_to_UV2, UV2, UV0);
-		
-		float denom = UV0_to_UV1.X * UV0_to_UV2.Y - UV0_to_UV2.X * UV0_to_UV1.Y;
-		if (fabs(denom) < 1e-6f) continue;
-		float f = 1.0f / denom;
+			Float4 UV2;
+			UV2.X = v2.uv.X;
+			UV2.Y = v2.uv.Y;
+			UV2.Z = 0.0f;
+			UV2.W = 0.0f;
 
 
-		Float4 E1;
-		MATH::VectorScale(E1, P0_to_P1, UV0_to_UV2.Y);
-		Float4 E2;
-		MATH::VectorScale(E2, P0_to_P2, UV0_to_UV1.Y);
-		Float4 SubE1;
-		MATH::VectorSub(SubE1, E1, E2);
-		Float4 T;
-		MATH::VectorScale(T, SubE1, f);
+			Float4 P0_to_P1;
+			MATH::VectorSub(P0_to_P1, P1, P0);
+			Float4 P0_to_P2;
+			MATH::VectorSub(P0_to_P2, P2, P0);
 
-		
-		Float4 E3;
-		MATH::VectorScale(E3, P0_to_P2, UV0_to_UV1.X);
-		Float4 E4;
-		MATH::VectorScale(E4, P0_to_P1, UV0_to_UV2.X);
-		Float4 SubE2;
-		MATH::VectorSub(SubE2, E3, E4);
-		Float4 B;
-		MATH::VectorScale(B, SubE2, f);
+			Float4 UV0_to_UV1;
+			MATH::VectorSub(UV0_to_UV1, UV1, UV0);
+			Float4 UV0_to_UV2;
+			MATH::VectorSub(UV0_to_UV2, UV2, UV0);
+
+			float denom = UV0_to_UV1.X * UV0_to_UV2.Y - UV0_to_UV2.X * UV0_to_UV1.Y;
+			if (fabs(denom) < 1e-6f) continue;
+			float f = 1.0f / denom;
 
 
-		MATH::VectorAdd(tanSum[i0], tanSum[i0], T);
-		MATH::VectorAdd(tanSum[i1], tanSum[i1], T);
-		MATH::VectorAdd(tanSum[i2], tanSum[i2], T);
+			Float4 E1;
+			MATH::VectorScale(E1, P0_to_P1, UV0_to_UV2.Y);
+			Float4 E2;
+			MATH::VectorScale(E2, P0_to_P2, UV0_to_UV1.Y);
+			Float4 SubE1;
+			MATH::VectorSub(SubE1, E1, E2);
+			Float4 T;
+			MATH::VectorScale(T, SubE1, f);
 
-		MATH::VectorAdd(bitanSum[i0], bitanSum[i0], B);
-		MATH::VectorAdd(bitanSum[i1], bitanSum[i1], B);
-		MATH::VectorAdd(bitanSum[i2], bitanSum[i2], B);
+
+			Float4 E3;
+			MATH::VectorScale(E3, P0_to_P2, UV0_to_UV1.X);
+			Float4 E4;
+			MATH::VectorScale(E4, P0_to_P1, UV0_to_UV2.X);
+			Float4 SubE2;
+			MATH::VectorSub(SubE2, E3, E4);
+			Float4 B;
+			MATH::VectorScale(B, SubE2, f);
+
+			MATH::VectorAdd(tanSum[i0], tanSum[i0], T);
+			MATH::VectorAdd(tanSum[i1], tanSum[i1], T);
+			MATH::VectorAdd(tanSum[i2], tanSum[i2], T);
+
+			MATH::VectorAdd(bitanSum[i0], bitanSum[i0], B);
+			MATH::VectorAdd(bitanSum[i1], bitanSum[i1], B);
+			MATH::VectorAdd(bitanSum[i2], bitanSum[i2], B);
+		}
 	}
-
 	// 2. Vertex 단위 정규화 + Gram-Schmidt
 	for (size_t i = 0; i < vertexCount; ++i)
 	{
@@ -880,7 +897,7 @@ void FBXImporter::ReadColor(fbxsdk::FbxSurfaceMaterial* material, const char* pr
 {
 	fbxsdk::FbxProperty prop = material->FindProperty(propName);
 	if (!prop.IsValid())
-	{ 
+	{
 		return;
 	}
 

@@ -163,12 +163,13 @@ struct Model
 {
 	std::vector<MeshInfo> meshInfo_;
 	std::vector<SkinnedMeshVertex> vertices_;
-	std::vector<uint16_t> indices_;
+	std::vector<std::vector<uint16_t>> indices_;
 
 	Model()
 		: vertices_()
-		, indices_()
+		, indices_(20)
 	{
+
 	}
 	~Model()
 	{
@@ -180,6 +181,7 @@ struct Model
 
 		vertices_.clear();
 		indices_.clear();
+		indices_.resize(20);
 	}
 };
 

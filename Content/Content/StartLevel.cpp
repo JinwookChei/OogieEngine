@@ -6,6 +6,7 @@
 #include "TestPlayer.h"
 #include "TestActor.h"
 #include "Wukong.h"
+#include "WereWolf.h"
 
 StartLevel::StartLevel()
 {
@@ -69,9 +70,13 @@ void StartLevel::BeginPlay()
 	pPlayer->GetWorldTransform().SetPosition({ 0.0f, 0.0f, 1.0f, 1.0f });
 	pPlayer->GetWorldTransform().SetScale({0.01f, 0.01f, 0.01f, 0.0f});
 
-	Wukong* pWukong = SpawnActor<Wukong>(E_ACTOR_TYPE::NORMAL);
+	/*Wukong* pWukong = SpawnActor<Wukong>(E_ACTOR_TYPE::NORMAL);
 	pWukong->GetWorldTransform().SetPosition({ -3.0f, 0.0f, 1.0f, 1.0f });
-	pWukong->GetWorldTransform().SetScale({ 0.01f, 0.01f, 0.01f, 0.0f });
+	pWukong->GetWorldTransform().SetScale({ 0.01f, 0.01f, 0.01f, 0.0f });*/
+
+	WereWolf* pWereWolf = SpawnActor<WereWolf>(E_ACTOR_TYPE::NORMAL);
+	pWereWolf->GetWorldTransform().SetPosition({ -3.0f, 0.0f, 0.0f, 1.0f });
+	pWereWolf->GetWorldTransform().SetScale({ 0.01f, 0.01f, 0.01f, 0.0f });
 }
 
 void StartLevel::Tick(double deltaTime)

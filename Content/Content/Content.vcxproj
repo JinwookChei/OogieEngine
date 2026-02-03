@@ -149,6 +149,7 @@
     </ClCompile>
     <ClCompile Include="TestActor.cpp" />
     <ClCompile Include="TestPlayer.cpp" />
+    <ClCompile Include="WereWolf.cpp" />
     <ClCompile Include="Wukong.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -167,6 +168,7 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="TestActor.h" />
     <ClInclude Include="TestPlayer.h" />
+    <ClInclude Include="WereWolf.h" />
     <ClInclude Include="Wukong.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

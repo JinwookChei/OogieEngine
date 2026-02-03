@@ -58,8 +58,8 @@ void MeshManager::TestLoad()
 	meshDesc_3.vertexCount = wukong.vertices_.size();
 	meshDesc_3.vertices = wukong.vertices_.data();
 	meshDesc_3.indexFormatSize = sizeof(uint16_t);
-	meshDesc_3.indexCount = wukong.indices_.size();
-	meshDesc_3.indices = wukong.indices_.data();
+	meshDesc_3.indexCount = wukong.indices_[0].size();
+	meshDesc_3.indices = wukong.indices_[0].data();
 	unsigned long long meshTag_3 = 3;
 	CreateMesh(meshDesc_3, meshTag_3);
 
@@ -72,10 +72,24 @@ void MeshManager::TestLoad()
 	meshDesc_4.vertexCount = capoeira.vertices_.size();
 	meshDesc_4.vertices = capoeira.vertices_.data();
 	meshDesc_4.indexFormatSize = sizeof(uint16_t);
-	meshDesc_4.indexCount = capoeira.indices_.size();
-	meshDesc_4.indices = capoeira.indices_.data();
+	meshDesc_4.indexCount = capoeira.indices_[0].size();
+	meshDesc_4.indices = capoeira.indices_[0].data();
 	unsigned long long meshTag_4 = 4;
 	CreateMesh(meshDesc_4, meshTag_4);
+
+
+	Model wereWolf;
+	FBXManager::LoadModel(&wereWolf, "..\\Resource\\Fbx\\WereWolf\\Model\\Werewolf_1.FBX");
+	MeshDesc meshDesc_5;
+	meshDesc_5.vertexFormat = E_VERTEX_FORMAT::SIMPLE;
+	meshDesc_5.vertexFormatSize = sizeof(SkinnedMeshVertex);
+	meshDesc_5.vertexCount = wereWolf.vertices_.size();
+	meshDesc_5.vertices = wereWolf.vertices_.data();
+	meshDesc_5.indexFormatSize = sizeof(uint16_t);
+	meshDesc_5.indexCount = wereWolf.indices_[0].size();
+	meshDesc_5.indices = wereWolf.indices_[0].data();
+	unsigned long long meshTag_5 = 5;
+	CreateMesh(meshDesc_5, meshTag_5);
 }
 
 IMesh* MeshManager::CreateMesh(const MeshDesc& desc, unsigned long long meshTag)

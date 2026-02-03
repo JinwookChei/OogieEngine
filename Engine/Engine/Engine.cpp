@@ -160,7 +160,9 @@ void Engine::Run()
 
 		// Input Update
 		InputManager::Tick(deltaTime);
-		GActorPicker->Tick(deltaTime);
+		
+		// 잠시 에러 있어서 OFF
+		//GActorPicker->Tick(deltaTime);
 
 		GRenderer->UpdateParticles(GParticle_1, deltaTime);
 		GRenderer->UpdateParticles(GParticle_2, deltaTime);

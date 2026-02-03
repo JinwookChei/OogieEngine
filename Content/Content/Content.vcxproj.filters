@@ -72,6 +72,9 @@
     <ClCompile Include="Wukong.cpp">
       <Filter>Source Files\Game\Actors\Player</Filter>
     </ClCompile>
+    <ClCompile Include="WereWolf.cpp">
+      <Filter>Source Files\Game\Actors\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -120,6 +123,9 @@
       <Filter>Source Files\Game\Actors\Player</Filter>
     </ClInclude>
     <ClInclude Include="Wukong.h">
+      <Filter>Source Files\Game\Actors\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="WereWolf.h">
       <Filter>Source Files\Game\Actors\Player</Filter>
     </ClInclude>
   </ItemGroup>
