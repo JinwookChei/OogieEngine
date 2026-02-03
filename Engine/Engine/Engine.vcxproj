@@ -162,7 +162,7 @@
     <ClInclude Include="BoundVolume.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="DirectionLight.h" />
-    <ClInclude Include="FBXSystem.h" />
+    <ClInclude Include="FBXManager.h" />
     <ClInclude Include="GeometryGenerator.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="Engine.h" />
@@ -189,7 +189,7 @@
     <ClCompile Include="BoundVolume.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="DirectionLight.cpp" />
-    <ClCompile Include="FBXSystem.cpp" />
+    <ClCompile Include="FBXManager.cpp" />
     <ClCompile Include="GeometryGenerator.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="dllmain.cpp" />

@@ -69,7 +69,7 @@
 
 
 // Engine
-#include "FBXSystem.h"
+#include "FBXManager.h"
 #include "InputManager.h"
 #include "TimeManager.h"
 #include "MeshManager.h"

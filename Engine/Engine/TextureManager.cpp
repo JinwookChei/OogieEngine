@@ -26,13 +26,18 @@ void TextureManager::TestLoad()
 	const wchar_t* normalTexPath = L"../Resource/Texture/Bricks_4K/Bricks_NormalDX.png";
 	CreateTexture(normalTexPath, true, 2);
 
-
 	TextureDesc whiteTextureDesc;
 	whiteTextureDesc.colorData_ = 0xFFFFFFFF;
 	whiteTextureDesc.size_ = { 1.0f, 1.0f };
 	ITexture* whiteTexture = GRenderer->CreateTexture(whiteTextureDesc);
 	unsigned long long whiteTexTag = 3;
 	textureTable_.Insert(whiteTexture, &whiteTexTag, 8);
+
+	const wchar_t* maria_diffuse_Path = L"../Resource/Fbx/Mixamo/maria_diffuse.png";
+	CreateTexture(maria_diffuse_Path, true, 4);
+
+	const wchar_t* maria_normal_Path = L"../Resource/Fbx/Mixamo/maria_normal.png";
+	CreateTexture(maria_normal_Path, true, 5);
 }
 
 ITexture* TextureManager::CreateTexture(const wchar_t* fileName, bool isNormalMap, unsigned long long textureTag)

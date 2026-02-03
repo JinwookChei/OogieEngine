@@ -3,7 +3,9 @@
 #include "MoveCamera.h"
 #include "LookAtCamera.h"
 #include "Sphere.h"
+#include "TestPlayer.h"
 #include "TestActor.h"
+#include "Wukong.h"
 
 StartLevel::StartLevel()
 {
@@ -63,9 +65,13 @@ void StartLevel::BeginPlay()
 	pSpotLight4->GetWorldTransform().SetPosition({ 10.0f, 0.0f, 6.0f, 1.0f });
 	pSpotLight4->GetWorldTransform().SetRotation({ 0.0f, 90.0f, 0.0f, 0.0f });
 
-	Player* pPlayer = SpawnActor<Player>(E_ACTOR_TYPE::NORMAL);
-	pPlayer->GetWorldTransform().SetPosition({ 0.0f, 0.0f, 0.0f, 1.0f });
-	pPlayer->GetWorldTransform().SetScale({1.0f, 1.0f, 1.0f, 0.0f});
+	TestPlayer* pPlayer = SpawnActor<TestPlayer>(E_ACTOR_TYPE::NORMAL);
+	pPlayer->GetWorldTransform().SetPosition({ 0.0f, 0.0f, 1.0f, 1.0f });
+	pPlayer->GetWorldTransform().SetScale({0.01f, 0.01f, 0.01f, 0.0f});
+
+	Wukong* pWukong = SpawnActor<Wukong>(E_ACTOR_TYPE::NORMAL);
+	pWukong->GetWorldTransform().SetPosition({ -3.0f, 0.0f, 1.0f, 1.0f });
+	pWukong->GetWorldTransform().SetScale({ 0.01f, 0.01f, 0.01f, 0.0f });
 }
 
 void StartLevel::Tick(double deltaTime)

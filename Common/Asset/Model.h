@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <cstdint>
 #include <string>
 #include <vector>
@@ -16,8 +16,10 @@ struct SkinnedMeshVertex
 
 	unsigned int boneIndices[4];
 	float blendWeights[4];
+	unsigned int materialIndex;
 
-	// unordered_map ����.
+
+	// unordered_map 전용.
 	bool operator==(const SkinnedMeshVertex& other) const
 	{
 		return position.X == other.position.X
@@ -31,7 +33,8 @@ struct SkinnedMeshVertex
 			&& normal.Y == other.normal.Y
 			&& normal.Z == other.normal.Z
 			&& uv.X == other.uv.X
-			&& uv.Y == other.uv.Y;
+			&& uv.Y == other.uv.Y
+			&& materialIndex == other.materialIndex;
 	}
 };
 
@@ -81,15 +84,84 @@ struct std::hash<SkinnedMeshVertex>
 //struct Bone
 //{
 //	std::string name_;
-//	int parentIndex_;                // �θ� �� �ε��� (-1�̸� ��Ʈ)
+//	int parentIndex_;                // 부모 본 인덱스 (-1이면 루트)
 //	Float4x4   meshBindPose_;       // Mesh Bind Global
 //	Float4x4   boneBindPose_;       // Bone Bind Global
 //};
 //
 
+struct MeshInfo
+{
+	std::string meshName;
+
+	// Mesh 내부에 존재하는 Material "Element(레이어)" 개수.
+	// 0 아님 1 -> 보통 1
+	int materialElementCount;
+
+	// Node에 실제로 바인딩된 Material 슬롯 개수
+	int materialSlotCount;
+
+	int controlPointNum;
+	int polygonNum;
+	int deformerNum;
+
+	bool isTriangulated;
+	bool isSkeletalMesh;
+};
+
+struct TextureInfo
+{
+	std::string Name;
+	std::string FilePath;
+	std::string UVSet;
+
+	// UV Transform
+	float OffsetU = 0.0f;
+	float OffsetV = 0.0f;
+	float ScaleU = 1.0f;
+	float ScaleV = 1.0f;
+
+	bool WrapU = true;
+	bool WrapV = true;
+};
+
+struct MaterialInfo
+{
+	// ---------- Basic ----------
+	std::string Name;
+	std::string ShadingModel;   // Lambert / Phong / PBR
+
+	// ---------- Colors ----------
+	float Emissive[3] = { 0,0,0 };
+	float Ambient[3] = { 0,0,0 };
+	float Diffuse[3] = { 1,1,1 };
+	float Specular[3] = { 0,0,0 };
+	float Transparent[3] = { 0,0,0 };
+
+	// ---------- Scalars ----------
+	float Opacity = 1.0f;
+	float Shininess = 0.0f;
+	float SpecularFactor = 1.0f;
+	float ReflectionFactor = 0.0f;
+
+	// ---------- Textures ----------
+	TextureInfo DiffuseTexture;
+	TextureInfo NormalTexture;
+	TextureInfo SpecularTexture;
+	TextureInfo EmissiveTexture;
+	TextureInfo OpacityTexture;
+
+	// ---------- Flags ----------
+	bool HasDiffuseTexture = false;
+	bool HasNormalTexture = false;
+	bool HasSpecularTexture = false;
+	bool HasEmissiveTexture = false;
+	bool HasOpacityTexture = false;
+};
 
 struct Model
 {
+	std::vector<MeshInfo> meshInfo_;
 	std::vector<SkinnedMeshVertex> vertices_;
 	std::vector<uint16_t> indices_;
 

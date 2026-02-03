@@ -29,71 +29,46 @@ void RenderComponent::Render()
 	objectData.albedo_ = pTextureColor_;
 	objectData.normal_ = pTextureNormal_;
 	GRenderer->RenderGBuffer(objectData);
-
-	//CBPerObject cbPerObject;
-	//cbPerObject.world = pOwner_->GetWorldTransform().GetWorldMatrixTranspose();
-	//cbPerObject.materialSpecular = pMaterial_->GetSpecularColor();
-	//cbPerObject.materialShineness = pMaterial_->GetShineness();
-
-	//ConstantManager::Instance()->UpdatePerObejct(&cbPerObject);
-
-	//pShader_->Bind();
-	//pMaterial_->Setting();
-	//pMesh_->Setting();
-	//pTextureColor_->Setting(0);
-	//pTextureNormal_->Setting(1);
-	//pMesh_->Draw();
 }
 
 
-void RenderComponent::Create(E_MESH_TYPE meshType)
+void RenderComponent::Create(uint16_t meshTag, uint16_t materialTag, uint16_t albedoTexTag, uint16_t normalTexTag)
 {
 	CleanUp();
 
-	switch (meshType)
+	// 1 : CUBE
+	// 2 : SPHERE
+	// 3 : WUKONG
+	// 4 : Capoeira
+	if (!MeshManager::Instance()->GetMesh(&pMesh_, meshTag))
 	{
-	case E_MESH_TYPE::SPHERE:
-		if (!MeshManager::Instance()->GetMesh(&pMesh_, 2))
-		{
-			DEBUG_BREAK();
-			return;
-		}
-		break;
-	case E_MESH_TYPE::CUBE:
-		if (!MeshManager::Instance()->GetMesh(&pMesh_, 1))
-		{
-			DEBUG_BREAK();
-			return;
-		}
-		break;
-	default:
-		break;
+		DEBUG_BREAK();
+		return;
 	}
 	pMesh_->AddRef();
+	
 
-	//if (!ShaderManager::Instance()->GetShader(&pShader_, 1))
-	//{
-	//	DEBUG_BREAK();
-	//	return;
-	//}
-	//pShader_->AddRef();
-
-	if (!MaterialManager::Instance()->GetMaterial(&pMaterial_, 1))
+	// 1 : 	matDesc.shineness = 0.7f    matDesc.specularColor = { 0.7f, 0.7f, 0.7f };
+	if (!MaterialManager::Instance()->GetMaterial(&pMaterial_, materialTag))
 	{
 		DEBUG_BREAK();
 		return;
 	}
 	pMaterial_->AddRef();
 
-
-	if (!TextureManager::Instance()->GetTexture(&pTextureColor_, 1))
+	// 1 : "../Resource/Texture/Bricks_4K/Bricks_Color.png";
+	// 2 : "../Resource/Texture/Bricks_4K/Bricks_NormalDX.png";
+	// 3 : WhiteTexture
+	// 4 : "../Resource/Fbx/Mixamo/maria_diffuse.png"
+	// 5 : "../Resource/Fbx/Mixamo/maria_normal.png"
+	if (!TextureManager::Instance()->GetTexture(&pTextureColor_, albedoTexTag))
 	{
 		DEBUG_BREAK();
 		return;
 	}
 	pTextureColor_->AddRef();
 
-	if (!TextureManager::Instance()->GetTexture(&pTextureNormal_, 2))
+	if (!TextureManager::Instance()->GetTexture(&pTextureNormal_, normalTexTag))
 	{
 		DEBUG_BREAK();
 		return;
@@ -150,12 +125,6 @@ void RenderComponent::CleanUp()
 		pMesh_->Release();
 		pMesh_ = nullptr;
 	}
-
-	//if (nullptr != pShader_)
-	//{
-	//	pShader_->Release();
-	//	pShader_ = nullptr;
-	//}
 	
 	if (nullptr != pMaterial_)
 	{

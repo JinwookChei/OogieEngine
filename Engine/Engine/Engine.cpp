@@ -87,7 +87,7 @@ bool Engine::Initialize
 		return false;
 	}
 
-	if (false == FBXSystem::Init())
+	if (false == FBXManager::Init())
 	{
 		DEBUG_BREAK();
 		return false;
@@ -105,15 +105,6 @@ bool Engine::Initialize
 		return false;
 	}
 
-
-	//GInputManager = new InputManager;
-	//if (false == GInputManager->Initialize())
-	//{
-	//	DEBUG_BREAK();
-	//	return false;
-	//}
-
-	//GTimeManager = new TimeManager;
 	if (false == TimeManager::Init())
 	{
 		return false;
@@ -146,17 +137,15 @@ void Engine::Run()
 	MeshManager::Instance()->TestLoad();
 	MaterialManager::Instance()->TestLoad();
 	TextureManager::Instance()->TestLoad();
-	FBXSystem::TestImportFBX();
-
 
 	ParticleDesc particleDesc;
-	particleDesc.maxNum_ = 10000;
+	particleDesc.maxNum_ = 10;
 	particleDesc.patternType_ = E_PARTICLE_PATTERN_TYPE::EXPLOSION;
 	TextureManager::Instance()->GetTexture(&particleDesc.pTexture_, 3);
 	GParticle_1 = GRenderer->CreateParticle(particleDesc);
 
 	ParticleDesc particleDesc2;
-	particleDesc2.maxNum_ = 10000;
+	particleDesc2.maxNum_ = 10;
 	particleDesc2.patternType_ = E_PARTICLE_PATTERN_TYPE::FUME;
 	TextureManager::Instance()->GetTexture(&particleDesc2.pTexture_, 3);
 	GParticle_2 = GRenderer->CreateParticle(particleDesc2);
@@ -392,21 +381,11 @@ void Engine::CleanUp()
 		GMeshManager = nullptr;
 	}
 
-	//if (nullptr != GTimeManager)
-	//{
-	//	delete GTimeManager;
-	//	GTimeManager = nullptr;
-	//}
 	TimeManager::CleanUp();
 	
 	InputManager::CleanUp();
-	//if (nullptr != GInputManager)
-	//{
-	//	delete GInputManager;
-	//	GInputManager = nullptr;
-	//}
 
-	FBXSystem::CleanUp();
+	FBXManager::CleanUp();
 
 	if (nullptr != pApplication_)
 	{

@@ -63,7 +63,8 @@ private:
 
 	ULONG refCount_;
 
-	Shader* pShader_;
+	Shader* pMeshShader_;
+	Shader* pSkinnedMeshShader_;
 
 	ConstantBuffer* pCBPerFrame_;
 	ConstantBuffer* pCBPerObject_;

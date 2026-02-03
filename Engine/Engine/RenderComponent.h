@@ -9,11 +9,12 @@ class InputLayout;
 class ShaderConstants;
 class Rasterizer;
 
-enum class E_MESH_TYPE
-{
-	SPHERE = 0,
-	CUBE
-};
+//enum class E_MESH_TYPE
+//{
+//	SPHERE = 0,
+//	CUBE,
+//	WUKONG
+//};
 
 class RenderComponent
 {
@@ -24,7 +25,7 @@ public:
 
 	ENGINE_API void Render();
 
-	ENGINE_API void Create(E_MESH_TYPE meshType);
+	ENGINE_API void Create(uint16_t meshTag, uint16_t materialTag, uint16_t albedoTexTag, uint16_t normalTexTag);
 
 	IMesh* GetMesh() const;
 
@@ -45,8 +46,6 @@ private:
 
 	IMesh* pMesh_;
 	IMaterial* pMaterial_;
-	//IShader* pShader_;
-
 
 	ITexture* pTextureColor_;
 	ITexture* pTextureNormal_;

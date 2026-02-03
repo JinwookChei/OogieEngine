@@ -12,7 +12,7 @@
 
 GeometryPass::GeometryPass()
 	: refCount_(1)
-	, pShader_(nullptr)
+	, pMeshShader_(nullptr)
 	, pCBPerFrame_(nullptr)
 	, pCBPerObject_(nullptr)
 	, pBlendState_(nullptr)
@@ -122,7 +122,7 @@ void GeometryPass::Render(const ObjectRenderData& objectData)
 	cbObject.materialShineness = objectData.pMaterial->GetShineness();
 	pCBPerObject_->Update(&cbObject);
 	
-	pShader_->Bind();
+	pMeshShader_->Bind();
 	pSamplerState_->BindPS(0);
 	pDepthState_->Bind();
 
@@ -144,7 +144,6 @@ bool GeometryPass::InitShaders()
 {
 	const wchar_t* pVSPath = L"GeometryVS.cso";
 	const wchar_t* pPSPath = L"GeometryPS.cso";
-	
 	ShaderDesc computeShaderDesc;
 	computeShaderDesc.inputDesc_.push_back({ "POSITION", 0, 6, 0, false });
 	computeShaderDesc.inputDesc_.push_back({ "COLOR", 0, 2, 0, false });
@@ -153,13 +152,32 @@ bool GeometryPass::InitShaders()
 	computeShaderDesc.inputDesc_.push_back({ "TANGENT", 0, 2, 0, false });
 	computeShaderDesc.pathVS_ = pVSPath;
 	computeShaderDesc.pathPS_ = pPSPath;
-	pShader_ = Shader::Create(computeShaderDesc);
-
-	if (nullptr == pShader_)
+	pMeshShader_ = Shader::Create(computeShaderDesc);
+	if (nullptr == pMeshShader_)
 	{
 		DEBUG_BREAK();
 		return false;
 	}
+
+	
+	//const wchar_t* pVSPath = L"GeometryVS.cso";
+	//const wchar_t* pPSPath = L"GeometryPS.cso";
+	//ShaderDesc computeShaderDesc;
+	//computeShaderDesc.inputDesc_.push_back({ "POSITION", 0, 6, 0, false });
+	//computeShaderDesc.inputDesc_.push_back({ "COLOR", 0, 2, 0, false });
+	//computeShaderDesc.inputDesc_.push_back({ "NORMAL", 0, 6, 0, false });
+	//computeShaderDesc.inputDesc_.push_back({ "TEXCOORD", 0, 16, 0, false });
+	//computeShaderDesc.inputDesc_.push_back({ "TANGENT", 0, 2, 0, false });
+	//computeShaderDesc.pathVS_ = pVSPath;
+	//computeShaderDesc.pathPS_ = pPSPath;
+	//pSkinnedMeshShader_ = Shader::Create(computeShaderDesc);
+	//if (nullptr == pSkinnedMeshShader_)
+	//{
+	//	DEBUG_BREAK();
+	//	return false;
+	//}
+
+
 
 	return true;
 }
@@ -194,7 +212,7 @@ bool GeometryPass::InitBlendState()
 
 bool GeometryPass::InitSamplerState()
 {
-	pSamplerState_ = SamplerState::Create(E_SAMPLER_TYPE::LINEAR_CLAMP, 0, D3D11_FLOAT32_MAX, 1);
+	pSamplerState_ = SamplerState::Create(E_SAMPLER_TYPE::LINEAR_WARP, 0, D3D11_FLOAT32_MAX, 1);
 	if (nullptr == pSamplerState_)
 	{
 		DEBUG_BREAK();
@@ -232,10 +250,10 @@ void GeometryPass::CleanUp()
 		pBlendState_->Release();
 		pBlendState_ = nullptr;
 	}
-	if (nullptr != pShader_)
+	if (nullptr != pMeshShader_)
 	{
-		pShader_->Release();
-		pShader_ = nullptr;
+		pMeshShader_->Release();
+		pMeshShader_ = nullptr;
 	}
 
 	if (nullptr != pCBPerFrame_)

@@ -1,6 +1,8 @@
 #pragma once
 #include "SceneAxisInfo.h"
 
+
+
 class Model;
 class FBXImporter : public IFBXImporter
 {
@@ -17,13 +19,26 @@ private:
 
 	bool Init(const std::string& file);
 	fbxsdk::FbxMesh* FindMesh(fbxsdk::FbxNode* pNode);
+	
 
+	// Model
+	void ExtractMeshInfo(Model* pModel, fbxsdk::FbxNode* pNode);
 	bool ExtractNormal(Float3* pOutNormal, fbxsdk::FbxMesh* pMesh, int cpIndex, int polygonVertexIndex);
 	bool ExtractTangent(Float4* pOutTangent, bool* pOutExistTangent, fbxsdk::FbxMesh* pMesh, int cpIndex, int polygonVertexIndex);
-	bool ExtractUV(Float2* pOutUV, fbxsdk::FbxMesh* pMesh, int polyIndex, int vertexIndex);
+	bool ExtractUV_1(Float2* pOutUV, fbxsdk::FbxMesh* pMesh, int polyIndex, int vertexIndex);
+	bool ExtractUV_2(Float2* pOutUV, fbxsdk::FbxMesh* pMesh, int polyIndex, int vertexIndex);
 	bool ExtractColor(Float4* pOutColor, fbxsdk::FbxMesh* pMesh, int cpIndex, int polygonVertexIndex);
+	bool ExtractMaterialIndex(unsigned int* pOutIndex, fbxsdk::FbxMesh* pMesh, int polyIndex);
 	void CalculateTangent(std::vector<SkinnedMeshVertex>* pVertices, const std::vector<uint16_t>& indices);
 	
+
+	// Material
+	MaterialInfo BuildMaterialInfo(fbxsdk::FbxSurfaceMaterial* material);
+	void ReadColor(fbxsdk::FbxSurfaceMaterial* material, const char* propName, float outColor[3]);
+	float GetScalar(fbxsdk::FbxSurfaceMaterial* material, const char* propName);
+	bool ReadTexture(fbxsdk::FbxSurfaceMaterial* material, const char* propName, TextureInfo& outTex);
+
+
 	int CountMeshes(fbxsdk::FbxNode* node);
 	SceneAxisInfo GetSceneAxisInfo(fbxsdk::FbxScene* pScene);
 	void CleanUp();
@@ -36,5 +51,6 @@ private:
 	fbxsdk::FbxImporter* pImporter_;
 	fbxsdk::FbxScene* pScene_;
 
-	SceneAxisInfo sceneAxisInfo_;
+	SceneAxisInfo originSceneAxisInfo_;
+	SceneAxisInfo convertSceneAxisInfo_;
 };

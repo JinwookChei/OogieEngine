@@ -76,11 +76,11 @@
     <Filter Include="Common">
       <UniqueIdentifier>{ef6808b8-b970-469a-8264-744640894f1a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\FBXSystem">
-      <UniqueIdentifier>{8b09a7ae-7e33-4c1f-9062-ec68c9bec508}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Actor\Player">
       <UniqueIdentifier>{d2fb2290-0889-4ddd-9d08-d3088fb95279}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\FBX">
+      <UniqueIdentifier>{8b09a7ae-7e33-4c1f-9062-ec68c9bec508}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -183,8 +183,8 @@
     <ClInclude Include="..\..\Interface\FBXImporter\IFBXImporter.h">
       <Filter>Interface</Filter>
     </ClInclude>
-    <ClInclude Include="FBXSystem.h">
-      <Filter>Source Files\FBXSystem</Filter>
+    <ClInclude Include="FBXManager.h">
+      <Filter>Source Files\FBX</Filter>
     </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>Source Files\Actor\Player</Filter>
@@ -260,8 +260,8 @@
     <ClCompile Include="ParticleComponent.cpp">
       <Filter>Source Files\Component\ParticleSystem</Filter>
     </ClCompile>
-    <ClCompile Include="FBXSystem.cpp">
-      <Filter>Source Files\FBXSystem</Filter>
+    <ClCompile Include="FBXManager.cpp">
+      <Filter>Source Files\FBX</Filter>
     </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>Source Files\Actor\Player</Filter>

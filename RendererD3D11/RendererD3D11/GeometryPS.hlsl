@@ -65,6 +65,7 @@ PS_OUTPUT main(PS_INPUT input)
     
     float4 textColor = textureColor.Sample(g_Sampler, input.uv);
     output.rt0 = textColor;
+    //output.rt0 = input.color;
     
     float4 texNormal = normalize(textureNormal.Sample(g_Sampler, input.uv));
     float3 worldNormal = normalize(mul(texNormal.xyz, input.TBN));

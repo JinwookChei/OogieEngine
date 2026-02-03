@@ -28,6 +28,18 @@ struct Float4 {
 		: X(x), Y(y), Z(z), W(w) {
 	}
 
+	Float4& operator=(const Float4& rhs)
+	{
+		if (this != &rhs)
+		{
+			X = rhs.X;
+			Y = rhs.Y;
+			Z = rhs.Z;
+			W = rhs.W;
+		}
+		return *this;
+	}
+
 	Float4 operator+(const Float4& rhs)
 	{
 		return { this->X + rhs.X, this->Y + rhs.Y, this->Z + rhs.Z, this->W + rhs.W };
@@ -88,6 +100,17 @@ struct Float3 {
 
 	Float3(float x, float y, float z)
 		: X(x), Y(y), Z(z) {
+	}
+
+	Float3& operator=(const Float3& rhs)
+	{
+		if (this != &rhs)
+		{
+			X = rhs.X;
+			Y = rhs.Y;
+			Z = rhs.Z;
+		}
+		return *this;
 	}
 
 	Float3 operator+(const Float3& rhs)
@@ -162,6 +185,16 @@ struct Float2 {
 
 	Float2(float x, float y)
 		: X(x), Y(y) {
+	}
+
+	Float2& operator=(const Float2& rhs)
+	{
+		if (this != &rhs)
+		{
+			X = rhs.X;
+			Y = rhs.Y;
+		}
+		return *this;
 	}
 
 	Float2 operator+(const Float2& rhs)

@@ -74,7 +74,7 @@ void LookAtCamera::Tick(double deltaTime)
 
 void LookAtCamera::BeginPlay()
 {
-	pRenderer_->Create(E_MESH_TYPE::CUBE);
+	pRenderer_->Create(1,1,1,2);
 
 	pTransform_->SetScale({ 2.0f, 2.0f, 2.0f, 0.0f });
 	pTransform_->SetRotation({ 0.0f, 0.0f, 0.0f, 0.0f });
