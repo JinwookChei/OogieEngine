@@ -4,44 +4,29 @@ class Texture;
 class RenderTarget final
 	: public IRenderTarget {
 private:
-	friend Renderer;
+	friend class RenderResourceFactory;
+	friend class Renderer;
 
 	RenderTarget();
-
 	virtual ~RenderTarget();
-
 	bool Init(const RenderTargetDesc& desc, Texture* pRenderTexture, Texture* pDepthTexture);
 
 public:
 	HRESULT __stdcall QueryInterface(REFIID riid, _COM_Outptr_ void __RPC_FAR* __RPC_FAR* ppvObject) override;
-
 	ULONG __stdcall AddRef() override;
-
 	ULONG __stdcall Release() override;
 
 	void __stdcall Bind() override;
-
 	void __stdcall Bind(ITexture* pDepthTexture) override;
-
 	void __stdcall Clear() override;
-
 	RenderTargetDesc __stdcall GetDesc() const override;
-
 	Float2 __stdcall GetSize() const override;
-
 	void __stdcall SetClearColor(const Color& color) override;
-
 	void __stdcall BindRenderTexturePS(uint32_t slot) override;
-
 	void __stdcall UnBindRenderTexturePS(uint32_t slot) override;
-
 	void __stdcall EndRenderPass() override;
-
 	void* __stdcall GetShaderResourceView(const E_RENDER_TEXTURE_TYPE& texureType) override;
-
 	ITexture* __stdcall GetDepthTexture() override;
-
-
 	bool SetTexture(Texture* pRenderTexture, Texture* pDepthTexture);
 
 private:

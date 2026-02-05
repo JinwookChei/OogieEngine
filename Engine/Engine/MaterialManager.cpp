@@ -30,7 +30,7 @@ void MaterialManager::TestLoad()
 
 IMaterial* MaterialManager::CreateMaterial(const MaterialDesc& desc, unsigned long long materialTag)
 {
-	IMaterial* pNewMaterial = GRenderer->CreateMaterial(desc);
+	IMaterial* pNewMaterial = Renderer::GetFactory()->CreateMaterial(desc);
 	materialTable_.Insert(pNewMaterial, &materialTag, 8);
 
 	return pNewMaterial;

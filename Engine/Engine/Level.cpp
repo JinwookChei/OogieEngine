@@ -110,9 +110,9 @@ void Level::OnRender()
 
 		// Light Pass
 		GCurrentCamera->LightPassBegin();
-		GRenderer->RenderLightBegin(GCurrentCamera->GetGBufferTarget());
+		Renderer::Instance()->RenderLightBegin(GCurrentCamera->GetGBufferTarget());
 		OnRenderLights();
-		GRenderer->RenderLightEnd(GCurrentCamera->GetGBufferTarget());
+		Renderer::Instance()->RenderLightEnd(GCurrentCamera->GetGBufferTarget());
 		GCurrentCamera->LightPassEnd();
 		// Light Pass End
 
@@ -125,7 +125,7 @@ void Level::OnRender()
 
 		GCurrentCamera->pFinalRenderTarget_->Bind();
 		GCurrentCamera->UpdatePerFrameConstant();
-		GRenderer->RenderMerge(GCurrentCamera->pParticleRenderTarget_);
+		Renderer::Instance()->RenderMerge(GCurrentCamera->pParticleRenderTarget_);
 		//GRenderer->RenderMerge(GCurrentCamera->pGBufferRenderTarget_, GCurrentCamera->pParticleRenderTarget_);
 		GCurrentCamera->pFinalRenderTarget_->EndRenderPass();
 
@@ -134,14 +134,14 @@ void Level::OnRender()
 		GCurrentCamera->DebugPassBegin();
 		//GCurrentCamera->pDebugRenderTarget_->Clear();
 		//GCurrentCamera->pDebugRenderTarget_->Bind();
-		GRenderer->RenderDebug();
+		Renderer::Instance()->RenderDebug();
 		GCurrentCamera->DebugPassEnd();
 		// DebugRender End
 		
 
 		GCurrentCamera->pFinalRenderTarget_->Bind();
 		GCurrentCamera->UpdatePerFrameConstant();
-		GRenderer->RenderMerge(GCurrentCamera->pDebugRenderTarget_);
+		Renderer::Instance()->RenderMerge(GCurrentCamera->pDebugRenderTarget_);
 		//GRenderer->RenderMerge(GCurrentCamera->pGBufferRenderTarget_, GCurrentCamera->pDebugRenderTarget_);
 		GCurrentCamera->pFinalRenderTarget_->EndRenderPass();
 	}
@@ -183,7 +183,7 @@ void Level::OnRenderLights()
 	{
 		Light* pCurLight = static_cast<Light*>(pLightIter->pItem_);
 		pLightIter = pLightIter->next_;
-		GRenderer->RenderLight(pCurLight->GetData());
+		Renderer::Instance()->RenderLight(pCurLight->GetData());
 		//pCurLight->BindLight();
 		//GCurrentCamera->RenderLight();
 	}
@@ -213,14 +213,14 @@ void Level::OnRenderParticles()
 	Float4 position1 = { 0.0f, 0.0f, 0.0f , 1.0f };
 	Float4x4 world1;
 	MATH::MatrixCompose(world1, scale1, rotation1, position1);
-	GRenderer->RenderParticles(GParticle_1, world1, viewProj, cameraRight, cameraUp);
+	Renderer::Instance()->RenderParticles(GParticle_1, world1, viewProj, cameraRight, cameraUp);
 
 	Float4 scale2 = { 1.0f, 1.0f, 1.0f, 0.0f };
 	Float4 rotation2 = { 0.0f, 0.0f, 0.0f , 0.0f };
 	Float4 position2 = { 0.0f, 5.0f, 5.0f , 1.0f };
 	Float4x4 world2;
 	MATH::MatrixCompose(world2, scale2, rotation2, position2);
-	GRenderer->RenderParticles(GParticle_2, world2,  viewProj, cameraRight, cameraUp);
+	Renderer::Instance()->RenderParticles(GParticle_2, world2,  viewProj, cameraRight, cameraUp);
 }
 
 

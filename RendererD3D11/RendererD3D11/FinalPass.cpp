@@ -130,7 +130,7 @@ bool FinalPass::InitScreenQuad()
 	meshDesc.indexFormatSize = sizeof(WORD);
 	meshDesc.indexCount = indices.size();
 	meshDesc.indices = indices.data();
-	pScreenQuad_ = (Mesh*)GRenderer->CreateMesh(meshDesc);
+	pScreenQuad_ = (Mesh*)GResourceFactory->CreateMesh(meshDesc);
 	if (nullptr == pScreenQuad_)
 	{
 		DEBUG_BREAK();

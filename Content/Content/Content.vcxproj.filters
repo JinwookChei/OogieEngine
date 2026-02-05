@@ -40,6 +40,15 @@
     <Filter Include="Source Files\Game\Actors\Player">
       <UniqueIdentifier>{bc34bcd1-d4f1-45e7-a820-ab3b7703bf00}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Interface\Renderer">
+      <UniqueIdentifier>{ed3d985b-870c-416f-8d22-5eec9f104c10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Interface\Application">
+      <UniqueIdentifier>{9fc3ce05-cb8c-474e-8667-53e0d59a215a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Interface\Editor">
+      <UniqueIdentifier>{485d940f-e62f-4bad-bf70-897ff389900b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -80,12 +89,6 @@
     <ClInclude Include="stdafx.h">
       <Filter>Precompiled Header</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Interface\Application\IApplication.h">
-      <Filter>Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Interface\Renderer\IRenderer.h">
-      <Filter>Interface</Filter>
-    </ClInclude>
     <ClInclude Include="ContentManager.h">
       <Filter>Source Files\Main</Filter>
     </ClInclude>
@@ -104,12 +107,6 @@
     <ClInclude Include="Sphere.h">
       <Filter>Source Files\Game\Actors</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Interface\Editor\IEditor.h">
-      <Filter>Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Interface\EditorBindObject\IEditorBindObject.h">
-      <Filter>Interface</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Common\GeometryType\GeometryType.h">
       <Filter>Common</Filter>
     </ClInclude>
@@ -127,6 +124,39 @@
     </ClInclude>
     <ClInclude Include="WereWolf.h">
       <Filter>Source Files\Game\Actors\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Interface\Editor\IEditor.h">
+      <Filter>Interface\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Interface\EditorBindObject\IEditorBindObject.h">
+      <Filter>Interface\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Interface\Application\IApplication.h">
+      <Filter>Interface\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Interface\Renderer\IRenderer.h">
+      <Filter>Interface\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Interface\Renderer\IMaterial.h">
+      <Filter>Interface\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Interface\Renderer\IMesh.h">
+      <Filter>Interface\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Interface\Renderer\IParticle.h">
+      <Filter>Interface\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Interface\Renderer\IRasterizer.h">
+      <Filter>Interface\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Interface\Renderer\IRenderResourceFactory.h">
+      <Filter>Interface\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Interface\Renderer\IRenderTarget.h">
+      <Filter>Interface\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Interface\Renderer\ITexture.h">
+      <Filter>Interface\Renderer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -52,16 +52,19 @@
     <Filter Include="Common">
       <UniqueIdentifier>{8d9c511e-226a-4257-899e-831095a02690}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Interface\Application">
+      <UniqueIdentifier>{db4e8ea1-b670-41a3-b16b-5eb293d4ed04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Interface\Editor">
+      <UniqueIdentifier>{ad23aca2-c45b-4216-ad20-fe03203f5e5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Interface\Renderer">
+      <UniqueIdentifier>{a179e71d-da38-406e-84ba-8cd97a77a204}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
       <Filter>Precompiled Header</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Interface\Application\IApplication.h">
-      <Filter>Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Interface\Renderer\IRenderer.h">
-      <Filter>Interface</Filter>
     </ClInclude>
     <ClInclude Include="..\..\ThirdParty\Imgui2\imconfig.h">
       <Filter>EditSource\ImGui</Filter>
@@ -108,12 +111,6 @@
     <ClInclude Include="EditorCore.h">
       <Filter>Source Files\EditorCore</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Interface\Editor\IEditor.h">
-      <Filter>Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Interface\EditorBindObject\IEditorBindObject.h">
-      <Filter>Interface</Filter>
-    </ClInclude>
     <ClInclude Include="EditorWindow.h">
       <Filter>Source Files\EditorCore\EditorWindow</Filter>
     </ClInclude>
@@ -140,6 +137,39 @@
     </ClInclude>
     <ClInclude Include="..\..\Common\GeometryType\GeometryType.h">
       <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Interface\Renderer\IRenderer.h">
+      <Filter>Interface\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Interface\Editor\IEditor.h">
+      <Filter>Interface\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Interface\EditorBindObject\IEditorBindObject.h">
+      <Filter>Interface\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Interface\Application\IApplication.h">
+      <Filter>Interface\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Interface\Renderer\IMaterial.h">
+      <Filter>Interface\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Interface\Renderer\IMesh.h">
+      <Filter>Interface\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Interface\Renderer\IParticle.h">
+      <Filter>Interface\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Interface\Renderer\IRasterizer.h">
+      <Filter>Interface\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Interface\Renderer\IRenderResourceFactory.h">
+      <Filter>Interface\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Interface\Renderer\IRenderTarget.h">
+      <Filter>Interface\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Interface\Renderer\ITexture.h">
+      <Filter>Interface\Renderer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

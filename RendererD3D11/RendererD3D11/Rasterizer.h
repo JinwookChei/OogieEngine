@@ -1,22 +1,17 @@
 #pragma once
 
-class Rasterizer final
-	: public IRasterizer
+class Rasterizer final : public IRasterizer
 {
 private:
-	friend Renderer;
+	friend class RenderResourceFactory;
 
 	Rasterizer();
-
 	virtual ~Rasterizer();
-
 	bool Init(ID3D11RasterizerState* pSolidState, ID3D11RasterizerState* pWireframeState);
 
 public:
 	HRESULT __stdcall QueryInterface(REFIID riid, _COM_Outptr_ void __RPC_FAR* __RPC_FAR* ppvObject) override;
-
 	ULONG __stdcall AddRef() override;
-
 	ULONG __stdcall Release() override;
 
 	void __stdcall Setting() override;

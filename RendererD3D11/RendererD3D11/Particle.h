@@ -1,8 +1,6 @@
 #pragma once
 
 class Texture;
-
-
 struct ParticleElem
 {
 	Float3 position_;
@@ -14,7 +12,7 @@ struct ParticleElem
 class Particle : public IParticle
 {
 private:
-	friend class Renderer;
+	friend class RenderResourceFactory;
 
 	Particle();
 	virtual ~Particle();

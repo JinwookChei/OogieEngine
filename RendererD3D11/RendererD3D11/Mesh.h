@@ -1,15 +1,11 @@
 #pragma once
 
-class Mesh
-	: public IMesh
+class Mesh : public IMesh
 {
 private:
-	friend Renderer;
-
+	friend class RenderResourceFactory;
 	Mesh();
-
 	virtual ~Mesh();
-
 	bool Init
 	(
 		E_VERTEX_FORMAT vertexFormat,
@@ -25,17 +21,12 @@ private:
 
 public:
 	HRESULT __stdcall QueryInterface(REFIID riid, _COM_Outptr_ void __RPC_FAR* __RPC_FAR* ppvObject) override;
-
 	ULONG __stdcall AddRef() override;
-
 	ULONG __stdcall Release() override;
 
 	void Bind() const;
-
 	void __stdcall GetVerticesData(E_VERTEX_FORMAT* pOutFormat, uint32_t* pOutStride, uint32_t* pOutCount, void** ppOutVertices) const override;
-
 	void __stdcall GetIndicesData(uint32_t* pOutStride, uint32_t* pOutCount, void** ppOutIndices) const override;
-
 	ULONG  GetIndexCount() const;
 
 private:

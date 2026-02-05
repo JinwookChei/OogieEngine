@@ -10,8 +10,7 @@ class DebugPass;
 class MergePass;
 class FinalPass;
 
-class Renderer final
-	: public IRenderer
+class Renderer final : public IRenderer
 {
 public:
 	Renderer();
@@ -55,28 +54,17 @@ public:
 	uint64_t __stdcall DrawCallCount() override;
 
 	// ------------------------- 인터페이스 노출된 Create -----------------------------
-	IMesh* __stdcall CreateMesh(const MeshDesc& desc) override;
-
-	IMaterial* __stdcall CreateMaterial(const MaterialDesc& materialDesc) override;
-
-	IRasterizer* __stdcall  CreateRasterizer(bool frontCounterClockwise, bool backFaceCulling) override;
-
-	IRenderTarget* __stdcall CreateRenderTarget(const RenderTargetDesc& desc) override;
-
-	IRenderTarget* __stdcall CreateForwardRenderTarget(const RenderTargetDesc& desc);
-
-	IRenderTarget* __stdcall CreateDeferredRenderTarget(const RenderTargetDesc& desc);
-
-	IParticle* __stdcall CreateParticle(const ParticleDesc& desc) override;
-
-	ITexture* __stdcall LoadTextureFromDirectXTex(const wchar_t* fileName, bool isNormalMap) override;
-	
-	ITexture* __stdcall CreateTexture(const TextureDesc& desc) override;
-
-	ITexture* CreateTexture(const Float2& size, DXGI_FORMAT format, uint32_t flag);
-
-	ITexture* CreateTexture(const D3D11_TEXTURE2D_DESC& desc);
-
+	//IMesh* __stdcall CreateMesh(const MeshDesc& desc) override;
+	//IMaterial* __stdcall CreateMaterial(const MaterialDesc& materialDesc) override;
+	//IRasterizer* __stdcall  CreateRasterizer(bool frontCounterClockwise, bool backFaceCulling) override;
+	//IRenderTarget* __stdcall CreateRenderTarget(const RenderTargetDesc& desc) override;
+	//IRenderTarget* __stdcall CreateForwardRenderTarget(const RenderTargetDesc& desc);
+	//IRenderTarget* __stdcall CreateDeferredRenderTarget(const RenderTargetDesc& desc);
+	//IParticle* __stdcall CreateParticle(const ParticleDesc& desc) override;
+	//ITexture* __stdcall LoadTextureFromDirectXTex(const wchar_t* fileName, bool isNormalMap) override;
+	//ITexture* __stdcall CreateTexture(const TextureDesc& desc) override;
+	//ITexture* CreateTexture(const Float2& size, DXGI_FORMAT format, uint32_t flag);
+	//ITexture* CreateTexture(const D3D11_TEXTURE2D_DESC& desc);
 	// ------------------------- 인터페이스 노출안된 Create -----------------------------
 	void Draw(UINT count, bool useIndex);
 	

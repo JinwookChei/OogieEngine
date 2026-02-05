@@ -81,3 +81,17 @@ extern "C" __declspec(dllexport) bool CreateRenderer(void** pVoid)
 	*pVoid = pNew;
 	return true;
 }
+
+
+extern "C" __declspec(dllexport) bool CreateRenderResourceFactory(void** pVoid)
+{
+	IRenderResourceFactory* pNew = new RenderResourceFactory;
+	if (nullptr == pNew)
+	{
+		DEBUG_BREAK();
+		return false;
+	}
+
+	*pVoid = pNew;
+	return true;
+}

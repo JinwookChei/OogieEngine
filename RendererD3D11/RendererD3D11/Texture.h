@@ -1,16 +1,14 @@
 #pragma once
 
-class Texture final :
-	public ITexture {
+class Texture final : public ITexture 
+{
 private:
-	friend Renderer;
+	friend class RenderResourceFactory;
+	friend class Renderer;
 
 	Texture();
-
 	virtual ~Texture();
-
 	bool Init(ID3D11Texture2D* pTexture);
-
 	bool Init(ID3D11Texture2D* pTexture, ID3D11ShaderResourceView* pShaderResourceView);
 
 public:

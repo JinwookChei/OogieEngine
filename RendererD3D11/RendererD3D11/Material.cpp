@@ -39,7 +39,6 @@ ULONG __stdcall Material::Release()
 	if (0 == refCount_) {
 		delete this;
 	}
-
 	return tmpRefCount;
 }
 

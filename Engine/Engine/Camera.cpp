@@ -112,7 +112,7 @@ void Camera::DebugPassEnd()
 
 void Camera::BlitToBackBuffer()
 {
-	GRenderer->RenderFinal(pParticleRenderTarget_);
+	Renderer::Instance()->RenderFinal(pParticleRenderTarget_);
 }
 
 const Float4x4& Camera::View() const
@@ -139,7 +139,7 @@ void Camera::SetSize(const Float2& size)
 	pGBufferRenderTarget_ = nullptr;
 
 	desc.size_ = size;
-	pGBufferRenderTarget_ = GRenderer->CreateRenderTarget(desc);
+	pGBufferRenderTarget_ = Renderer::GetFactory()->CreateRenderTarget(desc);
 }
 
 
@@ -198,7 +198,7 @@ void Camera::UpdatePerFrameConstant()
 	frameData.screenResolution = pGBufferRenderTarget_->GetSize();
 	frameData.camPos = pTransform_->GetPosition();
 
-	GRenderer->UpdateCameraFrame(frameData);
+	Renderer::Instance()->UpdateCameraFrame(frameData);
 }
 
 bool Camera::InitGBuffer()
@@ -206,7 +206,7 @@ bool Camera::InitGBuffer()
 	RenderTargetDesc gBufferDesc(E_RENDER_TECHNIQUE_TYPE::Deferred);
 	gBufferDesc.size_ = { DEFAULT_SCREEN_WIDTH , DEFAULT_SCREEN_HEIGHT };
 	gBufferDesc.clearColor_ = { 0.0f, 0.0f, 0.0f, 0.0f };
-	pGBufferRenderTarget_ = GRenderer->CreateRenderTarget(gBufferDesc);
+	pGBufferRenderTarget_ = Renderer::GetFactory()->CreateRenderTarget(gBufferDesc);
 	if (nullptr == pGBufferRenderTarget_)
 	{
 		return false;
@@ -221,7 +221,7 @@ bool Camera::InitLightBuffer()
 	lightBufferDesc.size_ = { DEFAULT_SCREEN_WIDTH , DEFAULT_SCREEN_HEIGHT };
 	lightBufferDesc.clearColor_ = { 0.0f, 0.0f, 0.0f, 0.0f };
 	lightBufferDesc.forwardDesc_.useDepthStencil_ = false;						// 라이트 패스에서 여러 라이트를 처리하기 위해서는 Depth는 꺼야함.
-	pFinalRenderTarget_ = GRenderer->CreateRenderTarget(lightBufferDesc);
+	pFinalRenderTarget_ = Renderer::GetFactory()->CreateRenderTarget(lightBufferDesc);
 	if (nullptr == pFinalRenderTarget_)
 	{
 		return false;
@@ -236,7 +236,7 @@ bool Camera::InitParticleBuffer()
 	particleRenderTargetDesc.size_ = { DEFAULT_SCREEN_WIDTH , DEFAULT_SCREEN_HEIGHT };
 	particleRenderTargetDesc.clearColor_ = { 0.0f, 0.0f, 0.0f, 0.0f };
 	particleRenderTargetDesc.forwardDesc_.useDepthStencil_ = false;
-	pParticleRenderTarget_ = GRenderer->CreateRenderTarget(particleRenderTargetDesc);
+	pParticleRenderTarget_ = Renderer::GetFactory()->CreateRenderTarget(particleRenderTargetDesc);
 	if (nullptr == pParticleRenderTarget_)
 	{
 		DEBUG_BREAK();
@@ -252,7 +252,7 @@ bool Camera::InitDebugBuffer()
 	debugRenderTargeetDesc.size_ = { DEFAULT_SCREEN_WIDTH , DEFAULT_SCREEN_HEIGHT };
 	debugRenderTargeetDesc.clearColor_ = { 0.0f, 0.0f, 0.0f, 0.0f };
 	debugRenderTargeetDesc.forwardDesc_.useDepthStencil_ = false;
-	pDebugRenderTarget_ = GRenderer->CreateRenderTarget(debugRenderTargeetDesc);
+	pDebugRenderTarget_ = Renderer::GetFactory()->CreateRenderTarget(debugRenderTargeetDesc);
 	if (nullptr == pDebugRenderTarget_)
 	{
 		DEBUG_BREAK();

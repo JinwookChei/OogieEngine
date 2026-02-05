@@ -94,7 +94,7 @@ void MeshManager::TestLoad()
 
 IMesh* MeshManager::CreateMesh(const MeshDesc& desc, unsigned long long meshTag)
 {
-	IMesh* pMesh = GRenderer->CreateMesh(desc);
+	IMesh* pMesh = Renderer::GetFactory()->CreateMesh(desc);
 	//pMesh->AddInputLayout("POSITION", 0, 6, 0, false);
 	//pMesh->AddInputLayout("COLOR", 0, 2, 0, false);
 	//pMesh->AddInputLayout("NORMAL", 0, 6, 0, false);

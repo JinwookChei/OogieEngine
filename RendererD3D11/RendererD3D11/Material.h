@@ -1,15 +1,12 @@
 #pragma once
 
-class Material
-	: public IMaterial
+class Material : public IMaterial
 {
 private:
-	friend Renderer;
+	friend class RenderResourceFactory;
 
 	Material();
-
 	virtual ~Material();
-
 	bool Init
 	(
 		float shineness,
@@ -18,9 +15,7 @@ private:
 
 public:
 	HRESULT __stdcall QueryInterface(REFIID riid, _COM_Outptr_ void __RPC_FAR* __RPC_FAR* ppvObject) override;
-
 	ULONG __stdcall AddRef() override;
-
 	ULONG __stdcall Release() override;
 
 	//void __stdcall Setting() override;

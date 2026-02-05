@@ -28,28 +28,25 @@
     <Filter Include="Common">
       <UniqueIdentifier>{798580fb-1e54-4170-a2d3-7bf4cd1ca17b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Interface\Application">
+      <UniqueIdentifier>{b533fae7-746c-440a-bf46-1258e3f98a0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Interface\Editor">
+      <UniqueIdentifier>{04e0d8a9-ebce-4e4f-a0fe-c06f2169a41d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Interface\Renderer">
+      <UniqueIdentifier>{6c775c0f-9123-4226-ac2b-5179abe1cbd7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
       <Filter>Precompiled Header</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Interface\Application\IApplication.h">
-      <Filter>Interface</Filter>
     </ClInclude>
     <ClInclude Include="WindowsApplication.h">
       <Filter>Source Files\Windows</Filter>
     </ClInclude>
     <ClInclude Include="Window.h">
       <Filter>Source Files\Windows</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Interface\Renderer\IRenderer.h">
-      <Filter>Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Interface\Editor\IEditor.h">
-      <Filter>Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Interface\EditorBindObject\IEditorBindObject.h">
-      <Filter>Interface</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Common\GeometryType\GeometryType.h">
       <Filter>Common</Filter>
@@ -59,6 +56,18 @@
     </ClInclude>
     <ClInclude Include="..\..\Common\VertexType\VertexType.h">
       <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Interface\Application\IApplication.h">
+      <Filter>Interface\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Interface\EditorBindObject\IEditorBindObject.h">
+      <Filter>Interface\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Interface\Editor\IEditor.h">
+      <Filter>Interface\Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Interface\Renderer\IRenderer.h">
+      <Filter>Interface\Renderer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

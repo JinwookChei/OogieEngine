@@ -42,8 +42,8 @@ void ActorPicker::Tick(double deltaTime)
 		Float3 rayPos = { ray.origin_.X, ray.origin_.Y, ray.origin_.Z };
 		Float3 rayDir = { ray.dir_.X, ray.dir_.Y, ray.dir_.Z };
 		MATH::VectorNormalize(rayDir, rayDir);
-		GRenderer->DrawDebugRay(rayPos, rayDir, GCurrentCamera->GetFar(), { 1.0f, 0.0f, 0.0f, 1.0f });
-		//GDebugRenderer->DrawRay(rayPos, rayDir, GCurrentCamera->GetFar(), { 1.0f, 0.0f, 0.0f, 1.0f });
+		Renderer::Instance()->DrawDebugRay(rayPos, rayDir, GCurrentCamera->GetFar(), { 1.0f, 0.0f, 0.0f, 1.0f });
+		//Renderer::Instance()->DrawRay(rayPos, rayDir, GCurrentCamera->GetFar(), { 1.0f, 0.0f, 0.0f, 1.0f });
 	}
 }
 

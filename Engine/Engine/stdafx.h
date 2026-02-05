@@ -58,6 +58,13 @@
 
 // Interface
 #include <Interface/Application/IApplication.h>
+#include <Interface/Renderer/IMesh.h>
+#include <Interface/Renderer/ITexture.h>
+#include <Interface/Renderer/IMaterial.h>
+#include <Interface/Renderer/IRenderTarget.h>
+#include <Interface/Renderer/IRasterizer.h>
+#include <Interface/Renderer/IParticle.h>
+#include <Interface/Renderer/IRenderResourceFactory.h>
 #include <Interface/Renderer/IRenderer.h>
 #include <Interface/EditorBindObject/IEditorBindObject.h>
 #include <Interface/Editor/IEditor.h>
@@ -69,6 +76,8 @@
 
 
 // Engine
+#include "Application.h"
+#include "Renderer.h"
 #include "FBXManager.h"
 #include "InputManager.h"
 #include "TimeManager.h"
@@ -83,8 +92,8 @@
 #include "Light.h"
 #include "SpotLight.h"
 
-extern IApplication* GApplication;
-extern IRenderer* GRenderer;
+//extern IApplication* GApplication;
+//extern IRenderer* GRenderer;
 
 extern MeshManager* GMeshManager;
 extern MaterialManager* GMaterialManager;

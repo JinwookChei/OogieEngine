@@ -3,15 +3,12 @@
 const int RENDER_BUFFER_COUNT = 3;
 const int RESOURCE_BUFFER_COUNT = 4;
 
-class DeferredTarget final
-	: public IRenderTarget
+class DeferredTarget final : public IRenderTarget
 {
-	friend class Renderer;
+	friend class RenderResourceFactory;
 
 	DeferredTarget();
-
 	virtual ~DeferredTarget();
-
 	bool Init
 	(
 		const RenderTargetDesc& desc,

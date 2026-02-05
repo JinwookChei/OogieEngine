@@ -29,7 +29,7 @@ void TextureManager::TestLoad()
 	TextureDesc whiteTextureDesc;
 	whiteTextureDesc.colorData_ = 0xFFFFFFFF;
 	whiteTextureDesc.size_ = { 1.0f, 1.0f };
-	ITexture* whiteTexture = GRenderer->CreateTexture(whiteTextureDesc);
+	ITexture* whiteTexture = Renderer::GetFactory()->CreateTexture(whiteTextureDesc);
 	unsigned long long whiteTexTag = 3;
 	textureTable_.Insert(whiteTexture, &whiteTexTag, 8);
 
@@ -58,7 +58,7 @@ void TextureManager::TestLoad()
 
 ITexture* TextureManager::CreateTexture(const wchar_t* fileName, bool isNormalMap, unsigned long long textureTag)
 {
-	ITexture* pNewTexture = GRenderer->LoadTextureFromDirectXTex(fileName, isNormalMap);
+	ITexture* pNewTexture = Renderer::GetFactory()->CreateTextureFromFile(fileName, isNormalMap);
 	textureTable_.Insert(pNewTexture, &textureTag, 8);
 
 	return pNewTexture;

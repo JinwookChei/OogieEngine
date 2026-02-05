@@ -28,7 +28,7 @@ void RenderComponent::Render()
 	objectData.pMaterial = pMaterial_;
 	objectData.albedo_ = pTextureColor_;
 	objectData.normal_ = pTextureNormal_;
-	GRenderer->RenderGBuffer(objectData);
+	Renderer::Instance()->RenderGBuffer(objectData);
 }
 
 

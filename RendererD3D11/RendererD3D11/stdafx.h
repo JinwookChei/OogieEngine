@@ -60,11 +60,19 @@
 #include <Utility/Utility/Math.h>
 
 // Interface
+#include <Interface/Renderer/IMesh.h>
+#include <Interface/Renderer/ITexture.h>
+#include <Interface/Renderer/IMaterial.h>
+#include <Interface/Renderer/IRenderTarget.h>
+#include <Interface/Renderer/IRasterizer.h>
+#include <Interface/Renderer/IParticle.h>
+#include <Interface/Renderer/IRenderResourceFactory.h>
 #include <Interface/Renderer/IRenderer.h>
 
 
 // RendererD3D11
 #include "D3D11Renderer.h"
+#include "RenderResourceFactory.h"
 
 struct InputDesc
 {
@@ -87,5 +95,6 @@ struct ShaderDesc
 
 
 extern Renderer* GRenderer;
+extern RenderResourceFactory* GResourceFactory;
 extern IRenderTarget* GCurrentSetRenderTarget;
 

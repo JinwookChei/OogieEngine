@@ -5,12 +5,12 @@
 #include "Engine.h"
 #include "Actor.h"
 
-typedef bool (*DLL_FUNCTION_ARG1)(void**);
-typedef bool (*DLL_FUNCTION_ARG5)(void**, HINSTANCE, PWSTR, int, const wchar_t*);
+//typedef bool (*DLL_FUNCTION_ARG1)(void**);
+//typedef bool (*DLL_FUNCTION_ARG5)(void**, HINSTANCE, PWSTR, int, const wchar_t*);
 
 
-IApplication* GApplication = nullptr;
-IRenderer* GRenderer = nullptr;
+//IApplication* GApplication = nullptr;
+//IRenderer* GRenderer = nullptr;
 
 MeshManager* GMeshManager = nullptr;
 MaterialManager* GMaterialManager = nullptr;
@@ -28,10 +28,10 @@ IParticle* GParticle_2 = nullptr;
 
 Engine::Engine()
 	: pStartUp_(nullptr)
-	, applicationModule_()
-	, pApplication_(nullptr)
-	, rendererModule_()
-	, pRenderer_(nullptr)
+	//, applicationModule_()
+	//, pApplication_(nullptr)
+	//, rendererModule_()
+	//, pRenderer_(nullptr)
 {
 }
 
@@ -74,26 +74,25 @@ bool Engine::Initialize
 	}
 
 	float dpiSclae = Editor::GetEditor()->EnableDpiAwareness();
-
-	if (false == LoadApplication(hInstance, pCmdLine, nCmdShow, pMainWindowClassName, pMainWindowText, pIConPath))
+	if (false == Application::LoadApplication(hInstance, pCmdLine, nCmdShow, pMainWindowClassName, pMainWindowText, pIConPath))
 	{
 		DEBUG_BREAK();
 		return false;
 	}
 
-	if (false == LoadRenderer())
+	if (false == Renderer::LoadRenderer())
 	{
 		DEBUG_BREAK();
 		return false;
 	}
 
-	if (false == FBXManager::Init())
+	if (false == FBXManager::LoadFBXImporter())
 	{
 		DEBUG_BREAK();
 		return false;
 	}
 
-	if (false == Editor::GetEditor()->Init(pApplication_, pRenderer_, dpiSclae))
+	if (false == Editor::GetEditor()->Init(Application::GApplication, Renderer::GRenderer, dpiSclae))
 	{
 		DEBUG_BREAK();
 		return false;
@@ -142,18 +141,18 @@ void Engine::Run()
 	particleDesc.maxNum_ = 10;
 	particleDesc.patternType_ = E_PARTICLE_PATTERN_TYPE::EXPLOSION;
 	TextureManager::Instance()->GetTexture(&particleDesc.pTexture_, 3);
-	GParticle_1 = GRenderer->CreateParticle(particleDesc);
+	GParticle_1 = Renderer::GetFactory()->CreateParticle(particleDesc);
 
 	ParticleDesc particleDesc2;
 	particleDesc2.maxNum_ = 10;
 	particleDesc2.patternType_ = E_PARTICLE_PATTERN_TYPE::FUME;
 	TextureManager::Instance()->GetTexture(&particleDesc2.pTexture_, 3);
-	GParticle_2 = GRenderer->CreateParticle(particleDesc2);
-	
+	GParticle_2 = Renderer::GetFactory()->CreateParticle(particleDesc2);
 
-	while (false == pApplication_->ApplicationQuit()) {
 
-		pApplication_->WinPumpMessage();
+	while (false == Application::Instance()->ApplicationQuit()) {
+
+		Application::Instance()->WinPumpMessage();
 
 		// Calc DeltaTime
 		double deltaTime = TimeManager::CalcDeltaTime();
@@ -164,8 +163,8 @@ void Engine::Run()
 		// 잠시 에러 있어서 OFF
 		//GActorPicker->Tick(deltaTime);
 
-		GRenderer->UpdateParticles(GParticle_1, deltaTime);
-		GRenderer->UpdateParticles(GParticle_2, deltaTime);
+		Renderer::Instance()->UpdateParticles(GParticle_1, deltaTime);
+		Renderer::Instance()->UpdateParticles(GParticle_2, deltaTime);
 		
 		// GameLoop
 		GWorld->CheckChangeLevel();
@@ -174,10 +173,10 @@ void Engine::Run()
 		// GameLoop End
 
 		// Blit RenderTarget 
-		GRenderer->RenderBegin();
+		Renderer::Instance()->RenderBegin();
 		//GWorld->OnBlit(); 
 		Editor::GetEditor()->OnRender();
-		GRenderer->RenderEnd();
+		Renderer::Instance()->RenderEnd();
 		// Blit RenderTarget  End
 	}
 }
@@ -186,123 +185,123 @@ World* Engine::GetWorld() const
 {
 	return GWorld;
 }
-
-bool Engine::LoadApplication
-(
-	HINSTANCE hInstance,
-	PWSTR pCmdLine,
-	int nCmdShow,
-	const wchar_t* pMainWindowClassName,
-	const wchar_t* pMainWindowText,
-	const wchar_t* pIConPath
-)
-{
-	if (nullptr != pApplication_)
-	{
-		DEBUG_BREAK();
-		pApplication_->Release();
-		pApplication_ = nullptr;
-	}
-
-#ifdef _DEBUG
-	LPCWSTR libFileName = L"Application_x64_Debug.dll";
-#else
-	LPCWSTR libFileName = L"Application_x64_Release.dll";
-#endif
-
-	applicationModule_ = LoadLibrary(libFileName);
-	if (!applicationModule_)
-	{
-		DEBUG_BREAK();
-		return false;
-	}
-
-	DLL_FUNCTION_ARG5 CreateWindowsApplication = (DLL_FUNCTION_ARG5)GetProcAddress(applicationModule_, "CreateWindowsApplication");
-	if (!CreateWindowsApplication)
-	{
-		DEBUG_BREAK();
-		return false;
-	}
-
-
-	CreateWindowsApplication
-	(
-		(void**)&pApplication_, 
-		hInstance,
-		pCmdLine, 
-		nCmdShow, 
-		pIConPath
-	);
-
-	if (nullptr == pApplication_)
-	{
-		DEBUG_BREAK();
-		return false;
-	}
-
-	if (false == pApplication_->InitializeMainWindow(pMainWindowClassName, pMainWindowText, {DEFAULT_SCREEN_WIDTH , DEFAULT_SCREEN_HEIGHT}))
-	{
-		DEBUG_BREAK();
-		return false;
-	}
-
-	GApplication = pApplication_;
-
-	return true;
-}
-
-bool Engine::LoadRenderer()
-{
-	if (nullptr == pApplication_)
-	{
-		DEBUG_BREAK();
-		return false;
-	}
-
-	if (nullptr != pRenderer_)
-	{
-		DEBUG_BREAK();
-		pRenderer_->Release();
-		pRenderer_ = nullptr;
-	}
-
-#ifdef _DEBUG
-	LPCWSTR libFileName = L"RendererD3D11_x64_Debug.dll";
-#else
-	LPCWSTR libFileName = L"RendererD3D11_x64_Release.dll";
-#endif
-	
-	rendererModule_ = LoadLibrary(libFileName);
-	if (!rendererModule_)
-	{
-		DEBUG_BREAK();
-		return false;
-	}
-
-	DLL_FUNCTION_ARG1 CreateRenderer = (DLL_FUNCTION_ARG1)GetProcAddress(rendererModule_, "CreateRenderer");
-	if (!CreateRenderer)
-	{
-		DEBUG_BREAK();
-		return false;
-	}
-
-	CreateRenderer((void**)&pRenderer_);
-	if (nullptr == pRenderer_)
-	{
-		DEBUG_BREAK();
-		return false;
-	}
-
-	void* pMainHwnd = pApplication_->GetMainWindowHandle();
-	if (false == pRenderer_->Initialize(pMainHwnd, DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT))
-	{
-		DEBUG_BREAK();
-		return false;
-	}
-
-	GRenderer = pRenderer_;
-	return true;
-}
+//
+//bool Engine::LoadApplication
+//(
+//	HINSTANCE hInstance,
+//	PWSTR pCmdLine,
+//	int nCmdShow,
+//	const wchar_t* pMainWindowClassName,
+//	const wchar_t* pMainWindowText,
+//	const wchar_t* pIConPath
+//)
+//{
+//	if (nullptr != pApplication_)
+//	{
+//		DEBUG_BREAK();
+//		pApplication_->Release();
+//		pApplication_ = nullptr;
+//	}
+//
+//#ifdef _DEBUG
+//	LPCWSTR libFileName = L"Application_x64_Debug.dll";
+//#else
+//	LPCWSTR libFileName = L"Application_x64_Release.dll";
+//#endif
+//
+//	applicationModule_ = LoadLibrary(libFileName);
+//	if (!applicationModule_)
+//	{
+//		DEBUG_BREAK();
+//		return false;
+//	}
+//
+//	DLL_FUNCTION_ARG5 CreateWindowsApplication = (DLL_FUNCTION_ARG5)GetProcAddress(applicationModule_, "CreateWindowsApplication");
+//	if (!CreateWindowsApplication)
+//	{
+//		DEBUG_BREAK();
+//		return false;
+//	}
+//
+//
+//	CreateWindowsApplication
+//	(
+//		(void**)&pApplication_, 
+//		hInstance,
+//		pCmdLine, 
+//		nCmdShow, 
+//		pIConPath
+//	);
+//
+//	if (nullptr == pApplication_)
+//	{
+//		DEBUG_BREAK();
+//		return false;
+//	}
+//
+//	if (false == pApplication_->InitializeMainWindow(pMainWindowClassName, pMainWindowText, {DEFAULT_SCREEN_WIDTH , DEFAULT_SCREEN_HEIGHT}))
+//	{
+//		DEBUG_BREAK();
+//		return false;
+//	}
+//
+//	GApplication = pApplication_;
+//
+//	return true;
+//}
+//
+//bool Engine::LoadRenderer()
+//{
+//	if (nullptr == pApplication_)
+//	{
+//		DEBUG_BREAK();
+//		return false;
+//	}
+//
+//	if (nullptr != pRenderer_)
+//	{
+//		DEBUG_BREAK();
+//		pRenderer_->Release();
+//		pRenderer_ = nullptr;
+//	}
+//
+//#ifdef _DEBUG
+//	LPCWSTR libFileName = L"RendererD3D11_x64_Debug.dll";
+//#else
+//	LPCWSTR libFileName = L"RendererD3D11_x64_Release.dll";
+//#endif
+//	
+//	rendererModule_ = LoadLibrary(libFileName);
+//	if (!rendererModule_)
+//	{
+//		DEBUG_BREAK();
+//		return false;
+//	}
+//
+//	DLL_FUNCTION_ARG1 CreateRenderer = (DLL_FUNCTION_ARG1)GetProcAddress(rendererModule_, "CreateRenderer");
+//	if (!CreateRenderer)
+//	{
+//		DEBUG_BREAK();
+//		return false;
+//	}
+//
+//	CreateRenderer((void**)&pRenderer_);
+//	if (nullptr == pRenderer_)
+//	{
+//		DEBUG_BREAK();
+//		return false;
+//	}
+//
+//	void* pMainHwnd = pApplication_->GetMainWindowHandle();
+//	if (false == pRenderer_->Initialize(pMainHwnd, DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT))
+//	{
+//		DEBUG_BREAK();
+//		return false;
+//	}
+//
+//	GRenderer = pRenderer_;
+//	return true;
+//}
 
 
 bool Engine::InitializeStartUp(IStartup* startUp)
@@ -387,9 +386,10 @@ void Engine::CleanUp()
 	
 	InputManager::CleanUp();
 
-	FBXManager::CleanUp();
-
-	if (nullptr != pApplication_)
+	FBXManager::ShutDown();
+	Renderer::ShutDown();
+	Application::ShutDown();
+	/*if (nullptr != pApplication_)
 	{
 		pApplication_->Release();
 		pApplication_ = nullptr;
@@ -411,5 +411,5 @@ void Engine::CleanUp()
 	{
 		FreeLibrary(rendererModule_);
 		rendererModule_ = nullptr;
-	}
+	}*/
 }

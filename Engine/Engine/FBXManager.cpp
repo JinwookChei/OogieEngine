@@ -6,14 +6,9 @@ typedef bool (*DLL_FUNCTION_ARG1)(void**);
 IFBXImporter* FBXManager::GFbxImporter = nullptr;
 HMODULE FBXManager::GFbxImporterModule = nullptr;
 
-bool FBXManager::Init()
-{
-	return LoadFBXImporter();
-}
-
 bool FBXManager::LoadFBXImporter()
 {
-	FBXManager::CleanUp();
+	FBXManager::ShutDown();
 
 #ifdef _DEBUG
 	LPCWSTR libFileName = L"FBXImporter_x64_Debug.dll";
@@ -26,7 +21,7 @@ bool FBXManager::LoadFBXImporter()
 	if (!FBXManager::GFbxImporterModule)
 	{
 		DEBUG_BREAK();
-		FBXManager::CleanUp();
+		FBXManager::ShutDown();
 		return false;
 	}
 
@@ -34,7 +29,7 @@ bool FBXManager::LoadFBXImporter()
 	if (!CreateFbxImporter)
 	{
 		DEBUG_BREAK();
-		FBXManager::CleanUp();
+		FBXManager::ShutDown();
 		return false;
 	}
 
@@ -42,7 +37,7 @@ bool FBXManager::LoadFBXImporter()
 	if (nullptr == FBXManager::GFbxImporter)
 	{
 		DEBUG_BREAK();
-		FBXManager::CleanUp();
+		FBXManager::ShutDown();
 		return false;
 	}
 
@@ -61,18 +56,8 @@ bool FBXManager::LoadModel(Model* pOutModel, const std::string& file)
 	return true;
 }
 
-//void FBXImporter::TestImportFBX()
-//{
-//	Model* pModel = new Model;
-//	if (false == FBXImporter::GetImporter()->ImportModel(pModel, "..\\Resource\\Fbx\\Wukong\\Wukong.FBX"))
-//	{
-//		DEBUG_BREAK();
-//		return;
-//	}
-//}
 
-
-void FBXManager::CleanUp()
+void FBXManager::ShutDown()
 {
 	if (nullptr != GFbxImporter)
 	{

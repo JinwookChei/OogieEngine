@@ -4,7 +4,7 @@
 RasterizerManager::RasterizerManager()
 	: pRasterizer_(nullptr)
 {
-	pRasterizer_ = GRenderer->CreateRasterizer(false, true);
+	pRasterizer_ = Renderer::GetFactory()->CreateRasterizer(false, true);
 	if (nullptr == pRasterizer_)
 	{
 		Assert("CreateRasterizer is Fail!!");

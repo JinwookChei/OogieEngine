@@ -85,6 +85,9 @@
     <Filter Include="Common">
       <UniqueIdentifier>{48720aec-ba2d-431d-881b-0c36d0fe5b3c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\RenderResourceFactory">
+      <UniqueIdentifier>{fb1138c7-9602-4cf7-83fb-410c79e9b57d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -159,6 +162,30 @@
     <ClInclude Include="..\..\Common\GeometryType\GeometryType.h">
       <Filter>Common</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Interface\Renderer\IMesh.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Interface\Renderer\IMaterial.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Interface\Renderer\ITexture.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Interface\Renderer\IRenderTarget.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Interface\Renderer\IRasterizer.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Interface\Renderer\IParticle.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Interface\Renderer\IRenderResourceFactory.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderResourceFactory.h">
+      <Filter>Source Files\RenderResourceFactory</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -223,6 +250,9 @@
     </ClCompile>
     <ClCompile Include="DepthState.cpp">
       <Filter>Source Files\State</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderResourceFactory.cpp">
+      <Filter>Source Files\RenderResourceFactory</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
