@@ -1,6 +1,9 @@
 #include "stdafx.h"
 #include "BlendState.h"
 
+BlendState* BlendState::GOpaqueBlend = nullptr;
+BlendState* BlendState::GAlphaBlend = nullptr;
+BlendState* BlendState::GAdditiveBlend = nullptr;
 
 BlendState::BlendState()
 	:refCount_(1)
@@ -14,7 +17,7 @@ BlendState::~BlendState()
 	CleanUp();
 }
 
-bool BlendState::Init(const E_BLEND_MODE& blendMode)
+bool BlendState::Init(const E_BLEND_PRESET& blendPreset)
 {
 	D3D11_BLEND_DESC blendDesc = { };
 	blendDesc.AlphaToCoverageEnable = FALSE;
@@ -22,9 +25,9 @@ bool BlendState::Init(const E_BLEND_MODE& blendMode)
 
 	D3D11_RENDER_TARGET_BLEND_DESC& rt0 = blendDesc.RenderTarget[0];
 	rt0.RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
-	switch (blendMode)
+	switch (blendPreset)
 	{
-	case E_BLEND_MODE::OPAQUE_BLEND:
+	case E_BLEND_PRESET::OPAQUE_BLEND:
 	{
 		rt0.BlendEnable = FALSE;
 		// 어차피 의미없음.
@@ -36,7 +39,7 @@ bool BlendState::Init(const E_BLEND_MODE& blendMode)
 		//rt0.DestBlendAlpha = D3D11_BLEND::D3D11_BLEND_ZERO;
 		//rt0.BlendOpAlpha = D3D11_BLEND_OP::D3D11_BLEND_OP_ADD;
 	}break;
-	case E_BLEND_MODE::ALPHA_BLEND:
+	case E_BLEND_PRESET::ALPHA_BLEND:
 	{
 		rt0.BlendEnable = TRUE;
 		rt0.SrcBlend = D3D11_BLEND::D3D11_BLEND_SRC_ALPHA;
@@ -47,7 +50,7 @@ bool BlendState::Init(const E_BLEND_MODE& blendMode)
 		rt0.BlendOpAlpha = D3D11_BLEND_OP::D3D11_BLEND_OP_ADD;
 	}break;
 
-	case E_BLEND_MODE::ADDITIVE_BLEND:
+	case E_BLEND_PRESET::ADDITIVE_BLEND:
 	{
 		rt0.BlendEnable = TRUE;
 		rt0.SrcBlend = D3D11_BLEND::D3D11_BLEND_ONE;
@@ -92,19 +95,6 @@ ULONG __stdcall BlendState::Release()
 	return tmpRefCount;
 }
 
-BlendState* BlendState::Create(const E_BLEND_MODE& blendMode)
-{
-	BlendState* pNewBlendState = new BlendState;
-	if (false == pNewBlendState->Init(blendMode))
-	{
-		DEBUG_BREAK();
-		pNewBlendState->Release();
-		pNewBlendState = nullptr;
-	}
-
-	return pNewBlendState;
-}
-
 void BlendState::Bind()
 {
 	UINT samplerMask = 0xffffffff;
@@ -124,4 +114,24 @@ void BlendState::CleanUp()
 		pBlendState_->Release();
 		pBlendState_ = nullptr;
 	}
+}
+
+void BlendState::InitGlobalBlendStates()
+{
+	GOpaqueBlend = Create(E_BLEND_PRESET::OPAQUE_BLEND);
+	GAlphaBlend = Create(E_BLEND_PRESET::ALPHA_BLEND);
+	GAdditiveBlend = Create(E_BLEND_PRESET::ADDITIVE_BLEND);
+}
+
+BlendState* BlendState::Create(const E_BLEND_PRESET& blendPreset)
+{
+	BlendState* pNewBlendState = new BlendState;
+	if (false == pNewBlendState->Init(blendPreset))
+	{
+		DEBUG_BREAK();
+		pNewBlendState->Release();
+		pNewBlendState = nullptr;
+	}
+
+	return pNewBlendState;
 }

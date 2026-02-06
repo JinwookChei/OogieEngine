@@ -168,6 +168,7 @@ bool __stdcall Renderer::Initialize(void* hWnd, uint32_t width, uint32_t height)
 
 	SamplerState::InitGlobalSamplers();
 	DepthState::InitGlobalDepthStates();
+	BlendState::InitGlobalBlendStates();
 
 	return true;
 }

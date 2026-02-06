@@ -178,7 +178,7 @@ bool MergePass::InitShaders()
 
 bool MergePass::InitBlendState()
 {
-	pBlendState_ = BlendState::Create(E_BLEND_MODE::ALPHA_BLEND);
+	pBlendState_ = BlendState::Create(E_BLEND_PRESET::ALPHA_BLEND);
 
 	if (nullptr == pBlendState_)
 	{

@@ -208,7 +208,7 @@ bool LightPass::InitConstantBuffer()
 
 bool LightPass::InitBlendState()
 {
-	pBlendState_ = BlendState::Create(E_BLEND_MODE::ADDITIVE_BLEND);
+	pBlendState_ = BlendState::Create(E_BLEND_PRESET::ADDITIVE_BLEND);
 
 	if (nullptr == pBlendState_)
 	{
