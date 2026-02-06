@@ -46,9 +46,6 @@
     <Filter Include="Source Files\RenderTarget">
       <UniqueIdentifier>{847b08a2-6ad4-4ffc-93a7-e335bfa0c95f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\BlendState">
-      <UniqueIdentifier>{68b0ed3b-27ae-43f8-ac8a-08b82caddf26}</UniqueIdentifier>
-    </Filter>
     <Filter Include="DirectXTex">
       <UniqueIdentifier>{b8a7c758-f17b-4ba4-9261-125c2b007fe1}</UniqueIdentifier>
     </Filter>
@@ -88,6 +85,9 @@
     <Filter Include="Source Files\RenderResourceFactory">
       <UniqueIdentifier>{fb1138c7-9602-4cf7-83fb-410c79e9b57d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\PSO">
+      <UniqueIdentifier>{c8ded7cc-cb94-44e6-aad9-c49e342ff31e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -122,9 +122,6 @@
     </ClInclude>
     <ClInclude Include="DeferredTarget.h">
       <Filter>Source Files\RenderTarget</Filter>
-    </ClInclude>
-    <ClInclude Include="BlendState.h">
-      <Filter>Source Files\BlendState</Filter>
     </ClInclude>
     <ClInclude Include="Shader.h">
       <Filter>Source Files\Shader</Filter>
@@ -186,6 +183,15 @@
     <ClInclude Include="RenderResourceFactory.h">
       <Filter>Source Files\RenderResourceFactory</Filter>
     </ClInclude>
+    <ClInclude Include="PipelineStateObject.h">
+      <Filter>Source Files\PSO</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Interface\Renderer\IPSO.h">
+      <Filter>Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="BlendState.h">
+      <Filter>Source Files\State</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -221,9 +227,6 @@
     <ClCompile Include="DeferredTarget.cpp">
       <Filter>Source Files\RenderTarget</Filter>
     </ClCompile>
-    <ClCompile Include="BlendState.cpp">
-      <Filter>Source Files\BlendState</Filter>
-    </ClCompile>
     <ClCompile Include="Shader.cpp">
       <Filter>Source Files\Shader</Filter>
     </ClCompile>
@@ -253,6 +256,12 @@
     </ClCompile>
     <ClCompile Include="RenderResourceFactory.cpp">
       <Filter>Source Files\RenderResourceFactory</Filter>
+    </ClCompile>
+    <ClCompile Include="PipelineStateObject.cpp">
+      <Filter>Source Files\PSO</Filter>
+    </ClCompile>
+    <ClCompile Include="BlendState.cpp">
+      <Filter>Source Files\State</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

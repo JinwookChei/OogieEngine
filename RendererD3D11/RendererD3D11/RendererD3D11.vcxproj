@@ -150,6 +150,7 @@
     <ClInclude Include="..\..\Interface\Renderer\IMaterial.h" />
     <ClInclude Include="..\..\Interface\Renderer\IMesh.h" />
     <ClInclude Include="..\..\Interface\Renderer\IParticle.h" />
+    <ClInclude Include="..\..\Interface\Renderer\IPSO.h" />
     <ClInclude Include="..\..\Interface\Renderer\IRasterizer.h" />
     <ClInclude Include="..\..\Interface\Renderer\IRenderer.h" />
     <ClInclude Include="..\..\Interface\Renderer\IRenderResourceFactory.h" />
@@ -160,6 +161,7 @@
     <ClInclude Include="GeometryPass.h" />
     <ClInclude Include="LightPass.h" />
     <ClInclude Include="MergePass.h" />
+    <ClInclude Include="PipelineStateObject.h" />
     <ClInclude Include="RenderResourceFactory.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="BlendState.h" />
@@ -183,6 +185,7 @@
     <ClCompile Include="GeometryPass.cpp" />
     <ClCompile Include="LightPass.cpp" />
     <ClCompile Include="MergePass.cpp" />
+    <ClCompile Include="PipelineStateObject.cpp" />
     <ClCompile Include="RenderResourceFactory.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="BlendState.cpp" />

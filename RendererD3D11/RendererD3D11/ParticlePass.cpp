@@ -66,7 +66,7 @@ bool ParticlePass::Init()
 	pCBPerComputeParticle_ = ConstantBuffer::Create(sizeof(CBPerComputeParticle));
 	pCBPerParticle_ = ConstantBuffer::Create(sizeof(CBPerParticle));
 	pBlendState_ = BlendState::Create(E_BLEND_MODE::ALPHA_BLEND);
-	pSamplerState_ = SamplerState::Create(E_SAMPLER_TYPE::LINEAR_CLAMP, 0, D3D11_FLOAT32_MAX, 1);
+	pSamplerState_ = SamplerState::Create(E_SAMPLER_PRESET::LINEAR_CLAMP, 0, D3D11_FLOAT32_MAX, 1);
 	pDepthState_ = DepthState::Create(true, false);
 
 	return true;

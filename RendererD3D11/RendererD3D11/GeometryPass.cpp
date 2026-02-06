@@ -212,7 +212,7 @@ bool GeometryPass::InitBlendState()
 
 bool GeometryPass::InitSamplerState()
 {
-	pSamplerState_ = SamplerState::Create(E_SAMPLER_TYPE::LINEAR_WARP, 0, D3D11_FLOAT32_MAX, 1);
+	pSamplerState_ = SamplerState::Create(E_SAMPLER_PRESET::LINEAR_WARP, 0, D3D11_FLOAT32_MAX, 1);
 	if (nullptr == pSamplerState_)
 	{
 		DEBUG_BREAK();

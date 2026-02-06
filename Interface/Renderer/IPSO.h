@@ -1,0 +1,23 @@
+#pragma once
+
+enum class E_SAMPLER_PRESET
+{
+	LINEAR_CLAMP = 0,
+	LINEAR_WARP,
+	ANISOTROPIC_CLAMP,
+	ANISOTROPIC_WARP
+};
+
+enum class E_DEPTH_PRESET
+{
+	DEPTH_ENABLE_WRITE = 0,
+	DEPTH_ENABLE_READ_ONLY,
+	DEPTH_DISABLE
+};
+
+
+// Pipeline State Object
+struct IPSO : IUnknown
+{
+
+};

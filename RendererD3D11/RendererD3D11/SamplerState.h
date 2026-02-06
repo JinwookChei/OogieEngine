@@ -1,25 +1,23 @@
 #pragma once
 
-enum class E_SAMPLER_TYPE
-{
-	LINEAR_CLAMP = 0,
-	LINEAR_WARP,
-	ANISOTROPIC_CLAMP,
-	ANISOTROPIC_WARP
-};
+//enum class E_SAMPLER_TYPE
+//{
+//	LINEAR_CLAMP = 0,
+//	LINEAR_WARP,
+//	ANISOTROPIC_CLAMP,
+//	ANISOTROPIC_WARP
+//};
 
 
-class SamplerState final
-	: public IUnknown
+class SamplerState final : public IUnknown
 {
 private:
-	friend Renderer;
-
+	//friend Renderer;
 	SamplerState();
 
 	virtual ~SamplerState();
 
-	bool Init(const E_SAMPLER_TYPE& samplerType, float minLOD, float maxLOD, unsigned int maxAnisotropy);
+	bool Init(const E_SAMPLER_PRESET& samplerType, float minLOD, float maxLOD, unsigned int maxAnisotropy);
 
 public:
 	HRESULT __stdcall QueryInterface(REFIID riid, _COM_Outptr_ void __RPC_FAR* __RPC_FAR* ppvObject) override;
@@ -28,8 +26,6 @@ public:
 
 	ULONG __stdcall Release() override;
 
-	static SamplerState* Create(const E_SAMPLER_TYPE& samplerType, float minLOD, float maxLOD, unsigned int maxAnisotropy);
-
 	void BindPS(UINT slot);
 
 private:
@@ -37,5 +33,17 @@ private:
 
 	ULONG refCount_;
 
+	E_SAMPLER_PRESET samplerType_;
+	float minLOD_;
+	float maxLOD_;
+	unsigned int maxAnisotropy_;
 	ID3D11SamplerState* pSamplerState_;
+
+public:
+	static void InitGlobalSamplers();
+	static SamplerState* Create(const E_SAMPLER_PRESET& samplerType, float minLOD, float maxLOD, unsigned int maxAnisotropy);
+	static SamplerState* GSamplerLinearClamp;
+	static SamplerState* GSamplerLinearWarp;
+	static SamplerState* GSamplerAnisotropicClamp;
+	static SamplerState* GSamplerAnisotropicWarp;
 };

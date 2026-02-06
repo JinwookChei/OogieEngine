@@ -165,6 +165,8 @@ bool __stdcall Renderer::Initialize(void* hWnd, uint32_t width, uint32_t height)
 		return false;
 	}
 
+	SamplerState::InitGlobalSamplers();
+
 	return true;
 }
 

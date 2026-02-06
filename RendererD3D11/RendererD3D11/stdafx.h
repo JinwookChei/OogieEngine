@@ -66,6 +66,7 @@
 #include <Interface/Renderer/IRenderTarget.h>
 #include <Interface/Renderer/IRasterizer.h>
 #include <Interface/Renderer/IParticle.h>
+#include <Interface/Renderer/IPSO.h>
 #include <Interface/Renderer/IRenderResourceFactory.h>
 #include <Interface/Renderer/IRenderer.h>
 

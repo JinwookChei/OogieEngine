@@ -33,7 +33,13 @@ private:
 
 	ULONG refCount_;
 
-	float shineness_;
+	//Shader* pShader_;
+	//Texture* pTextureAlbedo_;
+	//Texture* pTextureNormal_;
+	//SamplerState* pSampler_;
+	//BlendState* pBlendState_;
 
+
+	float shineness_;
 	Float3 specularColor_;
 };
