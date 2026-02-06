@@ -61,6 +61,7 @@
 
 // Interface
 #include <Interface/Renderer/IMesh.h>
+#include <Interface/Renderer/IShader.h>
 #include <Interface/Renderer/ITexture.h>
 #include <Interface/Renderer/IMaterial.h>
 #include <Interface/Renderer/IRenderTarget.h>
@@ -74,25 +75,6 @@
 // RendererD3D11
 #include "D3D11Renderer.h"
 #include "RenderResourceFactory.h"
-
-struct InputDesc
-{
-	const char* semanticName_;
-	uint32_t semanticIndex_;
-	uint32_t format_;
-	uint32_t inputSlot_;
-	bool isInstanceData_;
-};
-
-struct ShaderDesc
-{
-	std::vector<InputDesc> inputDesc_;
-	//E_SHADER_TYPE type_;
-	const wchar_t* pathCS_ = nullptr;
-	const wchar_t* pathVS_ = nullptr;
-	const wchar_t* pathGS_ = nullptr;
-	const wchar_t* pathPS_ = nullptr;
-};
 
 
 extern Renderer* GRenderer;

@@ -20,12 +20,15 @@ public:
 private:
 	void CleanUp();
 
-
 private:
 	ULONG refCount_;
+	IMesh* pMesh_;
+	IMaterial* pMaterial_;
+	E_SAMPLER_PRESET samplerState_;
+	E_DEPTH_PRESET depthState_;
+	E_BLEND_PRESET blendState_;
+	E_RASTERIZER_PRESET rasterizerMode_;
 
-	Mesh* pMesh_;
-	Material* pMaterial_;
-	DepthState* pDepthState_;
-	Rasterizer* pRasterizer_;
+public:
+	static PipelineStateObject* Create(const PipelineStateDesc& desc);
 };

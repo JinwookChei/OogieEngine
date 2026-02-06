@@ -11,6 +11,7 @@ public:
 	ULONG __stdcall Release() override;
 
 	IMesh* __stdcall CreateMesh(const MeshDesc& desc) override;
+	IShader* __stdcall CreateShader(const ShaderDesc& desc) override;
 	IMaterial* __stdcall CreateMaterial(const MaterialDesc& materialDesc) override;
 	ITexture* __stdcall CreateTextureFromFile(const wchar_t* fileName, bool isNormalMap) override;
 	ITexture* __stdcall CreateTexture(const TextureDesc& desc) override;
@@ -21,7 +22,8 @@ public:
 	IRenderTarget* __stdcall CreateDeferredRenderTarget(const RenderTargetDesc& desc);
 	IRasterizer* __stdcall  CreateRasterizer(bool frontCounterClockwise, bool backFaceCulling) override;
 	IParticle* __stdcall CreateParticle(const ParticleDesc& desc) override;
-	
+	IPSO* __stdcall CreatePipelineStateObject(const PipelineStateDesc& desc) override;
+
 private:
 	ULONG refCount_;
 };

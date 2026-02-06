@@ -22,6 +22,23 @@ enum class E_BLEND_PRESET
 	ADDITIVE_BLEND,					// Additive(가산) 블렌딩
 };
 
+// 이건 아직 임시로 적용.
+enum class E_RASTERIZER_PRESET
+{
+	SOLID = 0,
+	WIRE_FRAME
+};
+
+struct PipelineStateDesc
+{
+	IMesh* pMesh;
+	IMaterial* pMaterial;
+	E_SAMPLER_PRESET samplerState;
+	E_DEPTH_PRESET depthState;
+	E_BLEND_PRESET blendState;
+	E_RASTERIZER_PRESET rasterizerMode;
+};
+
 // Pipeline State Object
 struct IPSO : IUnknown
 {

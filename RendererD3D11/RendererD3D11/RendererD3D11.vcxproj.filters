@@ -88,6 +88,9 @@
     <Filter Include="Source Files\PSO">
       <UniqueIdentifier>{c8ded7cc-cb94-44e6-aad9-c49e342ff31e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Interface\Renderer">
+      <UniqueIdentifier>{23bd79d1-04fe-42c3-bdfd-a78045350235}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -98,9 +101,6 @@
     </ClInclude>
     <ClInclude Include="Texture.h">
       <Filter>Source Files\Texture</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Interface\Renderer\IRenderer.h">
-      <Filter>Interface</Filter>
     </ClInclude>
     <ClInclude Include="Mesh.h">
       <Filter>Source Files\Mesh</Filter>
@@ -159,38 +159,44 @@
     <ClInclude Include="..\..\Common\GeometryType\GeometryType.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Interface\Renderer\IMesh.h">
-      <Filter>Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Interface\Renderer\IMaterial.h">
-      <Filter>Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Interface\Renderer\ITexture.h">
-      <Filter>Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Interface\Renderer\IRenderTarget.h">
-      <Filter>Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Interface\Renderer\IRasterizer.h">
-      <Filter>Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Interface\Renderer\IParticle.h">
-      <Filter>Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Interface\Renderer\IRenderResourceFactory.h">
-      <Filter>Interface</Filter>
-    </ClInclude>
     <ClInclude Include="RenderResourceFactory.h">
       <Filter>Source Files\RenderResourceFactory</Filter>
     </ClInclude>
     <ClInclude Include="PipelineStateObject.h">
       <Filter>Source Files\PSO</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Interface\Renderer\IPSO.h">
-      <Filter>Interface</Filter>
-    </ClInclude>
     <ClInclude Include="BlendState.h">
       <Filter>Source Files\State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Interface\Renderer\ITexture.h">
+      <Filter>Interface\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Interface\Renderer\IMaterial.h">
+      <Filter>Interface\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Interface\Renderer\IMesh.h">
+      <Filter>Interface\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Interface\Renderer\IParticle.h">
+      <Filter>Interface\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Interface\Renderer\IPSO.h">
+      <Filter>Interface\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Interface\Renderer\IRasterizer.h">
+      <Filter>Interface\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Interface\Renderer\IRenderer.h">
+      <Filter>Interface\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Interface\Renderer\IRenderResourceFactory.h">
+      <Filter>Interface\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Interface\Renderer\IRenderTarget.h">
+      <Filter>Interface\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Interface\Renderer\IShader.h">
+      <Filter>Interface\Renderer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

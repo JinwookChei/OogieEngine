@@ -1,5 +1,8 @@
 #pragma once
 
+class Shader;
+class Texture;
+
 class Material : public IMaterial
 {
 private:
@@ -33,12 +36,9 @@ private:
 
 	ULONG refCount_;
 
-	//Shader* pShader_;
-	//Texture* pTextureAlbedo_;
-	//Texture* pTextureNormal_;
-	//SamplerState* pSampler_;
-	//BlendState* pBlendState_;
-
+	Shader* pShader_;
+	Texture* pTextureAlbedo_;
+	Texture* pTextureNormal_;
 
 	float shineness_;
 	Float3 specularColor_;

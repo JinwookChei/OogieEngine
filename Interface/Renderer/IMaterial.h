@@ -2,7 +2,11 @@
 
 struct MaterialDesc
 {
-	bool useTexture = false;
+	IShader* pShader;
+	ITexture* pTextureAlbedo;
+	ITexture* pTextureNormal;
+
+	//bool useTexture = false;
 	float shineness = 16.0f;
 	Float3 specularColor = { 0.7f,0.7f ,0.7f };
 };

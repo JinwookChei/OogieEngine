@@ -155,6 +155,7 @@
     <ClInclude Include="..\..\Interface\Renderer\IRenderer.h" />
     <ClInclude Include="..\..\Interface\Renderer\IRenderResourceFactory.h" />
     <ClInclude Include="..\..\Interface\Renderer\IRenderTarget.h" />
+    <ClInclude Include="..\..\Interface\Renderer\IShader.h" />
     <ClInclude Include="..\..\Interface\Renderer\ITexture.h" />
     <ClInclude Include="DepthState.h" />
     <ClInclude Include="FinalPass.h" />

@@ -1,7 +1,7 @@
 #pragma once
 
 class InputLayout;
-class Shader : public IUnknown
+class Shader : public IShader
 {
 private:
 	friend class Renderer;

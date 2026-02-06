@@ -1,11 +1,13 @@
 #include "stdafx.h"
 #include "Mesh.h"
+#include "Shader.h"
 #include "Material.h"
 #include "Texture.h"
 #include "RenderTarget.h"
 #include "DeferredTarget.h"
 #include "Rasterizer.h"
 #include "Particle.h"
+#include "PipelineStateObject.h"
 #include "RenderResourceFactory.h"
 
 RenderResourceFactory* GResourceFactory = nullptr;
@@ -166,6 +168,12 @@ IMesh* __stdcall RenderResourceFactory::CreateMesh(const MeshDesc& desc)
 	}
 
 	return nullptr;
+}
+
+IShader* __stdcall RenderResourceFactory::CreateShader(const ShaderDesc& desc)
+{
+	IShader* pNewShader = Shader::Create(desc);
+	return pNewShader;
 }
 
 IMaterial* __stdcall RenderResourceFactory::CreateMaterial(const MaterialDesc& materialDesc)
@@ -654,4 +662,10 @@ IParticle* __stdcall RenderResourceFactory::CreateParticle(const ParticleDesc& d
 {
 	IParticle* pParticle = Particle::Create(desc);
 	return pParticle;
+}
+
+IPSO* __stdcall RenderResourceFactory::CreatePipelineStateObject(const PipelineStateDesc& desc)
+{
+	IPSO* pPSO = PipelineStateObject::Create(desc);
+	return pPSO;
 }
