@@ -1,16 +1,14 @@
 #pragma once
 
-class DepthState final
-	: public IUnknown
+class DepthState final : public IUnknown
 {
 private:
-	friend Renderer;
-
+	//friend Renderer;
 	DepthState();
 
 	virtual ~DepthState();
 
-	bool Init(bool useDepthTest, bool wirteDepth);
+	bool Init(bool enableDepthTest, bool wirteDepth);
 
 public:
 	HRESULT __stdcall QueryInterface(REFIID riid, _COM_Outptr_ void __RPC_FAR* __RPC_FAR* ppvObject) override;
@@ -19,8 +17,6 @@ public:
 
 	ULONG __stdcall Release() override;
 
-	static DepthState* Create(bool useDepthTest, bool wirteDepth);
-
 	void Bind();
 
 	void UnBind();
@@ -28,7 +24,19 @@ public:
 private:
 	void CleanUp();
 
+private:
 	ULONG refCount_;
 
+	bool enableDepth_;
+
+	bool writeDepth_;
+
 	ID3D11DepthStencilState* pDepthState_;
+
+public:
+	static void InitGlobalDepthStates();
+	static DepthState* Create(bool enableDepthTest, bool wirteDepth);
+	static DepthState* GDepthEnableWrite;
+	static DepthState* GDepthEnableReadOnly;
+	static DepthState* GDepthDisable;
 };

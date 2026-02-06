@@ -6,6 +6,7 @@
 #include "Mesh.h"
 #include "Material.h"
 #include "Particle.h"
+#include "DepthState.h"
 #include "SamplerState.h"
 #include "BlendState.h"
 #include "ConstantBuffer.h"
@@ -166,6 +167,7 @@ bool __stdcall Renderer::Initialize(void* hWnd, uint32_t width, uint32_t height)
 	}
 
 	SamplerState::InitGlobalSamplers();
+	DepthState::InitGlobalDepthStates();
 
 	return true;
 }

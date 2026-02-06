@@ -31,8 +31,8 @@ public:
 private:
 	void CleanUp();
 
+private:
 	ULONG refCount_;
-
 	E_SAMPLER_PRESET samplerType_;
 	float minLOD_;
 	float maxLOD_;

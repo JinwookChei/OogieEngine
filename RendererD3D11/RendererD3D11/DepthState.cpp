@@ -1,9 +1,14 @@
 #include "stdafx.h"
 #include "DepthState.h"
 
+DepthState* DepthState::GDepthEnableWrite = nullptr;
+DepthState* DepthState::GDepthEnableReadOnly = nullptr;
+DepthState* DepthState::GDepthDisable = nullptr;
 
 DepthState::DepthState()
 	: refCount_(1)
+	, enableDepth_(false)
+	, writeDepth_(false)
 	, pDepthState_(nullptr)
 {
 }
@@ -35,11 +40,14 @@ ULONG __stdcall DepthState::Release()
 }
 
 
-bool DepthState::Init(bool useDepthTest, bool wirteDepth)
+bool DepthState::Init(bool enableDepthTest, bool wirteDepth)
 {
+	enableDepth_ = enableDepthTest;
+	writeDepth_ = wirteDepth;
+
 	D3D11_DEPTH_STENCIL_DESC pDepthStateDesc = {};
-	pDepthStateDesc.DepthEnable = useDepthTest ? TRUE : FALSE;
-	pDepthStateDesc.DepthFunc = useDepthTest ? D3D11_COMPARISON_LESS_EQUAL : D3D11_COMPARISON_ALWAYS;
+	pDepthStateDesc.DepthEnable = enableDepthTest ? TRUE : FALSE;
+	pDepthStateDesc.DepthFunc = enableDepthTest ? D3D11_COMPARISON_LESS_EQUAL : D3D11_COMPARISON_ALWAYS;
 	pDepthStateDesc.DepthWriteMask = wirteDepth ? D3D11_DEPTH_WRITE_MASK_ALL : D3D11_DEPTH_WRITE_MASK_ZERO;
 	pDepthStateDesc.StencilEnable = FALSE;
 
@@ -53,10 +61,17 @@ bool DepthState::Init(bool useDepthTest, bool wirteDepth)
 	return true;
 }
 
-DepthState* DepthState::Create(bool useDepthTest, bool wirteDepth)
+void DepthState::InitGlobalDepthStates()
+{
+	DepthState::GDepthEnableWrite = Create(true, true);
+	DepthState::GDepthEnableReadOnly = Create(true, false);
+	DepthState::GDepthDisable = Create(false, false);
+}
+
+DepthState* DepthState::Create(bool enableDepthTest, bool wirteDepth)
 {
 	DepthState* pNewDepthState = new DepthState;
-	if (false == pNewDepthState->Init(useDepthTest, wirteDepth))
+	if (false == pNewDepthState->Init(enableDepthTest, wirteDepth))
 	{
 		DEBUG_BREAK();
 		pNewDepthState->Release();
