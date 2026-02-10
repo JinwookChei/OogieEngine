@@ -1,31 +1,5 @@
 #pragma once
 
-struct CBPerFrame
-{
-	Float4x4 view;
-	Float4x4 projection;
-
-	Float4x4 inverseView;
-	Float4x4 inverseProjection;
-
-	Float2 screenOffset;
-	Float2 screenScale;
-	Float2 screenResolution;
-	Float2 pad0;
-
-	Float4 camPos;
-};
-
-struct CBPerObject
-{
-	Float4x4 world;
-
-	Float3 materialSpecular;
-
-	float materialShineness;
-};
-
-
 class GeometryPass final : public IUnknown
 {
 	friend class Renderer;

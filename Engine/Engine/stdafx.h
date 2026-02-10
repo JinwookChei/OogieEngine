@@ -59,11 +59,13 @@
 // Interface
 #include <Interface/Application/IApplication.h>
 #include <Interface/Renderer/IMesh.h>
+#include <Interface/Renderer/IShader.h>
 #include <Interface/Renderer/ITexture.h>
 #include <Interface/Renderer/IMaterial.h>
 #include <Interface/Renderer/IRenderTarget.h>
 #include <Interface/Renderer/IRasterizer.h>
 #include <Interface/Renderer/IParticle.h>
+#include <Interface/Renderer/IPSO.h>
 #include <Interface/Renderer/IRenderResourceFactory.h>
 #include <Interface/Renderer/IRenderer.h>
 #include <Interface/EditorBindObject/IEditorBindObject.h>
@@ -82,8 +84,9 @@
 #include "InputManager.h"
 #include "TimeManager.h"
 #include "MeshManager.h"
-#include "MaterialManager.h"
 #include "TextureManager.h"
+#include "ShaderManager.h"
+#include "MaterialManager.h"
 #include "RasterizerManager.h"
 #include "Transform.h"
 #include "ActorPicker.h"
@@ -96,6 +99,7 @@
 //extern IRenderer* GRenderer;
 
 extern MeshManager* GMeshManager;
+//extern ShaderManager* GShaderManager;
 extern MaterialManager* GMaterialManager;
 extern TextureManager* GTextureManager;
 extern RasterizerManager* GRasterizerManager;

@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "Rasterizer.h"
 
+Rasterizer* Rasterizer::GRasterizer = nullptr;
+
 Rasterizer::Rasterizer()
 	: refCount_(1),
 	pCurrentState_(nullptr),
@@ -101,5 +103,19 @@ void Rasterizer::CleanUp()
 	{
 		pWireframeState_->Release();
 		pWireframeState_ = nullptr;
+	}
+}
+
+void Rasterizer::InitGlobalRasterizer()
+{
+	Rasterizer::GRasterizer = static_cast<Rasterizer*>(GResourceFactory->CreateRasterizer(false, true));
+}
+
+void Rasterizer::ShutDown()
+{
+	if (nullptr != Rasterizer::GRasterizer)
+	{
+		Rasterizer::GRasterizer->Release();
+		Rasterizer::GRasterizer = nullptr;
 	}
 }

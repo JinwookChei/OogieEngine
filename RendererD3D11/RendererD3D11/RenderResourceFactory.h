@@ -11,8 +11,8 @@ public:
 	ULONG __stdcall Release() override;
 
 	IMesh* __stdcall CreateMesh(const MeshDesc& desc) override;
-	IShader* __stdcall CreateShader(const ShaderDesc& desc) override;
-	IMaterial* __stdcall CreateMaterial(const MaterialDesc& materialDesc) override;
+	//IShader* __stdcall CreateShader(const ShaderDesc& desc) override;
+	IMaterial* __stdcall CreateMaterial(const MaterialDesc& desc) override;
 	ITexture* __stdcall CreateTextureFromFile(const wchar_t* fileName, bool isNormalMap) override;
 	ITexture* __stdcall CreateTexture(const TextureDesc& desc) override;
 	ITexture* CreateTexture(const Float2& size, DXGI_FORMAT format, uint32_t flag);

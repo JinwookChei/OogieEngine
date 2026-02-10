@@ -30,8 +30,10 @@ public:
 	void* __stdcall GetDeviceContextHandle() override;
 
 	void __stdcall UpdateCameraFrame(const CameraFrameData& cameraFrameData) override;
+	void __stdcall UpdateObjectFrame(const ObjectFrameData& objectFrameData) override;
 
-	void __stdcall RenderGBuffer(const ObjectRenderData& objectData) override;
+	//void __stdcall RenderGBuffer(const ObjectRenderData& objectData) override;
+	void __stdcall RenderTest(IPSO* pipelineStateObject) override;
 
 	void __stdcall RenderLightBegin(IRenderTarget* pGBufferTarget) override;
 	void __stdcall RenderLight(const LightRenderData& lightData) override;
@@ -81,7 +83,7 @@ private:
 
 	bool InitBackBuffer(UINT width, UINT height, const Color& clearColor);
 
-	bool InitGeometryPass();
+	//bool InitGeometryPass();
 
 	bool InitLightPass();
 
@@ -111,7 +113,7 @@ private:
 
 	RenderTarget* pBackBuffer_;
 
-	GeometryPass* pGeometryPass_;
+	//GeometryPass* pGeometryPass_;
 
 	LightPass* pLightPass_;
 

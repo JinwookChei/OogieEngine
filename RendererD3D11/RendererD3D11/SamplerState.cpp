@@ -136,6 +136,30 @@ void SamplerState::InitGlobalSamplers()
 	SamplerState::GSamplerAnisotropicWarp = Create(E_SAMPLER_PRESET::ANISOTROPIC_WARP, 0, D3D11_FLOAT32_MAX, 8);;
 }
 
+void SamplerState::ShutDown()
+{
+	if (nullptr != SamplerState::GSamplerLinearClamp)
+	{
+		SamplerState::GSamplerLinearClamp->Release();
+		SamplerState::GSamplerLinearClamp = nullptr;
+	}
+	if (nullptr != SamplerState::GSamplerLinearWarp)
+	{
+		SamplerState::GSamplerLinearWarp->Release();
+		SamplerState::GSamplerLinearWarp = nullptr;
+	}
+	if (nullptr != SamplerState::GSamplerAnisotropicClamp)
+	{
+		SamplerState::GSamplerAnisotropicClamp->Release();
+		SamplerState::GSamplerAnisotropicClamp = nullptr;
+	}
+	if (nullptr != SamplerState::GSamplerAnisotropicWarp)
+	{
+		SamplerState::GSamplerAnisotropicWarp->Release();
+		SamplerState::GSamplerAnisotropicWarp = nullptr;
+	}
+}
+
 SamplerState* SamplerState::Create(const E_SAMPLER_PRESET& samplerType, float minLOD, float maxLOD, unsigned int maxAnisotropy)
 {
 	SamplerState* pNewSamplerState = new SamplerState;

@@ -162,10 +162,12 @@
     <ClInclude Include="..\..\Interface\Renderer\IMaterial.h" />
     <ClInclude Include="..\..\Interface\Renderer\IMesh.h" />
     <ClInclude Include="..\..\Interface\Renderer\IParticle.h" />
+    <ClInclude Include="..\..\Interface\Renderer\IPSO.h" />
     <ClInclude Include="..\..\Interface\Renderer\IRasterizer.h" />
     <ClInclude Include="..\..\Interface\Renderer\IRenderer.h" />
     <ClInclude Include="..\..\Interface\Renderer\IRenderResourceFactory.h" />
     <ClInclude Include="..\..\Interface\Renderer\IRenderTarget.h" />
+    <ClInclude Include="..\..\Interface\Renderer\IShader.h" />
     <ClInclude Include="..\..\Interface\Renderer\ITexture.h" />
     <ClInclude Include="ContentManager.h" />
     <ClInclude Include="LookAtCamera.h" />

@@ -17,6 +17,13 @@ public:
 	ULONG __stdcall AddRef() override;
 	ULONG __stdcall Release() override;
 
+	IMesh* GetMesh() const;
+	IMaterial* GetMaterial() const;
+	const E_SAMPLER_PRESET& GetSamplerState() const;
+	const E_DEPTH_PRESET& GetDepthState() const;
+	const E_BLEND_PRESET& GetBlendState() const;
+	const E_RASTERIZER_PRESET& GetRasterizerMode() const;
+
 private:
 	void CleanUp();
 

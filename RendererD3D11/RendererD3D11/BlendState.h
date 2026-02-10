@@ -39,6 +39,7 @@ private:
 
 public:
 	static void InitGlobalBlendStates();
+	static void ShutDown();
 	static BlendState* Create(const E_BLEND_PRESET& blendPreset);
 	static BlendState* GOpaqueBlend;
 	static BlendState* GAlphaBlend;

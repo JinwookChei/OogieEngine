@@ -35,6 +35,7 @@ private:
 
 public:
 	static void InitGlobalDepthStates();
+	static void ShutDown();
 	static DepthState* Create(bool enableDepthTest, bool wirteDepth);
 	static DepthState* GDepthEnableWrite;
 	static DepthState* GDepthEnableReadOnly;

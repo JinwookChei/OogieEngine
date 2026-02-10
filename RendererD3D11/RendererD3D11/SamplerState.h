@@ -41,6 +41,7 @@ private:
 
 public:
 	static void InitGlobalSamplers();
+	static void ShutDown();
 	static SamplerState* Create(const E_SAMPLER_PRESET& samplerType, float minLOD, float maxLOD, unsigned int maxAnisotropy);
 	static SamplerState* GSamplerLinearClamp;
 	static SamplerState* GSamplerLinearWarp;

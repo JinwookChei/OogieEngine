@@ -55,7 +55,7 @@ ULONG __stdcall Texture::Release()
 	return tmpRefCount;
 }
 
-void __stdcall Texture::Setting(UINT slot)
+void Texture::Bind(UINT slot) const
 {
 	if (nullptr == pShaderResourceView_)
 	{
@@ -65,6 +65,17 @@ void __stdcall Texture::Setting(UINT slot)
 
 	GRenderer->DeviceContext()->PSSetShaderResources(slot, 1, &pShaderResourceView_);
 }
+
+//void __stdcall Texture::Setting(UINT slot)
+//{
+//	if (nullptr == pShaderResourceView_)
+//	{
+//		DEBUG_BREAK();
+//		return;
+//	}
+//
+//	GRenderer->DeviceContext()->PSSetShaderResources(slot, 1, &pShaderResourceView_);
+//}
 
 ID3D11RenderTargetView* Texture::RenderTargetView() const
 {

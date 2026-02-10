@@ -61,25 +61,6 @@ bool DepthState::Init(bool enableDepthTest, bool wirteDepth)
 	return true;
 }
 
-void DepthState::InitGlobalDepthStates()
-{
-	DepthState::GDepthEnableWrite = Create(true, true);
-	DepthState::GDepthEnableReadOnly = Create(true, false);
-	DepthState::GDepthDisable = Create(false, false);
-}
-
-DepthState* DepthState::Create(bool enableDepthTest, bool wirteDepth)
-{
-	DepthState* pNewDepthState = new DepthState;
-	if (false == pNewDepthState->Init(enableDepthTest, wirteDepth))
-	{
-		DEBUG_BREAK();
-		pNewDepthState->Release();
-		pNewDepthState = nullptr;
-	}
-
-	return pNewDepthState;
-}
 
 
 void DepthState::Bind()
@@ -101,3 +82,44 @@ void DepthState::CleanUp()
 		pDepthState_ = nullptr;
 	}
 }
+
+void DepthState::InitGlobalDepthStates()
+{
+	DepthState::GDepthEnableWrite = Create(true, true);
+	DepthState::GDepthEnableReadOnly = Create(true, false);
+	DepthState::GDepthDisable = Create(false, false);
+}
+
+void DepthState::ShutDown()
+{
+	if (nullptr != DepthState::GDepthEnableWrite)
+	{
+		DepthState::GDepthEnableWrite->Release();
+		DepthState::GDepthEnableWrite = nullptr;
+	}
+	if (nullptr != DepthState::GDepthEnableReadOnly)
+	{
+		DepthState::GDepthEnableReadOnly->Release();
+		DepthState::GDepthEnableReadOnly = nullptr;
+	}
+	if (nullptr != DepthState::GDepthDisable)
+	{
+		DepthState::GDepthDisable->Release();
+		DepthState::GDepthDisable = nullptr;
+	}
+}
+
+DepthState* DepthState::Create(bool enableDepthTest, bool wirteDepth)
+{
+	DepthState* pNewDepthState = new DepthState;
+	if (false == pNewDepthState->Init(enableDepthTest, wirteDepth))
+	{
+		DEBUG_BREAK();
+		pNewDepthState->Release();
+		pNewDepthState = nullptr;
+	}
+
+	return pNewDepthState;
+}
+
+

@@ -13,6 +13,11 @@ struct CameraFrameData
 	Float4 camPos;
 };
 
+struct ObjectFrameData
+{
+	Float4x4 world;
+};
+
 struct ObjectRenderData
 {
 	Float4x4 world;
@@ -56,8 +61,11 @@ struct IRenderer : public IUnknown {
 	virtual void* __stdcall GetDeviceContextHandle() = 0;
 
 	virtual void __stdcall UpdateCameraFrame(const CameraFrameData& cameraFrameData) = 0;
+	virtual void __stdcall UpdateObjectFrame(const ObjectFrameData& objectFrameData) = 0;
 
-	virtual void __stdcall RenderGBuffer(const ObjectRenderData& objectData) = 0;
+	//virtual void __stdcall RenderGBuffer(const ObjectRenderData& objectData) = 0;
+
+	virtual void __stdcall RenderTest(IPSO* pipelineStateObject) = 0;
 
 	virtual void __stdcall RenderLightBegin(IRenderTarget* pGBufferTarget) = 0;
 
@@ -76,8 +84,7 @@ struct IRenderer : public IUnknown {
 	virtual void __stdcall RenderDebug() = 0;
 
 	virtual void __stdcall RenderMerge(IRenderTarget* pSrcTarget) = 0;
-	//virtual void __stdcall RenderMerge(IRenderTarget* pDepthTarget, IRenderTarget* pSrcTarget) = 0;
-
+	
 	virtual void __stdcall RenderBegin() = 0;
 
 	virtual void __stdcall RenderFinal(IRenderTarget* pSrcTarget) = 0;
@@ -85,19 +92,5 @@ struct IRenderer : public IUnknown {
 	virtual void __stdcall RenderEnd() = 0;
 
 	virtual uint64_t __stdcall DrawCallCount() = 0;
-
-	/*virtual IMesh* __stdcall CreateMesh(const MeshDesc& desc) = 0;
-
-	virtual IMaterial* __stdcall CreateMaterial(const MaterialDesc& materialDesc) = 0;
-
-	virtual IRasterizer* __stdcall  CreateRasterizer(bool frontCounterClockwise, bool backFaceCulling) = 0;
-
-	virtual IRenderTarget* __stdcall CreateRenderTarget(const RenderTargetDesc& desc) = 0;
-
-	virtual IParticle* __stdcall CreateParticle(const ParticleDesc& desc) = 0;
-
-	virtual ITexture* __stdcall LoadTextureFromDirectXTex(const wchar_t* fileName, bool isNormalMap) = 0;
-
-	virtual ITexture* __stdcall CreateTexture(const TextureDesc& desc) = 0;*/
 };
 

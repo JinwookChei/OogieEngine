@@ -170,15 +170,18 @@ IMesh* __stdcall RenderResourceFactory::CreateMesh(const MeshDesc& desc)
 	return nullptr;
 }
 
-IShader* __stdcall RenderResourceFactory::CreateShader(const ShaderDesc& desc)
-{
-	IShader* pNewShader = Shader::Create(desc);
-	return pNewShader;
-}
+//IShader* __stdcall RenderResourceFactory::CreateShader(const ShaderDesc& desc)
+//{
+//	IShader* pNewShader = Shader::Create(desc);
+//	return pNewShader;
+//}
 
-IMaterial* __stdcall RenderResourceFactory::CreateMaterial(const MaterialDesc& materialDesc)
+IMaterial* __stdcall RenderResourceFactory::CreateMaterial(const MaterialDesc& desc)
 {
-	Material* pMaterial = nullptr;
+	IMaterial* pMaterial = Material::Create(desc);
+	return pMaterial;
+
+	/*Material* pMaterial = nullptr;
 	do
 	{
 		pMaterial = new Material;
@@ -198,7 +201,7 @@ IMaterial* __stdcall RenderResourceFactory::CreateMaterial(const MaterialDesc& m
 		pMaterial = nullptr;
 	}
 
-	return nullptr;
+	return nullptr;*/
 }
 
 ITexture* __stdcall RenderResourceFactory::CreateTextureFromFile(const wchar_t* fileName, bool isNormalMap)

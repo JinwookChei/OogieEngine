@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Shader.h"
 
+Shader* Shader::GShaderDeferredSimple = nullptr;
 
 Shader::Shader()
 	: refCount_(1)
@@ -194,19 +195,6 @@ bool Shader::Init(const ShaderDesc& desc)
 	}
 
 	return false;
-}
-
-Shader* Shader::Create(const ShaderDesc& desc)
-{
-	Shader* pNewShader = new Shader;
-	if (false == pNewShader->Init(desc))
-	{
-		DEBUG_BREAK();
-		pNewShader->Release();
-		pNewShader = nullptr;
-	}
-
-	return pNewShader;
 }
 
 
@@ -471,5 +459,44 @@ void Shader::CleanUp()
 	{
 		pPS_->Release();
 		pPS_ = nullptr;
+	}
+}
+
+Shader* Shader::Create(const ShaderDesc& desc)
+{
+	Shader* pNewShader = new Shader;
+	if (false == pNewShader->Init(desc))
+	{
+		DEBUG_BREAK();
+		pNewShader->Release();
+		pNewShader = nullptr;
+	}
+
+	return pNewShader;
+}
+
+void Shader::InitGlobalShaders()
+{
+	ShaderDesc deferredSimpleDesc;
+	deferredSimpleDesc.pathVS_ = L"GeometryVS.cso";
+	deferredSimpleDesc.pathPS_ = L"GeometryPS.cso";
+	deferredSimpleDesc.inputDesc_.push_back({ "POSITION", 0, 6, 0, false });
+	deferredSimpleDesc.inputDesc_.push_back({ "COLOR", 0, 2, 0, false });
+	deferredSimpleDesc.inputDesc_.push_back({ "NORMAL", 0, 6, 0, false });
+	deferredSimpleDesc.inputDesc_.push_back({ "TEXCOORD", 0, 16, 0, false });
+	deferredSimpleDesc.inputDesc_.push_back({ "TANGENT", 0, 2, 0, false });
+	Shader::GShaderDeferredSimple = Shader::Create(deferredSimpleDesc);
+	if (nullptr == GShaderDeferredSimple)
+	{
+		DEBUG_BREAK();
+	}
+}
+
+void Shader::ShutDown()
+{
+	if (nullptr != Shader::GShaderDeferredSimple)
+	{
+		Shader::GShaderDeferredSimple->Release();
+		Shader::GShaderDeferredSimple = nullptr;
 	}
 }

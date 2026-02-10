@@ -123,6 +123,25 @@ void BlendState::InitGlobalBlendStates()
 	GAdditiveBlend = Create(E_BLEND_PRESET::ADDITIVE_BLEND);
 }
 
+void BlendState::ShutDown()
+{
+	if(nullptr != BlendState::GOpaqueBlend)
+	{
+		BlendState::GOpaqueBlend->Release();
+		BlendState::GOpaqueBlend = nullptr;
+	}
+	if (nullptr != BlendState::GAlphaBlend)
+	{
+		BlendState::GAlphaBlend->Release();
+		BlendState::GAlphaBlend = nullptr;
+	}
+	if (nullptr != BlendState::GAdditiveBlend)
+	{
+		BlendState::GAdditiveBlend->Release();
+		BlendState::GAdditiveBlend = nullptr;
+	}
+}
+
 BlendState* BlendState::Create(const E_BLEND_PRESET& blendPreset)
 {
 	BlendState* pNewBlendState = new BlendState;

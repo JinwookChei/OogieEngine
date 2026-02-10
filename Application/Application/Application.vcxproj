@@ -149,7 +149,16 @@
     <ClInclude Include="..\..\Interface\Application\IApplication.h" />
     <ClInclude Include="..\..\Interface\EditorBindObject\IEditorBindObject.h" />
     <ClInclude Include="..\..\Interface\Editor\IEditor.h" />
+    <ClInclude Include="..\..\Interface\Renderer\IMaterial.h" />
+    <ClInclude Include="..\..\Interface\Renderer\IMesh.h" />
+    <ClInclude Include="..\..\Interface\Renderer\IParticle.h" />
+    <ClInclude Include="..\..\Interface\Renderer\IPSO.h" />
+    <ClInclude Include="..\..\Interface\Renderer\IRasterizer.h" />
     <ClInclude Include="..\..\Interface\Renderer\IRenderer.h" />
+    <ClInclude Include="..\..\Interface\Renderer\IRenderResourceFactory.h" />
+    <ClInclude Include="..\..\Interface\Renderer\IRenderTarget.h" />
+    <ClInclude Include="..\..\Interface\Renderer\IShader.h" />
+    <ClInclude Include="..\..\Interface\Renderer\ITexture.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="WindowsApplication.h" />

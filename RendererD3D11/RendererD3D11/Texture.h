@@ -18,7 +18,7 @@ public:
 
 	ULONG __stdcall Release() override;
 
-	void __stdcall Setting(UINT slot) override;
+	void Bind(UINT slot) const;
 
 	ID3D11RenderTargetView* RenderTargetView() const;
 

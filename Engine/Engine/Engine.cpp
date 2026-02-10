@@ -5,14 +5,8 @@
 #include "Engine.h"
 #include "Actor.h"
 
-//typedef bool (*DLL_FUNCTION_ARG1)(void**);
-//typedef bool (*DLL_FUNCTION_ARG5)(void**, HINSTANCE, PWSTR, int, const wchar_t*);
-
-
-//IApplication* GApplication = nullptr;
-//IRenderer* GRenderer = nullptr;
-
 MeshManager* GMeshManager = nullptr;
+//ShaderManager* GShaderManager = nullptr;
 MaterialManager* GMaterialManager = nullptr;
 TextureManager* GTextureManager = nullptr;
 RasterizerManager* GRasterizerManager = nullptr;
@@ -28,10 +22,6 @@ IParticle* GParticle_2 = nullptr;
 
 Engine::Engine()
 	: pStartUp_(nullptr)
-	//, applicationModule_()
-	//, pApplication_(nullptr)
-	//, rendererModule_()
-	//, pRenderer_(nullptr)
 {
 }
 
@@ -111,6 +101,8 @@ bool Engine::Initialize
 
 	GMeshManager = new MeshManager;
 
+	//GShaderManager = new ShaderManager;
+
 	GTextureManager = new TextureManager;
 
 	GMaterialManager = new MaterialManager;
@@ -134,8 +126,8 @@ void Engine::Run()
 {
 	// TEMP
 	MeshManager::Instance()->TestLoad();
-	MaterialManager::Instance()->TestLoad();
 	TextureManager::Instance()->TestLoad();
+	MaterialManager::Instance()->TestLoad();
 
 	ParticleDesc particleDesc;
 	particleDesc.maxNum_ = 10;
@@ -185,123 +177,6 @@ World* Engine::GetWorld() const
 {
 	return GWorld;
 }
-//
-//bool Engine::LoadApplication
-//(
-//	HINSTANCE hInstance,
-//	PWSTR pCmdLine,
-//	int nCmdShow,
-//	const wchar_t* pMainWindowClassName,
-//	const wchar_t* pMainWindowText,
-//	const wchar_t* pIConPath
-//)
-//{
-//	if (nullptr != pApplication_)
-//	{
-//		DEBUG_BREAK();
-//		pApplication_->Release();
-//		pApplication_ = nullptr;
-//	}
-//
-//#ifdef _DEBUG
-//	LPCWSTR libFileName = L"Application_x64_Debug.dll";
-//#else
-//	LPCWSTR libFileName = L"Application_x64_Release.dll";
-//#endif
-//
-//	applicationModule_ = LoadLibrary(libFileName);
-//	if (!applicationModule_)
-//	{
-//		DEBUG_BREAK();
-//		return false;
-//	}
-//
-//	DLL_FUNCTION_ARG5 CreateWindowsApplication = (DLL_FUNCTION_ARG5)GetProcAddress(applicationModule_, "CreateWindowsApplication");
-//	if (!CreateWindowsApplication)
-//	{
-//		DEBUG_BREAK();
-//		return false;
-//	}
-//
-//
-//	CreateWindowsApplication
-//	(
-//		(void**)&pApplication_, 
-//		hInstance,
-//		pCmdLine, 
-//		nCmdShow, 
-//		pIConPath
-//	);
-//
-//	if (nullptr == pApplication_)
-//	{
-//		DEBUG_BREAK();
-//		return false;
-//	}
-//
-//	if (false == pApplication_->InitializeMainWindow(pMainWindowClassName, pMainWindowText, {DEFAULT_SCREEN_WIDTH , DEFAULT_SCREEN_HEIGHT}))
-//	{
-//		DEBUG_BREAK();
-//		return false;
-//	}
-//
-//	GApplication = pApplication_;
-//
-//	return true;
-//}
-//
-//bool Engine::LoadRenderer()
-//{
-//	if (nullptr == pApplication_)
-//	{
-//		DEBUG_BREAK();
-//		return false;
-//	}
-//
-//	if (nullptr != pRenderer_)
-//	{
-//		DEBUG_BREAK();
-//		pRenderer_->Release();
-//		pRenderer_ = nullptr;
-//	}
-//
-//#ifdef _DEBUG
-//	LPCWSTR libFileName = L"RendererD3D11_x64_Debug.dll";
-//#else
-//	LPCWSTR libFileName = L"RendererD3D11_x64_Release.dll";
-//#endif
-//	
-//	rendererModule_ = LoadLibrary(libFileName);
-//	if (!rendererModule_)
-//	{
-//		DEBUG_BREAK();
-//		return false;
-//	}
-//
-//	DLL_FUNCTION_ARG1 CreateRenderer = (DLL_FUNCTION_ARG1)GetProcAddress(rendererModule_, "CreateRenderer");
-//	if (!CreateRenderer)
-//	{
-//		DEBUG_BREAK();
-//		return false;
-//	}
-//
-//	CreateRenderer((void**)&pRenderer_);
-//	if (nullptr == pRenderer_)
-//	{
-//		DEBUG_BREAK();
-//		return false;
-//	}
-//
-//	void* pMainHwnd = pApplication_->GetMainWindowHandle();
-//	if (false == pRenderer_->Initialize(pMainHwnd, DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT))
-//	{
-//		DEBUG_BREAK();
-//		return false;
-//	}
-//
-//	GRenderer = pRenderer_;
-//	return true;
-//}
 
 
 bool Engine::InitializeStartUp(IStartup* startUp)
@@ -375,7 +250,11 @@ void Engine::CleanUp()
 		delete GMaterialManager;
 		GMaterialManager = nullptr;
 	}
-
+	//if (nullptr != GShaderManager)
+	//{
+	//	delete GShaderManager;
+	//	GShaderManager = nullptr;
+	//}
 	if (nullptr != GMeshManager)
 	{
 		delete GMeshManager;
@@ -389,27 +268,4 @@ void Engine::CleanUp()
 	FBXManager::ShutDown();
 	Renderer::ShutDown();
 	Application::ShutDown();
-	/*if (nullptr != pApplication_)
-	{
-		pApplication_->Release();
-		pApplication_ = nullptr;
-	}
-
-	if (nullptr != applicationModule_)
-	{
-		FreeLibrary(applicationModule_);
-		applicationModule_ = nullptr;
-	}
-
-	if (nullptr != pRenderer_)
-	{
-		pRenderer_->Release();
-		pRenderer_ = nullptr;
-	}
-
-	if (nullptr != rendererModule_)
-	{
-		FreeLibrary(rendererModule_);
-		rendererModule_ = nullptr;
-	}*/
 }

@@ -159,9 +159,12 @@
     <ClInclude Include="..\..\Interface\Renderer\IMaterial.h" />
     <ClInclude Include="..\..\Interface\Renderer\IMesh.h" />
     <ClInclude Include="..\..\Interface\Renderer\IParticle.h" />
+    <ClInclude Include="..\..\Interface\Renderer\IPSO.h" />
     <ClInclude Include="..\..\Interface\Renderer\IRasterizer.h" />
     <ClInclude Include="..\..\Interface\Renderer\IRenderer.h" />
     <ClInclude Include="..\..\Interface\Renderer\IRenderResourceFactory.h" />
+    <ClInclude Include="..\..\Interface\Renderer\IRenderTarget.h" />
+    <ClInclude Include="..\..\Interface\Renderer\IShader.h" />
     <ClInclude Include="..\..\Interface\Renderer\ITexture.h" />
     <ClInclude Include="Actor.h" />
     <ClInclude Include="ActorPicker.h" />
@@ -183,6 +186,7 @@
     <ClInclude Include="RasterizerManager.h" />
     <ClInclude Include="RenderComponent.h" />
     <ClInclude Include="Renderer.h" />
+    <ClInclude Include="ShaderManager.h" />
     <ClInclude Include="SpotLight.h" />
     <ClInclude Include="StartUp.h" />
     <ClInclude Include="stdafx.h" />
@@ -213,6 +217,7 @@
     <ClCompile Include="RasterizerManager.cpp" />
     <ClCompile Include="RenderComponent.cpp" />
     <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="ShaderManager.cpp" />
     <ClCompile Include="SpotLight.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -222,6 +227,9 @@
     <ClCompile Include="TimeManager.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="World.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

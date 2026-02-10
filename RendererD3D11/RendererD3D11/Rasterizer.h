@@ -26,4 +26,11 @@ private:
 	ID3D11RasterizerState* pCurrentState_;
 	ID3D11RasterizerState* pSolidState_;
 	ID3D11RasterizerState* pWireframeState_;
+
+public:
+	static void InitGlobalRasterizer();
+	static void ShutDown();
+	static Rasterizer* GRasterizer;
+	//static SamplerState* Create(const E_SAMPLER_PRESET& samplerType, float minLOD, float maxLOD, unsigned int maxAnisotropy);
+
 };

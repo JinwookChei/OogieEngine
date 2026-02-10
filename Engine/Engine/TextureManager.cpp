@@ -20,40 +20,39 @@ TextureManager* TextureManager::Instance()
 
 void TextureManager::TestLoad()
 {
+	TextureDesc whiteTextureDesc;
+	whiteTextureDesc.colorData_ = 0xFFFFFFFF;
+	whiteTextureDesc.size_ = { 1.0f, 1.0f };
+	ITexture* whiteTexture = Renderer::GetFactory()->CreateTexture(whiteTextureDesc);
+	unsigned long long whiteTexTag = 0;
+	textureTable_.Insert(whiteTexture, &whiteTexTag, 8);
+
 	const wchar_t* colorTexPath = L"../Resource/Texture/Bricks_4K/Bricks_Color.png";
 	CreateTexture(colorTexPath, false, 1);
 
 	const wchar_t* normalTexPath = L"../Resource/Texture/Bricks_4K/Bricks_NormalDX.png";
 	CreateTexture(normalTexPath, true, 2);
 
-	TextureDesc whiteTextureDesc;
-	whiteTextureDesc.colorData_ = 0xFFFFFFFF;
-	whiteTextureDesc.size_ = { 1.0f, 1.0f };
-	ITexture* whiteTexture = Renderer::GetFactory()->CreateTexture(whiteTextureDesc);
-	unsigned long long whiteTexTag = 3;
-	textureTable_.Insert(whiteTexture, &whiteTexTag, 8);
-
 	const wchar_t* maria_diffuse_Path = L"../Resource/Fbx/Mixamo/maria_diffuse.png";
-	CreateTexture(maria_diffuse_Path, false, 4);
+	CreateTexture(maria_diffuse_Path, false, 3);
 	const wchar_t* maria_normal_Path = L"../Resource/Fbx/Mixamo/maria_normal.png";
-	CreateTexture(maria_normal_Path, true, 5);
-
+	CreateTexture(maria_normal_Path, true, 4);
 
 	const wchar_t* wukong_torso_diffuse_Path = L"../Resource/Fbx/Wukong/Texture/Wukong_Torso_Diffuse.png";
-	CreateTexture(wukong_torso_diffuse_Path, false, 6);
+	CreateTexture(wukong_torso_diffuse_Path, false, 5);
 	const wchar_t* wukong_torso_normal_Path = L"../Resource/Fbx/Wukong/Texture/Wukong_Torso_Normal.png";
-	CreateTexture(wukong_torso_normal_Path, true, 7);
+	CreateTexture(wukong_torso_normal_Path, true, 6);
 
 
 	const wchar_t* wereWolf_Body_Albedo_Path = L"../Resource/Fbx/WereWolf/Texture/Werewolf_Body_Albedo.png";
-	CreateTexture(wereWolf_Body_Albedo_Path, false, 8);
+	CreateTexture(wereWolf_Body_Albedo_Path, false, 7);
 	const wchar_t* wereWolf_Body_Normal_Path = L"../Resource/Fbx/WereWolf/Texture/Werewolf_Body_Normal.png";
-	CreateTexture(wereWolf_Body_Normal_Path, true, 9);
+	CreateTexture(wereWolf_Body_Normal_Path, true, 8);
 
 	const wchar_t* wereWolf_Fur_Albedo_Path = L"../Resource/Fbx/WereWolf/Texture/Werewolf_Fur_Albedo.png";
-	CreateTexture(wereWolf_Fur_Albedo_Path, false, 10);
+	CreateTexture(wereWolf_Fur_Albedo_Path, false, 9);
 	const wchar_t* wereWolf_Fur_Normal_Path = L"../Resource/Fbx/WereWolf/Texture/Werewolf_Fur_Normal.png";
-	CreateTexture(wereWolf_Fur_Normal_Path, true, 11);
+	CreateTexture(wereWolf_Fur_Normal_Path, true, 10);
 }
 
 ITexture* TextureManager::CreateTexture(const wchar_t* fileName, bool isNormalMap, unsigned long long textureTag)

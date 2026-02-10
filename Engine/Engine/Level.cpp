@@ -91,7 +91,7 @@ void Level::OnTick(double deltaTime)
 void Level::OnRender()
 {
 	//SamplerManager::Instance()->Setting(0, E_SAMPLER_TYPE::LINEAR_CLAMP);
-	RasterizerManager::Instance()->Setting(E_FILLMODE_TYPE::SOLID);
+	//RasterizerManager::Instance()->Setting(E_FILLMODE_TYPE::SOLID);
 
 	LINK_NODE* pCameraIter = actorList_[(int)E_ACTOR_TYPE::CAMERA].GetHead();
 	while (pCameraIter)
@@ -109,10 +109,14 @@ void Level::OnRender()
 		// Geometry Pass End
 
 		// Light Pass
+		// Final RenderTarget Setting
 		GCurrentCamera->LightPassBegin();
-		Renderer::Instance()->RenderLightBegin(GCurrentCamera->GetGBufferTarget());
-		OnRenderLights();
-		Renderer::Instance()->RenderLightEnd(GCurrentCamera->GetGBufferTarget());
+		
+		//Renderer::Instance()->RenderLightBegin(GCurrentCamera->GetGBufferTarget());
+		//OnRenderLights();
+		//Renderer::Instance()->RenderLightEnd(GCurrentCamera->GetGBufferTarget());
+
+		// Final RenderTarget Un Setting
 		GCurrentCamera->LightPassEnd();
 		// Light Pass End
 

@@ -1,5 +1,25 @@
 #pragma once
 
+struct InputDesc
+{
+	const char* semanticName_;
+	uint32_t semanticIndex_;
+	uint32_t format_;
+	uint32_t inputSlot_;
+	bool isInstanceData_;
+};
+
+struct ShaderDesc
+{
+	const wchar_t* pathCS_ = nullptr;
+	const wchar_t* pathVS_ = nullptr;
+	const wchar_t* pathGS_ = nullptr;
+	const wchar_t* pathPS_ = nullptr;
+
+	std::vector<InputDesc> inputDesc_;
+};
+
+
 class InputLayout;
 class Shader : public IShader
 {
@@ -18,8 +38,6 @@ public:
 
 	ULONG __stdcall Release() override;
 
-	static Shader* Create(const ShaderDesc& desc);
-
 	void Bind();
 
 	void UnBind();
@@ -37,6 +55,12 @@ private:
 	ID3D11VertexShader* pVS_;
 	ID3D11GeometryShader* pGS_;
 	ID3D11PixelShader* pPS_;
+
+public:
+	static Shader* Create(const ShaderDesc& desc);
+	static void InitGlobalShaders();
+	static void ShutDown();
+	static Shader* GShaderDeferredSimple;
 };
 
 

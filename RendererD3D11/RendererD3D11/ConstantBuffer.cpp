@@ -1,6 +1,9 @@
 #include "stdafx.h"
 #include "ConstantBuffer.h"
 
+ConstantBuffer* ConstantBuffer::GConstantPerFrame = nullptr;
+ConstantBuffer* ConstantBuffer::GConstantPerObject = nullptr;
+
 ConstantBuffer::ConstantBuffer()
 	: refCount_(1),
 	pBuffer_(nullptr)
@@ -87,19 +90,6 @@ ULONG __stdcall ConstantBuffer::Release()
 	return tmpRefCount;
 }
 
-ConstantBuffer* ConstantBuffer::Create(uint32_t bufferSize)
-{
-	ConstantBuffer* pNewConstantBuffer = new ConstantBuffer;
-	if (false == pNewConstantBuffer->Init(bufferSize))
-	{
-		DEBUG_BREAK();
-		pNewConstantBuffer->Release();
-		pNewConstantBuffer = nullptr;
-	}
-
-	return pNewConstantBuffer;
-}
-
 void ConstantBuffer::Update(void* pSrcData)
 {
 	GRenderer->DeviceContext()->UpdateSubresource(pBuffer_, 0, nullptr, pSrcData, 0, 0);
@@ -132,4 +122,38 @@ void ConstantBuffer::CleanUp()
 		pBuffer_->Release();
 		pBuffer_ = nullptr;
 	}
+}
+
+void ConstantBuffer::InitGlobalConstant()
+{
+	ConstantBuffer::GConstantPerFrame = Create(sizeof(CBPerFrame));
+	ConstantBuffer::GConstantPerObject = Create(sizeof(CBPerObject));
+}
+
+void ConstantBuffer::ShutDown()
+{
+	if (nullptr != ConstantBuffer::GConstantPerFrame)
+	{
+		ConstantBuffer::GConstantPerFrame->Release();
+		ConstantBuffer::GConstantPerFrame = nullptr;
+	}
+
+	if (nullptr != ConstantBuffer::GConstantPerObject)
+	{
+		ConstantBuffer::GConstantPerObject->Release();
+		ConstantBuffer::GConstantPerObject = nullptr;
+	}
+}
+
+ConstantBuffer* ConstantBuffer::Create(uint32_t bufferSize)
+{
+	ConstantBuffer* pNewConstantBuffer = new ConstantBuffer;
+	if (false == pNewConstantBuffer->Init(bufferSize))
+	{
+		DEBUG_BREAK();
+		pNewConstantBuffer->Release();
+		pNewConstantBuffer = nullptr;
+	}
+
+	return pNewConstantBuffer;
 }
