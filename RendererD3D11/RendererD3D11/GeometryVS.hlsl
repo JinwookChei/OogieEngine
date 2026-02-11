@@ -1,3 +1,17 @@
+//cbuffer CBPerFrame : register(b0)
+//{
+//    matrix View;
+//    matrix Projection;
+    
+//    matrix InvViewTransform;
+//    matrix InvProjectTransform;
+    
+//    float2 ScreenOffset;
+//    float2 ScreenScale;
+    
+//    float4 CamPos;
+//};
+
 cbuffer CBPerFrame : register(b0)
 {
     matrix View;
@@ -8,6 +22,8 @@ cbuffer CBPerFrame : register(b0)
     
     float2 ScreenOffset;
     float2 ScreenScale;
+    float2 ScreenResolution;
+    float2 Pad0;
     
     float4 CamPos;
 };

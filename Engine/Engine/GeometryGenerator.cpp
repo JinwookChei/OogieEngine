@@ -278,7 +278,7 @@ bool GeometryGenerator::CreateCube(std::vector<SimpleVertex>* outVertices, std::
 	return true;
 }
 
-bool GeometryGenerator::CreateScreenRect(std::vector<ScreenRectVertex>* outVertices, std::vector<WORD>* outIndices)
+bool GeometryGenerator::CreateScreenQuad(std::vector<ScreenQuadVertex>* outVertices, std::vector<WORD>* outIndices)
 {
 	if (nullptr == outVertices || nullptr == outIndices)
 	{

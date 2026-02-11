@@ -14,6 +14,7 @@ cbuffer CBPerFrame : register(b0)
     float4 CamPos;
 };
 
+
 struct VS_ScreenRect
 {
     float2 pos : POSITION;

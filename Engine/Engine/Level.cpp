@@ -1,5 +1,6 @@
 #include "stdafx.h"
-#include "Actor.h"	
+#include "Actor.h"
+#include "Light.h"
 #include "Level.h"
 
 Level::Level()
@@ -90,9 +91,6 @@ void Level::OnTick(double deltaTime)
 
 void Level::OnRender()
 {
-	//SamplerManager::Instance()->Setting(0, E_SAMPLER_TYPE::LINEAR_CLAMP);
-	//RasterizerManager::Instance()->Setting(E_FILLMODE_TYPE::SOLID);
-
 	LINK_NODE* pCameraIter = actorList_[(int)E_ACTOR_TYPE::CAMERA].GetHead();
 	while (pCameraIter)
 	{
@@ -103,51 +101,64 @@ void Level::OnRender()
 		GCurrentCamera->UpdatePerFrameConstant();
 
 		// Geometry Pass
-		GCurrentCamera->GeometryPassBegin();
+		GCurrentCamera->RenderPassBegin(E_RENDER_PASS_TYPE::GeometryPass);
 		OnRenderActors();
-		GCurrentCamera->GeometryPassEnd();
+		Renderer::Instance()->UnBindSRVs(true, true);
+		GCurrentCamera->RenderPassEnd();
 		// Geometry Pass End
-
-		// Light Pass
-		// Final RenderTarget Setting
-		GCurrentCamera->LightPassBegin();
 		
-		//Renderer::Instance()->RenderLightBegin(GCurrentCamera->GetGBufferTarget());
-		//OnRenderLights();
-		//Renderer::Instance()->RenderLightEnd(GCurrentCamera->GetGBufferTarget());
-
-		// Final RenderTarget Un Setting
-		GCurrentCamera->LightPassEnd();
+		// Light Pass
+		GCurrentCamera->RenderPassBegin(E_RENDER_PASS_TYPE::LightPass);
+		OnRenderLights(GCurrentCamera->GetGBufferTarget());
+		Renderer::Instance()->UnBindSRVs(true, true);
+		GCurrentCamera->RenderPassEnd();
 		// Light Pass End
 
 
-		// Particle Pass Begin
-		GCurrentCamera->ParticlePassBegin();
-		OnRenderParticles();
-		GCurrentCamera->ParticlePassEnd();
-		// Particle Pass End
 
-		GCurrentCamera->pFinalRenderTarget_->Bind();
-		GCurrentCamera->UpdatePerFrameConstant();
-		Renderer::Instance()->RenderMerge(GCurrentCamera->pParticleRenderTarget_);
-		//GRenderer->RenderMerge(GCurrentCamera->pGBufferRenderTarget_, GCurrentCamera->pParticleRenderTarget_);
-		GCurrentCamera->pFinalRenderTarget_->EndRenderPass();
+		// 기존. 라이트 랜더링
+		//GCurrentCamera->RenderPassBegin(E_RENDER_PASS_TYPE::LightPass);
+		//Renderer::Instance()->RenderLightBegin(GCurrentCamera->GetGBufferTarget());
+		//OnRenderLights();
+		//Renderer::Instance()->RenderLightEnd(GCurrentCamera->GetGBufferTarget());
+		//GCurrentCamera->RenderPassEnd();
+		//
+		// Light Pass
+		// Renderer::Instance()->RenderLightBegin(GCurrentCamera->GetGBufferTarget());
+		// OnRenderLights();
 
 
-		// DebugRender
-		GCurrentCamera->DebugPassBegin();
-		//GCurrentCamera->pDebugRenderTarget_->Clear();
-		//GCurrentCamera->pDebugRenderTarget_->Bind();
-		Renderer::Instance()->RenderDebug();
-		GCurrentCamera->DebugPassEnd();
-		// DebugRender End
+
+		// Light Pass End
+
+
+		//// Particle Pass Begin
+		//GCurrentCamera->ParticlePassBegin();
+		//OnRenderParticles();
+		//GCurrentCamera->ParticlePassEnd();
+		//// Particle Pass End
+
+		//GCurrentCamera->pFinalRenderTarget_->Bind();
+		//GCurrentCamera->UpdatePerFrameConstant();
+		//Renderer::Instance()->RenderMerge(GCurrentCamera->pParticleRenderTarget_);
+		////GRenderer->RenderMerge(GCurrentCamera->pGBufferRenderTarget_, GCurrentCamera->pParticleRenderTarget_);
+		//GCurrentCamera->pFinalRenderTarget_->EndRenderPass();
+
+
+		//// DebugRender
+		//GCurrentCamera->DebugPassBegin();
+		////GCurrentCamera->pDebugRenderTarget_->Clear();
+		////GCurrentCamera->pDebugRenderTarget_->Bind();
+		//Renderer::Instance()->RenderDebug();
+		//GCurrentCamera->DebugPassEnd();
+		//// DebugRender End
 		
 
-		GCurrentCamera->pFinalRenderTarget_->Bind();
-		GCurrentCamera->UpdatePerFrameConstant();
-		Renderer::Instance()->RenderMerge(GCurrentCamera->pDebugRenderTarget_);
-		//GRenderer->RenderMerge(GCurrentCamera->pGBufferRenderTarget_, GCurrentCamera->pDebugRenderTarget_);
-		GCurrentCamera->pFinalRenderTarget_->EndRenderPass();
+		//GCurrentCamera->pFinalRenderTarget_->Bind();
+		//GCurrentCamera->UpdatePerFrameConstant();
+		//Renderer::Instance()->RenderMerge(GCurrentCamera->pDebugRenderTarget_);
+		////GRenderer->RenderMerge(GCurrentCamera->pGBufferRenderTarget_, GCurrentCamera->pDebugRenderTarget_);
+		//GCurrentCamera->pFinalRenderTarget_->UnBind();
 	}
 }
 
@@ -170,6 +181,8 @@ void Level::OnRenderActors()
 {
 	for (int i = 0; i < (int)E_ACTOR_TYPE::MAX; ++i)
 	{
+		if (i == (int)E_ACTOR_TYPE::LIGHT) continue;
+
 		LINK_NODE* pActorIter = actorList_[i].GetHead();
 		while (pActorIter)
 		{
@@ -180,16 +193,25 @@ void Level::OnRenderActors()
 	}
 }
 
-void Level::OnRenderLights()
+void Level::OnRenderLights(IRenderTarget* pGBufferTarget)
 {
+	IMaterial* pLightMaterial = Light::GLightPSO->GetMaterial();
+	if (nullptr == pLightMaterial)
+	{
+		DEBUG_BREAK();
+	}
+
+	pLightMaterial->SetTextures(0, pGBufferTarget->GetRenderTexture(E_RENDER_TEXTURE_TYPE::Albedo));
+	pLightMaterial->SetTextures(1, pGBufferTarget->GetRenderTexture(E_RENDER_TEXTURE_TYPE::Normal));
+	pLightMaterial->SetTextures(2, pGBufferTarget->GetRenderTexture(E_RENDER_TEXTURE_TYPE::Specular));
+	pLightMaterial->SetTextures(3, pGBufferTarget->GetRenderTexture(E_RENDER_TEXTURE_TYPE::Depth));
+
 	LINK_NODE* pLightIter = actorList_[(int)E_ACTOR_TYPE::LIGHT].GetHead();
 	while (pLightIter)
 	{
 		Light* pCurLight = static_cast<Light*>(pLightIter->pItem_);
+		pCurLight->Render();
 		pLightIter = pLightIter->next_;
-		Renderer::Instance()->RenderLight(pCurLight->GetData());
-		//pCurLight->BindLight();
-		//GCurrentCamera->RenderLight();
 	}
 }
 

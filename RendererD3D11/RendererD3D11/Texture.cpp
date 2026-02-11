@@ -55,16 +55,16 @@ ULONG __stdcall Texture::Release()
 	return tmpRefCount;
 }
 
-void Texture::Bind(UINT slot) const
-{
-	if (nullptr == pShaderResourceView_)
-	{
-		DEBUG_BREAK();
-		return;
-	}
-
-	GRenderer->DeviceContext()->PSSetShaderResources(slot, 1, &pShaderResourceView_);
-}
+//void Texture::Bind(UINT slot) const
+//{
+//	if (nullptr == pShaderResourceView_)
+//	{
+//		DEBUG_BREAK();
+//		return;
+//	}
+//
+//	GRenderer->DeviceContext()->PSSetShaderResources(slot, 1, &pShaderResourceView_);
+//}
 
 //void __stdcall Texture::Setting(UINT slot)
 //{
@@ -187,6 +187,12 @@ bool Texture::CreateRenderTargetView()
 		return false;
 	}
 
+
+	// ---------------- 메모리 누수 디버깅용 이름 설정. ----------------------------
+	const char* debugObjectName = "Texture::RenderTargetiew";
+	pRenderTargetView_->SetPrivateData(WKPDID_D3DDebugObjectName, (UINT)strlen(debugObjectName), debugObjectName);
+
+	// ---------------------------------------------------------------------------
 	return true;
 }
 
@@ -225,6 +231,12 @@ bool Texture::CreateDepthStencilView()
 		Assert("CreateDepthStencilView() FAIL");
 		return false;
 	}
+
+
+	// ---------------- 메모리 누수 디버깅용 이름 설정. ----------------------------
+	const char* debugObjectName = "Texture::DepthStencilView";
+	pDepthStencilView_->SetPrivateData(WKPDID_D3DDebugObjectName, (UINT)strlen(debugObjectName), debugObjectName);
+	// ---------------------------------------------------------------------------
 
 	return true;
 }
@@ -276,6 +288,12 @@ bool Texture::CreateShaderResourceView()
 		Assert("CreateShaderResourceView()::CreateShaderResourceView = FAIL");
 		return false;
 	}
+
+
+	// ---------------- 메모리 누수 디버깅용 이름 설정. ----------------------------
+	const char* debugObjectName = "Texture::pShaderResourceView_";
+	pShaderResourceView_->SetPrivateData(WKPDID_D3DDebugObjectName, (UINT)strlen(debugObjectName), debugObjectName);
+	// ---------------------------------------------------------------------------
 
 	return true;
 }

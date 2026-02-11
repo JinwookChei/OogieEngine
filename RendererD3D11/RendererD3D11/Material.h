@@ -12,11 +12,11 @@ private:
 	virtual ~Material();
 
 	// TODO : 이거 지워야함.
-	bool Init
-	(
-		float shineness,
-		Float3 specularColor
-	);
+	//bool Init
+	//(
+	//	float shineness,
+	//	Float3 specularColor
+	//);
 
 	static IMaterial* Create(const MaterialDesc& desc);
 	bool Init(const MaterialDesc& desc);
@@ -26,7 +26,8 @@ public:
 	ULONG __stdcall AddRef() override;
 	ULONG __stdcall Release() override;
 
-	//void __stdcall Setting() override;
+	//void __stdcall SetTextures(unsigned int texNum, ITexture** ppTextures) override;
+	void __stdcall SetTextures(unsigned int texIdx, ITexture* pTexture) override;
 
 	float GetShineness() const override;
 
@@ -39,17 +40,14 @@ public:
 	void Bind();
 
 private:
+	void CleanTextures();
 	void CleanUp();
 
 	ULONG refCount_;
 
-	//IShader* pShader_;
-
 	E_SHADER_PRESET shaderType_;
-	ULONG textureCount_;
+	ULONG texturesNum_;
 	Texture** ppTextures_;
-	//Texture* pTextureAlbedo_;
-	//Texture* pTextureNormal_;
 
 	// 얘네도 필요 없음.
 	float shineness_;

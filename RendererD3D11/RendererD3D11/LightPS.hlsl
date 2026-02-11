@@ -20,8 +20,7 @@ cbuffer CBPerFrame : register(b0)
     float4 CamPos;
 };
 
-
-cbuffer CBPerSpotLight : register(b1)
+cbuffer CBPerLight : register(b1)
 {
     float4 LightDiffuse;
     float4 LightSpecular;
@@ -71,6 +70,7 @@ float4 main(PS_ScreenRect input) : SV_TARGET
     float4 normal = renderTextureNormal.Sample(samplers, input.uv);
     float4 specular = renderTextureSpecular.Sample(samplers, input.uv);
     float depth = renderTextureDepth.Sample(samplers, input.uv).r;
+   
     
     // 물체를 비추는 픽셀인지 아닌지 검사.
     clip(normal.w - 0.0001f);
@@ -111,9 +111,10 @@ float4 main(PS_ScreenRect input) : SV_TARGET
         // float3 ambientColor = LightAmbient.rgb * albedo.rgb;
         // Emissive
         // float3 emissiveColor = 0.0f;
-
+        
         return float4(diffuseColor + specularColor /*+ ambientColor + emissiveColor*/, 1.0f);
     }
+    
     // SpotLight
     else if (LightType == 1)
     {
@@ -154,6 +155,7 @@ float4 main(PS_ScreenRect input) : SV_TARGET
         float3 finalColor = float3(diffuseColor + specularColor /*+ ambientColor*/ /*+ emissiveColor*/) * att;
         return float4(finalColor, 1.0f);
     }
+    
     // PointLight
     else
     {

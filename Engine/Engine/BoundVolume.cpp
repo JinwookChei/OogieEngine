@@ -97,14 +97,14 @@ bool BoundVolume::CalculateAABB
 			resultAABB.maxPos_.Z = max(resultAABB.maxPos_.Z, curVertex.position.Z);
 		}
 	}break;
-	case E_VERTEX_FORMAT::SCREEN_RECT:
+	case E_VERTEX_FORMAT::SCREEN_QUAD:
 	{
-		ScreenRectVertex* pScreenRectVertices = static_cast<ScreenRectVertex*>(pVertices);
+		ScreenQuadVertex* pScreenRectVertices = static_cast<ScreenQuadVertex*>(pVertices);
 		resultAABB.minPos_ = { pScreenRectVertices[0].position.X, pScreenRectVertices[0].position.Y, 0.0f };
 		resultAABB.maxPos_ = { pScreenRectVertices[0].position.X, pScreenRectVertices[0].position.Y, 0.0f };
 		for (int i = 1; i < vertexCount; ++i)
 		{
-			const ScreenRectVertex& curVertex = pScreenRectVertices[i];
+			const ScreenQuadVertex& curVertex = pScreenRectVertices[i];
 			resultAABB.minPos_.X = min(resultAABB.minPos_.X, curVertex.position.X);
 			resultAABB.maxPos_.X = max(resultAABB.maxPos_.X, curVertex.position.X);
 

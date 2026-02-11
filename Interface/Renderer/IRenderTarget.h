@@ -74,7 +74,11 @@ struct IRenderTarget : public IUnknown
 
 	virtual void __stdcall Bind(ITexture* pDepthTexture) = 0;
 
+	virtual void __stdcall UnBind() = 0;
+
 	virtual void __stdcall Clear() = 0;
+
+
 
 	virtual RenderTargetDesc __stdcall GetDesc() const = 0;
 
@@ -86,9 +90,9 @@ struct IRenderTarget : public IUnknown
 
 	virtual void __stdcall UnBindRenderTexturePS(uint32_t slot) = 0;
 
-	virtual void __stdcall EndRenderPass() = 0;
+	virtual void* __stdcall GetShaderResourceView(const E_RENDER_TEXTURE_TYPE& textureType) = 0;
 
-	virtual void* __stdcall GetShaderResourceView(const E_RENDER_TEXTURE_TYPE& texureType) = 0;
+	virtual ITexture* __stdcall GetRenderTexture(const E_RENDER_TEXTURE_TYPE& textureType) = 0;
 
-	virtual ITexture* __stdcall GetDepthTexture() = 0;
+	//virtual ITexture* __stdcall GetDepthTexture() = 0;
 };

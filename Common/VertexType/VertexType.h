@@ -2,10 +2,15 @@
 
 enum class E_VERTEX_FORMAT
 {
+	SCREEN_QUAD = 0,
 	SIMPLE,
-	SCREEN_RECT
 };
 
+struct ScreenQuadVertex
+{
+	Float2 position;
+	Float2 UV;
+};
 
 struct SimpleVertex
 {
@@ -24,8 +29,3 @@ struct SimpleVertex
 	}
 };
 
-struct ScreenRectVertex
-{
-	Float2 position;
-	Float2 UV;
-};

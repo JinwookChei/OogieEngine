@@ -5,8 +5,8 @@ struct MaterialDesc
 	//IShader* pShader;
 	E_SHADER_PRESET shaderType;
 
-	ULONG textureCount_ = 0;
-	ITexture** ppTextures_ = nullptr;
+	ULONG textureNum_ = 0;
+	//ITexture** ppTextures_ = nullptr;
 
 	//ITexture* pTextureAlbedo;
 	//ITexture* pTextureNormal;
@@ -20,6 +20,8 @@ struct MaterialDesc
 
 struct IMaterial : public IUnknown
 {
+	virtual void __stdcall SetTextures(unsigned int texIdx, ITexture* pTexture) = 0;
+
 	virtual float __stdcall GetShineness() const = 0;
 
 	virtual void __stdcall SetShineness(float shineness) = 0;

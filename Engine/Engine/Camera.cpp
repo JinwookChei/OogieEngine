@@ -11,6 +11,7 @@ Camera::Camera()
 	, cameraSpeed_(2.0f)
 	, screenOffset_({ 0.0f, 0.0f })
 	, screenScale_({ 1.0f, 1.0f })
+	, pCurrentRenderTarget_(nullptr)
 	, pGBufferRenderTarget_(nullptr)
 	, pFinalRenderTarget_(nullptr)
 	, pDebugRenderTarget_(nullptr)
@@ -24,13 +25,13 @@ Camera::Camera()
 
 	MATH::MatrixIdentity(projection_);
 
-	InitGBuffer();
+	InitGBufferRenderTarget();
 
-	InitLightBuffer();
+	InitFianlRenderTarget();
 
-	InitParticleBuffer();
+	InitParticleRenderTarget();
 
-	InitDebugBuffer();
+	InitDebugRenderTarget();
 }
 
 Camera::~Camera()
@@ -53,62 +54,62 @@ void Camera::Render()
 {
 
 }
-
-void Camera::GeometryPassBegin()
-{
-	pGBufferRenderTarget_->Clear();
-	pGBufferRenderTarget_->Bind();
-}
-
-void Camera::GeometryPassEnd()
-{
-	pGBufferRenderTarget_->EndRenderPass();
-}
-
-void Camera::LightPassBegin()
-{
-	pFinalRenderTarget_->Clear();
-	pFinalRenderTarget_->Bind();
-}
-void Camera::LightPassEnd()
-{
-	pFinalRenderTarget_->EndRenderPass();
-}
-
-void Camera::ParticlePassBegin()
-{
-	ITexture* pDepthTexture= pGBufferRenderTarget_->GetDepthTexture();
-	if (nullptr == pDepthTexture)
-	{
-		DEBUG_BREAK();
-	}
-
-	pParticleRenderTarget_->Clear();
-	pParticleRenderTarget_->Bind(pDepthTexture);
-	//pParticleRenderTarget_->Bind();
-}
-
-void Camera::ParticlePassEnd()
-{
-	pParticleRenderTarget_->EndRenderPass();
-}
-
-void Camera::DebugPassBegin()
-{
-	ITexture* pDepthTexture = pGBufferRenderTarget_->GetDepthTexture();
-	if (nullptr == pDepthTexture)
-	{
-		DEBUG_BREAK();
-	}
-
-	pDebugRenderTarget_->Clear();
-	pDebugRenderTarget_->Bind(pDepthTexture);
-}
-
-void Camera::DebugPassEnd()
-{
-	pDebugRenderTarget_->EndRenderPass();
-}
+//
+//void Camera::GeometryPassBegin()
+//{
+//	pGBufferRenderTarget_->Clear();
+//	pGBufferRenderTarget_->Bind();
+//}
+//
+//void Camera::GeometryPassEnd()
+//{
+//	pGBufferRenderTarget_->EndRenderPass();
+//}
+//
+//void Camera::LightPassBegin()
+//{
+//	pFinalRenderTarget_->Clear();
+//	pFinalRenderTarget_->Bind();
+//}
+//void Camera::LightPassEnd()
+//{
+//	pFinalRenderTarget_->EndRenderPass();
+//}
+//
+//void Camera::ParticlePassBegin()
+//{
+//	ITexture* pDepthTexture= pGBufferRenderTarget_->GetDepthTexture();
+//	if (nullptr == pDepthTexture)
+//	{
+//		DEBUG_BREAK();
+//	}
+//
+//	pParticleRenderTarget_->Clear();
+//	pParticleRenderTarget_->Bind(pDepthTexture);
+//	//pParticleRenderTarget_->Bind();
+//}
+//
+//void Camera::ParticlePassEnd()
+//{
+//	pParticleRenderTarget_->EndRenderPass();
+//}
+//
+//void Camera::DebugPassBegin()
+//{
+//	ITexture* pDepthTexture = pGBufferRenderTarget_->GetDepthTexture();
+//	if (nullptr == pDepthTexture)
+//	{
+//		DEBUG_BREAK();
+//	}
+//
+//	pDebugRenderTarget_->Clear();
+//	pDebugRenderTarget_->Bind(pDepthTexture);
+//}
+//
+//void Camera::DebugPassEnd()
+//{
+//	pDebugRenderTarget_->EndRenderPass();
+//}
 
 void Camera::BlitToBackBuffer()
 {
@@ -201,7 +202,69 @@ void Camera::UpdatePerFrameConstant()
 	Renderer::Instance()->UpdateCameraFrame(frameData);
 }
 
-bool Camera::InitGBuffer()
+void Camera::RenderPassBegin(E_RENDER_PASS_TYPE renderPassType)
+{
+	switch (renderPassType)
+	{
+	case E_RENDER_PASS_TYPE::GeometryPass:
+	{
+		pGBufferRenderTarget_->Clear();
+		pGBufferRenderTarget_->Bind();
+		pCurrentRenderTarget_ = pGBufferRenderTarget_;
+		break;
+	}
+	case E_RENDER_PASS_TYPE::LightPass:
+	{
+		pFinalRenderTarget_->Clear();
+		pFinalRenderTarget_->Bind();
+		pCurrentRenderTarget_ = pFinalRenderTarget_;
+		break;
+	}
+	case E_RENDER_PASS_TYPE::ParticlePass:
+	{
+		ITexture* pDepthTexture = pGBufferRenderTarget_->GetRenderTexture(E_RENDER_TEXTURE_TYPE::Depth);
+		if (nullptr == pDepthTexture)
+		{
+			DEBUG_BREAK();
+		}
+		pParticleRenderTarget_->Clear();
+		pParticleRenderTarget_->Bind(pDepthTexture);
+		pCurrentRenderTarget_ = pParticleRenderTarget_;
+		break;
+	}
+	case E_RENDER_PASS_TYPE::DebugPass:
+	{
+		ITexture* pDepthTexture = pGBufferRenderTarget_->GetRenderTexture(E_RENDER_TEXTURE_TYPE::Depth);
+		if (nullptr == pDepthTexture)
+		{
+			DEBUG_BREAK();
+		}
+		pDebugRenderTarget_->Clear();
+		pDebugRenderTarget_->Bind(pDepthTexture);
+		pCurrentRenderTarget_ = pDebugRenderTarget_;
+		break;
+	}
+	case E_RENDER_PASS_TYPE::CompositePass:
+		break;
+	case E_RENDER_PASS_TYPE::MergePass:
+		break;
+	default:
+		break;
+	}
+}
+
+void Camera::RenderPassEnd()
+{
+	if (nullptr == pCurrentRenderTarget_)
+	{
+		DEBUG_BREAK();
+		return;
+	}
+	pCurrentRenderTarget_->UnBind();
+	pCurrentRenderTarget_ = nullptr;
+}
+
+bool Camera::InitGBufferRenderTarget()
 {
 	RenderTargetDesc gBufferDesc(E_RENDER_TECHNIQUE_TYPE::Deferred);
 	gBufferDesc.size_ = { DEFAULT_SCREEN_WIDTH , DEFAULT_SCREEN_HEIGHT };
@@ -215,13 +278,13 @@ bool Camera::InitGBuffer()
 	return true;
 }
 
-bool Camera::InitLightBuffer()
+bool Camera::InitFianlRenderTarget()
 {
-	RenderTargetDesc lightBufferDesc(E_RENDER_TECHNIQUE_TYPE::Forward);
-	lightBufferDesc.size_ = { DEFAULT_SCREEN_WIDTH , DEFAULT_SCREEN_HEIGHT };
-	lightBufferDesc.clearColor_ = { 0.0f, 0.0f, 0.0f, 0.0f };
-	lightBufferDesc.forwardDesc_.useDepthStencil_ = false;						// 라이트 패스에서 여러 라이트를 처리하기 위해서는 Depth는 꺼야함.
-	pFinalRenderTarget_ = Renderer::GetFactory()->CreateRenderTarget(lightBufferDesc);
+	RenderTargetDesc finalRenderTargetDesc(E_RENDER_TECHNIQUE_TYPE::Forward);
+	finalRenderTargetDesc.size_ = { DEFAULT_SCREEN_WIDTH , DEFAULT_SCREEN_HEIGHT };
+	finalRenderTargetDesc.clearColor_ = { 0.0f, 0.0f, 0.0f, 0.0f };
+	finalRenderTargetDesc.forwardDesc_.useDepthStencil_ = false;						// 라이트 패스에서 여러 라이트를 처리하기 위해서는 Depth는 꺼야함.
+	pFinalRenderTarget_ = Renderer::GetFactory()->CreateRenderTarget(finalRenderTargetDesc);
 	if (nullptr == pFinalRenderTarget_)
 	{
 		return false;
@@ -230,7 +293,7 @@ bool Camera::InitLightBuffer()
 	return true;
 }
 
-bool Camera::InitParticleBuffer()
+bool Camera::InitParticleRenderTarget()
 {
 	RenderTargetDesc particleRenderTargetDesc(E_RENDER_TECHNIQUE_TYPE::Forward);
 	particleRenderTargetDesc.size_ = { DEFAULT_SCREEN_WIDTH , DEFAULT_SCREEN_HEIGHT };
@@ -246,7 +309,7 @@ bool Camera::InitParticleBuffer()
 	return true;
 }
 
-bool Camera::InitDebugBuffer()
+bool Camera::InitDebugRenderTarget()
 {
 	RenderTargetDesc debugRenderTargeetDesc(E_RENDER_TECHNIQUE_TYPE::Forward);
 	debugRenderTargeetDesc.size_ = { DEFAULT_SCREEN_WIDTH , DEFAULT_SCREEN_HEIGHT };

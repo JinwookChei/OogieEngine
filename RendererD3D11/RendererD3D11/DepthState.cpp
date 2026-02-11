@@ -45,6 +45,11 @@ bool DepthState::Init(bool enableDepthTest, bool wirteDepth)
 	enableDepth_ = enableDepthTest;
 	writeDepth_ = wirteDepth;
 
+	if (enableDepth_ == false && writeDepth_ == false)
+	{
+		return true;
+	}
+
 	D3D11_DEPTH_STENCIL_DESC pDepthStateDesc = {};
 	pDepthStateDesc.DepthEnable = enableDepthTest ? TRUE : FALSE;
 	pDepthStateDesc.DepthFunc = enableDepthTest ? D3D11_COMPARISON_LESS_EQUAL : D3D11_COMPARISON_ALWAYS;
@@ -60,7 +65,6 @@ bool DepthState::Init(bool enableDepthTest, bool wirteDepth)
 
 	return true;
 }
-
 
 
 void DepthState::Bind()

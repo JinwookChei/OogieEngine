@@ -60,7 +60,9 @@ public:
 	static Shader* Create(const ShaderDesc& desc);
 	static void InitGlobalShaders();
 	static void ShutDown();
+	static Shader* GShaderLight;
 	static Shader* GShaderDeferredSimple;
+	
 };
 
 

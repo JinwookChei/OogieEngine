@@ -10,11 +10,18 @@ class Light
 	: public Actor
 {
 public:
+	static IPSO* GLightPSO;
+
+public:
 	Light();
 
 	~Light() override;
 
-	//virtual void BindLight() = 0;
+	void Tick(double deltaTime) override;
+
+	void BeginPlay() override;
+
+	void Render() override;
 
 	virtual LightRenderData GetData() = 0;
 

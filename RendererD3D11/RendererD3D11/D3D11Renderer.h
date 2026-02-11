@@ -31,13 +31,16 @@ public:
 
 	void __stdcall UpdateCameraFrame(const CameraFrameData& cameraFrameData) override;
 	void __stdcall UpdateObjectFrame(const ObjectFrameData& objectFrameData) override;
+	void __stdcall UpdateLightFrame(const LightRenderData& lightFrameData) override;
 
 	//void __stdcall RenderGBuffer(const ObjectRenderData& objectData) override;
 	void __stdcall RenderTest(IPSO* pipelineStateObject) override;
 
-	void __stdcall RenderLightBegin(IRenderTarget* pGBufferTarget) override;
-	void __stdcall RenderLight(const LightRenderData& lightData) override;
-	void __stdcall RenderLightEnd(IRenderTarget* pGBufferTarget) override;
+	void __stdcall UnBindSRVs(bool bVS, bool bPS) override;
+
+	//void __stdcall RenderLightBegin(IRenderTarget* pGBufferTarget) override;
+	//void __stdcall RenderLight(const LightRenderData& lightData) override;
+	//void __stdcall RenderLightEnd(IRenderTarget* pGBufferTarget) override;
 
 	void __stdcall UpdateParticles(IParticle* pParticle, double deltaTime) override;
 	void __stdcall RenderParticles(IParticle* pParticle, const Float4x4 worldTransform, const Float4x4& viewProj, const Float3& cameraRight, const Float3& cameraUp) override;
@@ -55,19 +58,6 @@ public:
 
 	uint64_t __stdcall DrawCallCount() override;
 
-	// ------------------------- 인터페이스 노출된 Create -----------------------------
-	//IMesh* __stdcall CreateMesh(const MeshDesc& desc) override;
-	//IMaterial* __stdcall CreateMaterial(const MaterialDesc& materialDesc) override;
-	//IRasterizer* __stdcall  CreateRasterizer(bool frontCounterClockwise, bool backFaceCulling) override;
-	//IRenderTarget* __stdcall CreateRenderTarget(const RenderTargetDesc& desc) override;
-	//IRenderTarget* __stdcall CreateForwardRenderTarget(const RenderTargetDesc& desc);
-	//IRenderTarget* __stdcall CreateDeferredRenderTarget(const RenderTargetDesc& desc);
-	//IParticle* __stdcall CreateParticle(const ParticleDesc& desc) override;
-	//ITexture* __stdcall LoadTextureFromDirectXTex(const wchar_t* fileName, bool isNormalMap) override;
-	//ITexture* __stdcall CreateTexture(const TextureDesc& desc) override;
-	//ITexture* CreateTexture(const Float2& size, DXGI_FORMAT format, uint32_t flag);
-	//ITexture* CreateTexture(const D3D11_TEXTURE2D_DESC& desc);
-	// ------------------------- 인터페이스 노출안된 Create -----------------------------
 	void Draw(UINT count, bool useIndex);
 	
 	void IncrementDrawCall();
@@ -85,7 +75,7 @@ private:
 
 	//bool InitGeometryPass();
 
-	bool InitLightPass();
+	//bool InitLightPass();
 
 	bool InitParticlePass();
 
@@ -115,7 +105,7 @@ private:
 
 	//GeometryPass* pGeometryPass_;
 
-	LightPass* pLightPass_;
+	//LightPass* pLightPass_;
 
 	ParticlePass* pParticlePass_;
 

@@ -2,7 +2,8 @@
 
 enum class E_SHADER_PRESET
 {
-	DeferredSimple = 0,
+	Light = 0,
+	DeferredSimple
 };
 
 

@@ -1,8 +1,18 @@
 #pragma once
 #include "Actor.h"
 
-class Transform;
+enum class E_RENDER_PASS_TYPE
+{
+	GeometryPass = 0,
+	LightPass,
+	ParticlePass,
+	DebugPass,
+	CompositePass,
+	MergePass
+};
 
+
+class Transform;
 class Camera
 	: public Actor
 	, public IEditorBindCamera
@@ -28,21 +38,17 @@ public:
 
 	void UpdatePerFrameConstant();
 
-	void GeometryPassBegin();
+	void RenderPassBegin(E_RENDER_PASS_TYPE renderPassType);
+	void RenderPassEnd();
 
+	/*void GeometryPassBegin();
 	void GeometryPassEnd();
-
 	void LightPassBegin();
-
 	void LightPassEnd();
-
 	void ParticlePassBegin();
-
 	void ParticlePassEnd();
-
 	void DebugPassBegin();
-
-	void DebugPassEnd();
+	void DebugPassEnd();*/
 
 	void BlitToBackBuffer();
 
@@ -61,13 +67,13 @@ public:
 	float GetFar() const;
 
 private:
-	bool InitGBuffer();
+	bool InitGBufferRenderTarget();
 
-	bool InitLightBuffer();
+	bool InitFianlRenderTarget();
 
-	bool InitParticleBuffer();
+	bool InitParticleRenderTarget();
 
-	bool InitDebugBuffer();
+	bool InitDebugRenderTarget();
 
 	virtual ENGINE_API void CameraTransformUpdate();
 
@@ -99,6 +105,10 @@ protected:
 
 private:
 	friend class Level;
+
+	// Current RenderTarget
+	IRenderTarget* pCurrentRenderTarget_;
+
 	// Geometry Pass
 	IRenderTarget* pGBufferRenderTarget_;
 	

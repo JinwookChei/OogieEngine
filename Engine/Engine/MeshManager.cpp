@@ -17,8 +17,22 @@ MeshManager* MeshManager::Instance()
 	return GMeshManager;
 }
 
-void MeshManager::TestLoad()
+void MeshManager::TestLoad()	
 {
+	std::vector<ScreenQuadVertex> screenQuadVertices;
+	std::vector<WORD> screenQuadIndices;
+	GeometryGenerator::CreateScreenQuad(&screenQuadVertices, &screenQuadIndices);
+	MeshDesc screenQuadDesc;
+	screenQuadDesc.vertexFormat = E_VERTEX_FORMAT::SCREEN_QUAD;
+	screenQuadDesc.vertexFormatSize = sizeof(ScreenQuadVertex);
+	screenQuadDesc.vertexCount = screenQuadVertices.size();
+	screenQuadDesc.vertices = screenQuadVertices.data();
+	screenQuadDesc.indexFormatSize = sizeof(WORD);
+	screenQuadDesc.indexCount = screenQuadIndices.size();
+	screenQuadDesc.indices = screenQuadIndices.data();
+	CreateMesh(screenQuadDesc, 0);
+
+
 	std::vector<SimpleVertex> cubeVertices;
 	std::vector<WORD> cubeIndices;
 	GeometryGenerator::CreateCube(&cubeVertices, &cubeIndices);

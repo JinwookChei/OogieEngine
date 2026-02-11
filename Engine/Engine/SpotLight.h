@@ -12,7 +12,7 @@ public:
 
 	void BeginPlay() override;
 
-	//void BindLight() override;
+	//void Render() override;
 
 	LightRenderData GetData() override;
 
@@ -21,10 +21,6 @@ public:
 	float GetRange() const;
 
 	void SetRange(float range);
-
-//	float GetAngle() const;		// Radian ∏Æ≈œ
-
-	//void SetAngle(float deg);
 
 private:
 	void CleanUp() override;

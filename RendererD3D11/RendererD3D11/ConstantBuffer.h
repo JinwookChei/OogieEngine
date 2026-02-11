@@ -16,6 +16,7 @@ struct CBPerFrame
 	Float4 camPos;
 };
 
+
 struct CBPerObject
 {
 	Float4x4 world;
@@ -23,6 +24,31 @@ struct CBPerObject
 	float materialShineness;
 };
 
+struct CBPerLight
+{
+	Color lightDiffuse;
+	Color lightSpecular;
+	Color lightAmbient;
+
+	Float3 direction_D_S; // Spot, DirectionÀÌ¶û °øÀ¯.
+	float range_S_P;
+	Float3 position_S_P;
+
+	float exponent_S;
+	float innerAngle_S;
+	float outerAngle_S;
+
+	float attenuationConst_S_P;
+	float attenuationLinear_S_P;
+	float attenuationQuad_S_P;
+
+	// 0 -> DirectionLight
+	// 1 -> SpotLight
+	// 2 -> PointLight
+	float lightType;
+
+	Float2 pad;
+};
 
 class ConstantBuffer final
 	: public IUnknown
@@ -45,8 +71,6 @@ public:
 
 	ULONG __stdcall Release() override;
 
-	
-
 	void Update(void* pSrcData);
 
 	void BindConstantBufferCS(UINT slot);
@@ -67,5 +91,6 @@ public:
 	static ConstantBuffer* Create(uint32_t bufferSize);
 	static ConstantBuffer* GConstantPerFrame;
 	static ConstantBuffer* GConstantPerObject;
+	static ConstantBuffer* GConstantPerLight;
 };
 

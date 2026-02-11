@@ -12,7 +12,8 @@ public:
 
 	void BeginPlay() override;
 
-	//void BindLight() override;
+	//void Render() override;
+	
 
 	LightRenderData GetData() override;
 

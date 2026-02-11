@@ -19,12 +19,12 @@ MaterialManager* MaterialManager::Instance()
 
 void MaterialManager::TestLoad()
 {
-	//MaterialDesc matDesc;
-	////matDesc.VS = L"ObjectVS.cso";
-	////matDesc.PS = L"DeferredObjectPS.cso";
-	//matDesc.shineness = 0.7f;
-	//matDesc.specularColor = { 0.7f, 0.7f, 0.7f };
-	//CreateMaterial(matDesc, 1);
+	MaterialDesc lightPassMaterialDesc;
+	lightPassMaterialDesc.shaderType = E_SHADER_PRESET::Light;
+	lightPassMaterialDesc.textureNum_ = 4;
+	lightPassMaterialDesc.shineness = 0.5f;
+	lightPassMaterialDesc.specularColor = {0.8f, 0.8f, 0.8f};
+	IMaterial* pLightMaterial = CreateMaterial(lightPassMaterialDesc, 0);
 
 	ITexture* pWhiteTexture = nullptr;
 	if (false == TextureManager::Instance()->GetTexture(&pWhiteTexture, 0)) DEBUG_BREAK();
@@ -57,71 +57,52 @@ void MaterialManager::TestLoad()
 
 	MaterialDesc matDesc1;
 	matDesc1.shaderType = E_SHADER_PRESET::DeferredSimple;
-	matDesc1.textureCount_ = 2;
-	matDesc1.ppTextures_ = new ITexture * [matDesc1.textureCount_];
-	matDesc1.ppTextures_[0] = pBricks_Color;
-	matDesc1.ppTextures_[1] = pBricks_Normal;
+	matDesc1.textureNum_ = 2;
 	matDesc1.shineness = 0.7f;
 	matDesc1.specularColor = { 0.7f, 0.7f, 0.7f };
-	CreateMaterial(matDesc1, 1);
+	IMaterial* pMat1 = CreateMaterial(matDesc1, 1);
+	pMat1->SetTextures(0, pBricks_Color);
+	pMat1->SetTextures(1, pBricks_Normal);
 
 
 	MaterialDesc matDesc2;
 	matDesc2.shaderType = E_SHADER_PRESET::DeferredSimple;
-	matDesc2.textureCount_ = 2;
-	matDesc2.ppTextures_ = new ITexture * [matDesc2.textureCount_];
-	matDesc2.ppTextures_[0] = pMaria_Diffuse;
-	matDesc2.ppTextures_[1] = pMaria_Normal;
+	matDesc2.textureNum_ = 2;
 	matDesc2.shineness = 0.7f;
 	matDesc2.specularColor = { 0.7f, 0.7f, 0.7f };
-	CreateMaterial(matDesc2, 2);
+	IMaterial* pMat2 = CreateMaterial(matDesc2, 2);
+	pMat2->SetTextures(0, pMaria_Diffuse);
+	pMat2->SetTextures(1, pMaria_Normal);
 
 
 	MaterialDesc matDesc3;
 	matDesc3.shaderType = E_SHADER_PRESET::DeferredSimple;
-	matDesc3.textureCount_ = 2;
-	matDesc3.ppTextures_ = new ITexture * [matDesc3.textureCount_];
-	matDesc3.ppTextures_[0] = pWukong_Torso_Diffuse;
-	matDesc3.ppTextures_[1] = pWukong_Torso_Normal;
+	matDesc3.textureNum_ = 2;
 	matDesc3.shineness = 0.7f;
 	matDesc3.specularColor = { 0.7f, 0.7f, 0.7f };
-	CreateMaterial(matDesc3, 3);
+	IMaterial* pMat3 = CreateMaterial(matDesc3, 3);
+	pMat3->SetTextures(0, pWukong_Torso_Diffuse);
+	pMat3->SetTextures(1, pMaria_Normal);
 
 
 	MaterialDesc matDesc4;
 	matDesc4.shaderType = E_SHADER_PRESET::DeferredSimple;
-	matDesc4.textureCount_ = 2;
-	matDesc4.ppTextures_ = new ITexture * [matDesc4.textureCount_];
-	matDesc4.ppTextures_[0] = pWerewolf_Body_Albedo;
-	matDesc4.ppTextures_[1] = pWerewolf_Body_Normal;
+	matDesc4.textureNum_ = 2;
 	matDesc4.shineness = 0.7f;
 	matDesc4.specularColor = { 0.7f, 0.7f, 0.7f };
-	CreateMaterial(matDesc4, 4);
+	IMaterial* pMat4 = CreateMaterial(matDesc4, 4);
+	pMat4->SetTextures(0, pWerewolf_Body_Albedo);
+	pMat4->SetTextures(1, pWerewolf_Body_Normal);
 
 
 	MaterialDesc matDesc5;
 	matDesc5.shaderType = E_SHADER_PRESET::DeferredSimple;
-	matDesc5.textureCount_ = 2;
-	matDesc5.ppTextures_ = new ITexture * [matDesc5.textureCount_];
-	matDesc5.ppTextures_[0] = pWerewolf_Fur_Albedo;
-	matDesc5.ppTextures_[1] = pWerewolf_Fur_Normal;
+	matDesc5.textureNum_ = 2;
 	matDesc5.shineness = 0.7f;
 	matDesc5.specularColor = { 0.7f, 0.7f, 0.7f };
-	CreateMaterial(matDesc5, 5);
-
-
-	//MaterialDesc matDesc4;
-	//matDesc4.shaderType = E_SHADER_PRESET::DeferredSimple;
-	//TextureManager::Instance()->GetTexture(&matDesc4.pTextureAlbedo, 8);
-	//TextureManager::Instance()->GetTexture(&matDesc4.pTextureNormal, 9);
-	//matDesc4.shineness = 0.7f;
-	//matDesc4.specularColor = { 0.7f, 0.7f, 0.7f };
-
-	//matDesc4.textureCount_ = 3;
-	//matDesc4.ppTextures_ = new ITexture * [matDesc4.textureCount_] {pTex1, pTex2, pTex3};
-	//CreateMaterial(matDesc4, 4);
-	//delete[] matDesc4.ppTextures_;
-
+	IMaterial* pMat5 = CreateMaterial(matDesc5, 5);
+	pMat5->SetTextures(0, pWerewolf_Fur_Albedo);
+	pMat5->SetTextures(1, pWerewolf_Fur_Normal);
 }
 
 IMaterial* MaterialManager::CreateMaterial(const MaterialDesc& desc, unsigned long long materialTag)

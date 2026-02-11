@@ -7,10 +7,8 @@
 Material::Material()
 	: refCount_(1)
 	, shaderType_(E_SHADER_PRESET::DeferredSimple)
-	, textureCount_(0)
+	, texturesNum_(0)
 	, ppTextures_(nullptr)
-	//, pTextureAlbedo_(nullptr)
-	//, pTextureNormal_(nullptr)
 	, shineness_(1.0f)
 	, specularColor_(0.7f, 0.7f, 0.7f)
 {
@@ -21,13 +19,13 @@ Material::~Material()
 	CleanUp();
 }
 
-bool Material::Init(float shineness,Float3 specularColor)
-{
-	shineness_ = shineness;
-	specularColor_ = specularColor;
-	
-	return true;
-}
+//bool Material::Init(float shineness,Float3 specularColor)
+//{
+//	shineness_ = shineness;
+//	specularColor_ = specularColor;
+//	
+//	return true;
+//}
 
 IMaterial* Material::Create(const MaterialDesc& desc)
 {
@@ -44,52 +42,14 @@ IMaterial* Material::Create(const MaterialDesc& desc)
 
 bool Material::Init(const MaterialDesc& desc)
 {
-	//if (nullptr == desc.pShader)
-	//{
-	//	DEBUG_BREAK();
-	//	return false;
-	//}
-	//if (nullptr == desc.pTextureAlbedo)
-	//{
-	//	DEBUG_BREAK();
-	//	return false;
-	//}
-	//if (nullptr == desc.pTextureNormal)
-	//{
-	//	DEBUG_BREAK();
-	//	return false;
-	//}
-
-	//pShader_ = desc.pShader;
-	//pShader_->AddRef();
-
 	shaderType_ = desc.shaderType;
 
-	textureCount_ = desc.textureCount_;
-	if (textureCount_ > 0)
+	CleanTextures();
+	texturesNum_ = desc.textureNum_;
+	if(0 != texturesNum_)
 	{
-		if (nullptr == desc.ppTextures_)
-		{
-			DEBUG_BREAK();
-			return false;
-		}
+		ppTextures_ = new Texture * [desc.textureNum_]{nullptr};
 	}
-
-	ppTextures_ = (Texture**)desc.ppTextures_;
-	for (int i = 0; i < textureCount_; ++i)
-	{
-		ppTextures_[i]->AddRef();
-	}
-	
-
-	/*pTextureAlbedo_ = static_cast<Texture*>(desc.pTextureAlbedo);
-	pTextureAlbedo_->AddRef();
-
-	pTextureNormal_ = static_cast<Texture*>(desc.pTextureNormal);
-	pTextureNormal_->AddRef();*/
-
-
-
 
 	shineness_ = desc.shineness;
 	specularColor_ = desc.specularColor;
@@ -110,16 +70,51 @@ ULONG __stdcall Material::Release()
 {
 	--refCount_;
 	ULONG tmpRefCount = refCount_;
-	if (0 == refCount_) {
+	if (0 == refCount_) 
+{
 		delete this;
 	}
 	return tmpRefCount;
 }
 
-//void __stdcall Material::Setting()
+//void __stdcall Material::SetTextures(unsigned int texNum, ITexture** ppTextures)
 //{
+//	if (texNum > 0)
+//	{
+//		if (nullptr == ppTextures)
+//		{
+//			DEBUG_BREAK();
+//			return;
+//		}
+//	}
 //
+//	CleanTextures();
+//
+//	texturesNum_ = texNum;
+//	ppTextures_ = (Texture**)ppTextures;
+//	for (int i = 0; i < texturesNum_; ++i)
+//	{
+//		ppTextures_[i]->AddRef();
+//	}
 //}
+
+void __stdcall Material::SetTextures(unsigned int texIdx, ITexture* pTexture)
+{
+	if (texIdx >= texturesNum_)
+	{
+		DEBUG_BREAK();
+		return;
+	}
+
+	if (nullptr != ppTextures_[texIdx])
+	{
+		ppTextures_[texIdx]->Release();
+		ppTextures_[texIdx] = nullptr;
+	}
+
+	ppTextures_[texIdx] = static_cast<Texture*>(pTexture);
+	ppTextures_[texIdx]->AddRef();
+}
 
 float Material::GetShineness() const
 {
@@ -145,6 +140,11 @@ void Material::Bind()
 {
 	switch (shaderType_)
 	{
+	case E_SHADER_PRESET::Light:
+	{
+		Shader::GShaderLight->Bind();
+		break;
+	}
 	case E_SHADER_PRESET::DeferredSimple: 
 	{
 		Shader::GShaderDeferredSimple->Bind();
@@ -155,24 +155,27 @@ void Material::Bind()
 		break;
 	}
 	
-
-	for (int texIdx = 0; texIdx < textureCount_; ++texIdx)
+	ID3D11ShaderResourceView* pSRVs[16]; 
+	for (int i = 0; i < texturesNum_; ++i) 
 	{
-		ppTextures_[texIdx]->Bind(texIdx);
+		pSRVs[i] = ppTextures_[i]->ShaderResourceView();
+		if (nullptr == pSRVs[i])
+		{
+			DEBUG_BREAK();
+		}
 	}
-	//pTextureAlbedo_->Bind(0);
-	//pTextureNormal_->Bind(1);
+	GRenderer->DeviceContext()->PSSetShaderResources(0, texturesNum_, pSRVs);
+
+
+	//for (int texIdx = 0; texIdx < texturesNum_; ++texIdx)
+	//{
+	//	ppTextures_[texIdx]->Bind(texIdx);
+	//}
 }
 
-void Material::CleanUp()
+void Material::CleanTextures()
 {
-	//if (nullptr != pShader_)
-	//{
-	//	pShader_->Release();
-	//	pShader_ = nullptr;
-	//}
-
-	for (int i = 0; i < textureCount_; ++i)
+	for (int i = 0; i < texturesNum_; ++i)
 	{
 		if (nullptr != ppTextures_[i])
 		{
@@ -181,21 +184,14 @@ void Material::CleanUp()
 		}
 	}
 
-	if(nullptr != ppTextures_)
+	if (nullptr != ppTextures_)
 	{
 		delete[] ppTextures_;
 		ppTextures_ = nullptr;
 	}
+}
 
-
-	//if (nullptr != pTextureAlbedo_)
-	//{
-	//	pTextureAlbedo_->Release();
-	//	pTextureAlbedo_ = nullptr;
-	//}
-	//if (nullptr != pTextureNormal_)
-	//{
-	//	pTextureNormal_->Release();
-	//	pTextureNormal_ = nullptr;
-	//}
+void Material::CleanUp()
+{
+	CleanTextures();
 }

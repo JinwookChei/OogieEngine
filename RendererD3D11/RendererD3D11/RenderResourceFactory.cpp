@@ -412,6 +412,11 @@ ITexture* RenderResourceFactory::CreateTexture(const D3D11_TEXTURE2D_DESC& desc)
 			break;
 		}
 
+		// ---------------- 메모리 누수 디버깅용 이름 설정. ----------------------------
+		const char* debugObjectName = "ID3D11Texture2D";
+		pTexture->SetPrivateData(WKPDID_D3DDebugObjectName, (UINT)strlen(debugObjectName), debugObjectName);
+		// ---------------------------------------------------------------------------
+
 		return pNewTexture;
 
 	} while (false);

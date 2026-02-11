@@ -12,21 +12,17 @@ DirectionLight::~DirectionLight()
 
 void DirectionLight::Tick(double deltaTime)
 {
+	Light::Tick(deltaTime);
 }
 
 void DirectionLight::BeginPlay()
 {
+	Light::BeginPlay();
 }
 
-//void DirectionLight::BindLight()
+//void DirectionLight::Render()
 //{
-//	CBPerLight cbPerLight;
-//	cbPerLight.lightDiffuse = DiffuseColor();
-//	cbPerLight.lightSpecular = SpecularColor();
-//	cbPerLight.lightAmbient = AmbientColor();
-//	cbPerLight.direction_D_S = Direction();
-//	cbPerLight.lightType = (float)ELightType::DirectionLight;
-//	ConstantManager::Instance()->UpdatePerLight(&cbPerLight);
+//	Renderer::Instance()->UpdateLightFrame(GetData());
 //}
 
 LightRenderData DirectionLight::GetData()
@@ -37,7 +33,6 @@ LightRenderData DirectionLight::GetData()
 	data.lightAmbient = AmbientColor();
 	data.direction_D_S = Direction();
 	data.lightType = (float)ELightType::DirectionLight;
-
 	return data;
 }
 

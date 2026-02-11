@@ -12,6 +12,8 @@ public:
 
 	void BeginPlay() override;
 
+	//void Render() override;
+
 	LightRenderData GetData() override;
 
 	float GetRange() const;

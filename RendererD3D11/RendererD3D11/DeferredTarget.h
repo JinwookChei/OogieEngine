@@ -29,6 +29,8 @@ public:
 
 	void __stdcall Bind(ITexture* pDepthTexture) override;
 
+	void __stdcall UnBind() override;
+
 	void __stdcall Clear() override;
 
 	RenderTargetDesc __stdcall GetDesc() const override;
@@ -41,11 +43,13 @@ public:
 
 	void __stdcall UnBindRenderTexturePS(uint32_t slot) override;
 
-	void __stdcall EndRenderPass() override;
+	//void __stdcall EndRenderPass() override;
 
 	void* __stdcall GetShaderResourceView(const E_RENDER_TEXTURE_TYPE& texureType) override;
 
-	ITexture* __stdcall GetDepthTexture() override;
+	ITexture* __stdcall GetRenderTexture(const E_RENDER_TEXTURE_TYPE& textureType) override;
+
+	//ITexture* __stdcall GetDepthTexture() override;
 
 private:
 	bool SetTexture(Texture* pRenderTextureAlbedo, Texture* pRenderTextureNormal, Texture* pRenderTextureSpecular, Texture* pDepthTexture);
@@ -67,7 +71,7 @@ private:
 	Texture* pRenderTextureAlbedo_;
 	Texture* pRenderTextureNormal_;
 	Texture* pRenderTextureSpecular_;
-	Texture* pDepthTexture_;
+	Texture* pRenderTextureDepth_;
 
 	ID3D11RenderTargetView* pRTVs_[RENDER_BUFFER_COUNT];
 	ID3D11ShaderResourceView* pSRVs_[RESOURCE_BUFFER_COUNT];

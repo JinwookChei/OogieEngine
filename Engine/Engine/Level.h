@@ -79,7 +79,7 @@ private:
 
 	void OnRenderActors();
 
-	void OnRenderLights();
+	void OnRenderLights(IRenderTarget* pGBufferTarget);
 
 	void OnRenderParticles();
 	

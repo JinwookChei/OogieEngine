@@ -262,7 +262,6 @@ void Engine::CleanUp()
 	}
 
 	TimeManager::CleanUp();
-	
 	InputManager::CleanUp();
 
 	FBXManager::ShutDown();

@@ -8,7 +8,7 @@
 #include "SamplerState.h"
 #include "MergePass.h"
 
-bool CreateScreenRectt(std::vector<ScreenRectVertex>* outVertices, std::vector<WORD>* outIndices)
+bool CreateScreenRectt(std::vector<ScreenQuadVertex>* outVertices, std::vector<WORD>* outIndices)
 {
 	if (nullptr == outVertices || nullptr == outIndices)
 	{
@@ -132,13 +132,13 @@ bool MergePass::Init()
 
 bool MergePass::InitScreenQuad()
 {
-	std::vector<ScreenRectVertex> vertices;
+	std::vector<ScreenQuadVertex> vertices;
 	std::vector<WORD> indices;
 	CreateScreenRectt(&vertices, &indices);
 
 	MeshDesc meshDesc;
-	meshDesc.vertexFormat = E_VERTEX_FORMAT::SCREEN_RECT;
-	meshDesc.vertexFormatSize = sizeof(ScreenRectVertex);
+	meshDesc.vertexFormat = E_VERTEX_FORMAT::SCREEN_QUAD;
+	meshDesc.vertexFormatSize = sizeof(ScreenQuadVertex);
 	meshDesc.vertexCount = vertices.size();
 	meshDesc.vertices = vertices.data();
 	meshDesc.indexFormatSize = sizeof(WORD);

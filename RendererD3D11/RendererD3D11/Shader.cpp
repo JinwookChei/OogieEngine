@@ -2,6 +2,7 @@
 #include "Shader.h"
 
 Shader* Shader::GShaderDeferredSimple = nullptr;
+Shader* Shader::GShaderLight = nullptr;
 
 Shader::Shader()
 	: refCount_(1)
@@ -477,6 +478,17 @@ Shader* Shader::Create(const ShaderDesc& desc)
 
 void Shader::InitGlobalShaders()
 {
+	ShaderDesc lightShaderDesc;
+	lightShaderDesc.pathVS_ = L"LightVS.cso";
+	lightShaderDesc.pathPS_ = L"LightPS.cso";
+	lightShaderDesc.inputDesc_.push_back({ "POSITION", 0, 16, 0, false });
+	lightShaderDesc.inputDesc_.push_back({ "TEXCOORD", 0, 16, 0, false });
+	Shader::GShaderLight = Shader::Create(lightShaderDesc);
+	if (nullptr == GShaderLight)
+	{
+		DEBUG_BREAK();
+	}
+
 	ShaderDesc deferredSimpleDesc;
 	deferredSimpleDesc.pathVS_ = L"GeometryVS.cso";
 	deferredSimpleDesc.pathPS_ = L"GeometryPS.cso";
@@ -494,6 +506,12 @@ void Shader::InitGlobalShaders()
 
 void Shader::ShutDown()
 {
+	if (nullptr != Shader::GShaderLight)
+	{
+		Shader::GShaderLight->Release();
+		Shader::GShaderLight = nullptr;
+	}
+
 	if (nullptr != Shader::GShaderDeferredSimple)
 	{
 		Shader::GShaderDeferredSimple->Release();

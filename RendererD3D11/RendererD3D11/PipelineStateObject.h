@@ -17,8 +17,9 @@ public:
 	ULONG __stdcall AddRef() override;
 	ULONG __stdcall Release() override;
 
-	IMesh* GetMesh() const;
-	IMaterial* GetMaterial() const;
+	IMesh* __stdcall GetMesh() const override;
+	IMaterial* __stdcall GetMaterial() const override;
+
 	const E_SAMPLER_PRESET& GetSamplerState() const;
 	const E_DEPTH_PRESET& GetDepthState() const;
 	const E_BLEND_PRESET& GetBlendState() const;

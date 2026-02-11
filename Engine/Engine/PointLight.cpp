@@ -16,11 +16,19 @@ PointLight::~PointLight()
 
 void PointLight::Tick(double deltaTime)
 {
+	Light::Tick(deltaTime);
 }
 
 void PointLight::BeginPlay()
 {
+	Light::BeginPlay();
 }
+
+//void PointLight::Render()
+//{
+//	Renderer::Instance()->UpdateLightFrame(GetData());
+//	Renderer::Instance()->RenderTest(Light::GLightPSO);
+//}
 
 LightRenderData PointLight::GetData()
 {

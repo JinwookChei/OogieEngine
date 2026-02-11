@@ -135,6 +135,13 @@ void __stdcall RenderTarget::Bind(ITexture* pDepthTexture)
 	GRenderer->DeviceContext()->RSSetViewports(1, &viewport_);
 }
 
+void __stdcall RenderTarget::UnBind()
+{
+	GCurrentSetRenderTarget = nullptr;
+	ID3D11RenderTargetView* pRTV = nullptr;
+	GRenderer->DeviceContext()->OMSetRenderTargets(1, &pRTV, nullptr);
+}
+
 void RenderTarget::Clear()
 {
 	ID3D11RenderTargetView* pRenderTargetView = pRenderTexture_->RenderTargetView();
@@ -210,23 +217,46 @@ void __stdcall RenderTarget::UnBindRenderTexturePS(uint32_t slot)
 	}
 }
 
-void __stdcall RenderTarget::EndRenderPass()
-{
-	GCurrentSetRenderTarget = nullptr;
-
-	ID3D11RenderTargetView* pRTV = nullptr;
-	GRenderer->DeviceContext()->OMSetRenderTargets(1, &pRTV, nullptr);
-}
+//void __stdcall RenderTarget::EndRenderPass()
+//{
+//	GCurrentSetRenderTarget = nullptr;
+//
+//	ID3D11RenderTargetView* pRTV = nullptr;
+//	GRenderer->DeviceContext()->OMSetRenderTargets(1, &pRTV, nullptr);
+//}
 
 void* __stdcall RenderTarget::GetShaderResourceView(const E_RENDER_TEXTURE_TYPE& texureType)
 {
 	return pSRVs_[0];
 }
 
-ITexture* __stdcall RenderTarget::GetDepthTexture()
+ITexture* __stdcall RenderTarget::GetRenderTexture(const E_RENDER_TEXTURE_TYPE& textureType)
 {
-	return pDepthTexture_;
+	switch (textureType)
+	{
+	case E_RENDER_TEXTURE_TYPE::Albedo:
+		return pRenderTexture_;
+		break;
+	case E_RENDER_TEXTURE_TYPE::Normal:
+		DEBUG_BREAK();
+		break;
+	case E_RENDER_TEXTURE_TYPE::Specular:
+		DEBUG_BREAK();
+		break;
+	case E_RENDER_TEXTURE_TYPE::Depth:
+		return pDepthTexture_;
+		break;
+	default:
+		break;
+	}
+
+	return nullptr;
 }
+
+//ITexture* __stdcall RenderTarget::GetDepthTexture()
+//{
+//	return pDepthTexture_;
+//}
 
 
 bool RenderTarget::SetTexture(Texture* pRenderTexture, Texture* pDepthTexture)

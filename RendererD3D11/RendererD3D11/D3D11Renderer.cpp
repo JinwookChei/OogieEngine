@@ -31,7 +31,7 @@ Renderer::Renderer()
 	, pSwapChain_(nullptr)
 	, pBackBuffer_(nullptr)
 	//, pGeometryPass_(nullptr)
-	, pLightPass_(nullptr)
+	//, pLightPass_(nullptr)
 	, pParticlePass_(nullptr)
 	, pDebugPass_(nullptr)
 	, pMergePass_(nullptr)
@@ -146,10 +146,10 @@ bool __stdcall Renderer::Initialize(void* hWnd, uint32_t width, uint32_t height)
 	//{
 	//	return false;
 	//}
-	if (false == InitLightPass())
-	{
-		return false;
-	}
+	//if (false == InitLightPass())
+	//{
+	//	return false;
+	//}
 	if (false == InitParticlePass())
 	{
 		return false;
@@ -201,7 +201,6 @@ void __stdcall Renderer::UpdateCameraFrame(const CameraFrameData& cameraFrameDat
 	MATH::MatrixInverse(invProjectionTrans, cameraFrameData.projection);
 	MATH::MatrixTranspose(invProjectionTrans, invProjectionTrans);
 
-
 	CBPerFrame cbPerFrame;
 	cbPerFrame.camPos = cameraFrameData.camPos;
 	cbPerFrame.view = viewTrans;
@@ -214,6 +213,7 @@ void __stdcall Renderer::UpdateCameraFrame(const CameraFrameData& cameraFrameDat
 
 	ConstantBuffer::GConstantPerFrame->Update(&cbPerFrame);
 	ConstantBuffer::GConstantPerFrame->BindConstantBufferVS(0);
+	ConstantBuffer::GConstantPerFrame->BindConstantBufferPS(0);
 }
 
 void __stdcall Renderer::UpdateObjectFrame(const ObjectFrameData& objectFrameData)
@@ -226,6 +226,29 @@ void __stdcall Renderer::UpdateObjectFrame(const ObjectFrameData& objectFrameDat
 	ConstantBuffer::GConstantPerObject->Update(&cbPerObject);
 	ConstantBuffer::GConstantPerObject->BindConstantBufferVS(1);
 	ConstantBuffer::GConstantPerObject->BindConstantBufferPS(1);
+}
+
+void __stdcall Renderer::UpdateLightFrame(const LightRenderData& lightFrameData)
+{
+	CBPerLight cbPerLight;
+	cbPerLight.lightDiffuse = lightFrameData.lightDiffuse;
+	cbPerLight.lightSpecular = lightFrameData.lightSpecular;
+	cbPerLight.lightAmbient = lightFrameData.lightAmbient;
+	cbPerLight.direction_D_S = lightFrameData.direction_D_S;
+	cbPerLight.range_S_P = lightFrameData.range_S_P;
+	cbPerLight.position_S_P = lightFrameData.position_S_P;
+	cbPerLight.exponent_S = lightFrameData.exponent_S;
+	cbPerLight.innerAngle_S = lightFrameData.innerAngle_S;
+	cbPerLight.outerAngle_S = lightFrameData.outerAngle_S;
+	cbPerLight.attenuationConst_S_P = lightFrameData.attenuationConst_S_P;
+	cbPerLight.attenuationLinear_S_P = lightFrameData.attenuationLinear_S_P;
+	cbPerLight.attenuationQuad_S_P = lightFrameData.attenuationQuad_S_P;
+	cbPerLight.lightType = lightFrameData.lightType;
+	cbPerLight.pad = lightFrameData.pad;
+
+	ConstantBuffer::GConstantPerLight->Update(&cbPerLight);
+	ConstantBuffer::GConstantPerLight->BindConstantBufferVS(1);
+	ConstantBuffer::GConstantPerLight->BindConstantBufferPS(1);
 }
 
 //void __stdcall Renderer::RenderGBuffer(const ObjectRenderData& objectData)
@@ -331,6 +354,10 @@ void __stdcall Renderer::RenderTest(IPSO* pipelineStateObject)
 			Rasterizer::GRasterizer->ChangeFillMode(E_FILLMODE_TYPE::WIREFRAME);
 			break;
 		}
+		case E_RASTERIZER_PRESET::DISABLE:
+		{
+			break;
+		}
 		default:
 		{
 			DEBUG_BREAK();
@@ -341,20 +368,34 @@ void __stdcall Renderer::RenderTest(IPSO* pipelineStateObject)
 	GRenderer->Draw(pMesh->GetIndexCount(), true);
 }
 
-void __stdcall Renderer::RenderLightBegin(IRenderTarget* pGBufferTarget)
+void __stdcall Renderer::UnBindSRVs(bool bVS, bool bPS)
 {
-	pLightPass_->RenderBegin(pGBufferTarget);
+	ID3D11ShaderResourceView* nullSRVs[16] = {};
+	if (bVS)
+	{
+		pDeviceContext_->VSSetShaderResources(0, 16, nullSRVs);
+	}
+	if (bPS)
+	{
+		pDeviceContext_->PSSetShaderResources(0, 16, nullSRVs);
+	}
 }
 
-void __stdcall Renderer::RenderLight(const LightRenderData& lightData)
-{
-	pLightPass_->Render(lightData);
-}
-
-void __stdcall Renderer::RenderLightEnd(IRenderTarget* pGBufferTarget)
-{
-	pLightPass_->RenderEnd(pGBufferTarget);
-}
+//
+//void __stdcall Renderer::RenderLightBegin(IRenderTarget* pGBufferTarget)
+//{
+//	pLightPass_->RenderBegin(pGBufferTarget);
+//}
+//
+//void __stdcall Renderer::RenderLight(const LightRenderData& lightData)
+//{
+//	pLightPass_->Render(lightData);
+//}
+//
+//void __stdcall Renderer::RenderLightEnd(IRenderTarget* pGBufferTarget)
+//{
+//	pLightPass_->RenderEnd(pGBufferTarget);
+//}
 
 void __stdcall Renderer::UpdateParticles(IParticle* pParticle, double deltaTime)
 {
@@ -673,19 +714,19 @@ bool Renderer::InitBackBuffer(UINT width, UINT height, const Color& clearColor)
 //	return true;
 //}
 
-bool Renderer::InitLightPass()
-{
-	pLightPass_ = new LightPass;
-	if (false == pLightPass_->Init())
-	{
-		DEBUG_BREAK();
-		pLightPass_->Release();
-		pLightPass_ = nullptr;
-		return false;
-	}
-
-	return true;
-}
+//bool Renderer::InitLightPass()
+//{
+//	pLightPass_ = new LightPass;
+//	if (false == pLightPass_->Init())
+//	{
+//		DEBUG_BREAK();
+//		pLightPass_->Release();
+//		pLightPass_ = nullptr;
+//		return false;
+//	}
+//
+//	return true;
+//}
 
 bool Renderer::InitParticlePass()
 {
@@ -773,11 +814,11 @@ void Renderer::CleanUp()
 		pParticlePass_ = nullptr;
 	}
 
-	if (nullptr != pLightPass_)
-	{
-		pLightPass_->Release();
-		pLightPass_ = nullptr;
-	}
+	//if (nullptr != pLightPass_)
+	//{
+	//	pLightPass_->Release();
+	//	pLightPass_ = nullptr;
+	//}
 
 	//if (nullptr != pGeometryPass_)
 	//{
