@@ -69,11 +69,11 @@ void MeshManager::TestLoad()
 	MeshDesc meshDesc_3;
 	meshDesc_3.vertexFormat = E_VERTEX_FORMAT::SIMPLE;
 	meshDesc_3.vertexFormatSize = sizeof(SkinnedMeshVertex);
-	meshDesc_3.vertexCount = wukong.vertices_.size();
-	meshDesc_3.vertices = wukong.vertices_.data();
+	meshDesc_3.vertexCount = wukong.meshInfo_[0].vertices_.size();
+	meshDesc_3.vertices = wukong.meshInfo_[0].vertices_.data();
 	meshDesc_3.indexFormatSize = sizeof(uint16_t);
-	meshDesc_3.indexCount = wukong.indices_[0].size();
-	meshDesc_3.indices = wukong.indices_[0].data();
+	meshDesc_3.indexCount = wukong.meshInfo_[0].indices_[0].size();
+	meshDesc_3.indices = wukong.meshInfo_[0].indices_[0].data();
 	unsigned long long meshTag_3 = 3;
 	CreateMesh(meshDesc_3, meshTag_3);
 
@@ -83,11 +83,11 @@ void MeshManager::TestLoad()
 	MeshDesc meshDesc_4;
 	meshDesc_4.vertexFormat = E_VERTEX_FORMAT::SIMPLE;
 	meshDesc_4.vertexFormatSize = sizeof(SkinnedMeshVertex);
-	meshDesc_4.vertexCount = capoeira.vertices_.size();
-	meshDesc_4.vertices = capoeira.vertices_.data();
+	meshDesc_4.vertexCount = capoeira.meshInfo_[0].vertices_.size();
+	meshDesc_4.vertices = capoeira.meshInfo_[0].vertices_.data();
 	meshDesc_4.indexFormatSize = sizeof(uint16_t);
-	meshDesc_4.indexCount = capoeira.indices_[0].size();
-	meshDesc_4.indices = capoeira.indices_[0].data();
+	meshDesc_4.indexCount = capoeira.meshInfo_[0].indices_[0].size();
+	meshDesc_4.indices = capoeira.meshInfo_[0].indices_[0].data();
 	unsigned long long meshTag_4 = 4;
 	CreateMesh(meshDesc_4, meshTag_4);
 
@@ -97,13 +97,15 @@ void MeshManager::TestLoad()
 	MeshDesc meshDesc_5;
 	meshDesc_5.vertexFormat = E_VERTEX_FORMAT::SIMPLE;
 	meshDesc_5.vertexFormatSize = sizeof(SkinnedMeshVertex);
-	meshDesc_5.vertexCount = wereWolf.vertices_.size();
-	meshDesc_5.vertices = wereWolf.vertices_.data();
+	meshDesc_5.vertexCount = wereWolf.meshInfo_[0].vertices_.size();
+	meshDesc_5.vertices = wereWolf.meshInfo_[0].vertices_.data();
 	meshDesc_5.indexFormatSize = sizeof(uint16_t);
-	meshDesc_5.indexCount = wereWolf.indices_[0].size();
-	meshDesc_5.indices = wereWolf.indices_[0].data();
+	meshDesc_5.indexCount = wereWolf.meshInfo_[0].indices_[0].size();
+	meshDesc_5.indices = wereWolf.meshInfo_[0].indices_[0].data();
 	unsigned long long meshTag_5 = 5;
 	CreateMesh(meshDesc_5, meshTag_5);
+
+	int d = 0;
 }
 
 IMesh* MeshManager::CreateMesh(const MeshDesc& desc, unsigned long long meshTag)

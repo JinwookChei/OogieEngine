@@ -22,7 +22,7 @@ private:
 	
 
 	// Model
-	void ExtractMeshInfo(Model* pModel, fbxsdk::FbxNode* pNode);
+	void ExtractMeshInfo(Model* pModel, fbxsdk::FbxNode* pNode, int idx);
 	bool ExtractNormal(Float3* pOutNormal, fbxsdk::FbxMesh* pMesh, int cpIndex, int polygonVertexIndex);
 	bool ExtractTangent(Float4* pOutTangent, bool* pOutExistTangent, fbxsdk::FbxMesh* pMesh, int cpIndex, int polygonVertexIndex);
 	bool ExtractUV_1(Float2* pOutUV, fbxsdk::FbxMesh* pMesh, int polyIndex, int vertexIndex);

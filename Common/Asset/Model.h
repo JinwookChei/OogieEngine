@@ -92,21 +92,31 @@ struct std::hash<SkinnedMeshVertex>
 
 struct MeshInfo
 {
-	std::string meshName;
+	std::string meshName = "";
+	std::vector<SkinnedMeshVertex> vertices_;
+	std::vector<std::vector<uint16_t>> indices_;
 
 	// Mesh 내부에 존재하는 Material "Element(레이어)" 개수.
 	// 0 아님 1 -> 보통 1
-	int materialElementCount;
+	int materialElementCount = 1;
 
 	// Node에 실제로 바인딩된 Material 슬롯 개수
-	int materialSlotCount;
+	int materialSlotCount = 0;
 
-	int controlPointNum;
-	int polygonNum;
-	int deformerNum;
+	int controlPointCount =0;
+	int polygonCount = 0;
+	int deformerCount = 0;
 
-	bool isTriangulated;
-	bool isSkeletalMesh;
+	bool isTriangulated = false;
+	bool isSkeletalMesh = false;
+
+
+	MeshInfo() = default;
+	~MeshInfo() = default;
+	MeshInfo(const MeshInfo&) = default;
+	MeshInfo& operator=(const MeshInfo&) = default;
+	MeshInfo(MeshInfo&&) noexcept = default;
+	MeshInfo& operator=(MeshInfo&&) noexcept = default;
 };
 
 struct TextureInfo
@@ -161,15 +171,13 @@ struct MaterialInfo
 
 struct Model
 {
+	// 아직은 mesh 1개만 대응 함. (0번 index Mesh로만 활용.)
 	std::vector<MeshInfo> meshInfo_;
-	std::vector<SkinnedMeshVertex> vertices_;
-	std::vector<std::vector<uint16_t>> indices_;
-
-	Model()
-		: vertices_()
-		, indices_(20)
-	{
-
+	uint8_t meshCount_;
+	Model() 
+	: meshInfo_()
+	, meshCount_(0)
+	{ 
 	}
 	~Model()
 	{
@@ -178,10 +186,7 @@ struct Model
 
 	void CleanUp()
 	{
-
-		vertices_.clear();
-		indices_.clear();
-		indices_.resize(20);
+		meshInfo_.clear();
 	}
 };
 

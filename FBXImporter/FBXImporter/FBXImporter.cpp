@@ -56,136 +56,15 @@ bool FBXImporter::ImportModel(Model* pOutModel, const std::string& file)
 	pOutModel->CleanUp();
 
 	fbxsdk::FbxNode* pRootNode = pScene_->GetRootNode();
-	int totalMeshCount = CountMeshes(pRootNode);
-	if (1 != totalMeshCount)
+
+	ExtractMeshInfo(pOutModel, pRootNode, 0);
+	if (1 != pOutModel->meshCount_)
 	{
 		// DEBUG_BREAK();
 	}
 
-	ExtractMeshInfo(pOutModel, pRootNode);
-
-	fbxsdk::FbxMesh* pMesh = FindMesh(pRootNode);
-	if (nullptr == pMesh)
-	{
-		DEBUG_BREAK();
-		return false;
-	}
-
-	int polygonCount = pMesh->GetPolygonCount();
-	fbxsdk::FbxVector4* controlPoints = pMesh->GetControlPoints();
-
-	pOutModel->vertices_.reserve(polygonCount * 3);
-	pOutModel->indices_.reserve(polygonCount * 3);
-
-	std::unordered_map<SkinnedMeshVertex, uint32_t> vertexCache;
-	std::vector<uint32_t> vertexCpIndexCache;
-	vertexCpIndexCache.reserve(polygonCount * 3);
-
-
-	bool isExistTangent = false;
-	int polygonVertexCounter = 0;
-	for (int poly = 0; poly < polygonCount; ++poly)
-	{
-		int polySize = pMesh->GetPolygonSize(poly);
-		if (polySize != 3)
-		{
-			DEBUG_BREAK();
-		}
-
-		for (int vert = 0; vert < polySize; ++vert)
-		{
-			int cpIndex = pMesh->GetPolygonVertex(poly, vert);
-
-			// 여기서 모든 속성 추출
-			SkinnedMeshVertex v;
-			v.position.X = controlPoints[cpIndex][0];
-			v.position.Y = controlPoints[cpIndex][1];
-			v.position.Z = controlPoints[cpIndex][2];
-
-			bool res1 = ExtractColor(&v.color, pMesh, cpIndex, polygonVertexCounter);
-			if (false == res1)
-			{
-				//DEBUG_BREAK();
-				//return false;
-			}
-
-			//bool res2 = ExtractUV_1(&v.uv, pMesh, cpIndex, polygonVertexCounter);
-			bool res2 = ExtractUV_2(&v.uv, pMesh, poly, vert);
-			if (false == res2)
-			{
-				DEBUG_BREAK();
-				return false;
-			}
-			bool res3 = ExtractNormal(&v.normal, pMesh, cpIndex, polygonVertexCounter);
-			if (false == res3)
-			{
-				DEBUG_BREAK();
-				return false;
-			}
-			bool res4 = ExtractTangent(&v.tangent, &isExistTangent, pMesh, cpIndex, polygonVertexCounter);
-			if (false == res4)
-			{
-				DEBUG_BREAK();
-				return false;
-			}
-
-			if (false == ExtractMaterialIndex(&v.materialIndex, pMesh, poly))
-			{
-				DEBUG_BREAK();
-				return false;
-			}
-
-			if (v.materialIndex >= pOutModel->meshInfo_[0].materialSlotCount)
-			{
-				DEBUG_BREAK();
-				return false;
-			}
-
-			polygonVertexCounter++;
-
-			// 중복되는 Vertex들 최적화.
-			uint32_t vertexIndex;
-			auto iter = vertexCache.find(v);
-			if (iter != vertexCache.end())
-			{
-				// cache에 이미 존재.
-				vertexIndex = iter->second;
-				unsigned int matIndex = v.materialIndex;
-				if (matIndex >= 20)
-				{
-					DEBUG_BREAK();
-				}
-				pOutModel->indices_[matIndex].push_back(vertexIndex);
-				//pOutModel->indices_.push_back(vertexIndex);
-			}
-			else
-			{
-				// cache에 존재 하지 않음.
-				vertexIndex = pOutModel->vertices_.size();
-				pOutModel->vertices_.push_back(v);
-
-				unsigned int matIndex = v.materialIndex;
-				if (matIndex >= 20)
-				{
-					DEBUG_BREAK();
-				}
-				pOutModel->indices_[matIndex].push_back(vertexIndex);
-
-
-				vertexCpIndexCache.push_back(cpIndex);
-				vertexCache[v] = vertexIndex;
-			}
-		}
-	}
-
-	if (false == isExistTangent)
-	{
-		CalculateTangent(&pOutModel->vertices_, pOutModel->indices_);
-	}
-
-
+	
 	int k = 10;
-
 	// TEMP
 	//fbxsdk::FbxNode* pMeshNode = pMesh->GetNode();
 	//int materialCount = pMeshNode->GetMaterialCount();
@@ -197,7 +76,6 @@ bool FBXImporter::ImportModel(Model* pOutModel, const std::string& file)
 	//	//RegisterMaterial(materialInfo);
 	//	int aa = 10;
 	//}
-
 
 	return true;
 }
@@ -277,8 +155,15 @@ fbxsdk::FbxMesh* FBXImporter::FindMesh(fbxsdk::FbxNode* pNode)
 }
 
 
-void FBXImporter::ExtractMeshInfo(Model* pModel, fbxsdk::FbxNode* pNode)
+void FBXImporter::ExtractMeshInfo(Model* pModel, fbxsdk::FbxNode* pNode, int idx)
 {
+	if (idx == 0)
+	{
+		pModel->meshCount_ = 0;
+		pModel->meshInfo_.clear();
+		pModel->meshInfo_.reserve(5);
+	}
+
 	if (nullptr == pNode)
 	{
 		return;
@@ -290,8 +175,13 @@ void FBXImporter::ExtractMeshInfo(Model* pModel, fbxsdk::FbxNode* pNode)
 		MeshInfo mInfo;
 		mInfo.meshName = pMesh->GetName();
 		mInfo.isTriangulated = pMesh->IsTriangleMesh();
-		mInfo.deformerNum = pMesh->GetDeformerCount();
-		if (0 < mInfo.deformerNum)
+		if (mInfo.isTriangulated == false)
+		{
+			DEBUG_BREAK();
+			return;
+		}
+		mInfo.deformerCount = pMesh->GetDeformerCount();
+		if (0 < mInfo.deformerCount)
 		{
 			mInfo.isSkeletalMesh = true;
 		}
@@ -299,17 +189,129 @@ void FBXImporter::ExtractMeshInfo(Model* pModel, fbxsdk::FbxNode* pNode)
 		{
 			mInfo.isSkeletalMesh = false;
 		}
-		mInfo.controlPointNum = pMesh->GetControlPointsCount();
+		mInfo.controlPointCount = pMesh->GetControlPointsCount();
 		mInfo.materialElementCount = pMesh->GetElementMaterialCount();
 		mInfo.materialSlotCount = pNode->GetMaterialCount();
-		mInfo.polygonNum = pMesh->GetPolygonCount();
-		pModel->meshInfo_.push_back(mInfo);
-		return;
+		mInfo.polygonCount = pMesh->GetPolygonCount();
+
+		mInfo.vertices_.reserve(mInfo.polygonCount*3);
+		mInfo.indices_.resize(mInfo.materialSlotCount);
+		for (int i = 0; i < mInfo.materialSlotCount; ++i)
+		{
+			mInfo.indices_[i].reserve(mInfo.polygonCount * 3);
+		}
+
+		fbxsdk::FbxVector4* controlPoints = pMesh->GetControlPoints();
+		std::unordered_map<SkinnedMeshVertex, uint32_t> vertexCache;
+		std::vector<uint32_t> vertexCpIndexCache;
+		vertexCpIndexCache.reserve(mInfo.polygonCount * 3);
+
+		bool isExistTangent = false;
+		int polygonVertexCounter = 0;
+		for (int poly = 0; poly < mInfo.polygonCount; ++poly)
+		{
+			int polySize = pMesh->GetPolygonSize(poly);
+			if (polySize != 3)
+			{
+				DEBUG_BREAK();
+			}
+
+			for (int vert = 0; vert < polySize; ++vert)
+			{
+				int cpIndex = pMesh->GetPolygonVertex(poly, vert);
+
+				// 여기서 모든 속성 추출
+				SkinnedMeshVertex v;
+				v.position.X = controlPoints[cpIndex][0];
+				v.position.Y = controlPoints[cpIndex][1];
+				v.position.Z = controlPoints[cpIndex][2];
+
+				bool res1 = ExtractColor(&v.color, pMesh, cpIndex, polygonVertexCounter);
+				if (false == res1)
+				{
+					//DEBUG_BREAK();
+					//return false;
+				}
+
+				//bool res2 = ExtractUV_1(&v.uv, pMesh, cpIndex, polygonVertexCounter);
+				bool res2 = ExtractUV_2(&v.uv, pMesh, poly, vert);
+				if (false == res2)
+				{
+					DEBUG_BREAK();
+					return;
+				}
+				bool res3 = ExtractNormal(&v.normal, pMesh, cpIndex, polygonVertexCounter);
+				if (false == res3)
+				{
+					DEBUG_BREAK();
+					return;
+				}
+				bool res4 = ExtractTangent(&v.tangent, &isExistTangent, pMesh, cpIndex, polygonVertexCounter);
+				if (false == res4)
+				{
+					DEBUG_BREAK();
+					return;
+				}
+
+				if (false == ExtractMaterialIndex(&v.materialIndex, pMesh, poly))
+				{
+					DEBUG_BREAK();
+					return;
+				}
+
+				if (v.materialIndex >= mInfo.materialSlotCount)
+				{
+					DEBUG_BREAK();
+					return;
+				}
+
+				polygonVertexCounter++;
+
+				// 중복되는 Vertex들 최적화.
+				uint32_t vertexIndex;
+				auto iter = vertexCache.find(v);
+				if (iter != vertexCache.end())
+				{
+					// cache에 이미 존재.
+					vertexIndex = iter->second;
+					unsigned int matIndex = v.materialIndex;
+					if (matIndex >= 20)
+					{
+						DEBUG_BREAK();
+						return;
+					}
+					mInfo.indices_[matIndex].push_back(vertexIndex);
+				}
+				else
+				{
+					// cache에 존재 하지 않음.
+					vertexIndex = mInfo.vertices_.size();
+					mInfo.vertices_.push_back(v);
+					unsigned int matIndex = v.materialIndex;
+					if (matIndex >= 20)
+					{
+						DEBUG_BREAK();
+						return;
+					}
+					mInfo.indices_[matIndex].push_back(vertexIndex);
+					vertexCpIndexCache.push_back(cpIndex);
+					vertexCache[v] = vertexIndex;
+				}
+			}
+		}
+
+		if (false == isExistTangent)
+		{
+			CalculateTangent(&mInfo.vertices_, mInfo.indices_);
+		}
+
+		pModel->meshCount_++;
+		pModel->meshInfo_.push_back(std::move(mInfo));
 	}
 
 	for (int32_t c = 0; c < pNode->GetChildCount(); ++c)
 	{
-		ExtractMeshInfo(pModel, pNode->GetChild(c));
+		ExtractMeshInfo(pModel, pNode->GetChild(c), idx+1);
 	}
 }
 

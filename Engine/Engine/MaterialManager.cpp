@@ -30,27 +30,22 @@ void MaterialManager::TestLoad()
 
 	ITexture* pWhiteTexture = nullptr;
 	if (false == TextureManager::Instance()->GetTexture(&pWhiteTexture, 0)) DEBUG_BREAK();
-
 	ITexture* pBricks_Color = nullptr;
 	if (false == TextureManager::Instance()->GetTexture(&pBricks_Color, 1)) DEBUG_BREAK();
 	ITexture* pBricks_Normal = nullptr;
 	if (false == TextureManager::Instance()->GetTexture(&pBricks_Normal, 2)) DEBUG_BREAK();
-
 	ITexture* pMaria_Diffuse = nullptr;
 	if (false == TextureManager::Instance()->GetTexture(&pMaria_Diffuse, 3)) DEBUG_BREAK();
 	ITexture* pMaria_Normal = nullptr;
 	if (false == TextureManager::Instance()->GetTexture(&pMaria_Normal, 4)) DEBUG_BREAK();
-
 	ITexture* pWukong_Torso_Diffuse = nullptr;
 	if (false == TextureManager::Instance()->GetTexture(&pWukong_Torso_Diffuse, 5)) DEBUG_BREAK();
 	ITexture* pWukong_Torso_Normal = nullptr;
 	if (false == TextureManager::Instance()->GetTexture(&pWukong_Torso_Normal, 6)) DEBUG_BREAK();
-
 	ITexture* pWerewolf_Body_Albedo = nullptr;
 	if (false == TextureManager::Instance()->GetTexture(&pWerewolf_Body_Albedo, 7)) DEBUG_BREAK();
 	ITexture* pWerewolf_Body_Normal = nullptr;
 	if (false == TextureManager::Instance()->GetTexture(&pWerewolf_Body_Normal, 8)) DEBUG_BREAK();
-
 	ITexture* pWerewolf_Fur_Albedo = nullptr;
 	if (false == TextureManager::Instance()->GetTexture(&pWerewolf_Fur_Albedo, 9)) DEBUG_BREAK();
 	ITexture* pWerewolf_Fur_Normal = nullptr;
