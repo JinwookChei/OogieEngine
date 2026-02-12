@@ -4,7 +4,6 @@
 #include "Level.h"
 
 Level::Level()
-	//: pActorList_(new LinkedList[(int)E_ACTOR_TYPE::MAX])
 	: actorList_()
 {
 }
@@ -14,10 +13,6 @@ Level::~Level()
 	CleanUp();
 }
 
-//LinkedList* Level::GetActorList() const
-//{
-//	return pActorList_;
-//}
 
 LinkedList* Level::GetActorList(const E_ACTOR_TYPE& actoryType)
 {
@@ -59,17 +54,6 @@ void Level::SpawnLightInternal(Light* pLight)
 
 	pLight->BeginPlay();
 }
-
-
-//void Level::RegisterActor(Actor* pActor, E_ACTOR_TYPE actorType)
-//{
-//	if (nullptr == pActor)
-//	{
-//		return;
-//	}
-//
-//	pActorList_[(int)actorType].PushBack(pActor->LevelLink());
-//}
 
 void Level::RegisterActor(Actor* pActor, E_ACTOR_TYPE actorType)
 {
@@ -285,10 +269,4 @@ void Level::CleanUpActors()
 			pActorIter = actorList_[i].GetHead();
 		}
 	}
-
-	/*if (nullptr != pActorList_)
-	{
-		delete[] pActorList_;
-		pActorList_ = nullptr;
-	}*/
 }

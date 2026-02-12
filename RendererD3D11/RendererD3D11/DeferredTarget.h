@@ -43,13 +43,9 @@ public:
 
 	void __stdcall UnBindRenderTexturePS(uint32_t slot) override;
 
-	//void __stdcall EndRenderPass() override;
-
 	void* __stdcall GetShaderResourceView(const E_RENDER_TEXTURE_TYPE& texureType) override;
 
 	ITexture* __stdcall GetRenderTexture(const E_RENDER_TEXTURE_TYPE& textureType) override;
-
-	//ITexture* __stdcall GetDepthTexture() override;
 
 private:
 	bool SetTexture(Texture* pRenderTextureAlbedo, Texture* pRenderTextureNormal, Texture* pRenderTextureSpecular, Texture* pDepthTexture);

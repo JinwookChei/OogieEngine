@@ -1,22 +1,5 @@
 #pragma once
 
-//struct MeshData
-//{
-//	IMesh* pMesh_;
-//	MeshDesc desc_;
-//	unsigned long long meshtag_;
-//
-//	void Setting() const
-//	{
-//		pMesh_->Setting();
-//	}
-//
-//	void Draw() const
-//	{
-//		pMesh_->Draw();
-//	}
-//};
-
 class MeshManager
 {
 	friend class Engine;

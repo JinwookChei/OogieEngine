@@ -189,7 +189,6 @@ void* __stdcall Renderer::GetDeviceContextHandle()
 
 void __stdcall Renderer::UpdateCameraFrame(const CameraFrameData& cameraFrameData)
 {
-	//pGeometryPass_->UpdatePerFrameConstant(cameraFrameData);
 	Float4x4 viewTrans;
 	MATH::MatrixTranspose(viewTrans, cameraFrameData.view);
 	Float4x4 projectionTrans;
@@ -250,11 +249,6 @@ void __stdcall Renderer::UpdateLightFrame(const LightRenderData& lightFrameData)
 	ConstantBuffer::GConstantPerLight->BindConstantBufferVS(1);
 	ConstantBuffer::GConstantPerLight->BindConstantBufferPS(1);
 }
-
-//void __stdcall Renderer::RenderGBuffer(const ObjectRenderData& objectData)
-//{
-//	pGeometryPass_->Render(objectData);
-//}
 
 void __stdcall Renderer::RenderTest(IPSO* pipelineStateObject)
 {
@@ -380,22 +374,6 @@ void __stdcall Renderer::UnBindSRVs(bool bVS, bool bPS)
 		pDeviceContext_->PSSetShaderResources(0, 16, nullSRVs);
 	}
 }
-
-//
-//void __stdcall Renderer::RenderLightBegin(IRenderTarget* pGBufferTarget)
-//{
-//	pLightPass_->RenderBegin(pGBufferTarget);
-//}
-//
-//void __stdcall Renderer::RenderLight(const LightRenderData& lightData)
-//{
-//	pLightPass_->Render(lightData);
-//}
-//
-//void __stdcall Renderer::RenderLightEnd(IRenderTarget* pGBufferTarget)
-//{
-//	pLightPass_->RenderEnd(pGBufferTarget);
-//}
 
 void __stdcall Renderer::UpdateParticles(IParticle* pParticle, double deltaTime)
 {
@@ -700,34 +678,6 @@ bool Renderer::InitBackBuffer(UINT width, UINT height, const Color& clearColor)
 	return false;
 }
 
-//bool Renderer::InitGeometryPass()
-//{
-//	pGeometryPass_ = new GeometryPass;
-//	if (false == pGeometryPass_->Init())
-//	{
-//		DEBUG_BREAK();
-//		pGeometryPass_->Release();
-//		pGeometryPass_ = nullptr;
-//		return false;
-//	}
-//
-//	return true;
-//}
-
-//bool Renderer::InitLightPass()
-//{
-//	pLightPass_ = new LightPass;
-//	if (false == pLightPass_->Init())
-//	{
-//		DEBUG_BREAK();
-//		pLightPass_->Release();
-//		pLightPass_ = nullptr;
-//		return false;
-//	}
-//
-//	return true;
-//}
-
 bool Renderer::InitParticlePass()
 {
 	pParticlePass_ = new ParticlePass;
@@ -813,18 +763,6 @@ void Renderer::CleanUp()
 		pParticlePass_->Release();
 		pParticlePass_ = nullptr;
 	}
-
-	//if (nullptr != pLightPass_)
-	//{
-	//	pLightPass_->Release();
-	//	pLightPass_ = nullptr;
-	//}
-
-	//if (nullptr != pGeometryPass_)
-	//{
-	//	pGeometryPass_->Release();
-	//	pGeometryPass_ = nullptr;
-	//}
 
 	if (nullptr != pDeviceContext_)
 	{

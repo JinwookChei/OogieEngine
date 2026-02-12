@@ -64,18 +64,14 @@ struct IRenderer : public IUnknown {
 	virtual void* __stdcall GetDeviceContextHandle() = 0;
 
 	virtual void __stdcall UpdateCameraFrame(const CameraFrameData& cameraFrameData) = 0;
-	virtual void __stdcall UpdateObjectFrame(const ObjectFrameData& objectFrameData) = 0;
-	virtual void __stdcall UpdateLightFrame(const LightRenderData& lightFrameData) = 0;
 
-	//virtual void __stdcall RenderGBuffer(const ObjectRenderData& objectData) = 0;
+	virtual void __stdcall UpdateObjectFrame(const ObjectFrameData& objectFrameData) = 0;
+
+	virtual void __stdcall UpdateLightFrame(const LightRenderData& lightFrameData) = 0;
 
 	virtual void __stdcall RenderTest(IPSO* pipelineStateObject) = 0;
 
 	virtual void __stdcall UnBindSRVs(bool bVS, bool bPS) = 0;
-
-	/*virtual void __stdcall RenderLightBegin(IRenderTarget* pGBufferTarget) = 0;
-	virtual void __stdcall RenderLight(const LightRenderData& lightData) = 0;
-	virtual void __stdcall RenderLightEnd(IRenderTarget* pGBufferTarget) = 0;*/
 
 	virtual void __stdcall UpdateParticles(IParticle* pParticle, double deltaTime) = 0;
 

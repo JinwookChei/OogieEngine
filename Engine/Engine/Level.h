@@ -89,10 +89,7 @@ private:
 	
 	void CleanUpActors();
 
-	//LinkedList* pActorList_;
 	LinkedList actorList_[(int)E_ACTOR_TYPE::MAX];
-
-	//LinkedList particleList_;
 };
 
 

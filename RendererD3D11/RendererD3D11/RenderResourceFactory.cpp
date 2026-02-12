@@ -170,38 +170,10 @@ IMesh* __stdcall RenderResourceFactory::CreateMesh(const MeshDesc& desc)
 	return nullptr;
 }
 
-//IShader* __stdcall RenderResourceFactory::CreateShader(const ShaderDesc& desc)
-//{
-//	IShader* pNewShader = Shader::Create(desc);
-//	return pNewShader;
-//}
-
 IMaterial* __stdcall RenderResourceFactory::CreateMaterial(const MaterialDesc& desc)
 {
 	IMaterial* pMaterial = Material::Create(desc);
 	return pMaterial;
-
-	/*Material* pMaterial = nullptr;
-	do
-	{
-		pMaterial = new Material;
-		if (false == pMaterial->Init(materialDesc.shineness, materialDesc.specularColor))
-		{
-			DEBUG_BREAK();
-			break;
-		}
-
-		return pMaterial;
-
-	} while (false);
-
-	if (nullptr != pMaterial)
-	{
-		pMaterial->Release();
-		pMaterial = nullptr;
-	}
-
-	return nullptr;*/
 }
 
 ITexture* __stdcall RenderResourceFactory::CreateTextureFromFile(const wchar_t* fileName, bool isNormalMap)

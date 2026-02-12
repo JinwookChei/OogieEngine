@@ -95,11 +95,7 @@
 #include "Light.h"
 #include "SpotLight.h"
 
-//extern IApplication* GApplication;
-//extern IRenderer* GRenderer;
-
 extern MeshManager* GMeshManager;
-//extern ShaderManager* GShaderManager;
 extern MaterialManager* GMaterialManager;
 extern TextureManager* GTextureManager;
 extern RasterizerManager* GRasterizerManager;

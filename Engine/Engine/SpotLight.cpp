@@ -30,11 +30,6 @@ void SpotLight::BeginPlay()
 	Light::BeginPlay();
 }
 
-//void SpotLight::Render()
-//{
-//	Renderer::Instance()->UpdateLightFrame(GetData());
-//}
-
 LightRenderData SpotLight::GetData()
 {
 	LightRenderData data = {};

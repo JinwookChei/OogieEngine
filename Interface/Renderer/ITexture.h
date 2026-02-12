@@ -9,5 +9,4 @@ struct TextureDesc
 
 struct ITexture : public IUnknown
 {
-	//virtual void __stdcall Bind(UINT slot) = 0;
 };

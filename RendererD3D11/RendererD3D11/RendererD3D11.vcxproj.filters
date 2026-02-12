@@ -313,11 +313,11 @@
     <FxCompile Include="FinalPS.hlsl">
       <Filter>Resource Files\Shader\FinalPassShader</Filter>
     </FxCompile>
-    <FxCompile Include="DeferredSimpleVS.hlsl">
-      <Filter>Resource Files\Shader</Filter>
-    </FxCompile>
     <FxCompile Include="DeferredSimplePS.hlsl">
-      <Filter>Resource Files\Shader</Filter>
+      <Filter>Resource Files\Shader\GeometryPassShader</Filter>
+    </FxCompile>
+    <FxCompile Include="DeferredSimpleVS.hlsl">
+      <Filter>Resource Files\Shader\GeometryPassShader</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

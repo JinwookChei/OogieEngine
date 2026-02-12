@@ -30,27 +30,10 @@ public:
 	ENGINE_API World* GetWorld() const;
 
 private:
-	//bool LoadApplication
-	//(
-	//	HINSTANCE hInstance,
-	//	PWSTR pCmdLine,
-	//	int nCmdShow,
-	//	const wchar_t* pMainWindowClassName,
-	//	const wchar_t* pMainWindowText,
-	//	const wchar_t* pIConPath
-	//);
-
-	//bool LoadRenderer();
 
 	bool InitializeStartUp(IStartup* pStartUp);
 
 	void CleanUp();
 
 	IStartup* pStartUp_;
-
-	//HMODULE applicationModule_;
-	//IApplication* pApplication_;
-
-	//HMODULE rendererModule_;
-	//IRenderer* pRenderer_;
 };

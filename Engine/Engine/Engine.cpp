@@ -6,7 +6,6 @@
 #include "Actor.h"
 
 MeshManager* GMeshManager = nullptr;
-//ShaderManager* GShaderManager = nullptr;
 MaterialManager* GMaterialManager = nullptr;
 TextureManager* GTextureManager = nullptr;
 RasterizerManager* GRasterizerManager = nullptr;
@@ -100,8 +99,6 @@ bool Engine::Initialize
 	}
 
 	GMeshManager = new MeshManager;
-
-	//GShaderManager = new ShaderManager;
 
 	GTextureManager = new TextureManager;
 
@@ -250,11 +247,6 @@ void Engine::CleanUp()
 		delete GMaterialManager;
 		GMaterialManager = nullptr;
 	}
-	//if (nullptr != GShaderManager)
-	//{
-	//	delete GShaderManager;
-	//	GShaderManager = nullptr;
-	//}
 	if (nullptr != GMeshManager)
 	{
 		delete GMeshManager;

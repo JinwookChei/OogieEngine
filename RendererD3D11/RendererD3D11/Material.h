@@ -11,13 +11,6 @@ private:
 	Material();
 	virtual ~Material();
 
-	// TODO : 이거 지워야함.
-	//bool Init
-	//(
-	//	float shineness,
-	//	Float3 specularColor
-	//);
-
 	static IMaterial* Create(const MaterialDesc& desc);
 	bool Init(const MaterialDesc& desc);
 
@@ -26,7 +19,6 @@ public:
 	ULONG __stdcall AddRef() override;
 	ULONG __stdcall Release() override;
 
-	//void __stdcall SetTextures(unsigned int texNum, ITexture** ppTextures) override;
 	void __stdcall SetTextures(unsigned int texIdx, ITexture* pTexture) override;
 
 	float GetShineness() const override;

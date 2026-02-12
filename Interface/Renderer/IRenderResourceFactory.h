@@ -4,7 +4,6 @@
 struct IRenderResourceFactory : public IUnknown
 {
 	virtual IMesh* __stdcall CreateMesh(const MeshDesc& desc) = 0;
-	//virtual IShader* __stdcall CreateShader(const ShaderDesc& desc) = 0;
 	virtual IMaterial* __stdcall CreateMaterial(const MaterialDesc& materialDesc) = 0;
 	virtual ITexture* __stdcall CreateTextureFromFile(const wchar_t* fileName, bool isNormalMap) = 0;
 	virtual ITexture* __stdcall CreateTexture(const TextureDesc& desc) = 0;

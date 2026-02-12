@@ -162,13 +162,6 @@ void __stdcall DeferredTarget::UnBindRenderTexturePS(uint32_t slot)
 	GRenderer->DeviceContext()->PSSetShaderResources(slot, RESOURCE_BUFFER_COUNT, pNullSrvs);
 }
 
-//void __stdcall DeferredTarget::EndRenderPass()
-//{
-//	ID3D11RenderTargetView* nullRTV[RENDER_BUFFER_COUNT] = { nullptr, nullptr, nullptr };
-//
-//	GRenderer->DeviceContext()->OMSetRenderTargets(RENDER_BUFFER_COUNT, nullRTV, nullptr);
-//}
-
 void* __stdcall DeferredTarget::GetShaderResourceView(const E_RENDER_TEXTURE_TYPE& texureType)
 {
 	return pSRVs_[(int)texureType];
@@ -197,11 +190,6 @@ ITexture* __stdcall DeferredTarget::GetRenderTexture(const E_RENDER_TEXTURE_TYPE
 	DEBUG_BREAK();
 	return nullptr;
 }
-
-//ITexture* __stdcall DeferredTarget::GetDepthTexture()
-//{
-//	return pRenderTextureDepth_;
-//}
 
 bool DeferredTarget::SetTexture(Texture* pRenderTextureAlbedo, Texture* pRenderTextureNormal, Texture* pRenderTextureSpecular, Texture* pDepthTexture)
 {

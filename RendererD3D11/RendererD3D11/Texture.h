@@ -18,8 +18,6 @@ public:
 
 	ULONG __stdcall Release() override;
 
-	//void Bind(UINT slot) const;
-
 	ID3D11RenderTargetView* RenderTargetView() const;
 
 	ID3D11DepthStencilView* DepthStencilView() const;

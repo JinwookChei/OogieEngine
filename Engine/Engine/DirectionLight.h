@@ -12,9 +12,6 @@ public:
 
 	void BeginPlay() override;
 
-	//void Render() override;
-	
-
 	LightRenderData GetData() override;
 
 	Float3 Direction() const;

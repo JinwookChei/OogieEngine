@@ -2,20 +2,10 @@
 
 struct MaterialDesc
 {
-	//IShader* pShader;
 	E_SHADER_PRESET shaderType;
-
 	ULONG textureNum_ = 0;
-	//ITexture** ppTextures_ = nullptr;
-
-	//ITexture* pTextureAlbedo;
-	//ITexture* pTextureNormal;
-
-	//bool useTexture = false;
 	float shineness = 16.0f;
 	Float3 specularColor = { 0.7f,0.7f ,0.7f };
-
-	
 };
 
 struct IMaterial : public IUnknown

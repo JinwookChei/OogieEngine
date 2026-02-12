@@ -24,12 +24,6 @@ void PointLight::BeginPlay()
 	Light::BeginPlay();
 }
 
-//void PointLight::Render()
-//{
-//	Renderer::Instance()->UpdateLightFrame(GetData());
-//	Renderer::Instance()->RenderTest(Light::GLightPSO);
-//}
-
 LightRenderData PointLight::GetData()
 {
 	LightRenderData data = {};

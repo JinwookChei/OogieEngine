@@ -93,6 +93,4 @@ struct IRenderTarget : public IUnknown
 	virtual void* __stdcall GetShaderResourceView(const E_RENDER_TEXTURE_TYPE& textureType) = 0;
 
 	virtual ITexture* __stdcall GetRenderTexture(const E_RENDER_TEXTURE_TYPE& textureType) = 0;
-
-	//virtual ITexture* __stdcall GetDepthTexture() = 0;
 };

@@ -33,14 +33,9 @@ public:
 	void __stdcall UpdateObjectFrame(const ObjectFrameData& objectFrameData) override;
 	void __stdcall UpdateLightFrame(const LightRenderData& lightFrameData) override;
 
-	//void __stdcall RenderGBuffer(const ObjectRenderData& objectData) override;
 	void __stdcall RenderTest(IPSO* pipelineStateObject) override;
 
 	void __stdcall UnBindSRVs(bool bVS, bool bPS) override;
-
-	//void __stdcall RenderLightBegin(IRenderTarget* pGBufferTarget) override;
-	//void __stdcall RenderLight(const LightRenderData& lightData) override;
-	//void __stdcall RenderLightEnd(IRenderTarget* pGBufferTarget) override;
 
 	void __stdcall UpdateParticles(IParticle* pParticle, double deltaTime) override;
 	void __stdcall RenderParticles(IParticle* pParticle, const Float4x4 worldTransform, const Float4x4& viewProj, const Float3& cameraRight, const Float3& cameraUp) override;
@@ -50,7 +45,6 @@ public:
 	void __stdcall RenderDebug() override;
 
 	void __stdcall RenderMerge(IRenderTarget* pSrcTarget) override;
-	//void __stdcall RenderMerge(IRenderTarget* pDepthTarget, IRenderTarget* pSrcTarget) override;
 
 	void __stdcall RenderBegin() override;
 	void __stdcall RenderFinal(IRenderTarget* pSrcTarget) override;
@@ -72,10 +66,6 @@ private:
 	bool InitSwapChain(UINT width, UINT height);
 
 	bool InitBackBuffer(UINT width, UINT height, const Color& clearColor);
-
-	//bool InitGeometryPass();
-
-	//bool InitLightPass();
 
 	bool InitParticlePass();
 
@@ -102,10 +92,6 @@ private:
 	IDXGISwapChain* pSwapChain_;
 
 	RenderTarget* pBackBuffer_;
-
-	//GeometryPass* pGeometryPass_;
-
-	//LightPass* pLightPass_;
 
 	ParticlePass* pParticlePass_;
 

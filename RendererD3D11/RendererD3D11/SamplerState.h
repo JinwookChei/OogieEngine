@@ -1,14 +1,5 @@
 #pragma once
 
-//enum class E_SAMPLER_TYPE
-//{
-//	LINEAR_CLAMP = 0,
-//	LINEAR_WARP,
-//	ANISOTROPIC_CLAMP,
-//	ANISOTROPIC_WARP
-//};
-
-
 class SamplerState final : public IUnknown
 {
 private:

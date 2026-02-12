@@ -77,27 +77,6 @@ ULONG __stdcall Material::Release()
 	return tmpRefCount;
 }
 
-//void __stdcall Material::SetTextures(unsigned int texNum, ITexture** ppTextures)
-//{
-//	if (texNum > 0)
-//	{
-//		if (nullptr == ppTextures)
-//		{
-//			DEBUG_BREAK();
-//			return;
-//		}
-//	}
-//
-//	CleanTextures();
-//
-//	texturesNum_ = texNum;
-//	ppTextures_ = (Texture**)ppTextures;
-//	for (int i = 0; i < texturesNum_; ++i)
-//	{
-//		ppTextures_[i]->AddRef();
-//	}
-//}
-
 void __stdcall Material::SetTextures(unsigned int texIdx, ITexture* pTexture)
 {
 	if (texIdx >= texturesNum_)
@@ -165,12 +144,6 @@ void Material::Bind()
 		}
 	}
 	GRenderer->DeviceContext()->PSSetShaderResources(0, texturesNum_, pSRVs);
-
-
-	//for (int texIdx = 0; texIdx < texturesNum_; ++texIdx)
-	//{
-	//	ppTextures_[texIdx]->Bind(texIdx);
-	//}
 }
 
 void Material::CleanTextures()

@@ -20,11 +20,6 @@ void DirectionLight::BeginPlay()
 	Light::BeginPlay();
 }
 
-//void DirectionLight::Render()
-//{
-//	Renderer::Instance()->UpdateLightFrame(GetData());
-//}
-
 LightRenderData DirectionLight::GetData()
 {
 	LightRenderData data = {};

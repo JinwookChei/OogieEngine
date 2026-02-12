@@ -25,8 +25,6 @@ public:
 
 	ENGINE_API void Render();
 
-	//ENGINE_API void Create(uint16_t meshTag, uint16_t materialTag, uint16_t albedoTexTag, uint16_t normalTexTag);
-	//ENGINE_API void Create(uint16_t meshTag, uint16_t materialTag, uint16_t albedoTexTag, uint16_t normalTexTag);
 	ENGINE_API void Setting
 	(
 		uint16_t meshTag,
@@ -57,20 +55,5 @@ private:
 	IPSO* pPSO_;
 	IMesh* pMesh_;
 	IMaterial* pMaterial_;
-
-	/*uint16_t meshTag_;
-	uint16_t materialTag_;
-	E_SAMPLER_PRESET samplerState_;
-	E_DEPTH_PRESET depthState_;
-	E_BLEND_PRESET blendState_;
-	E_RASTERIZER_PRESET rasterizerMode_;*/
-
-
-
-	//IMesh* pMesh_;
-	//IMaterial* pMaterial_;
-
-	//ITexture* pTextureColor_;
-	//ITexture* pTextureNormal_;
 };
 
