@@ -259,7 +259,7 @@ void __stdcall Renderer::RenderTest(IPSO* pipelineStateObject)
 	pMesh->Bind();
 	pMaterial->Bind();
 
-	switch (pPSO->GetSamplerState())
+	switch (pMaterial->GetSamplerState())
 	{
 		case E_SAMPLER_PRESET::LINEAR_CLAMP:
 		{
@@ -288,7 +288,7 @@ void __stdcall Renderer::RenderTest(IPSO* pipelineStateObject)
 		}
 	}
 
-	switch (pPSO->GetBlendState())
+	switch (pMaterial->GetBlendState())
 	{
 		case E_BLEND_PRESET::OPAQUE_BLEND:
 		{

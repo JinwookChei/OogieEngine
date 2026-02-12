@@ -29,9 +29,7 @@ public:
 	(
 		uint16_t meshTag,
 		uint16_t materialTag,
-		E_SAMPLER_PRESET samplerState,
 		E_DEPTH_PRESET depthState,
-		E_BLEND_PRESET blendState,
 		E_RASTERIZER_PRESET rasterizerMode
 	);
 

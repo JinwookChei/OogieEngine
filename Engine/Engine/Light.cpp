@@ -13,9 +13,7 @@ Light::Light()
 		PipelineStateDesc psoDesc;
 		if (false == MeshManager::Instance()->GetMesh(&psoDesc.pMesh, 0)) DEBUG_BREAK();
 		if (false == MaterialManager::Instance()->GetMaterial(&psoDesc.pMaterial, 0)) DEBUG_BREAK();
-		psoDesc.blendState = E_BLEND_PRESET::ADDITIVE_BLEND;
 		psoDesc.depthState = E_DEPTH_PRESET::DEPTH_DISABLE;
-		psoDesc.samplerState = E_SAMPLER_PRESET::LINEAR_CLAMP;
 		psoDesc.rasterizerMode = E_RASTERIZER_PRESET::DISABLE;
 		GLightPSO = Renderer::GetFactory()->CreatePipelineStateObject(psoDesc);
 	}

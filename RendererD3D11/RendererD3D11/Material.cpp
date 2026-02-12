@@ -7,6 +7,8 @@
 Material::Material()
 	: refCount_(1)
 	, shaderType_(E_SHADER_PRESET::DeferredSimple)
+	, samplerState_(E_SAMPLER_PRESET::LINEAR_CLAMP)
+	, blendState_(E_BLEND_PRESET::ALPHA_BLEND)
 	, texturesNum_(0)
 	, ppTextures_(nullptr)
 	, shineness_(1.0f)
@@ -18,14 +20,6 @@ Material::~Material()
 {
 	CleanUp();
 }
-
-//bool Material::Init(float shineness,Float3 specularColor)
-//{
-//	shineness_ = shineness;
-//	specularColor_ = specularColor;
-//	
-//	return true;
-//}
 
 IMaterial* Material::Create(const MaterialDesc& desc)
 {
@@ -43,6 +37,8 @@ IMaterial* Material::Create(const MaterialDesc& desc)
 bool Material::Init(const MaterialDesc& desc)
 {
 	shaderType_ = desc.shaderType;
+	samplerState_ = desc.samplerState;
+	blendState_ = desc.blendState;
 
 	CleanTextures();
 	texturesNum_ = desc.textureNum_;
@@ -50,7 +46,6 @@ bool Material::Init(const MaterialDesc& desc)
 	{
 		ppTextures_ = new Texture * [desc.textureNum_]{nullptr};
 	}
-
 	shineness_ = desc.shineness;
 	specularColor_ = desc.specularColor;
 	return true;
@@ -113,6 +108,16 @@ const Float3& Material::GetSpecularColor() const
 void Material::SetSpecularColor(const Float3& specularColor)
 {
 	specularColor_ = specularColor;
+}
+
+const E_SAMPLER_PRESET& Material::GetSamplerState() const
+{
+	return samplerState_;
+}
+
+const E_BLEND_PRESET& Material::GetBlendState() const
+{
+	return blendState_;
 }
 
 void Material::Bind()

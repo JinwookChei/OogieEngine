@@ -29,6 +29,10 @@ public:
 
 	void SetSpecularColor(const Float3& specularColor) override;
 
+	const E_SAMPLER_PRESET& GetSamplerState() const;
+
+	const E_BLEND_PRESET& GetBlendState() const;
+
 	void Bind();
 
 private:
@@ -38,6 +42,9 @@ private:
 	ULONG refCount_;
 
 	E_SHADER_PRESET shaderType_;
+	E_SAMPLER_PRESET samplerState_;
+	E_BLEND_PRESET blendState_;
+
 	ULONG texturesNum_;
 	Texture** ppTextures_;
 

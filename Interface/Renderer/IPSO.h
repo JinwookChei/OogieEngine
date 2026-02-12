@@ -1,13 +1,13 @@
 #pragma once
 
-enum class E_SAMPLER_PRESET
-{
-	LINEAR_CLAMP = 0,
-	LINEAR_WARP,
-	ANISOTROPIC_CLAMP,
-	ANISOTROPIC_WARP,
-	DISABLE
-};
+//enum class E_SAMPLER_PRESET
+//{
+//	LINEAR_CLAMP = 0,
+//	LINEAR_WARP,
+//	ANISOTROPIC_CLAMP,
+//	ANISOTROPIC_WARP,
+//	DISABLE
+//};
 
 enum class E_DEPTH_PRESET
 {
@@ -16,13 +16,13 @@ enum class E_DEPTH_PRESET
 	DEPTH_DISABLE
 };
 
-enum class E_BLEND_PRESET
-{
-	OPAQUE_BLEND = 0,				// 블렌딩 없음 (불투명)
-	ALPHA_BLEND,					// 일반 알파 블렌딩
-	ADDITIVE_BLEND,					// Additive(가산) 블렌딩
-	DISABLE
-};
+//enum class E_BLEND_PRESET
+//{
+//	OPAQUE_BLEND = 0,				// 블렌딩 없음 (불투명)
+//	ALPHA_BLEND,					// 일반 알파 블렌딩
+//	ADDITIVE_BLEND,					// Additive(가산) 블렌딩
+//	DISABLE
+//};
 
 // 이건 아직 임시로 적용.
 enum class E_RASTERIZER_PRESET
@@ -36,9 +36,9 @@ struct PipelineStateDesc
 {
 	IMesh* pMesh;
 	IMaterial* pMaterial;
-	E_SAMPLER_PRESET samplerState;
+	//E_SAMPLER_PRESET samplerState;
+	//E_BLEND_PRESET blendState;
 	E_DEPTH_PRESET depthState;
-	E_BLEND_PRESET blendState;
 	E_RASTERIZER_PRESET rasterizerMode;
 };
 

@@ -30,9 +30,7 @@ void RenderComponent::Setting
 (
 	uint16_t meshTag, 
 	uint16_t materialTag, 
-	E_SAMPLER_PRESET samplerState, 
 	E_DEPTH_PRESET depthState, 
-	E_BLEND_PRESET blendState, 
 	E_RASTERIZER_PRESET rasterizerMode
 )
 {
@@ -51,8 +49,6 @@ void RenderComponent::Setting
 	PipelineStateDesc psoDesc;
 	psoDesc.pMesh = pMesh_;
 	psoDesc.pMaterial = pMaterial_;
-	psoDesc.samplerState = samplerState;
-	psoDesc.blendState = blendState;
 	psoDesc.depthState = depthState;
 	psoDesc.rasterizerMode = rasterizerMode;
 

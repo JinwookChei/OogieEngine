@@ -21,6 +21,8 @@ void MaterialManager::TestLoad()
 {
 	MaterialDesc lightPassMaterialDesc;
 	lightPassMaterialDesc.shaderType = E_SHADER_PRESET::Light;
+	lightPassMaterialDesc.samplerState = E_SAMPLER_PRESET::LINEAR_CLAMP;
+	lightPassMaterialDesc.blendState = E_BLEND_PRESET::ADDITIVE_BLEND;
 	lightPassMaterialDesc.textureNum_ = 4;
 	lightPassMaterialDesc.shineness = 0.5f;
 	lightPassMaterialDesc.specularColor = {0.8f, 0.8f, 0.8f};
@@ -57,6 +59,8 @@ void MaterialManager::TestLoad()
 
 	MaterialDesc matDesc1;
 	matDesc1.shaderType = E_SHADER_PRESET::DeferredSimple;
+	matDesc1.samplerState = E_SAMPLER_PRESET::LINEAR_CLAMP;
+	matDesc1.blendState = E_BLEND_PRESET::OPAQUE_BLEND;
 	matDesc1.textureNum_ = 2;
 	matDesc1.shineness = 0.7f;
 	matDesc1.specularColor = { 0.7f, 0.7f, 0.7f };
@@ -67,6 +71,8 @@ void MaterialManager::TestLoad()
 
 	MaterialDesc matDesc2;
 	matDesc2.shaderType = E_SHADER_PRESET::DeferredSimple;
+	matDesc2.samplerState = E_SAMPLER_PRESET::LINEAR_WARP;
+	matDesc2.blendState = E_BLEND_PRESET::OPAQUE_BLEND;
 	matDesc2.textureNum_ = 2;
 	matDesc2.shineness = 0.7f;
 	matDesc2.specularColor = { 0.7f, 0.7f, 0.7f };
@@ -77,16 +83,20 @@ void MaterialManager::TestLoad()
 
 	MaterialDesc matDesc3;
 	matDesc3.shaderType = E_SHADER_PRESET::DeferredSimple;
+	matDesc3.samplerState = E_SAMPLER_PRESET::LINEAR_CLAMP;
+	matDesc3.blendState = E_BLEND_PRESET::OPAQUE_BLEND;
 	matDesc3.textureNum_ = 2;
 	matDesc3.shineness = 0.7f;
 	matDesc3.specularColor = { 0.7f, 0.7f, 0.7f };
 	IMaterial* pMat3 = CreateMaterial(matDesc3, 3);
 	pMat3->SetTextures(0, pWukong_Torso_Diffuse);
-	pMat3->SetTextures(1, pMaria_Normal);
+	pMat3->SetTextures(1, pWhiteTexture);
 
 
 	MaterialDesc matDesc4;
 	matDesc4.shaderType = E_SHADER_PRESET::DeferredSimple;
+	matDesc4.samplerState = E_SAMPLER_PRESET::LINEAR_WARP;
+	matDesc4.blendState = E_BLEND_PRESET::OPAQUE_BLEND;
 	matDesc4.textureNum_ = 2;
 	matDesc4.shineness = 0.7f;
 	matDesc4.specularColor = { 0.7f, 0.7f, 0.7f };
@@ -97,6 +107,8 @@ void MaterialManager::TestLoad()
 
 	MaterialDesc matDesc5;
 	matDesc5.shaderType = E_SHADER_PRESET::DeferredSimple;
+	matDesc5.samplerState = E_SAMPLER_PRESET::LINEAR_WARP;
+	matDesc5.blendState = E_BLEND_PRESET::OPAQUE_BLEND;
 	matDesc5.textureNum_ = 2;
 	matDesc5.shineness = 0.7f;
 	matDesc5.specularColor = { 0.7f, 0.7f, 0.7f };

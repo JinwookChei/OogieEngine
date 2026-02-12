@@ -74,16 +74,11 @@ void LookAtCamera::Tick(double deltaTime)
 
 void LookAtCamera::BeginPlay()
 {
-	pRenderer_->Setting(1,1,E_SAMPLER_PRESET::LINEAR_CLAMP, E_DEPTH_PRESET::DEPTH_ENABLE_WRITE, E_BLEND_PRESET::ALPHA_BLEND, E_RASTERIZER_PRESET::SOLID);
+	pRenderer_->Setting(1,1, E_DEPTH_PRESET::DEPTH_ENABLE_WRITE, E_RASTERIZER_PRESET::SOLID);
 
 	pTransform_->SetScale({ 2.0f, 2.0f, 2.0f, 0.0f });
 	pTransform_->SetRotation({ 0.0f, 0.0f, 0.0f, 0.0f });
 	pTransform_->SetPosition({ 0.0f, 0.0f, 0.0f, 1.0f });
-
-	
-	/*pTransform_->SetScale({ 1.0f, 1.0f, 1.0f, 0.0f });
-	pTransform_->SetRotation({ 0.0f, 90.0f, 0.0f, 0.0f });
-	pTransform_->SetPosition({ 0.0f, 0.0f, 5.0f, 1.0f });*/
 }
 
 void LookAtCamera::Render()
