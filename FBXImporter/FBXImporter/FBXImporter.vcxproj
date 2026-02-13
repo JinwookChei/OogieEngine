@@ -156,6 +156,7 @@
     <ClInclude Include="..\..\Common\Asset\Model.h" />
     <ClInclude Include="..\..\Common\GeometryType\GeometryType.h" />
     <ClInclude Include="..\..\Common\MathType\MathType.h" />
+    <ClInclude Include="..\..\Common\VertexType\VertexType.h" />
     <ClInclude Include="..\..\Interface\FBXImporter\IFBXImporter.h" />
     <ClInclude Include="FBXImporter.h" />
     <ClInclude Include="SceneAxisInfo.h" />

@@ -79,7 +79,23 @@ bool BoundVolume::CalculateAABB
 	AABB resultAABB;
 	switch (vertexFormat)
 	{
-	case E_VERTEX_FORMAT::SIMPLE:
+	case E_VERTEX_FORMAT::ScreenQuad:
+	{
+		ScreenQuadVertex* pScreenRectVertices = static_cast<ScreenQuadVertex*>(pVertices);
+		resultAABB.minPos_ = { pScreenRectVertices[0].position.X, pScreenRectVertices[0].position.Y, 0.0f };
+		resultAABB.maxPos_ = { pScreenRectVertices[0].position.X, pScreenRectVertices[0].position.Y, 0.0f };
+		for (int i = 1; i < vertexCount; ++i)
+		{
+			const ScreenQuadVertex& curVertex = pScreenRectVertices[i];
+			resultAABB.minPos_.X = min(resultAABB.minPos_.X, curVertex.position.X);
+			resultAABB.maxPos_.X = max(resultAABB.maxPos_.X, curVertex.position.X);
+
+			resultAABB.minPos_.Y = min(resultAABB.minPos_.Y, curVertex.position.Y);
+			resultAABB.maxPos_.Y = max(resultAABB.maxPos_.Y, curVertex.position.Y);
+		}
+		break;
+	}
+	case E_VERTEX_FORMAT::Simple:
 	{
 		SimpleVertex* pSimpleVertices = static_cast<SimpleVertex*>(pVertices);
 		resultAABB.minPos_ = pSimpleVertices[0].position;
@@ -96,23 +112,29 @@ bool BoundVolume::CalculateAABB
 			resultAABB.minPos_.Z = min(resultAABB.minPos_.Z, curVertex.position.Z);
 			resultAABB.maxPos_.Z = max(resultAABB.maxPos_.Z, curVertex.position.Z);
 		}
-	}break;
-	case E_VERTEX_FORMAT::SCREEN_QUAD:
+		break;
+	};
+	case E_VERTEX_FORMAT::SkinnedMesh:
 	{
-		ScreenQuadVertex* pScreenRectVertices = static_cast<ScreenQuadVertex*>(pVertices);
-		resultAABB.minPos_ = { pScreenRectVertices[0].position.X, pScreenRectVertices[0].position.Y, 0.0f };
-		resultAABB.maxPos_ = { pScreenRectVertices[0].position.X, pScreenRectVertices[0].position.Y, 0.0f };
+		SkinnedMeshVertex* pSkinnedVertices = static_cast<SkinnedMeshVertex*>(pVertices);
+		resultAABB.minPos_ = pSkinnedVertices[0].position;
+		resultAABB.maxPos_ = pSkinnedVertices[0].position;
 		for (int i = 1; i < vertexCount; ++i)
 		{
-			const ScreenQuadVertex& curVertex = pScreenRectVertices[i];
+			const SkinnedMeshVertex& curVertex = pSkinnedVertices[i];
 			resultAABB.minPos_.X = min(resultAABB.minPos_.X, curVertex.position.X);
 			resultAABB.maxPos_.X = max(resultAABB.maxPos_.X, curVertex.position.X);
 
 			resultAABB.minPos_.Y = min(resultAABB.minPos_.Y, curVertex.position.Y);
 			resultAABB.maxPos_.Y = max(resultAABB.maxPos_.Y, curVertex.position.Y);
+
+			resultAABB.minPos_.Z = min(resultAABB.minPos_.Z, curVertex.position.Z);
+			resultAABB.maxPos_.Z = max(resultAABB.maxPos_.Z, curVertex.position.Z);
 		}
-	}break;
+		break;
+	}
 	default:
+		DEBUG_BREAK();
 		break;
 	}
 

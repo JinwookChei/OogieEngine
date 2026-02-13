@@ -146,55 +146,57 @@ bool ActorPicker::RaycastBroadPhase(float* pOutDistance, const Ray& ray, Actor* 
 
 bool ActorPicker::RaycastNarrowPhase(float* pOutDistance, const Ray& ray, Actor* pActor)
 {
-	RenderComponent* pRenderer = pActor->GetRenderComponent();
-	IMesh* pMesh = pRenderer->GetMesh();
+	// @@@@@@@@@@@@@@@ 잠시 주석. @@@@@@@@@@@@@@@@@@@@@@@@@@
+	
+	//RenderComponent* pRenderer = pActor->GetRenderComponent();
+	//IMesh* pMesh = pRenderer->GetMesh();
 
-	E_VERTEX_FORMAT vertexFormat;
-	uint32_t vertexStride;
-	uint32_t vertexCount;
-	void* pVertices;
-	pMesh->GetVerticesData(&vertexFormat, &vertexStride, &vertexCount, &pVertices);
+	//E_VERTEX_FORMAT vertexFormat;
+	//uint32_t vertexStride;
+	//uint32_t vertexCount;
+	//void* pVertices;
+	//pMesh->GetVerticesData(&vertexFormat, &vertexStride, &vertexCount, &pVertices);
 
-	uint32_t indexStride;
-	uint32_t indexCount;
-	void* pIndices;
-	pMesh->GetIndicesData(&indexStride, &indexCount, &pIndices);
-
-
-	SimpleVertex* pVerticesSimple = static_cast<SimpleVertex*>(pVertices);
-	WORD* pIndicesWORD = static_cast<WORD*>(pIndices);
+	//uint32_t indexStride;
+	//uint32_t indexCount;
+	//void* pIndices;
+	//pMesh->GetIndicesData(&indexStride, &indexCount, &pIndices);
 
 
-	float minDistance = FLT_MAX;
-	bool finalRet = false;
-	for (int i = 0; i < indexCount; i += 3)
-	{
-		WORD idxA = pIndicesWORD[i];
-		WORD idxB = pIndicesWORD[i + 1];
-		WORD idxC = pIndicesWORD[i + 2];
+	//SimpleVertex* pVerticesSimple = static_cast<SimpleVertex*>(pVertices);
+	//WORD* pIndicesWORD = static_cast<WORD*>(pIndices);
 
-		const SimpleVertex& vertexA = pVerticesSimple[idxA];
-		const SimpleVertex& vertexB = pVerticesSimple[idxB];
-		const SimpleVertex& vertexC = pVerticesSimple[idxC];
 
-		Triangle triangle;
-		triangle.a_ = vertexA.position;
-		triangle.b_ = vertexB.position;
-		triangle.c_ = vertexC.position;
+	//float minDistance = FLT_MAX;
+	//bool finalRet = false;
+	//for (int i = 0; i < indexCount; i += 3)
+	//{
+	//	WORD idxA = pIndicesWORD[i];
+	//	WORD idxB = pIndicesWORD[i + 1];
+	//	WORD idxC = pIndicesWORD[i + 2];
 
-		float distance;
-		if(MATH::Intersection3D_Ray_Triangle(&distance, ray, triangle))
-		{
-			minDistance = min(minDistance, distance);
-			finalRet = true;
-		}
-	}
+	//	const SimpleVertex& vertexA = pVerticesSimple[idxA];
+	//	const SimpleVertex& vertexB = pVerticesSimple[idxB];
+	//	const SimpleVertex& vertexC = pVerticesSimple[idxC];
 
-	if (finalRet)
-	{
-		*pOutDistance = minDistance;
-		return true;
-	}
+	//	Triangle triangle;
+	//	triangle.a_ = vertexA.position;
+	//	triangle.b_ = vertexB.position;
+	//	triangle.c_ = vertexC.position;
+
+	//	float distance;
+	//	if(MATH::Intersection3D_Ray_Triangle(&distance, ray, triangle))
+	//	{
+	//		minDistance = min(minDistance, distance);
+	//		finalRet = true;
+	//	}
+	//}
+
+	//if (finalRet)
+	//{
+	//	*pOutDistance = minDistance;
+	//	return true;
+	//}
 
 	return false;
 }

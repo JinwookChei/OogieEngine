@@ -9,13 +9,13 @@ class MaterialManager
 
 	~MaterialManager();
 public:
-	static MaterialManager* Instance();
+	static ENGINE_API MaterialManager* Instance();
 
 	void TestLoad();
 
 	IMaterial* CreateMaterial(const MaterialDesc& desc, unsigned long long materialTag);
 
-	bool GetMaterial(IMaterial** ppOutMaterial, unsigned long long materialTag);
+	ENGINE_API bool GetMaterial(IMaterial** ppOutMaterial, unsigned long long materialTag);
 
 private:
 	void CleanUp();

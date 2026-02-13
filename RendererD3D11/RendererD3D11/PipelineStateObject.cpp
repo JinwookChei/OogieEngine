@@ -4,9 +4,13 @@
 #include "PipelineStateObject.h"
 
 PipelineStateObject::PipelineStateObject()
-	:refCount_(1)
-	, pMesh_(nullptr)
-	, pMaterial_(nullptr)
+	: refCount_(1)
+	, meshSlotCount_(0)
+	, ppMesheSlot_(nullptr)
+	, materialSlotCount_(0)
+	, ppMaterialSlot_(nullptr)
+	//, pMesh_(nullptr)
+	//, pMaterial_(nullptr)
 	//, samplerState_(E_SAMPLER_PRESET::LINEAR_CLAMP)
 	, depthState_(E_DEPTH_PRESET::DEPTH_ENABLE_WRITE)
 	//, blendState_(E_BLEND_PRESET::ALPHA_BLEND)
@@ -40,15 +44,71 @@ ULONG __stdcall PipelineStateObject::Release()
 	return tmpRefCount;
 }
 
-IMesh* PipelineStateObject::GetMesh() const
+IMesh* __stdcall PipelineStateObject::GetMesh(uint16_t slot) const
 {
-	return pMesh_;
+	if (slot >= meshSlotCount_)
+	{
+		Assert("Mesh slot index out of range.");
+		return nullptr;
+	}
+
+	return ppMesheSlot_[slot];
 }
 
-IMaterial* PipelineStateObject::GetMaterial() const
+IMaterial* __stdcall PipelineStateObject::GetMaterial(uint16_t slot) const
 {
-	return pMaterial_;
+	if (slot >= materialSlotCount_)
+	{
+		Assert("Material slot index out of range.");
+		return nullptr;
+	}
+
+	return ppMaterialSlot_[slot];
 }
+
+void __stdcall PipelineStateObject::SetMeshToSlot(uint16_t slot, IMesh* pMesh)
+{
+	if (slot >= meshSlotCount_)
+	{
+		Assert("Mesh slot index out of range.");
+		return;
+	}
+
+	ppMesheSlot_[slot] = static_cast<Mesh*>(pMesh);
+	ppMesheSlot_[slot]->AddRef();
+}
+
+void __stdcall PipelineStateObject::SetMaterialToSlot(uint16_t slot, IMaterial* pMaterial)
+{
+	if (slot >= materialSlotCount_)
+	{
+		Assert("Material slot index out of range.");
+		return;
+	}
+
+	ppMaterialSlot_[slot] = static_cast<Material*>(pMaterial);
+	ppMaterialSlot_[slot]->AddRef();
+}
+
+uint32_t PipelineStateObject::GetMeshSlotCount() const
+{
+	return meshSlotCount_;
+}
+
+uint32_t PipelineStateObject::GetMaterialSlotCount() const
+{
+	return materialSlotCount_;
+}
+
+//IMesh* PipelineStateObject::GetMesh() const
+//{
+//	return pMesh_;
+//}
+
+//IMaterial* PipelineStateObject::GetMaterial() const
+//{
+//	return pMaterial_;
+//}
 
 //const E_SAMPLER_PRESET& PipelineStateObject::GetSamplerState() const
 //{
@@ -72,37 +132,64 @@ const E_RASTERIZER_PRESET& PipelineStateObject::GetRasterizerMode() const
 
 void PipelineStateObject::CleanUp()
 {
-	if (nullptr != pMesh_)
+	for (int i = 0; i < meshSlotCount_; ++i)
 	{
-		pMesh_->Release();
-		pMesh_ = nullptr;
+		if (nullptr != ppMesheSlot_[i])
+		{
+			ppMesheSlot_[i]->Release();
+			ppMesheSlot_[i] = nullptr;
+		}
 	}
-	if (nullptr != pMaterial_)
+	delete[] ppMesheSlot_;
+	ppMesheSlot_ = nullptr;
+
+	for (int i = 0; i < materialSlotCount_; ++i)
 	{
-		pMaterial_->Release();
-		pMaterial_ = nullptr;
+		if (nullptr != ppMaterialSlot_[i])
+		{
+			ppMaterialSlot_[i]->Release();
+			ppMaterialSlot_[i] = nullptr;
+		}
 	}
+	delete[] ppMaterialSlot_;
+	ppMaterialSlot_ = nullptr;
+
+
+	//if (nullptr != pMesh_)
+	//{
+	//	pMesh_->Release();
+	//	pMesh_ = nullptr;
+	//}
+	//if (nullptr != pMaterial_)
+	//{
+	//	pMaterial_->Release();
+	//	pMaterial_ = nullptr;
+	//}
 }
 
 PipelineStateObject* PipelineStateObject::Create(const PipelineStateDesc& desc)
 {
-	if (nullptr == desc.pMesh)
-	{
-		DEBUG_BREAK();
-		return nullptr;
-	}
-	if (nullptr == desc.pMaterial)
-	{
-		DEBUG_BREAK();
-		return nullptr;
-	}
+	//if (nullptr == desc.pMesh)
+	//{
+	//	DEBUG_BREAK();
+	//	return nullptr;
+	//}
+	//if (nullptr == desc.pMaterial)
+	//{
+	//	DEBUG_BREAK();
+	//	return nullptr;
+	//}
 
 	PipelineStateObject* pNewPSO = new PipelineStateObject;
-	
-	pNewPSO->pMesh_ = desc.pMesh;
-	pNewPSO->pMesh_->AddRef();
-	pNewPSO->pMaterial_ = desc.pMaterial;
-	pNewPSO->pMaterial_->AddRef();
+	pNewPSO->meshSlotCount_ = desc.meshSlotCount;
+	pNewPSO->ppMesheSlot_ = new Mesh * [pNewPSO->meshSlotCount_] {};
+	pNewPSO->materialSlotCount_ = desc.materialSlotCount;
+	pNewPSO->ppMaterialSlot_ = new Material * [pNewPSO->materialSlotCount_] {};
+
+	//pNewPSO->pMesh_ = desc.pMesh;
+	//pNewPSO->pMesh_->AddRef();
+	//pNewPSO->pMaterial_ = desc.pMaterial;
+	//pNewPSO->pMaterial_->AddRef();
 	//pNewPSO->samplerState_ = desc.samplerState;
 	pNewPSO->depthState_ = desc.depthState;
 	//pNewPSO->blendState_ = desc.blendState;

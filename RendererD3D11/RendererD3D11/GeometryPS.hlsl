@@ -64,6 +64,8 @@ PS_OUTPUT main(PS_INPUT input)
     PS_OUTPUT output = (PS_OUTPUT) 0;
     
     float4 textColor = textureColor.Sample(g_Sampler, input.uv);
+    
+    clip(textColor.a - 0.09);
     output.rt0 = textColor;
     //output.rt0 = input.color;
     

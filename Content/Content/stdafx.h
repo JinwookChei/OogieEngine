@@ -96,6 +96,7 @@
 // Engine
 #include <Engine/Engine/Engine.h>
 #include <Engine/Engine/StartUp.h>
+#include <Engine/Engine/MaterialManager.h>
 #include <Engine/Engine/MeshManager.h>
 #include <Engine/Engine/Transform.h>
 #include <Engine/Engine/Level.h>

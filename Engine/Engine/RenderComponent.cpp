@@ -7,8 +7,8 @@
 RenderComponent::RenderComponent(Actor* pOwner)
 	: pOwner_(pOwner)
 	, pPSO_(nullptr)
-	, pMesh_(nullptr)
-	, pMaterial_(nullptr)
+	//, pMesh_(nullptr)
+	//, pMaterial_(nullptr)
 	, OnMeshLoaded_()
 {
 }
@@ -26,29 +26,31 @@ void RenderComponent::Render()
 	Renderer::Instance()->RenderTest(pPSO_);
 }
 
-void RenderComponent::Setting
+void RenderComponent::InitPSO
 (
-	uint16_t meshTag, 
-	uint16_t materialTag, 
+	uint16_t meshSlotCount,
+	uint16_t meshMaterialCount,
 	E_DEPTH_PRESET depthState, 
 	E_RASTERIZER_PRESET rasterizerMode
 )
 {
 	CleanUp();
 
-	IMesh* tmpMesh = nullptr;
-	if (false == MeshManager::Instance()->GetMesh(&tmpMesh, meshTag)) DEBUG_BREAK();
-	pMesh_ = tmpMesh;
-	pMesh_->AddRef();
+	//IMesh* tmpMesh = nullptr;
+	//if (false == MeshManager::Instance()->GetMesh(&tmpMesh, meshTag)) DEBUG_BREAK();
+	//pMesh_ = tmpMesh;
+	//pMesh_->AddRef();
 
-	IMaterial* tmpMaterial = nullptr;
-	if (false == MaterialManager::Instance()->GetMaterial(&tmpMaterial, materialTag)) DEBUG_BREAK();
-	pMaterial_ = tmpMaterial;
-	pMaterial_->AddRef();
+	//IMaterial* tmpMaterial = nullptr;
+	//if (false == MaterialManager::Instance()->GetMaterial(&tmpMaterial, materialTag)) DEBUG_BREAK();
+	//pMaterial_ = tmpMaterial;
+	//pMaterial_->AddRef();
 
 	PipelineStateDesc psoDesc;
-	psoDesc.pMesh = pMesh_;
-	psoDesc.pMaterial = pMaterial_;
+	psoDesc.meshSlotCount = meshSlotCount;
+	psoDesc.materialSlotCount = meshMaterialCount;
+	/*psoDesc.pMesh = pMesh_;
+	psoDesc.pMaterial = pMaterial_;*/
 	psoDesc.depthState = depthState;
 	psoDesc.rasterizerMode = rasterizerMode;
 
@@ -59,11 +61,17 @@ void RenderComponent::Setting
 	}
 }
 
-IMesh* RenderComponent::GetMesh() const
+IPSO* RenderComponent::GetPSO() const
 {
-	return pMesh_;
+	return pPSO_;
 }
 
+//IMesh* RenderComponent::GetMesh() const
+//{
+//	return pMesh_;
+//}
+
+//TEMP
 void RenderComponent::BindOnMeshLoaded(MeshLoadedDelegate callback)
 {
 	if (!callback)
@@ -74,6 +82,8 @@ void RenderComponent::BindOnMeshLoaded(MeshLoadedDelegate callback)
 	OnMeshLoaded_.push_back(callback);
 }
 
+
+//TEMP
 void RenderComponent::BroadcastOnMeshLoaded()
 {
 	for (const auto& callback : OnMeshLoaded_)
@@ -83,13 +93,13 @@ void RenderComponent::BroadcastOnMeshLoaded()
 			DEBUG_BREAK();
 			continue;
 		}
-		callback(pMesh_);
+		//callback(pMesh_);
 	}
 }
 
 void RenderComponent::CleanUp()
 {
-	if (nullptr != pMesh_)
+	/*if (nullptr != pMesh_)
 	{
 		pMesh_->Release();
 		pMesh_ = nullptr;
@@ -99,7 +109,7 @@ void RenderComponent::CleanUp()
 	{
 		pMaterial_->Release();
 		pMaterial_ = nullptr;
-	}
+	}*/
 
 	if (nullptr != pPSO_)
 	{

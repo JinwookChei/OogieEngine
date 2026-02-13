@@ -33,9 +33,9 @@ Renderer::Renderer()
 	//, pGeometryPass_(nullptr)
 	//, pLightPass_(nullptr)
 	, pParticlePass_(nullptr)
-	, pDebugPass_(nullptr)
-	, pMergePass_(nullptr)
-	, pFinalPass_(nullptr)
+	//, pDebugPass_(nullptr)
+	//, pMergePass_(nullptr)
+	//, pFinalPass_(nullptr)
 {
 	GRenderer = this;
 }
@@ -154,18 +154,18 @@ bool __stdcall Renderer::Initialize(void* hWnd, uint32_t width, uint32_t height)
 	{
 		return false;
 	}
-	if (false == InitDebugPass())
-	{
-		return false;
-	}
-	if (false == InitMergePass())
-	{
-		return false;
-	}
-	if (false == InitFinalPass())
-	{
-		return false;
-	}
+	//if (false == InitDebugPass())
+	//{
+	//	return false;
+	//}
+	//if (false == InitMergePass())
+	//{
+	//	return false;
+	//}
+	//if (false == InitFinalPass())
+	//{
+	//	return false;
+	//}
 
 	Shader::InitGlobalShaders();
 	ConstantBuffer::InitGlobalConstant();
@@ -253,113 +253,74 @@ void __stdcall Renderer::UpdateLightFrame(const LightRenderData& lightFrameData)
 void __stdcall Renderer::RenderTest(IPSO* pipelineStateObject)
 {
 	PipelineStateObject* pPSO = static_cast<PipelineStateObject*>(pipelineStateObject);
-	Mesh* pMesh = static_cast<Mesh*>(pPSO->GetMesh());
-	Material* pMaterial = static_cast<Material*>(pPSO->GetMaterial());
-
-	pMesh->Bind();
-	pMaterial->Bind();
-
-	switch (pMaterial->GetSamplerState())
-	{
-		case E_SAMPLER_PRESET::LINEAR_CLAMP:
-		{
-			SamplerState::GSamplerLinearClamp->BindPS(0);
-			break;
-		}
-		case E_SAMPLER_PRESET::LINEAR_WARP:
-		{
-			SamplerState::GSamplerLinearWarp->BindPS(0);
-			break;
-		}
-		case E_SAMPLER_PRESET::ANISOTROPIC_CLAMP:
-		{
-			SamplerState::GSamplerAnisotropicClamp->BindPS(0);
-			break;
-		}
-		case E_SAMPLER_PRESET::ANISOTROPIC_WARP:
-		{
-			SamplerState::GSamplerAnisotropicClamp->BindPS(0);
-			break;
-		}
-		default:
-		{
-			DEBUG_BREAK();
-			break;
-		}
-	}
-
-	switch (pMaterial->GetBlendState())
-	{
-		case E_BLEND_PRESET::OPAQUE_BLEND:
-		{
-			BlendState::GOpaqueBlend->Bind();
-			break;
-		}
-		case E_BLEND_PRESET::ALPHA_BLEND:
-		{
-			BlendState::GAlphaBlend->Bind();
-			break;
-		}
-		case E_BLEND_PRESET::ADDITIVE_BLEND:
-		{
-			BlendState::GAdditiveBlend->Bind();
-			break;
-		}
-		default:
-		{
-			DEBUG_BREAK();
-			break;
-		}
-	}
-
 	switch (pPSO->GetDepthState())
 	{
-		case E_DEPTH_PRESET::DEPTH_ENABLE_WRITE:
-		{
-			DepthState::GDepthEnableWrite->Bind();
-			break;
-		}
-		case E_DEPTH_PRESET::DEPTH_ENABLE_READ_ONLY:
-		{
-			DepthState::GDepthEnableReadOnly->Bind();
-			break;
-		}
-		case E_DEPTH_PRESET::DEPTH_DISABLE:
-		{
-			DepthState::GDepthDisable->Bind();
-			break;
-		}
-		default:
-		{
-			DEBUG_BREAK();
-			break;
-		}
+	case E_DEPTH_PRESET::DEPTH_ENABLE_WRITE:
+	{
+		DepthState::GDepthEnableWrite->Bind();
+		break;
+	}
+	case E_DEPTH_PRESET::DEPTH_ENABLE_READ_ONLY:
+	{
+		DepthState::GDepthEnableReadOnly->Bind();
+		break;
+	}
+	case E_DEPTH_PRESET::DEPTH_DISABLE:
+	{
+		DepthState::GDepthDisable->Bind();
+		break;
+	}
+	default:
+	{
+		DEBUG_BREAK();
+		break;
+	}
 	}
 
 	switch (pPSO->GetRasterizerMode())
 	{
-		case E_RASTERIZER_PRESET::SOLID:
-		{
-			Rasterizer::GRasterizer->ChangeFillMode(E_FILLMODE_TYPE::SOLID);
-			break;
-		}
-		case E_RASTERIZER_PRESET::WIRE_FRAME:
-		{
-			Rasterizer::GRasterizer->ChangeFillMode(E_FILLMODE_TYPE::WIREFRAME);
-			break;
-		}
-		case E_RASTERIZER_PRESET::DISABLE:
-		{
-			break;
-		}
-		default:
-		{
-			DEBUG_BREAK();
-			break;
-		}
+	case E_RASTERIZER_PRESET::SOLID:
+	{
+		Rasterizer::GRasterizer->ChangeFillMode(E_FILLMODE_TYPE::SOLID);
+		break;
+	}
+	case E_RASTERIZER_PRESET::WIRE_FRAME:
+	{
+		Rasterizer::GRasterizer->ChangeFillMode(E_FILLMODE_TYPE::WIREFRAME);
+		break;
+	}
+	case E_RASTERIZER_PRESET::DISABLE:
+	{
+		break;
+	}
+	default:
+	{
+		DEBUG_BREAK();
+		break;
+	}
 	}
 
-	GRenderer->Draw(pMesh->GetIndexCount(), true);
+	for (int meshIdx = 0; meshIdx < pPSO->GetMeshSlotCount(); ++meshIdx)
+	{
+		Mesh* pMesh = static_cast<Mesh*>(pPSO->GetMesh(meshIdx));
+		if (nullptr == pMesh) continue;
+		pMesh->BindVertices();
+		const std::vector<MeshSubset>& meshSubset = pMesh->GetMeshSubsets();
+		for (int subsetIdx = 0; subsetIdx < meshSubset.size(); ++subsetIdx)
+		{
+			meshSubset[subsetIdx].BindIndices();
+
+			uint32_t matIdx = meshSubset[subsetIdx].materialSlot;
+			Material* pMaterial = static_cast<Material*>(pPSO->GetMaterial(matIdx));
+			if(nullptr == pMaterial)
+			{
+				DEBUG_BREAK();
+			}
+			pMaterial->Bind();
+
+			GRenderer->Draw(meshSubset[subsetIdx].indexCount, true);
+		}
+	}
 }
 
 void __stdcall Renderer::UnBindSRVs(bool bVS, bool bPS)
@@ -387,22 +348,22 @@ void __stdcall Renderer::RenderParticles(IParticle* pParticle, const Float4x4 wo
 
 void __stdcall Renderer::DrawDebugLine(const Float3& start, const Float3& end, const Float4& color)
 {
-	pDebugPass_->DrawLine(start, end, color);
+	//pDebugPass_->DrawLine(start, end, color);
 }
 
 void __stdcall Renderer::DrawDebugRay(const Float3& origin, Float3& dir, float length, const Color& color)
 {
-	pDebugPass_->DrawRay(origin, dir, length, color);
+	//pDebugPass_->DrawRay(origin, dir, length, color);
 }
 
 void __stdcall Renderer::RenderDebug()
 {
-	pDebugPass_->Render();
+	//pDebugPass_->Render();
 }
 
 void __stdcall Renderer::RenderMerge(IRenderTarget* pSrcTarget)
 {
-	pMergePass_->Render(pSrcTarget);
+	//pMergePass_->Render(pSrcTarget);
 }
 
 void __stdcall Renderer::RenderBegin()
@@ -416,7 +377,7 @@ void __stdcall Renderer::RenderBegin()
 
 void __stdcall Renderer::RenderFinal(IRenderTarget* pSrcTarget)
 {
-	pFinalPass_->Render(pSrcTarget);
+	//pFinalPass_->Render(pSrcTarget);
 }
 
 void __stdcall Renderer::RenderEnd()
@@ -692,47 +653,47 @@ bool Renderer::InitParticlePass()
 	return true;
 }
 
-bool Renderer::InitDebugPass()
-{
-	pDebugPass_ = new DebugPass;
-	if (false == pDebugPass_->Init())
-	{
-		DEBUG_BREAK();
-		pDebugPass_->Release();
-		pDebugPass_ = nullptr;
-		return false;
-	}
+//bool Renderer::InitDebugPass()
+//{
+//	pDebugPass_ = new DebugPass;
+//	if (false == pDebugPass_->Init())
+//	{
+//		DEBUG_BREAK();
+//		pDebugPass_->Release();
+//		pDebugPass_ = nullptr;
+//		return false;
+//	}
+//
+//	return true;
+//}
 
-	return true;
-}
-
-bool Renderer::InitMergePass()
-{
-	pMergePass_ = new MergePass;
-	if (false == pMergePass_->Init())
-	{
-		DEBUG_BREAK();
-		pMergePass_->Release();
-		pMergePass_ = nullptr;
-		return false;
-	}
-
-	return true;
-}
-
-bool Renderer::InitFinalPass()
-{
-	pFinalPass_ = new FinalPass;
-	if (false == pFinalPass_->Init())
-	{
-		DEBUG_BREAK();
-		pFinalPass_->Release();
-		pFinalPass_ = nullptr;
-		return false;
-	}
-
-	return true;
-}
+//bool Renderer::InitMergePass()
+//{
+//	pMergePass_ = new MergePass;
+//	if (false == pMergePass_->Init())
+//	{
+//		DEBUG_BREAK();
+//		pMergePass_->Release();
+//		pMergePass_ = nullptr;
+//		return false;
+//	}
+//
+//	return true;
+//}
+//
+//bool Renderer::InitFinalPass()
+//{
+//	pFinalPass_ = new FinalPass;
+//	if (false == pFinalPass_->Init())
+//	{
+//		DEBUG_BREAK();
+//		pFinalPass_->Release();
+//		pFinalPass_ = nullptr;
+//		return false;
+//	}
+//
+//	return true;
+//}
 
 void Renderer::CleanUp()
 {
@@ -743,21 +704,21 @@ void Renderer::CleanUp()
 	BlendState::ShutDown();
 	Rasterizer::ShutDown();
 
-	if (nullptr != pFinalPass_)
-	{
-		pFinalPass_->Release();
-		pFinalPass_ = nullptr;
-	}
-	if (nullptr != pMergePass_)
-	{
-		pMergePass_->Release();
-		pMergePass_ = nullptr;
-	}
-	if (nullptr != pDebugPass_)
-	{
-		pDebugPass_->Release();
-		pDebugPass_ = nullptr;
-	}
+	//if (nullptr != pFinalPass_)
+	//{
+	//	pFinalPass_->Release();
+	//	pFinalPass_ = nullptr;
+	//}
+	//if (nullptr != pMergePass_)
+	//{
+	//	pMergePass_->Release();
+	//	pMergePass_ = nullptr;
+	//}
+	//if (nullptr != pDebugPass_)
+	//{
+	//	pDebugPass_->Release();
+	//	pDebugPass_ = nullptr;
+	//}
 	if (nullptr != pParticlePass_)
 	{
 		pParticlePass_->Release();

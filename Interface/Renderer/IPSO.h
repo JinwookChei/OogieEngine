@@ -1,13 +1,5 @@
 #pragma once
 
-//enum class E_SAMPLER_PRESET
-//{
-//	LINEAR_CLAMP = 0,
-//	LINEAR_WARP,
-//	ANISOTROPIC_CLAMP,
-//	ANISOTROPIC_WARP,
-//	DISABLE
-//};
 
 enum class E_DEPTH_PRESET
 {
@@ -15,14 +7,6 @@ enum class E_DEPTH_PRESET
 	DEPTH_ENABLE_READ_ONLY,
 	DEPTH_DISABLE
 };
-
-//enum class E_BLEND_PRESET
-//{
-//	OPAQUE_BLEND = 0,				// 블렌딩 없음 (불투명)
-//	ALPHA_BLEND,					// 일반 알파 블렌딩
-//	ADDITIVE_BLEND,					// Additive(가산) 블렌딩
-//	DISABLE
-//};
 
 // 이건 아직 임시로 적용.
 enum class E_RASTERIZER_PRESET
@@ -34,10 +18,12 @@ enum class E_RASTERIZER_PRESET
 
 struct PipelineStateDesc
 {
-	IMesh* pMesh;
-	IMaterial* pMaterial;
-	//E_SAMPLER_PRESET samplerState;
-	//E_BLEND_PRESET blendState;
+	//IMesh* pMesh;
+	//IMaterial* pMaterial;
+
+	uint16_t meshSlotCount;
+	uint16_t materialSlotCount;
+
 	E_DEPTH_PRESET depthState;
 	E_RASTERIZER_PRESET rasterizerMode;
 };
@@ -45,6 +31,11 @@ struct PipelineStateDesc
 // Pipeline State Object
 struct IPSO : IUnknown
 {
-	virtual IMesh* __stdcall GetMesh() const = 0;
-	virtual IMaterial* __stdcall GetMaterial() const = 0;
+	virtual IMesh* __stdcall GetMesh(uint16_t slot) const = 0;
+
+	virtual IMaterial* __stdcall GetMaterial(uint16_t slot) const = 0;
+
+	virtual void __stdcall SetMeshToSlot(uint16_t slot, IMesh* pMesh) = 0;
+
+	virtual void __stdcall SetMaterialToSlot(uint16_t slot, IMaterial* pMaterial) = 0;
 };

@@ -19,7 +19,6 @@ public:
 
 	bool RaycastNarrowPhase(float* pOutDistance, const Ray& ray, Actor* pActor);
 
-
 	Actor* GetPickedActor() const;
 
 private:

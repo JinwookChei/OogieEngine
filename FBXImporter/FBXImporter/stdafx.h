@@ -35,10 +35,21 @@
 #define FBX_IMPORTER_API __declspec(dllexport)
 #define UTILITY_API __declspec(dllimport)
 
+// STL
+#include <cstdint>
+#include <unordered_map>
+#include <map>
+#include <vector>
+#include <string>
+#include <sstream>
+#include <string_view>
+
+
 // Common
-#include <Common/Asset/Model.h>
 #include <Common/Asset/Animation.h>
 #include <Common/MathType/MathType.h>
+#include <Common/VertexType/VertexType.h>
+#include <Common/Asset/Model.h>
 
 // Interface
 #include <Interface/FBXImporter/IFBXImporter.h>
@@ -53,9 +64,3 @@
 // AssetImporter
 #include "FBXImporter.h"
 
-
-#include <unordered_map>
-#include <vector>
-#include <string>
-#include <sstream>
-#include <string_view>

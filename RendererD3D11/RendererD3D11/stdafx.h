@@ -28,17 +28,21 @@
 
 
 
-
-//};
 #ifdef _DEBUG
 #include <dxgidebug.h>
 #endif
 
+// WINAPI
 #include <windows.h>
+
+// STL
 #include <algorithm>
+#include <string>
 #include <vector>
+#include <unordered_map>
 #include <cstdlib>
 #include <cstdio>
+
 
 // DirectX 11
 #include <d3d11.h>

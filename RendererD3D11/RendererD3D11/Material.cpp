@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "Shader.h"
+#include "SamplerState.h"
+#include "BlendState.h"
 #include "Texture.h"
 #include "Material.h"
 
@@ -139,6 +141,59 @@ void Material::Bind()
 		break;
 	}
 	
+	switch (samplerState_)
+	{
+	case E_SAMPLER_PRESET::LINEAR_CLAMP:
+	{
+		SamplerState::GSamplerLinearClamp->BindPS(0);
+		break;
+	}
+	case E_SAMPLER_PRESET::LINEAR_WARP:
+	{
+		SamplerState::GSamplerLinearWarp->BindPS(0);
+		break;
+	}
+	case E_SAMPLER_PRESET::ANISOTROPIC_CLAMP:
+	{
+		SamplerState::GSamplerAnisotropicClamp->BindPS(0);
+		break;
+	}
+	case E_SAMPLER_PRESET::ANISOTROPIC_WARP:
+	{
+		SamplerState::GSamplerAnisotropicClamp->BindPS(0);
+		break;
+	}
+	default:
+	{
+		DEBUG_BREAK();
+		break;
+	}
+	}
+
+	switch (blendState_)
+	{
+	case E_BLEND_PRESET::OPAQUE_BLEND:
+	{
+		BlendState::GOpaqueBlend->Bind();
+		break;
+	}
+	case E_BLEND_PRESET::ALPHA_BLEND:
+	{
+		BlendState::GAlphaBlend->Bind();
+		break;
+	}
+	case E_BLEND_PRESET::ADDITIVE_BLEND:
+	{
+		BlendState::GAdditiveBlend->Bind();
+		break;
+	}
+	default:
+	{
+		DEBUG_BREAK();
+		break;
+	}
+	}
+
 	ID3D11ShaderResourceView* pSRVs[16]; 
 	for (int i = 0; i < texturesNum_; ++i) 
 	{

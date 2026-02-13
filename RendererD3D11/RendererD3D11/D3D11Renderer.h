@@ -69,11 +69,9 @@ private:
 
 	bool InitParticlePass();
 
-	bool InitDebugPass();
-
+	/*bool InitDebugPass();
 	bool InitMergePass();
-
-	bool InitFinalPass();
+	bool InitFinalPass();*/
 
 	void CleanUp();
 
@@ -94,10 +92,7 @@ private:
 	RenderTarget* pBackBuffer_;
 
 	ParticlePass* pParticlePass_;
-
-	DebugPass* pDebugPass_;
-
-	MergePass* pMergePass_;
-
-	FinalPass* pFinalPass_;
+	//DebugPass* pDebugPass_;
+	//MergePass* pMergePass_;
+	//FinalPass* pFinalPass_;
 };

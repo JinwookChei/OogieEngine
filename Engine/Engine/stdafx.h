@@ -28,12 +28,13 @@
 #define UTILITY_API __declspec(dllimport)
 #define EDITOR_API __declspec(dllimport)
 
-
+// STL
 #include <windows.h>
 #include <stdint.h>
 #include <math.h>
 #include <string>
 #include <vector>
+#include <unordered_map>
 #include <map>
 #include <cstdlib>
 #include <cstdio>

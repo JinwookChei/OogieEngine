@@ -57,6 +57,9 @@
     <ClInclude Include="..\..\Interface\FBXImporter\IFBXImporter.h">
       <Filter>Interface</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Common\VertexType\VertexType.h">
+      <Filter>Common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

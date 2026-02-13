@@ -53,17 +53,17 @@ bool FBXImporter::ImportModel(Model* pOutModel, const std::string& file)
 		return false;
 	}
 
-	pOutModel->CleanUp();
+	pOutModel->meshInfo.clear();
 
 	fbxsdk::FbxNode* pRootNode = pScene_->GetRootNode();
-
 	ExtractMeshInfo(pOutModel, pRootNode, 0);
-	if (1 != pOutModel->meshCount_)
+	ExtractBones(pOutModel, pRootNode, -1);
+
+	if (1 != pOutModel->meshCount)
 	{
 		// DEBUG_BREAK();
 	}
 
-	
 	int k = 10;
 	// TEMP
 	//fbxsdk::FbxNode* pMeshNode = pMesh->GetNode();
@@ -159,9 +159,9 @@ void FBXImporter::ExtractMeshInfo(Model* pModel, fbxsdk::FbxNode* pNode, int idx
 {
 	if (idx == 0)
 	{
-		pModel->meshCount_ = 0;
-		pModel->meshInfo_.clear();
-		pModel->meshInfo_.reserve(5);
+		pModel->meshCount = 0;
+		pModel->meshInfo.clear();
+		pModel->meshInfo.reserve(5);
 	}
 
 	if (nullptr == pNode)
@@ -174,12 +174,10 @@ void FBXImporter::ExtractMeshInfo(Model* pModel, fbxsdk::FbxNode* pNode, int idx
 	{
 		MeshInfo mInfo;
 		mInfo.meshName = pMesh->GetName();
-		mInfo.isTriangulated = pMesh->IsTriangleMesh();
-		if (mInfo.isTriangulated == false)
-		{
-			DEBUG_BREAK();
-			return;
-		}
+		mInfo.meshSubsetCount = pNode->GetMaterialCount();
+		mInfo.controlPointCount = pMesh->GetControlPointsCount();
+		mInfo.materialElementCount = pMesh->GetElementMaterialCount();
+		mInfo.polygonCount = pMesh->GetPolygonCount();
 		mInfo.deformerCount = pMesh->GetDeformerCount();
 		if (0 < mInfo.deformerCount)
 		{
@@ -189,16 +187,19 @@ void FBXImporter::ExtractMeshInfo(Model* pModel, fbxsdk::FbxNode* pNode, int idx
 		{
 			mInfo.isSkeletalMesh = false;
 		}
-		mInfo.controlPointCount = pMesh->GetControlPointsCount();
-		mInfo.materialElementCount = pMesh->GetElementMaterialCount();
-		mInfo.materialSlotCount = pNode->GetMaterialCount();
-		mInfo.polygonCount = pMesh->GetPolygonCount();
 
-		mInfo.vertices_.reserve(mInfo.polygonCount*3);
-		mInfo.indices_.resize(mInfo.materialSlotCount);
-		for (int i = 0; i < mInfo.materialSlotCount; ++i)
+		mInfo.isTriangulated = pMesh->IsTriangleMesh();
+		if (mInfo.isTriangulated == false)
 		{
-			mInfo.indices_[i].reserve(mInfo.polygonCount * 3);
+			DEBUG_BREAK();
+			return;
+		}
+		
+		mInfo.vertices.reserve(mInfo.polygonCount * 3);
+		mInfo.indices.resize(mInfo.meshSubsetCount);
+		for (int i = 0; i < mInfo.meshSubsetCount; ++i)
+		{
+			mInfo.indices[i].reserve(mInfo.polygonCount * 3);
 		}
 
 		fbxsdk::FbxVector4* controlPoints = pMesh->GetControlPoints();
@@ -259,7 +260,7 @@ void FBXImporter::ExtractMeshInfo(Model* pModel, fbxsdk::FbxNode* pNode, int idx
 					return;
 				}
 
-				if (v.materialIndex >= mInfo.materialSlotCount)
+				if (v.materialIndex >= mInfo.meshSubsetCount)
 				{
 					DEBUG_BREAK();
 					return;
@@ -280,20 +281,20 @@ void FBXImporter::ExtractMeshInfo(Model* pModel, fbxsdk::FbxNode* pNode, int idx
 						DEBUG_BREAK();
 						return;
 					}
-					mInfo.indices_[matIndex].push_back(vertexIndex);
+					mInfo.indices[matIndex].push_back(vertexIndex);
 				}
 				else
 				{
 					// cache에 존재 하지 않음.
-					vertexIndex = mInfo.vertices_.size();
-					mInfo.vertices_.push_back(v);
+					vertexIndex = mInfo.vertices.size();
+					mInfo.vertices.push_back(v);
 					unsigned int matIndex = v.materialIndex;
 					if (matIndex >= 20)
 					{
 						DEBUG_BREAK();
 						return;
 					}
-					mInfo.indices_[matIndex].push_back(vertexIndex);
+					mInfo.indices[matIndex].push_back(vertexIndex);
 					vertexCpIndexCache.push_back(cpIndex);
 					vertexCache[v] = vertexIndex;
 				}
@@ -302,11 +303,11 @@ void FBXImporter::ExtractMeshInfo(Model* pModel, fbxsdk::FbxNode* pNode, int idx
 
 		if (false == isExistTangent)
 		{
-			CalculateTangent(&mInfo.vertices_, mInfo.indices_);
+			CalculateTangent(&mInfo.vertices, mInfo.indices);
 		}
 
-		pModel->meshCount_++;
-		pModel->meshInfo_.push_back(std::move(mInfo));
+		pModel->meshCount++;
+		pModel->meshInfo.push_back(std::move(mInfo));
 	}
 
 	for (int32_t c = 0; c < pNode->GetChildCount(); ++c)
@@ -858,39 +859,68 @@ void FBXImporter::CalculateTangent(std::vector<SkinnedMeshVertex>* pVertices, co
 	}
 }
 
-MaterialInfo FBXImporter::BuildMaterialInfo(fbxsdk::FbxSurfaceMaterial* material)
+void FBXImporter::ExtractBones(Model* pOutModel, FbxNode* node, int parentBoneIndex)
+{
+	if (!node) return;
+
+	FbxNodeAttribute* attr = node->GetNodeAttribute();
+	int currentBoneIndex = parentBoneIndex;
+
+	if (attr && attr->GetAttributeType() == FbxNodeAttribute::eSkeleton)
+	{
+		Bone bone;
+		bone.name = node->GetName();
+		bone.parentIndex = parentBoneIndex;
+		// 바인드 포즈 (로컬)
+		//bone.localBindPose = node->EvaluateLocalTransform();
+		// 바인드 포즈 (글로벌)
+		//bone.globalBindPose = node->EvaluateGlobalTransform();
+		
+		currentBoneIndex = static_cast<uint16_t>(pOutModel->bones.size());
+		pOutModel->bones.push_back(bone);
+		pOutModel->boneMap[node->GetUniqueID()] = currentBoneIndex;
+	}
+
+	const int childCount = node->GetChildCount();
+	for (int i = 0; i < childCount; ++i)
+	{
+		ExtractBones(pOutModel, node->GetChild(i), currentBoneIndex);
+	}
+}
+
+MaterialInfo FBXImporter::ExtractMaterialInfo(fbxsdk::FbxSurfaceMaterial* material)
 {
 	MaterialInfo info;
 	if (!material)
 		return info;
 
-	info.Name = material->GetName();
-	info.ShadingModel = material->ShadingModel.Get().Buffer();
+	info.name = material->GetName();
+	info.shadingModel = material->ShadingModel.Get().Buffer();
 
 	// Color Properties
-	ReadColor(material, fbxsdk::FbxSurfaceMaterial::sEmissive, info.Emissive);
-	ReadColor(material, fbxsdk::FbxSurfaceMaterial::sAmbient, info.Ambient);
-	ReadColor(material, fbxsdk::FbxSurfaceMaterial::sDiffuse, info.Diffuse);
-	ReadColor(material, fbxsdk::FbxSurfaceMaterial::sSpecular, info.Specular);
-	ReadColor(material, fbxsdk::FbxSurfaceMaterial::sTransparentColor, info.Transparent);
+	ReadColor(material, fbxsdk::FbxSurfaceMaterial::sEmissive, info.emissive);
+	ReadColor(material, fbxsdk::FbxSurfaceMaterial::sAmbient, info.ambient);
+	ReadColor(material, fbxsdk::FbxSurfaceMaterial::sDiffuse, info.diffuse);
+	ReadColor(material, fbxsdk::FbxSurfaceMaterial::sSpecular, info.specular);
+	ReadColor(material, fbxsdk::FbxSurfaceMaterial::sTransparentColor, info.transparent);
 
 	// Scalar
-	info.Opacity = 1.0f - GetScalar(material, fbxsdk::FbxSurfaceMaterial::sTransparencyFactor);
-	info.Shininess = GetScalar(material, fbxsdk::FbxSurfaceMaterial::sShininess);
-	info.ReflectionFactor = GetScalar(material, fbxsdk::FbxSurfaceMaterial::sReflectionFactor);
+	info.opacity = 1.0f - GetScalar(material, fbxsdk::FbxSurfaceMaterial::sTransparencyFactor);
+	info.shininess = GetScalar(material, fbxsdk::FbxSurfaceMaterial::sShininess);
+	info.reflectionFactor = GetScalar(material, fbxsdk::FbxSurfaceMaterial::sReflectionFactor);
 
 	// Phong Only
 	if (material->GetClassId().Is(fbxsdk::FbxSurfacePhong::ClassId))
 	{
-		info.SpecularFactor = GetScalar(material, fbxsdk::FbxSurfacePhong::sSpecularFactor);
+		info.specularFactor = GetScalar(material, fbxsdk::FbxSurfacePhong::sSpecularFactor);
 	}
 
 	// Textures
-	info.HasDiffuseTexture = ReadTexture(material, fbxsdk::FbxSurfaceMaterial::sDiffuse, info.DiffuseTexture);
-	info.HasNormalTexture = ReadTexture(material, fbxsdk::FbxSurfaceMaterial::sNormalMap, info.NormalTexture);
-	info.HasSpecularTexture = ReadTexture(material, fbxsdk::FbxSurfaceMaterial::sSpecular, info.SpecularTexture);
-	info.HasEmissiveTexture = ReadTexture(material, fbxsdk::FbxSurfaceMaterial::sEmissive, info.EmissiveTexture);
-	info.HasOpacityTexture = ReadTexture(material, fbxsdk::FbxSurfaceMaterial::sTransparentColor, info.OpacityTexture);
+	info.hasDiffuseTexture = ReadTexture(material, fbxsdk::FbxSurfaceMaterial::sDiffuse, info.diffuseTexture);
+	info.hasNormalTexture = ReadTexture(material, fbxsdk::FbxSurfaceMaterial::sNormalMap, info.normalTexture);
+	info.hasSpecularTexture = ReadTexture(material, fbxsdk::FbxSurfaceMaterial::sSpecular, info.specularTexture);
+	info.hasEmissiveTexture = ReadTexture(material, fbxsdk::FbxSurfaceMaterial::sEmissive, info.emissiveTexture);
+	info.hasOpacityTexture = ReadTexture(material, fbxsdk::FbxSurfaceMaterial::sTransparentColor, info.opacityTexture);
 
 	return info;
 }
@@ -939,16 +969,15 @@ bool FBXImporter::ReadTexture(fbxsdk::FbxSurfaceMaterial* material, const char* 
 	}
 
 	fbxsdk::FbxFileTexture* fileTex = (fbxsdk::FbxFileTexture*)tex;
-	outTex.Name = fileTex->GetName();
-	outTex.FilePath = fileTex->GetFileName();
-	outTex.UVSet = fileTex->UVSet.Get().Buffer();
-	outTex.OffsetU = (float)fileTex->GetTranslationU();
-	outTex.OffsetV = (float)fileTex->GetTranslationV();
-	outTex.ScaleU = (float)fileTex->GetScaleU();
-	outTex.ScaleV = (float)fileTex->GetScaleV();
-	outTex.WrapU = fileTex->GetWrapModeU() != fbxsdk::FbxTexture::eClamp;
-	outTex.WrapV = fileTex->GetWrapModeV() != fbxsdk::FbxTexture::eClamp;
-
+	outTex.name = fileTex->GetName();
+	outTex.filePath = fileTex->GetFileName();
+	outTex.uvSet = fileTex->UVSet.Get().Buffer();
+	outTex.offsetU = (float)fileTex->GetTranslationU();
+	outTex.offsetV = (float)fileTex->GetTranslationV();
+	outTex.scaleU = (float)fileTex->GetScaleU();
+	outTex.scaleV = (float)fileTex->GetScaleV();
+	outTex.wrapU = fileTex->GetWrapModeU() != fbxsdk::FbxTexture::eClamp;
+	outTex.wrapV = fileTex->GetWrapModeV() != fbxsdk::FbxTexture::eClamp;
 	return true;
 }
 

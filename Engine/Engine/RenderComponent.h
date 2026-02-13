@@ -25,22 +25,27 @@ public:
 
 	ENGINE_API void Render();
 
-	ENGINE_API void Setting
+	ENGINE_API void InitPSO
 	(
-		uint16_t meshTag,
-		uint16_t materialTag,
+		//uint16_t meshTag,
+		//uint16_t materialTag,
+		uint16_t meshSlotCount,
+		uint16_t meshMaterialCount,
 		E_DEPTH_PRESET depthState,
 		E_RASTERIZER_PRESET rasterizerMode
 	);
 
-	IMesh* GetMesh() const;
+	//IMesh* GetMesh() const;
+	ENGINE_API IPSO* GetPSO() const;
 
 // MeshLoad Delegate
 public:
+	//TEMP
 	using MeshLoadedDelegate = std::function<void(IMesh*)>;
 	void BindOnMeshLoaded(MeshLoadedDelegate callback);
 
 private:
+	//TEMP
 	void BroadcastOnMeshLoaded();
 	std::vector<MeshLoadedDelegate> OnMeshLoaded_;
 // MeshLoad Delegate End	
@@ -51,7 +56,8 @@ private:
 	Actor* pOwner_;
 
 	IPSO* pPSO_;
-	IMesh* pMesh_;
-	IMaterial* pMaterial_;
+
+	//IMesh* pMesh_;
+	//IMaterial* pMaterial_;
 };
 

@@ -45,11 +45,11 @@ PS_OUTPUT main(PS_INPUT input)
     PS_OUTPUT output = (PS_OUTPUT) 0;
     
     float4 textColor = textureColor.Sample(g_Sampler, input.uv);
-    output.rt0 = textColor;
+    //output.rt0 = textColor;
     float4 texNormal = normalize(textureNormal.Sample(g_Sampler, input.uv));
     float3 worldNormal = normalize(mul(texNormal.xyz, input.TBN));
-    output.rt1 = float4(worldNormal, 1.0f);
-    output.rt2 = float4(MaterialSpecular, MaterialShineness);
+    //output.rt1 = float4(worldNormal, 1.0f);
+    //output.rt2 = float4(MaterialSpecular, MaterialShineness);
     
     return output;
 }

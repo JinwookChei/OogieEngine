@@ -179,12 +179,11 @@ void Level::OnRenderActors()
 
 void Level::OnRenderLights(IRenderTarget* pGBufferTarget)
 {
-	IMaterial* pLightMaterial = Light::GLightPSO->GetMaterial();
+	IMaterial* pLightMaterial = Light::GLightPSO->GetMaterial(0);
 	if (nullptr == pLightMaterial)
 	{
 		DEBUG_BREAK();
 	}
-
 	pLightMaterial->SetTextures(0, pGBufferTarget->GetRenderTexture(E_RENDER_TEXTURE_TYPE::Albedo));
 	pLightMaterial->SetTextures(1, pGBufferTarget->GetRenderTexture(E_RENDER_TEXTURE_TYPE::Normal));
 	pLightMaterial->SetTextures(2, pGBufferTarget->GetRenderTexture(E_RENDER_TEXTURE_TYPE::Specular));
