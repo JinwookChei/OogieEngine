@@ -31,6 +31,9 @@
     <Filter Include="Common">
       <UniqueIdentifier>{b529b116-f42a-4bef-b361-5beb1d8ed7ba}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Utility">
+      <UniqueIdentifier>{0cb78201-6dfc-49f6-a491-7f7d1de6adcc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -59,6 +62,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Common\VertexType\VertexType.h">
       <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility.h">
+      <Filter>Source Files\Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

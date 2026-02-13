@@ -30,7 +30,13 @@ private:
 	void CalculateTangent(std::vector<SkinnedMeshVertex>* pVertices, const std::vector<std::vector<uint16_t>>& indices);
 	
 	// Skeleton
-	void ExtractBones(Model* pOutModel, FbxNode* node, int parentBoneIndex);
+	//void ExtractBones(Model* pOutModel, FbxNode* pNode, uint32_t parentBoneIndex);
+	void ExtractBones(Model* pOutModel, FbxNode* pNode, uint32_t parentBoneIndex);
+
+	// Skin
+	void ExtractBindBoneSkin(MeshInfo* outMeshInfo, Model& model, fbxsdk::FbxMesh* pMesh);
+	void AddBoneWeight(SkinWeight& skinData, int boneIndex, float weight);
+	void NormalizeSkinWeights(std::vector<SkinWeight>& skinData);
 
 
 	// Material

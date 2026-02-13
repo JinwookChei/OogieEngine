@@ -27,7 +27,7 @@ void MeshManager::TestLoad()
 	screenQuadDesc.vertexFormatSize = sizeof(ScreenQuadVertex);
 	screenQuadDesc.vertexCount = screenQuadVertices.size();
 	screenQuadDesc.pVertices = screenQuadVertices.data();
-	screenQuadDesc.meshSubsets.emplace_back(0, sizeof(WORD), screenQuadIndices.size(), screenQuadIndices.data());
+	screenQuadDesc.meshSubsets.emplace_back(0, (uint16_t)sizeof(WORD), screenQuadIndices.size(), screenQuadIndices.data());
 	CreateMesh(screenQuadDesc, 0);
 
 
@@ -39,7 +39,7 @@ void MeshManager::TestLoad()
 	meshDesc_1.vertexFormatSize = sizeof(SimpleVertex);
 	meshDesc_1.vertexCount = cubeVertices.size();
 	meshDesc_1.pVertices = cubeVertices.data();
-	meshDesc_1.meshSubsets.emplace_back(0, sizeof(WORD), cubeIndices.size(),cubeIndices.data());
+	meshDesc_1.meshSubsets.emplace_back(0, (uint16_t)sizeof(WORD), cubeIndices.size(), cubeIndices.data());
 	unsigned long long meshTag_1 = 1;
 	CreateMesh(meshDesc_1, meshTag_1);
 
@@ -52,7 +52,7 @@ void MeshManager::TestLoad()
 	meshDesc_2.vertexFormatSize = sizeof(SimpleVertex);
 	meshDesc_2.vertexCount = sphereVertices.size();
 	meshDesc_2.pVertices = sphereVertices.data();
-	meshDesc_2.meshSubsets.emplace_back(0, sizeof(WORD), sphereIndices.size(), sphereIndices.data());
+	meshDesc_2.meshSubsets.emplace_back(0, (uint16_t)sizeof(WORD), sphereIndices.size(), sphereIndices.data());
 	unsigned long long meshTag_2 = 2;
 	CreateMesh(meshDesc_2, meshTag_2);
 
@@ -63,9 +63,9 @@ void MeshManager::TestLoad()
 	MeshDesc meshDesc_3;
 	meshDesc_3.vertexFormat = E_VERTEX_FORMAT::SkinnedMesh;
 	meshDesc_3.vertexFormatSize = sizeof(SkinnedMeshVertex);
-	meshDesc_3.vertexCount = wukong.meshInfo[0].vertices.size();
-	meshDesc_3.pVertices = wukong.meshInfo[0].vertices.data();
-	meshDesc_3.meshSubsets.emplace_back(0, sizeof(uint16_t), wukong.meshInfo[0].indices[0].size(), wukong.meshInfo[0].indices[0].data());
+	meshDesc_3.vertexCount = wukong.meshInfos[0].vertices.size();
+	meshDesc_3.pVertices = wukong.meshInfos[0].vertices.data();
+	meshDesc_3.meshSubsets.emplace_back(0, (uint16_t)sizeof(uint16_t), wukong.meshInfos[0].indices[0].size(), wukong.meshInfos[0].indices[0].data());
 	
 	unsigned long long meshTag_3 = 3;
 	CreateMesh(meshDesc_3, meshTag_3);
@@ -76,11 +76,11 @@ void MeshManager::TestLoad()
 	MeshDesc meshDesc_4;
 	meshDesc_4.vertexFormat = E_VERTEX_FORMAT::SkinnedMesh;
 	meshDesc_4.vertexFormatSize = sizeof(SkinnedMeshVertex);
-	meshDesc_4.vertexCount = capoeira.meshInfo[0].vertices.size();
-	meshDesc_4.pVertices = capoeira.meshInfo[0].vertices.data();
-	for (int i = 0; i < capoeira.meshInfo[0].indices.size(); ++i)
+	meshDesc_4.vertexCount = capoeira.meshInfos[0].vertices.size();
+	meshDesc_4.pVertices = capoeira.meshInfos[0].vertices.data();
+	for (int i = 0; i < capoeira.meshInfos[0].indices.size(); ++i)
 	{
-		meshDesc_4.meshSubsets.emplace_back(i, sizeof(uint16_t), capoeira.meshInfo[0].indices[i].size(), capoeira.meshInfo[0].indices[i].data());
+		meshDesc_4.meshSubsets.emplace_back(i, (uint16_t)sizeof(uint16_t), capoeira.meshInfos[0].indices[i].size(), capoeira.meshInfos[0].indices[i].data());
 	}
 	unsigned long long meshTag_4 = 4;
 	CreateMesh(meshDesc_4, meshTag_4);
@@ -91,11 +91,11 @@ void MeshManager::TestLoad()
 	MeshDesc meshDesc_5;
 	meshDesc_5.vertexFormat = E_VERTEX_FORMAT::SkinnedMesh;
 	meshDesc_5.vertexFormatSize = sizeof(SkinnedMeshVertex);
-	meshDesc_5.vertexCount = wereWolf.meshInfo[0].vertices.size();
-	meshDesc_5.pVertices = wereWolf.meshInfo[0].vertices.data();
-	for (int i = 0; i < wereWolf.meshInfo[0].indices.size(); ++i)
+	meshDesc_5.vertexCount = wereWolf.meshInfos[0].vertices.size();
+	meshDesc_5.pVertices = wereWolf.meshInfos[0].vertices.data();
+	for (int i = 0; i < wereWolf.meshInfos[0].indices.size(); ++i)
 	{
-		meshDesc_5.meshSubsets.emplace_back(i,sizeof(uint16_t), wereWolf.meshInfo[0].indices[i].size(), wereWolf.meshInfo[0].indices[i].data());
+		meshDesc_5.meshSubsets.emplace_back(i, (uint16_t)sizeof(uint16_t), wereWolf.meshInfos[0].indices[i].size(), wereWolf.meshInfos[0].indices[i].data());
 	}
 	unsigned long long meshTag_5 = 5;
 	CreateMesh(meshDesc_5, meshTag_5);

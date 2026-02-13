@@ -6,14 +6,14 @@ struct MeshDesc
 	struct MeshSubsetDesc
 	{
 		uint32_t materialSlot;
-		uint32_t indexFormatSize;
-		uint32_t indexCount;
+		uint16_t indexFormatSize;
+		size_t  indexCount;
 		void* pIndices;
 
 		MeshSubsetDesc
 		(
 			uint32_t materialSlot,
-			unsigned int indexFormatSize,
+			uint16_t indexFormatSize,
 			size_t indexCount,
 			void* pIndices
 		)
@@ -26,8 +26,8 @@ struct MeshDesc
 	};
 
 	E_VERTEX_FORMAT vertexFormat;
-	uint32_t vertexFormatSize;
-	uint32_t vertexCount;
+	uint16_t vertexFormatSize;
+	size_t vertexCount;
 	void* pVertices;
 
 	//uint16_t meshSubsetCount;

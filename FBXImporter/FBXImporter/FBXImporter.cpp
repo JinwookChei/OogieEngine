@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "SceneAxisInfo.h"
 #include "FBXImporter.h"
+#include "Utility.h"
 
 
 FBXImporter::FBXImporter()
@@ -53,18 +54,13 @@ bool FBXImporter::ImportModel(Model* pOutModel, const std::string& file)
 		return false;
 	}
 
-	pOutModel->meshInfo.clear();
+	pOutModel->meshInfos.clear();
 
 	fbxsdk::FbxNode* pRootNode = pScene_->GetRootNode();
-	ExtractMeshInfo(pOutModel, pRootNode, 0);
 	ExtractBones(pOutModel, pRootNode, -1);
+	ExtractMeshInfo(pOutModel, pRootNode, 0);
 
-	if (1 != pOutModel->meshCount)
-	{
-		// DEBUG_BREAK();
-	}
-
-	int k = 10;
+	int t = 10;
 	// TEMP
 	//fbxsdk::FbxNode* pMeshNode = pMesh->GetNode();
 	//int materialCount = pMeshNode->GetMaterialCount();
@@ -159,9 +155,8 @@ void FBXImporter::ExtractMeshInfo(Model* pModel, fbxsdk::FbxNode* pNode, int idx
 {
 	if (idx == 0)
 	{
-		pModel->meshCount = 0;
-		pModel->meshInfo.clear();
-		pModel->meshInfo.reserve(5);
+		pModel->meshInfos.clear();
+		pModel->meshInfos.reserve(16);
 	}
 
 	if (nullptr == pNode)
@@ -194,7 +189,7 @@ void FBXImporter::ExtractMeshInfo(Model* pModel, fbxsdk::FbxNode* pNode, int idx
 			DEBUG_BREAK();
 			return;
 		}
-		
+
 		mInfo.vertices.reserve(mInfo.polygonCount * 3);
 		mInfo.indices.resize(mInfo.meshSubsetCount);
 		for (int i = 0; i < mInfo.meshSubsetCount; ++i)
@@ -306,13 +301,15 @@ void FBXImporter::ExtractMeshInfo(Model* pModel, fbxsdk::FbxNode* pNode, int idx
 			CalculateTangent(&mInfo.vertices, mInfo.indices);
 		}
 
-		pModel->meshCount++;
-		pModel->meshInfo.push_back(std::move(mInfo));
+		// Bone && Skin
+		ExtractBindBoneSkin(&mInfo, *pModel, pMesh);
+
+		pModel->meshInfos.push_back(std::move(mInfo));
 	}
 
 	for (int32_t c = 0; c < pNode->GetChildCount(); ++c)
 	{
-		ExtractMeshInfo(pModel, pNode->GetChild(c), idx+1);
+		ExtractMeshInfo(pModel, pNode->GetChild(c), idx + 1);
 	}
 }
 
@@ -618,78 +615,6 @@ bool FBXImporter::ExtractMaterialIndex(unsigned int* pOutIndex, fbxsdk::FbxMesh*
 		if (referenceMode == FbxLayerElement::eIndexToDirect)
 		{
 			*pOutIndex = pMatElem->GetIndexArray().GetAt(polyIndex);
-			if (*pOutIndex == 0)
-			{
-				int qqq = 10;
-			}
-			if (*pOutIndex == 1)
-			{
-				int qqq = 10;
-			}
-			if (*pOutIndex == 2)
-			{
-				int qqq = 10;
-			}
-			if (*pOutIndex == 3)
-			{
-				int qqq = 10;
-			}
-			if (*pOutIndex == 4)
-			{
-				int qqq = 10;
-			}
-			if (*pOutIndex == 5)
-			{
-				int qqq = 10;
-			}
-			if (*pOutIndex == 6)
-			{
-				int qqq = 10;
-			}
-			if (*pOutIndex == 7)
-			{
-				int qqq = 10;
-			}
-			if (*pOutIndex == 8)
-			{
-				int qqq = 10;
-			}
-			if (*pOutIndex == 9)
-			{
-				int qqq = 10;
-			}
-			if (*pOutIndex == 10)
-			{
-				int qqq = 10;
-			}
-			if (*pOutIndex == 11)
-			{
-				int qqq = 10;
-			}
-			if (*pOutIndex == 12)
-			{
-				int qqq = 10;
-			}
-			if (*pOutIndex == 13)
-			{
-				int qqq = 10;
-			}
-			if (*pOutIndex == 14)
-			{
-				int qqq = 10;
-			}
-			if (*pOutIndex == 15)
-			{
-				int qqq = 10;
-			}
-			if (*pOutIndex == 16)
-			{
-				int qqq = 10;
-			}
-			if (*pOutIndex == 17)
-			{
-				int qqq = 10;
-			}
 			return true;
 		}
 		else if (referenceMode == FbxLayerElement::eDirect)
@@ -859,34 +784,186 @@ void FBXImporter::CalculateTangent(std::vector<SkinnedMeshVertex>* pVertices, co
 	}
 }
 
-void FBXImporter::ExtractBones(Model* pOutModel, FbxNode* node, int parentBoneIndex)
-{
-	if (!node) return;
+//void FBXImporter::ExtractBones(Model* pOutModel, FbxNode* pNode, uint32_t parentBoneIndex)
+//{
+//	if (!pNode) return;
+//
+//	FbxNodeAttribute* attr = pNode->GetNodeAttribute();
+//	uint16_t currentBoneIndex = parentBoneIndex;
+//
+//	if (attr && attr->GetAttributeType() == FbxNodeAttribute::eSkeleton)
+//	{
+//		Bone bone;
+//		bone.name = pNode->GetName();
+//		bone.parentIndex = parentBoneIndex;
+//
+//		// 바인드 포즈 (로컬)
+//		//bone.localBindPose = pNode->EvaluateLocalTransform();
+//		//fbxsdk::FbxAMatrix localBindPose = pNode->EvaluateLocalTransform();
+//		//bone.localBindPose = ConvertFbxAMatrixToFloat4x4_SIMD(localBindPose);
+//
+//		// 바인드 포즈 (글로벌)
+//		//fbxsdk::FbxAMatrix globalBindPose = pNode->EvaluateGlobalTransform();
+//		//bone.globalBindPose = ConvertFbxAMatrixToFloat4x4_SIMD(globalBindPose);
+//
+//		uint32_t nodeID = pNode->GetUniqueID();
+//		currentBoneIndex = static_cast<uint32_t>(pOutModel->bones.size());
+//		pOutModel->bones.push_back(bone);
+//		pOutModel->boneMap[nodeID] = currentBoneIndex;
+//	}
+//
+//	const int childCount = pNode->GetChildCount();
+//	for (int i = 0; i < childCount; ++i)
+//	{
+//		ExtractBones(pOutModel, pNode->GetChild(i), currentBoneIndex);
+//	}
+//}
 
-	FbxNodeAttribute* attr = node->GetNodeAttribute();
-	int currentBoneIndex = parentBoneIndex;
+void FBXImporter::ExtractBones(Model* pOutModel, FbxNode* pNode, uint32_t parentBoneIndex)
+{
+	if (!pNode) return;
+
+	FbxNodeAttribute* attr = pNode->GetNodeAttribute();
+	uint16_t currentBoneIndex = parentBoneIndex;
 
 	if (attr && attr->GetAttributeType() == FbxNodeAttribute::eSkeleton)
 	{
-		Bone bone;
-		bone.name = node->GetName();
-		bone.parentIndex = parentBoneIndex;
+		BoneInfo boneInfo;
+		boneInfo.name = pNode->GetName();
+		boneInfo.parentIndex = parentBoneIndex;
+
 		// 바인드 포즈 (로컬)
-		//bone.localBindPose = node->EvaluateLocalTransform();
+		//bone.localBindPose = pNode->EvaluateLocalTransform();
+		//fbxsdk::FbxAMatrix localBindPose = pNode->EvaluateLocalTransform();
+		//bone.localBindPose = ConvertFbxAMatrixToFloat4x4_SIMD(localBindPose);
+
 		// 바인드 포즈 (글로벌)
-		//bone.globalBindPose = node->EvaluateGlobalTransform();
-		
-		currentBoneIndex = static_cast<uint16_t>(pOutModel->bones.size());
-		pOutModel->bones.push_back(bone);
-		pOutModel->boneMap[node->GetUniqueID()] = currentBoneIndex;
+		//fbxsdk::FbxAMatrix globalBindPose = pNode->EvaluateGlobalTransform();
+		//bone.globalBindPose = ConvertFbxAMatrixToFloat4x4_SIMD(globalBindPose);
+
+		uint32_t nodeID = pNode->GetUniqueID();
+		currentBoneIndex = static_cast<uint32_t>(pOutModel->totalBoneInfos.size());
+		pOutModel->totalBoneInfos.push_back(boneInfo);
+		pOutModel->totalBoneMap[nodeID] = currentBoneIndex;
 	}
 
-	const int childCount = node->GetChildCount();
+	const int childCount = pNode->GetChildCount();
 	for (int i = 0; i < childCount; ++i)
 	{
-		ExtractBones(pOutModel, node->GetChild(i), currentBoneIndex);
+		ExtractBones(pOutModel, pNode->GetChild(i), currentBoneIndex);
 	}
 }
+
+void FBXImporter::ExtractBindBoneSkin(MeshInfo* outMeshInfo, Model& model, fbxsdk::FbxMesh* pMesh)
+{
+	const int controlPointCount = pMesh->GetControlPointsCount();
+	outMeshInfo->skinDatas.resize(controlPointCount);
+	outMeshInfo->bones.resize(model.totalBoneInfos.size());
+
+	const int deformerCount = pMesh->GetDeformerCount(FbxDeformer::eSkin);
+	if (deformerCount == 0)
+	{
+		DEBUG_BREAK();
+		return;
+	}
+
+	for (int d = 0; d < deformerCount; d++)
+	{
+		FbxSkin* pSkin = static_cast<FbxSkin*>(pMesh->GetDeformer(d, FbxDeformer::eSkin));
+		const int clusterCount = pSkin->GetClusterCount();
+
+		for (int c = 0; c < clusterCount; c++)
+		{
+			FbxCluster* pCluster = pSkin->GetCluster(c);
+			FbxNode* pBoneNode = pCluster->GetLink();
+
+			if (!pBoneNode) continue;
+			const fbxsdk::FbxUInt64& nodeID = pBoneNode->GetUniqueID();
+			auto it = model.totalBoneMap.find(nodeID);
+			if (it == model.totalBoneMap.end()) continue;
+
+			// 현재 cluster에 매칭되는 BoneIndex
+			int boneIndex = it->second;
+
+			// Local Bind Pose
+			fbxsdk::FbxAMatrix localBindPose;
+			pCluster->GetTransformMatrix(localBindPose);
+			outMeshInfo->bones[boneIndex].localBindPose = ConvertFbxAMatrixToFloat4x4_SIMD(localBindPose);
+
+			// Global Bind Pose
+			fbxsdk::FbxAMatrix globalBindPose;
+			pCluster->GetTransformLinkMatrix(globalBindPose);
+			outMeshInfo->bones[boneIndex].globalBindPose = ConvertFbxAMatrixToFloat4x4_SIMD(globalBindPose);
+			
+
+			// 현재 cluster에 영향받고있는 Indices들.
+			const int indexCount = pCluster->GetControlPointIndicesCount();	// 현재 cluster에 영향받고있는 index의 갯수
+			const int* indices = pCluster->GetControlPointIndices();
+			const double* weights = pCluster->GetControlPointWeights();	// index에 해당하는 weight
+
+			for (int i = 0; i < indexCount; i++)
+			{
+				int cpIndex = indices[i];
+				float weight = static_cast<float>(weights[i]);
+
+				if (weight <= 0.0f) continue;
+				AddBoneWeight(outMeshInfo->skinDatas[cpIndex], boneIndex, weight);
+			}
+		}
+	}
+
+	NormalizeSkinWeights(outMeshInfo->skinDatas);
+}
+
+void FBXImporter::AddBoneWeight(SkinWeight& skinData, int boneIndex, float weight)
+{
+	for (int i = 0; i < MAX_BONE_INFLUENCE; i++)
+	{
+		if (skinData.boneWeights[i] == 0.0f)
+		{
+			skinData.boneIndices[i] = boneIndex;
+			skinData.boneWeights[i] = weight;
+			return;
+		}
+	}
+
+	//// 이미 4개가 찼다면 가장 작은 weight 교체
+	int minIndex = 0;
+	for (int i = 1; i < MAX_BONE_INFLUENCE; i++)
+	{
+		if (skinData.boneWeights[i] < skinData.boneWeights[minIndex])
+		{
+			minIndex = i;
+		}
+	}
+
+	if (skinData.boneWeights[minIndex] < weight)
+	{
+		skinData.boneIndices[minIndex] = boneIndex;
+		skinData.boneWeights[minIndex] = weight;
+	}
+}
+
+void FBXImporter::NormalizeSkinWeights(std::vector<SkinWeight>& skinData)
+{
+	for (auto& skinData : skinData)
+	{
+		float sum = 0.0f;
+		for (int i = 0; i < MAX_BONE_INFLUENCE; ++i)
+		{
+			sum += skinData.boneWeights[i];
+		}
+
+		if (sum > 0.0f)
+		{
+			for (int i = 0; i < MAX_BONE_INFLUENCE; ++i)
+			{
+				skinData.boneWeights[i] /= sum;
+			}
+		}
+	}
+}
+
 
 MaterialInfo FBXImporter::ExtractMaterialInfo(fbxsdk::FbxSurfaceMaterial* material)
 {
