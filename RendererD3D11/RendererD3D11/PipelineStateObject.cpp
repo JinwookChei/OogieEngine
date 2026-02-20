@@ -9,11 +9,7 @@ PipelineStateObject::PipelineStateObject()
 	, ppMesheSlot_(nullptr)
 	, materialSlotCount_(0)
 	, ppMaterialSlot_(nullptr)
-	//, pMesh_(nullptr)
-	//, pMaterial_(nullptr)
-	//, samplerState_(E_SAMPLER_PRESET::LINEAR_CLAMP)
 	, depthState_(E_DEPTH_PRESET::DEPTH_ENABLE_WRITE)
-	//, blendState_(E_BLEND_PRESET::ALPHA_BLEND)
 	, rasterizerMode_(E_RASTERIZER_PRESET::SOLID)
 {
 }
@@ -100,30 +96,10 @@ uint32_t PipelineStateObject::GetMaterialSlotCount() const
 	return materialSlotCount_;
 }
 
-//IMesh* PipelineStateObject::GetMesh() const
-//{
-//	return pMesh_;
-//}
-
-//IMaterial* PipelineStateObject::GetMaterial() const
-//{
-//	return pMaterial_;
-//}
-
-//const E_SAMPLER_PRESET& PipelineStateObject::GetSamplerState() const
-//{
-//	return samplerState_;
-//}
-
 const E_DEPTH_PRESET& PipelineStateObject::GetDepthState() const
 {
 	return depthState_;
 }
-
-//const E_BLEND_PRESET& PipelineStateObject::GetBlendState() const
-//{
-//	return blendState_;
-//}
 
 const E_RASTERIZER_PRESET& PipelineStateObject::GetRasterizerMode() const
 {
@@ -153,46 +129,17 @@ void PipelineStateObject::CleanUp()
 	}
 	delete[] ppMaterialSlot_;
 	ppMaterialSlot_ = nullptr;
-
-
-	//if (nullptr != pMesh_)
-	//{
-	//	pMesh_->Release();
-	//	pMesh_ = nullptr;
-	//}
-	//if (nullptr != pMaterial_)
-	//{
-	//	pMaterial_->Release();
-	//	pMaterial_ = nullptr;
-	//}
 }
 
 PipelineStateObject* PipelineStateObject::Create(const PipelineStateDesc& desc)
 {
-	//if (nullptr == desc.pMesh)
-	//{
-	//	DEBUG_BREAK();
-	//	return nullptr;
-	//}
-	//if (nullptr == desc.pMaterial)
-	//{
-	//	DEBUG_BREAK();
-	//	return nullptr;
-	//}
-
 	PipelineStateObject* pNewPSO = new PipelineStateObject;
 	pNewPSO->meshSlotCount_ = desc.meshSlotCount;
 	pNewPSO->ppMesheSlot_ = new Mesh * [pNewPSO->meshSlotCount_] {};
 	pNewPSO->materialSlotCount_ = desc.materialSlotCount;
 	pNewPSO->ppMaterialSlot_ = new Material * [pNewPSO->materialSlotCount_] {};
 
-	//pNewPSO->pMesh_ = desc.pMesh;
-	//pNewPSO->pMesh_->AddRef();
-	//pNewPSO->pMaterial_ = desc.pMaterial;
-	//pNewPSO->pMaterial_->AddRef();
-	//pNewPSO->samplerState_ = desc.samplerState;
 	pNewPSO->depthState_ = desc.depthState;
-	//pNewPSO->blendState_ = desc.blendState;
 	pNewPSO->rasterizerMode_ = desc.rasterizerMode;
 	return pNewPSO;
 }

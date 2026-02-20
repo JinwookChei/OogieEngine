@@ -46,10 +46,12 @@
 
 
 // Common
-#include <Common/Asset/Animation.h>
 #include <Common/MathType/MathType.h>
 #include <Common/VertexType/VertexType.h>
+#include <Common/Asset/Skeleton.h>
 #include <Common/Asset/Model.h>
+#include <Common/Asset/Animation.h>
+
 
 // Interface
 #include <Interface/FBXImporter/IFBXImporter.h>

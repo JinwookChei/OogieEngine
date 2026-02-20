@@ -1,11 +1,11 @@
 #pragma once
 
-enum class E_VERTEX_FORMAT
-{
-	ScreenQuad = 0,
-	Simple,
-	SkinnedMesh
-};
+//enum class E_VERTEX_FORMAT
+//{
+//	ScreenQuad = 0,
+//	Simple,
+//	SkinnedMesh
+//};
 
 struct ScreenQuadVertex
 {
@@ -38,10 +38,8 @@ struct SkinnedMeshVertex
 	Float2 uv;
 	Float4 tangent;
 
-	unsigned int boneIndices[4];
+	UINT boneIndices[4];
 	float blendWeights[4];
-	unsigned int materialIndex;
-
 
 	// unordered_map Àü¿ë.
 	bool operator==(const SkinnedMeshVertex& other) const
@@ -57,8 +55,7 @@ struct SkinnedMeshVertex
 			&& normal.Y == other.normal.Y
 			&& normal.Z == other.normal.Z
 			&& uv.X == other.uv.X
-			&& uv.Y == other.uv.Y
-			&& materialIndex == other.materialIndex;
+			&& uv.Y == other.uv.Y;
 	}
 };
 

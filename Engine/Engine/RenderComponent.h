@@ -9,13 +9,6 @@ class InputLayout;
 class ShaderConstants;
 class Rasterizer;
 
-//enum class E_MESH_TYPE
-//{
-//	SPHERE = 0,
-//	CUBE,
-//	WUKONG
-//};
-
 class RenderComponent
 {
 public:
@@ -56,6 +49,8 @@ private:
 	Actor* pOwner_;
 
 	IPSO* pPSO_;
+
+	//Animation* pAnimation_;
 
 	//IMesh* pMesh_;
 	//IMaterial* pMaterial_;

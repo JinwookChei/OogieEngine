@@ -3,6 +3,7 @@
 
 Shader* Shader::GShaderDeferredSimple = nullptr;
 Shader* Shader::GShaderLight = nullptr;
+Shader* Shader::GShaderSkinnedMesh = nullptr;
 
 Shader::Shader()
 	: refCount_(1)
@@ -502,6 +503,22 @@ void Shader::InitGlobalShaders()
 	{
 		DEBUG_BREAK();
 	}
+
+	ShaderDesc skinnedMeshDesc;
+	skinnedMeshDesc.pathVS_ = L"SkinnedMeshVS.cso";
+	skinnedMeshDesc.pathPS_ = L"SkinnedMeshPS.cso";
+	skinnedMeshDesc.inputDesc_.push_back({ "POSITION", 0, 6, 0, false });
+	skinnedMeshDesc.inputDesc_.push_back({ "COLOR", 0, 2, 0, false });
+	skinnedMeshDesc.inputDesc_.push_back({ "NORMAL", 0, 6, 0, false });
+	skinnedMeshDesc.inputDesc_.push_back({ "TEXCOORD", 0, 16, 0, false });
+	skinnedMeshDesc.inputDesc_.push_back({ "TANGENT", 0, 2, 0, false });
+	skinnedMeshDesc.inputDesc_.push_back({ "BONEINDICES", 0, 3, 0, false });
+	skinnedMeshDesc.inputDesc_.push_back({ "BLENDWEIGHT", 0, 2, 0, false });
+	Shader::GShaderSkinnedMesh = Shader::Create(skinnedMeshDesc);
+	if (nullptr == GShaderSkinnedMesh)
+	{
+		DEBUG_BREAK();
+	}
 }
 
 void Shader::ShutDown()
@@ -516,5 +533,11 @@ void Shader::ShutDown()
 	{
 		Shader::GShaderDeferredSimple->Release();
 		Shader::GShaderDeferredSimple = nullptr;
+	}
+
+	if (nullptr != Shader::GShaderSkinnedMesh)
+	{
+		Shader::GShaderSkinnedMesh->Release();
+		Shader::GShaderSkinnedMesh = nullptr;
 	}
 }

@@ -4,6 +4,7 @@
 ConstantBuffer* ConstantBuffer::GConstantPerFrame = nullptr;
 ConstantBuffer* ConstantBuffer::GConstantPerObject = nullptr;
 ConstantBuffer* ConstantBuffer::GConstantPerLight = nullptr;
+ConstantBuffer* ConstantBuffer::GConstantPerAnimation = nullptr;
 
 ConstantBuffer::ConstantBuffer()
 	: refCount_(1),
@@ -130,10 +131,17 @@ void ConstantBuffer::InitGlobalConstant()
 	ConstantBuffer::GConstantPerFrame = Create(sizeof(CBPerFrame));
 	ConstantBuffer::GConstantPerObject = Create(sizeof(CBPerObject));
 	ConstantBuffer::GConstantPerLight = Create(sizeof(CBPerLight));
+	ConstantBuffer::GConstantPerAnimation = Create(sizeof(CBPerAnimation));
 }
 
 void ConstantBuffer::ShutDown()
 {
+	if (nullptr != ConstantBuffer::GConstantPerAnimation)
+	{
+		ConstantBuffer::GConstantPerAnimation->Release();
+		ConstantBuffer::GConstantPerAnimation = nullptr;
+	}
+
 	if (nullptr != ConstantBuffer::GConstantPerFrame)
 	{
 		ConstantBuffer::GConstantPerFrame->Release();

@@ -3,17 +3,12 @@
 
 Mesh::Mesh()
 	: refCount_(1)
-	, vertexFormat_()
+	//, vertexFormat_()
 	, vertexStride_(0)
 	, vertexCount_(0)
 	, pVertexBuffer_(nullptr)
 	, pVertices_(nullptr)
-	//, meshSubsetCount_(0)
 	, meshSubsets_()
-	//, indexStride_(0)
-	//, indexCount_(0)
-	//, pIndexBuffer_(nullptr)
-	//, pIndices_(nullptr)
 {
 }
 
@@ -60,17 +55,12 @@ IMesh* Mesh::Create(const MeshDesc& desc)
 		pNewMesh = new Mesh;
 		if (false == pNewMesh->Init
 		(
-			desc.vertexFormat,
+			//desc.vertexFormat,
 			desc.vertexFormatSize,
 			desc.vertexCount,
 			copyVertices,
-			pVertexBuffer,
-			//desc.meshSubsetCount,
+			pVertexBuffer,			
 			meshSubsets
-			//desc.indexFormatSize,
-			//desc.indexCount,
-			//copyIndices,
-			//pIndexBuffer
 		))
 		{
 			Assert("Mesh Init Fail !!");
@@ -117,21 +107,19 @@ IMesh* Mesh::Create(const MeshDesc& desc)
 
 bool Mesh::Init
 (
-	E_VERTEX_FORMAT vertexFormat, 
+	//E_VERTEX_FORMAT vertexFormat, 
 	uint32_t vertexFormatSize, 
 	uint32_t vertexCount, 
 	void* pVertices, 
 	ID3D11Buffer* pVertexBuffer, 
-	//uint16_t meshSubsetCount,
 	const std::vector<MeshSubset>& meshSubsets
 )
 {
-	vertexFormat_ = vertexFormat;
+	//vertexFormat_ = vertexFormat;
 	vertexStride_ = vertexFormatSize;
 	vertexCount_ = vertexCount;
 	pVertices_ = pVertices;
 	pVertexBuffer_ = pVertexBuffer;
-	//meshSubsetCount_ = meshSubsetCount;
 	meshSubsets_ = meshSubsets;
 	return true;
 }
@@ -182,19 +170,20 @@ void Mesh::BindVertices() const
 //}
 
 
-void __stdcall Mesh::GetVerticesData
-(
-	E_VERTEX_FORMAT* pOutFormat, 
-	uint32_t* pOutStride, 
-	uint32_t* pOutCount, 
-	void** ppOutVertices
-) const
-{
-	*pOutFormat = vertexFormat_;
-	*pOutStride = vertexStride_;
-	*pOutCount = vertexCount_;
-	*ppOutVertices = pVertices_;
-}
+//void __stdcall Mesh::GetVerticesData
+//(
+//	//E_VERTEX_FORMAT* pOutFormat, 
+//	uint32_t* pOutStride, 
+//	uint32_t* pOutCount, 
+//	void** ppOutVertices
+//) const
+//{
+//	//*pOutFormat = vertexFormat_;
+//	*pOutStride = vertexStride_;
+//	*pOutCount = vertexCount_;
+//	*ppOutVertices = pVertices_;
+//}
+//
 
 const std::vector<MeshSubset>& Mesh::GetMeshSubsets() const
 {

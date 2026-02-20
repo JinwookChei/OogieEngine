@@ -50,7 +50,7 @@ private:
 
 	bool Init
 	(
-		E_VERTEX_FORMAT vertexFormat,
+		//E_VERTEX_FORMAT vertexFormat,
 		uint32_t vertexFormatSize,
 		uint32_t vertexCount,
 		void* pVertices,
@@ -69,7 +69,7 @@ public:
 
 	void BindVertices() const;
 
-	void __stdcall GetVerticesData(E_VERTEX_FORMAT* pOutFormat, uint32_t* pOutStride, uint32_t* pOutCount, void** ppOutVertices) const override;
+	//void __stdcall GetVerticesData(E_VERTEX_FORMAT* pOutFormat, uint32_t* pOutStride, uint32_t* pOutCount, void** ppOutVertices) const override;
 	//void __stdcall GetIndicesData(uint32_t* pOutStride, uint32_t* pOutCount, void** ppOutIndices) const override;
 
 	const std::vector<MeshSubset>& GetMeshSubsets() const;
@@ -82,7 +82,7 @@ private:
 
 	ULONG refCount_;
 
-	E_VERTEX_FORMAT vertexFormat_;
+	//E_VERTEX_FORMAT vertexFormat_;
 	uint32_t vertexStride_;
 	uint32_t vertexCount_;
 	void* pVertices_;

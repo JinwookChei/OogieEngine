@@ -47,6 +47,7 @@
 #include <Common/MathType/MathType.h>
 #include <Common/GeometryType/GeometryType.h>
 #include <Common/VertexType/VertexType.h>
+#include <Common/Asset/Skeleton.h>
 #include <Common/Asset/Animation.h>
 #include <Common/Asset/Model.h>
 
@@ -84,8 +85,10 @@
 #include "FBXManager.h"
 #include "InputManager.h"
 #include "TimeManager.h"
+#include "SkeletonManager.h"
 #include "MeshManager.h"
 #include "TextureManager.h"
+#include "AnimationManager.h"
 #include "ShaderManager.h"
 #include "MaterialManager.h"
 #include "RasterizerManager.h"
@@ -96,16 +99,18 @@
 #include "Light.h"
 #include "SpotLight.h"
 
+
+extern SkeletonManager* GSkeletonManager;
 extern MeshManager* GMeshManager;
 extern MaterialManager* GMaterialManager;
 extern TextureManager* GTextureManager;
+extern AnimationManager* GAnimationManager;
 extern RasterizerManager* GRasterizerManager;
 
 extern World* GWorld;
 extern Camera* GMainCamera;
 extern Camera* GCurrentCamera;
 extern ActorPicker* GActorPicker;
-
 
 extern IParticle* GParticle_1;
 extern IParticle* GParticle_2;

@@ -20,7 +20,7 @@ private:
 	bool CalculateAABB
 	(
 		AABB* pOutAABB,
-		E_VERTEX_FORMAT vertexFormat,
+		//E_VERTEX_FORMAT vertexFormat,
 		uint32_t vertexStride,
 		uint32_t vertexCount,
 		void* pVertices

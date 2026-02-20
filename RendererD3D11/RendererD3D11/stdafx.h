@@ -57,6 +57,8 @@
 #include <Common/MathType/MathType.h>
 #include <Common/GeometryType/GeometryType.h>
 #include <Common/VertexType/VertexType.h>
+#include <Common/Asset/Skeleton.h>
+#include <Common/Asset/Animation.h>
 #include <Common/Asset/Model.h>
 
 

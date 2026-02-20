@@ -68,7 +68,7 @@ ULONG __stdcall Material::Release()
 	--refCount_;
 	ULONG tmpRefCount = refCount_;
 	if (0 == refCount_) 
-{
+	{
 		delete this;
 	}
 	return tmpRefCount;
@@ -134,6 +134,11 @@ void Material::Bind()
 	case E_SHADER_PRESET::DeferredSimple: 
 	{
 		Shader::GShaderDeferredSimple->Bind();
+		break;
+	}
+	case E_SHADER_PRESET::SkinnedMesh:
+	{
+		Shader::GShaderSkinnedMesh->Bind();
 		break;
 	}
 	default:

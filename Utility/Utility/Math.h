@@ -25,6 +25,8 @@ namespace MATH
 	UTILITY_API void VectorScale(Float4& out, const Float4& lhs, float scale);
 	UTILITY_API void VectorNormalize(Float4& out, const Float4& lhs);
 	UTILITY_API void VectorLength(float& out, const Float4& lhs);
+	UTILITY_API inline Float4 VectorSlerp(const Float4& q1, const Float4& q2, double weight);
+
 
 	UTILITY_API void VectorDot(float& out, const Float3& lhs, const Float3& rhs);
 	UTILITY_API void VectorCross(Float3& out, const Float3& lhs, const Float3& rhs);
@@ -66,6 +68,7 @@ namespace MATH
 	UTILITY_API void MatrixDeterminant(float& out, const Float4x4& src);
 	UTILITY_API void MatrixDeterminant(float& out, const Float3x3& src);
 	UTILITY_API void MatrixCompose(Float4x4& out, const Float4& scale, const Float4& rotDeg, const Float4& pos);
+	UTILITY_API void MatrixComposeQuat(Float4x4& out, const Float4& scale, const Float4& quat, const Float4& trans);
 	UTILITY_API void MatrixDecompose(Float4& outScale, Float4& outQuat, Float4& outPos, const Float4x4& src);
 	UTILITY_API void MatrixLookAtLH(Float4x4& out, const Float4& eyePos, const Float4& focusPos, const Float4& eyeUp);
 	UTILITY_API void MatrixLookToLH(Float4x4& out, const Float4& eyePos, const Float4& eyeForward, const Float4& eyeUp);

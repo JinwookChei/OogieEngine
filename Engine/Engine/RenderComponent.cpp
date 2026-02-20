@@ -7,6 +7,7 @@
 RenderComponent::RenderComponent(Actor* pOwner)
 	: pOwner_(pOwner)
 	, pPSO_(nullptr)
+	//, pAnimation_(nullptr)
 	//, pMesh_(nullptr)
 	//, pMaterial_(nullptr)
 	, OnMeshLoaded_()
@@ -23,7 +24,7 @@ void RenderComponent::Render()
 	ObjectFrameData objectFrameData;
 	objectFrameData.world = pOwner_->GetWorldTransform().GetWorldMatrix();
 	Renderer::Instance()->UpdateObjectFrame(objectFrameData);
-	Renderer::Instance()->RenderTest(pPSO_);
+	Renderer::Instance()->Render(pPSO_);
 }
 
 void RenderComponent::InitPSO
@@ -36,21 +37,9 @@ void RenderComponent::InitPSO
 {
 	CleanUp();
 
-	//IMesh* tmpMesh = nullptr;
-	//if (false == MeshManager::Instance()->GetMesh(&tmpMesh, meshTag)) DEBUG_BREAK();
-	//pMesh_ = tmpMesh;
-	//pMesh_->AddRef();
-
-	//IMaterial* tmpMaterial = nullptr;
-	//if (false == MaterialManager::Instance()->GetMaterial(&tmpMaterial, materialTag)) DEBUG_BREAK();
-	//pMaterial_ = tmpMaterial;
-	//pMaterial_->AddRef();
-
 	PipelineStateDesc psoDesc;
 	psoDesc.meshSlotCount = meshSlotCount;
 	psoDesc.materialSlotCount = meshMaterialCount;
-	/*psoDesc.pMesh = pMesh_;
-	psoDesc.pMaterial = pMaterial_;*/
 	psoDesc.depthState = depthState;
 	psoDesc.rasterizerMode = rasterizerMode;
 
@@ -65,11 +54,6 @@ IPSO* RenderComponent::GetPSO() const
 {
 	return pPSO_;
 }
-
-//IMesh* RenderComponent::GetMesh() const
-//{
-//	return pMesh_;
-//}
 
 //TEMP
 void RenderComponent::BindOnMeshLoaded(MeshLoadedDelegate callback)
@@ -99,18 +83,6 @@ void RenderComponent::BroadcastOnMeshLoaded()
 
 void RenderComponent::CleanUp()
 {
-	/*if (nullptr != pMesh_)
-	{
-		pMesh_->Release();
-		pMesh_ = nullptr;
-	}
-	
-	if (nullptr != pMaterial_)
-	{
-		pMaterial_->Release();
-		pMaterial_ = nullptr;
-	}*/
-
 	if (nullptr != pPSO_)
 	{
 		pPSO_->Release();

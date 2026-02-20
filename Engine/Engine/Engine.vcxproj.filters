@@ -61,9 +61,6 @@
     <Filter Include="Source Files\Actor\Camera">
       <UniqueIdentifier>{d9fc05ca-5bf2-4814-b2e5-6f954e1800fb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Manager\GraphicsManager">
-      <UniqueIdentifier>{4f929b8f-e4bb-4425-b02c-a2b4715d3128}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Component\BoundVolume">
       <UniqueIdentifier>{fda48a9c-d09b-4392-83eb-db9b0658ba8f}</UniqueIdentifier>
     </Filter>
@@ -78,9 +75,6 @@
     </Filter>
     <Filter Include="Source Files\Actor\Player">
       <UniqueIdentifier>{d2fb2290-0889-4ddd-9d08-d3088fb95279}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\FBX">
-      <UniqueIdentifier>{8b09a7ae-7e33-4c1f-9062-ec68c9bec508}</UniqueIdentifier>
     </Filter>
     <Filter Include="Interface\Renderer">
       <UniqueIdentifier>{17feca84-0cee-4f89-ac63-93016f4e79c8}</UniqueIdentifier>
@@ -99,6 +93,18 @@
     </Filter>
     <Filter Include="Source Files\Application">
       <UniqueIdentifier>{84956872-881c-4dbe-8874-33c949c18b36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Component\Mesh">
+      <UniqueIdentifier>{448b90c2-41c6-4ac2-988f-31fc57cd5c24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Manager\FBX">
+      <UniqueIdentifier>{8b09a7ae-7e33-4c1f-9062-ec68c9bec508}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Asset">
+      <UniqueIdentifier>{3714f631-2a14-4460-ba16-b30449b8d50b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Manager\ResourceManager">
+      <UniqueIdentifier>{4f929b8f-e4bb-4425-b02c-a2b4715d3128}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -151,19 +157,19 @@
       <Filter>Source Files\Actor\Camera</Filter>
     </ClInclude>
     <ClInclude Include="MeshManager.h">
-      <Filter>Source Files\Manager\GraphicsManager</Filter>
+      <Filter>Source Files\Manager\ResourceManager</Filter>
     </ClInclude>
     <ClInclude Include="BoundVolume.h">
       <Filter>Source Files\Component\BoundVolume</Filter>
     </ClInclude>
     <ClInclude Include="RasterizerManager.h">
-      <Filter>Source Files\Manager\GraphicsManager</Filter>
+      <Filter>Source Files\Manager\ResourceManager</Filter>
     </ClInclude>
     <ClInclude Include="MaterialManager.h">
-      <Filter>Source Files\Manager\GraphicsManager</Filter>
+      <Filter>Source Files\Manager\ResourceManager</Filter>
     </ClInclude>
     <ClInclude Include="TextureManager.h">
-      <Filter>Source Files\Manager\GraphicsManager</Filter>
+      <Filter>Source Files\Manager\ResourceManager</Filter>
     </ClInclude>
     <ClInclude Include="ActorPicker.h">
       <Filter>Source Files\ActorPicker</Filter>
@@ -180,14 +186,8 @@
     <ClInclude Include="..\..\Common\VertexType\VertexType.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Common\Asset\Model.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Common\Asset\Animation.h">
-      <Filter>Common</Filter>
-    </ClInclude>
     <ClInclude Include="FBXManager.h">
-      <Filter>Source Files\FBX</Filter>
+      <Filter>Source Files\Manager\FBX</Filter>
     </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>Source Files\Actor\Player</Filter>
@@ -241,7 +241,31 @@
       <Filter>Interface\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="ShaderManager.h">
-      <Filter>Source Files\Manager\GraphicsManager</Filter>
+      <Filter>Source Files\Manager\ResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationManager.h">
+      <Filter>Source Files\Manager\ResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimTest.h">
+      <Filter>Source Files\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshComponent.h">
+      <Filter>Source Files\Component\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="SkeletalMeshComponent.h">
+      <Filter>Source Files\Component\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Asset\Skeleton.h">
+      <Filter>Common\Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Asset\Model.h">
+      <Filter>Common\Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Asset\Animation.h">
+      <Filter>Common\Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="SkeletonManager.h">
+      <Filter>Source Files\Manager\ResourceManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -294,19 +318,19 @@
       <Filter>Source Files\Actor\Camera</Filter>
     </ClCompile>
     <ClCompile Include="MeshManager.cpp">
-      <Filter>Source Files\Manager\GraphicsManager</Filter>
+      <Filter>Source Files\Manager\ResourceManager</Filter>
     </ClCompile>
     <ClCompile Include="BoundVolume.cpp">
       <Filter>Source Files\Component\BoundVolume</Filter>
     </ClCompile>
     <ClCompile Include="RasterizerManager.cpp">
-      <Filter>Source Files\Manager\GraphicsManager</Filter>
+      <Filter>Source Files\Manager\ResourceManager</Filter>
     </ClCompile>
     <ClCompile Include="MaterialManager.cpp">
-      <Filter>Source Files\Manager\GraphicsManager</Filter>
+      <Filter>Source Files\Manager\ResourceManager</Filter>
     </ClCompile>
     <ClCompile Include="TextureManager.cpp">
-      <Filter>Source Files\Manager\GraphicsManager</Filter>
+      <Filter>Source Files\Manager\ResourceManager</Filter>
     </ClCompile>
     <ClCompile Include="ActorPicker.cpp">
       <Filter>Source Files\ActorPicker</Filter>
@@ -315,7 +339,7 @@
       <Filter>Source Files\Component\ParticleSystem</Filter>
     </ClCompile>
     <ClCompile Include="FBXManager.cpp">
-      <Filter>Source Files\FBX</Filter>
+      <Filter>Source Files\Manager\FBX</Filter>
     </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>Source Files\Actor\Player</Filter>
@@ -327,7 +351,25 @@
       <Filter>Source Files\Application</Filter>
     </ClCompile>
     <ClCompile Include="ShaderManager.cpp">
-      <Filter>Source Files\Manager\GraphicsManager</Filter>
+      <Filter>Source Files\Manager\ResourceManager</Filter>
     </ClCompile>
+    <ClCompile Include="AnimationManager.cpp">
+      <Filter>Source Files\Manager\ResourceManager</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimTest.cpp">
+      <Filter>Source Files\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshComponent.cpp">
+      <Filter>Source Files\Component\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="SkeletalMeshComponent.cpp">
+      <Filter>Source Files\Component\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="SkeletonManager.cpp">
+      <Filter>Source Files\Manager\ResourceManager</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
   </ItemGroup>
 </Project>

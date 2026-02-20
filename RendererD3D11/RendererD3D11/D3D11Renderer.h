@@ -32,8 +32,9 @@ public:
 	void __stdcall UpdateCameraFrame(const CameraFrameData& cameraFrameData) override;
 	void __stdcall UpdateObjectFrame(const ObjectFrameData& objectFrameData) override;
 	void __stdcall UpdateLightFrame(const LightRenderData& lightFrameData) override;
+	void __stdcall UpdateAnimationFrame(const AnimConstantBuffer& animFrameData) override;
 
-	void __stdcall RenderTest(IPSO* pipelineStateObject) override;
+	void __stdcall Render(IPSO* pipelineStateObject) override;
 
 	void __stdcall UnBindSRVs(bool bVS, bool bPS) override;
 

@@ -56,6 +56,13 @@ struct LightRenderData
 	Float2 pad;
 };
 
+// 임시. -> Const-> Struct buffer로 바꿔야함.
+struct AnimConstantBuffer
+{
+	Float4x4 animTransform[200];
+};
+
+
 struct IRenderer : public IUnknown {
 	virtual bool __stdcall Initialize(void* hWnd, uint32_t width, uint32_t height) = 0;
 
@@ -69,7 +76,9 @@ struct IRenderer : public IUnknown {
 
 	virtual void __stdcall UpdateLightFrame(const LightRenderData& lightFrameData) = 0;
 
-	virtual void __stdcall RenderTest(IPSO* pipelineStateObject) = 0;
+	virtual void __stdcall UpdateAnimationFrame(const AnimConstantBuffer& animFrameData) = 0;
+	 
+	virtual void __stdcall Render(IPSO* pipelineStateObject) = 0;
 
 	virtual void __stdcall UnBindSRVs(bool bVS, bool bPS) = 0;
 

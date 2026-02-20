@@ -45,9 +45,6 @@ private:
 	uint32_t materialSlotCount_;
 	Material** ppMaterialSlot_;
 
-	//IMesh* pMesh_;
-	//IMaterial* pMaterial_;
-
 	E_DEPTH_PRESET depthState_;
 	E_RASTERIZER_PRESET rasterizerMode_;
 

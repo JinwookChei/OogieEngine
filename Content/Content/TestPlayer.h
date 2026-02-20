@@ -1,5 +1,7 @@
 #pragma once
 
+class SkeletalMeshComponent;
+
 class TestPlayer : public Player
 {
 public:
@@ -14,5 +16,6 @@ private:
 	void CleanUp() override;
 
 private:
-
+	//AnimTest* pAnimTest_;
+	SkeletalMeshComponent* pSkeletalMeshComponent_;
 };

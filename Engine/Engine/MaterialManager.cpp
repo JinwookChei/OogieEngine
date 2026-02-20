@@ -65,7 +65,7 @@ void MaterialManager::TestLoad()
 
 
 	MaterialDesc matDesc2;
-	matDesc2.shaderType = E_SHADER_PRESET::DeferredSimple;
+	matDesc2.shaderType = E_SHADER_PRESET::SkinnedMesh;
 	matDesc2.samplerState = E_SAMPLER_PRESET::LINEAR_WARP;
 	matDesc2.blendState = E_BLEND_PRESET::OPAQUE_BLEND;
 	matDesc2.textureNum_ = 2;

@@ -1,6 +1,6 @@
 #pragma once
 
-struct RenderResourceFactory : public IRenderResourceFactory
+class RenderResourceFactory : public IRenderResourceFactory
 {
 public:
 	RenderResourceFactory();

@@ -5,9 +5,12 @@
 #include "Engine.h"
 #include "Actor.h"
 
+
+SkeletonManager* GSkeletonManager = nullptr;
 MeshManager* GMeshManager = nullptr;
 MaterialManager* GMaterialManager = nullptr;
 TextureManager* GTextureManager = nullptr;
+AnimationManager* GAnimationManager = nullptr;
 RasterizerManager* GRasterizerManager = nullptr;
 
 World* GWorld = nullptr;
@@ -100,9 +103,13 @@ bool Engine::Initialize
 
 	GMeshManager = new MeshManager;
 
+	GSkeletonManager = new SkeletonManager;
+
 	GTextureManager = new TextureManager;
 
 	GMaterialManager = new MaterialManager;
+
+	GAnimationManager = new AnimationManager;
 
 	GRasterizerManager = new RasterizerManager;
 
@@ -125,6 +132,8 @@ void Engine::Run()
 	MeshManager::Instance()->TestLoad();
 	TextureManager::Instance()->TestLoad();
 	MaterialManager::Instance()->TestLoad();
+	AnimationManager::Instance()->TestLoad();
+	FBXManager::TestLoad();
 
 	ParticleDesc particleDesc;
 	particleDesc.maxNum_ = 10;
@@ -234,6 +243,18 @@ void Engine::CleanUp()
 	{
 		delete GRasterizerManager;
 		GRasterizerManager = nullptr;
+	}
+
+	if (nullptr != GSkeletonManager)
+	{
+		delete GSkeletonManager;
+		GSkeletonManager = nullptr;
+	}
+
+	if (nullptr != GAnimationManager)
+	{
+		delete GAnimationManager;
+		GAnimationManager = nullptr;
 	}
 
 	if (nullptr != GTextureManager)

@@ -49,22 +49,28 @@
 #define UNICODE
 #endif 
 
-
+// STL
 #include <windows.h>
 #include <cstdint>
 #include <cstdlib>
 #include <cstdio>
 #include <vector>
 #include <map>
+#include <unordered_map>
 #include <string>
 #include <functional>
 
-#include <DirectXMath.h>
+// DirectX
+//#include <DirectXMath.h>
 
-// CoreTypes
+
+// Common
 #include <Common/MathType/MathType.h>
 #include <Common/GeometryType/GeometryType.h>
 #include <Common/VertexType/VertexType.h>
+#include <Common/Asset/Skeleton.h>
+#include <Common/Asset/Animation.h>
+#include <Common/Asset/Model.h>
 
 
 // Interface
@@ -108,6 +114,8 @@
 #include <Engine/Engine/SpotLight.h>
 #include <Engine/Engine/PointLight.h>
 #include <Engine/Engine/RenderComponent.h>
+#include <Engine/Engine/MeshComponent.h>
+#include <Engine/Engine/SkeletalMeshComponent.h>
 #include <Engine/Engine/InputManager.h>
 #include <Engine/Engine/World.h>
 

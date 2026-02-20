@@ -149,6 +149,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\Common\Asset\Animation.h" />
     <ClInclude Include="..\..\Common\Asset\Model.h" />
+    <ClInclude Include="..\..\Common\Asset\Skeleton.h" />
     <ClInclude Include="..\..\Common\GeometryType\GeometryType.h" />
     <ClInclude Include="..\..\Common\MathType\MathType.h" />
     <ClInclude Include="..\..\Common\VertexType\VertexType.h" />
@@ -168,6 +169,8 @@
     <ClInclude Include="..\..\Interface\Renderer\ITexture.h" />
     <ClInclude Include="Actor.h" />
     <ClInclude Include="ActorPicker.h" />
+    <ClInclude Include="AnimationManager.h" />
+    <ClInclude Include="AnimTest.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="BoundVolume.h" />
     <ClInclude Include="Camera.h" />
@@ -179,6 +182,7 @@
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="MaterialManager.h" />
+    <ClInclude Include="MeshComponent.h" />
     <ClInclude Include="MeshManager.h" />
     <ClInclude Include="ParticleComponent.h" />
     <ClInclude Include="Player.h" />
@@ -187,6 +191,8 @@
     <ClInclude Include="RenderComponent.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="ShaderManager.h" />
+    <ClInclude Include="SkeletalMeshComponent.h" />
+    <ClInclude Include="SkeletonManager.h" />
     <ClInclude Include="SpotLight.h" />
     <ClInclude Include="StartUp.h" />
     <ClInclude Include="stdafx.h" />
@@ -198,6 +204,8 @@
   <ItemGroup>
     <ClCompile Include="Actor.cpp" />
     <ClCompile Include="ActorPicker.cpp" />
+    <ClCompile Include="AnimationManager.cpp" />
+    <ClCompile Include="AnimTest.cpp" />
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="BoundVolume.cpp" />
     <ClCompile Include="Camera.cpp" />
@@ -210,6 +218,7 @@
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="MaterialManager.cpp" />
+    <ClCompile Include="MeshComponent.cpp" />
     <ClCompile Include="MeshManager.cpp" />
     <ClCompile Include="ParticleComponent.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -218,6 +227,8 @@
     <ClCompile Include="RenderComponent.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="ShaderManager.cpp" />
+    <ClCompile Include="SkeletalMeshComponent.cpp" />
+    <ClCompile Include="SkeletonManager.cpp" />
     <ClCompile Include="SpotLight.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -227,6 +238,9 @@
     <ClCompile Include="TimeManager.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="World.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

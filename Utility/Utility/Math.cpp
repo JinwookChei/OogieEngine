@@ -84,6 +84,83 @@ void MATH::VectorLength(float& out, const Float4& lhs)
 	out = result.m128_f32[0];
 }
 
+inline Float4 MATH::VectorSlerp(const Float4& q1, const Float4& q2, double weight)
+{
+	const float t = static_cast<float>(weight);
+
+	// Load into SIMD registers
+	__m128 v1 = _mm_loadu_ps(&q1.X);
+	__m128 v2 = _mm_loadu_ps(&q2.X);
+
+	// dot = dot(q1, q2)
+	__m128 mul = _mm_mul_ps(v1, v2);
+
+	// horizontal add
+	__m128 shuf = _mm_shuffle_ps(mul, mul, _MM_SHUFFLE(2, 3, 0, 1));
+	__m128 sums = _mm_add_ps(mul, shuf);
+
+	shuf = _mm_shuffle_ps(sums, sums, _MM_SHUFFLE(1, 0, 3, 2));
+	sums = _mm_add_ps(sums, shuf);
+
+	float dot = _mm_cvtss_f32(sums);
+
+	// If dot < 0, negate second quaternion
+	if (dot < 0.0f)
+	{
+		dot = -dot;
+		v2 = _mm_sub_ps(_mm_setzero_ps(), v2);
+	}
+
+	const float DOT_THRESHOLD = 0.9995f;
+
+	// If very close -> use Lerp
+	if (dot > DOT_THRESHOLD)
+	{
+		// result = normalize(q1 + t*(q2-q1))
+
+		__m128 diff = _mm_sub_ps(v2, v1);
+		__m128 tv = _mm_set1_ps(t);
+
+		__m128 result = _mm_add_ps(v1, _mm_mul_ps(diff, tv));
+
+		// normalize
+		__m128 sq = _mm_mul_ps(result, result);
+
+		shuf = _mm_shuffle_ps(sq, sq, _MM_SHUFFLE(2, 3, 0, 1));
+		sums = _mm_add_ps(sq, shuf);
+
+		shuf = _mm_shuffle_ps(sums, sums, _MM_SHUFFLE(1, 0, 3, 2));
+		sums = _mm_add_ps(sums, shuf);
+
+		float len = std::sqrt(_mm_cvtss_f32(sums));
+
+		__m128 invLen = _mm_set1_ps(1.0f / len);
+		result = _mm_mul_ps(result, invLen);
+
+		Float4 out;
+		_mm_storeu_ps(&out.X, result);
+		return out;
+	}
+
+	// Standard Slerp
+	float theta = std::acos(dot);
+	float sinTheta = std::sin(theta);
+
+	float w1 = std::sin((1.0f - t) * theta) / sinTheta;
+	float w2 = std::sin(t * theta) / sinTheta;
+
+	__m128 vw1 = _mm_set1_ps(w1);
+	__m128 vw2 = _mm_set1_ps(w2);
+
+	__m128 r1 = _mm_mul_ps(v1, vw1);
+	__m128 r2 = _mm_mul_ps(v2, vw2);
+
+	__m128 result = _mm_add_ps(r1, r2);
+
+	Float4 out;
+	_mm_storeu_ps(&out.X, result);
+	return out;
+}
 
 void MATH::VectorDot(float& out, const Float3& lhs, const Float3& rhs)
 {
@@ -620,6 +697,134 @@ void MATH::MatrixCompose(Float4x4& out, const Float4& scale, const Float4& rotDe
 
 	memcpy_s(&out, sizeof(Float4x4), &matrix, sizeof(XMMATRIX));
 }
+
+void MATH::MatrixComposeQuat(Float4x4& out, const Float4& scale, const Float4& quat, const Float4& trans)
+{
+	using namespace DirectX;
+
+	//// Degree → radian
+	//XMVECTOR rotRad = _mm_mul_ps(_mm_loadu_ps(&rotDeg.X), _mm_loadu_ps(&MATH::DegToRad.X));
+
+	//// X-forward, Y-right, Z-up 기준 회전 구성
+	//XMVECTOR qx = XMQuaternionRotationAxis(g_XMIdentityR0, XMVectorGetX(rotRad)); // X (forward)
+	//XMVECTOR qy = XMQuaternionRotationAxis(g_XMIdentityR1, XMVectorGetY(rotRad)); // Y (right)
+	//XMVECTOR qz = XMQuaternionRotationAxis(g_XMIdentityR2, XMVectorGetZ(rotRad)); // Z (up)
+
+	//// 순서: Roll → Pitch → Yaw (필요에 맞게 조정)
+	//XMVECTOR q = XMQuaternionMultiply(qy, XMQuaternionMultiply(qx, qz));
+
+	XMVECTOR q = XMLoadFloat4(reinterpret_cast<const XMFLOAT4*>(&quat));
+
+	XMMATRIX matrix = XMMatrixAffineTransformation(
+		_mm_loadu_ps(&scale.X),
+		g_XMZero,
+		q,
+		_mm_loadu_ps(&trans.X));
+
+	memcpy_s(&out, sizeof(Float4x4), &matrix, sizeof(XMMATRIX));
+
+	////-----------------------------------
+	//	// Load Quaternion (x,y,z,w)
+	//	//-----------------------------------
+	//__m128 q = _mm_loadu_ps(&quat.X);
+
+	////-----------------------------------
+	//// (x,y,z,w) -> (x2,y2,z2,0)
+	////-----------------------------------
+	//__m128 q2 = _mm_add_ps(q, q);
+
+	////-----------------------------------
+	//// Shuffle
+	////-----------------------------------
+	//__m128 xx = _mm_shuffle_ps(q, q, _MM_SHUFFLE(0, 0, 0, 0));
+	//__m128 yy = _mm_shuffle_ps(q, q, _MM_SHUFFLE(1, 1, 1, 1));
+	//__m128 zz = _mm_shuffle_ps(q, q, _MM_SHUFFLE(2, 2, 2, 2));
+	//__m128 ww = _mm_shuffle_ps(q, q, _MM_SHUFFLE(3, 3, 3, 3));
+
+	//__m128 x2 = _mm_shuffle_ps(q2, q2, _MM_SHUFFLE(0, 0, 0, 0));
+	//__m128 y2 = _mm_shuffle_ps(q2, q2, _MM_SHUFFLE(1, 1, 1, 1));
+	//__m128 z2 = _mm_shuffle_ps(q2, q2, _MM_SHUFFLE(2, 2, 2, 2));
+
+	////-----------------------------------
+	//// Products
+	////-----------------------------------
+	//__m128 xx2 = _mm_mul_ps(xx, x2);
+	//__m128 yy2 = _mm_mul_ps(yy, y2);
+	//__m128 zz2 = _mm_mul_ps(zz, z2);
+
+	//__m128 xy2 = _mm_mul_ps(xx, y2);
+	//__m128 xz2 = _mm_mul_ps(xx, z2);
+	//__m128 yz2 = _mm_mul_ps(yy, z2);
+
+	//__m128 wx2 = _mm_mul_ps(ww, x2);
+	//__m128 wy2 = _mm_mul_ps(ww, y2);
+	//__m128 wz2 = _mm_mul_ps(ww, z2);
+
+	////-----------------------------------
+	//// Load Scale
+	////-----------------------------------
+	//__m128 s = _mm_loadu_ps(&scale.X);
+
+	////-----------------------------------
+	//// Rotation * Scale (Row-major)
+	////-----------------------------------
+
+	//// Row0
+	//__m128 r0 = _mm_set_ps(
+	//	0.0f,
+	//	1.0f - (yy2.m128_f32[0] + zz2.m128_f32[0]),
+	//	xy2.m128_f32[0] + wz2.m128_f32[0],
+	//	xz2.m128_f32[0] - wy2.m128_f32[0]
+	//);
+
+	//// Row1
+	//__m128 r1 = _mm_set_ps(
+	//	0.0f,
+	//	xy2.m128_f32[0] - wz2.m128_f32[0],
+	//	1.0f - (xx2.m128_f32[0] + zz2.m128_f32[0]),
+	//	yz2.m128_f32[0] + wx2.m128_f32[0]
+	//);
+
+	//// Row2
+	//__m128 r2 = _mm_set_ps(
+	//	0.0f,
+	//	xz2.m128_f32[0] + wy2.m128_f32[0],
+	//	yz2.m128_f32[0] - wx2.m128_f32[0],
+	//	1.0f - (xx2.m128_f32[0] + yy2.m128_f32[0])
+	//);
+
+	////-----------------------------------
+	//// Apply Scale
+	////-----------------------------------
+	//__m128 sx = _mm_shuffle_ps(s, s, _MM_SHUFFLE(0, 0, 0, 0));
+	//__m128 sy = _mm_shuffle_ps(s, s, _MM_SHUFFLE(1, 1, 1, 1));
+	//__m128 sz = _mm_shuffle_ps(s, s, _MM_SHUFFLE(2, 2, 2, 2));
+
+	//r0 = _mm_mul_ps(r0, sx);
+	//r1 = _mm_mul_ps(r1, sy);
+	//r2 = _mm_mul_ps(r2, sz);
+
+	////-----------------------------------
+	//// Translation
+	////-----------------------------------
+	//__m128 t = _mm_loadu_ps(&trans.X);
+
+	//__m128 r3 = _mm_set_ps(
+	//	1.0f,
+	//	t.m128_f32[2],
+	//	t.m128_f32[1],
+	//	t.m128_f32[0]
+	//);
+
+	////-----------------------------------
+	//// Store
+	////-----------------------------------
+	//_mm_storeu_ps(&out.r[0].X, r0);
+	//_mm_storeu_ps(&out.r[1].X, r1);
+	//_mm_storeu_ps(&out.r[2].X, r2);
+	//_mm_storeu_ps(&out.r[3].X, r3);
+}
+
 
 void MATH::MatrixDecompose(Float4& outScale, Float4& outQuat, Float4& outPos, const Float4x4& src)
 {

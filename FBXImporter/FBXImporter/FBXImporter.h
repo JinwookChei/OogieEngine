@@ -15,6 +15,7 @@ public:
 
 private:
 	bool ImportModel(Model* pOutModel, const std::string& file) override;
+	bool ImportAnimation(Animation* pOutAnimation, const std::string& file, double samplingRate = 1.0 / 60.0) override;
 
 	bool Init(const std::string& file);
 	fbxsdk::FbxMesh* FindMesh(fbxsdk::FbxNode* pNode);
@@ -30,21 +31,24 @@ private:
 	void CalculateTangent(std::vector<SkinnedMeshVertex>* pVertices, const std::vector<std::vector<uint16_t>>& indices);
 	
 	// Skeleton
-	//void ExtractBones(Model* pOutModel, FbxNode* pNode, uint32_t parentBoneIndex);
-	void ExtractBones(Model* pOutModel, FbxNode* pNode, uint32_t parentBoneIndex);
+	void ExtractBones(Model* pOutModel, FbxNode* pNode, int32_t parentBoneIndex);
 
 	// Skin
-	void ExtractBindBoneSkin(MeshInfo* outMeshInfo, Model& model, fbxsdk::FbxMesh* pMesh);
+	void ExtractBindBoneSkin(MeshInfo* pOutMeshInfo, Model& model, fbxsdk::FbxMesh* pMesh);
 	void AddBoneWeight(SkinWeight& skinData, int boneIndex, float weight);
 	void NormalizeSkinWeights(std::vector<SkinWeight>& skinData);
-
+	void SkinDataToVertexData(MeshInfo* pOutMeshInfo, const std::vector<uint32_t>& vertexCpIndexCache);
 
 	// Material
 	MaterialInfo ExtractMaterialInfo(fbxsdk::FbxSurfaceMaterial* material);
-	//void ExtractMaterialInfo(MaterialInfo* pOutMaterialInfo, fbxsdk::FbxSurfaceMaterial* material);
 	void ReadColor(fbxsdk::FbxSurfaceMaterial* material, const char* propName, float outColor[3]);
 	float GetScalar(fbxsdk::FbxSurfaceMaterial* material, const char* propName);
 	bool ReadTexture(fbxsdk::FbxSurfaceMaterial* material, const char* propName, TextureInfo& outTex);
+
+
+	// Animation
+	void CollectSkeletonNodes(FbxNode* node, std::vector<FbxNode*>& outBones);
+
 
 	int CountMeshes(fbxsdk::FbxNode* node);
 	SceneAxisInfo GetSceneAxisInfo(fbxsdk::FbxScene* pScene);

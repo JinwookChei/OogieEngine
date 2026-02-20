@@ -50,7 +50,7 @@ void Light::BeginPlay()
 void Light::Render()
 {
 	Renderer::Instance()->UpdateLightFrame(GetData());
-	Renderer::Instance()->RenderTest(Light::GLightPSO);
+	Renderer::Instance()->Render(Light::GLightPSO);
 }
 
 const Color& Light::DiffuseColor() const

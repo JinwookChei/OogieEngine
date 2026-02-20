@@ -1,4 +1,5 @@
 #pragma once
+
 struct Float4 {
 	union {
 		struct {

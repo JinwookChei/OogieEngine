@@ -250,7 +250,20 @@ void __stdcall Renderer::UpdateLightFrame(const LightRenderData& lightFrameData)
 	ConstantBuffer::GConstantPerLight->BindConstantBufferPS(1);
 }
 
-void __stdcall Renderer::RenderTest(IPSO* pipelineStateObject)
+void __stdcall Renderer::UpdateAnimationFrame(const AnimConstantBuffer& animFrameData)
+{
+	CBPerAnimation cbPerAnimation;
+	for (int i = 0; i < 200; ++i)
+	{
+		MATH::MatrixTranspose(cbPerAnimation.boneTransforms[i], animFrameData.animTransform[i]);
+	}
+
+	ConstantBuffer::GConstantPerAnimation->Update(&cbPerAnimation);
+	ConstantBuffer::GConstantPerAnimation->BindConstantBufferVS(2);
+	//ConstantBuffer::GConstantPerAnimation->BindConstantBufferPS(2);
+}
+
+void __stdcall Renderer::Render(IPSO* pipelineStateObject)
 {
 	PipelineStateObject* pPSO = static_cast<PipelineStateObject*>(pipelineStateObject);
 	switch (pPSO->GetDepthState())

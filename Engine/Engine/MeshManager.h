@@ -13,7 +13,7 @@ public:
 
 	IMesh* CreateMesh(const MeshDesc& desc, unsigned long long meshTag);
 
-	ENGINE_API bool  GetMesh(IMesh** ppOutMesh, unsigned long long meshTag);
+	ENGINE_API bool GetMesh(IMesh** ppOutMesh, unsigned long long meshTag);
 
 private:
 	void CleanUp();

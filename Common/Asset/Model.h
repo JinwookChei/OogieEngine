@@ -2,22 +2,17 @@
 
 constexpr int MAX_BONE_INFLUENCE = 4;
 
-struct Bone
-{
-	Float4x4 globalBindPose;
-	Float4x4 localBindPose;
-};
 
-struct BoneInfo
-{
-	std::string name;
-	int parentIndex;                // 부모 본 인덱스 (-1이면 루트)
-
-	//Float4x4 globalBindPose;
-	//Float4x4 localBindPose;
-	//Float4x4   meshBindPose;       // Mesh Bind Global
-	//Float4x4   boneBindPose;       // Bone Bind Global
-};
+//struct BoneInfo
+//{
+//	std::string name;
+//	int parentIndex;                // 부모 본 인덱스 (-1이면 루트)
+//
+//	//Float4x4 globalBindPose;
+//	//Float4x4 localBindPose;
+//	//Float4x4   meshBindPose;       // Mesh Bind Global
+//	//Float4x4   boneBindPose;       // Bone Bind Global
+//};
 
 struct SkinWeight
 {
@@ -42,6 +37,7 @@ struct MeshInfo
 	std::vector<SkinnedMeshVertex> vertices;
 	std::vector<std::vector<uint16_t>> indices;
 
+	// Bones
 	std::vector<Bone> bones;
 	
 	// Skins
@@ -119,7 +115,16 @@ struct Model
 	std::vector<MeshInfo> meshInfos;
 
 	// Bones
-	std::vector<BoneInfo> totalBoneInfos;
-	std::unordered_map<uint64_t, uint32_t> totalBoneMap;
+	//std::vector<BoneInfo> totalBoneInfos;
+
+	// <NodeId, <BoneIndex, parentIndex>>
+	struct BoneLink
+	{
+		std::string boneName;
+		int32_t boneIndex;
+		int32_t parentBoneIndex;
+	};
+
+	std::unordered_map<uint64_t, BoneLink> totalBoneMap;
 };
 

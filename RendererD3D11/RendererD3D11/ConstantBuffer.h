@@ -50,6 +50,11 @@ struct CBPerLight
 	Float2 pad;
 };
 
+struct CBPerAnimation
+{
+	Float4x4 boneTransforms[200];
+};
+
 class ConstantBuffer final
 	: public IUnknown
 {
@@ -92,5 +97,6 @@ public:
 	static ConstantBuffer* GConstantPerFrame;
 	static ConstantBuffer* GConstantPerObject;
 	static ConstantBuffer* GConstantPerLight;
+	static ConstantBuffer* GConstantPerAnimation;
 };
 
