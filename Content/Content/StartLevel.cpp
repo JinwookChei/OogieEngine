@@ -23,12 +23,9 @@ void StartLevel::BeginPlay()
 	pCamera1->GetWorldTransform().SetRotation({ 0.0f, 20.0f, 0.0f, 0.0f });
 	pCamera1->GetWorldTransform().SetPosition({ -10.0f, 0.0f, 5.0f, 1.0f});
 	
-
 	TestActor* pActor1 = SpawnActor<TestActor>(E_ACTOR_TYPE::NORMAL);
 	pActor1->GetWorldTransform().SetPosition({ 0.0f, 0.0f, 0.0f, 1.0f });
 	pActor1->GetWorldTransform().SetScale({ 10.0f, 10.0f, 1.0f, 0.0f });
-	//pActor1->GetWorldTransform().SetScale({ 1.0f, 1.0f, 1.0f, 0.0f });
-	//pActor1->GetWorldTransform().AddRotaionZ(90.0f);
 
 	/*DirectionLight* pDirectionLight = SpawnLight<DirectionLight>();
 	pDirectionLight->GetWorldTransform().SetRotation({ 0.0f, 0.0f, 0.0f, 0.0f });*/
@@ -68,7 +65,8 @@ void StartLevel::BeginPlay()
 
 	TestPlayer* pPlayer = SpawnActor<TestPlayer>(E_ACTOR_TYPE::NORMAL);
 	pPlayer->GetWorldTransform().SetPosition({ 0.0f, 0.0f, 1.0f, 1.0f });
-	pPlayer->GetWorldTransform().SetScale({0.01f, 0.01f, 0.01f, 0.0f});
+	//pPlayer->GetWorldTransform().SetRotation({ 0.0f, 0.0f, 70.0f, 0.0f });
+	pPlayer->GetWorldTransform().SetScale({ 1.0f, 1.0f, 1.0f, 0.0f });
 
 	/*Wukong* pWukong = SpawnActor<Wukong>(E_ACTOR_TYPE::NORMAL);
 	pWukong->GetWorldTransform().SetPosition({ -3.0f, 0.0f, 1.0f, 1.0f });
@@ -76,7 +74,8 @@ void StartLevel::BeginPlay()
 
 	WereWolf* pWereWolf = SpawnActor<WereWolf>(E_ACTOR_TYPE::NORMAL);
 	pWereWolf->GetWorldTransform().SetPosition({ -3.0f, 0.0f, 0.0f, 1.0f });
-	pWereWolf->GetWorldTransform().SetScale({ 0.01f, 0.01f, 0.01f, 0.0f });
+	//pWereWolf->GetWorldTransform().SetRotation({ 30.0f, 0.0f, 0.0f, 0.0f });
+	pWereWolf->GetWorldTransform().SetScale({ 1.0f, 1.0f, 1.0f, 0.0f });
 }
 
 void StartLevel::Tick(double deltaTime)

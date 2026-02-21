@@ -57,14 +57,10 @@ PS_INPUT main(VS_INPUT input)
     
     float4 skinnedPos = mul(float4(input.position, 1.0f), skinTransform);
     float4 worldPos = mul(skinnedPos, World);
-    //float4 worldPos = mul(float4(input.position, 1.0f), World);
-    
-    
     float4 viewPos = mul(worldPos, View);
     output.svPos = mul(viewPos, Projection);
     output.worldPos = worldPos.xyz;
     output.color = input.color;
-    //output.color = skinTransform[1];
     output.uv = input.uv;
     
     
@@ -76,7 +72,7 @@ PS_INPUT main(VS_INPUT input)
     T = normalize(mul(T, (float3x3) World));
 
     // Gram-Schmidt
-    T = normalize(T - N * dot(N, T));
+    //T = normalize(T - N * dot(N, T));
     float3 B = cross(N, T) * input.tangent.w;
 
     output.normal = N;

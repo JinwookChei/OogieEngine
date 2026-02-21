@@ -62,6 +62,9 @@ private:
 	fbxsdk::FbxImporter* pImporter_;
 	fbxsdk::FbxScene* pScene_;
 
+	fbxsdk::FbxAMatrix geoMatrix_;
+	fbxsdk::FbxAMatrix globalMatrix_;
+
 	SceneAxisInfo originSceneAxisInfo_;
 	SceneAxisInfo convertSceneAxisInfo_;
 };

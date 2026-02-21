@@ -69,8 +69,7 @@ PS_INPUT main(VS_INPUT input)
     float3 T = normalize(mul(input.tangent.xyz, (float3x3) World));
     float3 B = cross(N, T) * input.tangent.w;
     
-    float3x3 normalMatrix = (float3x3) World;
-    output.normal = mul(input.normal, normalMatrix);
+    output.normal = N;
     output.worldPos = worldPosition.xyz;
     output.uv = input.uv;
     output.TBN = float3x3(T, B, N);

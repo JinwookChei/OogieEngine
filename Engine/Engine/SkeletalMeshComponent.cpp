@@ -6,20 +6,22 @@ SkeletalMeshComponent::SkeletalMeshComponent(Actor* pOwner)
 	: MeshComponent(pOwner)
 	, curTime_(0)
 	, bLoop_(true)
+	, pAnimation_(nullptr)
+	, pSkeleton_(nullptr)
 	, curAnimBoneMatrices_()
 {
-	if (false == AnimationManager::Instance()->GetAnimation(&pAnimation_, 0))
+	/*if (false == AnimationManager::Instance()->GetAnimation(&pAnimation_, 0))
 	{
 		DEBUG_BREAK();
 	}
-	pAnimation_->AddRef();
+	pAnimation_->AddRef();*/
 
-	if (false == SkeletonManager::Instance()->GetSkeleton(&pSkeleton_, 4))
+	/*if (false == SkeletonManager::Instance()->GetSkeleton(&pSkeleton_, 4))
 	{
 		DEBUG_BREAK();
 	}
 	pSkeleton_->AddRef();
-	curAnimBoneMatrices_.resize(pSkeleton_->GetBones().size());
+	curAnimBoneMatrices_.resize(pSkeleton_->GetBones().size());*/
 }
 
 SkeletalMeshComponent::~SkeletalMeshComponent()
@@ -30,7 +32,6 @@ SkeletalMeshComponent::~SkeletalMeshComponent()
 void SkeletalMeshComponent::Tick(double deltaTime)
 {
 	UpdateAnimation(deltaTime);
-	//UpdateAnimation(0.01);
 }
 
 void SkeletalMeshComponent::Render()
@@ -49,8 +50,49 @@ void SkeletalMeshComponent::Render()
 	Renderer::Instance()->Render(pPSO_);
 }
 
+bool SkeletalMeshComponent::ChangeAnimation(unsigned long long animTag)
+{
+	if (nullptr != pAnimation_)
+	{
+		pAnimation_->Release();
+		pAnimation_ = nullptr;
+	}
+
+	if (false == AnimationManager::Instance()->GetAnimation(&pAnimation_, animTag))
+	{
+		DEBUG_BREAK();
+		return false;
+	}
+	pAnimation_->AddRef();
+	return true;
+}
+
+bool SkeletalMeshComponent::SetSkeleton(unsigned long long skeletonTag)
+{
+	if (nullptr != pSkeleton_)
+	{
+		pSkeleton_->Release();
+		pSkeleton_ = nullptr;
+	}
+
+	if (false == SkeletonManager::Instance()->GetSkeleton(&pSkeleton_, skeletonTag))
+	{
+		DEBUG_BREAK();
+		return false;
+	}
+	pSkeleton_->AddRef();
+	curAnimBoneMatrices_.resize(pSkeleton_->GetBones().size());
+
+	return true;
+}
+
 void SkeletalMeshComponent::UpdateAnimation(double deltaTime)
 {
+	if (nullptr == pAnimation_)
+	{
+		return;
+	}
+
 	const AnimationClip& clip = pAnimation_->GetAnimationClip();
 
 	// 1. 시간 진행
@@ -138,6 +180,7 @@ void SkeletalMeshComponent::UpdateAnimation(double deltaTime)
 		Float4x4 boneBindPoseInverse;
 		MATH::MatrixInverse(boneBindPoseInverse, pSkeleton_->GetBones()[i].globalBindPose);
 		MATH::MatrixMultiply(curAnimBoneMatrices_[i], boneBindPoseInverse, animatedGlobal);
+		//MATH::MatrixMultiply(curAnimBoneMatrices_[i], animatedGlobal, boneBindPoseInverse);
 	}
 }
 

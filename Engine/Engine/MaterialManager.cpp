@@ -66,6 +66,7 @@ void MaterialManager::TestLoad()
 
 	MaterialDesc matDesc2;
 	matDesc2.shaderType = E_SHADER_PRESET::SkinnedMesh;
+	//matDesc2.shaderType = E_SHADER_PRESET::DeferredSimple;
 	matDesc2.samplerState = E_SAMPLER_PRESET::LINEAR_WARP;
 	matDesc2.blendState = E_BLEND_PRESET::OPAQUE_BLEND;
 	matDesc2.textureNum_ = 2;
@@ -89,7 +90,8 @@ void MaterialManager::TestLoad()
 
 
 	MaterialDesc matDesc4;
-	matDesc4.shaderType = E_SHADER_PRESET::DeferredSimple;
+	matDesc4.shaderType = E_SHADER_PRESET::SkinnedMesh;
+	//matDesc4.shaderType = E_SHADER_PRESET::DeferredSimple;
 	matDesc4.samplerState = E_SAMPLER_PRESET::LINEAR_WARP;
 	matDesc4.blendState = E_BLEND_PRESET::OPAQUE_BLEND;
 	matDesc4.textureNum_ = 2;
@@ -101,7 +103,8 @@ void MaterialManager::TestLoad()
 
 
 	MaterialDesc matDesc5;
-	matDesc5.shaderType = E_SHADER_PRESET::DeferredSimple;
+	matDesc5.shaderType = E_SHADER_PRESET::SkinnedMesh;
+	//matDesc5.shaderType = E_SHADER_PRESET::DeferredSimple;
 	matDesc5.samplerState = E_SAMPLER_PRESET::LINEAR_WARP;
 	matDesc5.blendState = E_BLEND_PRESET::OPAQUE_BLEND;
 	matDesc5.textureNum_ = 2;
