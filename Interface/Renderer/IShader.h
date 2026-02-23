@@ -3,7 +3,7 @@
 enum class E_SHADER_PRESET
 {
 	Light = 0,
-	DeferredSimple,
+	StaticMesh,
 	SkinnedMesh
 };
 

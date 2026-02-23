@@ -28,8 +28,8 @@ void MaterialManager::TestLoad()
 	lightPassMaterialDesc.specularColor = {0.8f, 0.8f, 0.8f};
 	IMaterial* pLightMaterial = CreateMaterial(lightPassMaterialDesc, 0);
 
-	ITexture* pWhiteTexture = nullptr;
-	if (false == TextureManager::Instance()->GetTexture(&pWhiteTexture, 0)) DEBUG_BREAK();
+	ITexture* pBlueTexture = nullptr;
+	if (false == TextureManager::Instance()->GetTexture(&pBlueTexture, 0)) DEBUG_BREAK();
 	ITexture* pBricks_Color = nullptr;
 	if (false == TextureManager::Instance()->GetTexture(&pBricks_Color, 1)) DEBUG_BREAK();
 	ITexture* pBricks_Normal = nullptr;
@@ -53,7 +53,7 @@ void MaterialManager::TestLoad()
 
 
 	MaterialDesc matDesc1;
-	matDesc1.shaderType = E_SHADER_PRESET::DeferredSimple;
+	matDesc1.shaderType = E_SHADER_PRESET::StaticMesh;
 	matDesc1.samplerState = E_SAMPLER_PRESET::LINEAR_CLAMP;
 	matDesc1.blendState = E_BLEND_PRESET::OPAQUE_BLEND;
 	matDesc1.textureNum_ = 2;
@@ -66,7 +66,7 @@ void MaterialManager::TestLoad()
 
 	MaterialDesc matDesc2;
 	matDesc2.shaderType = E_SHADER_PRESET::SkinnedMesh;
-	//matDesc2.shaderType = E_SHADER_PRESET::DeferredSimple;
+	//matDesc2.shaderType = E_SHADER_PRESET::StaticMesh;
 	matDesc2.samplerState = E_SAMPLER_PRESET::LINEAR_WARP;
 	matDesc2.blendState = E_BLEND_PRESET::OPAQUE_BLEND;
 	matDesc2.textureNum_ = 2;
@@ -78,7 +78,7 @@ void MaterialManager::TestLoad()
 
 
 	MaterialDesc matDesc3;
-	matDesc3.shaderType = E_SHADER_PRESET::DeferredSimple;
+	matDesc3.shaderType = E_SHADER_PRESET::StaticMesh;
 	matDesc3.samplerState = E_SAMPLER_PRESET::LINEAR_CLAMP;
 	matDesc3.blendState = E_BLEND_PRESET::OPAQUE_BLEND;
 	matDesc3.textureNum_ = 2;
@@ -86,12 +86,12 @@ void MaterialManager::TestLoad()
 	matDesc3.specularColor = { 0.7f, 0.7f, 0.7f };
 	IMaterial* pMat3 = CreateMaterial(matDesc3, 3);
 	pMat3->SetTextures(0, pWukong_Torso_Diffuse);
-	pMat3->SetTextures(1, pWhiteTexture);
+	pMat3->SetTextures(1, pBlueTexture);
 
 
 	MaterialDesc matDesc4;
 	matDesc4.shaderType = E_SHADER_PRESET::SkinnedMesh;
-	//matDesc4.shaderType = E_SHADER_PRESET::DeferredSimple;
+	//matDesc4.shaderType = E_SHADER_PRESET::StaticMesh;
 	matDesc4.samplerState = E_SAMPLER_PRESET::LINEAR_WARP;
 	matDesc4.blendState = E_BLEND_PRESET::OPAQUE_BLEND;
 	matDesc4.textureNum_ = 2;
@@ -100,11 +100,11 @@ void MaterialManager::TestLoad()
 	IMaterial* pMat4 = CreateMaterial(matDesc4, 4);
 	pMat4->SetTextures(0, pWerewolf_Body_Albedo);
 	pMat4->SetTextures(1, pWerewolf_Body_Normal);
-
+	
 
 	MaterialDesc matDesc5;
 	matDesc5.shaderType = E_SHADER_PRESET::SkinnedMesh;
-	//matDesc5.shaderType = E_SHADER_PRESET::DeferredSimple;
+	//matDesc5.shaderType = E_SHADER_PRESET::StaticMesh;
 	matDesc5.samplerState = E_SAMPLER_PRESET::LINEAR_WARP;
 	matDesc5.blendState = E_BLEND_PRESET::OPAQUE_BLEND;
 	matDesc5.textureNum_ = 2;

@@ -177,103 +177,68 @@ bool GeometryGenerator::CreateSphere(std::vector<SimpleVertex>* outVertices, std
 
 bool GeometryGenerator::CreateCube(std::vector<SimpleVertex>* outVertices, std::vector<WORD>* outIndices, float halfExtent)
 {
-	if (nullptr == outVertices || nullptr == outIndices) {
+
+
+	if (nullptr == outVertices || nullptr == outIndices)
+	{
 		return false;
 	}
-	
+
 	float h = halfExtent;
-
 	outVertices->clear();
-	outVertices->reserve(24);
-	
-	// 뒤 (-Z)
-	outVertices->push_back(SimpleVertex(Float3(-h, -h, -h), Float4(1, 0, 0, 1), Float3(0, 0, -1), Float2(0, 1), Float4(-1, 0, 0, 1)));
-	outVertices->push_back(SimpleVertex(Float3(-h, h, -h), Float4(1, 0, 0, 1), Float3(0, 0, -1), Float2(0, 0), Float4(-1, 0, 0, 1)));
-	outVertices->push_back(SimpleVertex(Float3(h, h, -h), Float4(1, 0, 0, 1), Float3(0, 0, -1), Float2(1, 0), Float4(-1, 0, 0, 1)));
-	outVertices->push_back(SimpleVertex(Float3(h, -h, -h), Float4(1, 0, 0, 1), Float3(0, 0, -1), Float2(1, 1), Float4(-1, 0, 0, 1)));
-
-	// 앞 (+Z)
-	outVertices->push_back(SimpleVertex(Float3(-h, -h, h), Float4(1, 0, 0, 1), Float3(0, 0, 1), Float2(1, 1), Float4(1, 0, 0, 1)));
-	outVertices->push_back(SimpleVertex(Float3(h, -h, h), Float4(1, 0, 0, 1), Float3(0, 0, 1), Float2(0, 1), Float4(1, 0, 0, 1)));
-	outVertices->push_back(SimpleVertex(Float3(h, h, h), Float4(1, 0, 0, 1), Float3(0, 0, 1), Float2(0, 0), Float4(1, 0, 0, 1)));
-	outVertices->push_back(SimpleVertex(Float3(-h, h, h), Float4(1, 0, 0, 1), Float3(0, 0, 1), Float2(1, 0), Float4(1, 0, 0, 1)));
-
-	// 왼쪽 (-X)
-	outVertices->push_back(SimpleVertex(Float3(-h, -h, h), Float4(0, 1, 0, 1), Float3(-1, 0, 0), Float2(0, 1), Float4(0, 0, 1, 1)));
-	outVertices->push_back(SimpleVertex(Float3(-h, h, h), Float4(0, 1, 0, 1), Float3(-1, 0, 0), Float2(0, 0), Float4(0, 0, 1, 1)));
-	outVertices->push_back(SimpleVertex(Float3(-h, h, -h), Float4(0, 1, 0, 1), Float3(-1, 0, 0), Float2(1, 0), Float4(0, 0, 1, 1)));
-	outVertices->push_back(SimpleVertex(Float3(-h, -h, -h), Float4(0, 1, 0, 1), Float3(-1, 0, 0), Float2(1, 1), Float4(0, 0, 1, 1)));
-
-	// 오른쪽 (+X)
-	outVertices->push_back(SimpleVertex(Float3(h, -h, -h), Float4(0, 1, 0, 1), Float3(1, 0, 0), Float2(0, 1), Float4(0, 0, -1, 1)));
-	outVertices->push_back(SimpleVertex(Float3(h, h, -h), Float4(0, 1, 0, 1), Float3(1, 0, 0), Float2(0, 0), Float4(0, 0, -1, 1)));
-	outVertices->push_back(SimpleVertex(Float3(h, h, h), Float4(0, 1, 0, 1), Float3(1, 0, 0), Float2(1, 0), Float4(0, 0, -1, 1)));
-	outVertices->push_back(SimpleVertex(Float3(h, -h, h), Float4(0, 1, 0, 1), Float3(1, 0, 0), Float2(1, 1), Float4(0, 0, -1, 1)));
-
-	// 위 (+Y)
-	outVertices->push_back(SimpleVertex(Float3(-h, h, -h), Float4(0, 0, 1, 1), Float3(0, 1, 0), Float2(0, 1), Float4(1, 0, 0, 1)));
-	outVertices->push_back(SimpleVertex(Float3(-h, h, h), Float4(0, 0, 1, 1), Float3(0, 1, 0), Float2(0, 0), Float4(1, 0, 0, 1)));
-	outVertices->push_back(SimpleVertex(Float3(h, h, h), Float4(0, 0, 1, 1), Float3(0, 1, 0), Float2(1, 0), Float4(1, 0, 0, 1)));
-	outVertices->push_back(SimpleVertex(Float3(h, h, -h), Float4(0, 0, 1, 1), Float3(0, 1, 0), Float2(1, 1), Float4(1, 0, 0, 1)));
-
-	// 아래 (-Y)
-	outVertices->push_back(SimpleVertex(Float3(-h, -h, h), Float4(0, 0, 1, 1), Float3(0, -1, 0), Float2(1, 1), Float4(-1, 0, 1, 1)));
-	outVertices->push_back(SimpleVertex(Float3(-h, -h, -h), Float4(0, 0, 1, 1), Float3(0, -1, 0), Float2(0, 1), Float4(-1, 0, 1, 1)));
-	outVertices->push_back(SimpleVertex(Float3(h, -h, -h), Float4(0, 0, 1, 1), Float3(0, -1, 0), Float2(0, 0), Float4(-1, 0, 1, 1)));
-	outVertices->push_back(SimpleVertex(Float3(h, -h, h), Float4(0, 0, 1, 1), Float3(0, -1, 0), Float2(1, 0), Float4(-1, 0, 1, 1)));
-
-
-
 	outIndices->clear();
+	outVertices->reserve(24);
 	outIndices->reserve(36);
 
-	outIndices->push_back(0);
-	outIndices->push_back(1);
-	outIndices->push_back(2);
 
-	outIndices->push_back(0);
-	outIndices->push_back(2);
-	outIndices->push_back(3);
+	// FRONT (+X) - Normal: (1, 0, 0), Tangent: (0, 1, 0)
+	outVertices->push_back(SimpleVertex(Float3(+h, -h, -h), Float4(1, 1, 1, 1), Float3(1, 0, 0), Float2(0, 0), Float4(0, 1, 0, 1)));
+	outVertices->push_back(SimpleVertex(Float3(+h, +h, -h), Float4(1, 1, 1, 1), Float3(1, 0, 0), Float2(1, 0), Float4(0, 1, 0, 1)));
+	outVertices->push_back(SimpleVertex(Float3(+h, +h, +h), Float4(1, 1, 1, 1), Float3(1, 0, 0), Float2(1, 1), Float4(0, 1, 0, 1)));
+	outVertices->push_back(SimpleVertex(Float3(+h, -h, +h), Float4(1, 1, 1, 1), Float3(1, 0, 0), Float2(0, 1), Float4(0, 1, 0, 1)));
 
-	outIndices->push_back(4);
-	outIndices->push_back(5);
-	outIndices->push_back(6);
+	// BACK (-X) - Normal: (-1, 0, 0), Tangent: (0, -1, 0)
+	outVertices->push_back(SimpleVertex(Float3(-h, +h, -h), Float4(1, 1, 1, 1), Float3(-1, 0, 0), Float2(0, 0), Float4(0, -1, 0, 1)));
+	outVertices->push_back(SimpleVertex(Float3(-h, -h, -h), Float4(1, 1, 1, 1), Float3(-1, 0, 0), Float2(1, 0), Float4(0, -1, 0, 1)));
+	outVertices->push_back(SimpleVertex(Float3(-h, -h, +h), Float4(1, 1, 1, 1), Float3(-1, 0, 0), Float2(1, 1), Float4(0, -1, 0, 1)));
+	outVertices->push_back(SimpleVertex(Float3(-h, +h, +h), Float4(1, 1, 1, 1), Float3(-1, 0, 0), Float2(0, 1), Float4(0, -1, 0, 1)));
 
-	outIndices->push_back(4);
-	outIndices->push_back(6);
-	outIndices->push_back(7);
+	// RIGHT (+Y) - Normal: (0, 1, 0), Tangent: (-1, 0, 0)
+	outVertices->push_back(SimpleVertex(Float3(+h, +h, -h), Float4(1, 1, 1, 1), Float3(0, 1, 0), Float2(0, 0), Float4(-1, 0, 0, 1)));
+	outVertices->push_back(SimpleVertex(Float3(-h, +h, -h), Float4(1, 1, 1, 1), Float3(0, 1, 0), Float2(1, 0), Float4(-1, 0, 0, 1)));
+	outVertices->push_back(SimpleVertex(Float3(-h, +h, +h), Float4(1, 1, 1, 1), Float3(0, 1, 0), Float2(1, 1), Float4(-1, 0, 0, 1)));
+	outVertices->push_back(SimpleVertex(Float3(+h, +h, +h), Float4(1, 1, 1, 1), Float3(0, 1, 0), Float2(0, 1), Float4(-1, 0, 0, 1)));
 
-	outIndices->push_back(8);
-	outIndices->push_back(9);
-	outIndices->push_back(10);
+	// LEFT (-Y) - Normal: (0, -1, 0), Tangent: (1, 0, 0)
+	outVertices->push_back(SimpleVertex(Float3(-h, -h, -h), Float4(1, 1, 1, 1), Float3(0, -1, 0), Float2(0, 0), Float4(1, 0, 0, 1)));
+	outVertices->push_back(SimpleVertex(Float3(+h, -h, -h), Float4(1, 1, 1, 1), Float3(0, -1, 0), Float2(1, 0), Float4(1, 0, 0, 1)));
+	outVertices->push_back(SimpleVertex(Float3(+h, -h, +h), Float4(1, 1, 1, 1), Float3(0, -1, 0), Float2(1, 1), Float4(1, 0, 0, 1)));
+	outVertices->push_back(SimpleVertex(Float3(-h, -h, +h), Float4(1, 1, 1, 1), Float3(0, -1, 0), Float2(0, 1), Float4(1, 0, 0, 1)));
 
-	outIndices->push_back(8);
-	outIndices->push_back(10);
-	outIndices->push_back(11);
+	// UP (+Z) - Normal: (0, 0, 1), Tangent: (0, 1, 0)
+	outVertices->push_back(SimpleVertex(Float3(+h, -h, +h), Float4(1, 1, 1, 1), Float3(0, 0, 1), Float2(0, 0), Float4(0, 1, 0, 1)));
+	outVertices->push_back(SimpleVertex(Float3(+h, +h, +h), Float4(1, 1, 1, 1), Float3(0, 0, 1), Float2(1, 0), Float4(0, 1, 0, 1)));
+	outVertices->push_back(SimpleVertex(Float3(-h, +h, +h), Float4(1, 1, 1, 1), Float3(0, 0, 1), Float2(1, 1), Float4(0, 1, 0, 1)));
+	outVertices->push_back(SimpleVertex(Float3(-h, -h, +h), Float4(1, 1, 1, 1), Float3(0, 0, 1), Float2(0, 1), Float4(0, 1, 0, 1)));
 
-	outIndices->push_back(12);
-	outIndices->push_back(13);
-	outIndices->push_back(14);
+	// DOWN (-Z) - Normal: (0, 0, -1), Tangent: (0, -1, 0)
+	outVertices->push_back(SimpleVertex(Float3(-h, -h, -h), Float4(1, 1, 1, 1), Float3(0, 0, -1), Float2(0, 0), Float4(0, 1, 0, 1)));
+	outVertices->push_back(SimpleVertex(Float3(-h, +h, -h), Float4(1, 1, 1, 1), Float3(0, 0, -1), Float2(1, 0), Float4(0, 1, 0, 1)));
+	outVertices->push_back(SimpleVertex(Float3(+h, +h, -h), Float4(1, 1, 1, 1), Float3(0, 0, -1), Float2(1, 1), Float4(0, 1, 0, 1)));
+	outVertices->push_back(SimpleVertex(Float3(+h, -h, -h), Float4(1, 1, 1, 1), Float3(0, 0, -1), Float2(0, 1), Float4(0, 1, 0, 1)));
 
-	outIndices->push_back(12);
-	outIndices->push_back(14);
-	outIndices->push_back(15);
 
-	outIndices->push_back(16);
-	outIndices->push_back(17);
-	outIndices->push_back(18);
+	for (uint32_t face = 0; face < 6; ++face)
+	{
+		uint32_t base = face * 4;
+		outIndices->push_back(base + 0);
+		outIndices->push_back(base + 1);
+		outIndices->push_back(base + 2);
 
-	outIndices->push_back(16);
-	outIndices->push_back(18);
-	outIndices->push_back(19);
-
-	outIndices->push_back(20);
-	outIndices->push_back(21);
-	outIndices->push_back(22);
-
-	outIndices->push_back(20);
-	outIndices->push_back(22);
-	outIndices->push_back(23);
+		outIndices->push_back(base + 0);
+		outIndices->push_back(base + 2);
+		outIndices->push_back(base + 3);
+	}
 
 	return true;
 }

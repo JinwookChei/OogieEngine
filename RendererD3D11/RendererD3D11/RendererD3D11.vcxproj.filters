@@ -79,9 +79,6 @@
     <Filter Include="Resource Files\Shader\PaticleShader">
       <UniqueIdentifier>{6b0e954b-8b65-4103-93fc-add79e68067f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\Shader\GeometryPassShader">
-      <UniqueIdentifier>{a4b8f9b7-f4c3-44be-99cc-4f8137c80b4d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\Shader\LightShader">
       <UniqueIdentifier>{bbdec2bd-72d1-455b-b7d2-3c9f3fb4b5ca}</UniqueIdentifier>
     </Filter>
@@ -93,6 +90,9 @@
     </Filter>
     <Filter Include="Common\Asset">
       <UniqueIdentifier>{cb88d587-c715-4e32-96f8-754727edd96f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shader\DeferredPassShader">
+      <UniqueIdentifier>{a4b8f9b7-f4c3-44be-99cc-4f8137c80b4d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -301,11 +301,11 @@
     <FxCompile Include="ParticlePS.hlsl">
       <Filter>Resource Files\Shader\PaticleShader</Filter>
     </FxCompile>
-    <FxCompile Include="GeometryVS.hlsl">
-      <Filter>Resource Files\Shader\GeometryPassShader</Filter>
+    <FxCompile Include="StaticMeshVS.hlsl">
+      <Filter>Resource Files\Shader\DeferredPassShader</Filter>
     </FxCompile>
-    <FxCompile Include="GeometryPS.hlsl">
-      <Filter>Resource Files\Shader\GeometryPassShader</Filter>
+    <FxCompile Include="StaticMeshPS.hlsl">
+      <Filter>Resource Files\Shader\DeferredPassShader</Filter>
     </FxCompile>
     <FxCompile Include="LightVS.hlsl">
       <Filter>Resource Files\Shader\LightShader</Filter>
@@ -326,10 +326,10 @@
       <Filter>Resource Files\Shader\FinalPassShader</Filter>
     </FxCompile>
     <FxCompile Include="SkinnedMeshVS.hlsl">
-      <Filter>Resource Files\Shader\GeometryPassShader</Filter>
+      <Filter>Resource Files\Shader\DeferredPassShader</Filter>
     </FxCompile>
     <FxCompile Include="SkinnedMeshPS.hlsl">
-      <Filter>Resource Files\Shader\GeometryPassShader</Filter>
+      <Filter>Resource Files\Shader\DeferredPassShader</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

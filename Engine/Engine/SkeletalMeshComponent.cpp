@@ -10,18 +10,6 @@ SkeletalMeshComponent::SkeletalMeshComponent(Actor* pOwner)
 	, pSkeleton_(nullptr)
 	, curAnimBoneMatrices_()
 {
-	/*if (false == AnimationManager::Instance()->GetAnimation(&pAnimation_, 0))
-	{
-		DEBUG_BREAK();
-	}
-	pAnimation_->AddRef();*/
-
-	/*if (false == SkeletonManager::Instance()->GetSkeleton(&pSkeleton_, 4))
-	{
-		DEBUG_BREAK();
-	}
-	pSkeleton_->AddRef();
-	curAnimBoneMatrices_.resize(pSkeleton_->GetBones().size());*/
 }
 
 SkeletalMeshComponent::~SkeletalMeshComponent()
@@ -45,7 +33,7 @@ void SkeletalMeshComponent::Render()
 
 	Renderer::Instance()->UpdateAnimationFrame(cb);
 	ObjectFrameData objectFrameData;
-	objectFrameData.world = pOwner_->GetWorldTransform().GetWorldMatrix();
+	objectFrameData.worldMatrix = pOwner_->GetWorldTransform().GetWorldMatrix();
 	Renderer::Instance()->UpdateObjectFrame(objectFrameData);
 	Renderer::Instance()->Render(pPSO_);
 }
@@ -139,7 +127,6 @@ void SkeletalMeshComponent::UpdateAnimation(double deltaTime)
 		// fallback
 		if (!k0 || !k1)
 		{
-			MATH::MatrixInverse(curAnimBoneMatrices_[i], pSkeleton_->GetBones()[i].globalBindPose);
 			continue;
 		}
 
@@ -180,7 +167,6 @@ void SkeletalMeshComponent::UpdateAnimation(double deltaTime)
 		Float4x4 boneBindPoseInverse;
 		MATH::MatrixInverse(boneBindPoseInverse, pSkeleton_->GetBones()[i].globalBindPose);
 		MATH::MatrixMultiply(curAnimBoneMatrices_[i], boneBindPoseInverse, animatedGlobal);
-		//MATH::MatrixMultiply(curAnimBoneMatrices_[i], animatedGlobal, boneBindPoseInverse);
 	}
 }
 

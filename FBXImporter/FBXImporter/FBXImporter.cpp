@@ -361,7 +361,7 @@ bool FBXImporter::ExtractNormal(Float3* pOutNormal, fbxsdk::FbxMesh* pMesh, int 
 		return false;
 	}
 
-	FbxVector4 worldNormal = globalMatrix_.MultT(localNormal);
+	FbxVector4 worldNormal = globalMatrix_.Inverse().Transpose().MultT(localNormal);
 	worldNormal.Normalize();
 
 	pOutNormal->X = worldNormal[0];
@@ -421,12 +421,9 @@ bool FBXImporter::ExtractTangent(Float4* pOutTangent, bool* pOutExistTangent, fb
 		DEBUG_BREAK();
 		return false;
 	}
-
-	DEBUG_BREAK();
-	FbxAMatrix invTranspose = globalMatrix_.Inverse().Transpose();
-	//FbxVector4 worldNormal = invTranspose.MultT(localNormal);
-	FbxVector4 worldTangent = globalMatrix_.MultT(localTangent);
 	
+	FbxVector4 worldTangent = globalMatrix_.Inverse().Transpose().MultT(localTangent);
+	worldTangent.Normalize();
 	pOutTangent->X = localTangent[0];
 	pOutTangent->Y = localTangent[1];
 	pOutTangent->Z = localTangent[2];

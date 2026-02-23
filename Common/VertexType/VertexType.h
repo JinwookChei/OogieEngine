@@ -1,12 +1,5 @@
 #pragma once
 
-//enum class E_VERTEX_FORMAT
-//{
-//	ScreenQuad = 0,
-//	Simple,
-//	SkinnedMesh
-//};
-
 struct ScreenQuadVertex
 {
 	Float2 position;

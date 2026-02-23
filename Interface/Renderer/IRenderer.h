@@ -18,7 +18,7 @@ struct CameraFrameData
 
 struct ObjectFrameData
 {
-	Float4x4 world;
+	Float4x4 worldMatrix;
 };
 
 struct ObjectRenderData

@@ -20,7 +20,7 @@ void MeshComponent::Tick(double deltaTime)
 void MeshComponent::Render()
 {
 	ObjectFrameData objectFrameData;
-	objectFrameData.world = pOwner_->GetWorldTransform().GetWorldMatrix();
+	objectFrameData.worldMatrix = pOwner_->GetWorldTransform().GetWorldMatrix();
 	Renderer::Instance()->UpdateObjectFrame(objectFrameData);
 	Renderer::Instance()->Render(pPSO_);
 }

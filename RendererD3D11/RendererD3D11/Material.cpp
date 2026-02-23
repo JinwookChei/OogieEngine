@@ -8,7 +8,7 @@
 
 Material::Material()
 	: refCount_(1)
-	, shaderType_(E_SHADER_PRESET::DeferredSimple)
+	, shaderType_(E_SHADER_PRESET::StaticMesh)
 	, samplerState_(E_SAMPLER_PRESET::LINEAR_CLAMP)
 	, blendState_(E_BLEND_PRESET::ALPHA_BLEND)
 	, texturesNum_(0)
@@ -131,9 +131,9 @@ void Material::Bind()
 		Shader::GShaderLight->Bind();
 		break;
 	}
-	case E_SHADER_PRESET::DeferredSimple: 
+	case E_SHADER_PRESET::StaticMesh:
 	{
-		Shader::GShaderDeferredSimple->Bind();
+		Shader::GShaderStaticMesh->Bind();
 		break;
 	}
 	case E_SHADER_PRESET::SkinnedMesh:

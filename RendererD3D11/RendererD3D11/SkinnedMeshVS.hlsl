@@ -11,7 +11,9 @@ cbuffer CBPerFrame : register(b0)
 
 cbuffer CBPerObject : register(b1)
 {
-    matrix World;
+    matrix WorldMatrix;
+    matrix NormalMatrix;
+    
     float3 MaterialSpecular;
     float MaterialShineness;
 };
@@ -56,28 +58,23 @@ PS_INPUT main(VS_INPUT input)
     skinTransform += mul(input.blendWeights.w, BoneTransforms[(uint) input.boneIndices.w]);
     
     float4 skinnedPos = mul(float4(input.position, 1.0f), skinTransform);
-    float4 worldPos = mul(skinnedPos, World);
+    float4 worldPos = mul(skinnedPos, WorldMatrix);
     float4 viewPos = mul(worldPos, View);
     output.svPos = mul(viewPos, Projection);
     output.worldPos = worldPos.xyz;
     output.color = input.color;
     output.uv = input.uv;
     
-    
-    float3 N = normalize(mul(input.normal.xyz, (float3x3) skinTransform));
-    float3 T = normalize(mul(input.tangent.xyz, (float3x3) skinTransform));
+    float3 N = mul(input.normal, (float3x3) skinTransform);
+    float3 T = mul(input.tangent.xyz, (float3x3) skinTransform);
     
     // World (scale 없음 가정)
-    N = normalize(mul(N, (float3x3) World));
-    T = normalize(mul(T, (float3x3) World));
-
-    // Gram-Schmidt
-    //T = normalize(T - N * dot(N, T));
-    float3 B = cross(N, T) * input.tangent.w;
-
+    N = normalize(mul(N, (float3x3) NormalMatrix));
+    T = normalize(mul(T, (float3x3) NormalMatrix));
+    float3 B = normalize(cross(N, T)) * input.tangent.w;
+   
     output.normal = N;
     output.TBN = float3x3(T, B, N);
+    
     return output;
 }
-
-////////////////////////////////

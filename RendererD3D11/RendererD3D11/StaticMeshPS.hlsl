@@ -4,7 +4,8 @@ SamplerState g_Sampler : register(s0);
 
 cbuffer CBPerObject : register(b1)
 {
-    matrix World;
+    matrix WorldMatrix;
+    matrix NormalMatrix;
     
     float3 MaterialSpecular;
     float MaterialShineness;
@@ -37,42 +38,21 @@ float3 DecodingNormal(float3 normal)
     return normalize(normal * 2.0f - 1.0f);
 }
 
-
-
-// TextureColor, TextureNormal 없을 때 쉐이더.
-//PS_OUTPUT main(PS_INPUT input)
-//{   
-//    PS_OUTPUT output = (PS_OUTPUT) 0;
-//    output.rt0 = input.color;
-    
-//    float3 N = normalize(input.normal);
-//    output.rt1 = float4(N, 1.0f);
-    
-//    //float3 encodingN = EncodingNormal(N);
-//    //output.rt1 = float4(encodingN, 1.0f);
-    
-//    output.rt2 = float4(MaterialSpecular, MaterialShineness);
-    
-//    return output;
-//}
-
-
-
 // ""TextureColor, TextureNormal 적용 ""
 PS_OUTPUT main(PS_INPUT input)
 {
     PS_OUTPUT output = (PS_OUTPUT) 0;
     
     float4 textColor = textureColor.Sample(g_Sampler, input.uv);
-    
     clip(textColor.a - 0.09);
+    
+    float3 texNormal = textureNormal.Sample(g_Sampler, input.uv).xyz;
+    texNormal = DecodingNormal(texNormal);
+    float3 worldNormal = normalize(mul(texNormal, input.TBN));
+    
     output.rt0 = textColor;
-    //output.rt0 = input.color;
-    
-    float4 texNormal = normalize(textureNormal.Sample(g_Sampler, input.uv));
-    float3 worldNormal = normalize(mul(texNormal.xyz, input.TBN));
+    //output.rt0 = float4(input.normal, 1.0f);
     output.rt1 = float4(worldNormal, 1.0f);
-    
     output.rt2 = float4(MaterialSpecular, MaterialShineness);
     
     return output;

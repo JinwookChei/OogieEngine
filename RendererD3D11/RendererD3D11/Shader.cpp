@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Shader.h"
 
-Shader* Shader::GShaderDeferredSimple = nullptr;
+Shader* Shader::GShaderStaticMesh = nullptr;
 Shader* Shader::GShaderLight = nullptr;
 Shader* Shader::GShaderSkinnedMesh = nullptr;
 
@@ -490,16 +490,16 @@ void Shader::InitGlobalShaders()
 		DEBUG_BREAK();
 	}
 
-	ShaderDesc deferredSimpleDesc;
-	deferredSimpleDesc.pathVS_ = L"GeometryVS.cso";
-	deferredSimpleDesc.pathPS_ = L"GeometryPS.cso";
-	deferredSimpleDesc.inputDesc_.push_back({ "POSITION", 0, 6, 0, false });
-	deferredSimpleDesc.inputDesc_.push_back({ "COLOR", 0, 2, 0, false });
-	deferredSimpleDesc.inputDesc_.push_back({ "NORMAL", 0, 6, 0, false });
-	deferredSimpleDesc.inputDesc_.push_back({ "TEXCOORD", 0, 16, 0, false });
-	deferredSimpleDesc.inputDesc_.push_back({ "TANGENT", 0, 2, 0, false });
-	Shader::GShaderDeferredSimple = Shader::Create(deferredSimpleDesc);
-	if (nullptr == GShaderDeferredSimple)
+	ShaderDesc staticMeshDesc;
+	staticMeshDesc.pathVS_ = L"StaticMeshVS.cso";
+	staticMeshDesc.pathPS_ = L"StaticMeshPS.cso";
+	staticMeshDesc.inputDesc_.push_back({ "POSITION", 0, 6, 0, false });
+	staticMeshDesc.inputDesc_.push_back({ "COLOR", 0, 2, 0, false });
+	staticMeshDesc.inputDesc_.push_back({ "NORMAL", 0, 6, 0, false });
+	staticMeshDesc.inputDesc_.push_back({ "TEXCOORD", 0, 16, 0, false });
+	staticMeshDesc.inputDesc_.push_back({ "TANGENT", 0, 2, 0, false });
+	Shader::GShaderStaticMesh = Shader::Create(staticMeshDesc);
+	if (nullptr == GShaderStaticMesh)
 	{
 		DEBUG_BREAK();
 	}
@@ -529,10 +529,10 @@ void Shader::ShutDown()
 		Shader::GShaderLight = nullptr;
 	}
 
-	if (nullptr != Shader::GShaderDeferredSimple)
+	if (nullptr != Shader::GShaderStaticMesh)
 	{
-		Shader::GShaderDeferredSimple->Release();
-		Shader::GShaderDeferredSimple = nullptr;
+		Shader::GShaderStaticMesh->Release();
+		Shader::GShaderStaticMesh = nullptr;
 	}
 
 	if (nullptr != Shader::GShaderSkinnedMesh)

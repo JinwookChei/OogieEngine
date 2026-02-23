@@ -18,20 +18,11 @@ StartLevel::~StartLevel()
 
 void StartLevel::BeginPlay()
 {
-	MoveCamera* pCamera1 = SpawnCamera<MoveCamera>();
-	pCamera1->SetScreenPlacement({ 0.0f, 0.0f }, {1.0f, 1.0f});
-	pCamera1->GetWorldTransform().SetRotation({ 0.0f, 20.0f, 0.0f, 0.0f });
-	pCamera1->GetWorldTransform().SetPosition({ -10.0f, 0.0f, 5.0f, 1.0f});
-	
-	TestActor* pActor1 = SpawnActor<TestActor>(E_ACTOR_TYPE::NORMAL);
-	pActor1->GetWorldTransform().SetPosition({ 0.0f, 0.0f, 0.0f, 1.0f });
-	pActor1->GetWorldTransform().SetScale({ 10.0f, 10.0f, 1.0f, 0.0f });
-
 	/*DirectionLight* pDirectionLight = SpawnLight<DirectionLight>();
 	pDirectionLight->GetWorldTransform().SetRotation({ 0.0f, 0.0f, 0.0f, 0.0f });*/
 
 	SpotLight* pSpotLight = SpawnLight<SpotLight>();
-	pSpotLight->GetWorldTransform().SetPosition({ 1.0f, 1.0f, 5.0f, 1.0f });
+	pSpotLight->GetWorldTransform().SetPosition({ 1.5f, 0.0f, 5.0f, 1.0f });
 	pSpotLight->GetWorldTransform().SetRotation({ 0.0f, 90.0f, 0.0f, 0.0f });
 
 	SpotLight* pSpotLight2 = SpawnLight<SpotLight>();
@@ -47,6 +38,24 @@ void StartLevel::BeginPlay()
 	PointLight* pPointLight3 = SpawnLight<PointLight>();
 	pPointLight3->GetWorldTransform().SetPosition({ 3.0f, 4.0f, 2.0f, 1.0f });
 
+	//SpotLight* pSpotLight3 = SpawnLight<SpotLight>();
+	//pSpotLight3->GetWorldTransform().SetPosition({ 6.0f, 0.0f, 3.0f, 1.0f });
+	//pSpotLight3->GetWorldTransform().SetRotation({ 0.0f, 0.0f, 0.0f, 0.0f });
+
+	/*SpotLight* pSpotLight4 = SpawnLight<SpotLight>();
+	pSpotLight4->GetWorldTransform().SetPosition({ 10.0f, 0.0f, 6.0f, 1.0f });
+	pSpotLight4->GetWorldTransform().SetRotation({ 0.0f, 90.0f, 0.0f, 0.0f });*/
+
+
+	MoveCamera* pCamera1 = SpawnCamera<MoveCamera>();
+	pCamera1->SetScreenPlacement({ 0.0f, 0.0f }, { 1.0f, 1.0f });
+	pCamera1->GetWorldTransform().SetRotation({ 0.0f, 20.0f, 0.0f, 0.0f });
+	pCamera1->GetWorldTransform().SetPosition({ -10.0f, 0.0f, 5.0f, 1.0f });
+
+	TestActor* pActor1 = SpawnActor<TestActor>(E_ACTOR_TYPE::NORMAL);
+	pActor1->GetWorldTransform().SetPosition({ 0.0f, 0.0f, 0.0f, 1.0f });
+	pActor1->GetWorldTransform().SetScale({ 10.0f, 10.0f, 1.0f, 0.0f });
+
 	Sphere* pSphere1 = SpawnActor<Sphere>(E_ACTOR_TYPE::NORMAL);
 	pSphere1->GetWorldTransform().SetPosition({ 10.0f, 0.0f, 3.0f, 1.0f });
 	pSphere1->GetWorldTransform().SetScale({ 3.0f, 3.0f, 3.0f, 0.0f });
@@ -55,26 +64,13 @@ void StartLevel::BeginPlay()
 	pSphere2->GetWorldTransform().SetPosition({ 10.0f, 5.0f, 3.0f, 1.0f });
 	pSphere2->GetWorldTransform().SetScale({ 3.0f, 3.0f, 3.0f, 0.0f });
 
-	SpotLight* pSpotLight3 = SpawnLight<SpotLight>();
-	pSpotLight3->GetWorldTransform().SetPosition({ 6.0f, 0.0f, 3.0f, 1.0f });
-	pSpotLight3->GetWorldTransform().SetRotation({ 0.0f, 0.0f, 0.0f, 0.0f });
-
-	SpotLight* pSpotLight4 = SpawnLight<SpotLight>();
-	pSpotLight4->GetWorldTransform().SetPosition({ 10.0f, 0.0f, 6.0f, 1.0f });
-	pSpotLight4->GetWorldTransform().SetRotation({ 0.0f, 90.0f, 0.0f, 0.0f });
-
 	TestPlayer* pPlayer = SpawnActor<TestPlayer>(E_ACTOR_TYPE::NORMAL);
-	pPlayer->GetWorldTransform().SetPosition({ 0.0f, 0.0f, 1.0f, 1.0f });
-	//pPlayer->GetWorldTransform().SetRotation({ 0.0f, 0.0f, 70.0f, 0.0f });
+	pPlayer->GetWorldTransform().SetPosition({ 1.5f, 0.0f, 0.5f, 1.0f });
+	pPlayer->GetWorldTransform().SetRotation({ 0.0f, 0.0f, 180.0f, 0.0f });
 	pPlayer->GetWorldTransform().SetScale({ 1.0f, 1.0f, 1.0f, 0.0f });
-
-	/*Wukong* pWukong = SpawnActor<Wukong>(E_ACTOR_TYPE::NORMAL);
-	pWukong->GetWorldTransform().SetPosition({ -3.0f, 0.0f, 1.0f, 1.0f });
-	pWukong->GetWorldTransform().SetScale({ 0.01f, 0.01f, 0.01f, 0.0f });*/
 
 	WereWolf* pWereWolf = SpawnActor<WereWolf>(E_ACTOR_TYPE::NORMAL);
 	pWereWolf->GetWorldTransform().SetPosition({ -3.0f, 0.0f, 0.0f, 1.0f });
-	//pWereWolf->GetWorldTransform().SetRotation({ 30.0f, 0.0f, 0.0f, 0.0f });
 	pWereWolf->GetWorldTransform().SetScale({ 1.0f, 1.0f, 1.0f, 0.0f });
 }
 

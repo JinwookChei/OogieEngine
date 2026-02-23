@@ -218,7 +218,12 @@ void __stdcall Renderer::UpdateCameraFrame(const CameraFrameData& cameraFrameDat
 void __stdcall Renderer::UpdateObjectFrame(const ObjectFrameData& objectFrameData)
 {
 	CBPerObject cbPerObject;
-	MATH::MatrixTranspose(cbPerObject.world, objectFrameData.world);
+	MATH::MatrixTranspose(cbPerObject.worldMatrix, objectFrameData.worldMatrix);
+	// ununiform scale normal matrix : worldmatrix.Inverse().Transpose(); 
+	Float4x4 invWorld;
+	MATH::MatrixInverse(invWorld, objectFrameData.worldMatrix);
+	cbPerObject.normalMatrix = invWorld;
+
 	cbPerObject.materialShineness = 1.0f;
 	cbPerObject.materialSpecular = { 0.7f, 0.7f, 0.7f };
 

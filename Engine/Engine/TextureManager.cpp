@@ -20,12 +20,12 @@ TextureManager* TextureManager::Instance()
 
 void TextureManager::TestLoad()
 {
-	TextureDesc whiteTextureDesc;
-	whiteTextureDesc.colorData_ = 0xFFFFFFFF;
-	whiteTextureDesc.size_ = { 1.0f, 1.0f };
-	ITexture* whiteTexture = Renderer::GetFactory()->CreateTexture(whiteTextureDesc);
-	unsigned long long whiteTexTag = 0;
-	textureTable_.Insert(whiteTexture, &whiteTexTag, 8);
+	TextureDesc blueTextureDesc;
+	blueTextureDesc.colorData_ = 0x0000FFFF;
+	blueTextureDesc.size_ = { 1.0f, 1.0f };
+	ITexture* pBlueTexture = Renderer::GetFactory()->CreateTexture(blueTextureDesc);
+	unsigned long long blueTexTag = 0;
+	textureTable_.Insert(pBlueTexture, &blueTexTag, 8);
 
 	const wchar_t* colorTexPath = L"../Resource/Texture/Bricks_4K/Bricks_Color.png";
 	CreateTexture(colorTexPath, false, 1);

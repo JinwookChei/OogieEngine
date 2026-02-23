@@ -4,7 +4,9 @@ SamplerState Sampler : register(s0);
 
 cbuffer CBPerObject : register(b1)
 {
-    matrix World;
+    matrix WorldMatrix;
+    matrix NormalMatrix;
+    
     float3 MaterialSpecular;
     float MaterialShineness;
 };
@@ -40,57 +42,18 @@ float3 DecodingNormal(float3 normal)
 PS_OUTPUT main(PS_INPUT input)
 {
     PS_OUTPUT output = (PS_OUTPUT) 0;
+    
     float4 textColor = TextureColor.Sample(Sampler, input.uv);
-    
     clip(textColor.a - 0.09);
-    output.rt0 = textColor;
-    //output.rt0 = input.color;
+   
+    float3 texNormal = TextureNormal.Sample(Sampler, input.uv).xyz;
+    texNormal = DecodingNormal(texNormal);
+    float3 worldNormal = normalize(mul(texNormal, input.TBN));
     
-    float4 texNormal = normalize(TextureNormal.Sample(Sampler, input.uv));
-    float3 worldNormal = normalize(mul(texNormal.xyz, input.TBN));
+    output.rt0 = textColor;
+    //output.rt0 = float4(input.normal, 1.0f);
     output.rt1 = float4(worldNormal, 1.0f);
     output.rt2 = float4(MaterialSpecular, MaterialShineness);
+    
     return output;
 }
-
-/////////////////////////////////////////////////////////////////////
-
-
-
-//Texture2D textureColor : register(t0);
-//Texture2D textureNormal : register(t1);
-//SamplerState g_Sampler : register(s0);
-
-//cbuffer CBPerObject : register(b1)
-//{
-//    matrix World;
-    
-//    float3 MaterialSpecular;
-//    float MaterialShineness;
-//};
-
-//struct PS_INPUT
-//{
-//    float4 svPos : SV_POSITION;
-//    float4 color : COLOR;
-//    float3 normal : NORMAL;
-//    float3 worldPos : TEXCOORD0; // PointLight Pos
-//    float2 uv : TEXCOORD1;
-//    float3x3 TBN : TEXCOORD2;
-//};
-
-//struct PS_OUTPUT
-//{
-//    float4 rt0 : SV_TARGET0;
-//    float4 rt1 : SV_TARGET1;
-//    float4 rt2 : SV_TARGET2;
-//};
-
-
-//PS_OUTPUT main(PS_INPUT input)
-//{
-//    PS_OUTPUT output = (PS_OUTPUT) 0;
-  
-    
-//    return output;
-//}
