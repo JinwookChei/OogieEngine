@@ -3,11 +3,13 @@
 
 Mesh::Mesh()
 	: refCount_(1)
-	//, vertexFormat_()
+	, primitiveType_(D3D_PRIMITIVE_TOPOLOGY::D3D10_PRIMITIVE_TOPOLOGY_POINTLIST)
 	, vertexStride_(0)
 	, vertexCount_(0)
 	, pVertexBuffer_(nullptr)
 	, pVertices_(nullptr)
+	, pVerticesSRV_(nullptr)
+	, pVerticesUAV_(nullptr)
 	, meshSubsets_()
 {
 }
@@ -21,6 +23,8 @@ IMesh* Mesh::Create(const MeshDesc& desc)
 {
 	Mesh* pNewMesh = nullptr;
 	ID3D11Buffer* pVertexBuffer = nullptr;
+	ID3D11ShaderResourceView* pVerticesSRV = nullptr;
+	ID3D11UnorderedAccessView* pVerticesUAV = nullptr;
 	void* copyVertices = nullptr;
 
 	std::vector<MeshSubset> meshSubsets;
@@ -28,7 +32,7 @@ IMesh* Mesh::Create(const MeshDesc& desc)
 
 	do
 	{
-		if (false == CreateVertexBuffer(&pVertexBuffer, &copyVertices, desc.vertexFormatSize, desc.vertexCount, desc.pVertices))
+		if (false == CreateVertexBuffer(&pVertexBuffer, &copyVertices, desc.vertexFormatSize, desc.vertexCount, desc.resourceFlag, desc.pVertices))
 		{
 			DEBUG_BREAK();
 			break;
@@ -52,14 +56,48 @@ IMesh* Mesh::Create(const MeshDesc& desc)
 		}
 		
 
+		if (static_cast<uint32_t>(desc.resourceFlag) & static_cast<uint32_t>(E_MESH_RESOURCE_FLAG::ShaderResource))
+		{
+			D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
+			srvDesc.Format = DXGI_FORMAT_UNKNOWN;
+			srvDesc.ViewDimension = D3D11_SRV_DIMENSION_BUFFER;
+			srvDesc.Buffer.FirstElement = 0;
+			srvDesc.Buffer.NumElements = desc.vertexCount;
+			HRESULT hr = GRenderer->Device()->CreateShaderResourceView(pVertexBuffer, &srvDesc, &pVerticesSRV);
+			if (FAILED(hr))
+			{
+				DEBUG_BREAK();
+				break;
+			}
+		}
+
+		if (static_cast<uint32_t>(desc.resourceFlag) & static_cast<uint32_t>(E_MESH_RESOURCE_FLAG::UnorderedAccess))
+		{
+			D3D11_UNORDERED_ACCESS_VIEW_DESC uavDesc = {};
+			uavDesc.Format = DXGI_FORMAT_UNKNOWN;
+			uavDesc.ViewDimension = D3D11_UAV_DIMENSION_BUFFER;
+			uavDesc.Buffer.FirstElement = 0;
+			uavDesc.Buffer.NumElements = desc.vertexCount;
+			uavDesc.Buffer.Flags = 0;
+			HRESULT hr = GRenderer->Device()->CreateUnorderedAccessView(pVertexBuffer, &uavDesc, &pVerticesUAV);
+			if (FAILED(hr))
+			{
+				DEBUG_BREAK();
+				break;
+			}
+		}
+
+
 		pNewMesh = new Mesh;
 		if (false == pNewMesh->Init
 		(
-			//desc.vertexFormat,
+			desc.primitiveType,
 			desc.vertexFormatSize,
 			desc.vertexCount,
 			copyVertices,
-			pVertexBuffer,			
+			pVertexBuffer,
+			pVerticesSRV,
+			pVerticesUAV,
 			meshSubsets
 		))
 		{
@@ -96,6 +134,16 @@ IMesh* Mesh::Create(const MeshDesc& desc)
 		pVertexBuffer->Release();
 		pVertexBuffer = nullptr;
 	}
+	if (nullptr != pVerticesSRV)
+	{
+		pVerticesSRV->Release();
+		pVerticesSRV = nullptr;
+	}
+	if (nullptr != pVerticesUAV)
+	{
+		pVerticesUAV->Release();
+		pVerticesUAV = nullptr;
+	}
 	if (nullptr != pNewMesh)
 	{
 		pNewMesh->Release();
@@ -107,19 +155,37 @@ IMesh* Mesh::Create(const MeshDesc& desc)
 
 bool Mesh::Init
 (
-	//E_VERTEX_FORMAT vertexFormat, 
+	E_MESH_PRIMITIVE_TYPE primitiveType,
 	uint32_t vertexFormatSize, 
 	uint32_t vertexCount, 
 	void* pVertices, 
 	ID3D11Buffer* pVertexBuffer, 
+	ID3D11ShaderResourceView* pVerticesSRV,
+	ID3D11UnorderedAccessView* pVerticesUAV,
 	const std::vector<MeshSubset>& meshSubsets
 )
-{
-	//vertexFormat_ = vertexFormat;
+{	
+	switch (primitiveType)
+	{
+	case E_MESH_PRIMITIVE_TYPE::Point:
+		primitiveType_ = D3D_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_POINTLIST;
+		break;
+	case E_MESH_PRIMITIVE_TYPE::Line:
+		primitiveType_ = D3D_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_LINELIST;
+		break;
+	case E_MESH_PRIMITIVE_TYPE::Triangle:
+		primitiveType_ = D3D_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+		break;
+	default:
+		break;
+	}
+	
 	vertexStride_ = vertexFormatSize;
 	vertexCount_ = vertexCount;
 	pVertices_ = pVertices;
 	pVertexBuffer_ = pVertexBuffer;
+	pVerticesSRV_ = pVerticesSRV;
+	pVerticesUAV_ = pVerticesUAV;
 	meshSubsets_ = meshSubsets;
 	return true;
 }
@@ -150,8 +216,72 @@ void Mesh::BindVertices() const
 {
 	UINT offset = 0;
 	GRenderer->DeviceContext()->IASetVertexBuffers(0, 1, &pVertexBuffer_, &vertexStride_, &offset);
-	GRenderer->DeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	GRenderer->DeviceContext()->IASetPrimitiveTopology(primitiveType_);
 }
+
+
+void Mesh::BindUnorderedAccessViewCS(UINT slot)
+{
+	if (nullptr == pVerticesUAV_)
+	{
+		DEBUG_BREAK();
+		return;
+	}
+	GRenderer->DeviceContext()->CSSetUnorderedAccessViews(slot, 1, &pVerticesUAV_, nullptr);
+}
+
+void Mesh::UnBindUnorderedAccessViewCS(UINT slot)
+{
+	ID3D11UnorderedAccessView* pNullUAV = nullptr;
+	GRenderer->DeviceContext()->CSSetUnorderedAccessViews(slot, 1, &pNullUAV, nullptr);
+}
+
+void Mesh::BindShaderResourceViewVS(UINT slot)
+{
+	if (nullptr == pVerticesSRV_)
+	{
+		DEBUG_BREAK();
+		return;
+	}
+	GRenderer->DeviceContext()->VSSetShaderResources(slot, 1, &pVerticesSRV_);
+}
+
+void Mesh::BindShaderResourceViewGS(UINT slot)
+{
+	if (nullptr == pVerticesSRV_)
+	{
+		DEBUG_BREAK();
+		return;
+	}
+	GRenderer->DeviceContext()->GSSetShaderResources(slot, 1, &pVerticesSRV_);
+}
+
+void Mesh::BindShaderResourceViewPS(UINT slot)
+{
+	if (nullptr == pVerticesSRV_)
+	{
+		DEBUG_BREAK();
+		return;
+	}
+	GRenderer->DeviceContext()->PSSetShaderResources(slot, 1, &pVerticesSRV_);
+}
+
+void Mesh::UnBindShaderResourceViewVS(UINT slot)
+{
+	ID3D11ShaderResourceView* pNullSRV = nullptr;
+	GRenderer->DeviceContext()->VSSetShaderResources(slot, 1, &pNullSRV);
+}
+void Mesh::UnBindShaderResourceViewGS(UINT slot)
+{
+	ID3D11ShaderResourceView* pNullSRV = nullptr;
+	GRenderer->DeviceContext()->GSSetShaderResources(slot, 1, &pNullSRV);
+}
+void Mesh::UnBindShaderResourceViewPS(UINT slot)
+{
+	ID3D11ShaderResourceView* pNullSRV = nullptr;
+	GRenderer->DeviceContext()->PSSetShaderResources(slot, 1, &pNullSRV);
+}
+
 
 //void Mesh::Bind(uint32_t subsetIndex) const
 //{
@@ -209,7 +339,15 @@ const std::vector<MeshSubset>& Mesh::GetMeshSubsets() const
 //}
 
 
-bool Mesh::CreateVertexBuffer(ID3D11Buffer** ppOutVertexBuffer, void** ppOutCopyVertices, uint32_t vertexFormatSize, uint32_t vertexCount, void* pVertices)
+bool Mesh::CreateVertexBuffer
+(
+	ID3D11Buffer** ppOutVertexBuffer, 
+	void** ppOutCopyVertices, 
+	uint32_t vertexFormatSize, 
+	uint32_t vertexCount, 
+	E_MESH_RESOURCE_FLAG resourceFlag,
+	void* pVertices
+)
 {
 	if (nullptr == pVertices)
 	{
@@ -217,12 +355,36 @@ bool Mesh::CreateVertexBuffer(ID3D11Buffer** ppOutVertexBuffer, void** ppOutCopy
 		return false;
 	}
 
+	UINT bindFlags = 0;
+	UINT miscFlags = 0;
+	UINT structureByteStride = 0;
+	if (resourceFlag == E_MESH_RESOURCE_FLAG::None)
+	{
+		bindFlags = D3D11_BIND_FLAG::D3D11_BIND_VERTEX_BUFFER;
+	}
+	else
+	{
+		if (static_cast<uint32_t>(resourceFlag) & static_cast<uint32_t>(E_MESH_RESOURCE_FLAG::ShaderResource))
+		{
+			bindFlags |= D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE;
+		}
+		if (static_cast<uint32_t>(resourceFlag) & static_cast<uint32_t>(E_MESH_RESOURCE_FLAG::UnorderedAccess))
+		{
+			bindFlags |= D3D11_BIND_FLAG::D3D11_BIND_UNORDERED_ACCESS;
+			miscFlags |= D3D11_RESOURCE_MISC_FLAG::D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
+			structureByteStride = vertexFormatSize;
+		}
+	}
+
+
 	D3D11_BUFFER_DESC bd;
 	memset(&bd, 0x00, sizeof(D3D11_BUFFER_DESC));
 	bd.Usage = D3D11_USAGE_DEFAULT;
 	bd.ByteWidth = vertexFormatSize * vertexCount;
-	bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	bd.BindFlags = bindFlags;
 	bd.CPUAccessFlags = 0;
+	bd.MiscFlags = miscFlags;
+	bd.StructureByteStride = structureByteStride;
 
 	D3D11_SUBRESOURCE_DATA InitData;
 	memset(&InitData, 0x00, sizeof(D3D11_SUBRESOURCE_DATA));
@@ -308,7 +470,6 @@ void Mesh::CleanUp()
 			meshSubsets_[i].pIndexBuffer = nullptr;
 		}
 	}
-
 	if (nullptr != pVertices_)
 	{
 		free(pVertices_);
@@ -318,5 +479,15 @@ void Mesh::CleanUp()
 	{
 		pVertexBuffer_->Release();
 		pVertexBuffer_ = nullptr;
+	}
+	if (nullptr != pVerticesSRV_)
+	{
+		pVerticesSRV_->Release();
+		pVerticesSRV_ = nullptr;
+	}
+	if (nullptr != pVerticesUAV_)
+	{
+		pVerticesUAV_->Release();
+		pVerticesUAV_ = nullptr;
 	}
 }

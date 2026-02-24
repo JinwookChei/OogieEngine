@@ -131,6 +131,16 @@ void Material::Bind()
 		Shader::GShaderLight->Bind();
 		break;
 	}
+	case E_SHADER_PRESET::ParticleCompute:
+	{
+		Shader::GShaderComputeParticle->Bind();
+		break;
+	}
+	case E_SHADER_PRESET::ParticleRender:
+	{
+		Shader::GShaderParticle->Bind();
+		break;
+	}
 	case E_SHADER_PRESET::StaticMesh:
 	{
 		Shader::GShaderStaticMesh->Bind();
@@ -168,6 +178,10 @@ void Material::Bind()
 		SamplerState::GSamplerAnisotropicClamp->BindPS(0);
 		break;
 	}
+	case E_SAMPLER_PRESET::DISABLE:
+	{
+		break;
+	}
 	default:
 	{
 		DEBUG_BREAK();
@@ -192,9 +206,12 @@ void Material::Bind()
 		BlendState::GAdditiveBlend->Bind();
 		break;
 	}
+	case E_BLEND_PRESET::DISABLE:
+	{
+		break;
+	}
 	default:
 	{
-		DEBUG_BREAK();
 		break;
 	}
 	}
@@ -210,6 +227,106 @@ void Material::Bind()
 	}
 	GRenderer->DeviceContext()->PSSetShaderResources(0, texturesNum_, pSRVs);
 }
+
+
+void Material::UnBind()
+{
+	switch (shaderType_)
+	{
+	case E_SHADER_PRESET::Light:
+	{
+		Shader::GShaderLight->UnBind();
+		break;
+	}
+	case E_SHADER_PRESET::ParticleCompute:
+	{
+		Shader::GShaderComputeParticle->UnBind();
+		break;
+	}
+	case E_SHADER_PRESET::ParticleRender:
+	{
+		Shader::GShaderParticle->UnBind();
+		break;
+	}
+	case E_SHADER_PRESET::StaticMesh:
+	{
+		Shader::GShaderStaticMesh->UnBind();
+		break;
+	}
+	case E_SHADER_PRESET::SkinnedMesh:
+	{
+		Shader::GShaderSkinnedMesh->UnBind();
+		break;
+	}
+	default:
+		DEBUG_BREAK();
+		break;
+	}
+
+	switch (samplerState_)
+	{
+	case E_SAMPLER_PRESET::LINEAR_CLAMP:
+	{
+		SamplerState::GSamplerLinearClamp->UnBindPS(0);
+		break;
+	}
+	case E_SAMPLER_PRESET::LINEAR_WARP:
+	{
+		SamplerState::GSamplerLinearWarp->UnBindPS(0);
+		break;
+	}
+	case E_SAMPLER_PRESET::ANISOTROPIC_CLAMP:
+	{
+		SamplerState::GSamplerAnisotropicClamp->UnBindPS(0);
+		break;
+	}
+	case E_SAMPLER_PRESET::ANISOTROPIC_WARP:
+	{
+		SamplerState::GSamplerAnisotropicClamp->UnBindPS(0);
+		break;
+	}
+	case E_SAMPLER_PRESET::DISABLE:
+	{
+		break;
+	}
+	default:
+	{
+		DEBUG_BREAK();
+		break;
+	}
+	}
+
+	switch (blendState_)
+	{
+	case E_BLEND_PRESET::OPAQUE_BLEND:
+	{
+		BlendState::GOpaqueBlend->UnBind();
+		break;
+	}
+	case E_BLEND_PRESET::ALPHA_BLEND:
+	{
+		BlendState::GAlphaBlend->UnBind();
+		break;
+	}
+	case E_BLEND_PRESET::ADDITIVE_BLEND:
+	{
+		BlendState::GAdditiveBlend->UnBind();
+		break;
+	}
+	case E_BLEND_PRESET::DISABLE:
+	{
+		break;
+	}
+	default:
+	{
+		break;
+	}
+	}
+
+	ID3D11ShaderResourceView* pNullSRVs[16] = { nullptr };
+	GRenderer->DeviceContext()->PSSetShaderResources(0, texturesNum_, pNullSRVs);
+}
+
 
 void Material::CleanTextures()
 {

@@ -142,6 +142,7 @@
     <ClCompile Include="LookAtCamera.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MoveCamera.cpp" />
+    <ClCompile Include="ParticleActor.cpp" />
     <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="StartLevel.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -155,6 +156,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\Common\Asset\Animation.h" />
     <ClInclude Include="..\..\Common\Asset\Model.h" />
+    <ClInclude Include="..\..\Common\Asset\Particle.h" />
     <ClInclude Include="..\..\Common\Asset\Skeleton.h" />
     <ClInclude Include="..\..\Common\GeometryType\GeometryType.h" />
     <ClInclude Include="..\..\Common\MathType\MathType.h" />
@@ -175,6 +177,7 @@
     <ClInclude Include="ContentManager.h" />
     <ClInclude Include="LookAtCamera.h" />
     <ClInclude Include="MoveCamera.h" />
+    <ClInclude Include="ParticleActor.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="StartLevel.h" />
     <ClInclude Include="stdafx.h" />

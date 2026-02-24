@@ -210,6 +210,9 @@
     <ClInclude Include="..\..\Common\Asset\Skeleton.h">
       <Filter>Common\Asset</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Common\Asset\Particle.h">
+      <Filter>Common\Asset</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

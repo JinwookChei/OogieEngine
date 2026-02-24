@@ -36,6 +36,7 @@ private:
 		void** ppOutCopyVertices,
 		uint32_t vertexFormatSize,
 		uint32_t vertexCount,
+		E_MESH_RESOURCE_FLAG resourceFlag,
 		void* pVertices
 	);
 
@@ -50,12 +51,14 @@ private:
 
 	bool Init
 	(
-		//E_VERTEX_FORMAT vertexFormat,
+		E_MESH_PRIMITIVE_TYPE primitiveType,
+		//E_MESH_RESOURCE_FLAG resourceFlag,
 		uint32_t vertexFormatSize,
 		uint32_t vertexCount,
 		void* pVertices,
 		ID3D11Buffer* pVertexBuffer,
-		//uint16_t meshSubsetCount,
+		ID3D11ShaderResourceView* pVerticesSRV,
+		ID3D11UnorderedAccessView* pVerticesUAV,
 		const std::vector<MeshSubset>& meshSubsets
 	);
 
@@ -69,33 +72,39 @@ public:
 
 	void BindVertices() const;
 
+	//void BindShaderResourceViewCS(UINT slot);
+
+	void BindUnorderedAccessViewCS(UINT slot);
+	void UnBindUnorderedAccessViewCS(UINT slot);
+
+	void BindShaderResourceViewVS(UINT slot);
+	void BindShaderResourceViewGS(UINT slot);
+	void BindShaderResourceViewPS(UINT slot);
+
+	void UnBindShaderResourceViewVS(UINT slot);
+	void UnBindShaderResourceViewGS(UINT slot);
+	void UnBindShaderResourceViewPS(UINT slot);
+
+
 	//void __stdcall GetVerticesData(E_VERTEX_FORMAT* pOutFormat, uint32_t* pOutStride, uint32_t* pOutCount, void** ppOutVertices) const override;
 	//void __stdcall GetIndicesData(uint32_t* pOutStride, uint32_t* pOutCount, void** ppOutIndices) const override;
 
 	const std::vector<MeshSubset>& GetMeshSubsets() const;
-
-	//ULONG GetIndexCount(uint32_t subSetIndex) const;
 
 private:
 
 	void CleanUp();
 
 	ULONG refCount_;
+	D3D_PRIMITIVE_TOPOLOGY primitiveType_;
 
-	//E_VERTEX_FORMAT vertexFormat_;
 	uint32_t vertexStride_;
 	uint32_t vertexCount_;
 	void* pVertices_;
 	ID3D11Buffer* pVertexBuffer_;
+	ID3D11ShaderResourceView* pVerticesSRV_;
+	ID3D11UnorderedAccessView* pVerticesUAV_;
 
-	//uint16_t meshSubsetCount_;
-	std::vector<MeshSubset> meshSubsets_;
 
-	/*uint32_t indexStride_;
-	uint32_t indexCount_;
-	void* pIndices_;
-	ID3D11Buffer* pIndexBuffer_;*/
-
-	//UINT subMeshCount_;
-	//MeshSubset* pMeshSubsets_;
+	std::vector<MeshSubset> meshSubsets_;	
 };

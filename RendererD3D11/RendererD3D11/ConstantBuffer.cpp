@@ -4,6 +4,8 @@
 ConstantBuffer* ConstantBuffer::GConstantPerFrame = nullptr;
 ConstantBuffer* ConstantBuffer::GConstantPerObject = nullptr;
 ConstantBuffer* ConstantBuffer::GConstantPerLight = nullptr;
+ConstantBuffer* ConstantBuffer::GConstantPerComputeParticle = nullptr;
+ConstantBuffer* ConstantBuffer::GConstantPerRenderParticle = nullptr;
 ConstantBuffer* ConstantBuffer::GConstantPerAnimation = nullptr;
 
 ConstantBuffer::ConstantBuffer()
@@ -131,6 +133,8 @@ void ConstantBuffer::InitGlobalConstant()
 	ConstantBuffer::GConstantPerFrame = Create(sizeof(CBPerFrame));
 	ConstantBuffer::GConstantPerObject = Create(sizeof(CBPerObject));
 	ConstantBuffer::GConstantPerLight = Create(sizeof(CBPerLight));
+	ConstantBuffer::GConstantPerComputeParticle = Create(sizeof(CBPerComputeParticleTTTTT));
+	ConstantBuffer::GConstantPerRenderParticle = Create(sizeof(CBPerParticleTTTTT));
 	ConstantBuffer::GConstantPerAnimation = Create(sizeof(CBPerAnimation));
 }
 
@@ -141,7 +145,16 @@ void ConstantBuffer::ShutDown()
 		ConstantBuffer::GConstantPerAnimation->Release();
 		ConstantBuffer::GConstantPerAnimation = nullptr;
 	}
-
+	if (nullptr != ConstantBuffer::GConstantPerComputeParticle)
+	{
+		ConstantBuffer::GConstantPerComputeParticle->Release();
+		ConstantBuffer::GConstantPerComputeParticle = nullptr;
+	}
+	if (nullptr != ConstantBuffer::GConstantPerRenderParticle)
+	{
+		ConstantBuffer::GConstantPerRenderParticle->Release();
+		ConstantBuffer::GConstantPerRenderParticle = nullptr;
+	}
 	if (nullptr != ConstantBuffer::GConstantPerFrame)
 	{
 		ConstantBuffer::GConstantPerFrame->Release();

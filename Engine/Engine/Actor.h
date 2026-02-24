@@ -19,6 +19,8 @@ public:
 
 	ENGINE_API virtual void Render();
 
+	ENGINE_API virtual void ParticleRender();
+
 	ENGINE_API Transform& GetWorldTransform() const;
 
 	LINK_NODE* LevelLink();

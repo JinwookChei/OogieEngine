@@ -149,6 +149,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\Common\Asset\Animation.h" />
     <ClInclude Include="..\..\Common\Asset\Model.h" />
+    <ClInclude Include="..\..\Common\Asset\Particle.h" />
     <ClInclude Include="..\..\Common\Asset\Skeleton.h" />
     <ClInclude Include="..\..\Common\GeometryType\GeometryType.h" />
     <ClInclude Include="..\..\Common\MathType\MathType.h" />
@@ -190,7 +191,6 @@
     <ClInclude Include="RasterizerManager.h" />
     <ClInclude Include="RenderComponent.h" />
     <ClInclude Include="Renderer.h" />
-    <ClInclude Include="ShaderManager.h" />
     <ClInclude Include="SkeletalMeshComponent.h" />
     <ClInclude Include="SkeletonManager.h" />
     <ClInclude Include="SpotLight.h" />
@@ -226,7 +226,6 @@
     <ClCompile Include="RasterizerManager.cpp" />
     <ClCompile Include="RenderComponent.cpp" />
     <ClCompile Include="Renderer.cpp" />
-    <ClCompile Include="ShaderManager.cpp" />
     <ClCompile Include="SkeletalMeshComponent.cpp" />
     <ClCompile Include="SkeletonManager.cpp" />
     <ClCompile Include="SpotLight.cpp" />

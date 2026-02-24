@@ -51,7 +51,6 @@ PS_OUTPUT main(PS_INPUT input)
     float3 worldNormal = normalize(mul(texNormal, input.TBN));
     
     output.rt0 = textColor;
-    //output.rt0 = float4(input.normal, 1.0f);
     output.rt1 = float4(worldNormal, 1.0f);
     output.rt2 = float4(MaterialSpecular, MaterialShineness);
     

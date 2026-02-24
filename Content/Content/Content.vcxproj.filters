@@ -52,6 +52,9 @@
     <Filter Include="Common\Asset">
       <UniqueIdentifier>{95404e3e-337c-432a-82b8-f003d7b7e6a3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Game\Actors\Static">
+      <UniqueIdentifier>{af1e4831-6e19-4f0d-892d-dbe4ef5b91b7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -66,17 +69,11 @@
     <ClCompile Include="StartLevel.cpp">
       <Filter>Source Files\Game\Level</Filter>
     </ClCompile>
-    <ClCompile Include="TestActor.cpp">
-      <Filter>Source Files\Game\Actors</Filter>
-    </ClCompile>
     <ClCompile Include="MoveCamera.cpp">
       <Filter>Source Files\Game\Actors\Camera</Filter>
     </ClCompile>
     <ClCompile Include="LookAtCamera.cpp">
       <Filter>Source Files\Game\Actors\Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="Sphere.cpp">
-      <Filter>Source Files\Game\Actors</Filter>
     </ClCompile>
     <ClCompile Include="TestPlayer.cpp">
       <Filter>Source Files\Game\Actors\Player</Filter>
@@ -86,6 +83,15 @@
     </ClCompile>
     <ClCompile Include="WereWolf.cpp">
       <Filter>Source Files\Game\Actors\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="TestActor.cpp">
+      <Filter>Source Files\Game\Actors\Static</Filter>
+    </ClCompile>
+    <ClCompile Include="Sphere.cpp">
+      <Filter>Source Files\Game\Actors\Static</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleActor.cpp">
+      <Filter>Source Files\Game\Actors</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -98,17 +104,11 @@
     <ClInclude Include="StartLevel.h">
       <Filter>Source Files\Game\Level</Filter>
     </ClInclude>
-    <ClInclude Include="TestActor.h">
-      <Filter>Source Files\Game\Actors</Filter>
-    </ClInclude>
     <ClInclude Include="MoveCamera.h">
       <Filter>Source Files\Game\Actors\Camera</Filter>
     </ClInclude>
     <ClInclude Include="LookAtCamera.h">
       <Filter>Source Files\Game\Actors\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="Sphere.h">
-      <Filter>Source Files\Game\Actors</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Common\GeometryType\GeometryType.h">
       <Filter>Common</Filter>
@@ -175,6 +175,18 @@
     </ClInclude>
     <ClInclude Include="..\..\Common\MathType\MathType.h">
       <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="TestActor.h">
+      <Filter>Source Files\Game\Actors\Static</Filter>
+    </ClInclude>
+    <ClInclude Include="Sphere.h">
+      <Filter>Source Files\Game\Actors\Static</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleActor.h">
+      <Filter>Source Files\Game\Actors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Asset\Particle.h">
+      <Filter>Common\Asset</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

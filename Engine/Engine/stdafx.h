@@ -50,6 +50,7 @@
 #include <Common/Asset/Skeleton.h>
 #include <Common/Asset/Animation.h>
 #include <Common/Asset/Model.h>
+#include <Common/Asset/Particle.h>
 
 
 // Utility
@@ -89,7 +90,6 @@
 #include "MeshManager.h"
 #include "TextureManager.h"
 #include "AnimationManager.h"
-#include "ShaderManager.h"
 #include "MaterialManager.h"
 #include "RasterizerManager.h"
 #include "Transform.h"

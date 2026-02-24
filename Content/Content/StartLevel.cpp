@@ -5,6 +5,7 @@
 #include "Sphere.h"
 #include "TestPlayer.h"
 #include "TestActor.h"
+#include "ParticleActor.h"
 #include "Wukong.h"
 #include "WereWolf.h"
 
@@ -72,6 +73,12 @@ void StartLevel::BeginPlay()
 	WereWolf* pWereWolf = SpawnActor<WereWolf>(E_ACTOR_TYPE::NORMAL);
 	pWereWolf->GetWorldTransform().SetPosition({ -3.0f, 0.0f, 0.0f, 1.0f });
 	pWereWolf->GetWorldTransform().SetScale({ 1.0f, 1.0f, 1.0f, 0.0f });
+
+	ParticleActor* pParticleTes1 = SpawnActor<ParticleActor>(E_ACTOR_TYPE::NORMAL);
+	pParticleTes1->GetWorldTransform().SetPosition({0.0f, 0.0f, 0.0f, 1.0f});
+
+	ParticleActor* pParticleTest2 = SpawnActor<ParticleActor>(E_ACTOR_TYPE::NORMAL);
+	pParticleTest2->GetWorldTransform().SetPosition({ 0.0f, 4.0f, 0.0f, 1.0f });
 }
 
 void StartLevel::Tick(double deltaTime)

@@ -48,8 +48,6 @@ public:
 
 	//void UnBindUnorderedAccessViewCS();
 
-	
-
 	//ID3D11ShaderResourceView* GetParticlesSRV() const;
 
 	//ID3D11UnorderedAccessView* GetParticlesUAV() const;

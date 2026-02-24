@@ -27,6 +27,11 @@ void Actor::Render()
 
 }
 
+void Actor::ParticleRender()
+{
+
+}
+
 Transform& Actor::GetWorldTransform() const
 {
 	return *pTransform_;

@@ -61,6 +61,8 @@ public:
 	static void InitGlobalShaders();
 	static void ShutDown();
 	static Shader* GShaderLight;
+	static Shader* GShaderComputeParticle;
+	static Shader* GShaderParticle;
 	static Shader* GShaderStaticMesh;
 	static Shader* GShaderSkinnedMesh;
 };

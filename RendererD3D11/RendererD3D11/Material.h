@@ -35,6 +35,8 @@ public:
 
 	void Bind();
 
+	void UnBind();
+
 private:
 	void CleanTextures();
 	void CleanUp();

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Texture.h"
 #include "Particle.h"
+#include "Mesh.h"
 
 Particle::Particle()
 	:refCount_(1)
@@ -94,6 +95,7 @@ void Particle::BindUnorderedAccessViewCS(UINT slot)
 {
 	GRenderer->DeviceContext()->CSSetUnorderedAccessViews(slot, 1, &pParticlesUAV_, nullptr);
 }
+
 
 void Particle::UnBindUnorderedAccessViewCS(UINT slot)
 {

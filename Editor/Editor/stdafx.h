@@ -34,6 +34,7 @@
 #include <cstdio>
 #include <vector>
 #include <string>
+#include <unordered_map>
 #include <map>
 
 //#include <DirectXMath.h>
@@ -57,7 +58,10 @@
 #include <Common/MathType/MathType.h>
 #include <Common/GeometryType/GeometryType.h>
 #include <Common/VertexType/VertexType.h>
-
+#include <Common/Asset/Skeleton.h>
+#include <Common/Asset/Animation.h>
+#include <Common/Asset/Model.h>
+#include <Common/Asset/Particle.h>
 
 // Utility
 #include <Utility/Utility/Math.h>

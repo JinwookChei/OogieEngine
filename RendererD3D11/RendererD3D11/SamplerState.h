@@ -18,6 +18,7 @@ public:
 	ULONG __stdcall Release() override;
 
 	void BindPS(UINT slot);
+	void UnBindPS(UINT slot);
 
 private:
 	void CleanUp();

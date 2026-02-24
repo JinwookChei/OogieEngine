@@ -50,21 +50,21 @@ void FBXManager::TestLoad()
 	FBXManager::LoadModel(&wukong, "..\\Resource\\Fbx\\Wukong\\Wukong.FBX");
 	//FBXManager::LoadModel(&wukong, "..\\Resource\\Fbx\\Wukong\\Wukong_Fury.FBX");
 	MeshDesc meshDesc_3;
-	//meshDesc_3.vertexFormat = E_VERTEX_FORMAT::SkinnedMesh;
+	meshDesc_3.primitiveType = E_MESH_PRIMITIVE_TYPE::Triangle;
+	meshDesc_3.resourceFlag = E_MESH_RESOURCE_FLAG::None;
 	meshDesc_3.vertexFormatSize = sizeof(SkinnedMeshVertex);
 	meshDesc_3.vertexCount = wukong.meshInfos[0].vertices.size();
 	meshDesc_3.pVertices = wukong.meshInfos[0].vertices.data();
 	meshDesc_3.meshSubsets.emplace_back(0, (uint16_t)sizeof(uint16_t), wukong.meshInfos[0].indices[0].size(), wukong.meshInfos[0].indices[0].data());
-	unsigned long long meshTag_3 = 3;
-	MeshManager::Instance()->CreateMesh(meshDesc_3, meshTag_3);
-	unsigned long long skeletonTag_3 = 3;
-	SkeletonManager::Instance()->CreateSkeleton(wukong.meshInfos[0].bones, skeletonTag_3);
+	MeshManager::Instance()->CreateMesh(meshDesc_3, 12);
+	SkeletonManager::Instance()->CreateSkeleton(wukong.meshInfos[0].bones, 12);
 
 
 	Model capoeira;
 	FBXManager::LoadModel(&capoeira, "..\\Resource\\Fbx\\Mixamo\\Capoeira.FBX");
 	MeshDesc meshDesc_4;
-	//meshDesc_4.vertexFormat = E_VERTEX_FORMAT::SkinnedMesh;
+	meshDesc_4.primitiveType = E_MESH_PRIMITIVE_TYPE::Triangle;
+	meshDesc_4.resourceFlag = E_MESH_RESOURCE_FLAG::None;
 	meshDesc_4.vertexFormatSize = sizeof(SkinnedMeshVertex);
 	meshDesc_4.vertexCount = capoeira.meshInfos[0].vertices.size();
 	meshDesc_4.pVertices = capoeira.meshInfos[0].vertices.data();
@@ -72,16 +72,15 @@ void FBXManager::TestLoad()
 	{
 		meshDesc_4.meshSubsets.emplace_back(i, (uint16_t)sizeof(uint16_t), capoeira.meshInfos[0].indices[i].size(), capoeira.meshInfos[0].indices[i].data());
 	}
-	unsigned long long meshTag_4 = 4;
-	MeshManager::Instance()->CreateMesh(meshDesc_4, meshTag_4);
-	unsigned long long skeletonTag_4 = 4;
-	SkeletonManager::Instance()->CreateSkeleton(capoeira.meshInfos[0].bones, skeletonTag_4);
+	MeshManager::Instance()->CreateMesh(meshDesc_4, 13);
+	SkeletonManager::Instance()->CreateSkeleton(capoeira.meshInfos[0].bones, 13);
 
 
 	Model wereWolf;
 	FBXManager::LoadModel(&wereWolf, "..\\Resource\\Fbx\\WereWolf\\Model\\Werewolf_1.FBX");
 	MeshDesc meshDesc_5;
-	//meshDesc_5.vertexFormat = E_VERTEX_FORMAT::SkinnedMesh;
+	meshDesc_5.primitiveType = E_MESH_PRIMITIVE_TYPE::Triangle;
+	meshDesc_5.resourceFlag = E_MESH_RESOURCE_FLAG::None;
 	meshDesc_5.vertexFormatSize = sizeof(SkinnedMeshVertex);
 	meshDesc_5.vertexCount = wereWolf.meshInfos[0].vertices.size();
 	meshDesc_5.pVertices = wereWolf.meshInfos[0].vertices.data();
@@ -89,10 +88,8 @@ void FBXManager::TestLoad()
 	{
 		meshDesc_5.meshSubsets.emplace_back(i, (uint16_t)sizeof(uint16_t), wereWolf.meshInfos[0].indices[i].size(), wereWolf.meshInfos[0].indices[i].data());
 	}
-	unsigned long long meshTag_5 = 5;
-	MeshManager::Instance()->CreateMesh(meshDesc_5, meshTag_5);
-	unsigned long long skeletonTag_5 = 5;
-	SkeletonManager::Instance()->CreateSkeleton(wereWolf.meshInfos[0].bones, skeletonTag_5);
+	MeshManager::Instance()->CreateMesh(meshDesc_5, 14);
+	SkeletonManager::Instance()->CreateSkeleton(wereWolf.meshInfos[0].bones, 14);
 }
 
 bool FBXManager::LoadModel(Model* pOutModel, const std::string& file)

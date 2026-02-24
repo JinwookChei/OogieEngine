@@ -78,8 +78,6 @@ struct IRenderTarget : public IUnknown
 
 	virtual void __stdcall Clear() = 0;
 
-
-
 	virtual RenderTargetDesc __stdcall GetDesc() const = 0;
 
 	virtual Float2 __stdcall GetSize() const = 0;

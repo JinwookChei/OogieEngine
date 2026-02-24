@@ -61,6 +61,9 @@
     <Filter Include="Interface\Renderer">
       <UniqueIdentifier>{a179e71d-da38-406e-84ba-8cd97a77a204}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Common\Asset">
+      <UniqueIdentifier>{ab85377b-71b4-40ac-93df-10790b42c17f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -176,6 +179,18 @@
     </ClInclude>
     <ClInclude Include="..\..\Interface\Renderer\IShader.h">
       <Filter>Interface\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Asset\Animation.h">
+      <Filter>Common\Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Asset\Model.h">
+      <Filter>Common\Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Asset\Particle.h">
+      <Filter>Common\Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Asset\Skeleton.h">
+      <Filter>Common\Asset</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -18,9 +18,6 @@ enum class E_RASTERIZER_PRESET
 
 struct PipelineStateDesc
 {
-	//IMesh* pMesh;
-	//IMaterial* pMaterial;
-
 	uint16_t meshSlotCount;
 	uint16_t materialSlotCount;
 

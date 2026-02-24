@@ -255,6 +255,35 @@ void __stdcall Renderer::UpdateLightFrame(const LightRenderData& lightFrameData)
 	ConstantBuffer::GConstantPerLight->BindConstantBufferPS(1);
 }
 
+void __stdcall Renderer::UpdateComputeParticleFrame(const ComputeParticleData& computeParticleData)
+{
+	CBPerComputeParticleTTTTT cbComputeParticle;
+	cbComputeParticle.deltaTime = computeParticleData.deltaTime;
+	cbComputeParticle.particleNum = computeParticleData.particleNum;
+	cbComputeParticle.accTime = computeParticleData.accTime;
+	cbComputeParticle.particleType = computeParticleData.particleType;
+
+	ConstantBuffer::GConstantPerComputeParticle->Update(&cbComputeParticle);
+	ConstantBuffer::GConstantPerComputeParticle->BindConstantBufferCS(1);
+}
+
+void __stdcall Renderer::UpdateRenderParticleFrame(const RenderParticleData& renderParticleData)
+{
+	CBPerParticleTTTTT cbRenderParticle;
+	MATH::MatrixTranspose(cbRenderParticle.world, renderParticleData.world);
+	MATH::MatrixTranspose(cbRenderParticle.viewProj, renderParticleData.viewProj);
+	cbRenderParticle.cameraRight = renderParticleData.cameraRight;
+	cbRenderParticle.startSize = renderParticleData.startSize;
+	cbRenderParticle.cameraUp = renderParticleData.cameraUp;
+	cbRenderParticle.endSize = renderParticleData.endSize;
+	cbRenderParticle.startColor = renderParticleData.startColor;
+	cbRenderParticle.endColor = renderParticleData.endColor;
+
+	ConstantBuffer::GConstantPerRenderParticle->Update(&cbRenderParticle);
+	ConstantBuffer::GConstantPerRenderParticle->BindConstantBufferGS(0);
+	ConstantBuffer::GConstantPerRenderParticle->BindConstantBufferPS(0);
+}
+
 void __stdcall Renderer::UpdateAnimationFrame(const AnimConstantBuffer& animFrameData)
 {
 	CBPerAnimation cbPerAnimation;
@@ -341,9 +370,49 @@ void __stdcall Renderer::Render(IPSO* pipelineStateObject)
 	}
 }
 
+void __stdcall Renderer::RenderParticle_Test(IPSO* pipelineStateObject)
+{
+	PipelineStateObject* pPSO = static_cast<PipelineStateObject*>(pipelineStateObject);
+	Mesh* pMesh = static_cast<Mesh*>(pPSO->GetMesh(0));
+	Material* pMaterial = static_cast<Material*>(pPSO->GetMaterial(1));
+
+	UINT stride = 0;
+	UINT offset = 0;
+	ID3D11Buffer* nullVB = nullptr;
+	GRenderer->DeviceContext()->IASetVertexBuffers(0, 1, &nullVB, &stride, &offset);
+	GRenderer->DeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
+
+	pMaterial->Bind();
+	pMesh->BindShaderResourceViewVS(1);
+	
+	UINT maxParticleCnt = 1000;
+	GRenderer->DeviceContext()->Draw(maxParticleCnt, 0);
+
+	GRenderer->DeviceContext()->GSSetShader(nullptr, nullptr, 0);
+	ID3D11ShaderResourceView* nullSRV[2] = { nullptr, nullptr };
+	GRenderer->DeviceContext()->VSSetShaderResources(1, 1, nullSRV);
+}
+
+void __stdcall Renderer::Compute(IPSO* pipelineStateObject, UINT threadGroupCountX, UINT threadGroupCountY, UINT threadGroupCountZ)
+{
+	PipelineStateObject* pPSO = static_cast<PipelineStateObject*>(pipelineStateObject);
+
+	Mesh* pMesh = static_cast<Mesh*>(pPSO->GetMesh(0));
+	pMesh->BindUnorderedAccessViewCS(0);
+
+	// 0 : ComputeParticle
+	Material* pMaterial = static_cast<Material*>(pPSO->GetMaterial(0));
+	pMaterial->Bind();
+
+	Renderer::DeviceContext()->Dispatch(threadGroupCountX, threadGroupCountY, threadGroupCountZ);
+
+	pMesh->UnBindUnorderedAccessViewCS(0);
+	pMaterial->UnBind();
+}
+
 void __stdcall Renderer::UnBindSRVs(bool bVS, bool bPS)
 {
-	ID3D11ShaderResourceView* nullSRVs[16] = {};
+	ID3D11ShaderResourceView* nullSRVs[16] = {nullptr};
 	if (bVS)
 	{
 		pDeviceContext_->VSSetShaderResources(0, 16, nullSRVs);

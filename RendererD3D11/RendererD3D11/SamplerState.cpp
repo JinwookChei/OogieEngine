@@ -119,6 +119,11 @@ void SamplerState::BindPS(UINT slot)
 	GRenderer->DeviceContext()->PSSetSamplers(slot, 1, &pSamplerState_);
 }
 
+void SamplerState::UnBindPS(UINT slot)
+{
+	GRenderer->DeviceContext()->PSSetSamplers(slot, 1, nullptr);
+}
+
 void SamplerState::CleanUp()
 {
 	if (nullptr != pSamplerState_)

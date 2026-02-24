@@ -100,46 +100,46 @@ void ParticlePass::Tick(IParticle* pParticle,  float deltaTime)
 
 void ParticlePass::Render(IParticle* pParticle, const Float4x4 worldTransform,  const Float4x4& viewProj, const Float3& cameraRight, const Float3& cameraUp)
 {
-	Particle* pParticleImpl = (Particle*)pParticle;
+	//Particle* pParticleImpl = (Particle*)pParticle;
 
-	pBlendState_->Bind();
-	pDepthState_->Bind();
+	//pBlendState_->Bind();
+	//pDepthState_->Bind();
 
-	CBPerParticle cb = {};
-	MATH::MatrixTranspose(cb.world_, worldTransform);
-	MATH::MatrixTranspose(cb.viewProj_, viewProj);
-	cb.cameraRight_ = cameraRight;
-	cb.startSize_ = 0.5f;
-	cb.cameraUp_ = cameraUp;
-	cb.endSize_ = 0.1f;
-	cb.startColor_ = { 0.1f, 0.6f, 1.0f, 1.0f };
-	cb.endColor_ = { 0.1f, 0.1f, 1.0f, 0.0f };
-	pCBPerParticle_->Update(&cb);
+	//CBPerParticle cb = {};
+	//MATH::MatrixTranspose(cb.world_, worldTransform);
+	//MATH::MatrixTranspose(cb.viewProj_, viewProj);
+	//cb.cameraRight_ = cameraRight;
+	//cb.startSize_ = 0.5f;
+	//cb.cameraUp_ = cameraUp;
+	//cb.endSize_ = 0.1f;
+	//cb.startColor_ = { 0.1f, 0.6f, 1.0f, 1.0f };
+	//cb.endColor_ = { 0.1f, 0.1f, 1.0f, 0.0f };
+	//pCBPerParticle_->Update(&cb);
 
-	
-	GRenderer->DeviceContext()->IASetInputLayout(nullptr);
-	UINT stride = 0;
-	UINT offset = 0;
-	ID3D11Buffer* nullVB = nullptr;
-	GRenderer->DeviceContext()->IASetVertexBuffers(0, 1, &nullVB, &stride, &offset);
-	GRenderer->DeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
+	//
+	//GRenderer->DeviceContext()->IASetInputLayout(nullptr);
+	//UINT stride = 0;
+	//UINT offset = 0;
+	//ID3D11Buffer* nullVB = nullptr;
+	//GRenderer->DeviceContext()->IASetVertexBuffers(0, 1, &nullVB, &stride, &offset);
+	//GRenderer->DeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
 
-	pRenderShader_->Bind();
+	//pRenderShader_->Bind();
 
-	pCBPerParticle_->BindConstantBufferGS(0);
-	pCBPerParticle_->BindConstantBufferPS(0);
+	//pCBPerParticle_->BindConstantBufferGS(0);
+	//pCBPerParticle_->BindConstantBufferPS(0);
 
-	pParticleImpl->BindShaderResourceViewVS(1);
-	pParticleImpl->GetTexture()->BindRenderTextureForPS(0);
+	//pParticleImpl->BindShaderResourceViewVS(1);
+	//pParticleImpl->GetTexture()->BindRenderTextureForPS(0);
 
 
-	pSamplerState_->BindPS(0);
-	
-	GRenderer->DeviceContext()->Draw(pParticleImpl->GetMaxNumber(), 0);
+	//pSamplerState_->BindPS(0);
+	//
+	//GRenderer->DeviceContext()->Draw(pParticleImpl->GetMaxNumber(), 0);
 
-	pRenderShader_->UnBind();
-	pDepthState_->UnBind();
-	pParticleImpl->UnBindShaderResourceViewVS(1);
+	//pRenderShader_->UnBind();
+	//pDepthState_->UnBind();
+	//pParticleImpl->UnBindShaderResourceViewVS(1);
 }
 
 

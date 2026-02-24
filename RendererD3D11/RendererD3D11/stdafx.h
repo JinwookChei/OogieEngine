@@ -60,6 +60,7 @@
 #include <Common/Asset/Skeleton.h>
 #include <Common/Asset/Animation.h>
 #include <Common/Asset/Model.h>
+#include <Common/Asset/Particle.h>
 
 
 // Utility

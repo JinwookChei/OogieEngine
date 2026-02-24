@@ -146,6 +146,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\Common\Asset\Animation.h" />
     <ClInclude Include="..\..\Common\Asset\Model.h" />
+    <ClInclude Include="..\..\Common\Asset\Particle.h" />
     <ClInclude Include="..\..\Common\Asset\Skeleton.h" />
     <ClInclude Include="..\..\Common\GeometryType\GeometryType.h" />
     <ClInclude Include="..\..\Common\MathType\MathType.h" />

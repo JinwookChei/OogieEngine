@@ -9,7 +9,6 @@ enum class E_ACTOR_TYPE
 	MAX,
 };
 
-
 class Actor;
 class Camera;
 class Light;

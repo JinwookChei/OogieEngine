@@ -76,9 +76,15 @@ struct IRenderer : public IUnknown {
 
 	virtual void __stdcall UpdateLightFrame(const LightRenderData& lightFrameData) = 0;
 
+	virtual void __stdcall UpdateComputeParticleFrame(const ComputeParticleData& computeParticleData) = 0;
+
+	virtual void __stdcall UpdateRenderParticleFrame(const RenderParticleData& renderParticleData) = 0;
+
 	virtual void __stdcall UpdateAnimationFrame(const AnimConstantBuffer& animFrameData) = 0;
 	 
 	virtual void __stdcall Render(IPSO* pipelineStateObject) = 0;
+	virtual void __stdcall RenderParticle_Test(IPSO* pipelineStateObject) = 0;
+	virtual void __stdcall Compute(IPSO* pipelineStateObject, UINT threadGroupCountX, UINT threadGroupCountY, UINT threadGroupCountZ) = 0;
 
 	virtual void __stdcall UnBindSRVs(bool bVS, bool bPS) = 0;
 

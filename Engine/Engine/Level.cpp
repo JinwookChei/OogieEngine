@@ -99,6 +99,49 @@ void Level::OnRender()
 		// Light Pass End
 
 
+		// Particle Pass
+		GCurrentCamera->RenderPassBegin(E_RENDER_PASS_TYPE::ParticlePass);
+		OnRenderParticles();
+		GCurrentCamera->RenderPassEnd();
+		// Particle Pass End
+
+
+		//GCurrentCamera->pFinalRenderTarget_->Bind();
+		//GCurrentCamera->UpdatePerFrameConstant();
+		//Renderer::Instance()->RenderMerge(GCurrentCamera->pParticleRenderTarget_);
+		////GRenderer->RenderMerge(GCurrentCamera->pGBufferRenderTarget_, GCurrentCamera->pParticleRenderTarget_);
+		//GCurrentCamera->pFinalRenderTarget_->EndRenderPass();
+
+
+
+		//// Particle Pass Begin
+		//GCurrentCamera->ParticlePassBegin();
+		//OnRenderParticles();
+		//GCurrentCamera->ParticlePassEnd();
+		//// Particle Pass End
+
+		GCurrentCamera->pFinalRenderTarget_->Bind();
+		GCurrentCamera->UpdatePerFrameConstant();
+		Renderer::Instance()->RenderMerge(GCurrentCamera->pParticleRenderTarget_);
+
+		//GCurrentCamera->RenderPassEnd();
+		//GRenderer->RenderMerge(GCurrentCamera->pGBufferRenderTarget_, GCurrentCamera->pParticleRenderTarget_);
+		//GCurrentCamera->pFinalRenderTarget_->EndRenderPass();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 		// 기존. 라이트 랜더링
 		//GCurrentCamera->RenderPassBegin(E_RENDER_PASS_TYPE::LightPass);
@@ -200,36 +243,18 @@ void Level::OnRenderLights(IRenderTarget* pGBufferTarget)
 
 void Level::OnRenderParticles()
 {
-	const Transform& worldForm = GCurrentCamera->GetWorldTransform();
-	Vector eye = worldForm.GetPosition();
-	Vector to = worldForm.ForwardVector();
-	Vector right = worldForm.RightVector();
-	Vector up = worldForm.UpVector();
+	for (int i = 0; i < (int)E_ACTOR_TYPE::MAX; ++i)
+	{
+		if (i == (int)E_ACTOR_TYPE::LIGHT) continue;
 
-	const Float2& size = GCurrentCamera->GetRenderSize();
-	Float4x4 proj;
-	MATH::MatrixPerspectiveFovLH(proj, GCurrentCamera->GetFov(), (size.X / size.Y), GCurrentCamera->GetNear(), GCurrentCamera->GetFar());
-	Float4x4 view;
-	MATH::MatrixLookToLH(view, eye, to, up);
-	Float4x4 viewProj;
-	MATH::MatrixMultiply(viewProj, view, proj);
-	Float3 cameraRight(right.X, right.Y, right.Z);
-	Float3 cameraUp(up.X, up.Y, up.Z);
-
-	
-	Float4 scale1 = { 1.0f, 1.0f, 1.0f, 0.0f };
-	Float4 rotation1 = { 0.0f, 0.0f, 0.0f , 0.0f };
-	Float4 position1 = { 0.0f, 0.0f, 0.0f , 1.0f };
-	Float4x4 world1;
-	MATH::MatrixCompose(world1, scale1, rotation1, position1);
-	Renderer::Instance()->RenderParticles(GParticle_1, world1, viewProj, cameraRight, cameraUp);
-
-	Float4 scale2 = { 1.0f, 1.0f, 1.0f, 0.0f };
-	Float4 rotation2 = { 0.0f, 0.0f, 0.0f , 0.0f };
-	Float4 position2 = { 0.0f, 5.0f, 5.0f , 1.0f };
-	Float4x4 world2;
-	MATH::MatrixCompose(world2, scale2, rotation2, position2);
-	Renderer::Instance()->RenderParticles(GParticle_2, world2,  viewProj, cameraRight, cameraUp);
+		LINK_NODE* pActorIter = actorList_[i].GetHead();
+		while (pActorIter)
+		{
+			Actor* pActor = static_cast<Actor*>(pActorIter->pItem_);
+			pActor->ParticleRender();
+			pActorIter = pActorIter->next_;
+		}
+	}
 }
 
 

@@ -240,9 +240,6 @@
     <ClInclude Include="..\..\Interface\Renderer\IShader.h">
       <Filter>Interface\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="ShaderManager.h">
-      <Filter>Source Files\Manager\ResourceManager</Filter>
-    </ClInclude>
     <ClInclude Include="AnimationManager.h">
       <Filter>Source Files\Manager\ResourceManager</Filter>
     </ClInclude>
@@ -266,6 +263,9 @@
     </ClInclude>
     <ClInclude Include="SkeletonManager.h">
       <Filter>Source Files\Manager\ResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Asset\Particle.h">
+      <Filter>Common\Asset</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -349,9 +349,6 @@
     </ClCompile>
     <ClCompile Include="Application.cpp">
       <Filter>Source Files\Application</Filter>
-    </ClCompile>
-    <ClCompile Include="ShaderManager.cpp">
-      <Filter>Source Files\Manager\ResourceManager</Filter>
     </ClCompile>
     <ClCompile Include="AnimationManager.cpp">
       <Filter>Source Files\Manager\ResourceManager</Filter>

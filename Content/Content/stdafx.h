@@ -71,6 +71,7 @@
 #include <Common/Asset/Skeleton.h>
 #include <Common/Asset/Animation.h>
 #include <Common/Asset/Model.h>
+#include <Common/Asset/Particle.h>
 
 
 // Interface
@@ -116,6 +117,7 @@
 #include <Engine/Engine/RenderComponent.h>
 #include <Engine/Engine/MeshComponent.h>
 #include <Engine/Engine/SkeletalMeshComponent.h>
+#include <Engine/Engine/ParticleComponent.h>
 #include <Engine/Engine/InputManager.h>
 #include <Engine/Engine/World.h>
 

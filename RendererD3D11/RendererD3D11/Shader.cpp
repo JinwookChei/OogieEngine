@@ -1,8 +1,10 @@
 #include "stdafx.h"
 #include "Shader.h"
 
-Shader* Shader::GShaderStaticMesh = nullptr;
 Shader* Shader::GShaderLight = nullptr;
+Shader* Shader::GShaderComputeParticle = nullptr;
+Shader* Shader::GShaderParticle = nullptr;
+Shader* Shader::GShaderStaticMesh = nullptr;
 Shader* Shader::GShaderSkinnedMesh = nullptr;
 
 Shader::Shader()
@@ -490,6 +492,25 @@ void Shader::InitGlobalShaders()
 		DEBUG_BREAK();
 	}
 
+
+	ShaderDesc computeParticleShaderDesc;
+	computeParticleShaderDesc.pathCS_ = L"ParticleCS.cso";
+	Shader::GShaderComputeParticle = Shader::Create(computeParticleShaderDesc);
+	if (nullptr == GShaderComputeParticle)
+	{
+		DEBUG_BREAK();
+	}
+
+	ShaderDesc particleShaderDesc;
+	particleShaderDesc.pathVS_ = L"ParticleVS.cso";
+	particleShaderDesc.pathPS_ = L"ParticlePS.cso";
+	particleShaderDesc.pathGS_ = L"ParticleGS.cso";
+	Shader::GShaderParticle = Shader::Create(particleShaderDesc);
+	if (nullptr == GShaderParticle)
+	{
+		DEBUG_BREAK();
+	}
+
 	ShaderDesc staticMeshDesc;
 	staticMeshDesc.pathVS_ = L"StaticMeshVS.cso";
 	staticMeshDesc.pathPS_ = L"StaticMeshPS.cso";
@@ -527,6 +548,18 @@ void Shader::ShutDown()
 	{
 		Shader::GShaderLight->Release();
 		Shader::GShaderLight = nullptr;
+	}
+
+	if (nullptr != Shader::GShaderComputeParticle)
+	{
+		Shader::GShaderComputeParticle->Release();
+		Shader::GShaderComputeParticle = nullptr;
+	}
+
+	if (nullptr != Shader::GShaderParticle)
+	{
+		Shader::GShaderParticle->Release();
+		Shader::GShaderParticle = nullptr;
 	}
 
 	if (nullptr != Shader::GShaderStaticMesh)

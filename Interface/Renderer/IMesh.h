@@ -1,5 +1,28 @@
 #pragma once
 
+enum class E_MESH_PRIMITIVE_TYPE
+{
+	Point = 0,
+	Line,
+	Triangle
+};
+
+enum class E_MESH_RESOURCE_FLAG : uint32_t
+{
+	None = 0,
+	ShaderResource = 1 << 0,
+	UnorderedAccess = 1 << 1
+};
+
+inline E_MESH_RESOURCE_FLAG operator|(E_MESH_RESOURCE_FLAG lhs, E_MESH_RESOURCE_FLAG rhs)
+{
+	return static_cast<E_MESH_RESOURCE_FLAG>(static_cast<uint32_t>(lhs) | static_cast<uint32_t>(rhs));
+}
+
+inline E_MESH_RESOURCE_FLAG operator&(E_MESH_RESOURCE_FLAG lhs, E_MESH_RESOURCE_FLAG rhs)
+{
+	return static_cast<E_MESH_RESOURCE_FLAG>(static_cast<uint32_t>(lhs) & static_cast<uint32_t>(rhs));
+}
 
 struct MeshDesc
 {
@@ -25,7 +48,9 @@ struct MeshDesc
 		};
 	};
 
-	//E_VERTEX_FORMAT vertexFormat;
+	E_MESH_PRIMITIVE_TYPE primitiveType;
+	E_MESH_RESOURCE_FLAG resourceFlag;
+
 	uint16_t vertexFormatSize;
 	size_t vertexCount;
 	void* pVertices;
