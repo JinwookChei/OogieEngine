@@ -28,12 +28,17 @@
 // STL
 #include <string>
 #include <map>
+#include <unordered_map>
 #include <vector>
 
-//CoreTypes
+// Common
 #include <Common/MathType/MathType.h>
 #include <Common/GeometryType/GeometryType.h>
 #include <Common/VertexType/VertexType.h>
+#include <Common/Asset/Skeleton.h>
+#include <Common/Asset/Model.h>
+#include <Common/Asset/Animation.h>
+#include <Common/Asset/Particle.h>
 
 
 // Utility

@@ -93,7 +93,7 @@ void ParticleComponent::RenderParticle()
 	Float3 cameraUp(up.X, up.Y, up.Z);
 
 	RenderParticleData renderData;
-	renderData.world = GetOwner()->GetWorldTransform().GetWorldMatrix();;
+	renderData.world = GetOwner()->GetWorldTransform().GetAffineMatrix();;
 	renderData.viewProj = viewProj;
 	renderData.cameraRight = cameraRight;
 	renderData.cameraUp = cameraUp;

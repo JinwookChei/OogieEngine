@@ -99,7 +99,6 @@
 // ImguiModule
 #include <Editor/Editor/EditorCore.h>
 
-
 // Engine
 #include <Engine/Engine/Engine.h>
 #include <Engine/Engine/StartUp.h>
@@ -113,7 +112,6 @@
 #include <Engine/Engine/DirectionLight.h>
 #include <Engine/Engine/SpotLight.h>
 #include <Engine/Engine/PointLight.h>
-#include <Engine/Engine/RenderComponent.h>
 #include <Engine/Engine/ActorComponent.h>
 #include <Engine/Engine/SceneComponent.h>
 #include <Engine/Engine/MeshComponent.h>

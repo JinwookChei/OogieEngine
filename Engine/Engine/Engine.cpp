@@ -135,18 +135,6 @@ void Engine::Run()
 	AnimationManager::Instance()->TestLoad();
 	FBXManager::TestLoad();
 
-	//ParticleDesc particleDesc;
-	//particleDesc.maxNum_ = 10;
-	//particleDesc.patternType_ = E_PARTICLE_PATTERN_TYPE::EXPLOSION;
-	//TextureManager::Instance()->GetTexture(&particleDesc.pTexture_, 0);
-	//GParticle_1 = Renderer::GetFactory()->CreateParticle(particleDesc);
-
-	//ParticleDesc particleDesc2;
-	//particleDesc2.maxNum_ = 10;
-	//particleDesc2.patternType_ = E_PARTICLE_PATTERN_TYPE::FUME;
-	//TextureManager::Instance()->GetTexture(&particleDesc2.pTexture_, 0);
-	//GParticle_2 = Renderer::GetFactory()->CreateParticle(particleDesc2);
-
 
 	while (false == Application::Instance()->ApplicationQuit()) {
 
@@ -160,9 +148,6 @@ void Engine::Run()
 		
 		// 잠시 에러 있어서 OFF
 		//GActorPicker->Tick(deltaTime);
-
-		// Renderer::Instance()->UpdateParticles(GParticle_1, deltaTime);
-		// Renderer::Instance()->UpdateParticles(GParticle_2, deltaTime);
 		
 		// GameLoop
 		GWorld->CheckChangeLevel();

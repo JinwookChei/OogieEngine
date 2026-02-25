@@ -25,7 +25,7 @@ void StaticMeshComponent::Render()
 	MeshComponent::Render();
 
 	ObjectFrameData objectFrameData;
-	objectFrameData.worldMatrix = GetOwner()->GetWorldTransform().GetWorldMatrix();
+	MATH::MatrixMultiply(objectFrameData.worldMatrix, GetComponentTransform().GetAffineMatrix(), GetOwner()->GetWorldTransform().GetAffineMatrix());
 	Renderer::Instance()->UpdateObjectFrame(objectFrameData);
 	Renderer::Instance()->Render(pPSO_);
 }

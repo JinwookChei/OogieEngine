@@ -40,7 +40,8 @@ void SkeletalMeshComponent::Render()
 
 	Renderer::Instance()->UpdateAnimationFrame(cb);
 	ObjectFrameData objectFrameData;
-	objectFrameData.worldMatrix = GetOwner()->GetWorldTransform().GetWorldMatrix();
+	//MATH::MatrixMultiply(objectFrameData.worldMatrix, GetOwner()->GetWorldTransform().GetAffineMatrix(), GetComponentTransform().GetAffineMatrix());
+	MATH::MatrixMultiply(objectFrameData.worldMatrix, GetComponentTransform().GetAffineMatrix(), GetOwner()->GetWorldTransform().GetAffineMatrix());
 	Renderer::Instance()->UpdateObjectFrame(objectFrameData);
 	Renderer::Instance()->Render(pPSO_);
 }

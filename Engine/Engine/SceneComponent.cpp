@@ -3,8 +3,9 @@
 #include "SceneComponent.h"
 
 SceneComponent::SceneComponent()
-	: pTransform_(nullptr)
+	: pTransform_(new Transform)
 {
+	pTransform_;
 }
 
 SceneComponent::~SceneComponent()
@@ -14,7 +15,6 @@ SceneComponent::~SceneComponent()
 
 void SceneComponent::BeginPlay()
 {
-	
 }
 
 void SceneComponent::Tick(double deltaTime)
@@ -27,6 +27,16 @@ void SceneComponent::Render()
 	ActorComponent::Render();
 }
 
+Transform& SceneComponent::GetComponentTransform() const
+{
+	return *pTransform_;
+}
+
 void SceneComponent::CleanUp()
 {
+	if (nullptr != pTransform_)
+	{
+		delete pTransform_;
+		pTransform_ = nullptr;
+	}
 }

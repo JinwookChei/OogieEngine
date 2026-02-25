@@ -45,7 +45,6 @@ void MeshComponent::InitPSO
 	psoDesc.materialSlotCount = meshMaterialCount;
 	psoDesc.depthState = depthState;
 	psoDesc.rasterizerMode = rasterizerMode;
-
 	pPSO_ = Renderer::GetFactory()->CreatePipelineStateObject(psoDesc);
 	if (nullptr == pPSO_)
 	{

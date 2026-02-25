@@ -4,9 +4,8 @@
 #include "ActorPicker.h"
 
 
-
 ActorPicker::ActorPicker()
-	:pPickedActor_(nullptr),
+	: pPickedActor_(nullptr),
 	curPickedActorDiff_(0.0f),
 	pickedMousePos_({ 0.0f, 0.0f })
 {
@@ -92,7 +91,7 @@ bool ActorPicker::TryPickObject(const Ray& ray)
 		Actor* pActor = static_cast<Actor*>(pActorIter->pItem_);
 
 		Float4x4 invWorldMat;
-		MATH::MatrixInverse(invWorldMat, pActor->GetWorldTransform().GetWorldMatrix());
+		MATH::MatrixInverse(invWorldMat, pActor->GetWorldTransform().GetAffineMatrix());
 
 		Float4 rayOrigin_ObjSpace;
 		MATH::MatrixMultiply(rayOrigin_ObjSpace, ray.origin_, invWorldMat);

@@ -4,7 +4,6 @@
 #include "Actor.h"
 
 
-
 Actor::Actor()
 	: pTransform_(new Transform)
 	, ownedComponents_()
@@ -14,6 +13,9 @@ Actor::Actor()
 	levelLink_.next_ = nullptr;
 	levelLink_.pItem_ = this;
 
+	pTransform_->SetScale({ 1.0f, 1.0f, 1.0f, 0.0f });
+	pTransform_->SetRotation({ 0.0f, 0.0f, 0.0f, 0.0f });
+	pTransform_->SetPosition({ 0.0f, 0.0f, 0.0f, 1.0f });
 	//pBoundVolume->Init(pRenderer_, pTransform_);
 }
 

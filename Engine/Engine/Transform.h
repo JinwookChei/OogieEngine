@@ -30,9 +30,9 @@ public:
 
 	ENGINE_API void AddPositionZ(float offset);
 
-	ENGINE_API const Float4x4& __stdcall GetWorldMatrix() const;
+	ENGINE_API const Float4x4& __stdcall GetAffineMatrix() const;
 
-	ENGINE_API const Float4x4 __stdcall GetWorldMatrixTranspose() const;
+	ENGINE_API const Float4x4 __stdcall GetAffineMatrixTranspose() const;
 	
 	ENGINE_API const Float4& __stdcall GetScale() const;
 
@@ -69,7 +69,7 @@ private:
 	Float4x4 scaleMatrix_;
 	Float4x4 rotationMatrix_;
 	Float4x4 positionMatrix_;
-	Float4x4 worldMatrix_;
+	Float4x4 affineMatrix_;
 
 public:
 	Float4* __stdcall GetActorScaleForEditor() override;

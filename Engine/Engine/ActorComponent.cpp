@@ -14,17 +14,14 @@ ActorComponent::~ActorComponent()
 
 void ActorComponent::BeginPlay()
 {
-
 }
 
 void ActorComponent::Tick(double deltaTime)
 {
-
 }
 
 void ActorComponent::Render()
 {
-
 }
 
 Actor* ActorComponent::GetOwner() const

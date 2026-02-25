@@ -10,7 +10,7 @@ Transform::Transform()
 	MATH::MatrixIdentity(scaleMatrix_);
 	MATH::MatrixIdentity(rotationMatrix_);
 	MATH::MatrixIdentity(positionMatrix_);
-	MATH::MatrixIdentity(worldMatrix_);
+	MATH::MatrixIdentity(affineMatrix_);
 }
 
 Transform::~Transform()
@@ -85,15 +85,15 @@ void Transform::AddPositionZ(float offset)
 {
 }
 
-const Float4x4& Transform::GetWorldMatrix() const
+const Float4x4& Transform::GetAffineMatrix() const
 {
-	return worldMatrix_;
+	return affineMatrix_;
 }
 
-const Float4x4 Transform::GetWorldMatrixTranspose() const
+const Float4x4 Transform::GetAffineMatrixTranspose() const
 {
 	Float4x4 ret;
-	MATH::MatrixTranspose(ret, worldMatrix_);
+	MATH::MatrixTranspose(ret, affineMatrix_);
 	return ret;
 }
 
@@ -120,21 +120,21 @@ const Float4& Transform::GetPosition() const
 Float4 Transform::ForwardVector() const
 {
 	Float4 normal;
-	MATH::VectorNormalize(normal, worldMatrix_.r[0]);
+	MATH::VectorNormalize(normal, affineMatrix_.r[0]);
 	return normal;
 }
 
 Float4 Transform::RightVector() const
 {
 	Float4 normal;
-	MATH::VectorNormalize(normal, worldMatrix_.r[1]);
+	MATH::VectorNormalize(normal, affineMatrix_.r[1]);
 	return normal;
 }
 
 Float4 Transform::UpVector() const
 {
 	Float4 normal;
-	MATH::VectorNormalize(normal, worldMatrix_.r[2]);
+	MATH::VectorNormalize(normal, affineMatrix_.r[2]);
 	return normal;
 }
 
@@ -164,9 +164,9 @@ void Transform::BroadcastOnTransformUpdate()
 
 void Transform::TransformUpdate()
 {
-	MATH::MatrixCompose(worldMatrix_, scale_, rotation_, position_);
+	MATH::MatrixCompose(affineMatrix_, scale_, rotation_, position_);
 
-	MATH::MatrixDecompose(scale_, quaternion_, position_, worldMatrix_);
+	MATH::MatrixDecompose(scale_, quaternion_, position_, affineMatrix_);
 
 	BroadcastOnTransformUpdate();
 }

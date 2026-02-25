@@ -37,6 +37,9 @@
     <Filter Include="Interface\Renderer">
       <UniqueIdentifier>{6c775c0f-9123-4226-ac2b-5179abe1cbd7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Common\Asset">
+      <UniqueIdentifier>{db31113c-388d-4420-8eff-7ed1a0f813c5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -95,6 +98,18 @@
     </ClInclude>
     <ClInclude Include="..\..\Interface\Renderer\ITexture.h">
       <Filter>Interface\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Asset\Animation.h">
+      <Filter>Common\Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Asset\Particle.h">
+      <Filter>Common\Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Asset\Model.h">
+      <Filter>Common\Asset</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Asset\Skeleton.h">
+      <Filter>Common\Asset</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
