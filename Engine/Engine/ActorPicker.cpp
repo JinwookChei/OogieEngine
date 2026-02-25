@@ -137,11 +137,13 @@ bool ActorPicker::TryPickObject(const Ray& ray)
 
 bool ActorPicker::RaycastBroadPhase(float* pOutDistance, const Ray& ray, Actor* pActor)
 {
-	// AABB
-	BoundVolume* pBoundVolume = pActor->GetBoundVolume();
-	const AABB& aabb = pBoundVolume->GetAABB();
+	//// AABB
+	//BoundVolume* pBoundVolume = pActor->GetBoundVolume();
+	//const AABB& aabb = pBoundVolume->GetAABB();
 
-	return MATH::Intersection3D_Ray_AABB(pOutDistance, ray, aabb);
+	//return MATH::Intersection3D_Ray_AABB(pOutDistance, ray, aabb);
+
+	return false;
 }
 
 bool ActorPicker::RaycastNarrowPhase(float* pOutDistance, const Ray& ray, Actor* pActor)

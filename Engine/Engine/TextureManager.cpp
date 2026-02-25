@@ -35,10 +35,10 @@ void TextureManager::TestLoad()
 	CreateTexture(maria_diffuse_Path, false, 12);
 	const wchar_t* maria_normal_Path = L"../Resource/Fbx/Mixamo/maria_normal.png";
 	CreateTexture(maria_normal_Path, true, 13);
-	const wchar_t* wukong_torso_diffuse_Path = L"../Resource/Fbx/Wukong/Texture/Wukong_Torso_Diffuse.png";
+	/*const wchar_t* wukong_torso_diffuse_Path = L"../Resource/Fbx/Wukong/Texture/Wukong_Torso_Diffuse.png";
 	CreateTexture(wukong_torso_diffuse_Path, false, 14);
 	const wchar_t* wukong_torso_normal_Path = L"../Resource/Fbx/Wukong/Texture/Wukong_Torso_Normal.png";
-	CreateTexture(wukong_torso_normal_Path, true, 15);
+	CreateTexture(wukong_torso_normal_Path, true, 15);*/
 	const wchar_t* wereWolf_Body_Albedo_Path = L"../Resource/Fbx/WereWolf/Texture/Werewolf_Body_Albedo.png";
 	CreateTexture(wereWolf_Body_Albedo_Path, false, 16);
 	const wchar_t* wereWolf_Body_Normal_Path = L"../Resource/Fbx/WereWolf/Texture/Werewolf_Body_Normal.png";

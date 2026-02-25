@@ -7,9 +7,9 @@ public:
 	ENGINE_API MeshComponent(Actor* pOwner);
 	ENGINE_API virtual ~MeshComponent();
 
-	ENGINE_API virtual void Tick(double deltaTime);
+	ENGINE_API virtual void Tick(double deltaTime) = 0;
 
-	ENGINE_API virtual void Render();
+	ENGINE_API virtual void Render() = 0;
 
 	ENGINE_API void InitPSO
 	(

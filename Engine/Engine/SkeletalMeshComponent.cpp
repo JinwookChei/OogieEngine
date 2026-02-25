@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "MeshComponent.h"
 #include "SkeletalMeshComponent.h"
+#include "StaticMeshComponent.h"
 
 SkeletalMeshComponent::SkeletalMeshComponent(Actor* pOwner)
 	: MeshComponent(pOwner)
@@ -37,6 +38,8 @@ void SkeletalMeshComponent::Render()
 	Renderer::Instance()->UpdateObjectFrame(objectFrameData);
 	Renderer::Instance()->Render(pPSO_);
 }
+
+
 
 bool SkeletalMeshComponent::ChangeAnimation(unsigned long long animTag)
 {

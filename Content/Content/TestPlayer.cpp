@@ -35,7 +35,6 @@ void TestPlayer::BeginPlay()
 
 void TestPlayer::Render()
 {
-	//pRenderer_->Render();
 	pSkeletalMeshComponent_->Render();
 }
 

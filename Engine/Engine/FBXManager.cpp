@@ -46,18 +46,18 @@ bool FBXManager::LoadFBXImporter()
 
 void FBXManager::TestLoad()
 {
-	Model wukong;
-	FBXManager::LoadModel(&wukong, "..\\Resource\\Fbx\\Wukong\\Wukong.FBX");
-	//FBXManager::LoadModel(&wukong, "..\\Resource\\Fbx\\Wukong\\Wukong_Fury.FBX");
-	MeshDesc meshDesc_3;
-	meshDesc_3.primitiveType = E_MESH_PRIMITIVE_TYPE::Triangle;
-	meshDesc_3.resourceFlag = E_MESH_RESOURCE_FLAG::None;
-	meshDesc_3.vertexFormatSize = sizeof(SkinnedMeshVertex);
-	meshDesc_3.vertexCount = wukong.meshInfos[0].vertices.size();
-	meshDesc_3.pVertices = wukong.meshInfos[0].vertices.data();
-	meshDesc_3.meshSubsets.emplace_back(0, (uint16_t)sizeof(uint16_t), wukong.meshInfos[0].indices[0].size(), wukong.meshInfos[0].indices[0].data());
-	MeshManager::Instance()->CreateMesh(meshDesc_3, 12);
-	SkeletonManager::Instance()->CreateSkeleton(wukong.meshInfos[0].bones, 12);
+	//Model wukong;
+	//FBXManager::LoadModel(&wukong, "..\\Resource\\Fbx\\Wukong\\Wukong.FBX");
+	////FBXManager::LoadModel(&wukong, "..\\Resource\\Fbx\\Wukong\\Wukong_Fury.FBX");
+	//MeshDesc meshDesc_3;
+	//meshDesc_3.primitiveType = E_MESH_PRIMITIVE_TYPE::Triangle;
+	//meshDesc_3.resourceFlag = E_MESH_RESOURCE_FLAG::None;
+	//meshDesc_3.vertexFormatSize = sizeof(SkinnedMeshVertex);
+	//meshDesc_3.vertexCount = wukong.meshInfos[0].vertices.size();
+	//meshDesc_3.pVertices = wukong.meshInfos[0].vertices.data();
+	//meshDesc_3.meshSubsets.emplace_back(0, (uint16_t)sizeof(uint16_t), wukong.meshInfos[0].indices[0].size(), wukong.meshInfos[0].indices[0].data());
+	//MeshManager::Instance()->CreateMesh(meshDesc_3, 12);
+	//SkeletonManager::Instance()->CreateSkeleton(wukong.meshInfos[0].bones, 12);
 
 
 	Model capoeira;

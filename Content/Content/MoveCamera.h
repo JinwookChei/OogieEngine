@@ -17,4 +17,5 @@ public:
 private:
 	void CleanUp() override;
 
+	StaticMeshComponent* pStaticMesh_;
 };

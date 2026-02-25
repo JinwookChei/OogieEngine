@@ -267,6 +267,9 @@
     <ClInclude Include="..\..\Common\Asset\Particle.h">
       <Filter>Common\Asset</Filter>
     </ClInclude>
+    <ClInclude Include="StaticMeshComponent.h">
+      <Filter>Source Files\Component\Mesh</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -364,6 +367,9 @@
     </ClCompile>
     <ClCompile Include="SkeletonManager.cpp">
       <Filter>Source Files\Manager\ResourceManager</Filter>
+    </ClCompile>
+    <ClCompile Include="StaticMeshComponent.cpp">
+      <Filter>Source Files\Component\Mesh</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

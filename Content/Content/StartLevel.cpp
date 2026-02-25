@@ -6,7 +6,6 @@
 #include "TestPlayer.h"
 #include "TestActor.h"
 #include "ParticleActor.h"
-#include "Wukong.h"
 #include "WereWolf.h"
 
 StartLevel::StartLevel()

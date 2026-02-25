@@ -195,6 +195,7 @@
     <ClInclude Include="SkeletonManager.h" />
     <ClInclude Include="SpotLight.h" />
     <ClInclude Include="StartUp.h" />
+    <ClInclude Include="StaticMeshComponent.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="TextureManager.h" />
     <ClInclude Include="TimeManager.h" />
@@ -229,6 +230,7 @@
     <ClCompile Include="SkeletalMeshComponent.cpp" />
     <ClCompile Include="SkeletonManager.cpp" />
     <ClCompile Include="SpotLight.cpp" />
+    <ClCompile Include="StaticMeshComponent.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>

@@ -2,6 +2,7 @@
 #include "Sphere.h"
 
 Sphere::Sphere()
+	: pStaticMesh_(new StaticMeshComponent(this))
 {
 }
 
@@ -16,9 +17,9 @@ void Sphere::BeginPlay()
 	IMaterial* pMaterial;
 	MeshManager::Instance()->GetMesh(&pMesh, 11);
 	MaterialManager::Instance()->GetMaterial(&pMaterial, 10);
-	pRenderer_->InitPSO(1, 1, E_DEPTH_PRESET::DEPTH_ENABLE_WRITE, E_RASTERIZER_PRESET::SOLID);
-	pRenderer_->GetPSO()->SetMeshToSlot(0, pMesh);
-	pRenderer_->GetPSO()->SetMaterialToSlot(0, pMaterial);
+	pStaticMesh_->InitPSO(1, 1, E_DEPTH_PRESET::DEPTH_ENABLE_WRITE, E_RASTERIZER_PRESET::SOLID);
+	pStaticMesh_->GetPSO()->SetMeshToSlot(0, pMesh);
+	pStaticMesh_->GetPSO()->SetMaterialToSlot(0, pMaterial);
 
 	pTransform_->SetScale({ 1.0f, 1.0f, 1.0f, 0.0f });
 	pTransform_->SetRotation({ 0.0f, 0.0f, 0.0f, 0.0f });
@@ -31,9 +32,14 @@ void Sphere::Tick(double deltaTime)
 
 void Sphere::Render()
 {
-	pRenderer_->Render();
+	pStaticMesh_->Render();
 }
 
 void Sphere::CleanUp()
 {
+	if (nullptr != pStaticMesh_)
+	{
+		delete pStaticMesh_;
+		pStaticMesh_ = nullptr;
+	}
 }

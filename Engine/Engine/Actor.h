@@ -1,10 +1,9 @@
 #pragma once
 
 class RenderComponent;
-class BoundVolume;
+//class BoundVolume;
 
-class Actor
-	: public IEditorBindPickedActor
+class Actor : public IEditorBindPickedActor
 {
 public:
 	friend class Level;
@@ -25,19 +24,19 @@ public:
 
 	LINK_NODE* LevelLink();
 
-	BoundVolume* GetBoundVolume() const;
+	//BoundVolume* GetBoundVolume() const;
 
-	RenderComponent* GetRenderComponent() const;
+	// RenderComponent* GetRenderComponent() const;
 
 protected:
 	ENGINE_API virtual void CleanUp();
 
 protected:
-	RenderComponent* pRenderer_;
+	//RenderComponent* pRenderer_;
 
 	Transform* pTransform_;
 
-	BoundVolume* pBoundVolume;
+	//BoundVolume* pBoundVolume;
 
 	LINK_NODE levelLink_;
 

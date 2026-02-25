@@ -16,6 +16,6 @@ private:
 	void CleanUp() override;
 
 private:
-	//AnimTest* pAnimTest_;
+	
 	SkeletalMeshComponent* pSkeletalMeshComponent_;
 };

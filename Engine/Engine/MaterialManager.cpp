@@ -29,10 +29,10 @@ void MaterialManager::TestLoad()
 	if (false == TextureManager::Instance()->GetTexture(&pMaria_Diffuse, 12)) DEBUG_BREAK();
 	ITexture* pMaria_Normal = nullptr;
 	if (false == TextureManager::Instance()->GetTexture(&pMaria_Normal, 13)) DEBUG_BREAK();
-	ITexture* pWukong_Torso_Diffuse = nullptr;
+	/*ITexture* pWukong_Torso_Diffuse = nullptr;
 	if (false == TextureManager::Instance()->GetTexture(&pWukong_Torso_Diffuse, 14)) DEBUG_BREAK();
 	ITexture* pWukong_Torso_Normal = nullptr;
-	if (false == TextureManager::Instance()->GetTexture(&pWukong_Torso_Normal, 15)) DEBUG_BREAK();
+	if (false == TextureManager::Instance()->GetTexture(&pWukong_Torso_Normal, 15)) DEBUG_BREAK();*/
 	ITexture* pWerewolf_Body_Albedo = nullptr;
 	if (false == TextureManager::Instance()->GetTexture(&pWerewolf_Body_Albedo, 16)) DEBUG_BREAK();
 	ITexture* pWerewolf_Body_Normal = nullptr;
@@ -98,16 +98,16 @@ void MaterialManager::TestLoad()
 	pMat2->SetTextures(1, pMaria_Normal);
 
 
-	MaterialDesc matDesc3;
-	matDesc3.shaderType = E_SHADER_PRESET::StaticMesh;
-	matDesc3.samplerState = E_SAMPLER_PRESET::LINEAR_CLAMP;
-	matDesc3.blendState = E_BLEND_PRESET::OPAQUE_BLEND;
-	matDesc3.textureNum_ = 2;
-	matDesc3.shineness = 0.7f;
-	matDesc3.specularColor = { 0.7f, 0.7f, 0.7f };
-	IMaterial* pMat3 = CreateMaterial(matDesc3, 12);
-	pMat3->SetTextures(0, pWukong_Torso_Diffuse);
-	pMat3->SetTextures(1, pWhiteTexture);
+	//MaterialDesc matDesc3;
+	//matDesc3.shaderType = E_SHADER_PRESET::StaticMesh;
+	//matDesc3.samplerState = E_SAMPLER_PRESET::LINEAR_CLAMP;
+	//matDesc3.blendState = E_BLEND_PRESET::OPAQUE_BLEND;
+	//matDesc3.textureNum_ = 2;
+	//matDesc3.shineness = 0.7f;
+	//matDesc3.specularColor = { 0.7f, 0.7f, 0.7f };
+	//IMaterial* pMat3 = CreateMaterial(matDesc3, 12);
+	//pMat3->SetTextures(0, pWukong_Torso_Diffuse);
+	//pMat3->SetTextures(1, pWhiteTexture);
 
 
 	MaterialDesc matDesc4;

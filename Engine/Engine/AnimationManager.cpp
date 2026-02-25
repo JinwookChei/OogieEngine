@@ -19,7 +19,6 @@ AnimationManager* AnimationManager::Instance()
 
 void AnimationManager::TestLoad()
 {
-	//Animation* animWolfAttack = CreateAnimation("../Resource/Fbx/WereWolf/Animation/Anim_Werewolf_attack1.FBX", 0);
 	Animation* animCapoeira = CreateAnimation("../Resource/Fbx/Mixamo/Capoeira.FBX", 0);
 	Animation* werewolf_Attack = CreateAnimation("../Resource/Fbx/WereWolf/Animation/Anim_Werewolf_attack1.FBX", 1);
 }

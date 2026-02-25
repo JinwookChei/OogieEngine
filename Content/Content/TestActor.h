@@ -19,4 +19,5 @@ protected:
 	void CleanUp() override;
 
 private:
+	StaticMeshComponent* pStaticMesh_;
 };

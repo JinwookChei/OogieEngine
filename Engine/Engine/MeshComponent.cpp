@@ -12,18 +12,18 @@ MeshComponent::~MeshComponent()
 	CleanUp();
 }
 
-void MeshComponent::Tick(double deltaTime)
-{
-
-}
-
-void MeshComponent::Render()
-{
-	ObjectFrameData objectFrameData;
-	objectFrameData.worldMatrix = pOwner_->GetWorldTransform().GetWorldMatrix();
-	Renderer::Instance()->UpdateObjectFrame(objectFrameData);
-	Renderer::Instance()->Render(pPSO_);
-}
+//void MeshComponent::Tick(double deltaTime)
+//{
+//
+//}
+//
+//void MeshComponent::Render()
+//{
+//	ObjectFrameData objectFrameData;
+//	objectFrameData.worldMatrix = pOwner_->GetWorldTransform().GetWorldMatrix();
+//	Renderer::Instance()->UpdateObjectFrame(objectFrameData);
+//	Renderer::Instance()->Render(pPSO_);
+//}
 
 void MeshComponent::InitPSO
 (
