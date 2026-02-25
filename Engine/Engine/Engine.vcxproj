@@ -169,9 +169,9 @@
     <ClInclude Include="..\..\Interface\Renderer\IShader.h" />
     <ClInclude Include="..\..\Interface\Renderer\ITexture.h" />
     <ClInclude Include="Actor.h" />
+    <ClInclude Include="ActorComponent.h" />
     <ClInclude Include="ActorPicker.h" />
     <ClInclude Include="AnimationManager.h" />
-    <ClInclude Include="AnimTest.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="BoundVolume.h" />
     <ClInclude Include="Camera.h" />
@@ -189,8 +189,8 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="PointLight.h" />
     <ClInclude Include="RasterizerManager.h" />
-    <ClInclude Include="RenderComponent.h" />
     <ClInclude Include="Renderer.h" />
+    <ClInclude Include="SceneComponent.h" />
     <ClInclude Include="SkeletalMeshComponent.h" />
     <ClInclude Include="SkeletonManager.h" />
     <ClInclude Include="SpotLight.h" />
@@ -204,9 +204,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Actor.cpp" />
+    <ClCompile Include="ActorComponent.cpp" />
     <ClCompile Include="ActorPicker.cpp" />
     <ClCompile Include="AnimationManager.cpp" />
-    <ClCompile Include="AnimTest.cpp" />
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="BoundVolume.cpp" />
     <ClCompile Include="Camera.cpp" />
@@ -225,8 +225,8 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PointLight.cpp" />
     <ClCompile Include="RasterizerManager.cpp" />
-    <ClCompile Include="RenderComponent.cpp" />
     <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="SceneComponent.cpp" />
     <ClCompile Include="SkeletalMeshComponent.cpp" />
     <ClCompile Include="SkeletonManager.cpp" />
     <ClCompile Include="SpotLight.cpp" />

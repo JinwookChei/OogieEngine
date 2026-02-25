@@ -2,8 +2,9 @@
 #include "TestActor.h"
 
 TestActor::TestActor()
-	: pStaticMesh_ (new StaticMeshComponent(this))
+	//: pStaticMesh_ (new StaticMeshComponent(this))
 {
+	pStaticMesh_ = CreateComponent<StaticMeshComponent>();
 }
 
 TestActor::~TestActor()
@@ -29,18 +30,15 @@ void TestActor::BeginPlay()
 
 void TestActor::Tick(double deltaTime)
 {
+	Actor::Tick(deltaTime);
 }
 
 void TestActor::Render()
 {
-	pStaticMesh_->Render();
+	Actor::Render();
+	//pStaticMesh_->Render();
 }
 
 void TestActor::CleanUp()
 {
-	if (nullptr != pStaticMesh_)
-	{
-		delete pStaticMesh_;
-		pStaticMesh_ = nullptr;
-	}
 }

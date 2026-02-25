@@ -1,9 +1,8 @@
 #include "stdafx.h"
 #include "ParticleComponent.h"
 
-ParticleComponent::ParticleComponent(Actor* pOwner)
-	: pOwner_(pOwner)
-	, particleNum_(1000)
+ParticleComponent::ParticleComponent()
+	: particleNum_(1000)
 	, accTime_(0.0)
 	, particleType_(0)
 	, startSize_(0.5f)
@@ -37,7 +36,6 @@ ParticleComponent::ParticleComponent(Actor* pOwner)
 	IMaterial* pRenderMaterial = nullptr;
 	MaterialManager::Instance()->GetMaterial(&pRenderMaterial, 2);
 
-
 	PipelineStateDesc psoDesc;
 	psoDesc.meshSlotCount = 1;
 	psoDesc.materialSlotCount = 2;
@@ -52,6 +50,10 @@ ParticleComponent::ParticleComponent(Actor* pOwner)
 ParticleComponent::~ParticleComponent()
 {
 	CleanUp();
+}
+
+void ParticleComponent::BeginPlay()
+{
 }
 
 void ParticleComponent::Tick(double deltaTime)
@@ -70,6 +72,10 @@ void ParticleComponent::Tick(double deltaTime)
 
 void ParticleComponent::Render()
 {
+}
+
+void ParticleComponent::RenderParticle()
+{
 	const Transform& worldForm = GCurrentCamera->GetWorldTransform();
 	Vector eye = worldForm.GetPosition();
 	Vector to = worldForm.ForwardVector();
@@ -87,7 +93,7 @@ void ParticleComponent::Render()
 	Float3 cameraUp(up.X, up.Y, up.Z);
 
 	RenderParticleData renderData;
-	renderData.world = pOwner_->GetWorldTransform().GetWorldMatrix();;
+	renderData.world = GetOwner()->GetWorldTransform().GetWorldMatrix();;
 	renderData.viewProj = viewProj;
 	renderData.cameraRight = cameraRight;
 	renderData.cameraUp = cameraUp;
@@ -96,7 +102,6 @@ void ParticleComponent::Render()
 	renderData.startColor = startColor_;
 	renderData.endColor = endColor_;
 	Renderer::Instance()->UpdateRenderParticleFrame(renderData);
-
 	Renderer::Instance()->RenderParticle_Test(pPSO_);
 }
 

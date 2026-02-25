@@ -1,11 +1,11 @@
 #pragma once
 
-class StaticMeshComponent : public MeshComponent
+class SceneComponent 
+	: public ActorComponent
 {
 public:
-	ENGINE_API StaticMeshComponent();
-
-	ENGINE_API ~StaticMeshComponent() override;
+	ENGINE_API SceneComponent();
+	ENGINE_API ~SceneComponent() override;
 
 	void BeginPlay() override;
 
@@ -15,4 +15,7 @@ public:
 
 private:
 	void CleanUp() override;
+
+	Transform* pTransform_;
+
 };

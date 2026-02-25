@@ -1,15 +1,18 @@
 #pragma once
 
 
-class MeshComponent
+class MeshComponent 
+	: public SceneComponent
 {
 public:
-	ENGINE_API MeshComponent(Actor* pOwner);
-	ENGINE_API virtual ~MeshComponent();
+	ENGINE_API MeshComponent();
+	ENGINE_API ~MeshComponent() override;
 
-	ENGINE_API virtual void Tick(double deltaTime) = 0;
+	void BeginPlay() override;
 
-	ENGINE_API virtual void Render() = 0;
+	void Tick(double deltaTime) override;
+
+	void Render() override;
 
 	ENGINE_API void InitPSO
 	(
@@ -34,10 +37,8 @@ private:
 	// MeshLoad Delegate End	
 
 private:
-	virtual void CleanUp();
+	void CleanUp() override;
 
 protected:
-	Actor* pOwner_;
-
 	IPSO* pPSO_;
 };

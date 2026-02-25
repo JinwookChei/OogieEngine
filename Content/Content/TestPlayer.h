@@ -2,7 +2,8 @@
 
 class SkeletalMeshComponent;
 
-class TestPlayer : public Player
+class TestPlayer 
+	: public Player
 {
 public:
 	TestPlayer();

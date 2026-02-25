@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "Light.h"
-#include "RenderComponent.h"
 #include "SpotLight.h"
 
 SpotLight::SpotLight()

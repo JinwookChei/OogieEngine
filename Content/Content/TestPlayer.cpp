@@ -2,8 +2,8 @@
 #include "TestPlayer.h"
 
 TestPlayer::TestPlayer()
-	: pSkeletalMeshComponent_(new SkeletalMeshComponent(this))
 {
+	pSkeletalMeshComponent_ = CreateComponent<SkeletalMeshComponent>();
 }
 
 TestPlayer::~TestPlayer()
@@ -13,7 +13,7 @@ TestPlayer::~TestPlayer()
 
 void TestPlayer::Tick(double deltaTime)
 {
-	pSkeletalMeshComponent_->Tick(deltaTime);
+	Player::Tick(deltaTime);
 }
 
 void TestPlayer::BeginPlay()
@@ -35,14 +35,9 @@ void TestPlayer::BeginPlay()
 
 void TestPlayer::Render()
 {
-	pSkeletalMeshComponent_->Render();
+	Player::Render();
 }
 
 void TestPlayer::CleanUp()
 {
-	if (nullptr != pSkeletalMeshComponent_)
-	{
-		delete pSkeletalMeshComponent_;
-		pSkeletalMeshComponent_ = nullptr;
-	}
 }

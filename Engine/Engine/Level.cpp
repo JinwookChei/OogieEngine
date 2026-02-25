@@ -148,7 +148,6 @@ void Level::OnActorTick(double deltaTime)
 		{
 			Actor* pCurActor = static_cast<Actor*>(pCurLink->pItem_);
 			pCurActor->Tick(deltaTime);
-
 			pCurLink = pCurLink->next_;
 		}
 	}
@@ -210,13 +209,13 @@ void Level::OnRenderParticles()
 
 void Level::BlitCameraToBackBuffer()
 {
-	LINK_NODE* pCameraIter = actorList_[(int)E_ACTOR_TYPE::CAMERA].GetHead();
-	while (pCameraIter)
-	{
-		Camera* pCurCamera = static_cast<Camera*>(pCameraIter->pItem_);
-		pCurCamera->BlitToBackBuffer();
-		pCameraIter = pCameraIter->next_;
-	}
+	//LINK_NODE* pCameraIter = actorList_[(int)E_ACTOR_TYPE::CAMERA].GetHead();
+	//while (pCameraIter)
+	//{
+	//	Camera* pCurCamera = static_cast<Camera*>(pCameraIter->pItem_);
+	//	pCurCamera->BlitToBackBuffer();
+	//	pCameraIter = pCameraIter->next_;
+	//}
 }
 
 

@@ -2,8 +2,8 @@
 #include "Sphere.h"
 
 Sphere::Sphere()
-	: pStaticMesh_(new StaticMeshComponent(this))
 {
+	pStaticMesh_ = CreateComponent<StaticMeshComponent>();
 }
 
 Sphere::~Sphere()
@@ -28,18 +28,14 @@ void Sphere::BeginPlay()
 
 void Sphere::Tick(double deltaTime)
 {
+	Actor::Tick(deltaTime);
 }
 
 void Sphere::Render()
 {
-	pStaticMesh_->Render();
+	Actor::Render();
 }
 
 void Sphere::CleanUp()
 {
-	if (nullptr != pStaticMesh_)
-	{
-		delete pStaticMesh_;
-		pStaticMesh_ = nullptr;
-	}
 }

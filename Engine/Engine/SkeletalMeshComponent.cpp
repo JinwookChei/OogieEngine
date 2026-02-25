@@ -1,11 +1,9 @@
 #include "stdafx.h"
 #include "MeshComponent.h"
 #include "SkeletalMeshComponent.h"
-#include "StaticMeshComponent.h"
 
-SkeletalMeshComponent::SkeletalMeshComponent(Actor* pOwner)
-	: MeshComponent(pOwner)
-	, curTime_(0)
+SkeletalMeshComponent::SkeletalMeshComponent()
+	: curTime_(0)
 	, bLoop_(true)
 	, pAnimation_(nullptr)
 	, pSkeleton_(nullptr)
@@ -18,13 +16,21 @@ SkeletalMeshComponent::~SkeletalMeshComponent()
 	CleanUp();
 }
 
+void SkeletalMeshComponent::BeginPlay()
+{
+}
+
 void SkeletalMeshComponent::Tick(double deltaTime)
 {
+	MeshComponent::Tick(deltaTime);
+
 	UpdateAnimation(deltaTime);
 }
 
 void SkeletalMeshComponent::Render()
 {
+	MeshComponent::Render();
+
 	// 임시. StructBuffer로 바꿔야 함.
 	AnimConstantBuffer cb;
 	for (int i = 0; i < curAnimBoneMatrices_.size(); ++i)
@@ -34,7 +40,7 @@ void SkeletalMeshComponent::Render()
 
 	Renderer::Instance()->UpdateAnimationFrame(cb);
 	ObjectFrameData objectFrameData;
-	objectFrameData.worldMatrix = pOwner_->GetWorldTransform().GetWorldMatrix();
+	objectFrameData.worldMatrix = GetOwner()->GetWorldTransform().GetWorldMatrix();
 	Renderer::Instance()->UpdateObjectFrame(objectFrameData);
 	Renderer::Instance()->Render(pPSO_);
 }

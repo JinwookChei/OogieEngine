@@ -2,8 +2,8 @@
 #include "MoveCamera.h"
 
 MoveCamera::MoveCamera()
-	: pStaticMesh_(new StaticMeshComponent(this))
 {
+	pStaticMesh_ = CreateComponent<StaticMeshComponent>();
 }
 
 MoveCamera::~MoveCamera()
@@ -13,6 +13,8 @@ MoveCamera::~MoveCamera()
 
 void MoveCamera::Tick(double deltaTime)
 {
+	Camera::Tick(deltaTime);
+
 	if (InputManager::IsPress(VK_RBUTTON))
 	{
 		const Float2& deltaMouseMove = InputManager::GetDeltaMouseMove();
@@ -97,14 +99,9 @@ void MoveCamera::BeginPlay()
 
 void MoveCamera::Render()
 {
-	pStaticMesh_->Render();
+	Camera::Render();
 }
 
 void MoveCamera::CleanUp()
 {
-	if (nullptr != pStaticMesh_)
-	{
-		delete pStaticMesh_;
-		pStaticMesh_ = nullptr;
-	}
 }

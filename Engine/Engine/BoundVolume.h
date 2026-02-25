@@ -10,7 +10,7 @@ public:
 
 	~BoundVolume();
 
-	bool Init(RenderComponent* pRenderComponent, Transform* pTransform);
+	//bool Init(RenderComponent* pRenderComponent, Transform* pTransform);
 
 	void UpdateBoundVolume(IMesh* pMesh);
 

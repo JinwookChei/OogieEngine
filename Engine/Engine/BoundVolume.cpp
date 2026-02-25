@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include "RenderComponent.h"
 #include "BoundVolume.h"
 
 BoundVolume::BoundVolume()
@@ -13,22 +12,22 @@ BoundVolume::~BoundVolume()
 	CleanUp();
 }
 
-bool BoundVolume::Init(RenderComponent* pRenderComponent, Transform* pTransform)
-{
-	if (nullptr == pRenderComponent)
-	{
-		DEBUG_BREAK();
-		return false;
-	}
-	if (nullptr == pTransform)
-	{
-		DEBUG_BREAK();
-		return false;
-	}
-
-	pRenderComponent->BindOnMeshLoaded(std::bind(&BoundVolume::UpdateBoundVolume, this, std::placeholders::_1));
-	return true;
-}
+//bool BoundVolume::Init(RenderComponent* pRenderComponent, Transform* pTransform)
+//{
+//	if (nullptr == pRenderComponent)
+//	{
+//		DEBUG_BREAK();
+//		return false;
+//	}
+//	if (nullptr == pTransform)
+//	{
+//		DEBUG_BREAK();
+//		return false;
+//	}
+//
+//	pRenderComponent->BindOnMeshLoaded(std::bind(&BoundVolume::UpdateBoundVolume, this, std::placeholders::_1));
+//	return true;
+//}
 
 void BoundVolume::UpdateBoundVolume(IMesh* pMesh)
 {

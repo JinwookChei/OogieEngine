@@ -2,8 +2,7 @@
 #include "MeshComponent.h"
 #include "StaticMeshComponent.h"
 
-StaticMeshComponent::StaticMeshComponent(Actor* pOwner)
-	: MeshComponent(pOwner)
+StaticMeshComponent::StaticMeshComponent()
 {
 }
 
@@ -12,14 +11,21 @@ StaticMeshComponent::~StaticMeshComponent()
 	CleanUp();
 }
 
+void StaticMeshComponent::BeginPlay()
+{
+}
+
 void StaticMeshComponent::Tick(double deltaTime)
 {
+	MeshComponent::Tick(deltaTime);
 }
 
 void StaticMeshComponent::Render()
 {
+	MeshComponent::Render();
+
 	ObjectFrameData objectFrameData;
-	objectFrameData.worldMatrix = pOwner_->GetWorldTransform().GetWorldMatrix();
+	objectFrameData.worldMatrix = GetOwner()->GetWorldTransform().GetWorldMatrix();
 	Renderer::Instance()->UpdateObjectFrame(objectFrameData);
 	Renderer::Instance()->Render(pPSO_);
 }

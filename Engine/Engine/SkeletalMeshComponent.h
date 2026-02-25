@@ -1,15 +1,18 @@
 #pragma once
 
-class SkeletalMeshComponent : public MeshComponent
+class SkeletalMeshComponent 
+	: public MeshComponent
 {
 public:
-	ENGINE_API SkeletalMeshComponent(Actor* pOwner);
+	ENGINE_API SkeletalMeshComponent();
 
 	ENGINE_API ~SkeletalMeshComponent() override;
 
-	ENGINE_API void Tick(double deltaTime) override;
+	void BeginPlay() override;
 
-	ENGINE_API void Render() override;
+	void Tick(double deltaTime) override;
+
+	void Render() override;
 
 	ENGINE_API bool ChangeAnimation(unsigned long long animTag);
 
@@ -18,12 +21,12 @@ public:
 	void UpdateAnimation( double deltaTime );
 
 private:
-	virtual void CleanUp();
+	void CleanUp() override;
 
 	// 얘네가 여기 있는게 맞나?
 	double curTime_;
 	bool bLoop_;
-	//
+	// 
 
 	Animation* pAnimation_;
 	

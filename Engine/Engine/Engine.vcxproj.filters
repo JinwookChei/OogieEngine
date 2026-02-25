@@ -46,29 +46,14 @@
     <Filter Include="Source Files\Actor\Light">
       <UniqueIdentifier>{1e6e41c0-8f1f-4d5b-b178-2447b4105718}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Component">
-      <UniqueIdentifier>{b2175ee2-52bd-4faa-8458-61fc1c6edd75}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Component\RenderComponent">
-      <UniqueIdentifier>{0ee59b9b-733d-49dc-b14c-4eab904a7ac0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Component\Transform">
-      <UniqueIdentifier>{c5f06b07-d3ba-44d5-b5ad-babf8fd96da4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Graphics\Generator">
       <UniqueIdentifier>{3589f1c8-6e82-43bf-9c5e-254d45268f12}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Actor\Camera">
       <UniqueIdentifier>{d9fc05ca-5bf2-4814-b2e5-6f954e1800fb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Component\BoundVolume">
-      <UniqueIdentifier>{fda48a9c-d09b-4392-83eb-db9b0658ba8f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\ActorPicker">
       <UniqueIdentifier>{2e754504-9966-4a77-9eb7-3ceb07170912}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Component\ParticleSystem">
-      <UniqueIdentifier>{6664351a-eda3-48a0-b64d-a19e62e97f5a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Common">
       <UniqueIdentifier>{ef6808b8-b970-469a-8264-744640894f1a}</UniqueIdentifier>
@@ -94,9 +79,6 @@
     <Filter Include="Source Files\Application">
       <UniqueIdentifier>{84956872-881c-4dbe-8874-33c949c18b36}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Component\Mesh">
-      <UniqueIdentifier>{448b90c2-41c6-4ac2-988f-31fc57cd5c24}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Manager\FBX">
       <UniqueIdentifier>{8b09a7ae-7e33-4c1f-9062-ec68c9bec508}</UniqueIdentifier>
     </Filter>
@@ -105,6 +87,21 @@
     </Filter>
     <Filter Include="Source Files\Manager\ResourceManager">
       <UniqueIdentifier>{4f929b8f-e4bb-4425-b02c-a2b4715d3128}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ActorComponent">
+      <UniqueIdentifier>{b2175ee2-52bd-4faa-8458-61fc1c6edd75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ActorComponent\BoundVolume">
+      <UniqueIdentifier>{fda48a9c-d09b-4392-83eb-db9b0658ba8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ActorComponent\ParticleSystem">
+      <UniqueIdentifier>{6664351a-eda3-48a0-b64d-a19e62e97f5a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ActorComponent\Mesh">
+      <UniqueIdentifier>{448b90c2-41c6-4ac2-988f-31fc57cd5c24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Transform">
+      <UniqueIdentifier>{c5f06b07-d3ba-44d5-b5ad-babf8fd96da4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -132,11 +129,8 @@
     <ClInclude Include="StartUp.h">
       <Filter>Source Files\StartUp</Filter>
     </ClInclude>
-    <ClInclude Include="RenderComponent.h">
-      <Filter>Source Files\Component\RenderComponent</Filter>
-    </ClInclude>
     <ClInclude Include="Transform.h">
-      <Filter>Source Files\Component\Transform</Filter>
+      <Filter>Source Files\Transform</Filter>
     </ClInclude>
     <ClInclude Include="Light.h">
       <Filter>Source Files\Actor\Light</Filter>
@@ -160,7 +154,7 @@
       <Filter>Source Files\Manager\ResourceManager</Filter>
     </ClInclude>
     <ClInclude Include="BoundVolume.h">
-      <Filter>Source Files\Component\BoundVolume</Filter>
+      <Filter>Source Files\ActorComponent\BoundVolume</Filter>
     </ClInclude>
     <ClInclude Include="RasterizerManager.h">
       <Filter>Source Files\Manager\ResourceManager</Filter>
@@ -175,7 +169,7 @@
       <Filter>Source Files\ActorPicker</Filter>
     </ClInclude>
     <ClInclude Include="ParticleComponent.h">
-      <Filter>Source Files\Component\ParticleSystem</Filter>
+      <Filter>Source Files\ActorComponent\ParticleSystem</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Common\GeometryType\GeometryType.h">
       <Filter>Common</Filter>
@@ -243,14 +237,11 @@
     <ClInclude Include="AnimationManager.h">
       <Filter>Source Files\Manager\ResourceManager</Filter>
     </ClInclude>
-    <ClInclude Include="AnimTest.h">
-      <Filter>Source Files\Component</Filter>
-    </ClInclude>
     <ClInclude Include="MeshComponent.h">
-      <Filter>Source Files\Component\Mesh</Filter>
+      <Filter>Source Files\ActorComponent\Mesh</Filter>
     </ClInclude>
     <ClInclude Include="SkeletalMeshComponent.h">
-      <Filter>Source Files\Component\Mesh</Filter>
+      <Filter>Source Files\ActorComponent\Mesh</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Common\Asset\Skeleton.h">
       <Filter>Common\Asset</Filter>
@@ -268,7 +259,13 @@
       <Filter>Common\Asset</Filter>
     </ClInclude>
     <ClInclude Include="StaticMeshComponent.h">
-      <Filter>Source Files\Component\Mesh</Filter>
+      <Filter>Source Files\ActorComponent\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="ActorComponent.h">
+      <Filter>Source Files\ActorComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneComponent.h">
+      <Filter>Source Files\ActorComponent</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -296,11 +293,8 @@
     <ClCompile Include="TimeManager.cpp">
       <Filter>Source Files\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="RenderComponent.cpp">
-      <Filter>Source Files\Component\RenderComponent</Filter>
-    </ClCompile>
     <ClCompile Include="Transform.cpp">
-      <Filter>Source Files\Component\Transform</Filter>
+      <Filter>Source Files\Transform</Filter>
     </ClCompile>
     <ClCompile Include="Light.cpp">
       <Filter>Source Files\Actor\Light</Filter>
@@ -324,7 +318,7 @@
       <Filter>Source Files\Manager\ResourceManager</Filter>
     </ClCompile>
     <ClCompile Include="BoundVolume.cpp">
-      <Filter>Source Files\Component\BoundVolume</Filter>
+      <Filter>Source Files\ActorComponent\BoundVolume</Filter>
     </ClCompile>
     <ClCompile Include="RasterizerManager.cpp">
       <Filter>Source Files\Manager\ResourceManager</Filter>
@@ -339,7 +333,7 @@
       <Filter>Source Files\ActorPicker</Filter>
     </ClCompile>
     <ClCompile Include="ParticleComponent.cpp">
-      <Filter>Source Files\Component\ParticleSystem</Filter>
+      <Filter>Source Files\ActorComponent\ParticleSystem</Filter>
     </ClCompile>
     <ClCompile Include="FBXManager.cpp">
       <Filter>Source Files\Manager\FBX</Filter>
@@ -356,20 +350,23 @@
     <ClCompile Include="AnimationManager.cpp">
       <Filter>Source Files\Manager\ResourceManager</Filter>
     </ClCompile>
-    <ClCompile Include="AnimTest.cpp">
-      <Filter>Source Files\Component</Filter>
-    </ClCompile>
     <ClCompile Include="MeshComponent.cpp">
-      <Filter>Source Files\Component\Mesh</Filter>
+      <Filter>Source Files\ActorComponent\Mesh</Filter>
     </ClCompile>
     <ClCompile Include="SkeletalMeshComponent.cpp">
-      <Filter>Source Files\Component\Mesh</Filter>
+      <Filter>Source Files\ActorComponent\Mesh</Filter>
     </ClCompile>
     <ClCompile Include="SkeletonManager.cpp">
       <Filter>Source Files\Manager\ResourceManager</Filter>
     </ClCompile>
     <ClCompile Include="StaticMeshComponent.cpp">
-      <Filter>Source Files\Component\Mesh</Filter>
+      <Filter>Source Files\ActorComponent\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="ActorComponent.cpp">
+      <Filter>Source Files\ActorComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneComponent.cpp">
+      <Filter>Source Files\ActorComponent</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

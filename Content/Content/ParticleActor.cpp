@@ -2,8 +2,9 @@
 #include "ParticleActor.h"
 
 ParticleActor::ParticleActor()
-	: pParticle_(new ParticleComponent(this))
+	// : pParticle_(new ParticleComponent(this))
 {
+	pParticle_ = CreateComponent<ParticleComponent>();
 }
 
 ParticleActor::~ParticleActor()
@@ -13,7 +14,8 @@ ParticleActor::~ParticleActor()
 
 void ParticleActor::Tick(double deltaTime)
 {
-	pParticle_->Tick(deltaTime);
+	Actor::Tick(deltaTime);
+	//pParticle_->Tick(deltaTime);
 }
 
 void ParticleActor::BeginPlay()
@@ -22,18 +24,14 @@ void ParticleActor::BeginPlay()
 
 void ParticleActor::Render()
 {
+	Actor::Render();
 }
 
 void ParticleActor::ParticleRender()
 {
-	pParticle_->Render();
+	pParticle_->RenderParticle();
 }
 
 void ParticleActor::CleanUp()
 {
-	if (nullptr != pParticle_)
-	{
-		delete pParticle_;
-		pParticle_ = nullptr;
-	}
 }

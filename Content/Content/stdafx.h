@@ -55,10 +55,12 @@
 #include <cstdlib>
 #include <cstdio>
 #include <vector>
-#include <map>
 #include <unordered_map>
+#include <map>
 #include <string>
 #include <functional>
+#include <typeindex>
+#include <typeinfo>
 
 
 
@@ -104,7 +106,6 @@
 #include <Engine/Engine/MaterialManager.h>
 #include <Engine/Engine/MeshManager.h>
 #include <Engine/Engine/Transform.h>
-#include <Engine/Engine/Level.h>
 #include <Engine/Engine/Actor.h>
 #include <Engine/Engine/Player.h>
 #include <Engine/Engine/Camera.h>
@@ -113,12 +114,16 @@
 #include <Engine/Engine/SpotLight.h>
 #include <Engine/Engine/PointLight.h>
 #include <Engine/Engine/RenderComponent.h>
+#include <Engine/Engine/ActorComponent.h>
+#include <Engine/Engine/SceneComponent.h>
 #include <Engine/Engine/MeshComponent.h>
 #include <Engine/Engine/StaticMeshComponent.h>
 #include <Engine/Engine/SkeletalMeshComponent.h>
 #include <Engine/Engine/ParticleComponent.h>
 #include <Engine/Engine/InputManager.h>
 #include <Engine/Engine/World.h>
+#include <Engine/Engine/Level.h>
+
 
 // Content
 #include "StartLevel.h"

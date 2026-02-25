@@ -50,7 +50,7 @@ public:
 	void DebugPassBegin();
 	void DebugPassEnd();*/
 
-	void BlitToBackBuffer();
+	// void BlitToBackBuffer();
 
 	const Float4x4& View() const;
 
@@ -71,7 +71,7 @@ private:
 
 	bool InitFianlRenderTarget();
 
-	bool InitParticleRenderTarget();
+	// bool InitParticleRenderTarget();
 
 	bool InitDebugRenderTarget();
 
@@ -116,7 +116,7 @@ private:
 	IRenderTarget* pFinalRenderTarget_;
 
 	// Particle Pass
-	IRenderTarget* pParticleRenderTarget_;
+	//IRenderTarget* pParticleRenderTarget_;
 
 	// Debug Pass
 	IRenderTarget* pDebugRenderTarget_;

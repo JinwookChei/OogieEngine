@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "StartLevel.h"
 #include "MoveCamera.h"
-#include "LookAtCamera.h"
 #include "Sphere.h"
 #include "TestPlayer.h"
 #include "TestActor.h"

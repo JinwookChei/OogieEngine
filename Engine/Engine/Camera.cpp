@@ -29,8 +29,6 @@ Camera::Camera()
 
 	InitFianlRenderTarget();
 
-	InitParticleRenderTarget();
-
 	InitDebugRenderTarget();
 }
 
@@ -41,6 +39,7 @@ Camera::~Camera()
 
 void Camera::Tick(double deltaTime)
 {
+	Actor::Tick(deltaTime);
 }
 
 void Camera::BeginPlay()
@@ -52,7 +51,7 @@ void Camera::BeginPlay()
 
 void Camera::Render()
 {
-
+	Actor::Render();
 }
 //
 //void Camera::GeometryPassBegin()
@@ -111,10 +110,10 @@ void Camera::Render()
 //	pDebugRenderTarget_->EndRenderPass();
 //}
 
-void Camera::BlitToBackBuffer()
-{
-	Renderer::Instance()->RenderFinal(pParticleRenderTarget_);
-}
+//void Camera::BlitToBackBuffer()
+//{
+//	Renderer::Instance()->RenderFinal(pParticleRenderTarget_);
+//}
 
 const Float4x4& Camera::View() const
 {
@@ -295,22 +294,6 @@ bool Camera::InitFianlRenderTarget()
 	return true;
 }
 
-bool Camera::InitParticleRenderTarget()
-{
-	RenderTargetDesc particleRenderTargetDesc(E_RENDER_TECHNIQUE_TYPE::Forward);
-	particleRenderTargetDesc.size_ = { DEFAULT_SCREEN_WIDTH , DEFAULT_SCREEN_HEIGHT };
-	particleRenderTargetDesc.clearColor_ = { 0.0f, 0.0f, 0.0f, 0.0f };
-	particleRenderTargetDesc.forwardDesc_.useDepthStencil_ = false;
-	pParticleRenderTarget_ = Renderer::GetFactory()->CreateRenderTarget(particleRenderTargetDesc);
-	if (nullptr == pParticleRenderTarget_)
-	{
-		DEBUG_BREAK();
-		return false;
-	}
-
-	return true;
-}
-
 bool Camera::InitDebugRenderTarget()
 {
 	RenderTargetDesc debugRenderTargeetDesc(E_RENDER_TECHNIQUE_TYPE::Forward);
@@ -347,11 +330,7 @@ void Camera::CleanUp()
 		pDebugRenderTarget_->Release();
 		pDebugRenderTarget_ = nullptr;
 	}
-	if (nullptr != pParticleRenderTarget_)
-	{
-		pParticleRenderTarget_->Release();
-		pParticleRenderTarget_ = nullptr;
-	}
+
 	if (nullptr != pFinalRenderTarget_)
 	{
 		pFinalRenderTarget_->Release();
@@ -372,7 +351,8 @@ IRenderTarget* __stdcall Camera::GetGBufferRenderTargetForEditor() const
 
 ENGINE_API IRenderTarget* __stdcall Camera::GetParticleRenderTargetForEditor() const
 {
-	return pParticleRenderTarget_;
+	return nullptr;
+	//return pParticleRenderTarget_;
 }
 
 IRenderTarget* __stdcall Camera::GetDebugRenderTargetForEditor() const

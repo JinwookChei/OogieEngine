@@ -1,13 +1,13 @@
 #include "stdafx.h"
-#include "RenderComponent.h"
+#include "ActorComponent.h"
 #include "BoundVolume.h"
 #include "Actor.h"
 
 
 
 Actor::Actor()
-	: /*pRenderer_(new RenderComponent(this)),*/
-	pTransform_(new Transform)
+	: pTransform_(new Transform)
+	, ownedComponents_()
 	//pBoundVolume(new BoundVolume)
 {
 	levelLink_.prev_ = nullptr;
@@ -22,9 +22,28 @@ Actor::~Actor()
 	CleanUp();
 }
 
+void Actor::Tick(double deltaTime)
+{
+	for (auto& pair : ownedComponents_)
+	{
+		ActorComponent* component = pair.second;
+		if (component && component->IsEnable())
+		{
+			component->Tick(deltaTime);
+		}
+	}
+}
+
 void Actor::Render()
 {
-
+	for (auto& pair : ownedComponents_)
+	{
+		ActorComponent* component = pair.second;
+		if (component && component->IsEnable())
+		{
+			component->Render();
+		}
+	}
 }
 
 void Actor::ParticleRender()
@@ -35,6 +54,16 @@ void Actor::ParticleRender()
 Transform& Actor::GetWorldTransform() const
 {
 	return *pTransform_;
+}
+
+void Actor::DeleteComponents()
+{
+	for (auto& pair : ownedComponents_)
+	{
+		delete pair.second;
+		pair.second = nullptr;
+	}
+	ownedComponents_.clear();
 }
 
 LINK_NODE* Actor::LevelLink()
@@ -59,16 +88,13 @@ void Actor::CleanUp()
 	//	delete pBoundVolume;
 	//	pBoundVolume = nullptr;
 	//}
+	DeleteComponents();
+
 	if (nullptr != pTransform_)
 	{
 		delete pTransform_;
 		pTransform_ = nullptr;
 	}
-	//if (nullptr != pRenderer_)
-	//{
-	//	delete pRenderer_;
-	//	pRenderer_ = nullptr;
-	//}
 }
 
 ENGINE_API IEditorBindTransform* __stdcall Actor::GetTransformForEditor() const

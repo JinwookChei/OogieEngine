@@ -1,9 +1,8 @@
 #include "stdafx.h"
 #include "MeshComponent.h"
 
-MeshComponent::MeshComponent(Actor* pOwner)
-	: pOwner_(pOwner)
-	, pPSO_(nullptr)
+MeshComponent::MeshComponent()
+	:  pPSO_(nullptr)
 {
 }
 
@@ -12,18 +11,20 @@ MeshComponent::~MeshComponent()
 	CleanUp();
 }
 
-//void MeshComponent::Tick(double deltaTime)
-//{
-//
-//}
-//
-//void MeshComponent::Render()
-//{
-//	ObjectFrameData objectFrameData;
-//	objectFrameData.worldMatrix = pOwner_->GetWorldTransform().GetWorldMatrix();
-//	Renderer::Instance()->UpdateObjectFrame(objectFrameData);
-//	Renderer::Instance()->Render(pPSO_);
-//}
+void MeshComponent::BeginPlay()
+{
+
+}
+
+void MeshComponent::Tick(double deltaTime)
+{
+	SceneComponent::Tick(deltaTime);
+}
+
+void MeshComponent::Render()
+{
+	SceneComponent::Render();
+}
 
 void MeshComponent::InitPSO
 (

@@ -1,21 +1,24 @@
 #pragma once
 
 class ParticleTTTTT;
-class ParticleComponent
+class ParticleComponent 
+	: public SceneComponent
 {
 public:
-	ENGINE_API ParticleComponent(Actor* pOwner);
+	ENGINE_API ParticleComponent();
 
-	ENGINE_API ~ParticleComponent();
+	ENGINE_API ~ParticleComponent() override;
 
-	ENGINE_API void Tick(double deltaTime);
+	void BeginPlay() override;
 
-	ENGINE_API void Render();
+	void Tick(double deltaTime) override;
+
+	void Render() override;
+
+	ENGINE_API void RenderParticle();
 
 private:
-	void CleanUp();
-
-	Actor* pOwner_;
+	void CleanUp() override;
 	
 	uint32_t particleNum_;
 	double accTime_;

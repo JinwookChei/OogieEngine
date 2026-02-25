@@ -2,8 +2,8 @@
 #include "WereWolf.h"
 
 WereWolf::WereWolf()
-	: pSkeletalMeshComponent_(new SkeletalMeshComponent(this))
 {
+	pSkeletalMeshComponent_ = CreateComponent<SkeletalMeshComponent>();
 }
 
 WereWolf::~WereWolf()
@@ -13,7 +13,7 @@ WereWolf::~WereWolf()
 
 void WereWolf::Tick(double deltaTime)
 {
-	pSkeletalMeshComponent_->Tick(deltaTime);
+	Player::Tick(deltaTime);
 }
 
 void WereWolf::BeginPlay()
@@ -38,14 +38,9 @@ void WereWolf::BeginPlay()
 
 void WereWolf::Render()
 {
-	pSkeletalMeshComponent_->Render();
+	Player::Render();
 }
 
 void WereWolf::CleanUp()
 {
-	if (nullptr != pSkeletalMeshComponent_)
-	{
-		delete pSkeletalMeshComponent_;
-		pSkeletalMeshComponent_ = nullptr;
-	}
 }

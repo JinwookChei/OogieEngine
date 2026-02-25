@@ -41,6 +41,7 @@ Light::~Light()
 
 void Light::Tick(double deltaTime)
 {
+	Actor::Tick(deltaTime);
 }
 
 void Light::BeginPlay()
@@ -49,6 +50,7 @@ void Light::BeginPlay()
 
 void Light::Render()
 {
+	Actor::Render();
 	Renderer::Instance()->UpdateLightFrame(GetData());
 	Renderer::Instance()->Render(Light::GLightPSO);
 }

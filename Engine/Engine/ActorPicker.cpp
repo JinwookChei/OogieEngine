@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "Level.h"
 #include "BoundVolume.h"
-#include "RenderComponent.h"
 #include "ActorPicker.h"
 
 

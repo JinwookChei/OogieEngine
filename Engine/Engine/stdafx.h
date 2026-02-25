@@ -38,7 +38,10 @@
 #include <map>
 #include <cstdlib>
 #include <cstdio>
+#include <typeindex>
+#include <typeinfo>
 #include <functional>
+
 
 // Temp
 #include <DirectXMath.h>
@@ -93,11 +96,14 @@
 #include "MaterialManager.h"
 #include "RasterizerManager.h"
 #include "Transform.h"
-#include "ActorPicker.h"
 #include "World.h"
+#include "Actor.h"
+#include "ActorPicker.h"
 #include "Camera.h"
 #include "Light.h"
 #include "SpotLight.h"
+#include "ActorComponent.h"
+#include "SceneComponent.h"
 
 
 extern SkeletonManager* GSkeletonManager;
