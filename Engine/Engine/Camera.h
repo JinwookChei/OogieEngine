@@ -7,8 +7,8 @@ enum class E_RENDER_PASS_TYPE
 	LightPass,
 	ParticlePass,
 	DebugPass,
-	CompositePass,
-	MergePass
+	//CompositePass,
+	//MergePass
 };
 
 

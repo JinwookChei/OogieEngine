@@ -60,8 +60,6 @@
 #include <string>
 #include <functional>
 
-// DirectX
-//#include <DirectXMath.h>
 
 
 // Common

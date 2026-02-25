@@ -133,8 +133,8 @@ void ConstantBuffer::InitGlobalConstant()
 	ConstantBuffer::GConstantPerFrame = Create(sizeof(CBPerFrame));
 	ConstantBuffer::GConstantPerObject = Create(sizeof(CBPerObject));
 	ConstantBuffer::GConstantPerLight = Create(sizeof(CBPerLight));
-	ConstantBuffer::GConstantPerComputeParticle = Create(sizeof(CBPerComputeParticleTTTTT));
-	ConstantBuffer::GConstantPerRenderParticle = Create(sizeof(CBPerParticleTTTTT));
+	ConstantBuffer::GConstantPerComputeParticle = Create(sizeof(CBPerComputeParticle));
+	ConstantBuffer::GConstantPerRenderParticle = Create(sizeof(CBPerParticle));
 	ConstantBuffer::GConstantPerAnimation = Create(sizeof(CBPerAnimation));
 }
 

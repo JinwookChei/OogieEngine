@@ -88,10 +88,6 @@ struct IRenderer : public IUnknown {
 
 	virtual void __stdcall UnBindSRVs(bool bVS, bool bPS) = 0;
 
-	virtual void __stdcall UpdateParticles(IParticle* pParticle, double deltaTime) = 0;
-
-	virtual void __stdcall RenderParticles(IParticle* pParticle, const Float4x4 worldTransform, const Float4x4& viewProj, const Float3& cameraRight, const Float3& cameraUp) = 0;
-
 	virtual void __stdcall DrawDebugLine(const Float3& start, const Float3& end, const Float4& color) = 0;
 
 	virtual void __stdcall DrawDebugRay(const Float3& origin, Float3& dir, float length, const Color& color) = 0;

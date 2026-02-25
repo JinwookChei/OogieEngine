@@ -13,8 +13,8 @@ ParticleComponent::ParticleComponent(Actor* pOwner)
 	, pPSO_(nullptr)
 	, pParticle_(nullptr)
 {
-	std::vector<ParticleTTTTT> particleVertices(1000);
-	for (ParticleTTTTT& particle : particleVertices)
+	std::vector<Particle> particleVertices(1000);
+	for (Particle& particle : particleVertices)
 	{
 		particle.position = { 0.0f,0.0f, 0.0f };
 		particle.velocity = { 0.0f,0.0f, 0.0f };
@@ -25,7 +25,7 @@ ParticleComponent::ParticleComponent(Actor* pOwner)
 	MeshDesc particleDesc;
 	particleDesc.primitiveType = E_MESH_PRIMITIVE_TYPE::Point;
 	particleDesc.resourceFlag = E_MESH_RESOURCE_FLAG::ShaderResource | E_MESH_RESOURCE_FLAG::UnorderedAccess;
-	particleDesc.vertexFormatSize = sizeof(ParticleTTTTT);
+	particleDesc.vertexFormatSize = sizeof(Particle);
 	particleDesc.vertexCount = particleVertices.size();
 	particleDesc.pVertices = particleVertices.data();
 	particleDesc.meshSubsets;
@@ -47,13 +47,6 @@ ParticleComponent::ParticleComponent(Actor* pOwner)
 	pPSO_->SetMeshToSlot(0, pParticle_);
 	pPSO_->SetMaterialToSlot(0, pComputeMaterial);
 	pPSO_->SetMaterialToSlot(1, pRenderMaterial);
-
-
-	/*ParticleDesc particleDesc;
-	particleDesc.maxNum_ = 10;
-	particleDesc.patternType_ = E_PARTICLE_PATTERN_TYPE::EXPLOSION;
-	TextureManager::Instance()->GetTexture(&particleDesc.pTexture_, 0);*/
-	//pParticle_ = Renderer::GetFactory()->CreateParticle(particleDesc);
 }
 
 ParticleComponent::~ParticleComponent()
@@ -63,8 +56,6 @@ ParticleComponent::~ParticleComponent()
 
 void ParticleComponent::Tick(double deltaTime)
 {
-	//Renderer::Instance()->UpdateParticles(pParticle_, deltaTime);
-
 	accTime_ += deltaTime;
 	ComputeParticleData data;
 	data.deltaTime = deltaTime;

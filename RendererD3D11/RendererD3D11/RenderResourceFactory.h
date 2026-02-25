@@ -20,7 +20,6 @@ public:
 	IRenderTarget* __stdcall CreateForwardRenderTarget(const RenderTargetDesc& desc);
 	IRenderTarget* __stdcall CreateDeferredRenderTarget(const RenderTargetDesc& desc);
 	IRasterizer* __stdcall  CreateRasterizer(bool frontCounterClockwise, bool backFaceCulling) override;
-	IParticle* __stdcall CreateParticle(const ParticleDesc& desc) override;
 	IPSO* __stdcall CreatePipelineStateObject(const PipelineStateDesc& desc) override;
 
 private:

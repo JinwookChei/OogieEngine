@@ -283,23 +283,6 @@ void Mesh::UnBindShaderResourceViewPS(UINT slot)
 }
 
 
-//void Mesh::Bind(uint32_t subsetIndex) const
-//{
-//
-//
-//	if (nullptr != meshSubsets_[subsetIndex].pIndexBuffer)
-//	{
-//		DEBUG_BREAK();
-//		return;
-//	}
-//
-//	
-//	//GRenderer->DeviceContext()->IASetIndexBuffer(pIndexBuffer_, DXGI_FORMAT_R16_UINT, 0);
-//
-//	
-//}
-
-
 //void __stdcall Mesh::GetVerticesData
 //(
 //	//E_VERTEX_FORMAT* pOutFormat, 

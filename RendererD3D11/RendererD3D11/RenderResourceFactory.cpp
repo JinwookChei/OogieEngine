@@ -6,7 +6,6 @@
 #include "RenderTarget.h"
 #include "DeferredTarget.h"
 #include "Rasterizer.h"
-#include "Particle.h"
 #include "PipelineStateObject.h"
 #include "RenderResourceFactory.h"
 
@@ -515,11 +514,7 @@ IRasterizer* __stdcall  RenderResourceFactory::CreateRasterizer(bool frontCounte
 
 	return nullptr;
 }
-IParticle* __stdcall RenderResourceFactory::CreateParticle(const ParticleDesc& desc)
-{
-	IParticle* pParticle = Particle::Create(desc);
-	return pParticle;
-}
+
 
 IPSO* __stdcall RenderResourceFactory::CreatePipelineStateObject(const PipelineStateDesc& desc)
 {

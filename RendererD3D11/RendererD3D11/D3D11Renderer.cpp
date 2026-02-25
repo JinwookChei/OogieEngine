@@ -5,7 +5,6 @@
 #include "Shader.h"
 #include "Mesh.h"
 #include "Material.h"
-#include "Particle.h"
 #include "DepthState.h"
 #include "SamplerState.h"
 #include "BlendState.h"
@@ -30,12 +29,6 @@ Renderer::Renderer()
 	, pDeviceContext_(nullptr)
 	, pSwapChain_(nullptr)
 	, pBackBuffer_(nullptr)
-	//, pGeometryPass_(nullptr)
-	//, pLightPass_(nullptr)
-	, pParticlePass_(nullptr)
-	//, pDebugPass_(nullptr)
-	//, pMergePass_(nullptr)
-	//, pFinalPass_(nullptr)
 {
 	GRenderer = this;
 }
@@ -142,30 +135,6 @@ bool __stdcall Renderer::Initialize(void* hWnd, uint32_t width, uint32_t height)
 	{
 		return false;
 	}
-	//if (false == InitGeometryPass())
-	//{
-	//	return false;
-	//}
-	//if (false == InitLightPass())
-	//{
-	//	return false;
-	//}
-	if (false == InitParticlePass())
-	{
-		return false;
-	}
-	//if (false == InitDebugPass())
-	//{
-	//	return false;
-	//}
-	//if (false == InitMergePass())
-	//{
-	//	return false;
-	//}
-	//if (false == InitFinalPass())
-	//{
-	//	return false;
-	//}
 
 	Shader::InitGlobalShaders();
 	ConstantBuffer::InitGlobalConstant();
@@ -257,7 +226,7 @@ void __stdcall Renderer::UpdateLightFrame(const LightRenderData& lightFrameData)
 
 void __stdcall Renderer::UpdateComputeParticleFrame(const ComputeParticleData& computeParticleData)
 {
-	CBPerComputeParticleTTTTT cbComputeParticle;
+	CBPerComputeParticle cbComputeParticle;
 	cbComputeParticle.deltaTime = computeParticleData.deltaTime;
 	cbComputeParticle.particleNum = computeParticleData.particleNum;
 	cbComputeParticle.accTime = computeParticleData.accTime;
@@ -269,7 +238,7 @@ void __stdcall Renderer::UpdateComputeParticleFrame(const ComputeParticleData& c
 
 void __stdcall Renderer::UpdateRenderParticleFrame(const RenderParticleData& renderParticleData)
 {
-	CBPerParticleTTTTT cbRenderParticle;
+	CBPerParticle cbRenderParticle;
 	MATH::MatrixTranspose(cbRenderParticle.world, renderParticleData.world);
 	MATH::MatrixTranspose(cbRenderParticle.viewProj, renderParticleData.viewProj);
 	cbRenderParticle.cameraRight = renderParticleData.cameraRight;
@@ -359,7 +328,7 @@ void __stdcall Renderer::Render(IPSO* pipelineStateObject)
 
 			uint32_t matIdx = meshSubset[subsetIdx].materialSlot;
 			Material* pMaterial = static_cast<Material*>(pPSO->GetMaterial(matIdx));
-			if(nullptr == pMaterial)
+			if (nullptr == pMaterial)
 			{
 				DEBUG_BREAK();
 			}
@@ -373,6 +342,53 @@ void __stdcall Renderer::Render(IPSO* pipelineStateObject)
 void __stdcall Renderer::RenderParticle_Test(IPSO* pipelineStateObject)
 {
 	PipelineStateObject* pPSO = static_cast<PipelineStateObject*>(pipelineStateObject);
+	switch (pPSO->GetDepthState())
+	{
+	case E_DEPTH_PRESET::DEPTH_ENABLE_WRITE:
+	{
+		DepthState::GDepthEnableWrite->Bind();
+		break;
+	}
+	case E_DEPTH_PRESET::DEPTH_ENABLE_READ_ONLY:
+	{
+		DepthState::GDepthEnableReadOnly->Bind();
+		break;
+	}
+	case E_DEPTH_PRESET::DEPTH_DISABLE:
+	{
+		DepthState::GDepthDisable->Bind();
+		break;
+	}
+	default:
+	{
+		DEBUG_BREAK();
+		break;
+	}
+	}
+
+	switch (pPSO->GetRasterizerMode())
+	{
+	case E_RASTERIZER_PRESET::SOLID:
+	{
+		Rasterizer::GRasterizer->ChangeFillMode(E_FILLMODE_TYPE::SOLID);
+		break;
+	}
+	case E_RASTERIZER_PRESET::WIRE_FRAME:
+	{
+		Rasterizer::GRasterizer->ChangeFillMode(E_FILLMODE_TYPE::WIREFRAME);
+		break;
+	}
+	case E_RASTERIZER_PRESET::DISABLE:
+	{
+		break;
+	}
+	default:
+	{
+		DEBUG_BREAK();
+		break;
+	}
+	}
+
 	Mesh* pMesh = static_cast<Mesh*>(pPSO->GetMesh(0));
 	Material* pMaterial = static_cast<Material*>(pPSO->GetMaterial(1));
 
@@ -384,7 +400,7 @@ void __stdcall Renderer::RenderParticle_Test(IPSO* pipelineStateObject)
 
 	pMaterial->Bind();
 	pMesh->BindShaderResourceViewVS(1);
-	
+
 	UINT maxParticleCnt = 1000;
 	GRenderer->DeviceContext()->Draw(maxParticleCnt, 0);
 
@@ -412,7 +428,7 @@ void __stdcall Renderer::Compute(IPSO* pipelineStateObject, UINT threadGroupCoun
 
 void __stdcall Renderer::UnBindSRVs(bool bVS, bool bPS)
 {
-	ID3D11ShaderResourceView* nullSRVs[16] = {nullptr};
+	ID3D11ShaderResourceView* nullSRVs[16] = { nullptr };
 	if (bVS)
 	{
 		pDeviceContext_->VSSetShaderResources(0, 16, nullSRVs);
@@ -421,16 +437,6 @@ void __stdcall Renderer::UnBindSRVs(bool bVS, bool bPS)
 	{
 		pDeviceContext_->PSSetShaderResources(0, 16, nullSRVs);
 	}
-}
-
-void __stdcall Renderer::UpdateParticles(IParticle* pParticle, double deltaTime)
-{
-	pParticlePass_->Tick(pParticle, deltaTime);
-}
-
-void __stdcall Renderer::RenderParticles(IParticle* pParticle, const Float4x4 worldTransform, const Float4x4& viewProj, const Float3& cameraRight, const Float3& cameraUp)
-{
-	pParticlePass_->Render(pParticle, worldTransform, viewProj, cameraRight, cameraUp);
 }
 
 void __stdcall Renderer::DrawDebugLine(const Float3& start, const Float3& end, const Float4& color)
@@ -517,7 +523,7 @@ ID3D11ShaderResourceView* CreateWhiteTextureSRV(ID3D11Device* device)
 
 void Renderer::Draw(UINT count, bool useIndex)
 {
-	if(useIndex)
+	if (useIndex)
 	{
 		GRenderer->DeviceContext()->DrawIndexed(count, 0, 0);
 	}
@@ -726,62 +732,6 @@ bool Renderer::InitBackBuffer(UINT width, UINT height, const Color& clearColor)
 	return false;
 }
 
-bool Renderer::InitParticlePass()
-{
-	pParticlePass_ = new ParticlePass;
-	if (false == pParticlePass_->Init())
-	{
-		DEBUG_BREAK();
-		pParticlePass_->Release();
-		pParticlePass_ = nullptr;
-		return false;
-	}
-
-	return true;
-}
-
-//bool Renderer::InitDebugPass()
-//{
-//	pDebugPass_ = new DebugPass;
-//	if (false == pDebugPass_->Init())
-//	{
-//		DEBUG_BREAK();
-//		pDebugPass_->Release();
-//		pDebugPass_ = nullptr;
-//		return false;
-//	}
-//
-//	return true;
-//}
-
-//bool Renderer::InitMergePass()
-//{
-//	pMergePass_ = new MergePass;
-//	if (false == pMergePass_->Init())
-//	{
-//		DEBUG_BREAK();
-//		pMergePass_->Release();
-//		pMergePass_ = nullptr;
-//		return false;
-//	}
-//
-//	return true;
-//}
-//
-//bool Renderer::InitFinalPass()
-//{
-//	pFinalPass_ = new FinalPass;
-//	if (false == pFinalPass_->Init())
-//	{
-//		DEBUG_BREAK();
-//		pFinalPass_->Release();
-//		pFinalPass_ = nullptr;
-//		return false;
-//	}
-//
-//	return true;
-//}
-
 void Renderer::CleanUp()
 {
 	Shader::ShutDown();
@@ -790,27 +740,6 @@ void Renderer::CleanUp()
 	DepthState::ShutDown();
 	BlendState::ShutDown();
 	Rasterizer::ShutDown();
-
-	//if (nullptr != pFinalPass_)
-	//{
-	//	pFinalPass_->Release();
-	//	pFinalPass_ = nullptr;
-	//}
-	//if (nullptr != pMergePass_)
-	//{
-	//	pMergePass_->Release();
-	//	pMergePass_ = nullptr;
-	//}
-	//if (nullptr != pDebugPass_)
-	//{
-	//	pDebugPass_->Release();
-	//	pDebugPass_ = nullptr;
-	//}
-	if (nullptr != pParticlePass_)
-	{
-		pParticlePass_->Release();
-		pParticlePass_ = nullptr;
-	}
 
 	if (nullptr != pDeviceContext_)
 	{

@@ -42,9 +42,6 @@ public:
 
 	void __stdcall UnBindSRVs(bool bVS, bool bPS) override;
 
-	void __stdcall UpdateParticles(IParticle* pParticle, double deltaTime) override;
-	void __stdcall RenderParticles(IParticle* pParticle, const Float4x4 worldTransform, const Float4x4& viewProj, const Float3& cameraRight, const Float3& cameraUp) override;
-
 	void __stdcall DrawDebugLine(const Float3& start, const Float3& end, const Float4& color) override;
 	void __stdcall DrawDebugRay(const Float3& origin, Float3& dir, float length, const Color& color) override;
 	void __stdcall RenderDebug() override;
@@ -72,11 +69,7 @@ private:
 
 	bool InitBackBuffer(UINT width, UINT height, const Color& clearColor);
 
-	bool InitParticlePass();
-
-	/*bool InitDebugPass();
-	bool InitMergePass();
-	bool InitFinalPass();*/
+	//bool InitParticlePass();
 
 	void CleanUp();
 
@@ -96,8 +89,5 @@ private:
 
 	RenderTarget* pBackBuffer_;
 
-	ParticlePass* pParticlePass_;
-	//DebugPass* pDebugPass_;
-	//MergePass* pMergePass_;
-	//FinalPass* pFinalPass_;
+	//ParticlePass* pParticlePass_;
 };

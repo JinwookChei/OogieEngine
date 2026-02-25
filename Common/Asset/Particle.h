@@ -21,7 +21,7 @@ struct RenderParticleData
 };
 
 
-struct ParticleTTTTT
+struct Particle
 {
 	Float3 position;
 	float age;

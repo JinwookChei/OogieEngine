@@ -153,7 +153,6 @@
     <ClInclude Include="..\..\Common\VertexType\VertexType.h" />
     <ClInclude Include="..\..\Interface\Renderer\IMaterial.h" />
     <ClInclude Include="..\..\Interface\Renderer\IMesh.h" />
-    <ClInclude Include="..\..\Interface\Renderer\IParticle.h" />
     <ClInclude Include="..\..\Interface\Renderer\IPSO.h" />
     <ClInclude Include="..\..\Interface\Renderer\IRasterizer.h" />
     <ClInclude Include="..\..\Interface\Renderer\IRenderer.h" />
@@ -176,7 +175,6 @@
     <ClInclude Include="D3D11Renderer.h" />
     <ClInclude Include="DeferredTarget.h" />
     <ClInclude Include="Material.h" />
-    <ClInclude Include="Particle.h" />
     <ClInclude Include="Rasterizer.h" />
     <ClInclude Include="RenderTarget.h" />
     <ClInclude Include="SamplerState.h" />
@@ -201,7 +199,6 @@
     <ClCompile Include="D3D11Renderer.cpp" />
     <ClCompile Include="DeferredTarget.cpp" />
     <ClCompile Include="Material.cpp" />
-    <ClCompile Include="Particle.cpp" />
     <ClCompile Include="Rasterizer.cpp" />
     <ClCompile Include="RenderTarget.cpp" />
     <ClCompile Include="SamplerState.cpp" />

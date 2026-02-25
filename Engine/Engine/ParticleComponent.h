@@ -29,7 +29,4 @@ private:
 
 	IPSO* pPSO_;
 	IMesh* pParticle_;
-
-
-	//IParticle* pParticle_;
 };

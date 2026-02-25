@@ -52,7 +52,6 @@ private:
 	bool Init
 	(
 		E_MESH_PRIMITIVE_TYPE primitiveType,
-		//E_MESH_RESOURCE_FLAG resourceFlag,
 		uint32_t vertexFormatSize,
 		uint32_t vertexCount,
 		void* pVertices,
@@ -71,8 +70,6 @@ public:
 	ULONG __stdcall Release() override;
 
 	void BindVertices() const;
-
-	//void BindShaderResourceViewCS(UINT slot);
 
 	void BindUnorderedAccessViewCS(UINT slot);
 	void UnBindUnorderedAccessViewCS(UINT slot);
@@ -104,7 +101,6 @@ private:
 	ID3D11Buffer* pVertexBuffer_;
 	ID3D11ShaderResourceView* pVerticesSRV_;
 	ID3D11UnorderedAccessView* pVerticesUAV_;
-
 
 	std::vector<MeshSubset> meshSubsets_;	
 };

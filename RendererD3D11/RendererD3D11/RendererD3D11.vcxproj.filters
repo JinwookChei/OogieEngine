@@ -45,9 +45,6 @@
     <Filter Include="DirectXTex">
       <UniqueIdentifier>{b8a7c758-f17b-4ba4-9261-125c2b007fe1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Particle">
-      <UniqueIdentifier>{83876191-4a9e-4da4-952b-ae5e5029faf1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Renderer\RenderPass">
       <UniqueIdentifier>{48e17c90-4cab-4e3d-af23-d2fa0ef5a54d}</UniqueIdentifier>
     </Filter>
@@ -129,9 +126,6 @@
     <ClInclude Include="Shader.h">
       <Filter>Source Files\Shader</Filter>
     </ClInclude>
-    <ClInclude Include="Particle.h">
-      <Filter>Source Files\Particle</Filter>
-    </ClInclude>
     <ClInclude Include="ParticlePass.h">
       <Filter>Source Files\Renderer\RenderPass</Filter>
     </ClInclude>
@@ -178,9 +172,6 @@
       <Filter>Interface\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Interface\Renderer\IMesh.h">
-      <Filter>Interface\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Interface\Renderer\IParticle.h">
       <Filter>Interface\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Interface\Renderer\IPSO.h">
@@ -250,9 +241,6 @@
     </ClCompile>
     <ClCompile Include="Shader.cpp">
       <Filter>Source Files\Shader</Filter>
-    </ClCompile>
-    <ClCompile Include="Particle.cpp">
-      <Filter>Source Files\Particle</Filter>
     </ClCompile>
     <ClCompile Include="ParticlePass.cpp">
       <Filter>Source Files\Renderer\RenderPass</Filter>

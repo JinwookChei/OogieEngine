@@ -106,57 +106,7 @@ void Level::OnRender()
 		// Particle Pass End
 
 
-		//GCurrentCamera->pFinalRenderTarget_->Bind();
-		//GCurrentCamera->UpdatePerFrameConstant();
-		//Renderer::Instance()->RenderMerge(GCurrentCamera->pParticleRenderTarget_);
-		////GRenderer->RenderMerge(GCurrentCamera->pGBufferRenderTarget_, GCurrentCamera->pParticleRenderTarget_);
-		//GCurrentCamera->pFinalRenderTarget_->EndRenderPass();
 
-
-
-		//// Particle Pass Begin
-		//GCurrentCamera->ParticlePassBegin();
-		//OnRenderParticles();
-		//GCurrentCamera->ParticlePassEnd();
-		//// Particle Pass End
-
-		GCurrentCamera->pFinalRenderTarget_->Bind();
-		GCurrentCamera->UpdatePerFrameConstant();
-		Renderer::Instance()->RenderMerge(GCurrentCamera->pParticleRenderTarget_);
-
-		//GCurrentCamera->RenderPassEnd();
-		//GRenderer->RenderMerge(GCurrentCamera->pGBufferRenderTarget_, GCurrentCamera->pParticleRenderTarget_);
-		//GCurrentCamera->pFinalRenderTarget_->EndRenderPass();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-		// 기존. 라이트 랜더링
-		//GCurrentCamera->RenderPassBegin(E_RENDER_PASS_TYPE::LightPass);
-		//Renderer::Instance()->RenderLightBegin(GCurrentCamera->GetGBufferTarget());
-		//OnRenderLights();
-		//Renderer::Instance()->RenderLightEnd(GCurrentCamera->GetGBufferTarget());
-		//GCurrentCamera->RenderPassEnd();
-		//
-		// Light Pass
-		// Renderer::Instance()->RenderLightBegin(GCurrentCamera->GetGBufferTarget());
-		// OnRenderLights();
-
-
-
-		// Light Pass End
 
 
 		//// Particle Pass Begin

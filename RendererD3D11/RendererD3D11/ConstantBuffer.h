@@ -52,7 +52,7 @@ struct CBPerLight
 	Float2 pad;
 };
 
-struct CBPerComputeParticleTTTTT
+struct CBPerComputeParticle
 {
 	float deltaTime;
 	uint32_t particleNum;
@@ -60,7 +60,7 @@ struct CBPerComputeParticleTTTTT
 	uint32_t particleType;
 };
 
-struct CBPerParticleTTTTT
+struct CBPerParticle
 {
 	Float4x4 world;
 	Float4x4 viewProj;

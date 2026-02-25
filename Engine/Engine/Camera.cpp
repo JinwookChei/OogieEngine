@@ -227,9 +227,9 @@ void Camera::RenderPassBegin(E_RENDER_PASS_TYPE renderPassType)
 		{
 			DEBUG_BREAK();
 		}
-		pParticleRenderTarget_->Clear();
-		pParticleRenderTarget_->Bind(pDepthTexture);
-		pCurrentRenderTarget_ = pParticleRenderTarget_;
+
+		pFinalRenderTarget_->Bind(pDepthTexture);
+		pCurrentRenderTarget_ = pFinalRenderTarget_;
 		break;
 	}
 	case E_RENDER_PASS_TYPE::DebugPass:
@@ -244,10 +244,12 @@ void Camera::RenderPassBegin(E_RENDER_PASS_TYPE renderPassType)
 		pCurrentRenderTarget_ = pDebugRenderTarget_;
 		break;
 	}
-	case E_RENDER_PASS_TYPE::CompositePass:
-		break;
-	case E_RENDER_PASS_TYPE::MergePass:
-		break;
+	//case E_RENDER_PASS_TYPE::CompositePass:
+	//	pFinalRenderTarget_->Bind();
+	//	pCurrentRenderTarget_ = pFinalRenderTarget_;
+	//	break;
+	//case E_RENDER_PASS_TYPE::MergePass:
+	//	break;
 	default:
 		break;
 	}
