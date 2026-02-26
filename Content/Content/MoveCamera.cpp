@@ -24,7 +24,7 @@ void MoveCamera::Tick(double deltaTime)
 		pTransform_->AddRotaionY(deltaMouseMove.Y * deltaTime * 8.0f);
 	}
 
-	if (InputManager::IsPress('W'))
+	/*if (InputManager::IsPress('W'))
 	{
 		Float4 forwardVector = pTransform_->ForwardVector();
 
@@ -79,7 +79,7 @@ void MoveCamera::Tick(double deltaTime)
 	if (InputManager::IsPress('E'))
 	{
 		pTransform_->AddRotaionZ(50 * deltaTime);
-	}
+	}*/
 }
 
 void MoveCamera::BeginPlay()

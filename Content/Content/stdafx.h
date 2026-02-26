@@ -114,6 +114,7 @@
 #include <Engine/Engine/PointLight.h>
 #include <Engine/Engine/ActorComponent.h>
 #include <Engine/Engine/SceneComponent.h>
+#include <Engine/Engine/MovementComponent.h>
 #include <Engine/Engine/MeshComponent.h>
 #include <Engine/Engine/StaticMeshComponent.h>
 #include <Engine/Engine/SkeletalMeshComponent.h>

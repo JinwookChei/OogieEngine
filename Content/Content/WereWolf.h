@@ -13,5 +13,8 @@ private:
 	void CleanUp() override;
 
 private:
+	MovementComponent* pMovementComponent_;
+
 	SkeletalMeshComponent* pSkeletalMeshComponent_;
+	
 };

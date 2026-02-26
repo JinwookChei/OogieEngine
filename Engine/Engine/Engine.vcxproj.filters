@@ -103,6 +103,9 @@
     <Filter Include="Source Files\Transform">
       <UniqueIdentifier>{c5f06b07-d3ba-44d5-b5ad-babf8fd96da4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\ActorComponent\Movement">
+      <UniqueIdentifier>{0c7f97af-f417-4098-bc2e-8d04001c5aff}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -267,6 +270,9 @@
     <ClInclude Include="SceneComponent.h">
       <Filter>Source Files\ActorComponent</Filter>
     </ClInclude>
+    <ClInclude Include="MovementComponent.h">
+      <Filter>Source Files\ActorComponent\Movement</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -367,6 +373,9 @@
     </ClCompile>
     <ClCompile Include="SceneComponent.cpp">
       <Filter>Source Files\ActorComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="MovementComponent.cpp">
+      <Filter>Source Files\ActorComponent\Movement</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
