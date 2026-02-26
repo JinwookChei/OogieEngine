@@ -31,6 +31,10 @@
 #include <unordered_map>
 #include <vector>
 
+// Utility
+#include <Utility/Utility/Math.h>
+#include <Utility/Utility/LinkedList.h>
+
 // Common
 #include <Common/MathType/MathType.h>
 #include <Common/GeometryType/GeometryType.h>
@@ -39,11 +43,6 @@
 #include <Common/Asset/Model.h>
 #include <Common/Asset/Animation.h>
 #include <Common/Asset/Particle.h>
-
-
-// Utility
-#include <Utility/Utility/Math.h>
-#include <Utility/Utility/LinkedList.h>
 
 
 // Interface

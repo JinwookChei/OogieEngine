@@ -19,11 +19,16 @@ AnimationManager* AnimationManager::Instance()
 
 void AnimationManager::TestLoad()
 {
-	Animation* animCapoeira = CreateAnimation("../Resource/Fbx/Mixamo/Capoeira.FBX", 0);
-	Animation* werewolf_Attack = CreateAnimation("../Resource/Fbx/WereWolf/Animation/Anim_Werewolf_attack1.FBX", 1);
+	Animation* Anim_Capoeira = CreateAnimation("../Resource/Fbx/Mixamo/Capoeira.FBX", true, 0);
+	Animation* Anim_Werewolf_idle1 = CreateAnimation("../Resource/Fbx/WereWolf/Animation/Anim_Werewolf_idle1.FBX", false, 1);
+	Animation* Anim_Werewolf_idle2 = CreateAnimation("../Resource/Fbx/WereWolf/Animation/Anim_Werewolf_idle2.FBX", false, 2);
+	Animation* Anim_Werewolf_walk = CreateAnimation("../Resource/Fbx/WereWolf/Animation/Anim_Werewolf_walk.FBX", false, 3);
+	Animation* Anim_Werewolf_attack1 = CreateAnimation("../Resource/Fbx/WereWolf/Animation/Anim_Werewolf_attack1.FBX", false, 4);
+	Animation* Anim_Werewolf_death1 = CreateAnimation("../Resource/Fbx/WereWolf/Animation/Anim_Werewolf_death1.FBX", false, 5);
+	Animation* Anim_Werewolf_gethit1 = CreateAnimation("../Resource/Fbx/WereWolf/Animation/Anim_Werewolf_gethit1.FBX", false, 6);
 }
 
-Animation* AnimationManager::CreateAnimation(const std::string& fileName, unsigned long long animationTag)
+Animation* AnimationManager::CreateAnimation(const std::string& fileName, bool bLoop, unsigned long long animationTag)
 {
 	Animation* pNewAnimation = new Animation;
 	if (false == FBXManager::LoadAnimation(pNewAnimation, fileName))
@@ -34,6 +39,7 @@ Animation* AnimationManager::CreateAnimation(const std::string& fileName, unsign
 		return nullptr;
 	}
 	
+	pNewAnimation->animationClip_.bLoop = bLoop;
 	animationTable_.Insert(pNewAnimation, &animationTag, 8);
 	return pNewAnimation;
 }

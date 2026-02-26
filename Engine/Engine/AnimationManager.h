@@ -12,7 +12,7 @@ public:
 
 	void TestLoad();
 
-	Animation* CreateAnimation(const std::string& fileName, unsigned long long animationTag);
+	Animation* CreateAnimation(const std::string& fileName, bool bLoop, unsigned long long animationTag);
 
 	ENGINE_API bool GetAnimation(Animation** ppOutAnimation, unsigned long long animationTag);
 

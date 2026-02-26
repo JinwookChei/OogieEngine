@@ -18,20 +18,16 @@ public:
 
 	ENGINE_API bool SetSkeleton(unsigned long long skeletonTag);
 
-	void UpdateAnimation( double deltaTime );
-
 private:
 	void CleanUp() override;
 
-	// 얘네가 여기 있는게 맞나?
-	double curTime_;
-	bool bLoop_;
-	// 
-
-	Animation* pAnimation_;
-	
 	Skeleton* pSkeleton_;
 
+	Animation* pCurAnimation_;
+
+	AnimationPlayState animPlayState_;
+
 	std::vector<Float4x4> curAnimBoneMatrices_;
+	
 };
  

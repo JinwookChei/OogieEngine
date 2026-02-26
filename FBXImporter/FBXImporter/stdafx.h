@@ -44,6 +44,10 @@
 #include <sstream>
 #include <string_view>
 
+// Utility
+#include <Utility/Utility/Math.h>
+#include <Utility/Utility/LinkedList.h>
+#include <Utility/Utility/HashTable.h>
 
 // Common
 #include <Common/MathType/MathType.h>
@@ -52,15 +56,8 @@
 #include <Common/Asset/Model.h>
 #include <Common/Asset/Animation.h>
 
-
 // Interface
 #include <Interface/FBXImporter/IFBXImporter.h>
-
-
-// Utility
-#include <Utility/Utility/Math.h>
-#include <Utility/Utility/LinkedList.h>
-#include <Utility/Utility/HashTable.h>
 
 
 // AssetImporter

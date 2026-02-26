@@ -15,6 +15,32 @@ WereWolf::~WereWolf()
 void WereWolf::Tick(double deltaTime)
 {
 	Player::Tick(deltaTime);
+
+	if (InputManager::IsPress('1'))
+	{
+		pSkeletalMeshComponent_->ChangeAnimation(1);
+	}
+	if (InputManager::IsPress('2'))
+	{
+		pSkeletalMeshComponent_->ChangeAnimation(2);
+	}
+	if (InputManager::IsPress('3'))
+	{
+		pSkeletalMeshComponent_->ChangeAnimation(3);
+	}
+	if (InputManager::IsPress('4'))
+	{
+		pSkeletalMeshComponent_->ChangeAnimation(4);
+	}
+	if (InputManager::IsPress('5'))
+	{
+		pSkeletalMeshComponent_->ChangeAnimation(5);
+	}
+	if (InputManager::IsPress('6'))
+	{
+		pSkeletalMeshComponent_->ChangeAnimation(6);
+	}
+
 }
 
 void WereWolf::BeginPlay()
@@ -29,7 +55,7 @@ void WereWolf::BeginPlay()
 	pSkeletalMeshComponent_->GetPSO()->SetMeshToSlot(0, pMesh);
 	pSkeletalMeshComponent_->GetPSO()->SetMaterialToSlot(0, pMaterial1);
 	pSkeletalMeshComponent_->GetPSO()->SetMaterialToSlot(1, pMaterial2);
-	pSkeletalMeshComponent_->ChangeAnimation(1);
+	//pSkeletalMeshComponent_->ChangeAnimation(1);
 	pSkeletalMeshComponent_->SetSkeleton(14);
 
 	pTransform_->SetScale({ 1.0f, 1.0f, 1.0f, 0.0f });

@@ -11,6 +11,7 @@ private:
 	static TimeManager* GTimeManager;
 
 public:
+	static void StartTimer();
 	static double CalcDeltaTime();
 	static double GetDeltaTime();
 	static void CleanUp();

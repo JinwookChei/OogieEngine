@@ -52,6 +52,9 @@
 #include <ThirdParty/DirectXTex/DirectXTex.h>
 #include <ThirdParty/DirectXTex/DirectXTex.inl>
 
+// Utility
+#include <Utility/Utility/Math.h>
+
 
 // Common
 #include <Common/MathType/MathType.h>
@@ -62,9 +65,6 @@
 #include <Common/Asset/Model.h>
 #include <Common/Asset/Particle.h>
 
-
-// Utility
-#include <Utility/Utility/Math.h>
 
 // Interface
 #include <Interface/Renderer/IMesh.h>

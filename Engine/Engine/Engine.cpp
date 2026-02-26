@@ -135,7 +135,7 @@ void Engine::Run()
 	AnimationManager::Instance()->TestLoad();
 	FBXManager::TestLoad();
 
-
+	TimeManager::StartTimer();
 	while (false == Application::Instance()->ApplicationQuit()) {
 
 		Application::Instance()->WinPumpMessage();

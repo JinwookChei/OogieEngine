@@ -51,10 +51,13 @@
 #include <ThirdParty/ImguiGizmo/ImCurveEdit.h>
 #include <ThirdParty/ImguiGizmo/GraphEditor.h>
 
-// Editor
-#include "Label.h"
 
-// CoreTypes
+// Utility
+#include <Utility/Utility/Math.h>
+#include <Utility/Utility/LinkedList.h>
+
+
+// Common
 #include <Common/MathType/MathType.h>
 #include <Common/GeometryType/GeometryType.h>
 #include <Common/VertexType/VertexType.h>
@@ -62,10 +65,6 @@
 #include <Common/Asset/Animation.h>
 #include <Common/Asset/Model.h>
 #include <Common/Asset/Particle.h>
-
-// Utility
-#include <Utility/Utility/Math.h>
-#include <Utility/Utility/LinkedList.h>
 
 
 // Interface
@@ -85,6 +84,9 @@
 //#include <ImGuiBindObject/IImGuiBindObject.h>
 //#include <ImGuiModule/IImGuiModule.h>
 
+
+// Editor
+#include "Label.h"
 
 
 constexpr float DEFAULT_SCREEN_WIDTH = 2560.0f;

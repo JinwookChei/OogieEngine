@@ -38,9 +38,19 @@ public:
 		return tmpRefCount;
 	}
 
-	const std::vector<Bone>& GetBones() const
+	int GetBoneCount() const
 	{
-		return bones_;
+		return bones_.size();
+	}
+
+	const Bone& GetBones(int idx) const
+	{
+		if (GetBoneCount() <= idx)
+		{
+			DEBUG_BREAK();
+		}
+
+		return bones_[idx];
 	}
 
 private:

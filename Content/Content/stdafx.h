@@ -63,6 +63,11 @@
 #include <typeinfo>
 
 
+// Utility
+#include <Utility/Utility/Math.h>
+#include <Utility/Utility/LinkedList.h>
+#include <Utility/Utility/HashTable.h>
+
 
 // Common
 #include <Common/MathType/MathType.h>
@@ -89,11 +94,6 @@
 #include <Interface/EditorBindObject/IEditorBindObject.h>
 #include <Interface/Editor/IEditor.h>
 
-
-// Utility
-#include <Utility/Utility/Math.h>
-#include <Utility/Utility/LinkedList.h>
-#include <Utility/Utility/HashTable.h>
  
 
 // ImguiModule
