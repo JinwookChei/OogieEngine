@@ -966,17 +966,21 @@ void FBXImporter::ExtractBindBoneSkin(MeshInfo* pOutMeshInfo, Model& model, fbxs
 			//int boneIndex = it->second;
 			const Model::BoneLink& boneLink = it->second;
 
-			// Local Bind Pose
-			fbxsdk::FbxAMatrix localBindPose;
-			pCluster->GetTransformMatrix(localBindPose);
-			pOutMeshInfo->bones[boneLink.boneIndex].localBindPose = ConvertFbxAMatrixToFloat4x4_SIMD(localBindPose);
+			pOutMeshInfo->bones[boneLink.boneIndex].name = boneLink.boneName;
+			pOutMeshInfo->bones[boneLink.boneIndex].parentIndex = boneLink.parentBoneIndex;
 
 			// Global Bind Pose
 			fbxsdk::FbxAMatrix globalBindPose;
 			pCluster->GetTransformLinkMatrix(globalBindPose);
 			pOutMeshInfo->bones[boneLink.boneIndex].globalBindPose = ConvertFbxAMatrixToFloat4x4_SIMD(globalBindPose);
-			pOutMeshInfo->bones[boneLink.boneIndex].name = boneLink.boneName;
-			pOutMeshInfo->bones[boneLink.boneIndex].parentIndex = boneLink.parentBoneIndex;
+			MATH::MatrixInverse(pOutMeshInfo->bones[boneLink.boneIndex].invGlobalBindPose, pOutMeshInfo->bones[boneLink.boneIndex].globalBindPose);
+
+			// Local Bind Pose
+			fbxsdk::FbxAMatrix localBindPose;
+			pCluster->GetTransformMatrix(localBindPose);
+			pOutMeshInfo->bones[boneLink.boneIndex].localBindPose = ConvertFbxAMatrixToFloat4x4_SIMD(localBindPose);
+			MATH::MatrixInverse(pOutMeshInfo->bones[boneLink.boneIndex].invLocalBindPose, pOutMeshInfo->bones[boneLink.boneIndex].localBindPose);
+			
 
 			// 현재 cluster에 영향받고있는 Indices들.
 			const int indexCount = pCluster->GetControlPointIndicesCount();	// 현재 cluster에 영향받고있는 index의 갯수
@@ -1203,10 +1207,10 @@ bool FBXImporter::ImportAnimation(Animation* pOutAnimation, const std::string& f
 
 			BoneKeyframe key;
 			key.time = t.GetSecondDouble();
-			fbxsdk::FbxAMatrix localTransform = boneNode->EvaluateLocalTransform(t);
-			key.localTransform = ConvertFbxAMatrixToFloat4x4_SIMD(localTransform);
 			fbxsdk::FbxAMatrix globalTransform = boneNode->EvaluateGlobalTransform(t);
 			key.globalTransform = ConvertFbxAMatrixToFloat4x4_SIMD(globalTransform);
+			fbxsdk::FbxAMatrix localTransform = boneNode->EvaluateLocalTransform(t);
+			key.localTransform = ConvertFbxAMatrixToFloat4x4_SIMD(localTransform);
 			pOutAnimation->animationClip_.boneAnimations[b].keyframes.push_back(key);
 		}
 	}

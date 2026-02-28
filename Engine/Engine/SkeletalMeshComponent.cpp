@@ -3,8 +3,9 @@
 #include "SkeletalMeshComponent.h"
 
 SkeletalMeshComponent::SkeletalMeshComponent()
-	:  pSkeleton_(nullptr)
+	: pSkeleton_(nullptr)
 	, pCurAnimation_(nullptr)
+	, pNextAnimation_(nullptr)
 	, animPlayState_()
 	, curAnimBoneMatrices_()
 {
@@ -22,11 +23,7 @@ void SkeletalMeshComponent::BeginPlay()
 void SkeletalMeshComponent::Tick(double deltaTime)
 {
 	MeshComponent::Tick(deltaTime);
-
-	if(nullptr != pCurAnimation_)
-	{
-		pCurAnimation_->Update(curAnimBoneMatrices_, animPlayState_, *pSkeleton_, deltaTime);
-	}
+	AnimationTick(deltaTime);
 }
 
 void SkeletalMeshComponent::Render()
@@ -47,26 +44,56 @@ void SkeletalMeshComponent::Render()
 	Renderer::Instance()->Render(pPSO_);
 }
 
-
-
-bool SkeletalMeshComponent::ChangeAnimation(unsigned long long animTag)
+void SkeletalMeshComponent::AnimationTick(double deltaTime)
 {
 	if (nullptr != pCurAnimation_)
 	{
-		pCurAnimation_->Release();
-		pCurAnimation_ = nullptr;
+		if (nullptr != pNextAnimation_)
+		{
+			if (true == pCurAnimation_->Transition(curAnimBoneMatrices_, pNextAnimation_, pSkeleton_, animPlayState_, 0.1, deltaTime))
+			{
+				pCurAnimation_->Release();
+				pCurAnimation_ = pNextAnimation_;
+				pNextAnimation_ = nullptr;
+				animPlayState_.Init();
+			}
+		}
+		else
+		{
+			pCurAnimation_->Update(curAnimBoneMatrices_, animPlayState_, *pSkeleton_, deltaTime);
+		}
 	}
+}
 
-	if (false == AnimationManager::Instance()->GetAnimation(&pCurAnimation_, animTag))
+bool SkeletalMeshComponent::ChangeAnimation(unsigned long long animTag)
+{
+	if (nullptr == pCurAnimation_)
 	{
-		DEBUG_BREAK();
-		return false;
+		if (false == AnimationManager::Instance()->GetAnimation(&pCurAnimation_, animTag))
+		{
+			DEBUG_BREAK();
+			return false;
+		}
+		pCurAnimation_->AddRef();
+		animPlayState_.Init();
+		return true;
 	}
-	pCurAnimation_->AddRef();
+	else
+	{
+		if (nullptr != pNextAnimation_)
+		{
+			pNextAnimation_->Release();
+			pNextAnimation_ = nullptr;
+		}
 
-	animPlayState_.frameTime = 0.0;
-	animPlayState_.isEnd = false;
-
+		if (false == AnimationManager::Instance()->GetAnimation(&pNextAnimation_, animTag))
+		{
+			DEBUG_BREAK();
+			return false;
+		}
+		pNextAnimation_->AddRef();
+		animPlayState_.Init();
+	}
 	return true;
 }
 
@@ -96,7 +123,11 @@ void SkeletalMeshComponent::CleanUp()
 		pCurAnimation_->Release();
 		pCurAnimation_ = nullptr;
 	}
-
+	if (nullptr != pNextAnimation_)
+	{
+		pNextAnimation_->Release();
+		pNextAnimation_ = nullptr;
+	}
 	if (nullptr != pSkeleton_)
 	{
 		pSkeleton_->Release();

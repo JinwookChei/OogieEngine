@@ -5,7 +5,10 @@ struct Bone
 	std::string name;
 	int parentIndex;
 	Float4x4 globalBindPose;
+	Float4x4 invGlobalBindPose;
+
 	Float4x4 localBindPose;
+	Float4x4 invLocalBindPose;
 };
 
 class Skeleton : public IUnknown

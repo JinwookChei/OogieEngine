@@ -31,6 +31,12 @@ struct AnimationPlayState
 	{
 	}
 
+	void Init()
+	{
+		frameTime = 0.0;
+		isEnd = false;
+	}
+
 	double frameTime;
 
 	bool isEnd;
@@ -73,7 +79,7 @@ public:
 		return tmpRefCount;
 	}
 
-	void Update(std::vector<Float4x4>& outAnimMatrix, AnimationPlayState& playState, const Skeleton& srcSkeleton, double deltaTime)
+	void Update(std::vector<Float4x4>& curAnimBoneMatrices, AnimationPlayState& playState, const Skeleton& srcSkeleton, double deltaTime)
 	{
 		playState.frameTime += deltaTime;
 		playState.isEnd = false;
@@ -158,10 +164,68 @@ public:
 			MATH::MatrixComposeQuat(animatedGlobal, S, Q, T);
 
 			// 4. Skinning 최종 행렬
-			Float4x4 boneBindPoseInverse;
-			MATH::MatrixInverse(boneBindPoseInverse, srcSkeleton.GetBones(i).globalBindPose);
-			MATH::MatrixMultiply(outAnimMatrix[i], boneBindPoseInverse, animatedGlobal);
+			MATH::MatrixMultiply(curAnimBoneMatrices[i], srcSkeleton.GetBones(i).invGlobalBindPose, animatedGlobal);
 		}
+	}
+
+
+	bool Transition(std::vector<Float4x4>& curAnimBoneMatrices, Animation* pNextAnimation, Skeleton* pSrcSkeleton, AnimationPlayState& playState, double transTime, double deltaTime)
+	{
+		playState.frameTime += deltaTime;
+		if (playState.frameTime > transTime)
+		{
+			return true;
+		}
+
+		const int boneCount = pSrcSkeleton->GetBoneCount();
+		for (int i = 0; i < boneCount; ++i)
+		{
+			const BoneAnimation& boneAnim = pNextAnimation->GetAnimationClip().boneAnimations[i];
+			const BoneKeyframe* k1 = &boneAnim.keyframes[0];
+			double delta = (playState.frameTime) / transTime;
+
+			Float4x4 test;
+			MATH::MatrixMultiply(test, pSrcSkeleton->GetBones(i).globalBindPose, curAnimBoneMatrices[i]);
+
+			Float4 sA;
+			Float4 rA;
+			Float4 tA;
+			MATH::MatrixDecompose(sA, rA, tA, test);
+
+			Float4 sB;
+			Float4 rB;
+			Float4 tB;
+			MATH::MatrixDecompose(sB, rB, tB, k1->globalTransform);
+
+			Float4 sub_tBtA;
+			MATH::VectorSub(sub_tBtA, tB, tA);
+			Float4 scale_delta_sub_tBtA;
+			MATH::VectorScale(scale_delta_sub_tBtA, sub_tBtA, delta);
+			Float4 T;
+			MATH::VectorAdd(T, tA, scale_delta_sub_tBtA);
+			Float4 Q = MATH::VectorSlerp(rA, rB, delta);
+
+			Float4 sub_sBsA;
+			MATH::VectorSub(sub_sBsA, sB, sA);
+			Float4 scale_delta_sub_sBsA;
+			MATH::VectorScale(scale_delta_sub_sBsA, sub_sBsA, delta);
+			Float4 S;
+			MATH::VectorAdd(S, sA, scale_delta_sub_sBsA);
+
+			Float4x4 animatedGlobal;
+			MATH::MatrixComposeQuat(animatedGlobal, S, Q, T);
+
+			// 4. Skinning 최종 행렬
+			MATH::MatrixMultiply(curAnimBoneMatrices[i], pSrcSkeleton->GetBones(i).invGlobalBindPose, animatedGlobal);
+		}
+
+		return false;
+	}
+
+
+	AnimationClip& GetAnimationClip()
+	{
+		return animationClip_;
 	}
 
 private:

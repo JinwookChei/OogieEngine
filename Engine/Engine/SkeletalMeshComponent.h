@@ -14,9 +14,12 @@ public:
 
 	void Render() override;
 
+	void AnimationTick(double deltaTime);
+
 	ENGINE_API bool ChangeAnimation(unsigned long long animTag);
 
 	ENGINE_API bool SetSkeleton(unsigned long long skeletonTag);
+
 
 private:
 	void CleanUp() override;
@@ -24,6 +27,8 @@ private:
 	Skeleton* pSkeleton_;
 
 	Animation* pCurAnimation_;
+
+	Animation* pNextAnimation_;
 
 	AnimationPlayState animPlayState_;
 
