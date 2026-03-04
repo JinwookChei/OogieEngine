@@ -27,18 +27,22 @@ struct AnimationPlayState
 {
 	AnimationPlayState()
 		: frameTime(0.0)
-		, isEnd(false) 
+		, isBlending(false)
+		, isEnd(false)
 	{
 	}
 
 	void Init()
 	{
 		frameTime = 0.0;
+		isBlending = false;
 		isEnd = false;
 	}
 
 	double frameTime;
 
+	bool isBlending;
+	
 	bool isEnd;
 };
 
@@ -49,12 +53,12 @@ public:
 	friend class FBXImporter;
 	friend class AnimationManager;
 	Animation()
-		: refCount_(1) 
-		, animationClip_() 
+		: refCount_(1)
+		, animationClip_()
 	{
 	}
 
-	~Animation() 
+	~Animation()
 	{
 	}
 
@@ -79,7 +83,7 @@ public:
 		return tmpRefCount;
 	}
 
-	void Update(std::vector<Float4x4>& curAnimBoneMatrices, AnimationPlayState& playState, const Skeleton& srcSkeleton, double deltaTime)
+	void UpdateAnimation(std::vector<Float4x4>& curAnimBoneMatrices, AnimationPlayState& playState, const Skeleton& srcSkeleton, double deltaTime)
 	{
 		playState.frameTime += deltaTime;
 		playState.isEnd = false;
@@ -168,8 +172,7 @@ public:
 		}
 	}
 
-
-	bool Transition(std::vector<Float4x4>& curAnimBoneMatrices, Animation* pNextAnimation, Skeleton* pSrcSkeleton, AnimationPlayState& playState, double transTime, double deltaTime)
+	inline bool BlendAnimation(std::vector<Float4x4>& curAnimBoneMats, std::vector<Float4x4>& curAnimBoneLocalMats, Skeleton* pSrcSkeleton, AnimationPlayState& playState, double transTime, double deltaTime)
 	{
 		playState.frameTime += deltaTime;
 		if (playState.frameTime > transTime)
@@ -178,24 +181,36 @@ public:
 		}
 
 		const int boneCount = pSrcSkeleton->GetBoneCount();
-		for (int i = 0; i < boneCount; ++i)
+		for (int bone = 0; bone < boneCount; ++bone)
 		{
-			const BoneAnimation& boneAnim = pNextAnimation->GetAnimationClip().boneAnimations[i];
-			const BoneKeyframe* k1 = &boneAnim.keyframes[0];
-			double delta = (playState.frameTime) / transTime;
+			const BoneAnimation& boneAnim = animationClip_.boneAnimations[bone];
+			const BoneKeyframe* kf = nullptr;
 
-			Float4x4 test;
-			MATH::MatrixMultiply(test, pSrcSkeleton->GetBones(i).globalBindPose, curAnimBoneMatrices[i]);
+			for (size_t k = 0; k + 1 < boneAnim.keyframes.size(); ++k)
+			{
+				if (playState.frameTime >= boneAnim.keyframes[k].time && playState.frameTime <= boneAnim.keyframes[k + 1].time)
+				{
+					kf = &boneAnim.keyframes[k];
+					break;
+				}
+			}
+
+			if (!kf)
+			{
+				continue;
+			}
+			
+			double delta = playState.frameTime / transTime;
 
 			Float4 sA;
 			Float4 rA;
 			Float4 tA;
-			MATH::MatrixDecompose(sA, rA, tA, test);
+			MATH::MatrixDecompose(sA, rA, tA, curAnimBoneLocalMats[bone]);
 
 			Float4 sB;
 			Float4 rB;
 			Float4 tB;
-			MATH::MatrixDecompose(sB, rB, tB, k1->globalTransform);
+			MATH::MatrixDecompose(sB, rB, tB, kf->globalTransform);
 
 			Float4 sub_tBtA;
 			MATH::VectorSub(sub_tBtA, tB, tA);
@@ -215,11 +230,75 @@ public:
 			Float4x4 animatedGlobal;
 			MATH::MatrixComposeQuat(animatedGlobal, S, Q, T);
 
-			// 4. Skinning 최종 행렬
-			MATH::MatrixMultiply(curAnimBoneMatrices[i], pSrcSkeleton->GetBones(i).invGlobalBindPose, animatedGlobal);
+			MATH::MatrixMultiply(curAnimBoneMats[bone], pSrcSkeleton->GetBones(bone).invGlobalBindPose, animatedGlobal);
 		}
 
 		return false;
+	}
+
+
+	int SearchCloseAnimationFrame(std::vector<Float4x4>& curAnimBoneLocalMats, Skeleton* pSrcSkeleton, float rotWeight = 1, float posWeight = 0.25)
+	{
+		std::vector<BoneAnimation>& destAnimations = animationClip_.boneAnimations;
+		int boneCount = pSrcSkeleton->GetBoneCount();
+
+		int closeFrame = 0;
+		double minDiff = 0x7FEFFFFFFFFFFFFF;
+
+		int searchRange;
+		if (animationClip_.bLoop)
+		{
+			searchRange = destAnimations[0].keyframes.size();
+		}
+		else
+		{
+			searchRange = destAnimations[0].keyframes.size() / 2;
+		}
+
+		for (int frame = 0; frame < searchRange; ++frame)
+		{
+			double diff = 0;
+			for (int bone = 0; bone < boneCount; ++bone)
+			{
+				diff += CalcBoneDifference(curAnimBoneLocalMats[bone], destAnimations[bone].keyframes[frame].localTransform, rotWeight, posWeight);
+			}
+
+			if (diff < minDiff)
+			{
+				closeFrame = frame;
+				minDiff = diff;
+			}
+		}
+		
+		return closeFrame;
+	}
+
+	inline double CalcBoneDifference(Float4x4& srcAnimBoneMat, Float4x4& dstAnimBoneMat, float rotWeight, float posWeight)
+	{
+		double diff = 0.0;
+
+		Float4 srcS;
+		Float4 srcQ;
+		Float4 srcT;
+		MATH::MatrixDecompose(srcS, srcQ, srcT, srcAnimBoneMat);
+
+		Float4 dstS;
+		Float4 dstQ;
+		Float4 dstT;
+		MATH::MatrixDecompose(dstS, dstQ, dstT, dstAnimBoneMat);
+
+		float rotDiff;
+		float srcQ_dot_destQ;
+		MATH::VectorDot(srcQ_dot_destQ, srcQ, dstQ);
+		rotDiff = 1.0f - abs(srcQ_dot_destQ);
+
+		float posDiff;
+		Float4 srcT_sub_dstT;
+		MATH::VectorSub(srcT_sub_dstT, srcT, dstT);
+		MATH::VectorLength(posDiff, srcT_sub_dstT);
+
+		diff = rotWeight * rotDiff + posWeight * posDiff;
+		return diff;
 	}
 
 

@@ -40,7 +40,6 @@ void WereWolf::Tick(double deltaTime)
 	{
 		pSkeletalMeshComponent_->ChangeAnimation(6);
 	}
-
 }
 
 void WereWolf::BeginPlay()
@@ -55,8 +54,8 @@ void WereWolf::BeginPlay()
 	pSkeletalMeshComponent_->GetPSO()->SetMeshToSlot(0, pMesh);
 	pSkeletalMeshComponent_->GetPSO()->SetMaterialToSlot(0, pMaterial1);
 	pSkeletalMeshComponent_->GetPSO()->SetMaterialToSlot(1, pMaterial2);
-	//pSkeletalMeshComponent_->ChangeAnimation(1);
 	pSkeletalMeshComponent_->SetSkeleton(14);
+	pSkeletalMeshComponent_->ChangeAnimation(1);
 
 	pTransform_->SetScale({ 1.0f, 1.0f, 1.0f, 0.0f });
 	pTransform_->SetRotation({ 0.0f, 0.0f, 0.0f, 0.0f });

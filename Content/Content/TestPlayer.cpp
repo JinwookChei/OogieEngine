@@ -14,6 +14,11 @@ TestPlayer::~TestPlayer()
 void TestPlayer::Tick(double deltaTime)
 {
 	Player::Tick(deltaTime);
+
+	if (InputManager::IsPress('9'))
+	{
+		pSkeletalMeshComponent_->ChangeAnimation(0);
+	}
 }
 
 void TestPlayer::BeginPlay()
@@ -25,8 +30,9 @@ void TestPlayer::BeginPlay()
 	pSkeletalMeshComponent_->InitPSO(1, 1, E_DEPTH_PRESET::DEPTH_ENABLE_WRITE, E_RASTERIZER_PRESET::SOLID);
 	pSkeletalMeshComponent_->GetPSO()->SetMeshToSlot(0, pMesh);
 	pSkeletalMeshComponent_->GetPSO()->SetMaterialToSlot(0, pMaterial);
-	pSkeletalMeshComponent_->ChangeAnimation(0);
 	pSkeletalMeshComponent_->SetSkeleton(13);
+	pSkeletalMeshComponent_->ChangeAnimation(0);
+	
 
 	pTransform_->SetScale({ 1.0f, 1.0f, 1.0f, 0.0f });
 	pTransform_->SetRotation({ 0.0f, 0.0f, 0.0f, 0.0f });

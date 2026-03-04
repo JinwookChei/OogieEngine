@@ -26,13 +26,13 @@ private:
 
 	Skeleton* pSkeleton_;
 
-	Animation* pCurAnimation_;
-
-	Animation* pNextAnimation_;
+	Animation* pAnimation_;
 
 	AnimationPlayState animPlayState_;
 
-	std::vector<Float4x4> curAnimBoneMatrices_;
+	std::vector<Float4x4> curAnimBoneMats_;
+
+	std::vector<Float4x4> tmpAnimBoneLocalMats_;
 	
 };
  
