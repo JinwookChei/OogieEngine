@@ -32,7 +32,7 @@ IMesh* Mesh::Create(const MeshDesc& desc)
 
 	do
 	{
-		if (false == CreateVertexBuffer(&pVertexBuffer, &copyVertices, desc.vertexFormatSize, desc.vertexCount, desc.resourceFlag, desc.pVertices))
+		if (false == CreateVertexBuffer(&pVertexBuffer, &copyVertices, desc.vertexFormatSize, desc.vertexCount, desc.usage, desc.bindFlag, desc.pVertices))
 		{
 			DEBUG_BREAK();
 			break;
@@ -54,9 +54,8 @@ IMesh* Mesh::Create(const MeshDesc& desc)
 			meshSubsets[i].pIndexBuffer = pIndexBuffer;
 			meshSubsets[i].pIndices = pCopyIndices;
 		}
-		
 
-		if (static_cast<uint32_t>(desc.resourceFlag) & static_cast<uint32_t>(E_MESH_RESOURCE_FLAG::ShaderResource))
+		if ((desc.bindFlag & E_MESH_BIND_FLAG::SHADER_RESOURCE) != E_MESH_BIND_FLAG::NONE)
 		{
 			D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
 			srvDesc.Format = DXGI_FORMAT_UNKNOWN;
@@ -71,7 +70,7 @@ IMesh* Mesh::Create(const MeshDesc& desc)
 			}
 		}
 
-		if (static_cast<uint32_t>(desc.resourceFlag) & static_cast<uint32_t>(E_MESH_RESOURCE_FLAG::UnorderedAccess))
+		if ((desc.bindFlag & E_MESH_BIND_FLAG::UNORDERED_ACCESS) != E_MESH_BIND_FLAG::NONE)
 		{
 			D3D11_UNORDERED_ACCESS_VIEW_DESC uavDesc = {};
 			uavDesc.Format = DXGI_FORMAT_UNKNOWN;
@@ -156,30 +155,30 @@ IMesh* Mesh::Create(const MeshDesc& desc)
 bool Mesh::Init
 (
 	E_MESH_PRIMITIVE_TYPE primitiveType,
-	uint32_t vertexFormatSize, 
-	uint32_t vertexCount, 
-	void* pVertices, 
-	ID3D11Buffer* pVertexBuffer, 
+	uint32_t vertexFormatSize,
+	uint32_t vertexCount,
+	void* pVertices,
+	ID3D11Buffer* pVertexBuffer,
 	ID3D11ShaderResourceView* pVerticesSRV,
 	ID3D11UnorderedAccessView* pVerticesUAV,
 	const std::vector<MeshSubset>& meshSubsets
 )
-{	
+{
 	switch (primitiveType)
 	{
-	case E_MESH_PRIMITIVE_TYPE::Point:
+	case E_MESH_PRIMITIVE_TYPE::POINT:
 		primitiveType_ = D3D_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_POINTLIST;
 		break;
-	case E_MESH_PRIMITIVE_TYPE::Line:
+	case E_MESH_PRIMITIVE_TYPE::LINE:
 		primitiveType_ = D3D_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_LINELIST;
 		break;
-	case E_MESH_PRIMITIVE_TYPE::Triangle:
+	case E_MESH_PRIMITIVE_TYPE::TRIANGLE:
 		primitiveType_ = D3D_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 		break;
 	default:
 		break;
 	}
-	
+
 	vertexStride_ = vertexFormatSize;
 	vertexCount_ = vertexCount;
 	pVertices_ = pVertices;
@@ -324,11 +323,12 @@ const std::vector<MeshSubset>& Mesh::GetMeshSubsets() const
 
 bool Mesh::CreateVertexBuffer
 (
-	ID3D11Buffer** ppOutVertexBuffer, 
-	void** ppOutCopyVertices, 
-	uint32_t vertexFormatSize, 
-	uint32_t vertexCount, 
-	E_MESH_RESOURCE_FLAG resourceFlag,
+	ID3D11Buffer** ppOutVertexBuffer,
+	void** ppOutCopyVertices,
+	uint32_t vertexFormatSize,
+	uint32_t vertexCount,
+	E_MESH_USAGE usage,
+	E_MESH_BIND_FLAG bindFlag,
 	void* pVertices
 )
 {
@@ -338,34 +338,62 @@ bool Mesh::CreateVertexBuffer
 		return false;
 	}
 
+	D3D11_USAGE usageType = D3D11_USAGE::D3D11_USAGE_DEFAULT;
+	UINT cpuAccess = 0;
 	UINT bindFlags = 0;
 	UINT miscFlags = 0;
 	UINT structureByteStride = 0;
-	if (resourceFlag == E_MESH_RESOURCE_FLAG::None)
+
+	switch (usage)
 	{
-		bindFlags = D3D11_BIND_FLAG::D3D11_BIND_VERTEX_BUFFER;
-	}
-	else
-	{
-		if (static_cast<uint32_t>(resourceFlag) & static_cast<uint32_t>(E_MESH_RESOURCE_FLAG::ShaderResource))
-		{
-			bindFlags |= D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE;
-		}
-		if (static_cast<uint32_t>(resourceFlag) & static_cast<uint32_t>(E_MESH_RESOURCE_FLAG::UnorderedAccess))
-		{
-			bindFlags |= D3D11_BIND_FLAG::D3D11_BIND_UNORDERED_ACCESS;
-			miscFlags |= D3D11_RESOURCE_MISC_FLAG::D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
-			structureByteStride = vertexFormatSize;
-		}
+	case E_MESH_USAGE::DEFAULT:
+		usageType = D3D11_USAGE::D3D11_USAGE_DEFAULT;
+		break;
+	case E_MESH_USAGE::IMMUTABLE:
+		usageType = D3D11_USAGE::D3D11_USAGE_IMMUTABLE;
+		break;
+	case E_MESH_USAGE::DYNAMIC:
+		usageType = D3D11_USAGE::D3D11_USAGE_DYNAMIC;
+		cpuAccess |= D3D11_CPU_ACCESS_FLAG::D3D11_CPU_ACCESS_WRITE;
+		break;
+	case E_MESH_USAGE::STAGING:
+		usageType = D3D11_USAGE::D3D11_USAGE_STAGING;
+		cpuAccess |= D3D11_CPU_ACCESS_FLAG::D3D11_CPU_ACCESS_READ;
+		break;
+	default:
+		DEBUG_BREAK();
+		break;
 	}
 
+	if ((bindFlag & E_MESH_BIND_FLAG::VERTEX_BUFFER) != E_MESH_BIND_FLAG::NONE)
+	{
+		bindFlags |= D3D11_BIND_FLAG::D3D11_BIND_VERTEX_BUFFER;
+	}
+	if ((bindFlag & E_MESH_BIND_FLAG::INDEX_BUFFER) != E_MESH_BIND_FLAG::NONE)
+	{
+		bindFlags |= D3D11_BIND_FLAG::D3D11_BIND_INDEX_BUFFER;
+	}
+	if ((bindFlag & E_MESH_BIND_FLAG::CONSTANT_BUFFER) != E_MESH_BIND_FLAG::NONE)
+	{
+		bindFlags |= D3D11_BIND_FLAG::D3D11_BIND_CONSTANT_BUFFER;
+	}
+	if ((bindFlag & E_MESH_BIND_FLAG::SHADER_RESOURCE) != E_MESH_BIND_FLAG::NONE)
+	{
+		bindFlags |= D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE;
+	}
+	if ((bindFlag & E_MESH_BIND_FLAG::UNORDERED_ACCESS) != E_MESH_BIND_FLAG::NONE)
+	{
+		bindFlags |= D3D11_BIND_FLAG::D3D11_BIND_UNORDERED_ACCESS;
+		miscFlags |= D3D11_RESOURCE_MISC_FLAG::D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
+		structureByteStride = vertexFormatSize;
+	}
 
 	D3D11_BUFFER_DESC bd;
 	memset(&bd, 0x00, sizeof(D3D11_BUFFER_DESC));
-	bd.Usage = D3D11_USAGE_DEFAULT;
+	bd.Usage = usageType;
 	bd.ByteWidth = vertexFormatSize * vertexCount;
 	bd.BindFlags = bindFlags;
-	bd.CPUAccessFlags = 0;
+	bd.CPUAccessFlags = cpuAccess;
 	bd.MiscFlags = miscFlags;
 	bd.StructureByteStride = structureByteStride;
 

@@ -36,7 +36,8 @@ private:
 		void** ppOutCopyVertices,
 		uint32_t vertexFormatSize,
 		uint32_t vertexCount,
-		E_MESH_RESOURCE_FLAG resourceFlag,
+		E_MESH_USAGE usage,
+		E_MESH_BIND_FLAG bindFlag,
 		void* pVertices
 	);
 

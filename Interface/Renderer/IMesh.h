@@ -2,26 +2,37 @@
 
 enum class E_MESH_PRIMITIVE_TYPE
 {
-	Point = 0,
-	Line,
-	Triangle
+	POINT = 0,
+	LINE,
+	TRIANGLE
 };
 
-enum class E_MESH_RESOURCE_FLAG : uint32_t
+enum class E_MESH_USAGE
 {
-	None = 0,
-	ShaderResource = 1 << 0,
-	UnorderedAccess = 1 << 1
+	DEFAULT,   // GPU read/write
+	IMMUTABLE, // GPU read only (init data required)
+	DYNAMIC,   // CPU write
+	STAGING    // CPU read/write
 };
 
-inline E_MESH_RESOURCE_FLAG operator|(E_MESH_RESOURCE_FLAG lhs, E_MESH_RESOURCE_FLAG rhs)
+enum class E_MESH_BIND_FLAG : uint32_t
 {
-	return static_cast<E_MESH_RESOURCE_FLAG>(static_cast<uint32_t>(lhs) | static_cast<uint32_t>(rhs));
+	NONE = 0,
+	VERTEX_BUFFER = 1 << 0,
+	INDEX_BUFFER = 1 << 1,
+	CONSTANT_BUFFER = 1 << 2,
+	SHADER_RESOURCE = 1 << 3,
+	UNORDERED_ACCESS = 1 << 4
+};
+
+inline E_MESH_BIND_FLAG operator|(E_MESH_BIND_FLAG lhs, E_MESH_BIND_FLAG rhs)
+{
+	return static_cast<E_MESH_BIND_FLAG>(static_cast<uint32_t>(lhs) | static_cast<uint32_t>(rhs));
 }
 
-inline E_MESH_RESOURCE_FLAG operator&(E_MESH_RESOURCE_FLAG lhs, E_MESH_RESOURCE_FLAG rhs)
+inline E_MESH_BIND_FLAG operator&(E_MESH_BIND_FLAG lhs, E_MESH_BIND_FLAG rhs)
 {
-	return static_cast<E_MESH_RESOURCE_FLAG>(static_cast<uint32_t>(lhs) & static_cast<uint32_t>(rhs));
+	return static_cast<E_MESH_BIND_FLAG>(static_cast<uint32_t>(lhs) & static_cast<uint32_t>(rhs));
 }
 
 struct MeshDesc
@@ -49,7 +60,8 @@ struct MeshDesc
 	};
 
 	E_MESH_PRIMITIVE_TYPE primitiveType;
-	E_MESH_RESOURCE_FLAG resourceFlag;
+	E_MESH_USAGE usage;
+	E_MESH_BIND_FLAG bindFlag;
 
 	uint16_t vertexFormatSize;
 	size_t vertexCount;

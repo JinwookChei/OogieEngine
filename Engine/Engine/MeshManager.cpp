@@ -24,8 +24,9 @@ void MeshManager::TestLoad()
 	GeometryGenerator::CreateScreenQuad(&screenQuadVertices, &screenQuadIndices);
 	MeshDesc screenQuadDesc;
 	//screenQuadDesc.vertexFormat = E_VERTEX_FORMAT::ScreenQuad;
-	screenQuadDesc.primitiveType = E_MESH_PRIMITIVE_TYPE::Triangle;
-	screenQuadDesc.resourceFlag = E_MESH_RESOURCE_FLAG::None;
+	screenQuadDesc.primitiveType = E_MESH_PRIMITIVE_TYPE::TRIANGLE;
+	screenQuadDesc.usage = E_MESH_USAGE::DEFAULT;
+	screenQuadDesc.bindFlag = E_MESH_BIND_FLAG::VERTEX_BUFFER;
 	screenQuadDesc.vertexFormatSize = sizeof(ScreenQuadVertex);
 	screenQuadDesc.vertexCount = screenQuadVertices.size();
 	screenQuadDesc.pVertices = screenQuadVertices.data();
@@ -40,8 +41,9 @@ void MeshManager::TestLoad()
 	GeometryGenerator::CreateCube(&cubeVertices, &cubeIndices);
 	MeshDesc meshDesc_1;
 	//meshDesc_1.vertexFormat = E_VERTEX_FORMAT::Simple;
-	meshDesc_1.primitiveType = E_MESH_PRIMITIVE_TYPE::Triangle;
-	meshDesc_1.resourceFlag = E_MESH_RESOURCE_FLAG::None;
+	meshDesc_1.primitiveType = E_MESH_PRIMITIVE_TYPE::TRIANGLE;
+	meshDesc_1.usage = E_MESH_USAGE::DEFAULT;
+	meshDesc_1.bindFlag = E_MESH_BIND_FLAG::VERTEX_BUFFER;
 	meshDesc_1.vertexFormatSize = sizeof(SimpleVertex);
 	meshDesc_1.vertexCount = cubeVertices.size();
 	meshDesc_1.pVertices = cubeVertices.data();
@@ -53,8 +55,9 @@ void MeshManager::TestLoad()
 	std::vector<WORD> sphereIndices;
 	GeometryGenerator::CreateSphere(&sphereVertices, &sphereIndices);
 	MeshDesc meshDesc_2;
-	meshDesc_2.primitiveType = E_MESH_PRIMITIVE_TYPE::Triangle;
-	meshDesc_2.resourceFlag = E_MESH_RESOURCE_FLAG::None;
+	meshDesc_2.primitiveType = E_MESH_PRIMITIVE_TYPE::TRIANGLE;
+	meshDesc_2.usage = E_MESH_USAGE::DEFAULT;
+	meshDesc_2.bindFlag = E_MESH_BIND_FLAG::VERTEX_BUFFER;
 	//meshDesc_2.vertexFormat = E_VERTEX_FORMAT::Simple;
 	meshDesc_2.vertexFormatSize = sizeof(SimpleVertex);
 	meshDesc_2.vertexCount = sphereVertices.size();
