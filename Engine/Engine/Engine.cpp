@@ -89,7 +89,7 @@ bool Engine::Initialize
 		DEBUG_BREAK();
 		return false;
 	}
-	
+
 	if (false == InputManager::Init())
 	{
 		DEBUG_BREAK();
@@ -113,6 +113,8 @@ bool Engine::Initialize
 
 	GRasterizerManager = new RasterizerManager;
 
+	Debugger::Create();
+
 	if (false == InitializeStartUp(pStartup))
 	{
 		DEBUG_BREAK();
@@ -134,8 +136,9 @@ void Engine::Run()
 	MaterialManager::Instance()->TestLoad();
 	AnimationManager::Instance()->TestLoad();
 	FBXManager::TestLoad();
-
 	TimeManager::StartTimer();
+
+	Debugger::DrawDebugLine({ 0.0f, 0.0f,0.0f }, { 0.0f, 0.0f, 50.0f }, { 1.0f,0.0f,0.0f ,1.0f });
 	while (false == Application::Instance()->ApplicationQuit()) {
 
 		Application::Instance()->WinPumpMessage();
@@ -145,10 +148,10 @@ void Engine::Run()
 
 		// Input Update
 		InputManager::Tick(deltaTime);
-		
+
 		// 잠시 에러 있어서 OFF
 		//GActorPicker->Tick(deltaTime);
-		
+
 		// GameLoop
 		GWorld->CheckChangeLevel();
 		GWorld->OnTick(deltaTime);
@@ -262,6 +265,7 @@ void Engine::CleanUp()
 	TimeManager::CleanUp();
 	InputManager::CleanUp();
 
+	Debugger::ShutDown();
 	FBXManager::ShutDown();
 	Renderer::ShutDown();
 	Application::ShutDown();

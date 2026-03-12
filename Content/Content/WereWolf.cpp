@@ -3,7 +3,7 @@
 
 WereWolf::WereWolf()
 {
-	pMovementComponent_ = CreateComponent<MovementComponent>();
+	//pMovementComponent_ = CreateComponent<MovementComponent>();
 	pSkeletalMeshComponent_ = CreateComponent<SkeletalMeshComponent>();
 }
 

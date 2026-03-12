@@ -322,19 +322,35 @@ void __stdcall Renderer::Render(IPSO* pipelineStateObject)
 		if (nullptr == pMesh) continue;
 		pMesh->BindVertices();
 		const std::vector<MeshSubset>& meshSubset = pMesh->GetMeshSubsets();
-		for (int subsetIdx = 0; subsetIdx < meshSubset.size(); ++subsetIdx)
-		{
-			meshSubset[subsetIdx].BindIndices();
 
-			uint32_t matIdx = meshSubset[subsetIdx].materialSlot;
-			Material* pMaterial = static_cast<Material*>(pPSO->GetMaterial(matIdx));
+		// meshSubset이 1개 이상이면 index를 사용하여 Draw.
+		if (meshSubset.size() != 0)
+		{
+			for (int subsetIdx = 0; subsetIdx < meshSubset.size(); ++subsetIdx)
+			{
+				meshSubset[subsetIdx].BindIndices();
+
+				uint32_t matIdx = meshSubset[subsetIdx].materialSlot;
+				Material* pMaterial = static_cast<Material*>(pPSO->GetMaterial(matIdx));
+				if (nullptr == pMaterial)
+				{
+					DEBUG_BREAK();
+				}
+				pMaterial->Bind();
+
+				GRenderer->Draw(meshSubset[subsetIdx].indexCount, true);
+			}
+		}
+		// meshSubset이 0개(사용안함)이면, 자동으로 material slot 0으로 고정. 그리고, Vertex를 직접사용하여 Draw
+		else
+		{
+			Material* pMaterial = static_cast<Material*>(pPSO->GetMaterial(0));
 			if (nullptr == pMaterial)
 			{
 				DEBUG_BREAK();
 			}
 			pMaterial->Bind();
-
-			GRenderer->Draw(meshSubset[subsetIdx].indexCount, true);
+			GRenderer->Draw(pMesh->GetVertexCount(), false);
 		}
 	}
 }

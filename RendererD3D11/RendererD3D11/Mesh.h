@@ -34,6 +34,7 @@ private:
 	(
 		ID3D11Buffer** ppOutVertexBuffer,
 		void** ppOutCopyVertices,
+		uint32_t bufferSize,
 		uint32_t vertexFormatSize,
 		uint32_t vertexCount,
 		E_MESH_USAGE usage,
@@ -52,7 +53,7 @@ private:
 
 	bool Init
 	(
-		E_MESH_PRIMITIVE_TYPE primitiveType,
+		D3D_PRIMITIVE_TOPOLOGY primitiveType,
 		uint32_t vertexFormatSize,
 		uint32_t vertexCount,
 		void* pVertices,
@@ -70,6 +71,8 @@ public:
 
 	ULONG __stdcall Release() override;
 
+	void __stdcall WriteBuffer(const void* data, uint32_t size) override;
+
 	void BindVertices() const;
 
 	void BindUnorderedAccessViewCS(UINT slot);
@@ -82,23 +85,26 @@ public:
 	void UnBindShaderResourceViewVS(UINT slot);
 	void UnBindShaderResourceViewGS(UINT slot);
 	void UnBindShaderResourceViewPS(UINT slot);
-
+	
 
 	//void __stdcall GetVerticesData(E_VERTEX_FORMAT* pOutFormat, uint32_t* pOutStride, uint32_t* pOutCount, void** ppOutVertices) const override;
 	//void __stdcall GetIndicesData(uint32_t* pOutStride, uint32_t* pOutCount, void** ppOutIndices) const override;
 
 	const std::vector<MeshSubset>& GetMeshSubsets() const;
 
-private:
+	uint32_t GetVertexCount() const;
 
+private:
 	void CleanUp();
 
 	ULONG refCount_;
+
 	D3D_PRIMITIVE_TOPOLOGY primitiveType_;
 
 	uint32_t vertexStride_;
 	uint32_t vertexCount_;
 	void* pVertices_;
+
 	ID3D11Buffer* pVertexBuffer_;
 	ID3D11ShaderResourceView* pVerticesSRV_;
 	ID3D11UnorderedAccessView* pVerticesUAV_;

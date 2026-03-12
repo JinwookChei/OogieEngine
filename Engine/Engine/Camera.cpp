@@ -238,8 +238,9 @@ void Camera::RenderPassBegin(E_RENDER_PASS_TYPE renderPassType)
 		{
 			DEBUG_BREAK();
 		}
-		pDebugRenderTarget_->Clear();
-		pDebugRenderTarget_->Bind(pDepthTexture);
+		/*pDebugRenderTarget_->Clear();
+		pDebugRenderTarget_->Bind(pDepthTexture);*/
+		pFinalRenderTarget_->Bind(pDepthTexture);
 		pCurrentRenderTarget_ = pDebugRenderTarget_;
 		break;
 	}

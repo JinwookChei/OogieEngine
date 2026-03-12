@@ -25,6 +25,7 @@ ParticleComponent::ParticleComponent()
 	particleDesc.primitiveType = E_MESH_PRIMITIVE_TYPE::POINT;
 	particleDesc.usage = E_MESH_USAGE::DEFAULT;
 	particleDesc.bindFlag = E_MESH_BIND_FLAG::SHADER_RESOURCE | E_MESH_BIND_FLAG::UNORDERED_ACCESS;
+	particleDesc.bufferSize = sizeof(Particle) * particleVertices.size();
 	particleDesc.vertexFormatSize = sizeof(Particle);
 	particleDesc.vertexCount = particleVertices.size();
 	particleDesc.pVertices = particleVertices.data();

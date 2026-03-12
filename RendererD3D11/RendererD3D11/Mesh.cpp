@@ -3,7 +3,7 @@
 
 Mesh::Mesh()
 	: refCount_(1)
-	, primitiveType_(D3D_PRIMITIVE_TOPOLOGY::D3D10_PRIMITIVE_TOPOLOGY_POINTLIST)
+	, primitiveType_(D3D_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_POINTLIST)
 	, vertexStride_(0)
 	, vertexCount_(0)
 	, pVertexBuffer_(nullptr)
@@ -26,13 +26,13 @@ IMesh* Mesh::Create(const MeshDesc& desc)
 	ID3D11ShaderResourceView* pVerticesSRV = nullptr;
 	ID3D11UnorderedAccessView* pVerticesUAV = nullptr;
 	void* copyVertices = nullptr;
-
+	D3D_PRIMITIVE_TOPOLOGY primitiveType;
 	std::vector<MeshSubset> meshSubsets;
 	meshSubsets.resize(desc.meshSubsets.size());
 
 	do
 	{
-		if (false == CreateVertexBuffer(&pVertexBuffer, &copyVertices, desc.vertexFormatSize, desc.vertexCount, desc.usage, desc.bindFlag, desc.pVertices))
+		if (false == CreateVertexBuffer(&pVertexBuffer, &copyVertices, desc.bufferSize, desc.vertexFormatSize, desc.vertexCount, desc.usage, desc.bindFlag, desc.pVertices))
 		{
 			DEBUG_BREAK();
 			break;
@@ -86,11 +86,24 @@ IMesh* Mesh::Create(const MeshDesc& desc)
 			}
 		}
 
-
+		switch (desc.primitiveType)
+		{
+		case E_MESH_PRIMITIVE_TYPE::POINT:
+			primitiveType = D3D_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_POINTLIST;
+			break;
+		case E_MESH_PRIMITIVE_TYPE::LINE:
+			primitiveType = D3D_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_LINELIST;
+			break;
+		case E_MESH_PRIMITIVE_TYPE::TRIANGLE:
+			primitiveType = D3D_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+			break;
+		default:
+			break;
+		}
 		pNewMesh = new Mesh;
 		if (false == pNewMesh->Init
 		(
-			desc.primitiveType,
+			primitiveType,
 			desc.vertexFormatSize,
 			desc.vertexCount,
 			copyVertices,
@@ -154,7 +167,7 @@ IMesh* Mesh::Create(const MeshDesc& desc)
 
 bool Mesh::Init
 (
-	E_MESH_PRIMITIVE_TYPE primitiveType,
+	D3D_PRIMITIVE_TOPOLOGY primitiveType,
 	uint32_t vertexFormatSize,
 	uint32_t vertexCount,
 	void* pVertices,
@@ -164,21 +177,7 @@ bool Mesh::Init
 	const std::vector<MeshSubset>& meshSubsets
 )
 {
-	switch (primitiveType)
-	{
-	case E_MESH_PRIMITIVE_TYPE::POINT:
-		primitiveType_ = D3D_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_POINTLIST;
-		break;
-	case E_MESH_PRIMITIVE_TYPE::LINE:
-		primitiveType_ = D3D_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_LINELIST;
-		break;
-	case E_MESH_PRIMITIVE_TYPE::TRIANGLE:
-		primitiveType_ = D3D_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
-		break;
-	default:
-		break;
-	}
-
+	primitiveType_ = primitiveType;
 	vertexStride_ = vertexFormatSize;
 	vertexCount_ = vertexCount;
 	pVertices_ = pVertices;
@@ -209,6 +208,35 @@ ULONG __stdcall Mesh::Release()
 	}
 
 	return tmpRefCount;
+}
+
+
+void __stdcall Mesh::WriteBuffer(const void* data, uint32_t size)
+{
+	D3D11_BUFFER_DESC desc;
+	pVertexBuffer_->GetDesc(&desc);
+	if (desc.Usage != D3D11_USAGE_DYNAMIC || !(desc.CPUAccessFlags & D3D11_CPU_ACCESS_WRITE))
+	{
+		DEBUG_BREAK();
+		return;
+	}
+	if (size > desc.ByteWidth)
+	{
+		DEBUG_BREAK();
+		return;
+	}
+
+	D3D11_MAPPED_SUBRESOURCE mapped = {};
+	HRESULT hr = GRenderer->DeviceContext()->Map(pVertexBuffer_, 0, D3D11_MAP_WRITE_DISCARD, 0, &mapped);
+	if (FAILED(hr))
+	{
+		DEBUG_BREAK();
+		return;
+	}
+	memcpy(mapped.pData, data, size);
+	GRenderer->DeviceContext()->Unmap(pVertexBuffer_, 0);
+
+	vertexCount_ = size / vertexStride_;
 }
 
 void Mesh::BindVertices() const
@@ -302,6 +330,11 @@ const std::vector<MeshSubset>& Mesh::GetMeshSubsets() const
 	return meshSubsets_;
 }
 
+uint32_t Mesh::GetVertexCount() const
+{
+	return vertexCount_;
+}
+
 //ULONG Mesh::GetIndexCount(uint32_t subSetIndex) const
 //{
 //	return meshSubsets_[subSetIndex].indexCount;
@@ -325,6 +358,7 @@ bool Mesh::CreateVertexBuffer
 (
 	ID3D11Buffer** ppOutVertexBuffer,
 	void** ppOutCopyVertices,
+	uint32_t bufferSize,
 	uint32_t vertexFormatSize,
 	uint32_t vertexCount,
 	E_MESH_USAGE usage,
@@ -332,12 +366,6 @@ bool Mesh::CreateVertexBuffer
 	void* pVertices
 )
 {
-	if (nullptr == pVertices)
-	{
-		Assert("DESC::Vertices is NULL");
-		return false;
-	}
-
 	D3D11_USAGE usageType = D3D11_USAGE::D3D11_USAGE_DEFAULT;
 	UINT cpuAccess = 0;
 	UINT bindFlags = 0;
@@ -391,31 +419,47 @@ bool Mesh::CreateVertexBuffer
 	D3D11_BUFFER_DESC bd;
 	memset(&bd, 0x00, sizeof(D3D11_BUFFER_DESC));
 	bd.Usage = usageType;
-	bd.ByteWidth = vertexFormatSize * vertexCount;
 	bd.BindFlags = bindFlags;
+	bd.ByteWidth = bufferSize;
 	bd.CPUAccessFlags = cpuAccess;
 	bd.MiscFlags = miscFlags;
 	bd.StructureByteStride = structureByteStride;
 
-	D3D11_SUBRESOURCE_DATA InitData;
-	memset(&InitData, 0x00, sizeof(D3D11_SUBRESOURCE_DATA));
-	InitData.pSysMem = pVertices;
-
-	HRESULT hr = GRenderer->Device()->CreateBuffer(&bd, &InitData, ppOutVertexBuffer);
-	if (FAILED(hr))
+	if (nullptr == pVertices && usageType == D3D11_USAGE::D3D11_USAGE_DYNAMIC)
+	{
+		HRESULT hr = GRenderer->Device()->CreateBuffer(&bd, nullptr, ppOutVertexBuffer);
+		if (FAILED(hr))
+		{
+			DEBUG_BREAK();
+			return false;
+		}
+	}
+	else if (nullptr == pVertices && usageType != D3D11_USAGE::D3D11_USAGE_DYNAMIC)
 	{
 		DEBUG_BREAK();
 		return false;
 	}
+	else
+	{
+		D3D11_SUBRESOURCE_DATA InitData;
+		memset(&InitData, 0x00, sizeof(D3D11_SUBRESOURCE_DATA));
+		InitData.pSysMem = pVertices;
+		HRESULT hr = GRenderer->Device()->CreateBuffer(&bd, &InitData, ppOutVertexBuffer);
+		if (FAILED(hr))
+		{
+			DEBUG_BREAK();
+			return false;
+		}
+	}
 
 	// DeepCopy - Vertices 
-	if (vertexCount != 0)
+	if (nullptr != pVertices)
 	{
-		size_t dataSize = vertexCount * vertexFormatSize;
+		UINT dataSize = bd.ByteWidth;
 		*ppOutCopyVertices = malloc(dataSize);   // 또는 new char[dataSize];
 		memcpy(*ppOutCopyVertices, pVertices, dataSize);
 	}
-
+	
 	// ---------------- 메모리 누수 디버깅용 이름 설정. ----------------------------
 	const char* debugObjectName = "VertexBuffer";
 	(*ppOutVertexBuffer)->SetPrivateData(WKPDID_D3DDebugObjectName, (UINT)strlen(debugObjectName), debugObjectName);

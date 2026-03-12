@@ -65,6 +65,7 @@ public:
 	static Shader* GShaderParticle;
 	static Shader* GShaderStaticMesh;
 	static Shader* GShaderSkinnedMesh;
+	static Shader* GShaderDebugLine;
 };
 
 

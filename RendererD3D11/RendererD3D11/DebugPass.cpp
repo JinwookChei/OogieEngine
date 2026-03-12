@@ -1,10 +1,10 @@
 #include "stdafx.h"
-#include "Shader.h"
-#include "BlendState.h"
-#include "SamplerState.h"
-#include "DebugPass.h"
-
-
+//#include "Shader.h"
+//#include "BlendState.h"
+//#include "SamplerState.h"
+//#include "DebugPass.h"
+//
+//
 //DebugPass::DebugPass()
 //	: refCount_(1)
 //	, lineList_()
@@ -120,10 +120,11 @@
 //{
 //	D3D11_BUFFER_DESC bd = {};
 //	bd.Usage = D3D11_USAGE_DYNAMIC;
-//	bd.ByteWidth = sizeof(DebugLineVertex) * 32768; // capacity for many lines (2 verts per line)
 //	bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+//	bd.ByteWidth = sizeof(DebugLineVertex) * 32768; // capacity for many lines (2 verts per line)
 //	bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 //	bd.MiscFlags = 0;
+//
 //
 //	HRESULT hr = GRenderer->Device()->CreateBuffer(&bd, nullptr, &pVertexBuffer_);
 //	if (FAILED(hr))

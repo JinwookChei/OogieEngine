@@ -138,7 +138,6 @@ PipelineStateObject* PipelineStateObject::Create(const PipelineStateDesc& desc)
 	pNewPSO->ppMesheSlot_ = new Mesh * [pNewPSO->meshSlotCount_] {};
 	pNewPSO->materialSlotCount_ = desc.materialSlotCount;
 	pNewPSO->ppMaterialSlot_ = new Material * [pNewPSO->materialSlotCount_] {};
-
 	pNewPSO->depthState_ = desc.depthState;
 	pNewPSO->rasterizerMode_ = desc.rasterizerMode;
 	return pNewPSO;

@@ -8,9 +8,9 @@
 
 Material::Material()
 	: refCount_(1)
-	, shaderType_(E_SHADER_PRESET::StaticMesh)
-	, samplerState_(E_SAMPLER_PRESET::LINEAR_CLAMP)
-	, blendState_(E_BLEND_PRESET::ALPHA_BLEND)
+	, shaderType_(E_SHADER_PRESET::STATIC_MESH)
+	, samplerState_(E_SAMPLER_PRESET::DISABLE)
+	, blendState_(E_BLEND_PRESET::DISABLE)
 	, texturesNum_(0)
 	, ppTextures_(nullptr)
 	, shineness_(1.0f)
@@ -126,29 +126,34 @@ void Material::Bind()
 {
 	switch (shaderType_)
 	{
-	case E_SHADER_PRESET::Light:
+	case E_SHADER_PRESET::LIGHT:
 	{
 		Shader::GShaderLight->Bind();
 		break;
 	}
-	case E_SHADER_PRESET::ParticleCompute:
+	case E_SHADER_PRESET::PARTICLE_COMPUTE:
 	{
 		Shader::GShaderComputeParticle->Bind();
 		break;
 	}
-	case E_SHADER_PRESET::ParticleRender:
+	case E_SHADER_PRESET::PARTICLE_RENDER:
 	{
 		Shader::GShaderParticle->Bind();
 		break;
 	}
-	case E_SHADER_PRESET::StaticMesh:
+	case E_SHADER_PRESET::STATIC_MESH:
 	{
 		Shader::GShaderStaticMesh->Bind();
 		break;
 	}
-	case E_SHADER_PRESET::SkinnedMesh:
+	case E_SHADER_PRESET::SKINNED_MESH:
 	{
 		Shader::GShaderSkinnedMesh->Bind();
+		break;
+	}
+	case E_SHADER_PRESET::DEBUG_LINE:
+	{
+		Shader::GShaderDebugLine->Bind();
 		break;
 	}
 	default:
@@ -233,29 +238,34 @@ void Material::UnBind()
 {
 	switch (shaderType_)
 	{
-	case E_SHADER_PRESET::Light:
+	case E_SHADER_PRESET::LIGHT:
 	{
 		Shader::GShaderLight->UnBind();
 		break;
 	}
-	case E_SHADER_PRESET::ParticleCompute:
+	case E_SHADER_PRESET::PARTICLE_COMPUTE:
 	{
 		Shader::GShaderComputeParticle->UnBind();
 		break;
 	}
-	case E_SHADER_PRESET::ParticleRender:
+	case E_SHADER_PRESET::PARTICLE_RENDER:
 	{
 		Shader::GShaderParticle->UnBind();
 		break;
 	}
-	case E_SHADER_PRESET::StaticMesh:
+	case E_SHADER_PRESET::STATIC_MESH:
 	{
 		Shader::GShaderStaticMesh->UnBind();
 		break;
 	}
-	case E_SHADER_PRESET::SkinnedMesh:
+	case E_SHADER_PRESET::SKINNED_MESH:
 	{
 		Shader::GShaderSkinnedMesh->UnBind();
+		break;
+	}
+	case E_SHADER_PRESET::DEBUG_LINE:
+	{
+		Shader::GShaderDebugLine->UnBind();
 		break;
 	}
 	default:

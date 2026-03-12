@@ -6,6 +6,12 @@ struct ScreenQuadVertex
 	Float2 UV;
 };
 
+struct DebugLineVertex
+{
+	Float3 pos;
+	Float4 color;
+};
+
 struct SimpleVertex
 {
 	Float3 position;

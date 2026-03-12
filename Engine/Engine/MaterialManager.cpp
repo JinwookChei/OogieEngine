@@ -44,7 +44,7 @@ void MaterialManager::TestLoad()
 
 
 	MaterialDesc lightPassMaterialDesc;
-	lightPassMaterialDesc.shaderType = E_SHADER_PRESET::Light;
+	lightPassMaterialDesc.shaderType = E_SHADER_PRESET::LIGHT;
 	lightPassMaterialDesc.samplerState = E_SAMPLER_PRESET::LINEAR_CLAMP;
 	lightPassMaterialDesc.blendState = E_BLEND_PRESET::ADDITIVE_BLEND;
 	lightPassMaterialDesc.textureNum_ = 4;
@@ -53,7 +53,7 @@ void MaterialManager::TestLoad()
 	IMaterial* pLightMaterial = CreateMaterial(lightPassMaterialDesc, 0);
 
 	MaterialDesc particleComputeMaterialDesc;
-	particleComputeMaterialDesc.shaderType = E_SHADER_PRESET::ParticleCompute;
+	particleComputeMaterialDesc.shaderType = E_SHADER_PRESET::PARTICLE_COMPUTE;
 	particleComputeMaterialDesc.samplerState = E_SAMPLER_PRESET::DISABLE;
 	particleComputeMaterialDesc.blendState = E_BLEND_PRESET::DISABLE;
 	particleComputeMaterialDesc.textureNum_ = 0;
@@ -63,7 +63,7 @@ void MaterialManager::TestLoad()
 
 
 	MaterialDesc particlePassMaterialDesc;
-	particlePassMaterialDesc.shaderType = E_SHADER_PRESET::ParticleRender;
+	particlePassMaterialDesc.shaderType = E_SHADER_PRESET::PARTICLE_RENDER;
 	particlePassMaterialDesc.samplerState = E_SAMPLER_PRESET::LINEAR_CLAMP;
 	particlePassMaterialDesc.blendState = E_BLEND_PRESET::ALPHA_BLEND;
 	particlePassMaterialDesc.textureNum_ = 1;
@@ -74,7 +74,7 @@ void MaterialManager::TestLoad()
 
 
 	MaterialDesc matDesc1;
-	matDesc1.shaderType = E_SHADER_PRESET::StaticMesh;
+	matDesc1.shaderType = E_SHADER_PRESET::STATIC_MESH;
 	matDesc1.samplerState = E_SAMPLER_PRESET::LINEAR_CLAMP;
 	matDesc1.blendState = E_BLEND_PRESET::OPAQUE_BLEND;
 	matDesc1.textureNum_ = 2;
@@ -86,8 +86,7 @@ void MaterialManager::TestLoad()
 
 
 	MaterialDesc matDesc2;
-	matDesc2.shaderType = E_SHADER_PRESET::SkinnedMesh;
-	//matDesc2.shaderType = E_SHADER_PRESET::StaticMesh;
+	matDesc2.shaderType = E_SHADER_PRESET::SKINNED_MESH;
 	matDesc2.samplerState = E_SAMPLER_PRESET::LINEAR_WARP;
 	matDesc2.blendState = E_BLEND_PRESET::OPAQUE_BLEND;
 	matDesc2.textureNum_ = 2;
@@ -111,8 +110,7 @@ void MaterialManager::TestLoad()
 
 
 	MaterialDesc matDesc4;
-	matDesc4.shaderType = E_SHADER_PRESET::SkinnedMesh;
-	//matDesc4.shaderType = E_SHADER_PRESET::StaticMesh;
+	matDesc4.shaderType = E_SHADER_PRESET::SKINNED_MESH;
 	matDesc4.samplerState = E_SAMPLER_PRESET::LINEAR_WARP;
 	matDesc4.blendState = E_BLEND_PRESET::OPAQUE_BLEND;
 	matDesc4.textureNum_ = 2;
@@ -124,8 +122,7 @@ void MaterialManager::TestLoad()
 	
 
 	MaterialDesc matDesc5;
-	matDesc5.shaderType = E_SHADER_PRESET::SkinnedMesh;
-	//matDesc5.shaderType = E_SHADER_PRESET::StaticMesh;
+	matDesc5.shaderType = E_SHADER_PRESET::SKINNED_MESH;
 	matDesc5.samplerState = E_SAMPLER_PRESET::LINEAR_WARP;
 	matDesc5.blendState = E_BLEND_PRESET::OPAQUE_BLEND;
 	matDesc5.textureNum_ = 2;
@@ -134,6 +131,9 @@ void MaterialManager::TestLoad()
 	IMaterial* pMat5 = CreateMaterial(matDesc5, 14);
 	pMat5->SetTextures(0, pWerewolf_Fur_Albedo);
 	pMat5->SetTextures(1, pWerewolf_Fur_Normal);
+
+
+
 }
 
 IMaterial* MaterialManager::CreateMaterial(const MaterialDesc& desc, unsigned long long materialTag)

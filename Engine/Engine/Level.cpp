@@ -105,9 +105,11 @@ void Level::OnRender()
 		GCurrentCamera->RenderPassEnd();
 		// Particle Pass End
 
-
-
-
+		// Debug Pass
+		GCurrentCamera->RenderPassBegin(E_RENDER_PASS_TYPE::DebugPass);
+		Debugger::Draw();
+		GCurrentCamera->RenderPassEnd();
+		// Debug Pass End
 
 		//// Particle Pass Begin
 		//GCurrentCamera->ParticlePassBegin();

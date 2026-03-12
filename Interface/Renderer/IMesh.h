@@ -40,15 +40,15 @@ struct MeshDesc
 	struct MeshSubsetDesc
 	{
 		uint32_t materialSlot;
-		uint16_t indexFormatSize;
-		size_t  indexCount;
+		uint32_t indexFormatSize;
+		uint32_t  indexCount;
 		void* pIndices;
 
 		MeshSubsetDesc
 		(
 			uint32_t materialSlot,
-			uint16_t indexFormatSize,
-			size_t indexCount,
+			uint32_t indexFormatSize,
+			uint32_t indexCount,
 			void* pIndices
 		)
 			: materialSlot(materialSlot)
@@ -62,9 +62,9 @@ struct MeshDesc
 	E_MESH_PRIMITIVE_TYPE primitiveType;
 	E_MESH_USAGE usage;
 	E_MESH_BIND_FLAG bindFlag;
-
-	uint16_t vertexFormatSize;
-	size_t vertexCount;
+	uint32_t bufferSize;
+	uint32_t vertexFormatSize;
+	uint32_t vertexCount;
 	void* pVertices;
 
 	std::vector<MeshSubsetDesc> meshSubsets;
@@ -73,6 +73,8 @@ struct MeshDesc
 
 struct IMesh : public IUnknown
 {
+	virtual void __stdcall WriteBuffer(const void* data, uint32_t size) = 0;
+
 	//virtual void __stdcall GetVerticesData(E_VERTEX_FORMAT* pOutFormat, uint32_t* pOutStride, uint32_t* pOutCount, void** ppOutVertices) const = 0;
 
 	//virtual void __stdcall GetIndicesData(uint32_t* pOutStride, uint32_t* pOutCount, void** ppOutIndices) const = 0;

@@ -92,6 +92,7 @@
 #include "AnimationManager.h"
 #include "MaterialManager.h"
 #include "RasterizerManager.h"
+#include "Debugger.h"
 #include "Transform.h"
 #include "World.h"
 #include "Actor.h"

@@ -66,6 +66,7 @@ void FBXManager::TestLoad()
 	meshDesc_4.primitiveType = E_MESH_PRIMITIVE_TYPE::TRIANGLE;
 	meshDesc_4.usage = E_MESH_USAGE::DEFAULT;
 	meshDesc_4.bindFlag = E_MESH_BIND_FLAG::VERTEX_BUFFER;
+	meshDesc_4.bufferSize = sizeof(SkinnedMeshVertex) * capoeira.meshInfos[0].vertices.size();
 	meshDesc_4.vertexFormatSize = sizeof(SkinnedMeshVertex);
 	meshDesc_4.vertexCount = capoeira.meshInfos[0].vertices.size();
 	meshDesc_4.pVertices = capoeira.meshInfos[0].vertices.data();
@@ -83,6 +84,7 @@ void FBXManager::TestLoad()
 	meshDesc_5.primitiveType = E_MESH_PRIMITIVE_TYPE::TRIANGLE;
 	meshDesc_5.usage = E_MESH_USAGE::DEFAULT;
 	meshDesc_5.bindFlag = E_MESH_BIND_FLAG::VERTEX_BUFFER;
+	meshDesc_5.bufferSize = sizeof(SkinnedMeshVertex) * wereWolf.meshInfos[0].vertices.size();
 	meshDesc_5.vertexFormatSize = sizeof(SkinnedMeshVertex);
 	meshDesc_5.vertexCount = wereWolf.meshInfos[0].vertices.size();
 	meshDesc_5.pVertices = wereWolf.meshInfos[0].vertices.data();

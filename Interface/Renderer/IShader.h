@@ -2,11 +2,12 @@
 
 enum class E_SHADER_PRESET
 {
-	Light = 0,
-	ParticleCompute,
-	ParticleRender,
-	StaticMesh,
-	SkinnedMesh
+	LIGHT = 0,
+	PARTICLE_COMPUTE,
+	PARTICLE_RENDER,
+	STATIC_MESH,
+	SKINNED_MESH,
+	DEBUG_LINE
 };
 
 

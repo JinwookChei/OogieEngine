@@ -106,6 +106,9 @@
     <Filter Include="Source Files\ActorComponent\Movement">
       <UniqueIdentifier>{0c7f97af-f417-4098-bc2e-8d04001c5aff}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Debug">
+      <UniqueIdentifier>{db876a83-b565-4ce8-910d-970c28eb39a2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -273,6 +276,9 @@
     <ClInclude Include="MovementComponent.h">
       <Filter>Source Files\ActorComponent\Movement</Filter>
     </ClInclude>
+    <ClInclude Include="Debugger.h">
+      <Filter>Source Files\Debug</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -376,6 +382,9 @@
     </ClCompile>
     <ClCompile Include="MovementComponent.cpp">
       <Filter>Source Files\ActorComponent\Movement</Filter>
+    </ClCompile>
+    <ClCompile Include="Debugger.cpp">
+      <Filter>Source Files\Debug</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

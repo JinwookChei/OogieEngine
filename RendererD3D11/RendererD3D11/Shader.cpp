@@ -6,6 +6,7 @@ Shader* Shader::GShaderComputeParticle = nullptr;
 Shader* Shader::GShaderParticle = nullptr;
 Shader* Shader::GShaderStaticMesh = nullptr;
 Shader* Shader::GShaderSkinnedMesh = nullptr;
+Shader* Shader::GShaderDebugLine = nullptr;
 
 Shader::Shader()
 	: refCount_(1)
@@ -540,6 +541,17 @@ void Shader::InitGlobalShaders()
 	{
 		DEBUG_BREAK();
 	}
+
+	ShaderDesc debugLineDesc;
+	debugLineDesc.pathVS_ = L"DebugLineVS.cso";
+	debugLineDesc.pathPS_ = L"DebugLinePS.cso";
+	debugLineDesc.inputDesc_.push_back({ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, false });
+	debugLineDesc.inputDesc_.push_back({ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, false });
+	Shader::GShaderDebugLine = Shader::Create(debugLineDesc);
+	if (nullptr == Shader::GShaderDebugLine)
+	{
+		DEBUG_BREAK();
+	}
 }
 
 void Shader::ShutDown()
@@ -572,5 +584,11 @@ void Shader::ShutDown()
 	{
 		Shader::GShaderSkinnedMesh->Release();
 		Shader::GShaderSkinnedMesh = nullptr;
+	}
+
+	if (nullptr != Shader::GShaderDebugLine)
+	{
+		Shader::GShaderDebugLine->Release();
+		Shader::GShaderDebugLine = nullptr;
 	}
 }
