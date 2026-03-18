@@ -88,12 +88,6 @@ struct IRenderer : public IUnknown {
 
 	virtual void __stdcall UnBindSRVs(bool bVS, bool bPS) = 0;
 
-	virtual void __stdcall DrawDebugLine(const Float3& start, const Float3& end, const Float4& color) = 0;
-
-	virtual void __stdcall DrawDebugRay(const Float3& origin, Float3& dir, float length, const Color& color) = 0;
-
-	virtual void __stdcall RenderDebug() = 0;
-
 	virtual void __stdcall RenderMerge(IRenderTarget* pSrcTarget) = 0;
 	
 	virtual void __stdcall RenderBegin() = 0;

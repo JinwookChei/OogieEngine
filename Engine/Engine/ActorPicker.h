@@ -11,7 +11,7 @@ public:
 
 	void Tick(double deltaTime);
 
-	void ScreenToWorldRay(Ray* pOutRay, const Float2& screenPos);
+	void ScreenToWorldRay(Ray* pOutRay, const Float2& screenPos, const Float2& viewPortSize);
 
 	bool TryPickObject(const Ray& ray);
 	
@@ -28,5 +28,5 @@ private:
 
 	float curPickedActorDiff_;
 
-	Float2 pickedMousePos_;
+	//Float2 pickedMousePos_;
 };

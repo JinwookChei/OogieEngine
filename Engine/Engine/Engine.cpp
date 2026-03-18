@@ -138,7 +138,6 @@ void Engine::Run()
 	FBXManager::TestLoad();
 	TimeManager::StartTimer();
 
-	Debugger::DrawDebugLine({ 0.0f, 0.0f,0.0f }, { 0.0f, 0.0f, 50.0f }, { 1.0f,0.0f,0.0f ,1.0f });
 	while (false == Application::Instance()->ApplicationQuit()) {
 
 		Application::Instance()->WinPumpMessage();
@@ -149,8 +148,7 @@ void Engine::Run()
 		// Input Update
 		InputManager::Tick(deltaTime);
 
-		// 잠시 에러 있어서 OFF
-		//GActorPicker->Tick(deltaTime);
+		GActorPicker->Tick(deltaTime);
 
 		// GameLoop
 		GWorld->CheckChangeLevel();

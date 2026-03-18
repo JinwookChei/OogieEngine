@@ -116,6 +116,50 @@ void __stdcall EditorCore::OnRender()
 	pEditorContext_->End();
 }
 
+bool __stdcall EditorCore::IsWindowHovered(const char* name)
+{
+	ImGuiContext* ctx = ImGui::GetCurrentContext();
+	if (!ctx || !name)
+	{
+		return false;
+	}
+
+	ImGuiWindow* hovered = ctx->HoveredWindow;
+	if (!hovered)
+	{
+		return false;
+	}
+
+	return strcmp(hovered->Name, name) == 0;
+}
+
+Float2 __stdcall EditorCore::GetMousePos()
+{
+	ImGuiWindow* hovered = ImGui::GetCurrentContext()->HoveredWindow;
+	if (hovered)
+	{
+		ImVec2 mouse = ImGui::GetMousePos();
+		ImVec2 local = ImVec2
+		(
+			mouse.x - hovered->DC.CursorStartPos.x + hovered->Scroll.x,
+			mouse.y - hovered->DC.CursorStartPos.y + hovered->Scroll.y
+		);
+		return { local.x , local.y };
+	}
+	return { -1, -1 };
+}
+
+Float2 __stdcall EditorCore::GetViewPortSize()
+{
+	ImGuiWindow* hovered = ImGui::GetCurrentContext()->HoveredWindow;
+	if (hovered)
+	{
+		ImVec2 size = hovered->ContentRegionRect.GetSize();
+		return { size.x, size.y };
+	}
+	return { -1, -1 };
+}
+
 bool EditorCore::InitContext(IApplication* pApplication, IRenderer* pRenderer, float dpiScale)
 {
 	pEditorContext_ = new EditorContext;
@@ -172,11 +216,6 @@ void EditorCore::Update()
 
 void EditorCore::Render()
 {
-	// Our state
-	//bool show_demo_window = true;
-	//bool show_another_window = false;
-	//ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
-
 	// 이 윈도우 자체가 다른 DockSpace 안에 “도킹되는 것”을 금지
 	flags_ = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
 	if (fullScreen_)
@@ -199,19 +238,11 @@ void EditorCore::Render()
 		flags_ |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
 	}
 
-	// 이 코드는** ImGui Docking에서 “중앙 영역을 비워서(Scene View 같은) 직접 렌더링을 보이게 하기 위한 핵심 설정”** 입니다.
-	// 말 그대로 Passthru(뚫린 중앙 노드) 개념이에요.
 	if (dockspaceFlags_ & ImGuiDockNodeFlags_PassthruCentralNode)
 	{
 		flags_ |= ImGuiWindowFlags_NoBackground;
 	}
-	
 
-	// Important: note that we proceed even if Begin() returns false (aka window is collapsed).
-	// This is because we want to keep our DockSpace() active. If a DockSpace() is inactive,
-	// all active windows docked into it will lose their parent and become undocked.
-	// We cannot preserve the docking relationship between an active window and an inactive docking, otherwise
-	// any change of dockspace/settings would lead to windows being stuck in limbo and never being visible.
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
 	bool Active = static_cast<bool>(state_);
 	ImGui::Begin("EditorApplication", &Active, flags_);
@@ -224,16 +255,17 @@ void EditorCore::Render()
 
 	// DockSpace
 	ImGuiIO& io = ImGui::GetIO();
-	ImGuiStyle& style = ImGui::GetStyle();
-	float minWinSizeX = style.WindowMinSize.x;
-	style.WindowMinSize.x = 370.0f;
+	//ImGuiStyle& style = ImGui::GetStyle();
+	//float minWinSizeX = style.WindowMinSize.x;
+	//style.WindowMinSize.x = 370.0f;
 	if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
 	{
 		ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
 		ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspaceFlags_);
 	}
+	//style.WindowMinSize.x = minWinSizeX;
 
-	style.WindowMinSize.x = minWinSizeX;
+
 
 	//if (ImGui::BeginMenuBar())
 	//{
@@ -303,15 +335,12 @@ void EditorCore::Render()
 		//	ImGui::EndDragDropTarget();
 		//}
 
-		for (auto& iter : editorWindows_)
-		{
-			iter.second->OnRender();
-		}
+	for (auto& iter : editorWindows_)
+	{
+		iter.second->OnRender();
+	}
 
-		//ImGui::End();	// Scene end
-
-	//ImGui::PopStyleVar();
-	ImGui::End(); // dockspace end
+	ImGui::End(); // EditorApplication end
 }
 
 
@@ -323,7 +352,7 @@ void EditorCore::CleanUp()
 
 	for (auto iter : editorWindows_)
 	{
-		if(nullptr != iter.second)
+		if (nullptr != iter.second)
 		{
 			iter.second->Release();
 			iter.second = nullptr;

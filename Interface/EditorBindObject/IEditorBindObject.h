@@ -4,9 +4,9 @@ struct IEditorBindCamera
 {
 	virtual IRenderTarget* __stdcall GetGBufferRenderTargetForEditor() const = 0;
 
-	virtual IRenderTarget* __stdcall GetParticleRenderTargetForEditor() const = 0;
+	//virtual IRenderTarget* __stdcall GetParticleRenderTargetForEditor() const = 0;
 
-	virtual IRenderTarget* __stdcall GetDebugRenderTargetForEditor() const = 0;
+	//virtual IRenderTarget* __stdcall GetDebugRenderTargetForEditor() const = 0;
 
 	virtual IRenderTarget* __stdcall GetFinalRenderTargetForEditor() const = 0;
 };

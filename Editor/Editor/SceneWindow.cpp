@@ -22,15 +22,15 @@ SceneWindow::~SceneWindow()
 	CleanUp();
 }
 
-void SceneWindow::OnRender()
-{
-	Begin();
-
-	Update();
-	Render();
-
-	End();
-}
+//void SceneWindow::OnRender()
+//{
+//	Begin();
+//
+//	Update();
+//	Render();
+//
+//	End();
+//}
 
 void SceneWindow::Begin()
 {

@@ -20,7 +20,7 @@ public:
 	//void OnDisable() override;
 	//void OnDestroy() override;
 
-	void OnRender() override;
+	//void OnRender() override;
 	void Begin() override;
 	void End() override;
 

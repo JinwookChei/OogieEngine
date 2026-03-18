@@ -6,8 +6,8 @@
 
 ActorPicker::ActorPicker()
 	: pPickedActor_(nullptr),
-	curPickedActorDiff_(0.0f),
-	pickedMousePos_({ 0.0f, 0.0f })
+	curPickedActorDiff_(0.0f)
+	//pickedMousePos_({ 0.0f, 0.0f })
 {
 }
 
@@ -27,26 +27,30 @@ void ActorPicker::Tick(double deltaTime)
 
 	if (InputManager::IsDown(VK_LBUTTON))
 	{
-		pickedMousePos_ = InputManager::GetCurrentMousePosition();
+		bool isSceneHovered = Editor::GetEditor()->IsWindowHovered("Scene");
+		if (isSceneHovered)
+		{
+			// Editor
+			Float2 curMousePos = Editor::GetEditor()->GetMousePos();
+			Float2 viewPortSize = Editor::GetEditor()->GetViewPortSize();
 
-		Ray ray;
-		ScreenToWorldRay(&ray, pickedMousePos_);
-		TryPickObject(ray);
+			// CalcRay
+			Ray ray;
+			ScreenToWorldRay(&ray, curMousePos, viewPortSize);
+			TryPickObject(ray);
 
-		//ImGuiSystem::GetImGuiManager()->BindPickedActor(pPickedActor_);
+			// ImGuiSystem::GetImGuiManager()->BindPickedActor(pPickedActor_);
 
-
-		// DEBUG
-		Float3 rayPos = { ray.origin_.X, ray.origin_.Y, ray.origin_.Z };
-		Float3 rayDir = { ray.dir_.X, ray.dir_.Y, ray.dir_.Z };
-		MATH::VectorNormalize(rayDir, rayDir);
-		Renderer::Instance()->DrawDebugRay(rayPos, rayDir, GCurrentCamera->GetFar(), { 1.0f, 0.0f, 0.0f, 1.0f });
-		//Renderer::Instance()->DrawRay(rayPos, rayDir, GCurrentCamera->GetFar(), { 1.0f, 0.0f, 0.0f, 1.0f });
+			// Draw
+			Float3 rayPos = { ray.origin_.X, ray.origin_.Y, ray.origin_.Z };
+			Float3 rayDir = { ray.dir_.X, ray.dir_.Y, ray.dir_.Z };
+			MATH::VectorNormalize(rayDir, rayDir);
+			Debugger::DrawDebugRay(rayPos, rayDir, GCurrentCamera->GetFar(), { 1.0f, 0.0f, 0.0f, 1.0f });
+		}
 	}
 }
 
-
-void ActorPicker::ScreenToWorldRay(Ray* pOutRay, const Float2& screenPos)
+void ActorPicker::ScreenToWorldRay(Ray* pOutRay, const Float2& screenPos, const Float2& viewPortSize)
 {
 	Float4x4 invProjection;
 	MATH::MatrixInverse(invProjection, GCurrentCamera->Projection());
@@ -54,8 +58,8 @@ void ActorPicker::ScreenToWorldRay(Ray* pOutRay, const Float2& screenPos)
 	Float4x4 invView;
 	MATH::MatrixInverse(invView, GCurrentCamera->View());
 
-	float ndc_x = (2.0f * screenPos.X) / DEFAULT_SCREEN_WIDTH - 1.0f;
-	float ndc_y = 1.0f - (2.0f * screenPos.Y) / DEFAULT_SCREEN_HEIGHT;
+	float ndc_x = (2.0f * screenPos.X) / viewPortSize.X - 1.0f;
+	float ndc_y = 1.0f - (2.0f * screenPos.Y) / viewPortSize.Y;
 	float ndc_z = 0.0f;
 	float ndc_w = 1.0f;
 	Float4 ndcPos = { ndc_x, ndc_y, ndc_z, ndc_w };

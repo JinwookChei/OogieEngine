@@ -323,8 +323,7 @@ void __stdcall Renderer::Render(IPSO* pipelineStateObject)
 		pMesh->BindVertices();
 		const std::vector<MeshSubset>& meshSubset = pMesh->GetMeshSubsets();
 
-		// meshSubset이 1개 이상이면 index를 사용하여 Draw.
-		if (meshSubset.size() != 0)
+		if (meshSubset.size() != 0)	// meshSubset이 1개 이상이면 index를 사용하여 Draw.
 		{
 			for (int subsetIdx = 0; subsetIdx < meshSubset.size(); ++subsetIdx)
 			{
@@ -337,12 +336,10 @@ void __stdcall Renderer::Render(IPSO* pipelineStateObject)
 					DEBUG_BREAK();
 				}
 				pMaterial->Bind();
-
 				GRenderer->Draw(meshSubset[subsetIdx].indexCount, true);
 			}
 		}
-		// meshSubset이 0개(사용안함)이면, 자동으로 material slot 0으로 고정. 그리고, Vertex를 직접사용하여 Draw
-		else
+		else // meshSubset이 0개(사용안함)이면, 자동으로 material slot 0으로 고정. 그리고, Vertex를 직접사용하여 Draw
 		{
 			Material* pMaterial = static_cast<Material*>(pPSO->GetMaterial(0));
 			if (nullptr == pMaterial)
@@ -455,21 +452,6 @@ void __stdcall Renderer::UnBindSRVs(bool bVS, bool bPS)
 	}
 }
 
-void __stdcall Renderer::DrawDebugLine(const Float3& start, const Float3& end, const Float4& color)
-{
-	//pDebugPass_->DrawLine(start, end, color);
-}
-
-void __stdcall Renderer::DrawDebugRay(const Float3& origin, Float3& dir, float length, const Color& color)
-{
-	//pDebugPass_->DrawRay(origin, dir, length, color);
-}
-
-void __stdcall Renderer::RenderDebug()
-{
-	//pDebugPass_->Render();
-}
-
 void __stdcall Renderer::RenderMerge(IRenderTarget* pSrcTarget)
 {
 	//pMergePass_->Render(pSrcTarget);
@@ -477,10 +459,7 @@ void __stdcall Renderer::RenderMerge(IRenderTarget* pSrcTarget)
 
 void __stdcall Renderer::RenderBegin()
 {
-	drawCallCount_ = 0;
-
 	pBackBuffer_->Clear();
-
 	pBackBuffer_->Bind();
 }
 
@@ -491,6 +470,7 @@ void __stdcall Renderer::RenderFinal(IRenderTarget* pSrcTarget)
 
 void __stdcall Renderer::RenderEnd()
 {
+	drawCallCount_ = 0;
 	pSwapChain_->Present(0, 0);
 }
 

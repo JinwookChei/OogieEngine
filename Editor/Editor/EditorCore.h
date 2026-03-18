@@ -37,6 +37,12 @@ public:
 	//bool __stdcall BindCamera(IImGuiBindCamera* pCamera) override;
 	//bool __stdcall BindPickedActor(IImGuiBindPickedActor* pPickedActor) override;
 
+	bool __stdcall IsWindowHovered(const char* name) override;
+
+	Float2 __stdcall GetMousePos() override;
+
+	Float2 __stdcall GetViewPortSize() override;
+
 private:
 	bool InitContext(IApplication* pApplication, IRenderer* pRenderer, float dpiScale);
 	bool InitWindows();
@@ -63,13 +69,14 @@ private:
 	bool viewportHovered_;
 	int guizmoType_;
 
-
 public:
 	// TEMP
 	bool __stdcall BindCamera(IEditorBindCamera* pCamera) override;
 
 	bool __stdcall BindPickedActor(IEditorBindPickedActor* pPickedActor) override;
+
 	IEditorBindCamera* pBoundCamera_;
+
 	IEditorBindPickedActor* pPickedActor_;
 };
 

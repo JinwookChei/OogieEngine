@@ -40,12 +40,6 @@
     <Filter Include="Source Files\EditorCore">
       <UniqueIdentifier>{c965b0bf-6f76-46ea-8749-092da09d9cf1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\EditorCore\EditorWindow">
-      <UniqueIdentifier>{60193d21-0461-4ea1-af01-ace073ad7865}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\EditorCore\EditorWindow\EditorWidget">
-      <UniqueIdentifier>{e8301c84-6779-4a92-b6d2-2d47ebf909f3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\EditorCore\EditorContext">
       <UniqueIdentifier>{1963a738-abe9-4f8e-96f9-502c5d8565f0}</UniqueIdentifier>
     </Filter>
@@ -63,6 +57,12 @@
     </Filter>
     <Filter Include="Common\Asset">
       <UniqueIdentifier>{ab85377b-71b4-40ac-93df-10790b42c17f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\FF\EditorWindow">
+      <UniqueIdentifier>{60193d21-0461-4ea1-af01-ace073ad7865}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\FF\EditorWindow\EditorWidget">
+      <UniqueIdentifier>{e8301c84-6779-4a92-b6d2-2d47ebf909f3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -115,10 +115,10 @@
       <Filter>Source Files\EditorCore</Filter>
     </ClInclude>
     <ClInclude Include="EditorWindow.h">
-      <Filter>Source Files\EditorCore\EditorWindow</Filter>
+      <Filter>Source Files\FF\EditorWindow</Filter>
     </ClInclude>
     <ClInclude Include="EditorWidget.h">
-      <Filter>Source Files\EditorCore\EditorWindow\EditorWidget</Filter>
+      <Filter>Source Files\FF\EditorWindow\EditorWidget</Filter>
     </ClInclude>
     <ClInclude Include="EditorContext.h">
       <Filter>Source Files\EditorCore\EditorContext</Filter>
@@ -240,10 +240,10 @@
       <Filter>Source Files\EditorCore</Filter>
     </ClCompile>
     <ClCompile Include="EditorWindow.cpp">
-      <Filter>Source Files\EditorCore\EditorWindow</Filter>
+      <Filter>Source Files\FF\EditorWindow</Filter>
     </ClCompile>
     <ClCompile Include="EditorWidget.cpp">
-      <Filter>Source Files\EditorCore\EditorWindow\EditorWidget</Filter>
+      <Filter>Source Files\FF\EditorWindow\EditorWidget</Filter>
     </ClCompile>
     <ClCompile Include="EditorContext.cpp">
       <Filter>Source Files\EditorCore\EditorContext</Filter>

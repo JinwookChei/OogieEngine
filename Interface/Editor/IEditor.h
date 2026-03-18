@@ -8,8 +8,13 @@ struct IEditor : public IUnknown
 
 	virtual  float __stdcall EnableDpiAwareness() = 0;
 
-		
 	virtual  void __stdcall OnRender() = 0;
+
+	virtual bool __stdcall IsWindowHovered(const char* name) = 0;
+
+	virtual Float2 __stdcall GetMousePos() = 0;
+
+	virtual Float2 __stdcall GetViewPortSize() = 0;
 
 	virtual bool __stdcall BindCamera(IEditorBindCamera* pCamera) = 0;
 

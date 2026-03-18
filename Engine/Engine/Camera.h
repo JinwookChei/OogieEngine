@@ -11,7 +11,6 @@ enum class E_RENDER_PASS_TYPE
 	//MergePass
 };
 
-
 class Transform;
 class Camera
 	: public Actor
@@ -39,16 +38,8 @@ public:
 	void UpdatePerFrameConstant();
 
 	void RenderPassBegin(E_RENDER_PASS_TYPE renderPassType);
-	void RenderPassEnd();
 
-	/*void GeometryPassBegin();
-	void GeometryPassEnd();
-	void LightPassBegin();
-	void LightPassEnd();
-	void ParticlePassBegin();
-	void ParticlePassEnd();
-	void DebugPassBegin();
-	void DebugPassEnd();*/
+	void RenderPassEnd();
 
 	// void BlitToBackBuffer();
 
@@ -71,10 +62,6 @@ private:
 
 	bool InitFianlRenderTarget();
 
-	// bool InitParticleRenderTarget();
-
-	bool InitDebugRenderTarget();
-
 	virtual ENGINE_API void CameraTransformUpdate();
 
 	ENGINE_API void CleanUp() override;
@@ -83,9 +70,9 @@ public:
 	// IImguiBindCamera Area
 	ENGINE_API IRenderTarget* __stdcall GetGBufferRenderTargetForEditor() const override;
 
-	ENGINE_API IRenderTarget* __stdcall GetParticleRenderTargetForEditor() const override;
+	//ENGINE_API IRenderTarget* __stdcall GetParticleRenderTargetForEditor() const override;
 
-	ENGINE_API IRenderTarget* __stdcall GetDebugRenderTargetForEditor() const override;
+	//ENGINE_API IRenderTarget* __stdcall GetDebugRenderTargetForEditor() const override;
 
 	ENGINE_API IRenderTarget* __stdcall GetFinalRenderTargetForEditor() const override;
 
@@ -106,18 +93,7 @@ protected:
 private:
 	friend class Level;
 
-	// Current RenderTarget
 	IRenderTarget* pCurrentRenderTarget_;
-
-	// Geometry Pass
 	IRenderTarget* pGBufferRenderTarget_;
-	
-	// Light Pass
 	IRenderTarget* pFinalRenderTarget_;
-
-	// Particle Pass
-	//IRenderTarget* pParticleRenderTarget_;
-
-	// Debug Pass
-	IRenderTarget* pDebugRenderTarget_;
 };

@@ -18,6 +18,10 @@ public:
 	//void OnDisable() override;
 	//void OnDestroy() override;
 
+	
+	void Begin() override;
+	void End() override;
+
 private:
 	void Update() override;
 	void Render() override;

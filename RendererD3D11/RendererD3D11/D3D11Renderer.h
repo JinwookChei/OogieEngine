@@ -42,10 +42,6 @@ public:
 
 	void __stdcall UnBindSRVs(bool bVS, bool bPS) override;
 
-	void __stdcall DrawDebugLine(const Float3& start, const Float3& end, const Float4& color) override;
-	void __stdcall DrawDebugRay(const Float3& origin, Float3& dir, float length, const Color& color) override;
-	void __stdcall RenderDebug() override;
-
 	void __stdcall RenderMerge(IRenderTarget* pSrcTarget) override;
 
 	void __stdcall RenderBegin() override;
