@@ -24,7 +24,7 @@ Debugger::Debugger()
 	debugLineMaterialDesc.shaderType = E_SHADER_PRESET::DEBUG_LINE;
 	debugLineMaterialDesc.samplerState = E_SAMPLER_PRESET::DISABLE;
 	debugLineMaterialDesc.blendState = E_BLEND_PRESET::OPAQUE_BLEND;
-	debugLineMaterialDesc.textureNum_ = 0;
+	debugLineMaterialDesc.textureNum = 0;
 	pDebugLineMaterial_ = Renderer::GetFactory()->CreateMaterial(debugLineMaterialDesc);
 
 	PipelineStateDesc psoDesc;

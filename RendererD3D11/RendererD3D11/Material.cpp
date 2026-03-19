@@ -43,10 +43,10 @@ bool Material::Init(const MaterialDesc& desc)
 	blendState_ = desc.blendState;
 
 	CleanTextures();
-	texturesNum_ = desc.textureNum_;
+	texturesNum_ = desc.textureNum;
 	if(0 != texturesNum_)
 	{
-		ppTextures_ = new Texture * [desc.textureNum_]{nullptr};
+		ppTextures_ = new Texture * [desc.textureNum]{nullptr};
 	}
 	shineness_ = desc.shineness;
 	specularColor_ = desc.specularColor;
@@ -154,6 +154,11 @@ void Material::Bind()
 	case E_SHADER_PRESET::DEBUG_LINE:
 	{
 		Shader::GShaderDebugLine->Bind();
+		break;
+	}
+	case E_SHADER_PRESET::BLIT:
+	{
+		Shader::GShaderBlit->Bind();
 		break;
 	}
 	default:

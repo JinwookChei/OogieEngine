@@ -7,6 +7,7 @@ Shader* Shader::GShaderParticle = nullptr;
 Shader* Shader::GShaderStaticMesh = nullptr;
 Shader* Shader::GShaderSkinnedMesh = nullptr;
 Shader* Shader::GShaderDebugLine = nullptr;
+Shader* Shader::GShaderBlit = nullptr;
 
 Shader::Shader()
 	: refCount_(1)
@@ -552,10 +553,27 @@ void Shader::InitGlobalShaders()
 	{
 		DEBUG_BREAK();
 	}
+
+	ShaderDesc blitDesc;
+	blitDesc.pathVS_ = L"BlitVS.cso";
+	blitDesc.pathPS_ = L"BlitPS.cso";
+	blitDesc.inputDesc_.push_back({ "POSITION", 0, 16, 0, false });
+	blitDesc.inputDesc_.push_back({ "TEXCOORD", 0, 16, 0, false });
+	Shader::GShaderBlit = Shader::Create(blitDesc);
+	if (nullptr == Shader::GShaderBlit)
+	{
+		DEBUG_BREAK();
+	}
 }
 
 void Shader::ShutDown()
 {
+	if (nullptr != Shader::GShaderBlit)
+	{
+		Shader::GShaderBlit->Release();
+		Shader::GShaderBlit = nullptr;
+	}
+
 	if (nullptr != Shader::GShaderLight)
 	{
 		Shader::GShaderLight->Release();

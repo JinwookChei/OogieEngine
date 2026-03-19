@@ -33,9 +33,6 @@ void MeshManager::TestLoad()
 	screenQuadDesc.meshSubsets.emplace_back(0, (uint16_t)sizeof(WORD), screenQuadIndices.size(), screenQuadIndices.data());
 	CreateMesh(screenQuadDesc, 0);
 
-	
-
-
 
 	std::vector<SimpleVertex> cubeVertices;
 	std::vector<WORD> cubeIndices;

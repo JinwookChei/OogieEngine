@@ -22,7 +22,7 @@ struct MaterialDesc
 	E_SHADER_PRESET shaderType;
 	E_SAMPLER_PRESET samplerState;
 	E_BLEND_PRESET blendState;
-	ULONG textureNum_ = 0;
+	ULONG textureNum = 0;
 	float shineness = 16.0f;
 	Float3 specularColor = { 0.7f,0.7f ,0.7f };
 };

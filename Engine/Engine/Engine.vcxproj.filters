@@ -109,6 +109,9 @@
     <Filter Include="Source Files\Debug">
       <UniqueIdentifier>{db876a83-b565-4ce8-910d-970c28eb39a2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Mode">
+      <UniqueIdentifier>{81551d82-7a5d-4dea-b13f-8dab2c8a4dc7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -161,9 +164,6 @@
     </ClInclude>
     <ClInclude Include="BoundVolume.h">
       <Filter>Source Files\ActorComponent\BoundVolume</Filter>
-    </ClInclude>
-    <ClInclude Include="RasterizerManager.h">
-      <Filter>Source Files\Manager\ResourceManager</Filter>
     </ClInclude>
     <ClInclude Include="MaterialManager.h">
       <Filter>Source Files\Manager\ResourceManager</Filter>
@@ -279,6 +279,9 @@
     <ClInclude Include="Debugger.h">
       <Filter>Source Files\Debug</Filter>
     </ClInclude>
+    <ClInclude Include="RunTimeMode.h">
+      <Filter>Source Files\Mode</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -332,9 +335,6 @@
     <ClCompile Include="BoundVolume.cpp">
       <Filter>Source Files\ActorComponent\BoundVolume</Filter>
     </ClCompile>
-    <ClCompile Include="RasterizerManager.cpp">
-      <Filter>Source Files\Manager\ResourceManager</Filter>
-    </ClCompile>
     <ClCompile Include="MaterialManager.cpp">
       <Filter>Source Files\Manager\ResourceManager</Filter>
     </ClCompile>
@@ -385,6 +385,9 @@
     </ClCompile>
     <ClCompile Include="Debugger.cpp">
       <Filter>Source Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="RunTimeMode.cpp">
+      <Filter>Source Files\Mode</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -3,7 +3,7 @@
 
 
 MaterialManager::MaterialManager()
-	: materialTable_(16,8)
+	: materialTable_(16, 8)
 {
 }
 
@@ -47,7 +47,7 @@ void MaterialManager::TestLoad()
 	lightPassMaterialDesc.shaderType = E_SHADER_PRESET::LIGHT;
 	lightPassMaterialDesc.samplerState = E_SAMPLER_PRESET::LINEAR_CLAMP;
 	lightPassMaterialDesc.blendState = E_BLEND_PRESET::ADDITIVE_BLEND;
-	lightPassMaterialDesc.textureNum_ = 4;
+	lightPassMaterialDesc.textureNum = 4;
 	lightPassMaterialDesc.shineness = 0.5f;
 	lightPassMaterialDesc.specularColor = { 0.8f, 0.8f, 0.8f };
 	IMaterial* pLightMaterial = CreateMaterial(lightPassMaterialDesc, 0);
@@ -56,9 +56,7 @@ void MaterialManager::TestLoad()
 	particleComputeMaterialDesc.shaderType = E_SHADER_PRESET::PARTICLE_COMPUTE;
 	particleComputeMaterialDesc.samplerState = E_SAMPLER_PRESET::DISABLE;
 	particleComputeMaterialDesc.blendState = E_BLEND_PRESET::DISABLE;
-	particleComputeMaterialDesc.textureNum_ = 0;
-	//particleComputeMaterialDesc.shineness = 0.0f;
-	//particleComputeMaterialDesc.specularColor = { 0.0f, 0.0f, 0.0f };
+	particleComputeMaterialDesc.textureNum = 0;
 	IMaterial* pParticleComputeMaterial = CreateMaterial(particleComputeMaterialDesc, 1);
 
 
@@ -66,18 +64,22 @@ void MaterialManager::TestLoad()
 	particlePassMaterialDesc.shaderType = E_SHADER_PRESET::PARTICLE_RENDER;
 	particlePassMaterialDesc.samplerState = E_SAMPLER_PRESET::LINEAR_CLAMP;
 	particlePassMaterialDesc.blendState = E_BLEND_PRESET::ALPHA_BLEND;
-	particlePassMaterialDesc.textureNum_ = 1;
-	//particlePassMaterialDesc.shineness = 0.0f;
-	//particlePassMaterialDesc.specularColor = { 0.0f, 0.0f, 0.0f };
+	particlePassMaterialDesc.textureNum = 1;
 	IMaterial* pParticleRenderMaterial = CreateMaterial(particlePassMaterialDesc, 2);
 	pParticleRenderMaterial->SetTextures(0, pWhiteTexture);
 
+	MaterialDesc blitPassMaterialDesc;
+	blitPassMaterialDesc.blendState = E_BLEND_PRESET::ALPHA_BLEND;
+	blitPassMaterialDesc.samplerState = E_SAMPLER_PRESET::LINEAR_CLAMP;
+	blitPassMaterialDesc.shaderType = E_SHADER_PRESET::BLIT;
+	blitPassMaterialDesc.textureNum = 1;
+	IMaterial* pMat = CreateMaterial(blitPassMaterialDesc, 3);
 
 	MaterialDesc matDesc1;
 	matDesc1.shaderType = E_SHADER_PRESET::STATIC_MESH;
 	matDesc1.samplerState = E_SAMPLER_PRESET::LINEAR_CLAMP;
 	matDesc1.blendState = E_BLEND_PRESET::OPAQUE_BLEND;
-	matDesc1.textureNum_ = 2;
+	matDesc1.textureNum = 2;
 	matDesc1.shineness = 0.7f;
 	matDesc1.specularColor = { 0.7f, 0.7f, 0.7f };
 	IMaterial* pMat1 = CreateMaterial(matDesc1, 10);
@@ -89,7 +91,7 @@ void MaterialManager::TestLoad()
 	matDesc2.shaderType = E_SHADER_PRESET::SKINNED_MESH;
 	matDesc2.samplerState = E_SAMPLER_PRESET::LINEAR_WARP;
 	matDesc2.blendState = E_BLEND_PRESET::OPAQUE_BLEND;
-	matDesc2.textureNum_ = 2;
+	matDesc2.textureNum = 2;
 	matDesc2.shineness = 0.7f;
 	matDesc2.specularColor = { 0.7f, 0.7f, 0.7f };
 	IMaterial* pMat2 = CreateMaterial(matDesc2, 11);
@@ -113,27 +115,24 @@ void MaterialManager::TestLoad()
 	matDesc4.shaderType = E_SHADER_PRESET::SKINNED_MESH;
 	matDesc4.samplerState = E_SAMPLER_PRESET::LINEAR_WARP;
 	matDesc4.blendState = E_BLEND_PRESET::OPAQUE_BLEND;
-	matDesc4.textureNum_ = 2;
+	matDesc4.textureNum = 2;
 	matDesc4.shineness = 0.7f;
 	matDesc4.specularColor = { 0.7f, 0.7f, 0.7f };
 	IMaterial* pMat4 = CreateMaterial(matDesc4, 13);
 	pMat4->SetTextures(0, pWerewolf_Body_Albedo);
 	pMat4->SetTextures(1, pWerewolf_Body_Normal);
-	
+
 
 	MaterialDesc matDesc5;
 	matDesc5.shaderType = E_SHADER_PRESET::SKINNED_MESH;
 	matDesc5.samplerState = E_SAMPLER_PRESET::LINEAR_WARP;
 	matDesc5.blendState = E_BLEND_PRESET::OPAQUE_BLEND;
-	matDesc5.textureNum_ = 2;
+	matDesc5.textureNum = 2;
 	matDesc5.shineness = 0.7f;
 	matDesc5.specularColor = { 0.7f, 0.7f, 0.7f };
 	IMaterial* pMat5 = CreateMaterial(matDesc5, 14);
 	pMat5->SetTextures(0, pWerewolf_Fur_Albedo);
 	pMat5->SetTextures(1, pWerewolf_Fur_Normal);
-
-
-
 }
 
 IMaterial* MaterialManager::CreateMaterial(const MaterialDesc& desc, unsigned long long materialTag)

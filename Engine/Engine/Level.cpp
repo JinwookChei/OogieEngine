@@ -98,7 +98,6 @@ void Level::OnRender()
 		GCurrentCamera->RenderPassEnd();
 		// Light Pass End
 
-
 		// Particle Pass
 		GCurrentCamera->RenderPassBegin(E_RENDER_PASS_TYPE::ParticlePass);
 		OnRenderParticles();
@@ -110,34 +109,6 @@ void Level::OnRender()
 		Debugger::Draw();
 		GCurrentCamera->RenderPassEnd();
 		// Debug Pass End
-
-		//// Particle Pass Begin
-		//GCurrentCamera->ParticlePassBegin();
-		//OnRenderParticles();
-		//GCurrentCamera->ParticlePassEnd();
-		//// Particle Pass End
-
-		//GCurrentCamera->pFinalRenderTarget_->Bind();
-		//GCurrentCamera->UpdatePerFrameConstant();
-		//Renderer::Instance()->RenderMerge(GCurrentCamera->pParticleRenderTarget_);
-		////GRenderer->RenderMerge(GCurrentCamera->pGBufferRenderTarget_, GCurrentCamera->pParticleRenderTarget_);
-		//GCurrentCamera->pFinalRenderTarget_->EndRenderPass();
-
-
-		//// DebugRender
-		//GCurrentCamera->DebugPassBegin();
-		////GCurrentCamera->pDebugRenderTarget_->Clear();
-		////GCurrentCamera->pDebugRenderTarget_->Bind();
-		//Renderer::Instance()->RenderDebug();
-		//GCurrentCamera->DebugPassEnd();
-		//// DebugRender End
-		
-
-		//GCurrentCamera->pFinalRenderTarget_->Bind();
-		//GCurrentCamera->UpdatePerFrameConstant();
-		//Renderer::Instance()->RenderMerge(GCurrentCamera->pDebugRenderTarget_);
-		////GRenderer->RenderMerge(GCurrentCamera->pGBufferRenderTarget_, GCurrentCamera->pDebugRenderTarget_);
-		//GCurrentCamera->pFinalRenderTarget_->UnBind();
 	}
 }
 
@@ -215,7 +186,11 @@ void Level::BlitCameraToBackBuffer()
 	while (pCameraIter)
 	{
 		Camera* pCurCamera = static_cast<Camera*>(pCameraIter->pItem_);
-		//pCurCamera->BlitToBackBuffer();
+
+		ITexture* pFianlRenderTex = pCurCamera->pFinalRenderTarget_->GetRenderTexture(E_RENDER_TEXTURE_TYPE::Albedo);
+		GBlitPSO->GetMaterial(0)->SetTextures(0, pFianlRenderTex);
+		Renderer::Instance()->Render(GBlitPSO);
+
 		pCameraIter = pCameraIter->next_;
 	}
 }

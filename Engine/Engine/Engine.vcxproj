@@ -177,6 +177,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Debugger.h" />
     <ClInclude Include="DirectionLight.h" />
+    <ClInclude Include="RunTimeMode.h" />
     <ClInclude Include="FBXManager.h" />
     <ClInclude Include="GeometryGenerator.h" />
     <ClInclude Include="Light.h" />
@@ -190,7 +191,6 @@
     <ClInclude Include="ParticleComponent.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PointLight.h" />
-    <ClInclude Include="RasterizerManager.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="SceneComponent.h" />
     <ClInclude Include="SkeletalMeshComponent.h" />
@@ -214,6 +214,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Debugger.cpp" />
     <ClCompile Include="DirectionLight.cpp" />
+    <ClCompile Include="RunTimeMode.cpp" />
     <ClCompile Include="FBXManager.cpp" />
     <ClCompile Include="GeometryGenerator.cpp" />
     <ClCompile Include="Light.cpp" />
@@ -228,7 +229,6 @@
     <ClCompile Include="ParticleComponent.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PointLight.cpp" />
-    <ClCompile Include="RasterizerManager.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="SceneComponent.cpp" />
     <ClCompile Include="SkeletalMeshComponent.cpp" />

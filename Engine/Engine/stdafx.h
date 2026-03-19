@@ -91,7 +91,7 @@
 #include "TextureManager.h"
 #include "AnimationManager.h"
 #include "MaterialManager.h"
-#include "RasterizerManager.h"
+//#include "RasterizerManager.h"
 #include "Debugger.h"
 #include "Transform.h"
 #include "World.h"
@@ -109,15 +109,15 @@ extern MeshManager* GMeshManager;
 extern MaterialManager* GMaterialManager;
 extern TextureManager* GTextureManager;
 extern AnimationManager* GAnimationManager;
-extern RasterizerManager* GRasterizerManager;
+//extern RasterizerManager* GRasterizerManager;
 
 extern World* GWorld;
 extern Camera* GMainCamera;
 extern Camera* GCurrentCamera;
 extern ActorPicker* GActorPicker;
 
-extern IParticle* GParticle_1;
-extern IParticle* GParticle_2;
+// 임시 전역 객체.
+extern IPSO* GBlitPSO;
 
 // 임시.
 constexpr float DEFAULT_SCREEN_WIDTH = 2560.0f;

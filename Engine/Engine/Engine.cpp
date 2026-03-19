@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "StartUp.h"
+#include "RunTimeMode.h"
 #include "Level.h"
 #include "World.h"
 #include "Engine.h"
@@ -11,16 +12,14 @@ MeshManager* GMeshManager = nullptr;
 MaterialManager* GMaterialManager = nullptr;
 TextureManager* GTextureManager = nullptr;
 AnimationManager* GAnimationManager = nullptr;
-RasterizerManager* GRasterizerManager = nullptr;
 
 World* GWorld = nullptr;
 Camera* GMainCamera = nullptr;
 Camera* GCurrentCamera = nullptr;
 ActorPicker* GActorPicker = nullptr;
 
-IParticle* GParticle_1 = nullptr;
-IParticle* GParticle_2 = nullptr;
-
+// 임시 전역 객체.
+IPSO* GBlitPSO = nullptr;
 
 Engine::Engine()
 	: pStartUp_(nullptr)
@@ -102,17 +101,11 @@ bool Engine::Initialize
 	}
 
 	GMeshManager = new MeshManager;
-
 	GSkeletonManager = new SkeletonManager;
-
 	GTextureManager = new TextureManager;
-
 	GMaterialManager = new MaterialManager;
-
 	GAnimationManager = new AnimationManager;
-
-	GRasterizerManager = new RasterizerManager;
-
+	RunTimeMode::Create();
 	Debugger::Create();
 
 	if (false == InitializeStartUp(pStartup))
@@ -138,6 +131,20 @@ void Engine::Run()
 	FBXManager::TestLoad();
 	TimeManager::StartTimer();
 
+
+	IMesh* pBlitMesh = nullptr;
+	MeshManager::Instance()->GetMesh(&pBlitMesh, 0);
+	IMaterial* pBlitMaterial = nullptr;
+	MaterialManager::Instance()->GetMaterial(&pBlitMaterial, 3);
+	PipelineStateDesc blitDesc;
+	blitDesc.depthState = E_DEPTH_PRESET::DEPTH_DISABLE;
+	blitDesc.rasterizerMode = E_RASTERIZER_PRESET::DISABLE;
+	blitDesc.materialSlotCount = 1;
+	blitDesc.meshSlotCount = 1;
+	GBlitPSO = Renderer::GetFactory()->CreatePipelineStateObject(blitDesc);
+	GBlitPSO->SetMeshToSlot(0, pBlitMesh);
+	GBlitPSO->SetMaterialToSlot(0, pBlitMaterial);
+
 	while (false == Application::Instance()->ApplicationQuit()) {
 
 		Application::Instance()->WinPumpMessage();
@@ -147,7 +154,7 @@ void Engine::Run()
 
 		// Input Update
 		InputManager::Tick(deltaTime);
-
+		
 		GActorPicker->Tick(deltaTime);
 
 		// GameLoop
@@ -156,10 +163,25 @@ void Engine::Run()
 		GWorld->OnRender();
 		// GameLoop End
 
+		
+		if (InputManager::IsDown(VK_F2))
+		{
+			RunTimeMode::ToggleRunTimeMode();
+		}
+
 		// Blit RenderTarget 
 		Renderer::Instance()->RenderBegin();
-		//GWorld->OnBlit(); 
-		Editor::GetEditor()->OnRender();
+		switch (RunTimeMode::GetCurrentMode())
+		{
+		case E_RUNTIME_MODE::GAME:
+			GWorld->OnBlit(); 
+			break;
+		case E_RUNTIME_MODE::EDITOR:
+			Editor::GetEditor()->OnRender();
+			break;
+		default:
+			break;
+		}
 		Renderer::Instance()->RenderEnd();
 		// Blit RenderTarget  End
 	}
@@ -196,15 +218,10 @@ void Engine::CleanUp()
 {
 	Editor::GetEditor()->Release();
 
-	if (nullptr != GParticle_1)
+	if (nullptr != GBlitPSO)
 	{
-		GParticle_1->Release();
-		GParticle_1 = nullptr;
-	}
-	if (nullptr != GParticle_2)
-	{
-		GParticle_2->Release();
-		GParticle_2 = nullptr;
+		GBlitPSO->Release();
+		GBlitPSO = nullptr;
 	}
 
 	if (nullptr != GActorPicker)
@@ -223,12 +240,6 @@ void Engine::CleanUp()
 	{
 		pStartUp_->Release();
 		pStartUp_ = nullptr;
-	}
-
-	if (nullptr != GRasterizerManager)
-	{
-		delete GRasterizerManager;
-		GRasterizerManager = nullptr;
 	}
 
 	if (nullptr != GSkeletonManager)
@@ -263,6 +274,7 @@ void Engine::CleanUp()
 	TimeManager::CleanUp();
 	InputManager::CleanUp();
 
+	RunTimeMode::ShutDown();
 	Debugger::ShutDown();
 	FBXManager::ShutDown();
 	Renderer::ShutDown();
