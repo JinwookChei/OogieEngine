@@ -1,16 +1,14 @@
 #pragma once
 
-struct MeshSubset
+struct SubMesh
 {
 	uint32_t materialSlot;
-	uint32_t indexFormatSize;
 	uint32_t indexCount;
 	ID3D11Buffer* pIndexBuffer;
 	void* pIndices;
 	
-	MeshSubset()
+	SubMesh()
 		: materialSlot(0)
-		, indexFormatSize(0)
 		, indexCount(0)
 		, pIndexBuffer(nullptr)
 		, pIndices(nullptr)
@@ -19,7 +17,7 @@ struct MeshSubset
 
 	void BindIndices() const
 	{
-		GRenderer->DeviceContext()->IASetIndexBuffer(pIndexBuffer, DXGI_FORMAT_R16_UINT, 0);
+		GRenderer->DeviceContext()->IASetIndexBuffer(pIndexBuffer, DXGI_FORMAT_R32_UINT, 0);
 	}
 };
 
@@ -46,32 +44,37 @@ private:
 	(
 		ID3D11Buffer** ppOutIndexBuffer,
 		void** ppOutCopyIndices,
-		uint32_t indexFormatSize,
 		uint32_t indexCount,
 		void* pIndices
 	);
 
+	void CalcAABB();
+
+
 	bool Init
 	(
 		D3D_PRIMITIVE_TOPOLOGY primitiveType,
+		E_VERTEX_TYPE vertexType,
 		uint32_t vertexFormatSize,
 		uint32_t vertexCount,
 		void* pVertices,
 		ID3D11Buffer* pVertexBuffer,
 		ID3D11ShaderResourceView* pVerticesSRV,
 		ID3D11UnorderedAccessView* pVerticesUAV,
-		const std::vector<MeshSubset>& meshSubsets
+		const std::vector<SubMesh>& subMeshes
 	);
 
-
+	
 public:
 	HRESULT __stdcall QueryInterface(REFIID riid, _COM_Outptr_ void __RPC_FAR* __RPC_FAR* ppvObject) override;
-
 	ULONG __stdcall AddRef() override;
-
 	ULONG __stdcall Release() override;
 
 	void __stdcall WriteBuffer(const void* data, uint32_t size) override;
+	AABB __stdcall GetAABB() override;
+	void __stdcall GetVerticesData(void** ppOutVertices, E_VERTEX_TYPE* pOutType) const override;
+	void __stdcall GetIndiciesData(void** ppOutIndices, uint32_t* pOutIndicesCount, uint32_t subMeshIndex) const override;
+	uint32_t __stdcall GetSubMeshCount() const override;
 
 	void BindVertices() const;
 
@@ -90,7 +93,7 @@ public:
 	//void __stdcall GetVerticesData(E_VERTEX_FORMAT* pOutFormat, uint32_t* pOutStride, uint32_t* pOutCount, void** ppOutVertices) const override;
 	//void __stdcall GetIndicesData(uint32_t* pOutStride, uint32_t* pOutCount, void** ppOutIndices) const override;
 
-	const std::vector<MeshSubset>& GetMeshSubsets() const;
+	const std::vector<SubMesh>& GetSubMeshes() const;
 
 	uint32_t GetVertexCount() const;
 
@@ -98,6 +101,8 @@ private:
 	void CleanUp();
 
 	ULONG refCount_;
+
+	E_VERTEX_TYPE vertexType_;
 
 	D3D_PRIMITIVE_TOPOLOGY primitiveType_;
 
@@ -109,5 +114,7 @@ private:
 	ID3D11ShaderResourceView* pVerticesSRV_;
 	ID3D11UnorderedAccessView* pVerticesUAV_;
 
-	std::vector<MeshSubset> meshSubsets_;	
+	std::vector<SubMesh> subMeshes_;	
+
+	AABB aabb_;
 };

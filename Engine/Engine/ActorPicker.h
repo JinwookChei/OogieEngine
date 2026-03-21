@@ -27,6 +27,4 @@ private:
 	Actor* pPickedActor_;
 
 	float curPickedActorDiff_;
-
-	//Float2 pickedMousePos_;
 };

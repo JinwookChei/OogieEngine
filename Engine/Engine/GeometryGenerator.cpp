@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "GeometryGenerator.h"
 
-bool GeometryGenerator::CreateSphere(std::vector<SimpleVertex>* outVertices, std::vector<WORD>* outIndices, float radius)
+bool GeometryGenerator::CreateSphere(std::vector<SimpleVertex>* outVertices, std::vector<uint32_t>* outIndices, float radius)
 {
 	if (nullptr == outVertices || nullptr == outIndices)
 	{
@@ -25,7 +25,8 @@ bool GeometryGenerator::CreateSphere(std::vector<SimpleVertex>* outVertices, std
 
 			Float3 pos = Float3(x * radius, y * radius, z * radius);
 			Float3 normal = Float3(x, y, z);
-			Float4 color = Float4(
+			Float4 color = Float4
+			(
 				0.5f + 0.5f * x,
 				0.5f + 0.5f * y,
 				0.5f + 0.5f * z,
@@ -48,14 +49,14 @@ bool GeometryGenerator::CreateSphere(std::vector<SimpleVertex>* outVertices, std
 			int second = first + SPHERE_SLICES + 1;
 
 			// »ï°¢Çü 1
-			outIndices->push_back((WORD)first);
-			outIndices->push_back((WORD)second);
-			outIndices->push_back((WORD)(first + 1));
+			outIndices->push_back((uint32_t)first);
+			outIndices->push_back((uint32_t)second);
+			outIndices->push_back((uint32_t)(first + 1));
 
 			// »ï°¢Çü 2
-			outIndices->push_back((WORD)second);
-			outIndices->push_back((WORD)(second + 1));
-			outIndices->push_back((WORD)(first + 1));
+			outIndices->push_back((uint32_t)second);
+			outIndices->push_back((uint32_t)(second + 1));
+			outIndices->push_back((uint32_t)(first + 1));
 		}
 	}
 
@@ -64,9 +65,9 @@ bool GeometryGenerator::CreateSphere(std::vector<SimpleVertex>* outVertices, std
 
 	for (size_t n = 0; n < outIndices->size(); n += 3)
 	{
-		WORD i0 = (*outIndices)[n];
-		WORD i1 = (*outIndices)[n + 1];
-		WORD i2 = (*outIndices)[n + 2];
+		uint32_t i0 = (*outIndices)[n];
+		uint32_t i1 = (*outIndices)[n + 1];
+		uint32_t i2 = (*outIndices)[n + 2];
 
 		const Float3& p0 = (*outVertices)[i0].position;
 		const Float3& p1 = (*outVertices)[i1].position;
@@ -175,10 +176,8 @@ bool GeometryGenerator::CreateSphere(std::vector<SimpleVertex>* outVertices, std
 	return true;
 }
 
-bool GeometryGenerator::CreateCube(std::vector<SimpleVertex>* outVertices, std::vector<WORD>* outIndices, float halfExtent)
+bool GeometryGenerator::CreateCube(std::vector<SimpleVertex>* outVertices, std::vector<uint32_t>* outIndices, float halfExtent)
 {
-
-
 	if (nullptr == outVertices || nullptr == outIndices)
 	{
 		return false;
@@ -243,7 +242,7 @@ bool GeometryGenerator::CreateCube(std::vector<SimpleVertex>* outVertices, std::
 	return true;
 }
 
-bool GeometryGenerator::CreateScreenQuad(std::vector<ScreenQuadVertex>* outVertices, std::vector<WORD>* outIndices)
+bool GeometryGenerator::CreateScreenQuad(std::vector<ScreenQuadVertex>* outVertices, std::vector<uint32_t>* outIndices)
 {
 	if (nullptr == outVertices || nullptr == outIndices)
 	{

@@ -641,7 +641,7 @@ bool FBXImporter::ExtractMaterialIndex(unsigned int* pOutIndex, fbxsdk::FbxMesh*
 	return false;
 }
 
-void FBXImporter::CalculateTangent(std::vector<SkinnedMeshVertex>* pVertices, const std::vector<std::vector<uint16_t>>& indices)
+void FBXImporter::CalculateTangent(std::vector<SkinnedMeshVertex>* pVertices, const std::vector<std::vector<uint32_t>>& indices)
 {
 	const size_t vertexCount = pVertices->size();
 	for (size_t i = 0; i < indices.size(); ++i)

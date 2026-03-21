@@ -1,4 +1,12 @@
 #pragma once
+enum class E_VERTEX_TYPE
+{
+	NONE = 0,
+	SCREEN_QUAD,
+	DEBUG_LINE,
+	SIMPLE_VERTEX,
+	SKINNED_MESH
+};
 
 struct ScreenQuadVertex
 {
@@ -36,7 +44,6 @@ struct SkinnedMeshVertex
 	Float3 normal;
 	Float2 uv;
 	Float4 tangent;
-
 	UINT boneIndices[4];
 	float blendWeights[4];
 

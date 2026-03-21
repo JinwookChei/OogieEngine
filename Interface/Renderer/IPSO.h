@@ -29,10 +29,10 @@ struct PipelineStateDesc
 struct IPSO : IUnknown
 {
 	virtual IMesh* __stdcall GetMesh(uint16_t slot) const = 0;
-
-	virtual IMaterial* __stdcall GetMaterial(uint16_t slot) const = 0;
-
+	virtual uint32_t __stdcall GetMeshSlotCount() const = 0;
 	virtual void __stdcall SetMeshToSlot(uint16_t slot, IMesh* pMesh) = 0;
-
+	
+	virtual IMaterial* __stdcall GetMaterial(uint16_t slot) const = 0;
+	virtual uint32_t __stdcall GetMaterialSlotCount() const = 0;
 	virtual void __stdcall SetMaterialToSlot(uint16_t slot, IMaterial* pMaterial) = 0;
 };

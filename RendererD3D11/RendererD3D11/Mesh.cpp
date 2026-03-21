@@ -3,6 +3,7 @@
 
 Mesh::Mesh()
 	: refCount_(1)
+	, vertexType_(E_VERTEX_TYPE::NONE)
 	, primitiveType_(D3D_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_POINTLIST)
 	, vertexStride_(0)
 	, vertexCount_(0)
@@ -10,7 +11,8 @@ Mesh::Mesh()
 	, pVertices_(nullptr)
 	, pVerticesSRV_(nullptr)
 	, pVerticesUAV_(nullptr)
-	, meshSubsets_()
+	, subMeshes_()
+	, aabb_()
 {
 }
 
@@ -27,8 +29,8 @@ IMesh* Mesh::Create(const MeshDesc& desc)
 	ID3D11UnorderedAccessView* pVerticesUAV = nullptr;
 	void* copyVertices = nullptr;
 	D3D_PRIMITIVE_TOPOLOGY primitiveType;
-	std::vector<MeshSubset> meshSubsets;
-	meshSubsets.resize(desc.meshSubsets.size());
+	std::vector<SubMesh> subMeshes;
+	subMeshes.resize(desc.subMeshDesc.size());
 
 	do
 	{
@@ -38,21 +40,20 @@ IMesh* Mesh::Create(const MeshDesc& desc)
 			break;
 		}
 
-		for (int i = 0; i < desc.meshSubsets.size(); ++i)
+		for (int i = 0; i < desc.subMeshDesc.size(); ++i)
 		{
 			ID3D11Buffer* pIndexBuffer = nullptr;
 			void* pCopyIndices = nullptr;
-			if (false == CreateIndexBuffer(&pIndexBuffer, &pCopyIndices, desc.meshSubsets[i].indexFormatSize, desc.meshSubsets[i].indexCount, desc.meshSubsets[i].pIndices))
+			if (false == CreateIndexBuffer(&pIndexBuffer, &pCopyIndices, desc.subMeshDesc[i].indexCount, desc.subMeshDesc[i].pIndices))
 			{
 				DEBUG_BREAK();
 				break;
 			}
 
-			meshSubsets[i].materialSlot = desc.meshSubsets[i].materialSlot;
-			meshSubsets[i].indexFormatSize = desc.meshSubsets[i].indexFormatSize;
-			meshSubsets[i].indexCount = desc.meshSubsets[i].indexCount;
-			meshSubsets[i].pIndexBuffer = pIndexBuffer;
-			meshSubsets[i].pIndices = pCopyIndices;
+			subMeshes[i].materialSlot = desc.subMeshDesc[i].materialSlot;
+			subMeshes[i].indexCount = desc.subMeshDesc[i].indexCount;
+			subMeshes[i].pIndexBuffer = pIndexBuffer;
+			subMeshes[i].pIndices = pCopyIndices;
 		}
 
 		if ((desc.bindFlag & E_MESH_BIND_FLAG::SHADER_RESOURCE) != E_MESH_BIND_FLAG::NONE)
@@ -104,13 +105,14 @@ IMesh* Mesh::Create(const MeshDesc& desc)
 		if (false == pNewMesh->Init
 		(
 			primitiveType,
+			desc.vertexType,
 			desc.vertexFormatSize,
 			desc.vertexCount,
 			copyVertices,
 			pVertexBuffer,
 			pVerticesSRV,
 			pVerticesUAV,
-			meshSubsets
+			subMeshes
 		))
 		{
 			Assert("Mesh Init Fail !!");
@@ -122,18 +124,18 @@ IMesh* Mesh::Create(const MeshDesc& desc)
 	} while (false);
 
 
-	for (int i = 0; i < meshSubsets.size(); ++i)
+	for (int i = 0; i < subMeshes.size(); ++i)
 	{
-		if (nullptr != meshSubsets[i].pIndices)
+		if (nullptr != subMeshes[i].pIndices)
 		{
-			free(meshSubsets[i].pIndices);
-			meshSubsets[i].pIndices = nullptr;
+			free(subMeshes[i].pIndices);
+			subMeshes[i].pIndices = nullptr;
 		}
 
-		if (nullptr != meshSubsets[i].pIndexBuffer)
+		if (nullptr != subMeshes[i].pIndexBuffer)
 		{
-			meshSubsets[i].pIndexBuffer->Release();
-			meshSubsets[i].pIndexBuffer = nullptr;
+			subMeshes[i].pIndexBuffer->Release();
+			subMeshes[i].pIndexBuffer = nullptr;
 		}
 	}
 	if (nullptr != copyVertices)
@@ -168,23 +170,27 @@ IMesh* Mesh::Create(const MeshDesc& desc)
 bool Mesh::Init
 (
 	D3D_PRIMITIVE_TOPOLOGY primitiveType,
+	E_VERTEX_TYPE vertexType,
 	uint32_t vertexFormatSize,
 	uint32_t vertexCount,
 	void* pVertices,
 	ID3D11Buffer* pVertexBuffer,
 	ID3D11ShaderResourceView* pVerticesSRV,
 	ID3D11UnorderedAccessView* pVerticesUAV,
-	const std::vector<MeshSubset>& meshSubsets
+	const std::vector<SubMesh>& subMeshes
 )
 {
 	primitiveType_ = primitiveType;
+	vertexType_ = vertexType;
 	vertexStride_ = vertexFormatSize;
 	vertexCount_ = vertexCount;
 	pVertices_ = pVertices;
 	pVertexBuffer_ = pVertexBuffer;
 	pVerticesSRV_ = pVerticesSRV;
 	pVerticesUAV_ = pVerticesUAV;
-	meshSubsets_ = meshSubsets;
+	subMeshes_ = subMeshes;
+	CalcAABB();
+
 	return true;
 }
 
@@ -237,6 +243,34 @@ void __stdcall Mesh::WriteBuffer(const void* data, uint32_t size)
 	GRenderer->DeviceContext()->Unmap(pVertexBuffer_, 0);
 
 	vertexCount_ = size / vertexStride_;
+}
+
+AABB __stdcall Mesh::GetAABB()
+{
+	return aabb_;
+}
+
+void __stdcall Mesh::GetVerticesData(void** ppOutVertices, E_VERTEX_TYPE* pOutType) const
+{
+	*ppOutVertices = pVertices_;
+	*pOutType = vertexType_;
+}
+
+void __stdcall Mesh::GetIndiciesData(void** ppOutIndices, uint32_t* pOutIndicesCount, uint32_t subMeshIndex) const
+{
+	if (subMeshIndex >= subMeshes_.size())
+	{
+		DEBUG_BREAK();
+		return;
+	}
+	
+	*pOutIndicesCount = subMeshes_[subMeshIndex].indexCount;
+	*ppOutIndices = subMeshes_[subMeshIndex].pIndices;
+}
+
+uint32_t __stdcall Mesh::GetSubMeshCount() const
+{
+	return subMeshes_.size();
 }
 
 void Mesh::BindVertices() const
@@ -325,9 +359,9 @@ void Mesh::UnBindShaderResourceViewPS(UINT slot)
 //}
 //
 
-const std::vector<MeshSubset>& Mesh::GetMeshSubsets() const
+const std::vector<SubMesh>& Mesh::GetSubMeshes() const
 {
-	return meshSubsets_;
+	return subMeshes_;
 }
 
 uint32_t Mesh::GetVertexCount() const
@@ -468,7 +502,7 @@ bool Mesh::CreateVertexBuffer
 	return true;
 }
 
-bool Mesh::CreateIndexBuffer(ID3D11Buffer** ppOutIndexBuffer, void** ppOutCopyIndices, uint32_t indexFormatSize, uint32_t indexCount, void* pIndices)
+bool Mesh::CreateIndexBuffer(ID3D11Buffer** ppOutIndexBuffer, void** ppOutCopyIndices, uint32_t indexCount, void* pIndices)
 {
 	if (nullptr == pIndices)
 	{
@@ -480,7 +514,7 @@ bool Mesh::CreateIndexBuffer(ID3D11Buffer** ppOutIndexBuffer, void** ppOutCopyIn
 	D3D11_BUFFER_DESC bd;
 	memset(&bd, 0x00, sizeof(D3D11_BUFFER_DESC));
 	bd.Usage = D3D11_USAGE_DEFAULT;
-	bd.ByteWidth = indexFormatSize * indexCount;
+	bd.ByteWidth = sizeof(uint32_t) * indexCount;
 	bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	bd.CPUAccessFlags = 0;
 	D3D11_SUBRESOURCE_DATA InitData;
@@ -497,8 +531,8 @@ bool Mesh::CreateIndexBuffer(ID3D11Buffer** ppOutIndexBuffer, void** ppOutCopyIn
 	// DeepCopy - Indices 
 	if (indexCount != 0)
 	{
-		size_t dataSize = indexCount * indexFormatSize;
-		*ppOutCopyIndices = malloc(dataSize);   // ¶Ç´Â new char[dataSize];
+		size_t dataSize = indexCount * sizeof(uint32_t);
+		*ppOutCopyIndices = malloc(dataSize);  
 		memcpy(*ppOutCopyIndices, pIndices, dataSize);
 	}
 
@@ -510,19 +544,82 @@ bool Mesh::CreateIndexBuffer(ID3D11Buffer** ppOutIndexBuffer, void** ppOutCopyIn
 	return true;
 }
 
+void Mesh::CalcAABB()
+{
+	switch (vertexType_)
+	{
+	case E_VERTEX_TYPE::NONE:
+		break;
+	case E_VERTEX_TYPE::SCREEN_QUAD:
+	{
+		ScreenQuadVertex* pScreenRectVertices = static_cast<ScreenQuadVertex*>(pVertices_);
+		aabb_.minPos_ = { pScreenRectVertices[0].position.X, pScreenRectVertices[0].position.Y, 0.0f };
+		aabb_.maxPos_ = { pScreenRectVertices[0].position.X, pScreenRectVertices[0].position.Y, 0.0f };
+		for (int i = 1; i < vertexCount_; ++i)
+		{
+			const ScreenQuadVertex& curVertex = pScreenRectVertices[i];
+			aabb_.minPos_.X = min(aabb_.minPos_.X, curVertex.position.X);
+			aabb_.maxPos_.X = max(aabb_.maxPos_.X, curVertex.position.X);
+			aabb_.minPos_.Y = min(aabb_.minPos_.Y, curVertex.position.Y);
+			aabb_.maxPos_.Y = max(aabb_.maxPos_.Y, curVertex.position.Y);
+		}
+	}break;
+	case E_VERTEX_TYPE::DEBUG_LINE:
+		break;
+	case E_VERTEX_TYPE::SIMPLE_VERTEX:
+	{
+		SimpleVertex* pSimpleVertices = static_cast<SimpleVertex*>(pVertices_);
+		aabb_.minPos_ = pSimpleVertices[0].position;
+		aabb_.maxPos_ = pSimpleVertices[0].position;
+		for (int i = 1; i < vertexCount_; ++i)
+		{
+			const SimpleVertex& curVertex = pSimpleVertices[i];
+			aabb_.minPos_.X = min(aabb_.minPos_.X, curVertex.position.X);
+			aabb_.maxPos_.X = max(aabb_.maxPos_.X, curVertex.position.X);
+			aabb_.minPos_.Y = min(aabb_.minPos_.Y, curVertex.position.Y);
+			aabb_.maxPos_.Y = max(aabb_.maxPos_.Y, curVertex.position.Y);
+			aabb_.minPos_.Z = min(aabb_.minPos_.Z, curVertex.position.Z);
+			aabb_.maxPos_.Z = max(aabb_.maxPos_.Z, curVertex.position.Z);
+		}
+	} break;
+	case E_VERTEX_TYPE::SKINNED_MESH:
+	{
+		SkinnedMeshVertex* pSkinnedVertices = static_cast<SkinnedMeshVertex*>(pVertices_);
+		aabb_.minPos_ = pSkinnedVertices[0].position;
+		aabb_.maxPos_ = pSkinnedVertices[0].position;
+		for (int i = 1; i < vertexCount_; ++i)
+		{
+			const SkinnedMeshVertex& curVertex = pSkinnedVertices[i];
+			aabb_.minPos_.X = min(aabb_.minPos_.X, curVertex.position.X);
+			aabb_.maxPos_.X = max(aabb_.maxPos_.X, curVertex.position.X);
+			aabb_.minPos_.Y = min(aabb_.minPos_.Y, curVertex.position.Y);
+			aabb_.maxPos_.Y = max(aabb_.maxPos_.Y, curVertex.position.Y);
+			aabb_.minPos_.Z = min(aabb_.minPos_.Z, curVertex.position.Z);
+			aabb_.maxPos_.Z = max(aabb_.maxPos_.Z, curVertex.position.Z);
+		}
+	}break;
+	default:
+		break;
+	}
+	//aabb_.minPos_ = 
+
+
+	//pVertices_;
+}
+
 void Mesh::CleanUp()
 {
-	for (int i = 0; i < meshSubsets_.size(); ++i)
+	for (int i = 0; i < subMeshes_.size(); ++i)
 	{
-		if (nullptr != meshSubsets_[i].pIndices)
+		if (nullptr != subMeshes_[i].pIndices)
 		{
-			free(meshSubsets_[i].pIndices);
-			meshSubsets_[i].pIndices = nullptr;
+			free(subMeshes_[i].pIndices);
+			subMeshes_[i].pIndices = nullptr;
 		}
-		if (nullptr != meshSubsets_[i].pIndexBuffer)
+		if (nullptr != subMeshes_[i].pIndexBuffer)
 		{
-			meshSubsets_[i].pIndexBuffer->Release();
-			meshSubsets_[i].pIndexBuffer = nullptr;
+			subMeshes_[i].pIndexBuffer->Release();
+			subMeshes_[i].pIndexBuffer = nullptr;
 		}
 	}
 	if (nullptr != pVertices_)

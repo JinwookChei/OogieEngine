@@ -1,13 +1,44 @@
 #include "stdafx.h"
 #include "Level.h"
+#include "MeshComponent.h"
+#include "StaticMeshComponent.h"
+#include "SkeletalMeshComponent.h"
 #include "BoundVolume.h"
 #include "ActorPicker.h"
 
+auto MakeTriangle = [&](void* pVertices, E_VERTEX_TYPE type,
+	uint32_t idxA, uint32_t idxB, uint32_t idxC) -> Triangle
+	{
+		Triangle tri{};
+
+		switch (type)
+		{
+		case E_VERTEX_TYPE::SIMPLE_VERTEX:
+		{
+			SimpleVertex* v = static_cast<SimpleVertex*>(pVertices);
+			tri.a_ = v[idxA].position;
+			tri.b_ = v[idxB].position;
+			tri.c_ = v[idxC].position;
+			break;
+		}
+		case E_VERTEX_TYPE::SKINNED_MESH:
+		{
+			SkinnedMeshVertex* v = static_cast<SkinnedMeshVertex*>(pVertices);
+			tri.a_ = v[idxA].position;
+			tri.b_ = v[idxB].position;
+			tri.c_ = v[idxC].position;
+			break;
+		}
+		default:
+			break;
+		}
+
+		return tri;
+	};
 
 ActorPicker::ActorPicker()
 	: pPickedActor_(nullptr),
 	curPickedActorDiff_(0.0f)
-	//pickedMousePos_({ 0.0f, 0.0f })
 {
 }
 
@@ -23,14 +54,11 @@ ActorPicker* ActorPicker::GetInstance()
 
 void ActorPicker::Tick(double deltaTime)
 {
-	//if (pPickedActor_ != nullptr) return;
-
 	if (InputManager::IsDown(VK_LBUTTON))
 	{
 		bool isSceneHovered = Editor::GetEditor()->IsWindowHovered("Scene");
 		if (isSceneHovered)
 		{
-			// Editor
 			Float2 curMousePos = Editor::GetEditor()->GetMousePos();
 			Float2 viewPortSize = Editor::GetEditor()->GetViewPortSize();
 
@@ -79,7 +107,7 @@ void ActorPicker::ScreenToWorldRay(Ray* pOutRay, const Float2& screenPos, const 
 
 	pOutRay->origin_ = clickPos_WorldSpace;
 	pOutRay->dir_ = rayDir;
-	pOutRay->maxDistance_ = GCurrentCamera->GetFar();	
+	pOutRay->maxDistance_ = GCurrentCamera->GetFar();
 }
 
 bool ActorPicker::TryPickObject(const Ray& ray)
@@ -113,17 +141,17 @@ bool ActorPicker::TryPickObject(const Ray& ray)
 		ray_ObjSpace.maxDistance_ = ray.maxDistance_;
 
 
-		float diffToVolume;
-		if (RaycastBroadPhase(&diffToVolume, ray_ObjSpace, pActor))
+		float diffToAABB;
+		if (RaycastBroadPhase(&diffToAABB, ray_ObjSpace, pActor))
 		{
-			if (curPickedActorDiff_ > diffToVolume)
+			if (curPickedActorDiff_ > diffToAABB)
 			{
-				float diffToVertex;
-				if (RaycastNarrowPhase(&diffToVertex, ray_ObjSpace, pActor))
+				float diffToTriangle;
+				if (RaycastNarrowPhase(&diffToTriangle, ray_ObjSpace, pActor))
 				{
-					if (curPickedActorDiff_ > diffToVertex)
+					if (curPickedActorDiff_ > diffToTriangle)
 					{
-						curPickedActorDiff_ = diffToVertex;
+						curPickedActorDiff_ = diffToTriangle;
 						pPickedActor_ = pActor;
 					}
 				}
@@ -136,75 +164,121 @@ bool ActorPicker::TryPickObject(const Ray& ray)
 	return nullptr != pPickedActor_;
 }
 
-
 bool ActorPicker::RaycastBroadPhase(float* pOutDistance, const Ray& ray, Actor* pActor)
 {
-	//// AABB
-	//BoundVolume* pBoundVolume = pActor->GetBoundVolume();
-	//const AABB& aabb = pBoundVolume->GetAABB();
-
-	//return MATH::Intersection3D_Ray_AABB(pOutDistance, ray, aabb);
-
+	MeshComponent* pStaticMeshComponent = pActor->GetComponent<StaticMeshComponent>();
+	if (nullptr != pStaticMeshComponent)
+	{
+		IPSO* pPSO = pStaticMeshComponent->GetPSO();
+		uint32_t meshCnt = pPSO->GetMeshSlotCount();
+		for (int meshIdx = 0; meshIdx < meshCnt; ++meshIdx)
+		{
+			AABB aabb = pPSO->GetMesh(meshIdx)->GetAABB();
+			return MATH::Intersection3D_Ray_AABB(pOutDistance, ray, aabb);
+		}
+	}
+	MeshComponent* pSkeletalMeshComponent = pActor->GetComponent<SkeletalMeshComponent>();
+	if (nullptr != pSkeletalMeshComponent)
+	{
+		IPSO* pPSO = pSkeletalMeshComponent->GetPSO();
+		uint32_t meshCnt = pPSO->GetMeshSlotCount();
+		for (int meshIdx = 0; meshIdx < meshCnt; ++meshIdx)
+		{
+			AABB aabb = pPSO->GetMesh(meshIdx)->GetAABB();
+			return MATH::Intersection3D_Ray_AABB(pOutDistance, ray, aabb);
+		}
+	}
 	return false;
 }
 
 bool ActorPicker::RaycastNarrowPhase(float* pOutDistance, const Ray& ray, Actor* pActor)
 {
-	// @@@@@@@@@@@@@@@ 잠시 주석. @@@@@@@@@@@@@@@@@@@@@@@@@@
-	
-	//RenderComponent* pRenderer = pActor->GetRenderComponent();
-	//IMesh* pMesh = pRenderer->GetMesh();
+	float minDistance = FLT_MAX;
+	bool finalRet = false;
 
-	//E_VERTEX_FORMAT vertexFormat;
-	//uint32_t vertexStride;
-	//uint32_t vertexCount;
-	//void* pVertices;
-	//pMesh->GetVerticesData(&vertexFormat, &vertexStride, &vertexCount, &pVertices);
+	MeshComponent* pStaticMeshComponent = pActor->GetComponent<StaticMeshComponent>();
+	if (nullptr != pStaticMeshComponent)
+	{
+		IPSO* pPSO = pStaticMeshComponent->GetPSO();
+		uint32_t meshCnt = pPSO->GetMeshSlotCount();
+		for (int meshIdx = 0; meshIdx < meshCnt; ++meshIdx)
+		{
+			IMesh* pMesh = pPSO->GetMesh(meshIdx);
 
-	//uint32_t indexStride;
-	//uint32_t indexCount;
-	//void* pIndices;
-	//pMesh->GetIndicesData(&indexStride, &indexCount, &pIndices);
+			void* pVertices = nullptr;
+			E_VERTEX_TYPE vertexType;
+			pMesh->GetVerticesData(&pVertices, &vertexType);
 
+			for (int subMesh = 0; subMesh < pMesh->GetSubMeshCount(); ++subMesh)
+			{
+				uint32_t* pIndices = nullptr;
+				uint32_t indicesCount = 0;
+				pMesh->GetIndiciesData((void**)&pIndices, &indicesCount, subMesh);
+		
+				for (int index = 0; index < indicesCount; index += 3)
+				{
+					uint16_t idxA = pIndices[index];
+					uint16_t idxB = pIndices[index + 1];
+					uint16_t idxC = pIndices[index + 2];
 
-	//SimpleVertex* pVerticesSimple = static_cast<SimpleVertex*>(pVertices);
-	//WORD* pIndicesWORD = static_cast<WORD*>(pIndices);
+					Triangle triangle = MakeTriangle(pVertices, vertexType, idxA, idxB, idxC);
+					float distance;
+					if (MATH::Intersection3D_Ray_Triangle(&distance, ray, triangle))
+					{
+						minDistance = min(minDistance, distance);
+						finalRet = true;
+					}
+				}
+				
+			}
+		}
+	}
 
+	MeshComponent* pSkeletalMeshComponent = pActor->GetComponent<SkeletalMeshComponent>();
+	if (nullptr != pSkeletalMeshComponent)
+	{
+		IPSO* pPSO = pSkeletalMeshComponent->GetPSO();
+		uint32_t meshCnt = pPSO->GetMeshSlotCount();
+		for (int meshIdx = 0; meshIdx < meshCnt; ++meshIdx)
+		{
+			IMesh* pMesh = pPSO->GetMesh(meshIdx);
 
-	//float minDistance = FLT_MAX;
-	//bool finalRet = false;
-	//for (int i = 0; i < indexCount; i += 3)
-	//{
-	//	WORD idxA = pIndicesWORD[i];
-	//	WORD idxB = pIndicesWORD[i + 1];
-	//	WORD idxC = pIndicesWORD[i + 2];
+			void* pVertices = nullptr;
+			E_VERTEX_TYPE vertexType;
+			pMesh->GetVerticesData(&pVertices, &vertexType);
 
-	//	const SimpleVertex& vertexA = pVerticesSimple[idxA];
-	//	const SimpleVertex& vertexB = pVerticesSimple[idxB];
-	//	const SimpleVertex& vertexC = pVerticesSimple[idxC];
+			for (int subMesh = 0; subMesh < pMesh->GetSubMeshCount(); ++subMesh)
+			{
+				uint32_t* pIndices = nullptr;
+				uint32_t indicesCount = 0;
+				pMesh->GetIndiciesData((void**)&pIndices, &indicesCount, subMesh);
 
-	//	Triangle triangle;
-	//	triangle.a_ = vertexA.position;
-	//	triangle.b_ = vertexB.position;
-	//	triangle.c_ = vertexC.position;
+				for (int index = 0; index < indicesCount; index += 3)
+				{
+					uint16_t idxA = pIndices[index];
+					uint16_t idxB = pIndices[index + 1];
+					uint16_t idxC = pIndices[index + 2];
 
-	//	float distance;
-	//	if(MATH::Intersection3D_Ray_Triangle(&distance, ray, triangle))
-	//	{
-	//		minDistance = min(minDistance, distance);
-	//		finalRet = true;
-	//	}
-	//}
+					Triangle triangle = MakeTriangle(pVertices, vertexType, idxA, idxB, idxC);
+					float distance;
+					if (MATH::Intersection3D_Ray_Triangle(&distance, ray, triangle))
+					{
+						minDistance = min(minDistance, distance);
+						finalRet = true;
+					}
+				}
+			}
+		}
+	}
 
-	//if (finalRet)
-	//{
-	//	*pOutDistance = minDistance;
-	//	return true;
-	//}
+	if (finalRet)
+	{
+		*pOutDistance = minDistance;
+		return true;
+	}
 
 	return false;
 }
-
 
 Actor* ActorPicker::GetPickedActor() const
 {

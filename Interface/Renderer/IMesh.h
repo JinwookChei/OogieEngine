@@ -37,28 +37,26 @@ inline E_MESH_BIND_FLAG operator&(E_MESH_BIND_FLAG lhs, E_MESH_BIND_FLAG rhs)
 
 struct MeshDesc
 {
-	struct MeshSubsetDesc
+	struct SubMeshDesc
 	{
 		uint32_t materialSlot;
-		uint32_t indexFormatSize;
-		uint32_t  indexCount;
+		uint32_t indexCount;
 		void* pIndices;
 
-		MeshSubsetDesc
+		SubMeshDesc
 		(
 			uint32_t materialSlot,
-			uint32_t indexFormatSize,
 			uint32_t indexCount,
 			void* pIndices
 		)
 			: materialSlot(materialSlot)
-			, indexFormatSize(indexFormatSize)
 			, indexCount(indexCount)
 			, pIndices(pIndices)
 		{
 		};
 	};
 
+	E_VERTEX_TYPE vertexType; 
 	E_MESH_PRIMITIVE_TYPE primitiveType;
 	E_MESH_USAGE usage;
 	E_MESH_BIND_FLAG bindFlag;
@@ -67,13 +65,21 @@ struct MeshDesc
 	uint32_t vertexCount;
 	void* pVertices;
 
-	std::vector<MeshSubsetDesc> meshSubsets;
+	std::vector<SubMeshDesc> subMeshDesc;
 };
 
 
 struct IMesh : public IUnknown
 {
 	virtual void __stdcall WriteBuffer(const void* data, uint32_t size) = 0;
+
+	virtual AABB __stdcall GetAABB() = 0;
+
+	virtual void __stdcall GetVerticesData(void** ppOutVertices, E_VERTEX_TYPE* pOutType) const = 0;
+
+	virtual void __stdcall GetIndiciesData(void** ppOutIndices, uint32_t* pOutIndicesCount, uint32_t subMeshIndex) const = 0;
+
+	virtual uint32_t __stdcall GetSubMeshCount() const = 0;
 
 	//virtual void __stdcall GetVerticesData(E_VERTEX_FORMAT* pOutFormat, uint32_t* pOutStride, uint32_t* pOutCount, void** ppOutVertices) const = 0;
 

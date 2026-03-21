@@ -51,15 +51,9 @@ IMesh* __stdcall PipelineStateObject::GetMesh(uint16_t slot) const
 	return ppMesheSlot_[slot];
 }
 
-IMaterial* __stdcall PipelineStateObject::GetMaterial(uint16_t slot) const
+uint32_t __stdcall PipelineStateObject::GetMeshSlotCount() const
 {
-	if (slot >= materialSlotCount_)
-	{
-		Assert("Material slot index out of range.");
-		return nullptr;
-	}
-
-	return ppMaterialSlot_[slot];
+	return meshSlotCount_;
 }
 
 void __stdcall PipelineStateObject::SetMeshToSlot(uint16_t slot, IMesh* pMesh)
@@ -74,6 +68,22 @@ void __stdcall PipelineStateObject::SetMeshToSlot(uint16_t slot, IMesh* pMesh)
 	ppMesheSlot_[slot]->AddRef();
 }
 
+IMaterial* __stdcall PipelineStateObject::GetMaterial(uint16_t slot) const
+{
+	if (slot >= materialSlotCount_)
+	{
+		Assert("Material slot index out of range.");
+		return nullptr;
+	}
+
+	return ppMaterialSlot_[slot];
+}
+
+uint32_t __stdcall PipelineStateObject::GetMaterialSlotCount() const
+{
+	return materialSlotCount_;
+}
+
 void __stdcall PipelineStateObject::SetMaterialToSlot(uint16_t slot, IMaterial* pMaterial)
 {
 	if (slot >= materialSlotCount_)
@@ -86,15 +96,15 @@ void __stdcall PipelineStateObject::SetMaterialToSlot(uint16_t slot, IMaterial* 
 	ppMaterialSlot_[slot]->AddRef();
 }
 
-uint32_t PipelineStateObject::GetMeshSlotCount() const
-{
-	return meshSlotCount_;
-}
-
-uint32_t PipelineStateObject::GetMaterialSlotCount() const
-{
-	return materialSlotCount_;
-}
+//uint32_t PipelineStateObject::GetMeshSlotCount() const
+//{
+//	return meshSlotCount_;
+//}
+//
+//uint32_t PipelineStateObject::GetMaterialSlotCount() const
+//{
+//	return materialSlotCount_;
+//}
 
 const E_DEPTH_PRESET& PipelineStateObject::GetDepthState() const
 {

@@ -64,6 +64,7 @@ void FBXManager::TestLoad()
 	FBXManager::LoadModel(&capoeira, "..\\Resource\\Fbx\\Mixamo\\Capoeira.FBX");
 	MeshDesc meshDesc_4;
 	meshDesc_4.primitiveType = E_MESH_PRIMITIVE_TYPE::TRIANGLE;
+	meshDesc_4.vertexType = E_VERTEX_TYPE::SKINNED_MESH;
 	meshDesc_4.usage = E_MESH_USAGE::DEFAULT;
 	meshDesc_4.bindFlag = E_MESH_BIND_FLAG::VERTEX_BUFFER;
 	meshDesc_4.bufferSize = sizeof(SkinnedMeshVertex) * capoeira.meshInfos[0].vertices.size();
@@ -72,7 +73,7 @@ void FBXManager::TestLoad()
 	meshDesc_4.pVertices = capoeira.meshInfos[0].vertices.data();
 	for (int i = 0; i < capoeira.meshInfos[0].indices.size(); ++i)
 	{
-		meshDesc_4.meshSubsets.emplace_back(i, (uint16_t)sizeof(uint16_t), capoeira.meshInfos[0].indices[i].size(), capoeira.meshInfos[0].indices[i].data());
+		meshDesc_4.subMeshDesc.emplace_back(i, (uint32_t)capoeira.meshInfos[0].indices[i].size(), capoeira.meshInfos[0].indices[i].data());
 	}
 	MeshManager::Instance()->CreateMesh(meshDesc_4, 13);
 	SkeletonManager::Instance()->CreateSkeleton(capoeira.meshInfos[0].bones, 13);
@@ -82,6 +83,7 @@ void FBXManager::TestLoad()
 	FBXManager::LoadModel(&wereWolf, "..\\Resource\\Fbx\\WereWolf\\Model\\Werewolf_1.FBX");
 	MeshDesc meshDesc_5;
 	meshDesc_5.primitiveType = E_MESH_PRIMITIVE_TYPE::TRIANGLE;
+	meshDesc_5.vertexType = E_VERTEX_TYPE::SKINNED_MESH;
 	meshDesc_5.usage = E_MESH_USAGE::DEFAULT;
 	meshDesc_5.bindFlag = E_MESH_BIND_FLAG::VERTEX_BUFFER;
 	meshDesc_5.bufferSize = sizeof(SkinnedMeshVertex) * wereWolf.meshInfos[0].vertices.size();
@@ -90,7 +92,7 @@ void FBXManager::TestLoad()
 	meshDesc_5.pVertices = wereWolf.meshInfos[0].vertices.data();
 	for (int i = 0; i < wereWolf.meshInfos[0].indices.size(); ++i)
 	{
-		meshDesc_5.meshSubsets.emplace_back(i, (uint16_t)sizeof(uint16_t), wereWolf.meshInfos[0].indices[i].size(), wereWolf.meshInfos[0].indices[i].data());
+		meshDesc_5.subMeshDesc.emplace_back(i, (uint32_t)wereWolf.meshInfos[0].indices[i].size(), wereWolf.meshInfos[0].indices[i].data());
 	}
 	MeshManager::Instance()->CreateMesh(meshDesc_5, 14);
 	SkeletonManager::Instance()->CreateSkeleton(wereWolf.meshInfos[0].bones, 14);

@@ -20,47 +20,50 @@ MeshManager* MeshManager::Instance()
 void MeshManager::TestLoad()	
 {
 	std::vector<ScreenQuadVertex> screenQuadVertices;
-	std::vector<WORD> screenQuadIndices;
+	std::vector<uint32_t> screenQuadIndices;
 	GeometryGenerator::CreateScreenQuad(&screenQuadVertices, &screenQuadIndices);
 	MeshDesc screenQuadDesc;
 	screenQuadDesc.primitiveType = E_MESH_PRIMITIVE_TYPE::TRIANGLE;
+	screenQuadDesc.vertexType = E_VERTEX_TYPE::SCREEN_QUAD;
 	screenQuadDesc.usage = E_MESH_USAGE::DEFAULT;
 	screenQuadDesc.bindFlag = E_MESH_BIND_FLAG::VERTEX_BUFFER;
 	screenQuadDesc.bufferSize = sizeof(ScreenQuadVertex) * screenQuadVertices.size();
 	screenQuadDesc.vertexFormatSize = sizeof(ScreenQuadVertex);
 	screenQuadDesc.vertexCount = screenQuadVertices.size();
 	screenQuadDesc.pVertices = screenQuadVertices.data();
-	screenQuadDesc.meshSubsets.emplace_back(0, (uint16_t)sizeof(WORD), screenQuadIndices.size(), screenQuadIndices.data());
+	screenQuadDesc.subMeshDesc.emplace_back(0, (uint32_t)screenQuadIndices.size(), screenQuadIndices.data());
 	CreateMesh(screenQuadDesc, 0);
 
 
 	std::vector<SimpleVertex> cubeVertices;
-	std::vector<WORD> cubeIndices;
+	std::vector<uint32_t> cubeIndices;
 	GeometryGenerator::CreateCube(&cubeVertices, &cubeIndices);
 	MeshDesc meshDesc_1;
 	meshDesc_1.primitiveType = E_MESH_PRIMITIVE_TYPE::TRIANGLE;
+	meshDesc_1.vertexType = E_VERTEX_TYPE::SIMPLE_VERTEX;
 	meshDesc_1.usage = E_MESH_USAGE::DEFAULT;
 	meshDesc_1.bindFlag = E_MESH_BIND_FLAG::VERTEX_BUFFER;
 	meshDesc_1.bufferSize = sizeof(SimpleVertex) * cubeVertices.size();
 	meshDesc_1.vertexFormatSize = sizeof(SimpleVertex);
 	meshDesc_1.vertexCount = cubeVertices.size();
 	meshDesc_1.pVertices = cubeVertices.data();
-	meshDesc_1.meshSubsets.emplace_back(0, (uint16_t)sizeof(WORD), cubeIndices.size(), cubeIndices.data());
+	meshDesc_1.subMeshDesc.emplace_back(0, (uint32_t)cubeIndices.size(), cubeIndices.data());
 	CreateMesh(meshDesc_1, 10);
 
 
 	std::vector<SimpleVertex> sphereVertices;
-	std::vector<WORD> sphereIndices;
+	std::vector<uint32_t> sphereIndices;
 	GeometryGenerator::CreateSphere(&sphereVertices, &sphereIndices);
 	MeshDesc meshDesc_2;
 	meshDesc_2.primitiveType = E_MESH_PRIMITIVE_TYPE::TRIANGLE;
+	meshDesc_2.vertexType = E_VERTEX_TYPE::SIMPLE_VERTEX;
 	meshDesc_2.usage = E_MESH_USAGE::DEFAULT;
 	meshDesc_2.bindFlag = E_MESH_BIND_FLAG::VERTEX_BUFFER;
 	meshDesc_2.bufferSize = sizeof(SimpleVertex) * sphereVertices.size();
 	meshDesc_2.vertexFormatSize = sizeof(SimpleVertex);
 	meshDesc_2.vertexCount = sphereVertices.size();
 	meshDesc_2.pVertices = sphereVertices.data();
-	meshDesc_2.meshSubsets.emplace_back(0, (uint16_t)sizeof(WORD), sphereIndices.size(), sphereIndices.data());
+	meshDesc_2.subMeshDesc.emplace_back(0, (uint32_t)sphereIndices.size(), sphereIndices.data());
 	CreateMesh(meshDesc_2, 11);
 }
 

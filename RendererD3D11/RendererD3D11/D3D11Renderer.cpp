@@ -321,22 +321,21 @@ void __stdcall Renderer::Render(IPSO* pipelineStateObject)
 		Mesh* pMesh = static_cast<Mesh*>(pPSO->GetMesh(meshIdx));
 		if (nullptr == pMesh) continue;
 		pMesh->BindVertices();
-		const std::vector<MeshSubset>& meshSubset = pMesh->GetMeshSubsets();
-
-		if (meshSubset.size() != 0)	// meshSubset이 1개 이상이면 index를 사용하여 Draw.
+		const std::vector<SubMesh>& subMeshes = pMesh->GetSubMeshes();
+		if (subMeshes.size() != 0)	// meshSubset이 1개 이상이면 index를 사용하여 Draw.
 		{
-			for (int subsetIdx = 0; subsetIdx < meshSubset.size(); ++subsetIdx)
+			for (int subsetIdx = 0; subsetIdx < subMeshes.size(); ++subsetIdx)
 			{
-				meshSubset[subsetIdx].BindIndices();
+				subMeshes[subsetIdx].BindIndices();
 
-				uint32_t matIdx = meshSubset[subsetIdx].materialSlot;
+				uint32_t matIdx = subMeshes[subsetIdx].materialSlot;
 				Material* pMaterial = static_cast<Material*>(pPSO->GetMaterial(matIdx));
 				if (nullptr == pMaterial)
 				{
 					DEBUG_BREAK();
 				}
 				pMaterial->Bind();
-				GRenderer->Draw(meshSubset[subsetIdx].indexCount, true);
+				GRenderer->Draw(subMeshes[subsetIdx].indexCount, true);
 			}
 		}
 		else // meshSubset이 0개(사용안함)이면, 자동으로 material slot 0으로 고정. 그리고, Vertex를 직접사용하여 Draw

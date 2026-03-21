@@ -12,6 +12,7 @@ Debugger::Debugger()
 
 	MeshDesc debugLineMeshDesc;
 	debugLineMeshDesc.primitiveType = E_MESH_PRIMITIVE_TYPE::LINE;
+	debugLineMeshDesc.vertexType = E_VERTEX_TYPE::DEBUG_LINE;
 	debugLineMeshDesc.usage = E_MESH_USAGE::DYNAMIC;
 	debugLineMeshDesc.bindFlag = E_MESH_BIND_FLAG::VERTEX_BUFFER;
 	debugLineMeshDesc.bufferSize = sizeof(DebugLineVertex) * 32768;

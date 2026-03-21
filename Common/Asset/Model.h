@@ -35,7 +35,7 @@ struct MeshInfo
 
 	// Vertices
 	std::vector<SkinnedMeshVertex> vertices;
-	std::vector<std::vector<uint16_t>> indices;
+	std::vector<std::vector<uint32_t>> indices;
 
 	// Bones
 	std::vector<Bone> bones;

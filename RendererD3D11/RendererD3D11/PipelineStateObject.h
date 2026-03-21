@@ -12,22 +12,21 @@ public:
 	~PipelineStateObject();
 
 	HRESULT __stdcall QueryInterface(REFIID riid, _COM_Outptr_ void __RPC_FAR* __RPC_FAR* ppvObject) override;
-
 	ULONG __stdcall AddRef() override;
-
 	ULONG __stdcall Release() override;
 
 	IMesh* __stdcall GetMesh(uint16_t slot) const override;
-
-	IMaterial* __stdcall GetMaterial(uint16_t slot) const override;
-
+	uint32_t __stdcall GetMeshSlotCount() const override;
 	void __stdcall SetMeshToSlot(uint16_t slot, IMesh* pMesh);
 
+	IMaterial* __stdcall GetMaterial(uint16_t slot) const override;
+	uint32_t __stdcall GetMaterialSlotCount() const override;
 	void __stdcall SetMaterialToSlot(uint16_t slot, IMaterial* pMaterial);
+	
 
-	uint32_t GetMeshSlotCount() const;
+	//uint32_t GetMeshSlotCount() const;
 
-	uint32_t GetMaterialSlotCount() const;
+	//uint32_t GetMaterialSlotCount() const;
 
 	const E_DEPTH_PRESET& GetDepthState() const;
 

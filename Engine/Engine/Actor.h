@@ -55,7 +55,6 @@ public:
 
 	void DeleteComponents();
 
-
 	LINK_NODE* LevelLink();
 
 	//BoundVolume* GetBoundVolume() const;

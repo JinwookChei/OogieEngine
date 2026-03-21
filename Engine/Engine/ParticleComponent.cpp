@@ -23,13 +23,13 @@ ParticleComponent::ParticleComponent()
 
 	MeshDesc particleDesc;
 	particleDesc.primitiveType = E_MESH_PRIMITIVE_TYPE::POINT;
+	particleDesc.vertexType = E_VERTEX_TYPE::NONE;
 	particleDesc.usage = E_MESH_USAGE::DEFAULT;
 	particleDesc.bindFlag = E_MESH_BIND_FLAG::SHADER_RESOURCE | E_MESH_BIND_FLAG::UNORDERED_ACCESS;
 	particleDesc.bufferSize = sizeof(Particle) * particleVertices.size();
 	particleDesc.vertexFormatSize = sizeof(Particle);
 	particleDesc.vertexCount = particleVertices.size();
-	particleDesc.pVertices = particleVertices.data();
-	particleDesc.meshSubsets;
+	particleDesc.pVertices = particleVertices.data();	
 	pParticle_ = Renderer::GetFactory()->CreateMesh(particleDesc);
 
 
