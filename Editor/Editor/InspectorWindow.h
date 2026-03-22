@@ -1,5 +1,6 @@
 #pragma once
 class EditorWidget;
+class TransformWidget;
 class InspectorWindow
 	: public EditorWindow
 {
@@ -22,10 +23,10 @@ public:
 	void Begin() override;
 	void End() override;
 
-private:
-	void Update() override;
-	void Render() override;
-
+protected:
 	void CleanUp();
-	std::vector<EditorWidget*> widgets_;
+
+private:
+
+	TransformWidget* pTransformWidget_;
 };

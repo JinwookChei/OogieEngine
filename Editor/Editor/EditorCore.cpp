@@ -9,7 +9,10 @@ bool bShowExitPopup = false;
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
+IEditorBindCamera* GBoundCamera = nullptr;
+IEditorBindPickedActor* GPickedActor = nullptr;
 EditorCore* GEditor = nullptr;
+
 namespace Editor
 {
 	EDITOR_API IEditor* GetEditor()
@@ -38,8 +41,8 @@ EditorCore::EditorCore()
 	, viewportFocused_(false)
 	, viewportHovered_(false)
 	, guizmoType_(-1)
-	, pBoundCamera_(nullptr)
-	, pPickedActor_(nullptr)
+	//, pBoundCamera_(nullptr)
+	//, pPickedActor_(nullptr)
 {
 }
 
@@ -159,6 +162,25 @@ Float2 __stdcall EditorCore::GetViewPortSize()
 	}
 	return { -1, -1 };
 }
+
+bool __stdcall EditorCore::BindCamera(IEditorBindCamera* pCamera)
+{
+	if (nullptr == pCamera)
+	{
+		Assert("Camera is NULL");
+		return false;
+	}
+
+	GBoundCamera = pCamera;
+	return true;
+}
+
+bool __stdcall EditorCore::BindPickedActor(IEditorBindPickedActor* pPickedActor)
+{
+	GPickedActor = pPickedActor;
+	return true;
+}
+
 
 bool EditorCore::InitContext(IApplication* pApplication, IRenderer* pRenderer, float dpiScale)
 {
@@ -378,20 +400,3 @@ void EditorCore::CleanUp()
 	}
 }
 
-bool __stdcall EditorCore::BindCamera(IEditorBindCamera* pCamera)
-{
-	if (nullptr == pCamera)
-	{
-		Assert("Camera is NULL");
-		return false;
-	}
-
-	pBoundCamera_ = pCamera;
-	return true;
-}
-
-bool __stdcall EditorCore::BindPickedActor(IEditorBindPickedActor* pPickedActor)
-{
-	pPickedActor_ = pPickedActor;
-	return true;
-}

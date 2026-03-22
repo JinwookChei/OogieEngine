@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "EditorWidget.h"
 #include "EditorWindow.h"
 
 EditorWindow::EditorWindow()
@@ -56,9 +57,27 @@ void EditorWindow::End()
 	ImGui::End();
 }
 
+void EditorWindow::Update()
+{
+	for (EditorWidget* widget : widgets_)
+	{
+		widget->Update();
+	}
+}
 
+void EditorWindow::Render()
+{
+	for (EditorWidget* editor : widgets_)
+	{
+		editor->Render();
+	}
+}
 
 void EditorWindow::CleanUp()
 {
-
+	for (auto widget : widgets_)
+	{
+		widget->Release();
+		widget = nullptr;
+	}
 }

@@ -1,5 +1,7 @@
 #pragma once
 
+class EditorWidget;
+
 class EditorWindow 
 	: public IUnknown
 	, public Label
@@ -19,7 +21,6 @@ public:
 	ULONG __stdcall AddRef(void) override;
 	ULONG __stdcall Release(void) override;
 
-
 	virtual void OnRender();
 	virtual void Begin();
 	virtual void End();
@@ -28,7 +29,6 @@ public:
 	//virtual void OnEnable();
 	//virtual void OnDisable();
 	//virtual void OnDestroy();
-
 	//virtual void OnEvent(ya::Event& e) {}
 
 	ImGuiWindowFlags GetFlag() const { return flags_; }
@@ -37,14 +37,24 @@ public:
 	ImVec2 GetSize() { return size_; }
 	void SetSize(const ImVec2& size) { size_ = size; }
 
-private:
-	virtual void Update() = 0;
-	virtual void Render() = 0;
+	template<typename T>
+	T* CreateWidget()
+	{
+		EditorWidget* pNewWidgets = new T;
+		widgets_.push_back(pNewWidgets);
+		return static_cast<T*>(pNewWidgets);
+	}
 
+protected:
+	virtual void Update();
+	virtual void Render();
 	virtual void CleanUp();
 
+private:
 	ULONG refCount_;
 	ImGuiWindowFlags flags_;
-	eState state_;
+	eState state_;	
 	ImVec2 size_;
+
+	std::vector<EditorWidget*> widgets_;
 };

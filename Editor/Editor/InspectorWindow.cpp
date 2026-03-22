@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "TransformWidget.h"
 #include "EditorWidget.h"
 #include "EditorWindow.h"
 #include "InspectorWindow.h"
@@ -7,6 +8,7 @@ InspectorWindow::InspectorWindow()
 {
 	SetName("Inspector");
 	SetSize(ImVec2(300, 600));
+	pTransformWidget_ = CreateWidget<TransformWidget>();
 }
 
 InspectorWindow::~InspectorWindow()
@@ -25,22 +27,6 @@ void InspectorWindow::End()
 {
 	ImGui::End();
 	ImGui::PopStyleVar();
-}
-
-void InspectorWindow::Update()
-{
-	for (EditorWidget* widget : widgets_)
-	{
-		widget->Update();
-	}
-}
-
-void InspectorWindow::Render()
-{
-	for (EditorWidget* editor : widgets_)
-	{
-		editor->Render();
-	}
 }
 
 void InspectorWindow::CleanUp()

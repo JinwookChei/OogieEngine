@@ -64,6 +64,12 @@
     <Filter Include="Source Files\FF\EditorWindow\EditorWidget">
       <UniqueIdentifier>{e8301c84-6779-4a92-b6d2-2d47ebf909f3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\FF\Windows">
+      <UniqueIdentifier>{d8ac8ed5-42ea-425f-9407-d4031f7e4fdd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\FF\Widgets">
+      <UniqueIdentifier>{7c67170a-693d-43b0-bf98-12bb5e4d4a81}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -123,14 +129,8 @@
     <ClInclude Include="EditorContext.h">
       <Filter>Source Files\EditorCore\EditorContext</Filter>
     </ClInclude>
-    <ClInclude Include="InspectorWindow.h">
-      <Filter>Source Files\FF</Filter>
-    </ClInclude>
     <ClInclude Include="Label.h">
       <Filter>Source Files\Label</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneWindow.h">
-      <Filter>Source Files\FF</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Common\VertexType\VertexType.h">
       <Filter>Common</Filter>
@@ -192,6 +192,15 @@
     <ClInclude Include="..\..\Common\Asset\Skeleton.h">
       <Filter>Common\Asset</Filter>
     </ClInclude>
+    <ClInclude Include="InspectorWindow.h">
+      <Filter>Source Files\FF\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneWindow.h">
+      <Filter>Source Files\FF\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="TransformWidget.h">
+      <Filter>Source Files\FF\Widgets</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -248,14 +257,17 @@
     <ClCompile Include="EditorContext.cpp">
       <Filter>Source Files\EditorCore\EditorContext</Filter>
     </ClCompile>
-    <ClCompile Include="InspectorWindow.cpp">
-      <Filter>Source Files\FF</Filter>
-    </ClCompile>
     <ClCompile Include="Label.cpp">
       <Filter>Source Files\Label</Filter>
     </ClCompile>
+    <ClCompile Include="InspectorWindow.cpp">
+      <Filter>Source Files\FF\Windows</Filter>
+    </ClCompile>
     <ClCompile Include="SceneWindow.cpp">
-      <Filter>Source Files\FF</Filter>
+      <Filter>Source Files\FF\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="TransformWidget.cpp">
+      <Filter>Source Files\FF\Widgets</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

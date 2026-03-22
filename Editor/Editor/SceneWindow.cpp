@@ -5,9 +5,7 @@
 #include "SceneWindow.h"
 
 SceneWindow::SceneWindow()
-	: /*mEditorCameraObject(nullptr)
-	, mEditorCamera(nullptr)*/
-	 ViewportFocused(false)
+	: ViewportFocused(false)
 	, ViewportHovered(false)
 	, GuizmoType(-1)
 	, ViewportBounds{}
@@ -60,8 +58,7 @@ void SceneWindow::End()
 	//ya::graphics::Texture* texture = frameBuffer->GetAttachmentTexture(0);
 
 	
-	EditorCore* pEditorCore = (EditorCore*)Editor::GetEditor();
-	void* pSRV = pEditorCore->pBoundCamera_->GetFinalRenderTargetForEditor()->GetShaderResourceView(E_RENDER_TEXTURE_TYPE::Albedo);
+	void* pSRV = GBoundCamera->GetFinalRenderTargetForEditor()->GetShaderResourceView(E_RENDER_TEXTURE_TYPE::Albedo);
 	//void* pSRV = pEditorCore->pBoundCamera_->GetParticleRenderTargetForEditor()->GetShaderResourceView(E_RENDER_TEXTURE_TYPE::Albedo);
 	//void* pSRV = pEditorCore->pBoundCamera_->GetGBufferRenderTargetForEditor()->GetShaderResourceView(E_RENDER_TEXTURE_TYPE::Normal);
 	//void* pSRV = pEditorCore->pBoundCamera_->GetFinalRenderTargetForEditor()->GetShaderResourceView(E_RENDER_TEXTURE_TYPE::Normal);
@@ -131,23 +128,6 @@ void SceneWindow::End()
 
 	ImGui::End();
 	ImGui::PopStyleVar();
-}
-
-void SceneWindow::Update()
-{
-	for (EditorWidget* widget : widgets_)
-	{
-		widget->Update();
-	}
-}
-
-void SceneWindow::Render()
-{
-
-	for (EditorWidget* editor : widgets_)
-	{
-		editor->Render();
-	}
 }
 
 void SceneWindow::CleanUp()

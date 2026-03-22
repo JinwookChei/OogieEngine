@@ -87,6 +87,12 @@
 
 // Editor
 #include "Label.h"
+#include "EditorWidget.h"
+#include "EditorWindow.h"
+
+
+extern IEditorBindCamera* GBoundCamera;
+extern IEditorBindPickedActor* GPickedActor;
 
 
 constexpr float DEFAULT_SCREEN_WIDTH = 2560.0f;

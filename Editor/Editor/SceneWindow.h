@@ -19,18 +19,16 @@ public:
 	//void OnEnable() override;
 	//void OnDisable() override;
 	//void OnDestroy() override;
-
 	//void OnRender() override;
+
+
 	void Begin() override;
 	void End() override;
 
-private:
-	void Update() override;
-	void Render() override;
-
+protected:
 	void CleanUp();
-	std::vector<EditorWidget*> widgets_;
-
+	
+private:
 	//GameObject* mEditorCameraObject;
 	//EditorCamera* mEditorCamera;
 

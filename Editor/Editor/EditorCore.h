@@ -34,20 +34,24 @@ public:
 	float __stdcall EnableDpiAwareness() override;
 
 	void __stdcall OnRender() override;
-	//bool __stdcall BindCamera(IImGuiBindCamera* pCamera) override;
-	//bool __stdcall BindPickedActor(IImGuiBindPickedActor* pPickedActor) override;
 
 	bool __stdcall IsWindowHovered(const char* name) override;
 
 	Float2 __stdcall GetMousePos() override;
 
 	Float2 __stdcall GetViewPortSize() override;
+	
+	bool __stdcall BindCamera(IEditorBindCamera* pCamera) override;
+
+	bool __stdcall BindPickedActor(IEditorBindPickedActor* pPickedActor) override;
 
 private:
 	bool InitContext(IApplication* pApplication, IRenderer* pRenderer, float dpiScale);
+
 	bool InitWindows();
 
 	void Update();
+
 	void Render();
 
 	void CleanUp();
@@ -70,14 +74,10 @@ private:
 	int guizmoType_;
 
 public:
-	// TEMP
-	bool __stdcall BindCamera(IEditorBindCamera* pCamera) override;
 
-	bool __stdcall BindPickedActor(IEditorBindPickedActor* pPickedActor) override;
+	//IEditorBindCamera* pBoundCamera_;
 
-	IEditorBindCamera* pBoundCamera_;
-
-	IEditorBindPickedActor* pPickedActor_;
+	//IEditorBindPickedActor* pPickedActor_;
 };
 
 

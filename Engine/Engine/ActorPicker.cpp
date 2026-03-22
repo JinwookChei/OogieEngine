@@ -65,9 +65,10 @@ void ActorPicker::Tick(double deltaTime)
 			// CalcRay
 			Ray ray;
 			ScreenToWorldRay(&ray, curMousePos, viewPortSize);
+
 			TryPickObject(ray);
 
-			// ImGuiSystem::GetImGuiManager()->BindPickedActor(pPickedActor_);
+			Editor::GetEditor()->BindPickedActor(pPickedActor_);
 
 			// Draw
 			Float3 rayPos = { ray.origin_.X, ray.origin_.Y, ray.origin_.Z };
