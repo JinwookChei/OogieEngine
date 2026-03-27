@@ -164,6 +164,10 @@ void Engine::Run()
 		// GameLoop End
 
 		
+		//Float4 rot = { 0.0f, 0.0f, 1.0f, 0.0f };
+		//Float4 quat;
+		//MATH::EulerDegToQuaternion(quat, rot);
+
 		if (InputManager::IsDown(VK_F2))
 		{
 			RunTimeMode::ToggleRunTimeMode();

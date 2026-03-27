@@ -212,19 +212,39 @@ void EditorCore::Update()
 	// 종료 팝업
 	if (bShowExitPopup)
 	{
-		ImGui::SetNextWindowSize(ImVec2(300, 150));
+		ImGui::SetNextWindowSize(ImVec2(400, 200));
+		ImGuiViewport* viewport = ImGui::GetMainViewport();
+		ImVec2 center = viewport->GetCenter();
+		ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
 		if (ImGui::BeginPopupModal("Exit Program", NULL, ImGuiWindowFlags_NoResize))
 		{
-			ImGui::Text(" Do you want to exit the program ? ");
-			ImGui::Spacing();
-			ImGui::Spacing();
+			const char* text = "Do you want to exit the program ?";
+			ImVec2 windowSize = ImGui::GetWindowSize();
+			ImVec2 textSize = ImGui::CalcTextSize(text);
 
-			if (ImGui::Button("Quit", ImVec2(120, 0)))
+			// 중앙 좌표 계산
+			ImVec2 pos;
+			pos.x = (windowSize.x - textSize.x) * 0.5f;
+			pos.y = (windowSize.y - textSize.y) * 0.5f;
+
+			ImGui::SetCursorPos(pos);
+			ImGui::Text("%s", text);
+			
+			// 버튼은 아래쪽으로 따로 배치하고 싶으면 커서 다시 이동
+			ImGui::SetCursorPosY(windowSize.y - 50);
+
+			// 버튼 가운데 정렬
+			float buttonWidth = 160.0f;
+			float totalWidth = buttonWidth * 2 + ImGui::GetStyle().ItemSpacing.x;
+			ImGui::SetCursorPosX((windowSize.x - totalWidth) * 0.5f);
+			if (ImGui::Button("Quit", ImVec2(buttonWidth, 0)))
 			{
 				pApplication_->Quit();
 			}
+
 			ImGui::SameLine();
-			if (ImGui::Button("Cancel", ImVec2(120, 0)))
+
+			if (ImGui::Button("Cancel", ImVec2(buttonWidth, 0)))
 			{
 				ImGui::CloseCurrentPopup();
 				bShowExitPopup = false;

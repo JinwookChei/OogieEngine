@@ -52,6 +52,7 @@ namespace MATH
 
 	UTILITY_API void QuaternionToEulerDeg(Float4& out, const Float4& quat);
 	UTILITY_API void QuaternionToEulerRad(Float4& out, const Float4& quat);
+	UTILITY_API void EulerDegToQuaternion(Float4& out, const Float4& deg);
 
 
 	UTILITY_API void CreateMatrixFromRows(Float3x3& out, const Float3& row0, const Float3& row1, const Float3& row2);
@@ -67,8 +68,8 @@ namespace MATH
 	UTILITY_API void MatrixInverse(Float4x4& out, const Float4x4& src);
 	UTILITY_API void MatrixDeterminant(float& out, const Float4x4& src);
 	UTILITY_API void MatrixDeterminant(float& out, const Float3x3& src);
-	UTILITY_API void MatrixCompose(Float4x4& out, const Float4& scale, const Float4& rotDeg, const Float4& pos);
-	UTILITY_API void MatrixComposeQuat(Float4x4& out, const Float4& scale, const Float4& quat, const Float4& trans);
+	UTILITY_API void MatrixCompose(Float4x4& worldMat, const Float4& scale, const Float4& quat, const Float4& trans);
+	UTILITY_API void MatrixCompose(Float4x4& worldMat, Float4x4& scaleMat, Float4x4& rotMat, Float4x4& transMat, const Float4& scale, const Float4& quat, const Float4& trans);
 	UTILITY_API void MatrixDecompose(Float4& outScale, Float4& outQuat, Float4& outPos, const Float4x4& src);
 	UTILITY_API void MatrixLookAtLH(Float4x4& out, const Float4& eyePos, const Float4& focusPos, const Float4& eyeUp);
 	UTILITY_API void MatrixLookToLH(Float4x4& out, const Float4& eyePos, const Float4& eyeForward, const Float4& eyeUp);

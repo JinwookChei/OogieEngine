@@ -124,7 +124,7 @@ bool ActorPicker::TryPickObject(const Ray& ray)
 		Actor* pActor = static_cast<Actor*>(pActorIter->pItem_);
 
 		Float4x4 invWorldMat;
-		MATH::MatrixInverse(invWorldMat, pActor->GetWorldTransform().GetAffineMatrix());
+		MATH::MatrixInverse(invWorldMat, pActor->GetWorldTransform().GetWorldMatrix());
 
 		Float4 rayOrigin_ObjSpace;
 		MATH::MatrixMultiply(rayOrigin_ObjSpace, ray.origin_, invWorldMat);

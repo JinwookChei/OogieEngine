@@ -418,6 +418,21 @@ void MATH::QuaternionToEulerRad(Float4& out, const Float4& quat)
 	out.Z = atan2f(sinY_cosP, cosY_cosP);
 }
 
+void MATH::EulerDegToQuaternion(Float4& out, const Float4& deg)
+{
+	// Degree → radian
+	DirectX::XMVECTOR rotRad = _mm_mul_ps(_mm_loadu_ps(&deg.X), _mm_loadu_ps(&MATH::DegToRad.X));
+	// X-forward, Y-right, Z-up 기준 회전 구성
+	DirectX::XMVECTOR qx = DirectX::XMQuaternionRotationAxis(DirectX::g_XMIdentityR0, DirectX::XMVectorGetX(rotRad)); // X (forward)
+	DirectX::XMVECTOR qy = DirectX::XMQuaternionRotationAxis(DirectX::g_XMIdentityR1, DirectX::XMVectorGetY(rotRad)); // Y (right)
+	DirectX::XMVECTOR qz = DirectX::XMQuaternionRotationAxis(DirectX::g_XMIdentityR2, DirectX::XMVectorGetZ(rotRad)); // Z (up)
+	// 순서: Roll → Pitch → Yaw (필요에 맞게 조정)
+	DirectX::XMVECTOR q = DirectX::XMQuaternionMultiply(qy, DirectX::XMQuaternionMultiply(qx, qz));
+
+	DirectX::XMStoreFloat4(reinterpret_cast<DirectX::XMFLOAT4*>(&out), q);
+}
+
+
 void MATH::CreateMatrixFromRows(Float3x3& out, const Float3& row0, const Float3& row1, const Float3& row2)
 {
 	__m128 r0 = _mm_set_ps(0.0f, row0.Z, row0.Y, row0.X);
@@ -674,157 +689,36 @@ void MATH::MatrixDeterminant(float& out, const Float3x3& src)
 	out = x + y + z;
 }
 
-void MATH::MatrixCompose(Float4x4& out, const Float4& scale, const Float4& rotDeg, const Float4& pos)
+void MATH::MatrixCompose(Float4x4& worldMat, const Float4& scale, const Float4& quat, const Float4& trans)
 {
-	using namespace DirectX;
+	DirectX::XMMATRIX S = DirectX::XMMatrixScaling(scale.X, scale.Y, scale.Z);
+	DirectX::XMVECTOR Q = DirectX::XMVectorSet(quat.X, quat.Y, quat.Z, quat.W);
+	DirectX::XMMATRIX R = DirectX::XMMatrixRotationQuaternion(Q);
+	DirectX::XMMATRIX T = DirectX::XMMatrixTranslation(trans.X, trans.Y, trans.Z);
 
-	// Degree → radian
-	XMVECTOR rotRad = _mm_mul_ps(_mm_loadu_ps(&rotDeg.X), _mm_loadu_ps(&MATH::DegToRad.X));
+	// World = S * R * T
+	DirectX::XMMATRIX W = S * R * T;
 
-	// X-forward, Y-right, Z-up 기준 회전 구성
-	XMVECTOR qx = XMQuaternionRotationAxis(g_XMIdentityR0, XMVectorGetX(rotRad)); // X (forward)
-	XMVECTOR qy = XMQuaternionRotationAxis(g_XMIdentityR1, XMVectorGetY(rotRad)); // Y (right)
-	XMVECTOR qz = XMQuaternionRotationAxis(g_XMIdentityR2, XMVectorGetZ(rotRad)); // Z (up)
-
-	// 순서: Roll → Pitch → Yaw (필요에 맞게 조정)
-	XMVECTOR q = XMQuaternionMultiply(qy, XMQuaternionMultiply(qx, qz));
-
-	XMMATRIX matrix = XMMatrixAffineTransformation(
-		_mm_loadu_ps(&scale.X),
-		g_XMZero,
-		q,
-		_mm_loadu_ps(&pos.X));
-
-	memcpy_s(&out, sizeof(Float4x4), &matrix, sizeof(XMMATRIX));
+	// Store into your Float4x4
+	DirectX::XMStoreFloat4x4(reinterpret_cast<DirectX::XMFLOAT4X4*>(&worldMat), W);
 }
 
-void MATH::MatrixComposeQuat(Float4x4& out, const Float4& scale, const Float4& quat, const Float4& trans)
+void MATH::MatrixCompose(Float4x4& worldMat, Float4x4& scaleMat, Float4x4& rotMat, Float4x4& transMat, const Float4& scale, const Float4& quat, const Float4& trans)
 {
-	using namespace DirectX;
+	DirectX::XMMATRIX S = DirectX::XMMatrixScaling(scale.X, scale.Y, scale.Z);
+	DirectX::XMVECTOR Q = DirectX::XMVectorSet(quat.X, quat.Y, quat.Z, quat.W);
+	DirectX::XMMATRIX R = DirectX::XMMatrixRotationQuaternion(Q);
+	DirectX::XMMATRIX T = DirectX::XMMatrixTranslation(trans.X, trans.Y, trans.Z);
 
-	//// Degree → radian
-	//XMVECTOR rotRad = _mm_mul_ps(_mm_loadu_ps(&rotDeg.X), _mm_loadu_ps(&MATH::DegToRad.X));
+	// World = S * R * T
+	DirectX::XMMATRIX W = S * R * T;
 
-	//// X-forward, Y-right, Z-up 기준 회전 구성
-	//XMVECTOR qx = XMQuaternionRotationAxis(g_XMIdentityR0, XMVectorGetX(rotRad)); // X (forward)
-	//XMVECTOR qy = XMQuaternionRotationAxis(g_XMIdentityR1, XMVectorGetY(rotRad)); // Y (right)
-	//XMVECTOR qz = XMQuaternionRotationAxis(g_XMIdentityR2, XMVectorGetZ(rotRad)); // Z (up)
-
-	//// 순서: Roll → Pitch → Yaw (필요에 맞게 조정)
-	//XMVECTOR q = XMQuaternionMultiply(qy, XMQuaternionMultiply(qx, qz));
-
-	XMVECTOR q = XMLoadFloat4(reinterpret_cast<const XMFLOAT4*>(&quat));
-
-	XMMATRIX matrix = XMMatrixAffineTransformation(
-		_mm_loadu_ps(&scale.X),
-		g_XMZero,
-		q,
-		_mm_loadu_ps(&trans.X));
-
-	memcpy_s(&out, sizeof(Float4x4), &matrix, sizeof(XMMATRIX));
-
-	////-----------------------------------
-	//	// Load Quaternion (x,y,z,w)
-	//	//-----------------------------------
-	//__m128 q = _mm_loadu_ps(&quat.X);
-
-	////-----------------------------------
-	//// (x,y,z,w) -> (x2,y2,z2,0)
-	////-----------------------------------
-	//__m128 q2 = _mm_add_ps(q, q);
-
-	////-----------------------------------
-	//// Shuffle
-	////-----------------------------------
-	//__m128 xx = _mm_shuffle_ps(q, q, _MM_SHUFFLE(0, 0, 0, 0));
-	//__m128 yy = _mm_shuffle_ps(q, q, _MM_SHUFFLE(1, 1, 1, 1));
-	//__m128 zz = _mm_shuffle_ps(q, q, _MM_SHUFFLE(2, 2, 2, 2));
-	//__m128 ww = _mm_shuffle_ps(q, q, _MM_SHUFFLE(3, 3, 3, 3));
-
-	//__m128 x2 = _mm_shuffle_ps(q2, q2, _MM_SHUFFLE(0, 0, 0, 0));
-	//__m128 y2 = _mm_shuffle_ps(q2, q2, _MM_SHUFFLE(1, 1, 1, 1));
-	//__m128 z2 = _mm_shuffle_ps(q2, q2, _MM_SHUFFLE(2, 2, 2, 2));
-
-	////-----------------------------------
-	//// Products
-	////-----------------------------------
-	//__m128 xx2 = _mm_mul_ps(xx, x2);
-	//__m128 yy2 = _mm_mul_ps(yy, y2);
-	//__m128 zz2 = _mm_mul_ps(zz, z2);
-
-	//__m128 xy2 = _mm_mul_ps(xx, y2);
-	//__m128 xz2 = _mm_mul_ps(xx, z2);
-	//__m128 yz2 = _mm_mul_ps(yy, z2);
-
-	//__m128 wx2 = _mm_mul_ps(ww, x2);
-	//__m128 wy2 = _mm_mul_ps(ww, y2);
-	//__m128 wz2 = _mm_mul_ps(ww, z2);
-
-	////-----------------------------------
-	//// Load Scale
-	////-----------------------------------
-	//__m128 s = _mm_loadu_ps(&scale.X);
-
-	////-----------------------------------
-	//// Rotation * Scale (Row-major)
-	////-----------------------------------
-
-	//// Row0
-	//__m128 r0 = _mm_set_ps(
-	//	0.0f,
-	//	1.0f - (yy2.m128_f32[0] + zz2.m128_f32[0]),
-	//	xy2.m128_f32[0] + wz2.m128_f32[0],
-	//	xz2.m128_f32[0] - wy2.m128_f32[0]
-	//);
-
-	//// Row1
-	//__m128 r1 = _mm_set_ps(
-	//	0.0f,
-	//	xy2.m128_f32[0] - wz2.m128_f32[0],
-	//	1.0f - (xx2.m128_f32[0] + zz2.m128_f32[0]),
-	//	yz2.m128_f32[0] + wx2.m128_f32[0]
-	//);
-
-	//// Row2
-	//__m128 r2 = _mm_set_ps(
-	//	0.0f,
-	//	xz2.m128_f32[0] + wy2.m128_f32[0],
-	//	yz2.m128_f32[0] - wx2.m128_f32[0],
-	//	1.0f - (xx2.m128_f32[0] + yy2.m128_f32[0])
-	//);
-
-	////-----------------------------------
-	//// Apply Scale
-	////-----------------------------------
-	//__m128 sx = _mm_shuffle_ps(s, s, _MM_SHUFFLE(0, 0, 0, 0));
-	//__m128 sy = _mm_shuffle_ps(s, s, _MM_SHUFFLE(1, 1, 1, 1));
-	//__m128 sz = _mm_shuffle_ps(s, s, _MM_SHUFFLE(2, 2, 2, 2));
-
-	//r0 = _mm_mul_ps(r0, sx);
-	//r1 = _mm_mul_ps(r1, sy);
-	//r2 = _mm_mul_ps(r2, sz);
-
-	////-----------------------------------
-	//// Translation
-	////-----------------------------------
-	//__m128 t = _mm_loadu_ps(&trans.X);
-
-	//__m128 r3 = _mm_set_ps(
-	//	1.0f,
-	//	t.m128_f32[2],
-	//	t.m128_f32[1],
-	//	t.m128_f32[0]
-	//);
-
-	////-----------------------------------
-	//// Store
-	////-----------------------------------
-	//_mm_storeu_ps(&out.r[0].X, r0);
-	//_mm_storeu_ps(&out.r[1].X, r1);
-	//_mm_storeu_ps(&out.r[2].X, r2);
-	//_mm_storeu_ps(&out.r[3].X, r3);
+	// Store into your Float4x4
+	DirectX::XMStoreFloat4x4(reinterpret_cast<DirectX::XMFLOAT4X4*>(&worldMat), W);
+	DirectX::XMStoreFloat4x4(reinterpret_cast<DirectX::XMFLOAT4X4*>(&scaleMat), S);
+	DirectX::XMStoreFloat4x4(reinterpret_cast<DirectX::XMFLOAT4X4*>(&rotMat), R);
+	DirectX::XMStoreFloat4x4(reinterpret_cast<DirectX::XMFLOAT4X4*>(&transMat), T);
 }
-
 
 void MATH::MatrixDecompose(Float4& outScale, Float4& outQuat, Float4& outPos, const Float4x4& src)
 {

@@ -255,6 +255,16 @@ void Camera::CleanUp()
 	}
 }
 
+const Float4x4& __stdcall Camera::GetViewMatrix() const
+{
+	return view_;
+}
+
+const Float4x4& __stdcall Camera::GetProjectionMatrix() const
+{
+	return projection_;
+}
+
 IRenderTarget* __stdcall Camera::GetGBufferRenderTargetForEditor() const
 {
 	return pGBufferRenderTarget_;

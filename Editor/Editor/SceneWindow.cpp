@@ -7,7 +7,7 @@
 SceneWindow::SceneWindow()
 	: ViewportFocused(false)
 	, ViewportHovered(false)
-	, GuizmoType(-1)
+	, GuizmoType(ImGuizmo::TRANSLATE)
 	, ViewportBounds{}
 	, ViewportSize{}
 {
@@ -57,7 +57,7 @@ void SceneWindow::End()
 	Float2 ViewportSize = Float2{ viewportPanelSize.x, viewportPanelSize.y };
 	//ya::graphics::Texture* texture = frameBuffer->GetAttachmentTexture(0);
 
-	
+
 	void* pSRV = GBoundCamera->GetFinalRenderTargetForEditor()->GetShaderResourceView(E_RENDER_TEXTURE_TYPE::Albedo);
 	//void* pSRV = pEditorCore->pBoundCamera_->GetParticleRenderTargetForEditor()->GetShaderResourceView(E_RENDER_TEXTURE_TYPE::Albedo);
 	//void* pSRV = pEditorCore->pBoundCamera_->GetGBufferRenderTargetForEditor()->GetShaderResourceView(E_RENDER_TEXTURE_TYPE::Normal);
@@ -66,65 +66,57 @@ void SceneWindow::End()
 	ImGui::Image
 	(
 		(ImTextureID)pSRV,
-		ImVec2{ ViewportSize.X, ViewportSize.Y }, 
+		ImVec2{ ViewportSize.X, ViewportSize.Y },
 		ImVec2{ 0, 0 }, ImVec2{ 1, 1 }
 	);
 
+	ImGuiIO& io = ImGui::GetIO();
+
+	if (!io.WantTextInput)
+	{
+		if (ImGui::IsKeyPressed(ImGuiKey_1))
+		{
+			GuizmoType = ImGuizmo::SCALE;
+		}
+		if (ImGui::IsKeyPressed(ImGuiKey_2))
+		{
+			GuizmoType = ImGuizmo::ROTATE;
+		}
+		if (ImGui::IsKeyPressed(ImGuiKey_3))
+		{
+			GuizmoType = ImGuizmo::TRANSLATE;
+		}
+	}
 	//// To do : guizmo
-	//ya::GameObject* selectedObject = ya::renderer::selectedObject;
-	//if (selectedObject && GuizmoType != -1)
-	//{
-	//	ImGuizmo::SetOrthographic(false);
-	//	ImGuizmo::SetDrawlist();
-	//	ImGuizmo::SetGizmoSizeClipSpace(0.15f);
-	//	ImGuizmo::SetRect(ViewportBounds[0].x, ViewportBounds[0].y
-	//		, ViewportBounds[1].x - ViewportBounds[0].x, ViewportBounds[1].y - ViewportBounds[0].y);
+	if (GPickedActor && GuizmoType != -1)
+	{
+		ImGuizmo::SetOrthographic(false);
+		ImGuizmo::SetDrawlist();
+		ImGuizmo::SetGizmoSizeClipSpace(0.07f);
+		ImGuizmo::SetRect
+		(
+			ViewportBounds[0].X,
+			ViewportBounds[0].Y,
+			ViewportBounds[1].X - ViewportBounds[0].X,
+			ViewportBounds[1].Y - ViewportBounds[0].Y
+		);
 
-	//	// To do : guizmo...
-	//	// game view camera setting
+		const Float4x4& viewMatrix = GBoundCamera->GetViewMatrix();
+		const Float4x4& projectionMatrix = GBoundCamera->GetProjectionMatrix();
+		IEditorBindTransform& actorTransform = GPickedActor->GetTransformForEditor();
+		const Float4x4& worldMatrix = actorTransform.GetWorldMatrixForEditor();
+		ImGuizmo::Manipulate
+		(
+			(const float*)&viewMatrix
+			, (const float*)&projectionMatrix
+			, (ImGuizmo::OPERATION)GuizmoType
+			, ImGuizmo::LOCAL
+			, (float*)&worldMatrix
+			, nullptr
+		);
 
-	//	// Scene Camera
-	//	const ya::math::Matrix& viewMatrix = mEditorCamera->GetViewMatrix();
-	//	const ya::math::Matrix& projectionMatrix = mEditorCamera->GetProjectionMatrix();
-
-	//	// Object Transform
-	//	ya::Transform* transform = selectedObject->GetComponent<ya::Transform>();
-	//	ya::math::Matrix worldMatrix = transform->GetWorldMatrix();
-
-	//	// snapping
-	//	bool snap = ya::Input::GetKey(ya::eKeyCode::Leftcontrol);
-	//	float snapValue = 0.5f;
-
-	//	// snap to 45 degrees for rotation
-	//	if (GuizmoType == ImGuizmo::OPERATION::ROTATE)
-	//		snapValue = 45.0f;
-
-	//	float snapValues[3] = { snapValue, snapValue, snapValue };
-
-	//	ImGuizmo::Manipulate(*viewMatrix.m, *projectionMatrix.m, static_cast<ImGuizmo::OPERATION>(GuizmoType)
-	//		, ImGuizmo::WORLD, *worldMatrix.m, nullptr, snap ? snapValues : nullptr);
-
-	//	if (ImGuizmo::IsUsing())
-	//	{
-	//		// Decompose matrix to translation, rotation and scale
-	//		float translation[3];
-	//		float rotation[3];
-	//		float scale[3];
-	//		ImGuizmo::DecomposeMatrixToComponents(*worldMatrix.m, translation, rotation, scale);
-
-	//		// delta rotation from the current rotation
-	//		ya::math::Vector3 deltaRotation = Vector3(rotation) - transform->GetRotation();
-	//		deltaRotation = transform->GetRotation() + deltaRotation;
-
-	//		// set the new transform
-	//		transform->SetScale(Vector3(scale));
-	//		transform->SetRotation(Vector3(deltaRotation));
-	//		transform->SetPosition(Vector3(translation));
-	//	}
-	//}
-
-	// repair the default render target
-	//ya::graphics::GetDevice()->BindDefaultRenderTarget();
+		actorTransform.TransformUpdateForEditorTTT();
+	}
 
 	ImGui::End();
 	ImGui::PopStyleVar();

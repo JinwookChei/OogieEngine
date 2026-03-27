@@ -165,7 +165,7 @@ public:
 			MATH::VectorAdd(S, sA, scale_delta_sub_sBsA);
 
 			Float4x4 animatedGlobal;
-			MATH::MatrixComposeQuat(animatedGlobal, S, Q, T);
+			MATH::MatrixCompose(animatedGlobal, S, Q, T);
 
 			// 4. Skinning 최종 행렬
 			MATH::MatrixMultiply(curAnimBoneMatrices[i], srcSkeleton.GetBones(i).invGlobalBindPose, animatedGlobal);
@@ -228,7 +228,8 @@ public:
 			MATH::VectorAdd(S, sA, scale_delta_sub_sBsA);
 
 			Float4x4 animatedGlobal;
-			MATH::MatrixComposeQuat(animatedGlobal, S, Q, T);
+			//MATH::MatrixComposeQuat(animatedGlobal, S, Q, T);
+			MATH::MatrixCompose(animatedGlobal, S, Q, T);
 
 			MATH::MatrixMultiply(curAnimBoneMats[bone], pSrcSkeleton->GetBones(bone).invGlobalBindPose, animatedGlobal);
 		}

@@ -99,7 +99,7 @@ void Actor::CleanUp()
 	}
 }
 
-ENGINE_API IEditorBindTransform* __stdcall Actor::GetTransformForEditor() const
+ENGINE_API IEditorBindTransform& __stdcall Actor::GetTransformForEditor()
 {
-	return pTransform_;
+	return *pTransform_;
 }

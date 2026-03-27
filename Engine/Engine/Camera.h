@@ -68,6 +68,10 @@ private:
 
 public:
 	// IImguiBindCamera Area
+	ENGINE_API const Float4x4& __stdcall GetViewMatrix() const override;
+
+	ENGINE_API const Float4x4& __stdcall GetProjectionMatrix() const override;
+
 	ENGINE_API IRenderTarget* __stdcall GetGBufferRenderTargetForEditor() const override;
 
 	//ENGINE_API IRenderTarget* __stdcall GetParticleRenderTargetForEditor() const override;

@@ -74,5 +74,5 @@ protected:
 	LINK_NODE levelLink_;
 
 public:
-	ENGINE_API IEditorBindTransform* __stdcall GetTransformForEditor() const override;
+	ENGINE_API IEditorBindTransform& __stdcall GetTransformForEditor() override;
 };
