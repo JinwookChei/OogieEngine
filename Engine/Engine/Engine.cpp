@@ -152,6 +152,11 @@ void Engine::Run()
 		// Calc DeltaTime
 		double deltaTime = TimeManager::CalcDeltaTime();
 
+		if(RunTimeMode::GetCurrentMode() == E_RUNTIME_MODE::EDITOR)
+		{
+			Editor::GetEditor()->OnBegin();
+		}
+
 		// Input Update
 		InputManager::Tick(deltaTime);
 		
@@ -162,11 +167,6 @@ void Engine::Run()
 		GWorld->OnTick(deltaTime);
 		GWorld->OnRender();
 		// GameLoop End
-
-		
-		//Float4 rot = { 0.0f, 0.0f, 1.0f, 0.0f };
-		//Float4 quat;
-		//MATH::EulerDegToQuaternion(quat, rot);
 
 		if (InputManager::IsDown(VK_F2))
 		{

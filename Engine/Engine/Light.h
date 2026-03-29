@@ -24,6 +24,8 @@ public:
 
 	void Render() override;
 
+	void RenderLight();
+
 	virtual LightRenderData GetData() = 0;
 
 	const Color& DiffuseColor() const;

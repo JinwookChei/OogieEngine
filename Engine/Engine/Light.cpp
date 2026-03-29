@@ -64,6 +64,10 @@ void Light::BeginPlay()
 void Light::Render()
 {
 	Actor::Render();
+}
+
+void Light::RenderLight()
+{
 	Renderer::Instance()->UpdateLightFrame(GetData());
 	Renderer::Instance()->Render(Light::GLightPSO);
 }

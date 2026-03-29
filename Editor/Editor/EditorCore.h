@@ -33,9 +33,15 @@ public:
 	bool __stdcall WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) override;
 	float __stdcall EnableDpiAwareness() override;
 
+	void __stdcall OnBegin() override;
+
 	void __stdcall OnRender() override;
 
 	bool __stdcall IsWindowHovered(const char* name) override;
+
+	bool __stdcall IsGizmoHovered() const override;
+
+	bool __stdcall IsKeyboardCapturedByEditor() const override;
 
 	Float2 __stdcall GetMousePos() override;
 

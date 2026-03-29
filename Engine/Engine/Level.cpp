@@ -130,7 +130,7 @@ void Level::OnRenderActors()
 {
 	for (int i = 0; i < (int)E_ACTOR_TYPE::MAX; ++i)
 	{
-		if (i == (int)E_ACTOR_TYPE::LIGHT) continue;
+		//if (i == (int)E_ACTOR_TYPE::LIGHT) continue;
 
 		LINK_NODE* pActorIter = actorList_[i].GetHead();
 		while (pActorIter)
@@ -158,7 +158,7 @@ void Level::OnRenderLights(IRenderTarget* pGBufferTarget)
 	while (pLightIter)
 	{
 		Light* pCurLight = static_cast<Light*>(pLightIter->pItem_);
-		pCurLight->Render();
+		pCurLight->RenderLight();
 		pLightIter = pLightIter->next_;
 	}
 }

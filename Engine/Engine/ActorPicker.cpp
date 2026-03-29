@@ -54,20 +54,18 @@ ActorPicker* ActorPicker::GetInstance()
 
 void ActorPicker::Tick(double deltaTime)
 {
+	if (Editor::GetEditor()->IsGizmoHovered()) return;
+	
 	if (InputManager::IsDown(VK_LBUTTON))
 	{
-		bool isSceneHovered = Editor::GetEditor()->IsWindowHovered("Scene");
-		if (isSceneHovered)
+		if (Editor::GetEditor()->IsWindowHovered("Scene"))
 		{
 			Float2 curMousePos = Editor::GetEditor()->GetMousePos();
 			Float2 viewPortSize = Editor::GetEditor()->GetViewPortSize();
 
-			// CalcRay
 			Ray ray;
 			ScreenToWorldRay(&ray, curMousePos, viewPortSize);
-
 			TryPickObject(ray);
-
 			Editor::GetEditor()->BindPickedActor(pPickedActor_);
 
 			// Draw
@@ -158,10 +156,52 @@ bool ActorPicker::TryPickObject(const Ray& ray)
 				}
 			}
 		}
-
 		pActorIter = pActorIter->next_;
 	}
 
+	// TODO : 에디터모드에서는 Light도 피킹기능이 활성화. (수정해야 하는 코드, 하드 코딩)
+	pActorList = pCurLevel->GetActorList(E_ACTOR_TYPE::LIGHT);
+	pActorIter = pActorList->GetHead();
+	while (pActorIter)
+	{
+		Actor* pActor = static_cast<Actor*>(pActorIter->pItem_);
+
+		Float4x4 invWorldMat;
+		MATH::MatrixInverse(invWorldMat, pActor->GetWorldTransform().GetWorldMatrix());
+
+		Float4 rayOrigin_ObjSpace;
+		MATH::MatrixMultiply(rayOrigin_ObjSpace, ray.origin_, invWorldMat);
+		Float3 rayOrigin_ObjSpace_V3 = { rayOrigin_ObjSpace.X, rayOrigin_ObjSpace.Y, rayOrigin_ObjSpace.Z };
+
+		Float4 rayDir_ObjSpace;
+		MATH::MatrixMultiply(rayDir_ObjSpace, ray.dir_, invWorldMat);
+		Float3 rayDir_ObjSpace_V3 = { rayDir_ObjSpace.X, rayDir_ObjSpace.Y, rayDir_ObjSpace.Z };
+		MATH::VectorNormalize(rayDir_ObjSpace_V3, rayDir_ObjSpace_V3);
+
+		// ObjectSapce Ray
+		Ray ray_ObjSpace;
+		ray_ObjSpace.origin_ = rayOrigin_ObjSpace;
+		ray_ObjSpace.dir_ = rayDir_ObjSpace;
+		ray_ObjSpace.maxDistance_ = ray.maxDistance_;
+
+		float diffToAABB;
+		if (RaycastBroadPhase(&diffToAABB, ray_ObjSpace, pActor))
+		{
+			if (curPickedActorDiff_ > diffToAABB)
+			{
+				float diffToTriangle;
+				if (RaycastNarrowPhase(&diffToTriangle, ray_ObjSpace, pActor))
+				{
+					if (curPickedActorDiff_ > diffToTriangle)
+					{
+						curPickedActorDiff_ = diffToTriangle;
+						pPickedActor_ = pActor;
+					}
+				}
+			}
+		}
+		pActorIter = pActorIter->next_;
+	}
 	return nullptr != pPickedActor_;
 }
 
@@ -215,7 +255,7 @@ bool ActorPicker::RaycastNarrowPhase(float* pOutDistance, const Ray& ray, Actor*
 				uint32_t* pIndices = nullptr;
 				uint32_t indicesCount = 0;
 				pMesh->GetIndiciesData((void**)&pIndices, &indicesCount, subMesh);
-		
+
 				for (int index = 0; index < indicesCount; index += 3)
 				{
 					uint16_t idxA = pIndices[index];
@@ -230,7 +270,7 @@ bool ActorPicker::RaycastNarrowPhase(float* pOutDistance, const Ray& ray, Actor*
 						finalRet = true;
 					}
 				}
-				
+
 			}
 		}
 	}
@@ -290,7 +330,3 @@ void ActorPicker::CleanUp()
 {
 
 }
-
-
-
-

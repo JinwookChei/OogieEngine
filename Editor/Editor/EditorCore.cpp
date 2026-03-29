@@ -107,10 +107,15 @@ float __stdcall EditorCore::EnableDpiAwareness()
 	return dpiScale;
 }
 
+void __stdcall EditorCore::OnBegin()
+{
+	pEditorContext_->Begin();
+}
+
 
 void __stdcall EditorCore::OnRender()
 {
-	pEditorContext_->Begin();
+	//pEditorContext_->Begin();
 
 	Update();
 
@@ -134,6 +139,17 @@ bool __stdcall EditorCore::IsWindowHovered(const char* name)
 	}
 
 	return strcmp(hovered->Name, name) == 0;
+}
+
+bool __stdcall EditorCore::IsGizmoHovered() const
+{
+	return ImGuizmo::IsOver();
+}
+
+bool __stdcall EditorCore::IsKeyboardCapturedByEditor() const
+{
+	ImGuiIO& io = ImGui::GetIO();
+	return io.WantCaptureKeyboard;
 }
 
 Float2 __stdcall EditorCore::GetMousePos()

@@ -33,7 +33,7 @@ void TextureManager::TestLoad()
 	unsigned long long defaultNormalTexTag = 1;
 	textureTable_.Insert(pdefaultNormalTexture, &defaultNormalTexTag, 8);
 
-
+	
 	const wchar_t* colorTexPath = L"../Resource/Texture/Bricks_4K/Bricks_Color.png";
 	CreateTexture(colorTexPath, false, 10);
 	const wchar_t* normalTexPath = L"../Resource/Texture/Bricks_4K/Bricks_NormalDX.png";
@@ -42,10 +42,10 @@ void TextureManager::TestLoad()
 	CreateTexture(maria_diffuse_Path, false, 12);
 	const wchar_t* maria_normal_Path = L"../Resource/Fbx/Mixamo/maria_normal.png";
 	CreateTexture(maria_normal_Path, true, 13);
-	/*const wchar_t* wukong_torso_diffuse_Path = L"../Resource/Fbx/Wukong/Texture/Wukong_Torso_Diffuse.png";
-	CreateTexture(wukong_torso_diffuse_Path, false, 14);
-	const wchar_t* wukong_torso_normal_Path = L"../Resource/Fbx/Wukong/Texture/Wukong_Torso_Normal.png";
-	CreateTexture(wukong_torso_normal_Path, true, 15);*/
+	const wchar_t* lightBulb_diffuse_path = L"../Resource/Fbx/LightBulb/T_Communication_BaseColor.png";
+	CreateTexture(lightBulb_diffuse_path, false, 14);
+	const wchar_t* lightBulb_normal_path = L"../Resource/Fbx/LightBulb/T_Communication_Normal.png";
+	CreateTexture(lightBulb_normal_path, true, 15);
 	const wchar_t* wereWolf_Body_Albedo_Path = L"../Resource/Fbx/WereWolf/Texture/Werewolf_Body_Albedo.png";
 	CreateTexture(wereWolf_Body_Albedo_Path, false, 16);
 	const wchar_t* wereWolf_Body_Normal_Path = L"../Resource/Fbx/WereWolf/Texture/Werewolf_Body_Normal.png";
