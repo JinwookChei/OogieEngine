@@ -59,9 +59,25 @@ void FBXManager::TestLoad()
 	//MeshManager::Instance()->CreateMesh(meshDesc_3, 12);
 	//SkeletonManager::Instance()->CreateSkeleton(wukong.meshInfos[0].bones, 12);
 
+	StaticModel lightBulb;
+	FBXManager::LoadStaticModel(&lightBulb, "..\\Resource\\Fbx\\LightBulb\\SM_Lamp7.FBX");
+	MeshDesc meshDesc_3;
+	meshDesc_3.primitiveType = E_MESH_PRIMITIVE_TYPE::TRIANGLE;
+	meshDesc_3.vertexType = E_VERTEX_TYPE::SIMPLE_VERTEX;
+	meshDesc_3.usage = E_MESH_USAGE::DEFAULT;
+	meshDesc_3.bindFlag = E_MESH_BIND_FLAG::VERTEX_BUFFER;
+	meshDesc_3.bufferSize = sizeof(SimpleVertex) * lightBulb.meshInfos[0].vertices.size();
+	meshDesc_3.vertexFormatSize = sizeof(SimpleVertex);
+	meshDesc_3.vertexCount = lightBulb.meshInfos[0].vertices.size();
+	meshDesc_3.pVertices = lightBulb.meshInfos[0].vertices.data();
+	for (int i = 0; i < lightBulb.meshInfos[0].indices.size(); ++i)
+	{
+		meshDesc_3.subMeshDesc.emplace_back(i, (uint32_t)lightBulb.meshInfos[0].indices[i].size(), lightBulb.meshInfos[0].indices[i].data());
+	}
+	MeshManager::Instance()->CreateMesh(meshDesc_3, 12);
 
-	Model capoeira;
-	FBXManager::LoadModel(&capoeira, "..\\Resource\\Fbx\\Mixamo\\Capoeira.FBX");
+	SkeletalModel capoeira;
+	FBXManager::LoadSkeletalModel(&capoeira, "..\\Resource\\Fbx\\Mixamo\\Capoeira.FBX");
 	MeshDesc meshDesc_4;
 	meshDesc_4.primitiveType = E_MESH_PRIMITIVE_TYPE::TRIANGLE;
 	meshDesc_4.vertexType = E_VERTEX_TYPE::SKINNED_MESH;
@@ -78,9 +94,8 @@ void FBXManager::TestLoad()
 	MeshManager::Instance()->CreateMesh(meshDesc_4, 13);
 	SkeletonManager::Instance()->CreateSkeleton(capoeira.meshInfos[0].bones, 13);
 
-
-	Model wereWolf;
-	FBXManager::LoadModel(&wereWolf, "..\\Resource\\Fbx\\WereWolf\\Model\\Werewolf_1.FBX");
+	SkeletalModel wereWolf;
+	FBXManager::LoadSkeletalModel(&wereWolf, "..\\Resource\\Fbx\\WereWolf\\Model\\Werewolf_1.FBX");
 	MeshDesc meshDesc_5;
 	meshDesc_5.primitiveType = E_MESH_PRIMITIVE_TYPE::TRIANGLE;
 	meshDesc_5.vertexType = E_VERTEX_TYPE::SKINNED_MESH;
@@ -96,9 +111,10 @@ void FBXManager::TestLoad()
 	}
 	MeshManager::Instance()->CreateMesh(meshDesc_5, 14);
 	SkeletonManager::Instance()->CreateSkeleton(wereWolf.meshInfos[0].bones, 14);
+
 }
 
-bool FBXManager::LoadModel(Model* pOutModel, const std::string& file)
+bool FBXManager::LoadStaticModel(StaticModel* pOutModel, const std::string& file)
 {
 	if (nullptr == GFbxImporter)
 	{
@@ -106,7 +122,19 @@ bool FBXManager::LoadModel(Model* pOutModel, const std::string& file)
 		return false;
 	}
 
-	GFbxImporter->ImportModel(pOutModel, file);
+	GFbxImporter->ImportStaticModel(pOutModel, file);
+	return true;
+}
+
+bool FBXManager::LoadSkeletalModel(SkeletalModel* pOutModel, const std::string& file)
+{
+	if (nullptr == GFbxImporter)
+	{
+		DEBUG_BREAK();
+		return false;
+	}
+
+	GFbxImporter->ImportSkeletalModel(pOutModel, file);
 	return true;
 }
 

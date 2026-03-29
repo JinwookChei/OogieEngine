@@ -2,25 +2,13 @@
 
 constexpr int MAX_BONE_INFLUENCE = 4;
 
-
-//struct BoneInfo
-//{
-//	std::string name;
-//	int parentIndex;                // 부모 본 인덱스 (-1이면 루트)
-//
-//	//Float4x4 globalBindPose;
-//	//Float4x4 localBindPose;
-//	//Float4x4   meshBindPose;       // Mesh Bind Global
-//	//Float4x4   boneBindPose;       // Bone Bind Global
-//};
-
 struct SkinWeight
 {
 	UINT   boneIndices[MAX_BONE_INFLUENCE] = { 0 };
 	float  boneWeights[MAX_BONE_INFLUENCE] = { 0.0f };
 };
 
-struct MeshInfo
+struct SkeletalMeshInfo
 {
 	std::string meshName = "";
 	int meshSubsetCount = 0;
@@ -33,23 +21,62 @@ struct MeshInfo
 	bool isTriangulated = false;
 	bool isSkeletalMesh = false;
 
-	// Vertices
 	std::vector<SkinnedMeshVertex> vertices;
 	std::vector<std::vector<uint32_t>> indices;
-
-	// Bones
-	std::vector<Bone> bones;
-	
-	// Skins
+	std::vector<Bone> bones;	
 	std::vector<SkinWeight> skinDatas;
 
-	MeshInfo() = default;
-	~MeshInfo() = default;
-	MeshInfo(const MeshInfo&) = default;
-	MeshInfo& operator=(const MeshInfo&) = default;
-	MeshInfo(MeshInfo&&) noexcept = default;
-	MeshInfo& operator=(MeshInfo&&) noexcept = default;
+	SkeletalMeshInfo() = default;
+	~SkeletalMeshInfo() = default;
+	SkeletalMeshInfo(const SkeletalMeshInfo&) = default;
+	SkeletalMeshInfo& operator=(const SkeletalMeshInfo&) = default;
+	SkeletalMeshInfo(SkeletalMeshInfo&&) noexcept = default;
+	SkeletalMeshInfo& operator=(SkeletalMeshInfo&&) noexcept = default;
 };
+
+struct SkeletalModel
+{
+	std::vector<SkeletalMeshInfo> meshInfos;
+
+	struct BoneLink
+	{
+		std::string boneName;
+		int32_t boneIndex;
+		int32_t parentBoneIndex;
+	};
+
+	std::unordered_map<uint64_t, BoneLink> totalBoneMap;
+};
+
+struct StaticMeshInfo
+{
+	std::string meshName = "";
+	int meshSubsetCount = 0;
+	// Mesh 내부에 존재하는 Material "Element(레이어)" 개수.
+	// 0 아님 1 -> 보통 1
+	int materialElementCount = 1;
+	int controlPointCount = 0;
+	int polygonCount = 0;
+	int deformerCount = 0;
+	bool isTriangulated = false;
+	bool isSkeletalMesh = false;
+	
+	std::vector<SimpleVertex> vertices;
+	std::vector<std::vector<uint32_t>> indices;
+
+	StaticMeshInfo() = default;
+	~StaticMeshInfo() = default;
+	StaticMeshInfo(const StaticMeshInfo&) = default;
+	StaticMeshInfo& operator=(const StaticMeshInfo&) = default;
+	StaticMeshInfo(StaticMeshInfo&&) noexcept = default;
+	StaticMeshInfo& operator=(StaticMeshInfo&&) noexcept = default;
+};
+
+struct StaticModel
+{
+	std::vector<StaticMeshInfo> meshInfos;
+};
+
 
 struct TextureInfo
 {
@@ -100,7 +127,6 @@ struct MaterialInfo
 	bool hasEmissiveTexture = false;
 	bool hasOpacityTexture = false;
 
-
 	MaterialInfo() = default;
 	~MaterialInfo() = default;
 	MaterialInfo(const MaterialInfo&) = default;
@@ -108,23 +134,3 @@ struct MaterialInfo
 	MaterialInfo(MaterialInfo&&) noexcept = default;
 	MaterialInfo& operator=(MaterialInfo&&) noexcept = default;
 };
-
-struct Model
-{
-	// Meshes
-	std::vector<MeshInfo> meshInfos;
-
-	// Bones
-	//std::vector<BoneInfo> totalBoneInfos;
-
-	// <NodeId, <BoneIndex, parentIndex>>
-	struct BoneLink
-	{
-		std::string boneName;
-		int32_t boneIndex;
-		int32_t parentBoneIndex;
-	};
-
-	std::unordered_map<uint64_t, BoneLink> totalBoneMap;
-};
-

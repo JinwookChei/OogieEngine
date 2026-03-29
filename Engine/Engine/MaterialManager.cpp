@@ -21,6 +21,8 @@ void MaterialManager::TestLoad()
 {
 	ITexture* pWhiteTexture = nullptr;
 	if (false == TextureManager::Instance()->GetTexture(&pWhiteTexture, 0)) DEBUG_BREAK();
+	ITexture* pDefaultNormalTexture = nullptr;
+	if (false == TextureManager::Instance()->GetTexture(&pDefaultNormalTexture, 1)) DEBUG_BREAK();
 	ITexture* pBricks_Color = nullptr;
 	if (false == TextureManager::Instance()->GetTexture(&pBricks_Color, 10)) DEBUG_BREAK();
 	ITexture* pBricks_Normal = nullptr;
@@ -59,7 +61,6 @@ void MaterialManager::TestLoad()
 	particleComputeMaterialDesc.textureNum = 0;
 	IMaterial* pParticleComputeMaterial = CreateMaterial(particleComputeMaterialDesc, 1);
 
-
 	MaterialDesc particlePassMaterialDesc;
 	particlePassMaterialDesc.shaderType = E_SHADER_PRESET::PARTICLE_RENDER;
 	particlePassMaterialDesc.samplerState = E_SAMPLER_PRESET::LINEAR_CLAMP;
@@ -75,6 +76,19 @@ void MaterialManager::TestLoad()
 	blitPassMaterialDesc.textureNum = 1;
 	IMaterial* pMat = CreateMaterial(blitPassMaterialDesc, 3);
 
+
+	MaterialDesc matDesc0;
+	matDesc0.shaderType = E_SHADER_PRESET::STATIC_MESH;
+	matDesc0.samplerState = E_SAMPLER_PRESET::LINEAR_CLAMP;
+	matDesc0.blendState = E_BLEND_PRESET::OPAQUE_BLEND;
+	matDesc0.textureNum = 2;
+	matDesc0.shineness = 0.7f;
+	matDesc0.specularColor = { 0.7f, 0.7f, 0.7f };
+	IMaterial* pMat0 = CreateMaterial(matDesc0, 9);
+	pMat0->SetTextures(0, pWhiteTexture);
+	pMat0->SetTextures(1, pDefaultNormalTexture);
+
+
 	MaterialDesc matDesc1;
 	matDesc1.shaderType = E_SHADER_PRESET::STATIC_MESH;
 	matDesc1.samplerState = E_SAMPLER_PRESET::LINEAR_CLAMP;
@@ -85,7 +99,6 @@ void MaterialManager::TestLoad()
 	IMaterial* pMat1 = CreateMaterial(matDesc1, 10);
 	pMat1->SetTextures(0, pBricks_Color);
 	pMat1->SetTextures(1, pBricks_Normal);
-
 
 	MaterialDesc matDesc2;
 	matDesc2.shaderType = E_SHADER_PRESET::SKINNED_MESH;

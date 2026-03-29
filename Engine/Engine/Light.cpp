@@ -1,10 +1,12 @@
 #include "stdafx.h"
+#include "StaticMeshComponent.h"
 #include "Light.h"
 
 IPSO* Light::GLightPSO = nullptr;
 
 Light::Light()
-	: diffuseColor_(1.0f, 1.0f, 1.0f, 1.0f)
+	: pStaticMesh_(nullptr)
+	, diffuseColor_(1.0f, 1.0f, 1.0f, 1.0f)
 	, specularColor_(0.8f, 0.8f, 0.8f, 1.0f)
 	, ambientColor_(0.3f, 0.3f, 0.3f, 1.0f)
 {
@@ -27,6 +29,8 @@ Light::Light()
 	{
 		GLightPSO->AddRef();
 	}
+
+	pStaticMesh_ = CreateComponent<StaticMeshComponent>();
 }
 
 Light::~Light()
@@ -46,6 +50,15 @@ void Light::Tick(double deltaTime)
 
 void Light::BeginPlay()
 {
+	IMesh* pMesh;
+	IMaterial* pMaterial;
+	MeshManager::Instance()->GetMesh(&pMesh, 12);
+	MaterialManager::Instance()->GetMaterial(&pMaterial, 9);
+	pStaticMesh_->InitPSO(1, 1, E_DEPTH_PRESET::DEPTH_ENABLE_WRITE, E_RASTERIZER_PRESET::SOLID);
+	pStaticMesh_->GetPSO()->SetMeshToSlot(0, pMesh);
+	pStaticMesh_->GetPSO()->SetMaterialToSlot(0, pMaterial);
+
+	//pTransform_->SetScale({ 0.5f, 0.5f ,0.5f ,0.0f });
 }
 
 void Light::Render()

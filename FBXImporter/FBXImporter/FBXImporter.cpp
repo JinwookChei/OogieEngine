@@ -13,7 +13,7 @@ FBXImporter::FBXImporter()
 	, geoMatrix_()
 	, globalMatrix_()
 {
-	
+
 }
 
 FBXImporter::~FBXImporter()
@@ -43,7 +43,28 @@ ULONG __stdcall FBXImporter::Release()
 }
 
 
-bool FBXImporter::ImportModel(Model* pOutModel, const std::string& file)
+bool FBXImporter::ImportStaticModel(StaticModel* pOutModel, const std::string& file)
+{
+	if (!Init(file))
+	{
+		DEBUG_BREAK();
+		return false;
+	}
+
+	if (nullptr == pOutModel)
+	{
+		DEBUG_BREAK();
+		return false;
+	}
+
+	pOutModel->meshInfos.clear();
+	fbxsdk::FbxNode* pRootNode = pScene_->GetRootNode();
+	ExtractStaticMeshInfo(pOutModel, pRootNode, 0);
+	return true;
+	return true;
+}
+
+bool FBXImporter::ImportSkeletalModel(SkeletalModel* pOutModel, const std::string& file)
 {
 	if (!Init(file))
 	{
@@ -61,7 +82,7 @@ bool FBXImporter::ImportModel(Model* pOutModel, const std::string& file)
 
 	fbxsdk::FbxNode* pRootNode = pScene_->GetRootNode();
 	ExtractBones(pOutModel, pRootNode, -1);
-	ExtractMeshInfo(pOutModel, pRootNode, 0);
+	ExtractSkeletalMeshInfo(pOutModel, pRootNode, 0);
 	return true;
 }
 
@@ -140,7 +161,7 @@ fbxsdk::FbxMesh* FBXImporter::FindMesh(fbxsdk::FbxNode* pNode)
 	return nullptr;
 }
 
-void FBXImporter::ExtractMeshInfo(Model* pModel, fbxsdk::FbxNode* pNode, int idx)
+void FBXImporter::ExtractSkeletalMeshInfo(SkeletalModel* pModel, fbxsdk::FbxNode* pNode, int idx)
 {
 	if (idx == 0)
 	{
@@ -156,7 +177,7 @@ void FBXImporter::ExtractMeshInfo(Model* pModel, fbxsdk::FbxNode* pNode, int idx
 	fbxsdk::FbxMesh* pMesh = pNode->GetMesh();
 	if (nullptr != pMesh)
 	{
-		MeshInfo mInfo;
+		SkeletalMeshInfo mInfo;
 		mInfo.meshName = pMesh->GetName();
 		mInfo.meshSubsetCount = pNode->GetMaterialCount();
 		mInfo.controlPointCount = pMesh->GetControlPointsCount();
@@ -186,17 +207,13 @@ void FBXImporter::ExtractMeshInfo(Model* pModel, fbxsdk::FbxNode* pNode, int idx
 			mInfo.indices[i].reserve(mInfo.polygonCount * 3);
 		}
 
-		/////////////////////////////////////////
 		geoMatrix_.SetT(pNode->GetGeometricTranslation(FbxNode::eSourcePivot));
 		geoMatrix_.SetR(pNode->GetGeometricRotation(FbxNode::eSourcePivot));
 		geoMatrix_.SetS(pNode->GetGeometricScaling(FbxNode::eSourcePivot));
 		globalMatrix_ = pNode->EvaluateGlobalTransform();
 		globalMatrix_ = globalMatrix_ * geoMatrix_;
-		/////////////////////////////////////////
 
 		fbxsdk::FbxVector4* pControlPoints = pMesh->GetControlPoints();
-		
-
 		std::unordered_map<SkinnedMeshVertex, uint32_t> vertexCache;
 		std::vector<uint32_t> vertexCpIndexCache;
 		vertexCpIndexCache.reserve(mInfo.polygonCount * 3);
@@ -215,32 +232,15 @@ void FBXImporter::ExtractMeshInfo(Model* pModel, fbxsdk::FbxNode* pNode, int idx
 			{
 				int cpIndex = pMesh->GetPolygonVertex(poly, vert);
 
-				// 여기서 모든 속성 추출
 				SkinnedMeshVertex v;
-
-				//////////////////////////////////////////////////////////////////////////////
-				// 1. 원본 로컬 좌표
 				FbxVector4 localPos = pControlPoints[cpIndex];
-				// 2. 글로벌 행렬 곱하기 (좌표계 변환 반영)
 				FbxVector4 globalPos = globalMatrix_.MultT(localPos);
 				v.position.X = globalPos[0];
 				v.position.Y = globalPos[1];
 				v.position.Z = globalPos[2];
-				//////////////////////////////////////////////////////////////////////////////
-
-				/*v.position.X = pControlPoints[cpIndex][0];
-				v.position.Y = pControlPoints[cpIndex][1];
-				v.position.Z = pControlPoints[cpIndex][2];*/
 
 				bool res1 = ExtractColor(&v.color, pMesh, cpIndex, polygonVertexCounter);
-				if (false == res1)
-				{
-					//DEBUG_BREAK();
-					//return false;
-				}
-
-				//bool res2 = ExtractUV_1(&v.uv, pMesh, cpIndex, polygonVertexCounter);
-				bool res2 = ExtractUV_2(&v.uv, pMesh, poly, vert);
+				bool res2 = ExtractUV(&v.uv, pMesh, poly, vert);
 				if (false == res2)
 				{
 					DEBUG_BREAK();
@@ -262,7 +262,6 @@ void FBXImporter::ExtractMeshInfo(Model* pModel, fbxsdk::FbxNode* pNode, int idx
 				polygonVertexCounter++;
 
 				// 중복되는 Vertex들 최적화.
-
 				unsigned int matIndex;
 				if (false == ExtractMaterialIndex(&matIndex, pMesh, poly))
 				{
@@ -302,15 +301,167 @@ void FBXImporter::ExtractMeshInfo(Model* pModel, fbxsdk::FbxNode* pNode, int idx
 
 
 		// Bone && Skin
-		ExtractBindBoneSkin(&mInfo, *pModel, pMesh);
-		SkinDataToVertexData(&mInfo, vertexCpIndexCache);
+				// Bone && Skin
+		if (mInfo.isSkeletalMesh)
+		{
+			ExtractBindBoneSkin(&mInfo, *pModel, pMesh);
+			SkinDataToVertexData(&mInfo, vertexCpIndexCache);
+		}
 
 		pModel->meshInfos.push_back(std::move(mInfo));
 	}
 
 	for (int32_t c = 0; c < pNode->GetChildCount(); ++c)
 	{
-		ExtractMeshInfo(pModel, pNode->GetChild(c), idx + 1);
+		ExtractSkeletalMeshInfo(pModel, pNode->GetChild(c), idx + 1);
+	}
+}
+
+void FBXImporter::ExtractStaticMeshInfo(StaticModel* pModel, fbxsdk::FbxNode* pNode, int idx)
+{
+	if (idx == 0)
+	{
+		pModel->meshInfos.clear();
+		pModel->meshInfos.reserve(16);
+	}
+
+	if (nullptr == pNode)
+	{
+		return;
+	}
+
+	fbxsdk::FbxMesh* pMesh = pNode->GetMesh();
+	if (nullptr != pMesh)
+	{
+		StaticMeshInfo mInfo;
+		mInfo.meshName = pMesh->GetName();
+		mInfo.meshSubsetCount = pNode->GetMaterialCount();
+		mInfo.controlPointCount = pMesh->GetControlPointsCount();
+		mInfo.materialElementCount = pMesh->GetElementMaterialCount();
+		mInfo.polygonCount = pMesh->GetPolygonCount();
+		mInfo.deformerCount = pMesh->GetDeformerCount();
+		if (0 < mInfo.deformerCount)
+		{
+			mInfo.isSkeletalMesh = true;
+		}
+		else
+		{
+			mInfo.isSkeletalMesh = false;
+		}
+
+		mInfo.isTriangulated = pMesh->IsTriangleMesh();
+		if (mInfo.isTriangulated == false)
+		{
+			DEBUG_BREAK();
+			return;
+		}
+
+		mInfo.vertices.reserve(mInfo.polygonCount * 3);
+		mInfo.indices.resize(mInfo.meshSubsetCount);
+		for (int i = 0; i < mInfo.meshSubsetCount; ++i)
+		{
+			mInfo.indices[i].reserve(mInfo.polygonCount * 3);
+		}
+
+		geoMatrix_.SetT(pNode->GetGeometricTranslation(FbxNode::eSourcePivot));
+		geoMatrix_.SetR(pNode->GetGeometricRotation(FbxNode::eSourcePivot));
+		geoMatrix_.SetS(pNode->GetGeometricScaling(FbxNode::eSourcePivot));
+		globalMatrix_ = pNode->EvaluateGlobalTransform();
+		globalMatrix_ = globalMatrix_ * geoMatrix_;
+
+
+		fbxsdk::FbxVector4* pControlPoints = pMesh->GetControlPoints();
+		std::unordered_map<SimpleVertex, uint32_t> vertexCache;
+		std::vector<uint32_t> vertexCpIndexCache;
+		vertexCpIndexCache.reserve(mInfo.polygonCount * 3);
+
+		bool isExistTangent = false;
+		int polygonVertexCounter = 0;
+		for (int poly = 0; poly < mInfo.polygonCount; ++poly)
+		{
+			int polySize = pMesh->GetPolygonSize(poly);
+			if (polySize != 3)
+			{
+				DEBUG_BREAK();
+			}
+
+			for (int vert = 0; vert < polySize; ++vert)
+			{
+				int cpIndex = pMesh->GetPolygonVertex(poly, vert);
+
+				SimpleVertex v;
+				FbxVector4 localPos = pControlPoints[cpIndex];
+				FbxVector4 globalPos = globalMatrix_.MultT(localPos);
+				v.position.X = globalPos[0];
+				v.position.Y = globalPos[1];
+				v.position.Z = globalPos[2];
+
+				bool res1 = ExtractColor(&v.color, pMesh, cpIndex, polygonVertexCounter);
+				bool res2 = ExtractUV(&v.UV, pMesh, poly, vert);
+				if (false == res2)
+				{
+					DEBUG_BREAK();
+					return;
+				}
+				bool res3 = ExtractNormal(&v.normal, pMesh, cpIndex, polygonVertexCounter);
+				if (false == res3)
+				{
+					DEBUG_BREAK();
+					return;
+				}
+				bool res4 = ExtractTangent(&v.tangent, &isExistTangent, pMesh, cpIndex, polygonVertexCounter);
+				if (false == res4)
+				{
+					DEBUG_BREAK();
+					return;
+				}
+
+				polygonVertexCounter++;
+
+				// 중복되는 Vertex들 최적화.
+				unsigned int matIndex;
+				if (false == ExtractMaterialIndex(&matIndex, pMesh, poly))
+				{
+					DEBUG_BREAK();
+					return;
+				}
+				if (matIndex >= mInfo.meshSubsetCount)
+				{
+					DEBUG_BREAK();
+					return;
+				}
+
+				uint32_t vertexIndex;
+				auto iter = vertexCache.find(v);
+				if (iter != vertexCache.end())
+				{
+					// cache에 이미 존재.
+					vertexIndex = iter->second;
+					mInfo.indices[matIndex].push_back(vertexIndex);
+				}
+				else
+				{
+					// cache에 존재 하지 않음.
+					vertexIndex = mInfo.vertices.size();
+					mInfo.vertices.push_back(v);
+					mInfo.indices[matIndex].push_back(vertexIndex);
+					vertexCpIndexCache.push_back(cpIndex);
+					vertexCache[v] = vertexIndex;
+				}
+			}
+		}
+
+		if (false == isExistTangent)
+		{
+			CalculateTangent(&mInfo.vertices, mInfo.indices);
+		}
+
+		pModel->meshInfos.push_back(std::move(mInfo));
+	}
+
+	for (int32_t c = 0; c < pNode->GetChildCount(); ++c)
+	{
+		ExtractStaticMeshInfo(pModel, pNode->GetChild(c), idx + 1);
 	}
 }
 
@@ -384,7 +535,6 @@ bool FBXImporter::ExtractTangent(Float4* pOutTangent, bool* pOutExistTangent, fb
 		*pOutExistTangent = true;
 	}
 
-
 	int index = 0;
 	fbxsdk::FbxVector4 localTangent;
 	switch (element->GetMappingMode())
@@ -421,7 +571,7 @@ bool FBXImporter::ExtractTangent(Float4* pOutTangent, bool* pOutExistTangent, fb
 		DEBUG_BREAK();
 		return false;
 	}
-	
+
 	FbxVector4 worldTangent = globalMatrix_.Inverse().Transpose().MultT(localTangent);
 	worldTangent.Normalize();
 	pOutTangent->X = localTangent[0];
@@ -432,63 +582,7 @@ bool FBXImporter::ExtractTangent(Float4* pOutTangent, bool* pOutExistTangent, fb
 	return true;
 }
 
-bool FBXImporter::ExtractUV_1(Float2* pOutUV, fbxsdk::FbxMesh* pMesh, int polyIndex, int vertexIndex)
-{
-	int uvElementCnt = pMesh->GetElementUVCount();
-	if (uvElementCnt != 1)
-	{
-		//DEBUG_BREAK();
-	}
-
-	FbxGeometryElementUV* element = pMesh->GetElementUV(0);
-	if (!element)
-	{
-		DEBUG_BREAK();
-		return false;
-	}
-
-	int index = 0;
-	switch (element->GetMappingMode())
-	{
-	case FbxGeometryElement::eByControlPoint:
-	{
-		index = polyIndex;
-		break;
-	}
-	case FbxGeometryElement::eByPolygonVertex:
-	{
-		index = vertexIndex;
-		break;
-	}
-	default:
-		return false;
-	}
-
-	switch (element->GetReferenceMode())
-	{
-	case FbxGeometryElement::eDirect:
-	{
-		FbxVector2 uv = element->GetDirectArray().GetAt(index);
-		pOutUV->X = uv[0];
-		pOutUV->Y = 1.0 - uv[1];
-		return true;
-	}
-	case FbxGeometryElement::eIndexToDirect:
-	{
-		int directIndex = element->GetIndexArray().GetAt(index);
-		FbxVector2 uv = element->GetDirectArray().GetAt(directIndex);
-		pOutUV->X = uv[0];
-		pOutUV->Y = 1.0 - uv[1];
-		return true;
-	}
-	default:
-		break;
-	}
-
-	return false;
-}
-
-bool FBXImporter::ExtractUV_2(Float2* pOutUV, fbxsdk::FbxMesh* pMesh, int polyIndex, int vertexIndex)
+bool FBXImporter::ExtractUV(Float2* pOutUV, fbxsdk::FbxMesh* pMesh, int polyIndex, int vertexIndex)
 {
 	int uvElementCnt = pMesh->GetElementUVCount();
 	if (uvElementCnt != 1)
@@ -628,7 +722,7 @@ bool FBXImporter::ExtractMaterialIndex(unsigned int* pOutIndex, fbxsdk::FbxMesh*
 		}
 		else if (referenceMode == FbxLayerElement::eDirect)
 		{
-			*pOutIndex = polyIndex;	
+			*pOutIndex = polyIndex;
 			if (*pOutIndex != 0)
 			{
 				DEBUG_BREAK();
@@ -754,161 +848,124 @@ void FBXImporter::CalculateTangent(std::vector<SkinnedMeshVertex>* pVertices, co
 			v2.tangent = Float4(tan2.X, tan2.Y, tan2.Z, handedness2);
 		}
 	}
-
-
-	////// ------------------ [ Version 1 ] ----------------------------
-	//const size_t vertexCount = pVertices->size();
-
-	//std::vector<Float4> tanSum(vertexCount, { 0.0f,0.0f, 0.0f, 0.0f });
-	//std::vector<Float4> bitanSum(vertexCount, { 0.0f,0.0f, 0.0f, 0.0f });
-
-	//// 1. 삼각형 단위 누적
-
-	//for (size_t j = 0; j < indices.size(); ++j)
-	//{
-	//	for (size_t i = 0; i < indices[j].size(); i += 3)
-	//	{
-	//		uint32_t i0 = indices[j][i + 0];
-	//		uint32_t i1 = indices[j][i + 1];
-	//		uint32_t i2 = indices[j][i + 2];
-
-	//		const SkinnedMeshVertex& v0 = (*pVertices)[i0];
-	//		const SkinnedMeshVertex& v1 = (*pVertices)[i1];
-	//		const SkinnedMeshVertex& v2 = (*pVertices)[i2];
-
-	//		Float4 P0;
-	//		P0.X = v0.position.X;
-	//		P0.Y = v0.position.Y;
-	//		P0.Z = v0.position.Z;
-	//		P0.W = 0.0f;
-
-	//		Float4 P1;
-	//		P1.X = v1.position.X;
-	//		P1.Y = v1.position.Y;
-	//		P1.Z = v1.position.Z;
-	//		P1.W = 0.0f;
-
-	//		Float4 P2;
-	//		P2.X = v2.position.X;
-	//		P2.Y = v2.position.Y;
-	//		P2.Z = v2.position.Z;
-	//		P2.W = 0.0f;
-
-	//		Float4 UV0;
-	//		UV0.X = v0.uv.X;
-	//		UV0.Y = v0.uv.Y;
-	//		UV0.Z = 0.0f;
-	//		UV0.W = 0.0f;
-
-	//		Float4 UV1;
-	//		UV1.X = v1.uv.X;
-	//		UV1.Y = v1.uv.Y;
-	//		UV1.Z = 0.0f;
-	//		UV1.W = 0.0f;
-
-	//		Float4 UV2;
-	//		UV2.X = v2.uv.X;
-	//		UV2.Y = v2.uv.Y;
-	//		UV2.Z = 0.0f;
-	//		UV2.W = 0.0f;
-
-
-	//		Float4 P0_to_P1;
-	//		MATH::VectorSub(P0_to_P1, P1, P0);
-	//		Float4 P0_to_P2;
-	//		MATH::VectorSub(P0_to_P2, P2, P0);
-
-	//		Float4 UV0_to_UV1;
-	//		MATH::VectorSub(UV0_to_UV1, UV1, UV0);
-	//		Float4 UV0_to_UV2;
-	//		MATH::VectorSub(UV0_to_UV2, UV2, UV0);
-
-	//		float denom = UV0_to_UV1.X * UV0_to_UV2.Y - UV0_to_UV2.X * UV0_to_UV1.Y;
-	//		if (fabs(denom) < 1e-6f) continue;
-	//		float f = 1.0f / denom;
-
-
-	//		Float4 E1;
-	//		MATH::VectorScale(E1, P0_to_P1, UV0_to_UV2.Y);
-	//		Float4 E2;
-	//		MATH::VectorScale(E2, P0_to_P2, UV0_to_UV1.Y);
-	//		Float4 SubE1;
-	//		MATH::VectorSub(SubE1, E1, E2);
-	//		Float4 T;
-	//		MATH::VectorScale(T, SubE1, f);
-
-
-	//		Float4 E3;
-	//		MATH::VectorScale(E3, P0_to_P2, UV0_to_UV1.X);
-	//		Float4 E4;
-	//		MATH::VectorScale(E4, P0_to_P1, UV0_to_UV2.X);
-	//		Float4 SubE2;
-	//		MATH::VectorSub(SubE2, E3, E4);
-	//		Float4 B;
-	//		MATH::VectorScale(B, SubE2, f);
-
-	//		MATH::VectorAdd(tanSum[i0], tanSum[i0], T);
-	//		MATH::VectorAdd(tanSum[i1], tanSum[i1], T);
-	//		MATH::VectorAdd(tanSum[i2], tanSum[i2], T);
-
-	//		MATH::VectorAdd(bitanSum[i0], bitanSum[i0], B);
-	//		MATH::VectorAdd(bitanSum[i1], bitanSum[i1], B);
-	//		MATH::VectorAdd(bitanSum[i2], bitanSum[i2], B);
-	//	}
-	//}
-	//// 2. Vertex 단위 정규화 + Gram-Schmidt
-	//for (size_t i = 0; i < vertexCount; ++i)
-	//{
-	//	Float4 N;
-	//	N.X = (*pVertices)[i].normal.X;
-	//	N.Y = (*pVertices)[i].normal.Y;
-	//	N.Z = (*pVertices)[i].normal.Z;
-	//	N.W = 0.0f;
-	//	Float4 T = tanSum[i];
-	//	Float4 B = bitanSum[i];
-
-
-	//	// T 외적 N
-	//	// 정사영 제거(Gram-Schmidt 정규직교화)
-	//	//T = DirectX::XMVector3Normalize(T - N * DirectX::XMVector3Dot(N, T));
-	//	float d;
-	//	MATH::VectorDot(d, N, T);
-	//	Float4 sN;
-	//	MATH::VectorScale(sN, N, d);
-	//	Float4 subN;
-	//	MATH::VectorSub(subN, T, sN);
-	//	MATH::VectorNormalize(T, subN);
-
-	//	// handedness
-	//	//float handedness = (DirectX::XMVectorGetX(DirectX::XMVector3Dot(DirectX::XMVector3Cross(N, T), B)) < 0.0f) ? -1.0f : 1.0f;
-	//	Float3 N3;
-	//	N3.X = N.X;
-	//	N3.Y = N.Y;
-	//	N3.Z = N.Z;
-
-	//	Float3 T3;
-	//	T3.X = T.X;
-	//	T3.Y = T.Y;
-	//	T3.Z = T.Z;
-
-	//	Float3 B3;
-	//	B3.X = B.X;
-	//	B3.Y = B.Y;
-	//	B3.Z = B.Z;
-
-	//	Float3 Cross;
-	//	MATH::VectorCross(Cross, N3, T3);
-	//	float Dot;
-	//	MATH::VectorDot(Dot, Cross, B3);
-	//	float handedness = Dot < 0.0f ? -1.0f : 1.0f;
-
-	//	(*pVertices)[i].tangent = T;
-	//	(*pVertices)[i].tangent.W = handedness;
-	//}
 }
 
+void FBXImporter::CalculateTangent(std::vector<SimpleVertex>* pVertices, const std::vector<std::vector<uint32_t>>& indices)
+{
+	const size_t vertexCount = pVertices->size();
+	for (size_t i = 0; i < indices.size(); ++i)
+	{
+		for (size_t j = 0; j < indices[i].size(); j += 3)
+		{
+			uint32_t i0 = indices[i][j + 0];
+			uint32_t i1 = indices[i][j + 1];
+			uint32_t i2 = indices[i][j + 2];
 
-void FBXImporter::ExtractBones(Model* pOutModel, FbxNode* pNode, int32_t parentBoneIndex)
+			SimpleVertex& v0 = (*pVertices)[i0];
+			SimpleVertex& v1 = (*pVertices)[i1];
+			SimpleVertex& v2 = (*pVertices)[i2];
+
+			Float4 pos0;
+			pos0.X = v0.position.X;
+			pos0.Y = v0.position.Y;
+			pos0.Z = v0.position.Z;
+			pos0.W = 1.0f;
+
+			Float4 pos1;
+			pos1.X = v1.position.X;
+			pos1.Y = v1.position.Y;
+			pos1.Z = v1.position.Z;
+			pos1.W = 1.0f;
+
+			Float4 pos2;
+			pos2.X = v2.position.X;
+			pos2.Y = v2.position.Y;
+			pos2.Z = v2.position.Z;
+			pos2.W = 1.0f;
+
+			Float4 edge1 = pos1 - pos0;
+			Float4 edge2 = pos2 - pos0;
+
+			Float2 uv0;
+			uv0.X = v0.UV.X;
+			uv0.Y = v0.UV.Y;
+
+			Float2 uv1;
+			uv1.X = v1.UV.X;
+			uv1.Y = v1.UV.Y;
+
+			Float2 uv2;
+			uv2.X = v2.UV.X;
+			uv2.Y = v2.UV.Y;
+
+			Float2 deltaUV1 = uv1 - uv0;
+			Float2 deltaUV2 = uv2 - uv0;
+
+			float f = 1.0f / (deltaUV1.X * deltaUV2.Y - deltaUV2.X * deltaUV1.Y);
+
+			Float3 T;
+			T.X = f * (deltaUV2.Y * edge1.X - deltaUV1.Y * edge2.X);
+			T.Y = f * (deltaUV2.Y * edge1.Y - deltaUV1.Y * edge2.Y);
+			T.Z = f * (deltaUV2.Y * edge1.Z - deltaUV1.Y * edge2.Z);
+			MATH::VectorNormalize(T, T);
+
+			Float3 B;
+			B.X = f * (-deltaUV2.X * edge1.X + deltaUV1.X * edge2.X);
+			B.Y = f * (-deltaUV2.X * edge1.Y + deltaUV1.X * edge2.Y);
+			B.Z = f * (-deltaUV2.X * edge1.Z + deltaUV1.X * edge2.Z);
+			MATH::VectorNormalize(B, B);
+
+			// tangent
+			// 그람슈미트
+			// T = Normalize(T - N * dot(N, T));
+			float n0DotT;
+			MATH::VectorDot(n0DotT, v0.normal, T);
+			Float3 s0;
+			MATH::VectorScale(s0, v0.normal, n0DotT);
+			Float3 tan0 = T - s0;
+			MATH::VectorNormalize(tan0, tan0);
+
+			float n1DotT;
+			MATH::VectorDot(n1DotT, v1.normal, T);
+			Float3 s1;
+			MATH::VectorScale(s1, v1.normal, n1DotT);
+			Float3 tan1 = T - s1;
+			MATH::VectorNormalize(tan1, tan1);
+
+			float n2DotT;
+			MATH::VectorDot(n2DotT, v2.normal, T);
+			Float3 s2;
+			MATH::VectorScale(s2, v2.normal, n2DotT);
+			Float3 tan2 = T - s2;
+			MATH::VectorNormalize(tan2, tan2);
+
+			// Handedness
+			Float3 n0CrossT;
+			MATH::VectorCross(n0CrossT, v0.normal, T);
+			float b0DotB;
+			MATH::VectorDot(b0DotB, n0CrossT, B);
+			float handedness0 = b0DotB < 0.0f ? -1.0f : 1.0f;
+
+			Float3 n1CrossT;
+			MATH::VectorCross(n1CrossT, v1.normal, T);
+			float b1DotB;
+			MATH::VectorDot(b1DotB, n1CrossT, B);
+			float handedness1 = b1DotB < 0.0f ? -1.0f : 1.0f;
+
+			Float3 n2CrossT;
+			MATH::VectorCross(n2CrossT, v2.normal, T);
+			float b2DotB;
+			MATH::VectorDot(b2DotB, n2CrossT, B);
+			float handedness2 = b2DotB < 0.0f ? -1.0f : 1.0f;
+
+			v0.tangent = Float4(tan0.X, tan0.Y, tan0.Z, handedness0);
+			v1.tangent = Float4(tan1.X, tan1.Y, tan1.Z, handedness1);
+			v2.tangent = Float4(tan2.X, tan2.Y, tan2.Z, handedness2);
+		}
+	}
+}
+
+void FBXImporter::ExtractBones(SkeletalModel* pOutModel, FbxNode* pNode, int32_t parentBoneIndex)
 {
 	if (!pNode) return;
 
@@ -917,7 +974,7 @@ void FBXImporter::ExtractBones(Model* pOutModel, FbxNode* pNode, int32_t parentB
 
 	if (attr && attr->GetAttributeType() == FbxNodeAttribute::eSkeleton)
 	{
-		Model::BoneLink boneLink;
+		SkeletalModel::BoneLink boneLink;
 		boneLink.boneName = pNode->GetName();
 		currentBoneIndex = pOutModel->totalBoneMap.size();
 		boneLink.boneIndex = currentBoneIndex;
@@ -934,7 +991,7 @@ void FBXImporter::ExtractBones(Model* pOutModel, FbxNode* pNode, int32_t parentB
 	}
 }
 
-void FBXImporter::ExtractBindBoneSkin(MeshInfo* pOutMeshInfo, Model& model, fbxsdk::FbxMesh* pMesh)
+void FBXImporter::ExtractBindBoneSkin(SkeletalMeshInfo* pOutMeshInfo, SkeletalModel& model, fbxsdk::FbxMesh* pMesh)
 {
 	const int controlPointCount = pMesh->GetControlPointsCount();
 	pOutMeshInfo->skinDatas.resize(controlPointCount);
@@ -964,7 +1021,7 @@ void FBXImporter::ExtractBindBoneSkin(MeshInfo* pOutMeshInfo, Model& model, fbxs
 
 			// 현재 cluster에 매칭되는 BoneIndex
 			//int boneIndex = it->second;
-			const Model::BoneLink& boneLink = it->second;
+			const SkeletalModel::BoneLink& boneLink = it->second;
 
 			pOutMeshInfo->bones[boneLink.boneIndex].name = boneLink.boneName;
 			pOutMeshInfo->bones[boneLink.boneIndex].parentIndex = boneLink.parentBoneIndex;
@@ -980,7 +1037,7 @@ void FBXImporter::ExtractBindBoneSkin(MeshInfo* pOutMeshInfo, Model& model, fbxs
 			pCluster->GetTransformMatrix(localBindPose);
 			pOutMeshInfo->bones[boneLink.boneIndex].localBindPose = ConvertFbxAMatrixToFloat4x4_SIMD(localBindPose);
 			MATH::MatrixInverse(pOutMeshInfo->bones[boneLink.boneIndex].invLocalBindPose, pOutMeshInfo->bones[boneLink.boneIndex].localBindPose);
-			
+
 
 			// 현재 cluster에 영향받고있는 Indices들.
 			const int indexCount = pCluster->GetControlPointIndicesCount();	// 현재 cluster에 영향받고있는 index의 갯수
@@ -1050,7 +1107,7 @@ void FBXImporter::NormalizeSkinWeights(std::vector<SkinWeight>& skinData)
 	}
 }
 
-void FBXImporter::SkinDataToVertexData(MeshInfo* pOutMeshInfo, const std::vector<uint32_t>& vertexCpIndexCache)
+void FBXImporter::SkinDataToVertexData(SkeletalMeshInfo* pOutMeshInfo, const std::vector<uint32_t>& vertexCpIndexCache)
 {
 	for (int i = 0; i < pOutMeshInfo->vertices.size(); ++i)
 	{

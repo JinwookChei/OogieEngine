@@ -1,8 +1,8 @@
 #pragma once
 #include "SceneAxisInfo.h"
 
-
-class Model;
+class StaticModel;
+class SkeletalModel;
 class FBXImporter : public IFBXImporter
 {
 public:
@@ -14,30 +14,32 @@ public:
 	ULONG __stdcall Release() override;
 
 private:
-	bool ImportModel(Model* pOutModel, const std::string& file) override;
+	bool ImportStaticModel(StaticModel* pOutModel, const std::string& file) override;
+	bool ImportSkeletalModel(SkeletalModel* pOutModel, const std::string& file) override;
 	bool ImportAnimation(Animation* pOutAnimation, const std::string& file, double samplingRate = 1.0 / 60.0) override;
 
 	bool Init(const std::string& file);
 	fbxsdk::FbxMesh* FindMesh(fbxsdk::FbxNode* pNode);
 	
 	// Model
-	void ExtractMeshInfo(Model* pModel, fbxsdk::FbxNode* pNode, int idx);
+	void ExtractSkeletalMeshInfo(SkeletalModel* pModel, fbxsdk::FbxNode* pNode, int idx);
+	void ExtractStaticMeshInfo(StaticModel* pModel, fbxsdk::FbxNode* pNode, int idx);
 	bool ExtractNormal(Float3* pOutNormal, fbxsdk::FbxMesh* pMesh, int cpIndex, int polygonVertexIndex);
 	bool ExtractTangent(Float4* pOutTangent, bool* pOutExistTangent, fbxsdk::FbxMesh* pMesh, int cpIndex, int polygonVertexIndex);
-	bool ExtractUV_1(Float2* pOutUV, fbxsdk::FbxMesh* pMesh, int polyIndex, int vertexIndex);
-	bool ExtractUV_2(Float2* pOutUV, fbxsdk::FbxMesh* pMesh, int polyIndex, int vertexIndex);
+	bool ExtractUV(Float2* pOutUV, fbxsdk::FbxMesh* pMesh, int polyIndex, int vertexIndex);
 	bool ExtractColor(Float4* pOutColor, fbxsdk::FbxMesh* pMesh, int cpIndex, int polygonVertexIndex);
 	bool ExtractMaterialIndex(unsigned int* pOutIndex, fbxsdk::FbxMesh* pMesh, int polyIndex);
 	void CalculateTangent(std::vector<SkinnedMeshVertex>* pVertices, const std::vector<std::vector<uint32_t>>& indices);
+	void CalculateTangent(std::vector<SimpleVertex>* pVertices, const std::vector<std::vector<uint32_t>>& indices);
 	
 	// Skeleton
-	void ExtractBones(Model* pOutModel, FbxNode* pNode, int32_t parentBoneIndex);
+	void ExtractBones(SkeletalModel* pOutModel, FbxNode* pNode, int32_t parentBoneIndex);
 
 	// Skin
-	void ExtractBindBoneSkin(MeshInfo* pOutMeshInfo, Model& model, fbxsdk::FbxMesh* pMesh);
+	void ExtractBindBoneSkin(SkeletalMeshInfo* pOutMeshInfo, SkeletalModel& model, fbxsdk::FbxMesh* pMesh);
 	void AddBoneWeight(SkinWeight& skinData, int boneIndex, float weight);
 	void NormalizeSkinWeights(std::vector<SkinWeight>& skinData);
-	void SkinDataToVertexData(MeshInfo* pOutMeshInfo, const std::vector<uint32_t>& vertexCpIndexCache);
+	void SkinDataToVertexData(SkeletalMeshInfo* pOutMeshInfo, const std::vector<uint32_t>& vertexCpIndexCache);
 
 	// Material
 	MaterialInfo ExtractMaterialInfo(fbxsdk::FbxSurfaceMaterial* material);

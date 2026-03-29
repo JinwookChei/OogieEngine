@@ -12,7 +12,8 @@ private:
 	static void TestLoad();
 
 public:
-	static bool LoadModel(Model* pOutModel, const std::string& file);
+	static bool LoadStaticModel(StaticModel* pOutModel, const std::string& file);
+	static bool LoadSkeletalModel(SkeletalModel* pOutModel, const std::string& file);
 	static bool LoadAnimation(Animation* pOutAnimation, const std::string& file);
 	static void ShutDown();
 };

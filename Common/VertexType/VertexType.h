@@ -28,12 +28,31 @@ struct SimpleVertex
 	Float2 UV;
 	Float4 tangent;
 
+	SimpleVertex() = default;
+
 	SimpleVertex(Float3 pos, Float4 tmpcolor, Float3 tmpnormal, Float2 uv, Float4 tan)
 		: position(pos), color(tmpcolor), normal(tmpnormal), UV(uv), tangent(tan) {
 	}
 
 	SimpleVertex(Float3 pos, Float4 tmpcolor, Float3 tmpnormal, Float2 uv)
 		: position(pos), color(tmpcolor), normal(tmpnormal), UV(uv), tangent() {
+	}
+
+	// unordered_map Àü¿ë.
+	bool operator==(const SimpleVertex& other) const
+	{
+		return position.X == other.position.X
+			&& position.Y == other.position.Y
+			&& position.Z == other.position.Z
+			&& color.X == other.color.X
+			&& color.Y == other.color.Y
+			&& color.Z == other.color.Z
+			&& color.W == other.color.W
+			&& normal.X == other.normal.X
+			&& normal.Y == other.normal.Y
+			&& normal.Z == other.normal.Z
+			&& UV.X == other.UV.X
+			&& UV.Y == other.UV.Y;
 	}
 };
 
@@ -100,6 +119,35 @@ struct std::hash<SkinnedMeshVertex>
 
 		HashCombine(seed, HashFloat(v.uv.X));
 		HashCombine(seed, HashFloat(v.uv.Y));
+
+		return seed;
+	}
+};
+
+
+template<>
+struct std::hash<SimpleVertex>
+{
+	size_t operator()(const SimpleVertex& v) const noexcept
+	{
+		size_t seed = 0;
+
+		HashCombine(seed, HashFloat(v.position.X));
+		HashCombine(seed, HashFloat(v.position.Y));
+		HashCombine(seed, HashFloat(v.position.Z));
+
+		HashCombine(seed, HashFloat(v.color.X));
+		HashCombine(seed, HashFloat(v.color.Y));
+		HashCombine(seed, HashFloat(v.color.Z));
+		HashCombine(seed, HashFloat(v.color.W));
+
+		HashCombine(seed, HashFloat(v.normal.X));
+		HashCombine(seed, HashFloat(v.normal.Y));
+		HashCombine(seed, HashFloat(v.normal.Z));
+		HashCombine(seed, HashFloat(v.normal.X));
+
+		HashCombine(seed, HashFloat(v.UV.X));
+		HashCombine(seed, HashFloat(v.UV.Y));
 
 		return seed;
 	}

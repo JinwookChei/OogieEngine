@@ -27,7 +27,6 @@ BOOL APIENTRY DllMain( HMODULE hModule,
     return TRUE;
 }
 
-
 extern "C" __declspec(dllexport) bool CreateFBXImporter(void** ppVoid)
 {
     IFBXImporter* pNewImporter = new FBXImporter;

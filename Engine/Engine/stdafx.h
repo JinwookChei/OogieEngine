@@ -91,7 +91,6 @@
 #include "TextureManager.h"
 #include "AnimationManager.h"
 #include "MaterialManager.h"
-//#include "RasterizerManager.h"
 #include "Debugger.h"
 #include "Transform.h"
 #include "World.h"
@@ -102,6 +101,7 @@
 #include "SpotLight.h"
 #include "ActorComponent.h"
 #include "SceneComponent.h"
+#include "MeshComponent.h"
 
 
 extern SkeletonManager* GSkeletonManager;

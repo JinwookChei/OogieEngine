@@ -6,6 +6,7 @@ enum class ELightType
 	PointLight
 };
 
+class StaticMeshComponent;
 class Light
 	: public Actor
 {
@@ -33,6 +34,8 @@ public:
 
 private:
 	void CleanUp() override;
+
+	StaticMeshComponent* pStaticMesh_;
 
 	Color diffuseColor_;
 
