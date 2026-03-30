@@ -7,7 +7,6 @@
 Actor::Actor()
 	: pTransform_(new Transform)
 	, ownedComponents_()
-	//pBoundVolume(new BoundVolume)
 {
 	levelLink_.prev_ = nullptr;
 	levelLink_.next_ = nullptr;
@@ -16,7 +15,6 @@ Actor::Actor()
 	pTransform_->SetScale({ 1.0f, 1.0f, 1.0f, 0.0f });
 	pTransform_->SetRotation({ 0.0f, 0.0f, 0.0f, 0.0f });
 	pTransform_->SetPosition({ 0.0f, 0.0f, 0.0f, 1.0f });
-	//pBoundVolume->Init(pRenderer_, pTransform_);
 }
 
 Actor::~Actor()
@@ -73,23 +71,8 @@ LINK_NODE* Actor::LevelLink()
 	return &levelLink_;
 }
 
-//BoundVolume* Actor::GetBoundVolume() const
-//{
-//	return pBoundVolume;
-//}
-//
-//RenderComponent* Actor::GetRenderComponent() const
-//{
-//	return pRenderer_;
-//}
-
 void Actor::CleanUp()
 {
-	//if (nullptr != pBoundVolume)
-	//{
-	//	delete pBoundVolume;
-	//	pBoundVolume = nullptr;
-	//}
 	DeleteComponents();
 
 	if (nullptr != pTransform_)

@@ -57,10 +57,6 @@ public:
 
 	LINK_NODE* LevelLink();
 
-	//BoundVolume* GetBoundVolume() const;
-
-	// RenderComponent* GetRenderComponent() const;
-
 protected:
 	ENGINE_API virtual void CleanUp();
 
@@ -68,8 +64,6 @@ protected:
 	Transform* pTransform_;
 
 	std::unordered_map<std::type_index, ActorComponent*> ownedComponents_;
-
-	//BoundVolume* pBoundVolume;
 
 	LINK_NODE levelLink_;
 

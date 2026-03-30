@@ -36,16 +36,15 @@ public:
 	void __stdcall UpdateRenderParticleFrame(const RenderParticleData& renderParticleData) override;
 	void __stdcall UpdateAnimationFrame(const AnimConstantBuffer& animFrameData) override;
 
+	void __stdcall RenderBegin() override;
 	void __stdcall Render(IPSO* pipelineStateObject) override;
 	void __stdcall RenderParticle_Test(IPSO* pipelineStateObject) override;
 	void __stdcall Compute(IPSO* pipelineStateObject, UINT threadGroupCountX, UINT threadGroupCountY, UINT threadGroupCountZ) override;
 
 	void __stdcall UnBindSRVs(bool bVS, bool bPS) override;
 
-	void __stdcall RenderMerge(IRenderTarget* pSrcTarget) override;
 
-	void __stdcall RenderBegin() override;
-	void __stdcall RenderFinal(IRenderTarget* pSrcTarget) override;
+	
 	void __stdcall RenderEnd() override;
 
 	uint64_t __stdcall DrawCallCount() override;
@@ -65,8 +64,6 @@ private:
 
 	bool InitBackBuffer(UINT width, UINT height, const Color& clearColor);
 
-	//bool InitParticlePass();
-
 	void CleanUp();
 
 	bool coInit_;
@@ -84,6 +81,4 @@ private:
 	IDXGISwapChain* pSwapChain_;
 
 	RenderTarget* pBackBuffer_;
-
-	//ParticlePass* pParticlePass_;
 };

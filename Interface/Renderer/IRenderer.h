@@ -5,9 +5,6 @@ struct CameraFrameData
 	Float4x4 view;
 	Float4x4 projection;
 
-	//Float4x4 inverseView;
-	//Float4x4 inverseProjection;
-
 	Float2 screenOffset;
 	Float2 screenScale;
 	Float2 screenResolution;
@@ -81,20 +78,18 @@ struct IRenderer : public IUnknown {
 	virtual void __stdcall UpdateRenderParticleFrame(const RenderParticleData& renderParticleData) = 0;
 
 	virtual void __stdcall UpdateAnimationFrame(const AnimConstantBuffer& animFrameData) = 0;
-	 
-	virtual void __stdcall Render(IPSO* pipelineStateObject) = 0;
-	virtual void __stdcall RenderParticle_Test(IPSO* pipelineStateObject) = 0;
-	virtual void __stdcall Compute(IPSO* pipelineStateObject, UINT threadGroupCountX, UINT threadGroupCountY, UINT threadGroupCountZ) = 0;
-
-	virtual void __stdcall UnBindSRVs(bool bVS, bool bPS) = 0;
-
-	virtual void __stdcall RenderMerge(IRenderTarget* pSrcTarget) = 0;
 	
 	virtual void __stdcall RenderBegin() = 0;
 
-	virtual void __stdcall RenderFinal(IRenderTarget* pSrcTarget) = 0;
+	virtual void __stdcall Render(IPSO* pipelineStateObject) = 0;
+
+	virtual void __stdcall RenderParticle_Test(IPSO* pipelineStateObject) = 0;
+
+	virtual void __stdcall Compute(IPSO* pipelineStateObject, UINT threadGroupCountX, UINT threadGroupCountY, UINT threadGroupCountZ) = 0;
 
 	virtual void __stdcall RenderEnd() = 0;
+
+	virtual void __stdcall UnBindSRVs(bool bVS, bool bPS) = 0;
 
 	virtual uint64_t __stdcall DrawCallCount() = 0;
 };

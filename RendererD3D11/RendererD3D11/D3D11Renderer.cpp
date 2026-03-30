@@ -11,12 +11,6 @@
 #include "ConstantBuffer.h"
 #include "Rasterizer.h"
 #include "PipelineStateObject.h"
-#include "DebugPass.h"
-#include "GeometryPass.h"
-#include "LightPass.h"
-#include "ParticlePass.h"
-#include "MergePass.h"
-#include "FinalPass.h"
 
 Renderer* GRenderer = nullptr;
 
@@ -131,7 +125,7 @@ bool __stdcall Renderer::Initialize(void* hWnd, uint32_t width, uint32_t height)
 		return false;
 	}
 
-	if (false == InitBackBuffer(width, height, { 0.01f, 0.02f, 0.07f, 1.0f }))
+	if (false == InitBackBuffer(width, height, { 0.0f, 0.0f, 0.0f, 1.0f }))
 	{
 		return false;
 	}
@@ -263,7 +257,12 @@ void __stdcall Renderer::UpdateAnimationFrame(const AnimConstantBuffer& animFram
 
 	ConstantBuffer::GConstantPerAnimation->Update(&cbPerAnimation);
 	ConstantBuffer::GConstantPerAnimation->BindConstantBufferVS(2);
-	//ConstantBuffer::GConstantPerAnimation->BindConstantBufferPS(2);
+}
+
+void __stdcall Renderer::RenderBegin()
+{
+	pBackBuffer_->Clear();
+	pBackBuffer_->Bind();
 }
 
 void __stdcall Renderer::Render(IPSO* pipelineStateObject)
@@ -449,22 +448,6 @@ void __stdcall Renderer::UnBindSRVs(bool bVS, bool bPS)
 	{
 		pDeviceContext_->PSSetShaderResources(0, 16, nullSRVs);
 	}
-}
-
-void __stdcall Renderer::RenderMerge(IRenderTarget* pSrcTarget)
-{
-	//pMergePass_->Render(pSrcTarget);
-}
-
-void __stdcall Renderer::RenderBegin()
-{
-	pBackBuffer_->Clear();
-	pBackBuffer_->Bind();
-}
-
-void __stdcall Renderer::RenderFinal(IRenderTarget* pSrcTarget)
-{
-	//pFinalPass_->Render(pSrcTarget);
 }
 
 void __stdcall Renderer::RenderEnd()

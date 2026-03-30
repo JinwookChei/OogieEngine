@@ -45,9 +45,6 @@
     <Filter Include="DirectXTex">
       <UniqueIdentifier>{b8a7c758-f17b-4ba4-9261-125c2b007fe1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Renderer\RenderPass">
-      <UniqueIdentifier>{48e17c90-4cab-4e3d-af23-d2fa0ef5a54d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\State">
       <UniqueIdentifier>{68e458d7-76d0-45f3-9723-5f9b775c9690}</UniqueIdentifier>
     </Filter>
@@ -125,24 +122,6 @@
     </ClInclude>
     <ClInclude Include="Shader.h">
       <Filter>Source Files\Shader</Filter>
-    </ClInclude>
-    <ClInclude Include="ParticlePass.h">
-      <Filter>Source Files\Renderer\RenderPass</Filter>
-    </ClInclude>
-    <ClInclude Include="DebugPass.h">
-      <Filter>Source Files\Renderer\RenderPass</Filter>
-    </ClInclude>
-    <ClInclude Include="GeometryPass.h">
-      <Filter>Source Files\Renderer\RenderPass</Filter>
-    </ClInclude>
-    <ClInclude Include="LightPass.h">
-      <Filter>Source Files\Renderer\RenderPass</Filter>
-    </ClInclude>
-    <ClInclude Include="MergePass.h">
-      <Filter>Source Files\Renderer\RenderPass</Filter>
-    </ClInclude>
-    <ClInclude Include="FinalPass.h">
-      <Filter>Source Files\Renderer\RenderPass</Filter>
     </ClInclude>
     <ClInclude Include="DepthState.h">
       <Filter>Source Files\State</Filter>
@@ -241,24 +220,6 @@
     </ClCompile>
     <ClCompile Include="Shader.cpp">
       <Filter>Source Files\Shader</Filter>
-    </ClCompile>
-    <ClCompile Include="ParticlePass.cpp">
-      <Filter>Source Files\Renderer\RenderPass</Filter>
-    </ClCompile>
-    <ClCompile Include="DebugPass.cpp">
-      <Filter>Source Files\Renderer\RenderPass</Filter>
-    </ClCompile>
-    <ClCompile Include="GeometryPass.cpp">
-      <Filter>Source Files\Renderer\RenderPass</Filter>
-    </ClCompile>
-    <ClCompile Include="LightPass.cpp">
-      <Filter>Source Files\Renderer\RenderPass</Filter>
-    </ClCompile>
-    <ClCompile Include="MergePass.cpp">
-      <Filter>Source Files\Renderer\RenderPass</Filter>
-    </ClCompile>
-    <ClCompile Include="FinalPass.cpp">
-      <Filter>Source Files\Renderer\RenderPass</Filter>
     </ClCompile>
     <ClCompile Include="DepthState.cpp">
       <Filter>Source Files\State</Filter>

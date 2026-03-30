@@ -161,17 +161,11 @@
     <ClInclude Include="..\..\Interface\Renderer\IShader.h" />
     <ClInclude Include="..\..\Interface\Renderer\ITexture.h" />
     <ClInclude Include="DepthState.h" />
-    <ClInclude Include="FinalPass.h" />
-    <ClInclude Include="GeometryPass.h" />
-    <ClInclude Include="LightPass.h" />
-    <ClInclude Include="MergePass.h" />
     <ClInclude Include="PipelineStateObject.h" />
     <ClInclude Include="RenderResourceFactory.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="BlendState.h" />
     <ClInclude Include="ConstantBuffer.h" />
-    <ClInclude Include="DebugPass.h" />
-    <ClInclude Include="ParticlePass.h" />
     <ClInclude Include="D3D11Renderer.h" />
     <ClInclude Include="DeferredTarget.h" />
     <ClInclude Include="Material.h" />
@@ -184,17 +178,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DepthState.cpp" />
-    <ClCompile Include="FinalPass.cpp" />
-    <ClCompile Include="GeometryPass.cpp" />
-    <ClCompile Include="LightPass.cpp" />
-    <ClCompile Include="MergePass.cpp" />
     <ClCompile Include="PipelineStateObject.cpp" />
     <ClCompile Include="RenderResourceFactory.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="BlendState.cpp" />
     <ClCompile Include="ConstantBuffer.cpp" />
-    <ClCompile Include="DebugPass.cpp" />
-    <ClCompile Include="ParticlePass.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="D3D11Renderer.cpp" />
     <ClCompile Include="DeferredTarget.cpp" />
