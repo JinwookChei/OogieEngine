@@ -160,29 +160,17 @@ void TransformWidget::Render()
                 bool updateFlag = false;
                 if (DrawVec3Control("Location", loc, 0.0f))
                 {
-                    /*actorLoc.X = loc[0];
-                    actorLoc.Y = loc[1];
-                    actorLoc.Z = loc[2];
-                    actorLoc.W = 1.0f;*/
                     transform.SetActorPositionForEditor({ loc[0], loc[1], loc[2], 1.0f });
                     updateFlag = true;
                     
                 }
                 if (DrawVec3Control("Rotation", rot, 0.0f))
                 {
-                    /*actorRot.X = rot[0];
-                    actorRot.Y = rot[1];
-                    actorRot.Z = rot[2];
-                    actorRot.W = 0.0f;*/
                     transform.SetActorRotationForEditor({ rot[0] , rot[1], rot[2], 0.0f });
                     updateFlag = true;
                 }
                 if (DrawVec3Control("Scale", scale, 1.0f))
                 {
-                    /*actorScale.X = scale[0];
-                    actorScale.Y = scale[1];
-                    actorScale.Z = scale[2];
-                    actorScale.W = 0.0f;*/
                     transform.SetActorScaleForEditor({ scale[0],scale[1] ,scale[2] ,0.0f});
                     updateFlag = true;
                 }

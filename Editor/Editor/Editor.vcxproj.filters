@@ -201,6 +201,9 @@
     <ClInclude Include="TransformWidget.h">
       <Filter>Source Files\FF\Widgets</Filter>
     </ClInclude>
+    <ClInclude Include="GBufferViewerWindow.h">
+      <Filter>Source Files\FF\Windows</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -268,6 +271,9 @@
     </ClCompile>
     <ClCompile Include="TransformWidget.cpp">
       <Filter>Source Files\FF\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="GBufferViewerWindow.cpp">
+      <Filter>Source Files\FF\Windows</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

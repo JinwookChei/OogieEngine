@@ -32,6 +32,7 @@ public:
 	//virtual void OnEvent(ya::Event& e) {}
 
 	ImGuiWindowFlags GetFlag() const { return flags_; }
+	void AddFlag(ImGuiWindowFlags flag);
 	eState GetState() const { return state_; }
 	void SetState(eState state) { state_ = state; }
 	ImVec2 GetSize() { return size_; }
@@ -55,6 +56,5 @@ private:
 	ImGuiWindowFlags flags_;
 	eState state_;	
 	ImVec2 size_;
-
 	std::vector<EditorWidget*> widgets_;
 };

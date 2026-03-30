@@ -57,8 +57,6 @@ void Light::BeginPlay()
 	pStaticMesh_->InitPSO(1, 1, E_DEPTH_PRESET::DEPTH_ENABLE_WRITE, E_RASTERIZER_PRESET::SOLID);
 	pStaticMesh_->GetPSO()->SetMeshToSlot(0, pMesh);
 	pStaticMesh_->GetPSO()->SetMaterialToSlot(0, pMaterial);
-
-	//pTransform_->SetScale({ 0.5f, 0.5f ,0.5f ,0.0f });
 }
 
 void Light::Render()

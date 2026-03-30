@@ -130,8 +130,6 @@ void Level::OnRenderActors()
 {
 	for (int i = 0; i < (int)E_ACTOR_TYPE::MAX; ++i)
 	{
-		//if (i == (int)E_ACTOR_TYPE::LIGHT) continue;
-
 		LINK_NODE* pActorIter = actorList_[i].GetHead();
 		while (pActorIter)
 		{

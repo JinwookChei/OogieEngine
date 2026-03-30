@@ -2,16 +2,21 @@
 #include "EditorContext.h"
 #include "EditorWindow.h"
 #include "EditorCore.h"
+#include "GBufferViewerWindow.h"
 #include "InspectorWindow.h"
 #include "SceneWindow.h"
 
-bool bShowExitPopup = false;
+bool GShowExitPopup = false;
+bool GGameModeFlag = false;
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
-
 IEditorBindCamera* GBoundCamera = nullptr;
 IEditorBindPickedActor* GPickedActor = nullptr;
 EditorCore* GEditor = nullptr;
+SceneWindow* SceneWindow::GSceneWindow = nullptr;
+InspectorWindow* InspectorWindow::GInspectorWindow = nullptr;
+GBufferViewerWindow* GBufferViewerWindow::GGBufferViewerWindow = nullptr;
+
 
 namespace Editor
 {
@@ -41,8 +46,6 @@ EditorCore::EditorCore()
 	, viewportFocused_(false)
 	, viewportHovered_(false)
 	, guizmoType_(-1)
-	//, pBoundCamera_(nullptr)
-	//, pPickedActor_(nullptr)
 {
 }
 
@@ -115,12 +118,8 @@ void __stdcall EditorCore::OnBegin()
 
 void __stdcall EditorCore::OnRender()
 {
-	//pEditorContext_->Begin();
-
 	Update();
-
 	Render();
-
 	pEditorContext_->End();
 }
 
@@ -197,6 +196,16 @@ bool __stdcall EditorCore::BindPickedActor(IEditorBindPickedActor* pPickedActor)
 	return true;
 }
 
+bool __stdcall EditorCore::GetGameModeFlag()
+{
+	return GGameModeFlag;
+}
+
+void __stdcall EditorCore::SetGameModeFlag(bool flag)
+{
+	GGameModeFlag = flag;
+}
+
 
 bool EditorCore::InitContext(IApplication* pApplication, IRenderer* pRenderer, float dpiScale)
 {
@@ -206,13 +215,15 @@ bool EditorCore::InitContext(IApplication* pApplication, IRenderer* pRenderer, f
 
 bool EditorCore::InitWindows()
 {
-	//InspectorWindow
-	InspectorWindow* pInspector = new InspectorWindow();
-	editorWindows_.insert(std::make_pair(L"InspectorWindow", pInspector));
+	InspectorWindow::GInspectorWindow = new InspectorWindow();
+	editorWindows_.insert(std::make_pair(L"InspectorWindow", InspectorWindow::GInspectorWindow));
 	//EventCallback = &EditorApplication::OnEvent;
 
-	SceneWindow* pScene = new SceneWindow();
-	editorWindows_.insert(std::make_pair(L"SceneWindow", pScene));
+	GBufferViewerWindow::GGBufferViewerWindow = new GBufferViewerWindow;
+	editorWindows_.insert(std::make_pair(L"GBufferViewerWindow", GBufferViewerWindow::GGBufferViewerWindow));
+	
+	SceneWindow::GSceneWindow = new SceneWindow();
+	editorWindows_.insert(std::make_pair(L"SceneWindow", SceneWindow::GSceneWindow));
 
 	return true;
 }
@@ -222,11 +233,11 @@ void EditorCore::Update()
 	// ESC 키 감지
 	if (ImGui::IsKeyPressed(ImGuiKey_Escape))
 	{
-		bShowExitPopup = true;
+		GShowExitPopup = true;
 		ImGui::OpenPopup("Exit Program");
 	}
 	// 종료 팝업
-	if (bShowExitPopup)
+	if (GShowExitPopup)
 	{
 		ImGui::SetNextWindowSize(ImVec2(400, 200));
 		ImGuiViewport* viewport = ImGui::GetMainViewport();
@@ -263,9 +274,8 @@ void EditorCore::Update()
 			if (ImGui::Button("Cancel", ImVec2(buttonWidth, 0)))
 			{
 				ImGui::CloseCurrentPopup();
-				bShowExitPopup = false;
+				GShowExitPopup = false;
 			}
-
 			ImGui::EndPopup();
 		}
 	}
@@ -292,7 +302,7 @@ void EditorCore::Render()
 		// 테두리 제거.
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
 		// Imgui의 윈도우 장식 제거 + 고정
-		flags_ |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
+		flags_ |= /*ImGuiWindowFlags_NoTitleBar |*/ ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
 		flags_ |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
 	}
 
@@ -303,7 +313,7 @@ void EditorCore::Render()
 
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
 	bool Active = static_cast<bool>(state_);
-	ImGui::Begin("EditorApplication", &Active, flags_);
+	ImGui::Begin("OogieEngine", &Active, flags_);
 	ImGui::PopStyleVar();
 
 	if (fullScreen_)
@@ -323,7 +333,31 @@ void EditorCore::Render()
 	}
 	//style.WindowMinSize.x = minWinSizeX;
 
+	if (ImGui::BeginMenuBar())
+	{
+		if (ImGui::BeginMenu("File"))
+		{
+			ImGui::EndMenu();
+		}
+		if (ImGui::BeginMenu("Excute"))
+		{
+			if (ImGui::MenuItem("RunGame", "Ctrl+O"))
+			{
+				SetGameModeFlag(true);
+			}
+			ImGui::EndMenu();
+		}
+		if (ImGui::BeginMenu("View"))
+		{
+			if (ImGui::MenuItem("Open GBufferViewer", "Ctrl+O"))
+			{
+				GBufferViewerWindow::GGBufferViewerWindow->SetState(EditorWindow::eState::Active);
+			}
+			ImGui::EndMenu();
+		}
 
+		ImGui::EndMenuBar();
+	}
 
 	//if (ImGui::BeginMenuBar())
 	//{
@@ -395,7 +429,11 @@ void EditorCore::Render()
 
 	for (auto& iter : editorWindows_)
 	{
-		iter.second->OnRender();
+		if (EditorWindow::eState::Active == iter.second->GetState())
+		{
+			iter.second->OnRender();
+		}
+
 	}
 
 	ImGui::End(); // EditorApplication end

@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "StaticMeshComponent.h"
 #include "Light.h"
 #include "SpotLight.h"
 
@@ -27,6 +28,7 @@ void SpotLight::Tick(double deltaTime)
 void SpotLight::BeginPlay()
 {
 	Light::BeginPlay();
+	pStaticMesh_->GetComponentTransform().SetRotation({ 0.0f, -90.0f, 0.0f, 0.0f });
 }
 
 LightRenderData SpotLight::GetData()

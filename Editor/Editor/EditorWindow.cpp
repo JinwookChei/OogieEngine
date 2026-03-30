@@ -39,10 +39,8 @@ ULONG __stdcall EditorWindow::Release(void)
 void EditorWindow::OnRender()
 {
 	Begin();
-
 	Update();
 	Render();
-
 	End();
 }
 
@@ -55,6 +53,11 @@ void EditorWindow::Begin()
 void EditorWindow::End()
 {
 	ImGui::End();
+}
+
+void EditorWindow::AddFlag(ImGuiWindowFlags flag)
+{
+	flags_ |= flag;
 }
 
 void EditorWindow::Update()

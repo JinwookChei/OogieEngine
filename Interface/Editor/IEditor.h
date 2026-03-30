@@ -25,4 +25,8 @@ struct IEditor : public IUnknown
 	virtual bool __stdcall BindCamera(IEditorBindCamera* pCamera) = 0;
 
 	virtual bool __stdcall BindPickedActor(IEditorBindPickedActor* pPickedActor) = 0;
+
+	virtual bool __stdcall GetGameModeFlag() = 0;
+
+	virtual void __stdcall SetGameModeFlag(bool flag) = 0;
 };

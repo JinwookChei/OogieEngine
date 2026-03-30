@@ -37,6 +37,7 @@ public:
 private:
 	void CleanUp() override;
 
+protected:
 	StaticMeshComponent* pStaticMesh_;
 
 	Color diffuseColor_;

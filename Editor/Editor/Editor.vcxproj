@@ -180,6 +180,7 @@
     <ClInclude Include="..\..\ThirdParty\ImguiGizmo\ImGuizmo.h" />
     <ClInclude Include="..\..\ThirdParty\ImguiGizmo\ImSequencer.h" />
     <ClInclude Include="..\..\ThirdParty\ImguiGizmo\ImZoomSlider.h" />
+    <ClInclude Include="GBufferViewerWindow.h" />
     <ClInclude Include="EditorContext.h" />
     <ClInclude Include="EditorWidget.h" />
     <ClInclude Include="EditorWindow.h" />
@@ -218,6 +219,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="GBufferViewerWindow.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="EditorContext.cpp" />
     <ClCompile Include="EditorWidget.cpp" />

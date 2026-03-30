@@ -9,6 +9,8 @@ public:
 	SceneWindow();
 	~SceneWindow() override;
 
+	static SceneWindow* GSceneWindow;
+
 	//void Init()  override;
 	//void OnUpdate() override;
 	//void OnRender() override;
@@ -26,7 +28,7 @@ public:
 	void End() override;
 
 protected:
-	void CleanUp();
+	void CleanUp() override;
 	
 private:
 	//GameObject* mEditorCameraObject;
@@ -38,3 +40,5 @@ private:
 	bool ViewportHovered;
 	int GuizmoType;
 };
+
+//extern SceneWindow* SceneWindow::GSceneWindow;

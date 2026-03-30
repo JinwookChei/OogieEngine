@@ -37,10 +37,12 @@ void RunTimeMode::ToggleRunTimeMode()
 		break;
 	case E_RUNTIME_MODE::EDITOR:
 		GRunTimeMode->curMode_ = E_RUNTIME_MODE::GAME;
+		Editor::GetEditor()->SetGameModeFlag(false);
 		break;
 	default:
 		break;
 	}		
+	
 }
 
 E_RUNTIME_MODE RunTimeMode::GetCurrentMode()

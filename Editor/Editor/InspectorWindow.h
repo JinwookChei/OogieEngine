@@ -8,6 +8,7 @@ public:
 	InspectorWindow();
 	~InspectorWindow() override;
 
+	static InspectorWindow* GInspectorWindow;
 	//void Init()  override;
 	//void OnUpdate() override;
 	//void OnRender() override;

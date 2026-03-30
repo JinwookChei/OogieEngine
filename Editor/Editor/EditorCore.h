@@ -34,22 +34,16 @@ public:
 	float __stdcall EnableDpiAwareness() override;
 
 	void __stdcall OnBegin() override;
-
 	void __stdcall OnRender() override;
-
 	bool __stdcall IsWindowHovered(const char* name) override;
-
 	bool __stdcall IsGizmoHovered() const override;
-
 	bool __stdcall IsKeyboardCapturedByEditor() const override;
-
 	Float2 __stdcall GetMousePos() override;
-
 	Float2 __stdcall GetViewPortSize() override;
-	
 	bool __stdcall BindCamera(IEditorBindCamera* pCamera) override;
-
 	bool __stdcall BindPickedActor(IEditorBindPickedActor* pPickedActor) override;
+	bool __stdcall GetGameModeFlag() override;
+	void __stdcall SetGameModeFlag(bool flag) override;
 
 private:
 	bool InitContext(IApplication* pApplication, IRenderer* pRenderer, float dpiScale);
@@ -78,12 +72,6 @@ private:
 	bool viewportFocused_;
 	bool viewportHovered_;
 	int guizmoType_;
-
-public:
-
-	//IEditorBindCamera* pBoundCamera_;
-
-	//IEditorBindPickedActor* pPickedActor_;
 };
 
 

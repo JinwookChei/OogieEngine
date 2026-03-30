@@ -149,17 +149,10 @@ void Engine::Run()
 
 		Application::Instance()->WinPumpMessage();
 
-		// Calc DeltaTime
 		double deltaTime = TimeManager::CalcDeltaTime();
 
-		if(RunTimeMode::GetCurrentMode() == E_RUNTIME_MODE::EDITOR)
-		{
-			Editor::GetEditor()->OnBegin();
-		}
-
-		// Input Update
 		InputManager::Tick(deltaTime);
-		
+
 		GActorPicker->Tick(deltaTime);
 
 		// GameLoop
@@ -168,9 +161,13 @@ void Engine::Run()
 		GWorld->OnRender();
 		// GameLoop End
 
-		if (InputManager::IsDown(VK_F2))
+		if (InputManager::IsDown(VK_F2) || Editor::GetEditor()->GetGameModeFlag())
 		{
 			RunTimeMode::ToggleRunTimeMode();
+		}
+		if (RunTimeMode::GetCurrentMode() == E_RUNTIME_MODE::EDITOR)
+		{
+			Editor::GetEditor()->OnBegin();
 		}
 
 		// Blit RenderTarget 
