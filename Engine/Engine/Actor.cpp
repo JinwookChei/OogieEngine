@@ -5,7 +5,8 @@
 
 
 Actor::Actor()
-	: pTransform_(new Transform)
+	: actorType_(E_ACTOR_TYPE::NONE)
+	, pTransform_(new Transform)
 	, ownedComponents_()
 {
 	levelLink_.prev_ = nullptr;
@@ -69,6 +70,11 @@ void Actor::DeleteComponents()
 LINK_NODE* Actor::LevelLink()
 {
 	return &levelLink_;
+}
+
+E_ACTOR_TYPE Actor::GetActorType() const
+{
+	return actorType_;
 }
 
 void Actor::CleanUp()

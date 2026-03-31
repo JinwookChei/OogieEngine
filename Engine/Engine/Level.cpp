@@ -26,50 +26,23 @@ void Level::SpawnActorInternal(Actor* pActor, E_ACTOR_TYPE actorType)
 		return;
 	}
 
-	RegisterActor(pActor, actorType);
-
+	pActor->actorType_ = actorType;
+	RegisterActor(pActor);
 	pActor->BeginPlay();
 }
 
-void Level::SpawnCameraInternal(Camera* pCamera)
-{
-	if (nullptr == pCamera)
-	{
-		return;
-	} 
-
-	RegisterActor(pCamera, E_ACTOR_TYPE::CAMERA);
-
-	pCamera->BeginPlay();
-}
-
-void Level::SpawnLightInternal(Light* pLight)
-{
-	if (nullptr == pLight)
-	{
-		return;
-	}
-
-	RegisterActor(pLight, E_ACTOR_TYPE::LIGHT);
-
-	pLight->BeginPlay();
-}
-
-void Level::RegisterActor(Actor* pActor, E_ACTOR_TYPE actorType)
+void Level::RegisterActor(Actor* pActor)
 {
 	if (nullptr == pActor)
 	{
 		return;
 	}
-
-	actorList_[(int)actorType].PushBack(pActor->LevelLink());
+	actorList_[(int)pActor->GetActorType()].PushBack(pActor->LevelLink());
 }
-
 
 void Level::OnTick(double deltaTime)
 {
 	OnActorTick(deltaTime);
-
 	Tick(deltaTime);
 }
 

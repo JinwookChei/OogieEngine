@@ -1,7 +1,6 @@
 #pragma once
 
 class ActorComponent;
-
 class Actor : public IEditorBindPickedActor
 {
 public:
@@ -57,10 +56,14 @@ public:
 
 	LINK_NODE* LevelLink();
 
+	E_ACTOR_TYPE GetActorType() const;
+
 protected:
 	ENGINE_API virtual void CleanUp();
 
 protected:
+	E_ACTOR_TYPE actorType_;
+
 	Transform* pTransform_;
 
 	std::unordered_map<std::type_index, ActorComponent*> ownedComponents_;

@@ -176,5 +176,8 @@
     <ClInclude Include="..\..\Common\Asset\Particle.h">
       <Filter>Common\Asset</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Common\ActorType\ActorType.h">
+      <Filter>Common</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

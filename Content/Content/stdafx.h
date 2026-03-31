@@ -70,6 +70,7 @@
 
 
 // Common
+#include <Common/ActorType/ActorType.h>
 #include <Common/MathType/MathType.h>
 #include <Common/GeometryType/GeometryType.h>
 #include <Common/VertexType/VertexType.h>

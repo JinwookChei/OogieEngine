@@ -282,6 +282,9 @@
     <ClInclude Include="RunTimeMode.h">
       <Filter>Source Files\Mode</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Common\ActorType\ActorType.h">
+      <Filter>Common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">

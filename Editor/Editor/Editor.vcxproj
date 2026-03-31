@@ -146,6 +146,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Common\ActorType\ActorType.h" />
     <ClInclude Include="..\..\Common\Asset\Animation.h" />
     <ClInclude Include="..\..\Common\Asset\Model.h" />
     <ClInclude Include="..\..\Common\Asset\Particle.h" />

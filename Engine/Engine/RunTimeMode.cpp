@@ -42,7 +42,6 @@ void RunTimeMode::ToggleRunTimeMode()
 	default:
 		break;
 	}		
-	
 }
 
 E_RUNTIME_MODE RunTimeMode::GetCurrentMode()
