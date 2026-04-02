@@ -18,4 +18,7 @@ public:
 
 private:
 	void CleanUp() override;
+
+public:
+	ENGINE_API int __stdcall GetLightTypeForEditor() const override;
 };

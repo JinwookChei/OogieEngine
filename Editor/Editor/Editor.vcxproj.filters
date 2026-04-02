@@ -207,6 +207,9 @@
     <ClInclude Include="..\..\Common\ActorType\ActorType.h">
       <Filter>Common</Filter>
     </ClInclude>
+    <ClInclude Include="LightDetailWidget.h">
+      <Filter>Source Files\FF\Widgets</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -277,6 +280,9 @@
     </ClCompile>
     <ClCompile Include="GBufferViewerWindow.cpp">
       <Filter>Source Files\FF\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="LightDetailWidget.cpp">
+      <Filter>Source Files\FF\Widgets</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

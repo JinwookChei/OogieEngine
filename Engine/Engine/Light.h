@@ -1,9 +1,9 @@
 #pragma once
-enum class ELightType
+enum class E_LIGHT_TYPE
 {
-	DirectionLight = 0,
-	SpotLight,
-	PointLight
+	DIRECTION_LIGHT = 0,
+	SPOT_LIGHT,
+	POINT_LIGHT	
 };
 
 class StaticMeshComponent;
@@ -40,9 +40,22 @@ private:
 protected:
 	StaticMeshComponent* pStaticMesh_;
 
+	float intensity_;
+
 	Color diffuseColor_;
 
 	Color specularColor_;
 
 	Color ambientColor_;
+
+public:	
+	ENGINE_API Color __stdcall GetDiffuseColorForEditor() const override;
+	ENGINE_API Color __stdcall GetSpecularColorForEditor() const override;
+	ENGINE_API Color __stdcall GetAmbientColorForEditor() const override;
+	ENGINE_API void __stdcall SetDiffuseColorForEditor(const Color& color) override;
+	ENGINE_API void __stdcall SetSpecularColorForEditor(const Color& color) override;
+	ENGINE_API void __stdcall SetAmbientColorForEditor(const Color& color) override;
+
+	ENGINE_API float __stdcall GetLightIntensity() const override;
+	ENGINE_API void __stdcall SetLightIntensity(float intensity) override;
 };

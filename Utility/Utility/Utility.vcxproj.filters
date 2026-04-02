@@ -48,6 +48,9 @@
     <ClInclude Include="..\..\Common\GeometryType\GeometryType.h">
       <Filter>Common</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Common\ActorType\ActorType.h">
+      <Filter>Common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

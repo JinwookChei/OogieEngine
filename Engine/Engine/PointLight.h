@@ -25,4 +25,10 @@ private:
 	float attenuationConst_;
 	float attenuationLinear_;
 	float attenuationQuad_;
+
+public:
+	ENGINE_API int __stdcall GetLightTypeForEditor() const override;
+
+	ENGINE_API float __stdcall GetLightRange() const override;
+	ENGINE_API void __stdcall SetLightRange(float range) override;
 };

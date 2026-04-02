@@ -204,13 +204,14 @@ void __stdcall Renderer::UpdateLightFrame(const LightRenderData& lightFrameData)
 	cbPerLight.direction_D_S = lightFrameData.direction_D_S;
 	cbPerLight.range_S_P = lightFrameData.range_S_P;
 	cbPerLight.position_S_P = lightFrameData.position_S_P;
-	cbPerLight.exponent_S = lightFrameData.exponent_S;
+	cbPerLight.smooth_S = lightFrameData.smooth_S;
 	cbPerLight.innerAngle_S = lightFrameData.innerAngle_S;
 	cbPerLight.outerAngle_S = lightFrameData.outerAngle_S;
 	cbPerLight.attenuationConst_S_P = lightFrameData.attenuationConst_S_P;
 	cbPerLight.attenuationLinear_S_P = lightFrameData.attenuationLinear_S_P;
 	cbPerLight.attenuationQuad_S_P = lightFrameData.attenuationQuad_S_P;
 	cbPerLight.lightType = lightFrameData.lightType;
+	cbPerLight.lightIntensity = lightFrameData.lightIntensity;
 	cbPerLight.pad = lightFrameData.pad;
 
 	ConstantBuffer::GConstantPerLight->Update(&cbPerLight);

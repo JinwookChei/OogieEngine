@@ -1,5 +1,6 @@
 #pragma once
 class EditorWidget;
+class LightDetailWidget;
 class TransformWidget;
 class InspectorWindow
 	: public EditorWindow
@@ -28,6 +29,7 @@ protected:
 	void CleanUp();
 
 private:
-
 	TransformWidget* pTransformWidget_;
+
+	LightDetailWidget* pLightDetailWidget_;
 };

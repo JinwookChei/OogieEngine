@@ -30,5 +30,30 @@ struct IEditorBindTransform
 struct IEditorBindPickedActor
 {
 	virtual IEditorBindTransform& __stdcall GetTransformForEditor() = 0;
-};
+	virtual E_ACTOR_TYPE __stdcall GetActorTypeForEditor() const = 0;
 
+	// Light	
+	// 0 -> DirectionLight
+	// 1 -> SpotLight
+	// 2 -> PointLight
+	virtual int __stdcall GetLightTypeForEditor() const = 0;
+
+
+	virtual Color __stdcall GetDiffuseColorForEditor() const  = 0;
+	virtual Color __stdcall GetSpecularColorForEditor() const  = 0;
+	virtual Color __stdcall GetAmbientColorForEditor() const  = 0;
+	virtual void __stdcall SetDiffuseColorForEditor(const Color& color) = 0;
+	virtual void __stdcall SetSpecularColorForEditor(const Color& color) = 0;
+	virtual void __stdcall SetAmbientColorForEditor(const Color& color) = 0;
+
+	virtual float __stdcall GetLightIntensity() const = 0;
+	virtual float __stdcall GetLightRange() const = 0;
+	virtual float __stdcall GetLightSmooth() const = 0;
+	virtual float __stdcall GetLightInnerAngle() const = 0;
+	virtual float __stdcall GetLightOuterAngle() const = 0;
+	virtual void __stdcall SetLightIntensity(float intensity) = 0;
+	virtual void __stdcall SetLightRange(float range) = 0;
+	virtual void __stdcall SetLightSmooth(float smooth) = 0;
+	virtual void __stdcall SetLightInnerAngle(float innerAngle) = 0;
+	virtual void __stdcall SetLightOuterAngle(float outerAngle) = 0;
+};

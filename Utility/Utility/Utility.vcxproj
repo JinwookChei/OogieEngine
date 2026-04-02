@@ -140,6 +140,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Common\ActorType\ActorType.h" />
     <ClInclude Include="..\..\Common\GeometryType\GeometryType.h" />
     <ClInclude Include="..\..\Common\MathType\MathType.h" />
     <ClInclude Include="Math.h" />

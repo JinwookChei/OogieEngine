@@ -1,7 +1,8 @@
 #pragma once
 
 class ActorComponent;
-class Actor : public IEditorBindPickedActor
+class Actor 
+	: public IEditorBindPickedActor
 {
 public:
 	friend class Level;
@@ -72,4 +73,23 @@ protected:
 
 public:
 	ENGINE_API IEditorBindTransform& __stdcall GetTransformForEditor() override;
+	ENGINE_API E_ACTOR_TYPE __stdcall GetActorTypeForEditor() const override;
+
+	ENGINE_API int __stdcall GetLightTypeForEditor() const override;
+	ENGINE_API Color __stdcall GetDiffuseColorForEditor() const override;
+	ENGINE_API Color __stdcall GetSpecularColorForEditor() const override;
+	ENGINE_API Color __stdcall GetAmbientColorForEditor() const override;
+	ENGINE_API void __stdcall SetDiffuseColorForEditor(const Color& color) override;
+	ENGINE_API void __stdcall SetSpecularColorForEditor(const Color& color) override;
+	ENGINE_API void __stdcall SetAmbientColorForEditor(const Color& color) override;
+	ENGINE_API float __stdcall GetLightIntensity() const override;
+	ENGINE_API float __stdcall GetLightRange() const override;
+	ENGINE_API float __stdcall GetLightSmooth() const override;
+	ENGINE_API float __stdcall GetLightInnerAngle() const override;
+	ENGINE_API float __stdcall GetLightOuterAngle() const override;
+	ENGINE_API void __stdcall SetLightIntensity(float intensity) override;
+	ENGINE_API void __stdcall SetLightRange(float range) override;
+	ENGINE_API void __stdcall SetLightSmooth(float smooth) override;
+	ENGINE_API void __stdcall SetLightInnerAngle(float innerAngle) override;
+	ENGINE_API void __stdcall SetLightOuterAngle(float outerAngle) override;
 };

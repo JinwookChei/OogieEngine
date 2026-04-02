@@ -37,7 +37,7 @@ struct LightRenderData
 	float range_S_P;
 	Float3 position_S_P;
 
-	float exponent_S;
+	float smooth_S;
 	float innerAngle_S;
 	float outerAngle_S;
 
@@ -49,8 +49,9 @@ struct LightRenderData
 	// 1 -> SpotLight
 	// 2 -> PointLight
 	float lightType;
+	float lightIntensity;
 
-	Float2 pad;
+	float pad;
 };
 
 // 임시. -> Const-> Struct buffer로 바꿔야함.

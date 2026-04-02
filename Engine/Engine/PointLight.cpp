@@ -2,7 +2,7 @@
 #include "PointLight.h"
 
 PointLight::PointLight()
-	:range_(3.0f),
+	:range_(30.0f),
 	attenuationConst_(1.0f),
 	attenuationLinear_(0.09f),
 	attenuationQuad_(0.032f)
@@ -36,7 +36,8 @@ LightRenderData PointLight::GetData()
 	data.attenuationConst_S_P = attenuationConst_;
 	data.attenuationLinear_S_P = attenuationLinear_;
 	data.attenuationQuad_S_P = attenuationQuad_;
-	data.lightType = (float)ELightType::PointLight;
+	data.lightType = (float)E_LIGHT_TYPE::POINT_LIGHT;
+	data.lightIntensity = intensity_;
 	return data;
 }
 
@@ -52,4 +53,19 @@ void PointLight::SetRange(float range)
 
 void PointLight::CleanUp()
 {
+}
+
+int __stdcall PointLight::GetLightTypeForEditor() const
+{
+	return (int)E_LIGHT_TYPE::POINT_LIGHT;
+}
+
+float __stdcall PointLight::GetLightRange() const
+{
+	return range_;
+}
+
+void __stdcall PointLight::SetLightRange(float range)
+{
+	SetRange(range);
 }

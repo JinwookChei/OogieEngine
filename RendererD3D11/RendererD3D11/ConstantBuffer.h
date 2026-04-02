@@ -35,8 +35,8 @@ struct CBPerLight
 	Float3 direction_D_S; // Spot, DirectionÀÌ¶û °øÀ¯.
 	float range_S_P;
 	Float3 position_S_P;
-
-	float exponent_S;
+	
+	float smooth_S;
 	float innerAngle_S;
 	float outerAngle_S;
 
@@ -48,8 +48,9 @@ struct CBPerLight
 	// 1 -> SpotLight
 	// 2 -> PointLight
 	float lightType;
+	float lightIntensity;
 
-	Float2 pad;
+	float pad;
 };
 
 struct CBPerComputeParticle

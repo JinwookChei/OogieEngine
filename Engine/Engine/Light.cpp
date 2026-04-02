@@ -6,6 +6,7 @@ IPSO* Light::GLightPSO = nullptr;
 
 Light::Light()
 	: pStaticMesh_(nullptr)
+	, intensity_ (1.0f)
 	, diffuseColor_(1.0f, 1.0f, 1.0f, 1.0f)
 	, specularColor_(0.8f, 0.8f, 0.8f, 1.0f)
 	, ambientColor_(0.3f, 0.3f, 0.3f, 1.0f)
@@ -87,4 +88,44 @@ const Color& Light::AmbientColor() const
 
 void Light::CleanUp()
 {
+}
+
+Color __stdcall Light::GetDiffuseColorForEditor() const
+{
+	return diffuseColor_;
+}
+
+Color __stdcall Light::GetSpecularColorForEditor() const
+{
+	return specularColor_;
+}
+
+Color __stdcall Light::GetAmbientColorForEditor() const
+{
+	return ambientColor_;
+}
+
+void __stdcall Light::SetDiffuseColorForEditor(const Color& color)
+{
+	diffuseColor_ = color;
+}
+
+void __stdcall Light::SetSpecularColorForEditor(const Color& color)
+{
+	specularColor_ = color;
+}
+
+void __stdcall Light::SetAmbientColorForEditor(const Color& color)
+{
+	ambientColor_ = color;
+}
+
+float __stdcall Light::GetLightIntensity() const
+{
+	return intensity_;
+}
+
+void __stdcall Light::SetLightIntensity(float intensity)
+{
+	intensity_ = intensity;
 }

@@ -26,11 +26,11 @@ cbuffer CBPerLight : register(b1)
     float4 LightSpecular;
     float4 LightAmbient;
 
-    float3 LightDirection; // Spot, DirectionÀÌ¶û °øÀ¯.
+    float3 LightDirection;
     float LightRange;
     float3 LightPosition;
 
-    float SpotExponent;
+    float Smooth;
     float InnerAngle;
     float OuterAngle;
     
@@ -42,9 +42,9 @@ cbuffer CBPerLight : register(b1)
 	// 1 -> SpotLight
 	// 2 -> PointLight
     float LightType;
+    float LightIntensity;
     
-    
-    float2 Pad;
+    float Pad;
 };
 
 
@@ -111,8 +111,8 @@ float4 main(PS_ScreenRect input) : SV_TARGET
         // float3 ambientColor = LightAmbient.rgb * albedo.rgb;
         // Emissive
         // float3 emissiveColor = 0.0f;
-        
-        return float4(diffuseColor + specularColor /*+ ambientColor + emissiveColor*/, 1.0f);
+        float3 finalColor = float3(diffuseColor + specularColor /*+ ambientColor + emissiveColor*/);
+        return float4(finalColor * LightIntensity, 1.0f);
     }
     
     // SpotLight
@@ -147,13 +147,13 @@ float4 main(PS_ScreenRect input) : SV_TARGET
         float outerCone = cos(radians(OuterAngle));
         float theta = dot(-toLight, LightDirection);
         float spotIntensity = smoothstep(outerCone, innerCone, theta);
-        float spot = pow(max(spotIntensity, 0.0f), SpotExponent);
+        float spot = pow(max(spotIntensity, 0.0f), Smooth);
         float3 attCoeffs = float3(AttenuationConst, AttenuationLinear, AttenuationQuad);
         float attenuation = 1.0f / dot(attCoeffs, float3(1.0f, dist, dist * dist));
         float att = spot * attenuation;
         
         float3 finalColor = float3(diffuseColor + specularColor /*+ ambientColor*/ /*+ emissiveColor*/) * att;
-        return float4(finalColor, 1.0f);
+        return float4(finalColor * LightIntensity, 1.0f);
     }
     
     // PointLight
@@ -165,7 +165,7 @@ float4 main(PS_ScreenRect input) : SV_TARGET
         float3 lightVec = LightPosition - worldPos.xyz;
         
         float dist = length(lightVec);
-        //clip(LightRange - dist);
+        clip(LightRange - dist);
         lightVec /= dist;
         
         // Diffuses
@@ -189,7 +189,7 @@ float4 main(PS_ScreenRect input) : SV_TARGET
         float att = 1.0f / dot(attCoeffs, float3(1.0f, dist, dist * dist));
         
         float3 finalColor = float3(diffuseColor + specularColor /*+ ambientColor + emissiveColor*/) * att;
-        return float4(finalColor, 1.0f);
+        return float4(finalColor*LightIntensity, 1.0f);
     }
     
     return float4(0.0f, 0.0f, 0.0f, 1.0f);

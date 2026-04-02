@@ -27,7 +27,8 @@ LightRenderData DirectionLight::GetData()
 	data.lightSpecular = SpecularColor();
 	data.lightAmbient = AmbientColor();
 	data.direction_D_S = Direction();
-	data.lightType = (float)ELightType::DirectionLight;
+	data.lightType = (float)E_LIGHT_TYPE::DIRECTION_LIGHT;
+	data.lightIntensity = intensity_;
 	return data;
 }
 
@@ -41,3 +42,9 @@ Float3 DirectionLight::Direction() const
 void DirectionLight::CleanUp()
 {
 }
+
+int __stdcall DirectionLight::GetLightTypeForEditor() const
+{
+	return (int)E_LIGHT_TYPE::DIRECTION_LIGHT;
+}
+
