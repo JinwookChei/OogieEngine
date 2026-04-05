@@ -12,10 +12,11 @@ MeshManager* GMeshManager = nullptr;
 MaterialManager* GMaterialManager = nullptr;
 TextureManager* GTextureManager = nullptr;
 AnimationManager* GAnimationManager = nullptr;
+CameraManager* GCameraManager = nullptr;
 
 World* GWorld = nullptr;
-Camera* GMainCamera = nullptr;
-Camera* GCurrentCamera = nullptr;
+//Camera* GMainCamera = nullptr;
+//Camera* GCurrentCamera = nullptr;
 ActorPicker* GActorPicker = nullptr;
 
 // 임시 전역 객체.
@@ -100,6 +101,11 @@ bool Engine::Initialize
 		return false;
 	}
 
+	if (false == CameraManager::Init())
+	{
+		return false;
+	}
+
 	GMeshManager = new MeshManager;
 	GSkeletonManager = new SkeletonManager;
 	GTextureManager = new TextureManager;
@@ -150,9 +156,7 @@ void Engine::Run()
 		Application::Instance()->WinPumpMessage();
 
 		double deltaTime = TimeManager::CalcDeltaTime();
-
 		InputManager::Tick(deltaTime);
-
 		GActorPicker->Tick(deltaTime);
 
 		// GameLoop
@@ -274,6 +278,7 @@ void Engine::CleanUp()
 
 	TimeManager::CleanUp();
 	InputManager::CleanUp();
+	CameraManager::CleanUp();
 
 	RunTimeMode::ShutDown();
 	Debugger::ShutDown();

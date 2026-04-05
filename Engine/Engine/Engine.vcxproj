@@ -176,8 +176,10 @@
     <ClInclude Include="Application.h" />
     <ClInclude Include="BoundVolume.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="CameraManager.h" />
     <ClInclude Include="Debugger.h" />
     <ClInclude Include="DirectionLight.h" />
+    <ClInclude Include="EditorCamera.h" />
     <ClInclude Include="RunTimeMode.h" />
     <ClInclude Include="FBXManager.h" />
     <ClInclude Include="GeometryGenerator.h" />
@@ -213,8 +215,10 @@
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="BoundVolume.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CameraManager.cpp" />
     <ClCompile Include="Debugger.cpp" />
     <ClCompile Include="DirectionLight.cpp" />
+    <ClCompile Include="EditorCamera.cpp" />
     <ClCompile Include="RunTimeMode.cpp" />
     <ClCompile Include="FBXManager.cpp" />
     <ClCompile Include="GeometryGenerator.cpp" />

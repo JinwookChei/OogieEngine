@@ -1,10 +1,12 @@
 #include "stdafx.h"
+#include "EditorCamera.h"
 #include "Actor.h"
 #include "Light.h"
 #include "Level.h"
 
 Level::Level()
 	: actorList_()
+	, pEditorCamera_(nullptr)
 {
 }
 
@@ -13,6 +15,18 @@ Level::~Level()
 	CleanUp();
 }
 
+void Level::BeginPlay()
+{
+	pEditorCamera_ = SpawnCamera<EditorCamera>();
+	pEditorCamera_->SetScreenPlacement({ 0.0f, 0.0f }, { 1.0f, 1.0f });
+	pEditorCamera_->GetWorldTransform().SetPosition({-10.0f, 0.0f, 5.0f, 1.0f });
+	pEditorCamera_->GetWorldTransform().SetRotation({ 0.0f, 20.0f, 0.0f, 0.0f });
+	CameraManager::SetEditorCamera(pEditorCamera_);
+}
+
+void Level::Tick(double deltaTime)
+{
+}
 
 LinkedList* Level::GetActorList(const E_ACTOR_TYPE& actoryType)
 {
@@ -51,36 +65,36 @@ void Level::OnRender()
 	LINK_NODE* pCameraIter = actorList_[(int)E_ACTOR_TYPE::CAMERA].GetHead();
 	while (pCameraIter)
 	{
-		GCurrentCamera = static_cast<Camera*>(pCameraIter->pItem_);
+		Camera* pCurCamera = static_cast<Camera*>(pCameraIter->pItem_);
 		pCameraIter = pCameraIter->next_;
 
 		// Update FrameConstant
-		GCurrentCamera->UpdatePerFrameConstant();
+		pCurCamera->UpdatePerFrameConstant();
 
 		// Geometry Pass
-		GCurrentCamera->RenderPassBegin(E_RENDER_PASS_TYPE::GeometryPass);
+		pCurCamera->RenderPassBegin(E_RENDER_PASS_TYPE::GeometryPass);
 		OnRenderActors();
 		Renderer::Instance()->UnBindSRVs(true, true);
-		GCurrentCamera->RenderPassEnd();
+		pCurCamera->RenderPassEnd();
 		// Geometry Pass End
 		
 		// Light Pass
-		GCurrentCamera->RenderPassBegin(E_RENDER_PASS_TYPE::LightPass);
-		OnRenderLights(GCurrentCamera->GetGBufferTarget());
+		pCurCamera->RenderPassBegin(E_RENDER_PASS_TYPE::LightPass);
+		OnRenderLights(pCurCamera->GetGBufferTarget());
 		Renderer::Instance()->UnBindSRVs(true, true);
-		GCurrentCamera->RenderPassEnd();
+		pCurCamera->RenderPassEnd();
 		// Light Pass End
 
 		// Particle Pass
-		GCurrentCamera->RenderPassBegin(E_RENDER_PASS_TYPE::ParticlePass);
+		pCurCamera->RenderPassBegin(E_RENDER_PASS_TYPE::ParticlePass);
 		OnRenderParticles();
-		GCurrentCamera->RenderPassEnd();
+		pCurCamera->RenderPassEnd();
 		// Particle Pass End
 
 		// Debug Pass
-		GCurrentCamera->RenderPassBegin(E_RENDER_PASS_TYPE::DebugPass);
+		pCurCamera->RenderPassBegin(E_RENDER_PASS_TYPE::DebugPass);
 		Debugger::Draw();
-		GCurrentCamera->RenderPassEnd();
+		pCurCamera->RenderPassEnd();
 		// Debug Pass End
 	}
 }
@@ -191,3 +205,4 @@ void Level::CleanUpActors()
 		}
 	}
 }
+

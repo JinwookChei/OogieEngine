@@ -64,18 +64,18 @@ void World::OnBlit()
 void World::CheckChangeLevel()
 {
 	if (nullptr != nextLevel_) {
-		GMainCamera = nullptr;
-
+		//GMainCamera = nullptr;
+		
 		nextLevel_->BeginPlay();
+		
 
 		//GMainCamera.
-		if (nullptr == GMainCamera)
+		/*if (nullptr == GMainCamera)
 		{
 			DEBUG_BREAK();
 			return;
-		}
+		}*/
 
-		Editor::GetEditor()->BindCamera(GMainCamera);
 
 		if (nullptr != curLevel_) {
 			delete curLevel_;

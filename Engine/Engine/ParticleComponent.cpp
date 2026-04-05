@@ -78,15 +78,22 @@ void ParticleComponent::Render()
 
 void ParticleComponent::RenderParticle()
 {
-	const Transform& worldForm = GCurrentCamera->GetWorldTransform();
+	const Transform& worldForm = CameraManager::GetCurrentCamera()->GetWorldTransform();
 	Vector eye = worldForm.GetPosition();
 	Vector to = worldForm.ForwardVector();
 	Vector right = worldForm.RightVector();
 	Vector up = worldForm.UpVector();
 
-	const Float2& size = GCurrentCamera->GetRenderSize();
+	const Float2& size = CameraManager::GetCurrentCamera()->GetRenderSize();
 	Float4x4 proj;
-	MATH::MatrixPerspectiveFovLH(proj, GCurrentCamera->GetFov(), (size.X / size.Y), GCurrentCamera->GetNear(), GCurrentCamera->GetFar());
+	MATH::MatrixPerspectiveFovLH
+	(
+		proj, 
+		CameraManager::GetCurrentCamera()->GetFov(), 
+		(size.X / size.Y), 
+		CameraManager::GetCurrentCamera()->GetNear(), 
+		CameraManager::GetCurrentCamera()->GetFar()
+	);
 	Float4x4 view;
 	MATH::MatrixLookToLH(view, eye, to, up);
 	Float4x4 viewProj;

@@ -15,11 +15,6 @@ Camera::Camera()
 	, pGBufferRenderTarget_(nullptr)
 	, pFinalRenderTarget_(nullptr)
 {
-	if (nullptr == GMainCamera)
-	{
-		GMainCamera = this;
-	}
-
 	MATH::MatrixIdentity(view_);
 	MATH::MatrixIdentity(projection_);
 
@@ -48,11 +43,6 @@ void Camera::Render()
 {
 	Actor::Render();
 }
-
-//void Camera::BlitToBackBuffer()
-//{
-//	Renderer::Instance()->RenderFinal(pParticleRenderTarget_);
-//}
 
 const Float4x4& Camera::View() const
 {

@@ -7,8 +7,6 @@ enum class E_RENDER_PASS_TYPE
 	LightPass,
 	ParticlePass,
 	DebugPass,
-	//CompositePass,
-	//MergePass
 };
 
 class Transform;
@@ -40,8 +38,6 @@ public:
 	void RenderPassBegin(E_RENDER_PASS_TYPE renderPassType);
 
 	void RenderPassEnd();
-
-	// void BlitToBackBuffer();
 
 	const Float4x4& View() const;
 

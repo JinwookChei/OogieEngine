@@ -285,6 +285,12 @@
     <ClInclude Include="..\..\Common\ActorType\ActorType.h">
       <Filter>Common</Filter>
     </ClInclude>
+    <ClInclude Include="CameraManager.h">
+      <Filter>Source Files\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorCamera.h">
+      <Filter>Source Files\Actor\Camera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -391,6 +397,12 @@
     </ClCompile>
     <ClCompile Include="RunTimeMode.cpp">
       <Filter>Source Files\Mode</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraManager.cpp">
+      <Filter>Source Files\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="EditorCamera.cpp">
+      <Filter>Source Files\Actor\Camera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -1,7 +1,7 @@
 #pragma once
 
 class Actor;
-class Camera;
+class EditorCamera;
 class Light;
 
 class Level
@@ -11,8 +11,8 @@ public:
 
 	ENGINE_API Level();
 	ENGINE_API virtual ~Level();
-	ENGINE_API virtual void BeginPlay() = 0;
-	ENGINE_API virtual void Tick(double deltaTime) = 0;
+	ENGINE_API virtual void BeginPlay();
+	ENGINE_API virtual void Tick(double deltaTime);
 
 	template <typename ActorType>
 	ActorType* SpawnActor(E_ACTOR_TYPE actorType)
@@ -56,6 +56,7 @@ private:
 	void CleanUpActors();
 
 	LinkedList actorList_[(int)E_ACTOR_TYPE::MAX];
+	EditorCamera* pEditorCamera_;
 };
 
 

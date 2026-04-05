@@ -92,6 +92,7 @@
 #include "TextureManager.h"
 #include "AnimationManager.h"
 #include "MaterialManager.h"
+#include "CameraManager.h"
 #include "Debugger.h"
 #include "Transform.h"
 #include "World.h"
@@ -113,8 +114,8 @@ extern AnimationManager* GAnimationManager;
 //extern RasterizerManager* GRasterizerManager;
 
 extern World* GWorld;
-extern Camera* GMainCamera;
-extern Camera* GCurrentCamera;
+//extern Camera* GMainCamera;
+//extern Camera* GCurrentCamera;
 extern ActorPicker* GActorPicker;
 
 // 임시 전역 객체.

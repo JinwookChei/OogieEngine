@@ -17,6 +17,8 @@ StartLevel::~StartLevel()
 
 void StartLevel::BeginPlay()
 {
+	Level::BeginPlay();
+
 	/*DirectionLight* pDirectionLight = SpawnLight<DirectionLight>();
 	pDirectionLight->GetWorldTransform().SetRotation({ 0.0f, 0.0f, 0.0f, 0.0f });*/
 
@@ -45,11 +47,10 @@ void StartLevel::BeginPlay()
 	pSpotLight4->GetWorldTransform().SetPosition({ 10.0f, 0.0f, 6.0f, 1.0f });
 	pSpotLight4->GetWorldTransform().SetRotation({ 0.0f, 90.0f, 0.0f, 0.0f });*/
 
-
-	MoveCamera* pCamera1 = SpawnCamera<MoveCamera>();
+	/*MoveCamera* pCamera1 = SpawnCamera<MoveCamera>();
 	pCamera1->SetScreenPlacement({ 0.0f, 0.0f }, { 1.0f, 1.0f });
 	pCamera1->GetWorldTransform().SetRotation({ 0.0f, 20.0f, 0.0f, 0.0f });
-	pCamera1->GetWorldTransform().SetPosition({ -10.0f, 0.0f, 5.0f, 1.0f });
+	pCamera1->GetWorldTransform().SetPosition({ -10.0f, 0.0f, 5.0f, 1.0f });*/
 
 	TestActor* pActor1 = SpawnActor<TestActor>(E_ACTOR_TYPE::NORMAL);
 	pActor1->GetWorldTransform().SetPosition({ 0.0f, 0.0f, 0.0f, 1.0f });
@@ -81,5 +82,5 @@ void StartLevel::BeginPlay()
 
 void StartLevel::Tick(double deltaTime)
 {
-
+	Level::Tick(deltaTime);
 }

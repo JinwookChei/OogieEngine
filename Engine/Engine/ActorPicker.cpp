@@ -72,7 +72,7 @@ void ActorPicker::Tick(double deltaTime)
 			Float3 rayPos = { ray.origin_.X, ray.origin_.Y, ray.origin_.Z };
 			Float3 rayDir = { ray.dir_.X, ray.dir_.Y, ray.dir_.Z };
 			MATH::VectorNormalize(rayDir, rayDir);
-			Debugger::DrawDebugRay(rayPos, rayDir, GCurrentCamera->GetFar(), { 1.0f, 0.0f, 0.0f, 1.0f });
+			Debugger::DrawDebugRay(rayPos, rayDir, CameraManager::GetCurrentCamera()->GetFar(), { 1.0f, 0.0f, 0.0f, 1.0f });
 		}
 	}
 }
@@ -80,10 +80,10 @@ void ActorPicker::Tick(double deltaTime)
 void ActorPicker::ScreenToWorldRay(Ray* pOutRay, const Float2& screenPos, const Float2& viewPortSize)
 {
 	Float4x4 invProjection;
-	MATH::MatrixInverse(invProjection, GCurrentCamera->Projection());
+	MATH::MatrixInverse(invProjection, CameraManager::GetCurrentCamera()->GetProjectionMatrix());
 
 	Float4x4 invView;
-	MATH::MatrixInverse(invView, GCurrentCamera->View());
+	MATH::MatrixInverse(invView, CameraManager::GetCurrentCamera()->GetViewMatrix());
 
 	float ndc_x = (2.0f * screenPos.X) / viewPortSize.X - 1.0f;
 	float ndc_y = 1.0f - (2.0f * screenPos.Y) / viewPortSize.Y;
@@ -99,14 +99,14 @@ void ActorPicker::ScreenToWorldRay(Ray* pOutRay, const Float2& screenPos, const 
 	MATH::MatrixMultiply(clickPos_WorldSpace, clickPos_CamSpace, invView);
 	MATH::VectorScale(clickPos_WorldSpace, clickPos_WorldSpace, 1 / clickPos_WorldSpace.W);
 
-	Float4 camPos_WorldSpace = GCurrentCamera->GetWorldTransform().GetPosition();
+	Float4 camPos_WorldSpace = CameraManager::GetCurrentCamera()->GetWorldTransform().GetPosition();
 	Float4 rayDir = clickPos_WorldSpace - camPos_WorldSpace;
 	rayDir.W = 0;
 	MATH::VectorNormalize(rayDir, rayDir);
 
 	pOutRay->origin_ = clickPos_WorldSpace;
 	pOutRay->dir_ = rayDir;
-	pOutRay->maxDistance_ = GCurrentCamera->GetFar();
+	pOutRay->maxDistance_ = CameraManager::GetCurrentCamera()->GetFar();
 }
 
 bool ActorPicker::TryPickObject(const Ray& ray)
