@@ -91,9 +91,6 @@
     <Filter Include="Source Files\ActorComponent">
       <UniqueIdentifier>{b2175ee2-52bd-4faa-8458-61fc1c6edd75}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\ActorComponent\BoundVolume">
-      <UniqueIdentifier>{fda48a9c-d09b-4392-83eb-db9b0658ba8f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\ActorComponent\ParticleSystem">
       <UniqueIdentifier>{6664351a-eda3-48a0-b64d-a19e62e97f5a}</UniqueIdentifier>
     </Filter>
@@ -161,9 +158,6 @@
     </ClInclude>
     <ClInclude Include="MeshManager.h">
       <Filter>Source Files\Manager\ResourceManager</Filter>
-    </ClInclude>
-    <ClInclude Include="BoundVolume.h">
-      <Filter>Source Files\ActorComponent\BoundVolume</Filter>
     </ClInclude>
     <ClInclude Include="MaterialManager.h">
       <Filter>Source Files\Manager\ResourceManager</Filter>
@@ -340,9 +334,6 @@
     </ClCompile>
     <ClCompile Include="MeshManager.cpp">
       <Filter>Source Files\Manager\ResourceManager</Filter>
-    </ClCompile>
-    <ClCompile Include="BoundVolume.cpp">
-      <Filter>Source Files\ActorComponent\BoundVolume</Filter>
     </ClCompile>
     <ClCompile Include="MaterialManager.cpp">
       <Filter>Source Files\Manager\ResourceManager</Filter>

@@ -174,7 +174,6 @@
     <ClInclude Include="ActorPicker.h" />
     <ClInclude Include="AnimationManager.h" />
     <ClInclude Include="Application.h" />
-    <ClInclude Include="BoundVolume.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraManager.h" />
     <ClInclude Include="Debugger.h" />
@@ -213,7 +212,6 @@
     <ClCompile Include="ActorPicker.cpp" />
     <ClCompile Include="AnimationManager.cpp" />
     <ClCompile Include="Application.cpp" />
-    <ClCompile Include="BoundVolume.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraManager.cpp" />
     <ClCompile Include="Debugger.cpp" />
