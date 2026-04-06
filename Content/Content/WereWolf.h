@@ -1,5 +1,8 @@
 #pragma once
-class WereWolf : public Player
+
+class CameraComponent;
+class WereWolf 
+	: public Player
 {
 public:
 	WereWolf();
@@ -14,7 +17,6 @@ private:
 
 private:
 	MovementComponent* pMovementComponent_;
-
 	SkeletalMeshComponent* pSkeletalMeshComponent_;
-	
+	CameraComponent* pCameraComponent_;	
 };

@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "ActorComponent.h"
-#include "BoundVolume.h"
 #include "Actor.h"
 
 

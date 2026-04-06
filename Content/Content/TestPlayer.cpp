@@ -32,7 +32,6 @@ void TestPlayer::BeginPlay()
 	pSkeletalMeshComponent_->GetPSO()->SetMaterialToSlot(0, pMaterial);
 	pSkeletalMeshComponent_->SetSkeleton(13);
 	pSkeletalMeshComponent_->ChangeAnimation(0);
-	
 
 	pTransform_->SetScale({ 1.0f, 1.0f, 1.0f, 0.0f });
 	pTransform_->SetRotation({ 0.0f, 0.0f, 0.0f, 0.0f });

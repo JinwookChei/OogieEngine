@@ -109,6 +109,9 @@
     <Filter Include="Source Files\Mode">
       <UniqueIdentifier>{81551d82-7a5d-4dea-b13f-8dab2c8a4dc7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\ActorComponent\Camera">
+      <UniqueIdentifier>{f3f22993-a7c1-4b7d-9e08-0077c607f0bd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine.h">
@@ -285,6 +288,12 @@
     <ClInclude Include="EditorCamera.h">
       <Filter>Source Files\Actor\Camera</Filter>
     </ClInclude>
+    <ClInclude Include="CameraComponent.h">
+      <Filter>Source Files\ActorComponent\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerCamera.h">
+      <Filter>Source Files\Actor\Camera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -393,6 +402,12 @@
       <Filter>Source Files\Manager</Filter>
     </ClCompile>
     <ClCompile Include="EditorCamera.cpp">
+      <Filter>Source Files\Actor\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraComponent.cpp">
+      <Filter>Source Files\ActorComponent\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerCamera.cpp">
       <Filter>Source Files\Actor\Camera</Filter>
     </ClCompile>
   </ItemGroup>

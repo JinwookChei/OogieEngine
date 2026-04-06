@@ -19,8 +19,8 @@ public:
 	ENGINE_API void AddPositionY(float offset);
 	ENGINE_API void AddPositionZ(float offset);
 
-	ENGINE_API const Float4x4& __stdcall GetWorldMatrix() const;
-	ENGINE_API const Float4x4 __stdcall GetWorldMatrixTranspose() const;
+	ENGINE_API const Float4x4& __stdcall GetMatrix() const;
+	ENGINE_API const Float4x4 __stdcall GetMatrixTranspose() const;
 	ENGINE_API const Float4& __stdcall GetScale() const;
 	ENGINE_API const Float4& __stdcall GetRotation() const;
 	ENGINE_API const Float4& __stdcall GetQuaternion() const;
@@ -51,10 +51,10 @@ private:
 	Float4x4 scaleMatrix_;
 	Float4x4 rotationMatrix_;
 	Float4x4 translationMatrix_;
-	Float4x4 worldMatrix_;
+	Float4x4 affineMatrix_;
 
 public:
-	const Float4x4& __stdcall GetWorldMatrixForEditor() const override;
+	const Float4x4& __stdcall GetMatrixForEditor() const override;
 	Float4& __stdcall GetActorScaleForEditor() override;
 	Float4& __stdcall GetActorRotationForEditor() override;
 	Float4& __stdcall GetActorQuaternionForEditor() override;

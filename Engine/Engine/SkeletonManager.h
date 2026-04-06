@@ -1,6 +1,5 @@
 #pragma once
 
-
 class SkeletonManager
 {
 	friend class Engine;

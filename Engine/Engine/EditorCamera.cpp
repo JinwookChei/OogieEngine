@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "RunTimeMode.h"
 #include "EditorCamera.h"
 
 EditorCamera::EditorCamera()
@@ -14,6 +15,7 @@ void EditorCamera::Tick(double deltaTime)
 {
 	Camera::Tick(deltaTime);
 
+	if (RunTimeMode::GetCurrentMode() != E_RUNTIME_MODE::EDITOR) return;
 	if (InputManager::IsPress(VK_RBUTTON))
 	{
 		const Float2& deltaMouseMove = InputManager::GetDeltaMouseMove();

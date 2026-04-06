@@ -119,6 +119,7 @@
 #include <Engine/Engine/MeshComponent.h>
 #include <Engine/Engine/StaticMeshComponent.h>
 #include <Engine/Engine/SkeletalMeshComponent.h>
+#include <Engine/Engine/CameraComponent.h>
 #include <Engine/Engine/ParticleComponent.h>
 #include <Engine/Engine/InputManager.h>
 #include <Engine/Engine/World.h>

@@ -13,7 +13,7 @@ struct IEditorBindCamera
 
 struct IEditorBindTransform
 {
-	virtual const Float4x4& __stdcall GetWorldMatrixForEditor() const = 0;
+	virtual const Float4x4& __stdcall GetMatrixForEditor() const = 0;
 	virtual Float4& __stdcall GetActorScaleForEditor() = 0;
 	virtual Float4& __stdcall GetActorRotationForEditor() = 0;
 	virtual Float4& __stdcall GetActorQuaternionForEditor() = 0;	
@@ -37,7 +37,6 @@ struct IEditorBindPickedActor
 	// 1 -> SpotLight
 	// 2 -> PointLight
 	virtual int __stdcall GetLightTypeForEditor() const = 0;
-
 
 	virtual Color __stdcall GetDiffuseColorForEditor() const  = 0;
 	virtual Color __stdcall GetSpecularColorForEditor() const  = 0;

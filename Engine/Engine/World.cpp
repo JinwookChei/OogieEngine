@@ -65,10 +65,7 @@ void World::CheckChangeLevel()
 {
 	if (nullptr != nextLevel_) {
 		//GMainCamera = nullptr;
-		
-		nextLevel_->BeginPlay();
-		
-
+		//nextLevel_->BeginPlay();
 		//GMainCamera.
 		/*if (nullptr == GMainCamera)
 		{
@@ -76,13 +73,13 @@ void World::CheckChangeLevel()
 			return;
 		}*/
 
-
 		if (nullptr != curLevel_) {
 			delete curLevel_;
 			curLevel_ = nullptr;
 		}
 
 		curLevel_ = nextLevel_;
+		nextLevel_->BeginPlay();
 		nextLevel_ = nullptr;
 	}
 }

@@ -29,7 +29,6 @@ private:
 	Float4 startColor_;
 	Float4 endColor_;
 
-
 	IPSO* pPSO_;
 	IMesh* pParticle_;
 };

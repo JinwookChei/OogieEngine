@@ -10,7 +10,7 @@ Transform::Transform()
 	MATH::MatrixIdentity(scaleMatrix_);
 	MATH::MatrixIdentity(rotationMatrix_);
 	MATH::MatrixIdentity(translationMatrix_);
-	MATH::MatrixIdentity(worldMatrix_);
+	MATH::MatrixIdentity(affineMatrix_);
 }
 
 Transform::~Transform()
@@ -82,15 +82,15 @@ void Transform::AddPositionZ(float offset)
 {
 }
 
-const Float4x4& Transform::GetWorldMatrix() const
+const Float4x4& Transform::GetMatrix() const
 {
-	return worldMatrix_;
+	return affineMatrix_;
 }
 
-const Float4x4 Transform::GetWorldMatrixTranspose() const
+const Float4x4 Transform::GetMatrixTranspose() const
 {
 	Float4x4 ret;
-	MATH::MatrixTranspose(ret, worldMatrix_);
+	MATH::MatrixTranspose(ret, affineMatrix_);
 	return ret;
 }
 
@@ -117,21 +117,21 @@ const Float4& Transform::GetPosition() const
 Float4 Transform::ForwardVector() const
 {
 	Float4 foward;
-	MATH::VectorNormalize(foward, worldMatrix_.r[0]);
+	MATH::VectorNormalize(foward, affineMatrix_.r[0]);
 	return foward;
 }
 
 Float4 Transform::RightVector() const
 {
 	Float4 right;
-	MATH::VectorNormalize(right, worldMatrix_.r[1]);
+	MATH::VectorNormalize(right, affineMatrix_.r[1]);
 	return right;
 }
 
 Float4 Transform::UpVector() const
 {
 	Float4 up;
-	MATH::VectorNormalize(up, worldMatrix_.r[2]);
+	MATH::VectorNormalize(up, affineMatrix_.r[2]);
 	return up;
 }
 
@@ -161,20 +161,20 @@ void Transform::BroadcastOnTransformUpdate()
 
 void Transform::TransformUpdate()
 {
-	MATH::MatrixCompose(worldMatrix_, scaleMatrix_, rotationMatrix_, translationMatrix_, scale_, quaternion_, translation_);
+	MATH::MatrixCompose(affineMatrix_, scaleMatrix_, rotationMatrix_, translationMatrix_, scale_, quaternion_, translation_);
 	BroadcastOnTransformUpdate();
 }
 
 void Transform::TransformUpdateTTT()
 {
-	MATH::MatrixDecompose(scale_, quaternion_, translation_, worldMatrix_);
+	MATH::MatrixDecompose(scale_, quaternion_, translation_, affineMatrix_);
 	MATH::QuaternionToEulerDeg(rotation_, quaternion_);
 	TransformUpdate();
 }
 
-const Float4x4& __stdcall Transform::GetWorldMatrixForEditor() const
+const Float4x4& __stdcall Transform::GetMatrixForEditor() const
 {
-	return worldMatrix_;
+	return affineMatrix_;
 }
 
 Float4& __stdcall Transform::GetActorScaleForEditor()

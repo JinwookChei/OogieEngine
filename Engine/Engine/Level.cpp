@@ -167,17 +167,22 @@ void Level::OnRenderParticles()
 
 void Level::BlitCameraToBackBuffer()
 {
-	LINK_NODE* pCameraIter = actorList_[(int)E_ACTOR_TYPE::CAMERA].GetHead();
-	while (pCameraIter)
-	{
-		Camera* pCurCamera = static_cast<Camera*>(pCameraIter->pItem_);
+	Camera* pPlayerCamera = CameraManager::GetCurrentCamera();
+	ITexture* pFianlRenderTex = pPlayerCamera->pFinalRenderTarget_->GetRenderTexture(E_RENDER_TEXTURE_TYPE::Albedo);
+	GBlitPSO->GetMaterial(0)->SetTextures(0, pFianlRenderTex);
+	Renderer::Instance()->Render(GBlitPSO);
+	
+	//LINK_NODE* pCameraIter = actorList_[(int)E_ACTOR_TYPE::CAMERA].GetHead();
+	//while (pCameraIter)
+	//{
+	//	Camera* pCurCamera = static_cast<Camera*>(pCameraIter->pItem_);
 
-		ITexture* pFianlRenderTex = pCurCamera->pFinalRenderTarget_->GetRenderTexture(E_RENDER_TEXTURE_TYPE::Albedo);
-		GBlitPSO->GetMaterial(0)->SetTextures(0, pFianlRenderTex);
-		Renderer::Instance()->Render(GBlitPSO);
+	//	ITexture* pFianlRenderTex = pCurCamera->pFinalRenderTarget_->GetRenderTexture(E_RENDER_TEXTURE_TYPE::Albedo);
+	//	GBlitPSO->GetMaterial(0)->SetTextures(0, pFianlRenderTex);
+	//	Renderer::Instance()->Render(GBlitPSO);
 
-		pCameraIter = pCameraIter->next_;
-	}
+	//	pCameraIter = pCameraIter->next_;
+	//}
 }
 
 

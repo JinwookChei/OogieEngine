@@ -3,8 +3,9 @@
 
 WereWolf::WereWolf()
 {
-	//pMovementComponent_ = CreateComponent<MovementComponent>();
+	pMovementComponent_ = CreateComponent<MovementComponent>();
 	pSkeletalMeshComponent_ = CreateComponent<SkeletalMeshComponent>();
+	pCameraComponent_ = CreateComponent<CameraComponent>();
 }
 
 WereWolf::~WereWolf()
@@ -60,6 +61,9 @@ void WereWolf::BeginPlay()
 	pTransform_->SetScale({ 1.0f, 1.0f, 1.0f, 0.0f });
 	pTransform_->SetRotation({ 0.0f, 0.0f, 0.0f, 0.0f });
 	pTransform_->SetPosition({ 0.0f, 0.0f, 0.0f, 1.0f });
+
+	pCameraComponent_->GetComponentTransform().SetPosition({-5.0f, 0.0f, 4.0f, 1.0f});
+	pCameraComponent_->GetComponentTransform().SetRotation({0.0f, 15.0f, 0.0f, 0.0f});
 }
 
 void WereWolf::Render()

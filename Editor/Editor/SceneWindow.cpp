@@ -104,7 +104,7 @@ void SceneWindow::End()
 		const Float4x4& viewMatrix = GBoundCamera->GetViewMatrix();
 		const Float4x4& projectionMatrix = GBoundCamera->GetProjectionMatrix();
 		IEditorBindTransform& actorTransform = GPickedActor->GetTransformForEditor();
-		const Float4x4& worldMatrix = actorTransform.GetWorldMatrixForEditor();
+		const Float4x4& worldMatrix = actorTransform.GetMatrixForEditor();
 		ImGuizmo::Manipulate
 		(
 			(const float*)&viewMatrix

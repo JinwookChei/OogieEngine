@@ -3,7 +3,6 @@
 #include "MeshComponent.h"
 #include "StaticMeshComponent.h"
 #include "SkeletalMeshComponent.h"
-#include "BoundVolume.h"
 #include "ActorPicker.h"
 
 auto MakeTriangle = [&](void* pVertices, E_VERTEX_TYPE type,
@@ -122,7 +121,7 @@ bool ActorPicker::TryPickObject(const Ray& ray)
 		Actor* pActor = static_cast<Actor*>(pActorIter->pItem_);
 
 		Float4x4 invWorldMat;
-		MATH::MatrixInverse(invWorldMat, pActor->GetWorldTransform().GetWorldMatrix());
+		MATH::MatrixInverse(invWorldMat, pActor->GetWorldTransform().GetMatrix());
 
 		Float4 rayOrigin_ObjSpace;
 		MATH::MatrixMultiply(rayOrigin_ObjSpace, ray.origin_, invWorldMat);
@@ -167,7 +166,7 @@ bool ActorPicker::TryPickObject(const Ray& ray)
 		Actor* pActor = static_cast<Actor*>(pActorIter->pItem_);
 
 		Float4x4 invWorldMat;
-		MATH::MatrixInverse(invWorldMat, pActor->GetWorldTransform().GetWorldMatrix());
+		MATH::MatrixInverse(invWorldMat, pActor->GetWorldTransform().GetMatrix());
 
 		Float4 rayOrigin_ObjSpace;
 		MATH::MatrixMultiply(rayOrigin_ObjSpace, ray.origin_, invWorldMat);

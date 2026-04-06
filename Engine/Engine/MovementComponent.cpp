@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "RunTimeMode.h"
 #include "MovementComponent.h"
 
 MovementComponent::MovementComponent()
@@ -18,6 +19,7 @@ void MovementComponent::Tick(double deltaTime)
 {
 	ActorComponent::Tick(deltaTime);
 
+	if (RunTimeMode::GetCurrentMode() != E_RUNTIME_MODE::GAME) return;
 	if (InputManager::IsPress('W'))
 	{
 		Float4 forwardVector = GetOwner()->GetWorldTransform().ForwardVector();
