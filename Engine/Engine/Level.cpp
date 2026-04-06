@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "RunTimeMode.h"
 #include "EditorCamera.h"
 #include "Actor.h"
 #include "Light.h"
@@ -19,7 +20,7 @@ void Level::BeginPlay()
 {
 	pEditorCamera_ = SpawnCamera<EditorCamera>();
 	pEditorCamera_->SetScreenPlacement({ 0.0f, 0.0f }, { 1.0f, 1.0f });
-	pEditorCamera_->GetWorldTransform().SetPosition({-10.0f, 0.0f, 5.0f, 1.0f });
+	pEditorCamera_->GetWorldTransform().SetPosition({ -10.0f, 0.0f, 5.0f, 1.0f });
 	pEditorCamera_->GetWorldTransform().SetRotation({ 0.0f, 20.0f, 0.0f, 0.0f });
 	CameraManager::SetEditorCamera(pEditorCamera_);
 }
@@ -77,7 +78,7 @@ void Level::OnRender()
 		Renderer::Instance()->UnBindSRVs(true, true);
 		pCurCamera->RenderPassEnd();
 		// Geometry Pass End
-		
+
 		// Light Pass
 		pCurCamera->RenderPassBegin(E_RENDER_PASS_TYPE::LightPass);
 		OnRenderLights(pCurCamera->GetGBufferTarget());
@@ -92,9 +93,12 @@ void Level::OnRender()
 		// Particle Pass End
 
 		// Debug Pass
-		pCurCamera->RenderPassBegin(E_RENDER_PASS_TYPE::DebugPass);
-		Debugger::Draw();
-		pCurCamera->RenderPassEnd();
+		if (RunTimeMode::GetCurrentMode() == E_RUNTIME_MODE::EDITOR)
+		{
+			pCurCamera->RenderPassBegin(E_RENDER_PASS_TYPE::DebugPass);
+			Debugger::Draw();
+			pCurCamera->RenderPassEnd();
+		}
 		// Debug Pass End
 	}
 }
@@ -171,7 +175,7 @@ void Level::BlitCameraToBackBuffer()
 	ITexture* pFianlRenderTex = pPlayerCamera->pFinalRenderTarget_->GetRenderTexture(E_RENDER_TEXTURE_TYPE::Albedo);
 	GBlitPSO->GetMaterial(0)->SetTextures(0, pFianlRenderTex);
 	Renderer::Instance()->Render(GBlitPSO);
-	
+
 	//LINK_NODE* pCameraIter = actorList_[(int)E_ACTOR_TYPE::CAMERA].GetHead();
 	//while (pCameraIter)
 	//{
