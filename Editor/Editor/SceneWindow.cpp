@@ -48,15 +48,8 @@ void SceneWindow::End()
 	constexpr int rightBottom = 1;
 	ViewportBounds[letTop] = Float2{ viewportMinRegion.x + viewportOffset.x, viewportMinRegion.y + viewportOffset.y };
 	ViewportBounds[rightBottom] = Float2{ viewportMaxRegion.x + viewportOffset.x, viewportMaxRegion.y + viewportOffset.y };
-
-
-	// get the camera render target view
-	// rendering framebuffer image to the sceneview
-	//ya::graphics::RenderTarget* frameBuffer = mEditorCamera->GetRenderTarget();
 	ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
 	Float2 ViewportSize = Float2{ viewportPanelSize.x, viewportPanelSize.y };
-	//ya::graphics::Texture* texture = frameBuffer->GetAttachmentTexture(0);
-
 
 	void* pSRV = GBoundCamera->GetFinalRenderTargetForEditor()->GetShaderResourceView(E_RENDER_TEXTURE_TYPE::Albedo);
 	//void* pSRV = pEditorCore->pBoundCamera_->GetParticleRenderTargetForEditor()->GetShaderResourceView(E_RENDER_TEXTURE_TYPE::Albedo);
@@ -118,8 +111,33 @@ void SceneWindow::End()
 		actorTransform.TransformUpdateForEditorTTT();
 	}
 
+	// FPS Layout을 위한 정보.
+	ImVec2 scenePos = ImGui::GetWindowPos();
+	ImVec2 contentMin = ImGui::GetWindowContentRegionMin();
+	ImVec2 contentMax = ImGui::GetWindowContentRegionMax();
+	ImVec2 contentPos = ImVec2(scenePos.x + contentMin.x, scenePos.y + contentMin.y);
+	ImGuiViewport* sceneViewport = ImGui::GetWindowViewport();
+
 	ImGui::End();
 	ImGui::PopStyleVar();
+
+	
+	// ================= FPS Overlay =================
+	ImGui::SetNextWindowViewport(sceneViewport->ID);  // << 핵심!!!!
+	ImGui::SetNextWindowPos(ImVec2(contentPos.x + 10, contentPos.y + 10));
+	ImGui::SetNextWindowBgAlpha(0.35f);
+	ImGui::Begin("##FPSOverlay", nullptr,
+		ImGuiWindowFlags_NoTitleBar |
+		ImGuiWindowFlags_NoResize |
+		ImGuiWindowFlags_AlwaysAutoResize |
+		ImGuiWindowFlags_NoMove |
+		ImGuiWindowFlags_NoSavedSettings |
+		ImGuiWindowFlags_NoFocusOnAppearing |
+		ImGuiWindowFlags_NoNav |
+		ImGuiWindowFlags_NoDocking);
+	ImGui::Text("FPS: %.1f", io.Framerate);
+	ImGui::Text("ms: %.3f", 1000.0f / io.Framerate);
+	ImGui::End();
 }
 
 void SceneWindow::CleanUp()
