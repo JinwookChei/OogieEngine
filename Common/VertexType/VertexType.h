@@ -4,7 +4,7 @@ enum class E_VERTEX_TYPE
 	NONE = 0,
 	SCREEN_QUAD,
 	DEBUG_LINE,
-	SIMPLE_VERTEX,
+	STATIC_MESH,
 	SKINNED_MESH
 };
 
@@ -20,7 +20,7 @@ struct DebugLineVertex
 	Float4 color;
 };
 
-struct SimpleVertex
+struct StaticMeshVertex
 {
 	Float3 position;
 	Float4 color;
@@ -28,18 +28,18 @@ struct SimpleVertex
 	Float2 UV;
 	Float4 tangent;
 
-	SimpleVertex() = default;
+	StaticMeshVertex() = default;
 
-	SimpleVertex(Float3 pos, Float4 tmpcolor, Float3 tmpnormal, Float2 uv, Float4 tan)
+	StaticMeshVertex(Float3 pos, Float4 tmpcolor, Float3 tmpnormal, Float2 uv, Float4 tan)
 		: position(pos), color(tmpcolor), normal(tmpnormal), UV(uv), tangent(tan) {
 	}
 
-	SimpleVertex(Float3 pos, Float4 tmpcolor, Float3 tmpnormal, Float2 uv)
+	StaticMeshVertex(Float3 pos, Float4 tmpcolor, Float3 tmpnormal, Float2 uv)
 		: position(pos), color(tmpcolor), normal(tmpnormal), UV(uv), tangent() {
 	}
 
 	// unordered_map Àü¿ë.
-	bool operator==(const SimpleVertex& other) const
+	bool operator==(const StaticMeshVertex& other) const
 	{
 		return position.X == other.position.X
 			&& position.Y == other.position.Y
@@ -126,9 +126,9 @@ struct std::hash<SkinnedMeshVertex>
 
 
 template<>
-struct std::hash<SimpleVertex>
+struct std::hash<StaticMeshVertex>
 {
-	size_t operator()(const SimpleVertex& v) const noexcept
+	size_t operator()(const StaticMeshVertex& v) const noexcept
 	{
 		size_t seed = 0;
 

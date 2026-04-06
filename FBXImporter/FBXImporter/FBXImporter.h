@@ -30,7 +30,7 @@ private:
 	bool ExtractColor(Float4* pOutColor, fbxsdk::FbxMesh* pMesh, int cpIndex, int polygonVertexIndex);
 	bool ExtractMaterialIndex(unsigned int* pOutIndex, fbxsdk::FbxMesh* pMesh, int polyIndex);
 	void CalculateTangent(std::vector<SkinnedMeshVertex>* pVertices, const std::vector<std::vector<uint32_t>>& indices);
-	void CalculateTangent(std::vector<SimpleVertex>* pVertices, const std::vector<std::vector<uint32_t>>& indices);
+	void CalculateTangent(std::vector<StaticMeshVertex>* pVertices, const std::vector<std::vector<uint32_t>>& indices);
 	
 	// Skeleton
 	void ExtractBones(SkeletalModel* pOutModel, FbxNode* pNode, int32_t parentBoneIndex);

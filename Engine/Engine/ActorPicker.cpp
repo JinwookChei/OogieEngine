@@ -12,9 +12,9 @@ auto MakeTriangle = [&](void* pVertices, E_VERTEX_TYPE type,
 
 		switch (type)
 		{
-		case E_VERTEX_TYPE::SIMPLE_VERTEX:
+		case E_VERTEX_TYPE::STATIC_MESH:
 		{
-			SimpleVertex* v = static_cast<SimpleVertex*>(pVertices);
+			StaticMeshVertex* v = static_cast<StaticMeshVertex*>(pVertices);
 			tri.a_ = v[idxA].position;
 			tri.b_ = v[idxB].position;
 			tri.c_ = v[idxC].position;

@@ -566,14 +566,14 @@ void Mesh::CalcAABB()
 	}break;
 	case E_VERTEX_TYPE::DEBUG_LINE:
 		break;
-	case E_VERTEX_TYPE::SIMPLE_VERTEX:
+	case E_VERTEX_TYPE::STATIC_MESH:
 	{
-		SimpleVertex* pSimpleVertices = static_cast<SimpleVertex*>(pVertices_);
+		StaticMeshVertex* pSimpleVertices = static_cast<StaticMeshVertex*>(pVertices_);
 		aabb_.minPos_ = pSimpleVertices[0].position;
 		aabb_.maxPos_ = pSimpleVertices[0].position;
 		for (int i = 1; i < vertexCount_; ++i)
 		{
-			const SimpleVertex& curVertex = pSimpleVertices[i];
+			const StaticMeshVertex& curVertex = pSimpleVertices[i];
 			aabb_.minPos_.X = min(aabb_.minPos_.X, curVertex.position.X);
 			aabb_.maxPos_.X = max(aabb_.maxPos_.X, curVertex.position.X);
 			aabb_.minPos_.Y = min(aabb_.minPos_.Y, curVertex.position.Y);

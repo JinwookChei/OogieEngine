@@ -63,11 +63,11 @@ void FBXManager::TestLoad()
 	FBXManager::LoadStaticModel(&lightBulb, "..\\Resource\\Fbx\\LightBulb\\SM_Lamp7.FBX");
 	MeshDesc meshDesc_3;
 	meshDesc_3.primitiveType = E_MESH_PRIMITIVE_TYPE::TRIANGLE;
-	meshDesc_3.vertexType = E_VERTEX_TYPE::SIMPLE_VERTEX;
+	meshDesc_3.vertexType = E_VERTEX_TYPE::STATIC_MESH;
 	meshDesc_3.usage = E_MESH_USAGE::DEFAULT;
 	meshDesc_3.bindFlag = E_MESH_BIND_FLAG::VERTEX_BUFFER;
-	meshDesc_3.bufferSize = sizeof(SimpleVertex) * lightBulb.meshInfos[0].vertices.size();
-	meshDesc_3.vertexFormatSize = sizeof(SimpleVertex);
+	meshDesc_3.bufferSize = sizeof(StaticMeshVertex) * lightBulb.meshInfos[0].vertices.size();
+	meshDesc_3.vertexFormatSize = sizeof(StaticMeshVertex);
 	meshDesc_3.vertexCount = lightBulb.meshInfos[0].vertices.size();
 	meshDesc_3.pVertices = lightBulb.meshInfos[0].vertices.data();
 	for (int i = 0; i < lightBulb.meshInfos[0].indices.size(); ++i)

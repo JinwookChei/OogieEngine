@@ -371,7 +371,7 @@ void FBXImporter::ExtractStaticMeshInfo(StaticModel* pModel, fbxsdk::FbxNode* pN
 
 
 		fbxsdk::FbxVector4* pControlPoints = pMesh->GetControlPoints();
-		std::unordered_map<SimpleVertex, uint32_t> vertexCache;
+		std::unordered_map<StaticMeshVertex, uint32_t> vertexCache;
 		std::vector<uint32_t> vertexCpIndexCache;
 		vertexCpIndexCache.reserve(mInfo.polygonCount * 3);
 
@@ -389,7 +389,7 @@ void FBXImporter::ExtractStaticMeshInfo(StaticModel* pModel, fbxsdk::FbxNode* pN
 			{
 				int cpIndex = pMesh->GetPolygonVertex(poly, vert);
 
-				SimpleVertex v;
+				StaticMeshVertex v;
 				FbxVector4 localPos = pControlPoints[cpIndex];
 				FbxVector4 globalPos = globalMatrix_.MultT(localPos);
 				v.position.X = globalPos[0];
@@ -850,7 +850,7 @@ void FBXImporter::CalculateTangent(std::vector<SkinnedMeshVertex>* pVertices, co
 	}
 }
 
-void FBXImporter::CalculateTangent(std::vector<SimpleVertex>* pVertices, const std::vector<std::vector<uint32_t>>& indices)
+void FBXImporter::CalculateTangent(std::vector<StaticMeshVertex>* pVertices, const std::vector<std::vector<uint32_t>>& indices)
 {
 	const size_t vertexCount = pVertices->size();
 	for (size_t i = 0; i < indices.size(); ++i)
@@ -861,9 +861,9 @@ void FBXImporter::CalculateTangent(std::vector<SimpleVertex>* pVertices, const s
 			uint32_t i1 = indices[i][j + 1];
 			uint32_t i2 = indices[i][j + 2];
 
-			SimpleVertex& v0 = (*pVertices)[i0];
-			SimpleVertex& v1 = (*pVertices)[i1];
-			SimpleVertex& v2 = (*pVertices)[i2];
+			StaticMeshVertex& v0 = (*pVertices)[i0];
+			StaticMeshVertex& v1 = (*pVertices)[i1];
+			StaticMeshVertex& v2 = (*pVertices)[i2];
 
 			Float4 pos0;
 			pos0.X = v0.position.X;

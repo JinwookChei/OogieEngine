@@ -61,7 +61,7 @@ struct StaticMeshInfo
 	bool isTriangulated = false;
 	bool isSkeletalMesh = false;
 	
-	std::vector<SimpleVertex> vertices;
+	std::vector<StaticMeshVertex> vertices;
 	std::vector<std::vector<uint32_t>> indices;
 
 	StaticMeshInfo() = default;
