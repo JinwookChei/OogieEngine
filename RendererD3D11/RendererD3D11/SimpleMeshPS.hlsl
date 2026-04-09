@@ -1,6 +1,6 @@
-Texture2D TextureColor : register(t0);
-Texture2D TextureNormal : register(t1);
-SamplerState Sampler : register(s0);
+Texture2D textureColor : register(t0);
+Texture2D textureNormal : register(t1);
+SamplerState g_Sampler : register(s0);
 
 cbuffer CBPerObject : register(b1)
 {
@@ -43,14 +43,11 @@ PS_OUTPUT main(PS_INPUT input)
 {
     PS_OUTPUT output = (PS_OUTPUT) 0;
     
-    float4 textColor = TextureColor.Sample(Sampler, input.uv);
-    clip(textColor.a - 0.09);
-   
-    float3 texNormal = TextureNormal.Sample(Sampler, input.uv).xyz;
-    texNormal = DecodingNormal(texNormal);
-    float3 worldNormal = normalize(mul(texNormal, input.TBN));
+    clip(input.color.a - 0.09);
     
-    output.rt0 = textColor;
+    float3 worldNormal = normalize(mul(input.normal, input.TBN));
+    
+    output.rt0 = input.color;
     output.rt1 = float4(worldNormal, 1.0f);
     output.rt2 = float4(MaterialSpecular, MaterialShineness);
     

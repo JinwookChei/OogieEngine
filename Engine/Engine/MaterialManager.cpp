@@ -76,7 +76,6 @@ void MaterialManager::TestLoad()
 	blitPassMaterialDesc.textureNum = 1;
 	IMaterial* pMat = CreateMaterial(blitPassMaterialDesc, 3);
 
-
 	MaterialDesc matDesc0;
 	matDesc0.shaderType = E_SHADER_PRESET::STATIC_MESH;
 	matDesc0.samplerState = E_SAMPLER_PRESET::LINEAR_CLAMP;
@@ -87,7 +86,6 @@ void MaterialManager::TestLoad()
 	IMaterial* pMat0 = CreateMaterial(matDesc0, 9);
 	pMat0->SetTextures(0, pLightBulb_Diffuse);
 	pMat0->SetTextures(1, pLightBulb_Normal);
-
 
 	MaterialDesc matDesc1;
 	matDesc1.shaderType = E_SHADER_PRESET::STATIC_MESH;
@@ -122,7 +120,6 @@ void MaterialManager::TestLoad()
 	pMat4->SetTextures(0, pWerewolf_Body_Albedo);
 	pMat4->SetTextures(1, pWerewolf_Body_Normal);
 
-
 	MaterialDesc matDesc5;
 	matDesc5.shaderType = E_SHADER_PRESET::SKINNED_MESH;
 	matDesc5.samplerState = E_SAMPLER_PRESET::LINEAR_WARP;
@@ -133,6 +130,17 @@ void MaterialManager::TestLoad()
 	IMaterial* pMat5 = CreateMaterial(matDesc5, 14);
 	pMat5->SetTextures(0, pWerewolf_Fur_Albedo);
 	pMat5->SetTextures(1, pWerewolf_Fur_Normal);
+
+	MaterialDesc matDesc6;
+	matDesc6.shaderType = E_SHADER_PRESET::TEST_MESH;
+	matDesc6.samplerState = E_SAMPLER_PRESET::LINEAR_WARP;
+	matDesc6.blendState = E_BLEND_PRESET::OPAQUE_BLEND;
+	matDesc6.textureNum = 2;
+	matDesc6.shineness = 0.7f;
+	matDesc6.specularColor = { 0.7f, 0.7f, 0.7f };
+	IMaterial* pMat6 = CreateMaterial(matDesc6, 15);
+	pMat6->SetTextures(0, pBricks_Color);
+	pMat6->SetTextures(1, pBricks_Normal);
 }
 
 IMaterial* MaterialManager::CreateMaterial(const MaterialDesc& desc, unsigned long long materialTag)
@@ -163,7 +171,6 @@ bool MaterialManager::GetMaterial(IMaterial** ppOutMaterial, unsigned long long 
 	*ppOutMaterial = static_cast<IMaterial*>(pTmpMaterial);
 	return true;
 }
-
 
 void MaterialManager::CleanUp()
 {

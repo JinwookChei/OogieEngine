@@ -16,6 +16,7 @@ struct CameraFrameData
 struct ObjectFrameData
 {
 	Float4x4 worldMatrix;
+	Float4 scale;
 };
 
 struct ObjectRenderData
@@ -59,7 +60,6 @@ struct AnimConstantBuffer
 {
 	Float4x4 animTransform[200];
 };
-
 
 struct IRenderer : public IUnknown {
 	virtual bool __stdcall Initialize(void* hWnd, uint32_t width, uint32_t height) = 0;

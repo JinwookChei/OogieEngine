@@ -63,6 +63,8 @@ public:
 	static Shader* GShaderLight;
 	static Shader* GShaderComputeParticle;
 	static Shader* GShaderParticle;
+	static Shader* GShaderSimpleMesh;
+	static Shader* GShaderTestMesh;
 	static Shader* GShaderStaticMesh;
 	static Shader* GShaderSkinnedMesh;
 	static Shader* GShaderDebugLine;

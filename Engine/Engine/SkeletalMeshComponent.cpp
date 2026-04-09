@@ -36,10 +36,11 @@ void SkeletalMeshComponent::Render()
 	{
 		cb.animTransform[i] = curAnimBoneMats_[i];
 	}
-
 	Renderer::Instance()->UpdateAnimationFrame(cb);
+
 	ObjectFrameData objectFrameData;
 	MATH::MatrixMultiply(objectFrameData.worldMatrix, GetComponentTransform().GetMatrix(), GetOwner()->GetWorldTransform().GetMatrix());
+	objectFrameData.scale = GetWorldScale();
 	Renderer::Instance()->UpdateObjectFrame(objectFrameData);
 	Renderer::Instance()->Render(pPSO_);
 }

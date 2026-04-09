@@ -141,6 +141,15 @@ void Material::Bind()
 		Shader::GShaderParticle->Bind();
 		break;
 	}
+	case E_SHADER_PRESET::TEST_MESH:
+	{
+		Shader::GShaderTestMesh->Bind();
+		break;
+	}
+	case E_SHADER_PRESET::SIMPLE_MESH:
+	{
+		Shader::GShaderSimpleMesh->Bind();
+	}
 	case E_SHADER_PRESET::STATIC_MESH:
 	{
 		Shader::GShaderStaticMesh->Bind();

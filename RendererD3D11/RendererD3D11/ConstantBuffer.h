@@ -16,11 +16,12 @@ struct CBPerFrame
 	Float4 camPos;
 };
 
-
 struct CBPerObject
 {
 	Float4x4 worldMatrix;
 	Float4x4 normalMatrix;
+	
+	Float4 scale;
 
 	Float3 materialSpecular;
 	float materialShineness;
@@ -77,6 +78,17 @@ struct CBPerAnimation
 {
 	Float4x4 boneTransforms[200];
 };
+
+
+struct CBPerTest
+{
+	Float4x4 worldMatrix;
+	Float4x4 normalMatrix;
+	Float4 scale;
+	Float3 materialSpecular;
+	float materialShineness;
+};
+
 
 class ConstantBuffer final
 	: public IUnknown

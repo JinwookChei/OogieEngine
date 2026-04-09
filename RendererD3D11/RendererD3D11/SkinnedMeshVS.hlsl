@@ -13,7 +13,7 @@ cbuffer CBPerObject : register(b1)
 {
     matrix WorldMatrix;
     matrix NormalMatrix;
-    
+    float4 Scale;
     float3 MaterialSpecular;
     float MaterialShineness;
 };

@@ -4,6 +4,8 @@
 Shader* Shader::GShaderLight = nullptr;
 Shader* Shader::GShaderComputeParticle = nullptr;
 Shader* Shader::GShaderParticle = nullptr;
+Shader* Shader::GShaderTestMesh = nullptr;
+Shader* Shader::GShaderSimpleMesh = nullptr;
 Shader* Shader::GShaderStaticMesh = nullptr;
 Shader* Shader::GShaderSkinnedMesh = nullptr;
 Shader* Shader::GShaderDebugLine = nullptr;
@@ -202,8 +204,6 @@ bool Shader::Init(const ShaderDesc& desc)
 
 	return false;
 }
-
-
 
 HRESULT __stdcall Shader::QueryInterface(REFIID riid, void** ppvObject)
 {
@@ -513,6 +513,21 @@ void Shader::InitGlobalShaders()
 		DEBUG_BREAK();
 	}
 
+	ShaderDesc simpleMeshDesc;
+	simpleMeshDesc.pathVS_ = L"SimpleMeshVS.cso";
+	simpleMeshDesc.pathPS_ = L"SimpleMeshPS.cso";
+	simpleMeshDesc.inputDesc_.push_back({ "POSITION", 0, 6, 0, false });
+	simpleMeshDesc.inputDesc_.push_back({ "COLOR", 0, 2, 0, false });
+	simpleMeshDesc.inputDesc_.push_back({ "NORMAL", 0, 6, 0, false });
+	simpleMeshDesc.inputDesc_.push_back({ "TEXCOORD", 0, 16, 0, false });
+	simpleMeshDesc.inputDesc_.push_back({ "TANGENT", 0, 2, 0, false });
+	Shader::GShaderSimpleMesh = Shader::Create(simpleMeshDesc);
+	if (nullptr == GShaderSimpleMesh)
+	{
+		DEBUG_BREAK();
+	}
+
+
 	ShaderDesc staticMeshDesc;
 	staticMeshDesc.pathVS_ = L"StaticMeshVS.cso";
 	staticMeshDesc.pathPS_ = L"StaticMeshPS.cso";
@@ -564,6 +579,20 @@ void Shader::InitGlobalShaders()
 	{
 		DEBUG_BREAK();
 	}
+
+	ShaderDesc testMeshDesc;
+	testMeshDesc.pathVS_ = L"ScaleAwareTilingVS.cso";
+	testMeshDesc.pathPS_ = L"ScaleAwareTilingPS.cso";
+	testMeshDesc.inputDesc_.push_back({ "POSITION", 0, 6, 0, false });
+	testMeshDesc.inputDesc_.push_back({ "COLOR", 0, 2, 0, false });
+	testMeshDesc.inputDesc_.push_back({ "NORMAL", 0, 6, 0, false });
+	testMeshDesc.inputDesc_.push_back({ "TEXCOORD", 0, 16, 0, false });
+	testMeshDesc.inputDesc_.push_back({ "TANGENT", 0, 2, 0, false });
+	Shader::GShaderTestMesh = Shader::Create(testMeshDesc);
+	if (nullptr == GShaderTestMesh)
+	{
+		DEBUG_BREAK();
+	}
 }
 
 void Shader::ShutDown()
@@ -592,6 +621,12 @@ void Shader::ShutDown()
 		Shader::GShaderParticle = nullptr;
 	}
 
+	if (nullptr != Shader::GShaderSimpleMesh)
+	{
+		Shader::GShaderSimpleMesh->Release();
+		Shader::GShaderSimpleMesh = nullptr;
+	}
+
 	if (nullptr != Shader::GShaderStaticMesh)
 	{
 		Shader::GShaderStaticMesh->Release();
@@ -608,5 +643,12 @@ void Shader::ShutDown()
 	{
 		Shader::GShaderDebugLine->Release();
 		Shader::GShaderDebugLine = nullptr;
+	}
+
+
+	if (nullptr != Shader::GShaderTestMesh)
+	{
+		Shader::GShaderTestMesh->Release();
+		Shader::GShaderTestMesh = nullptr;
 	}
 }

@@ -283,5 +283,17 @@
     <FxCompile Include="SkinnedMeshPS.hlsl">
       <Filter>Resource Files\Shader\DeferredPassShader</Filter>
     </FxCompile>
+    <FxCompile Include="SimpleMeshVS.hlsl">
+      <Filter>Resource Files\Shader\DeferredPassShader</Filter>
+    </FxCompile>
+    <FxCompile Include="SimpleMeshPS.hlsl">
+      <Filter>Resource Files\Shader\DeferredPassShader</Filter>
+    </FxCompile>
+    <FxCompile Include="ScaleAwareTilingVS.hlsl">
+      <Filter>Resource Files\Shader\DeferredPassShader</Filter>
+    </FxCompile>
+    <FxCompile Include="ScaleAwareTilingPS.hlsl">
+      <Filter>Resource Files\Shader\DeferredPassShader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

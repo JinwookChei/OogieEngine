@@ -26,6 +26,7 @@ void StaticMeshComponent::Render()
 
 	ObjectFrameData objectFrameData;
 	MATH::MatrixMultiply(objectFrameData.worldMatrix, GetComponentTransform().GetMatrix(), GetOwner()->GetWorldTransform().GetMatrix());
+	objectFrameData.scale = GetWorldScale();
 	Renderer::Instance()->UpdateObjectFrame(objectFrameData);
 	Renderer::Instance()->Render(pPSO_);
 }

@@ -22,14 +22,8 @@ public:
 	IMaterial* __stdcall GetMaterial(uint16_t slot) const override;
 	uint32_t __stdcall GetMaterialSlotCount() const override;
 	void __stdcall SetMaterialToSlot(uint16_t slot, IMaterial* pMaterial);
-	
-
-	//uint32_t GetMeshSlotCount() const;
-
-	//uint32_t GetMaterialSlotCount() const;
 
 	const E_DEPTH_PRESET& GetDepthState() const;
-
 	const E_RASTERIZER_PRESET& GetRasterizerMode() const;
 
 private:

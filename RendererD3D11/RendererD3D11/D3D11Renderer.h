@@ -42,8 +42,6 @@ public:
 	void __stdcall Compute(IPSO* pipelineStateObject, UINT threadGroupCountX, UINT threadGroupCountY, UINT threadGroupCountZ) override;
 
 	void __stdcall UnBindSRVs(bool bVS, bool bPS) override;
-
-
 	
 	void __stdcall RenderEnd() override;
 

@@ -96,16 +96,6 @@ void __stdcall PipelineStateObject::SetMaterialToSlot(uint16_t slot, IMaterial* 
 	ppMaterialSlot_[slot]->AddRef();
 }
 
-//uint32_t PipelineStateObject::GetMeshSlotCount() const
-//{
-//	return meshSlotCount_;
-//}
-//
-//uint32_t PipelineStateObject::GetMaterialSlotCount() const
-//{
-//	return materialSlotCount_;
-//}
-
 const E_DEPTH_PRESET& PipelineStateObject::GetDepthState() const
 {
 	return depthState_;
