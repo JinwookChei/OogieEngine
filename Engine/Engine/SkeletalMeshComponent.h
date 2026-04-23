@@ -18,6 +18,8 @@ public:
 
 	ENGINE_API bool ChangeAnimation(unsigned long long animTag);
 
+	ENGINE_API unsigned long long GetCurrentAnimationTag();
+
 	ENGINE_API bool SetSkeleton(unsigned long long skeletonTag);
 
 

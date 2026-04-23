@@ -51,7 +51,7 @@ void SkeletalMeshComponent::AnimationTick(double deltaTime)
 	{
 		if (animPlayState_.isBlending)
 		{
-			if (true == pAnimation_->BlendAnimation(curAnimBoneMats_, tmpAnimBoneLocalMats_, pSkeleton_, animPlayState_, 0.04, deltaTime))
+			if (true == pAnimation_->BlendAnimation(curAnimBoneMats_, tmpAnimBoneLocalMats_, pSkeleton_, animPlayState_, 0.2, deltaTime))
 			{
 				animPlayState_.isBlending = false;
 			}
@@ -83,6 +83,7 @@ bool SkeletalMeshComponent::ChangeAnimation(unsigned long long animTag)
 	{
 		pAnimation_->Release();
 		animPlayState_.isBlending = true;
+		animPlayState_.curAnimTag = animTag;
 	}
 
 	if (false == AnimationManager::Instance()->GetAnimation(&pAnimation_, animTag))
@@ -94,6 +95,11 @@ bool SkeletalMeshComponent::ChangeAnimation(unsigned long long animTag)
 
 	
 	return true;
+}
+
+unsigned long long SkeletalMeshComponent::GetCurrentAnimationTag()
+{
+	return animPlayState_.curAnimTag;
 }
 
 bool SkeletalMeshComponent::SetSkeleton(unsigned long long skeletonTag)

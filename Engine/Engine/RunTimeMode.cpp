@@ -34,10 +34,12 @@ void RunTimeMode::ToggleRunTimeMode()
 	{	
 	case E_RUNTIME_MODE::GAME:
 		GRunTimeMode->curMode_ = E_RUNTIME_MODE::EDITOR;
+		Application::Instance()->SetShowCursor(true);
 		break;
 	case E_RUNTIME_MODE::EDITOR:
 		GRunTimeMode->curMode_ = E_RUNTIME_MODE::GAME;
 		Editor::GetEditor()->SetGameModeFlag(false);
+		Application::Instance()->SetShowCursor(false);
 		break;
 	default:
 		break;

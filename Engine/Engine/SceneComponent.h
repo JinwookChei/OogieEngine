@@ -25,5 +25,4 @@ private:
 	void CleanUp() override;
 
 	Transform* pTransform_;
-
 };

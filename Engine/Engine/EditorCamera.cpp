@@ -19,8 +19,8 @@ void EditorCamera::Tick(double deltaTime)
 	if (InputManager::IsPress(VK_RBUTTON))
 	{
 		const Float2& deltaMouseMove = InputManager::GetDeltaMouseMove();
-		pTransform_->AddRotaionZ(deltaMouseMove.X * deltaTime * 8.0f);
-		pTransform_->AddRotaionY(deltaMouseMove.Y * deltaTime * 8.0f);
+		pTransform_->AddRotaionZ(deltaMouseMove.X * deltaTime * 10.0f);
+		pTransform_->AddRotaionY(deltaMouseMove.Y * deltaTime * 10.0f);
 	}
 
 	if (InputManager::IsPress('W'))

@@ -26,6 +26,8 @@ public:
 
 	void __stdcall WinPumpMessage() override;
 
+	void __stdcall EndFrame() override;
+
 	bool __stdcall ApplicationQuit() override;
 
 	void __stdcall SetShowCursor(bool show) override;
@@ -34,9 +36,13 @@ public:
 
 	const Float2& __stdcall GetMousePosition() const override;
 
-	void __stdcall Quit() override;
+	const Float2& __stdcall GetMouseDeltaPosition() const override;
 
 	void UpdateMousePosition(const Float2& mousePos);
+
+	void UpdateMouseDeltaPosition(const Float2& delta);
+
+	void __stdcall Quit() override;
 
 	const HINSTANCE HandleInstance() const;
 
@@ -64,4 +70,6 @@ private:
 	bool isApplicationQuit_;
 
 	Float2 mousePos_;
+
+	Float2 mouseDeltaPos_;
 };

@@ -32,9 +32,11 @@ bool SamplerState::Init(const E_SAMPLER_PRESET& samplerType, float minLOD, float
 	D3D11_SAMPLER_DESC samplerDesc = {};
 	samplerDesc.MinLOD = (FLOAT)minLOD;
 	samplerDesc.MaxLOD = (FLOAT)maxLOD;
+	samplerDesc.MinLOD = 0;
+	samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
 	samplerDesc.MipLODBias = 0.0f;
-	//samplerDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
-	samplerDesc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
+	samplerDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
+	//samplerDesc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
 	
 	switch (samplerType)
 	{
@@ -61,7 +63,8 @@ bool SamplerState::Init(const E_SAMPLER_PRESET& samplerType, float minLOD, float
 		samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_MODE::D3D11_TEXTURE_ADDRESS_WRAP;
 		samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_MODE::D3D11_TEXTURE_ADDRESS_WRAP;
 		samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_MODE::D3D11_TEXTURE_ADDRESS_WRAP;
-		samplerDesc.MaxAnisotropy = (UINT)maxAnisotropy;
+		//samplerDesc.MaxAnisotropy = (UINT)maxAnisotropy;
+		samplerDesc.MaxAnisotropy = 8;
 
 	}break;
 	case E_SAMPLER_PRESET::ANISOTROPIC_CLAMP:
@@ -70,7 +73,8 @@ bool SamplerState::Init(const E_SAMPLER_PRESET& samplerType, float minLOD, float
 		samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_MODE::D3D11_TEXTURE_ADDRESS_CLAMP;
 		samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_MODE::D3D11_TEXTURE_ADDRESS_CLAMP;
 		samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_MODE::D3D11_TEXTURE_ADDRESS_CLAMP;
-		samplerDesc.MaxAnisotropy = (UINT)maxAnisotropy;
+		//samplerDesc.MaxAnisotropy = (UINT)maxAnisotropy;
+		samplerDesc.MaxAnisotropy = 8;
 	}break;
 
 	default:

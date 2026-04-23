@@ -51,12 +51,9 @@ void SceneWindow::End()
 	ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
 	Float2 ViewportSize = Float2{ viewportPanelSize.x, viewportPanelSize.y };
 
-	void* pSRV = GBoundCamera->GetFinalRenderTargetForEditor()->GetShaderResourceView(E_RENDER_TEXTURE_TYPE::Albedo);
 	//void* pSRV = GBoundCamera->GetFinalRenderTargetForEditor()->GetShaderResourceView(E_RENDER_TEXTURE_TYPE::Albedo);
-	//void* pSRV = pEditorCore->pBoundCamera_->GetParticleRenderTargetForEditor()->GetShaderResourceView(E_RENDER_TEXTURE_TYPE::Albedo);
-	//void* pSRV = GBoundCamera->GetGBufferRenderTargetForEditor()->GetShaderResourceView(E_RENDER_TEXTURE_TYPE::Albedo);
-	//void* pSRV = pEditorCore->pBoundCamera_->GetFinalRenderTargetForEditor()->GetShaderResourceView(E_RENDER_TEXTURE_TYPE::Normal);
-	//void* pSRV = pEditorCore->pBoundCamera_->GetDebugRenderTargetForEditor()->GetShaderResourceView(E_RENDER_TEXTURE_TYPE::Albedo);
+	void* pSRV = GBoundCamera->GetGBufferRenderTargetForEditor()->GetShaderResourceView(E_RENDER_TEXTURE_TYPE::Normal);
+	
 	ImGui::Image
 	(
 		(ImTextureID)pSRV,	

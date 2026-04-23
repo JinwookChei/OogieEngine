@@ -3,7 +3,7 @@
 #include "MovementComponent.h"
 
 MovementComponent::MovementComponent()
-	: velocity_(1.0f)
+	: velocity_(1.7f)
 {
 }
 
@@ -20,6 +20,10 @@ void MovementComponent::Tick(double deltaTime)
 	ActorComponent::Tick(deltaTime);
 
 	if (RunTimeMode::GetCurrentMode() != E_RUNTIME_MODE::GAME) return;
+
+	const Float2& deltaMouseMove = InputManager::GetDeltaMouseMove();
+	GetOwner()->GetWorldTransform().AddRotaionZ(deltaMouseMove.X * deltaTime * 15.0f);
+
 	if (InputManager::IsPress('W'))
 	{
 		Float4 forwardVector = GetOwner()->GetWorldTransform().ForwardVector();

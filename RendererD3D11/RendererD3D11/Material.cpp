@@ -194,7 +194,7 @@ void Material::Bind()
 	}
 	case E_SAMPLER_PRESET::ANISOTROPIC_WARP:
 	{
-		SamplerState::GSamplerAnisotropicClamp->BindPS(0);
+		SamplerState::GSamplerAnisotropicWarp->BindPS(0);
 		break;
 	}
 	case E_SAMPLER_PRESET::DISABLE:
@@ -306,7 +306,7 @@ void Material::UnBind()
 	}
 	case E_SAMPLER_PRESET::ANISOTROPIC_WARP:
 	{
-		SamplerState::GSamplerAnisotropicClamp->UnBindPS(0);
+		SamplerState::GSamplerAnisotropicWarp->UnBindPS(0);
 		break;
 	}
 	case E_SAMPLER_PRESET::DISABLE:

@@ -184,11 +184,6 @@ unsigned long long InputManager::UpTime(int key)
     return pFind->upTime_;
 }
 
-const Float2& InputManager::GetPrevMousePosition()
-{
-    return GInputManager->prevMousePos_;
-}
-
 const Float2& InputManager::GetCurrentMousePosition() 
 {
     return GInputManager->curMousePos_;
@@ -283,9 +278,6 @@ void InputManager::UpdateInputState(double deltaTime)
 
 void InputManager::UpdateMouseMove()
 {
-    prevMousePos_ = curMousePos_;
-
     curMousePos_ = Application::Instance()->GetMousePosition();
-
-    deltaMouseMove_ = curMousePos_ - prevMousePos_;
+    deltaMouseMove_ = Application::Instance()->GetMouseDeltaPosition();
 }

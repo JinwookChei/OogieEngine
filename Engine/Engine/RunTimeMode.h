@@ -10,8 +10,8 @@ class RunTimeMode
 {
 	friend class Engine;
 
-	RunTimeMode();
-	~RunTimeMode();
+	ENGINE_API RunTimeMode();
+	ENGINE_API ~RunTimeMode();
 
 	static RunTimeMode* GRunTimeMode;
 	static bool Create();
@@ -19,7 +19,7 @@ class RunTimeMode
 
 public:
 	static void ToggleRunTimeMode();
-	static E_RUNTIME_MODE GetCurrentMode();
+	ENGINE_API static E_RUNTIME_MODE GetCurrentMode();
 
 private:
 	void CleanUp();

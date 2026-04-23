@@ -35,7 +35,7 @@ Transform& SceneComponent::GetComponentTransform() const
 Float4x4 SceneComponent::GetWorldMatrix() const
 {
 	Float4x4 worldMat;
-	MATH::MatrixMultiply(worldMat, GetOwner()->GetWorldTransform().GetMatrix(), pTransform_->GetMatrix());
+	MATH::MatrixMultiply(worldMat, pTransform_->GetMatrix(), GetOwner()->GetWorldTransform().GetMatrix());
 	return worldMat;
 }
 

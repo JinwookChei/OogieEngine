@@ -26,7 +26,8 @@ struct AnimationClip
 struct AnimationPlayState
 {
 	AnimationPlayState()
-		: frameTime(0.0)
+		: curAnimTag(0)
+		, frameTime(0.0)
 		, isBlending(false)
 		, isEnd(false)
 	{
@@ -34,15 +35,15 @@ struct AnimationPlayState
 
 	void Init()
 	{
+		curAnimTag = 0;
 		frameTime = 0.0;
 		isBlending = false;
 		isEnd = false;
 	}
 
+	unsigned long long curAnimTag;
 	double frameTime;
-
 	bool isBlending;
-	
 	bool isEnd;
 };
 

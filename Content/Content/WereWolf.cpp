@@ -17,29 +17,44 @@ void WereWolf::Tick(double deltaTime)
 {
 	Player::Tick(deltaTime);
 
-	if (InputManager::IsPress('1'))
+	if (E_RUNTIME_MODE::GAME == RunTimeMode::GetCurrentMode())
 	{
-		pSkeletalMeshComponent_->ChangeAnimation(1);
-	}
-	if (InputManager::IsPress('2'))
-	{
-		pSkeletalMeshComponent_->ChangeAnimation(2);
-	}
-	if (InputManager::IsPress('3'))
-	{
-		pSkeletalMeshComponent_->ChangeAnimation(3);
-	}
-	if (InputManager::IsPress('4'))
-	{
-		pSkeletalMeshComponent_->ChangeAnimation(4);
-	}
-	if (InputManager::IsPress('5'))
-	{
-		pSkeletalMeshComponent_->ChangeAnimation(5);
-	}
-	if (InputManager::IsPress('6'))
-	{
-		pSkeletalMeshComponent_->ChangeAnimation(6);
+		if (InputManager::IsPress('W') && pSkeletalMeshComponent_->GetCurrentAnimationTag() != 3)
+		{
+			pSkeletalMeshComponent_->ChangeAnimation(3);
+		}
+		if (InputManager::IsUp('W'))
+		{
+			pSkeletalMeshComponent_->ChangeAnimation(1);
+		}
+		if (InputManager::IsPress('S') && pSkeletalMeshComponent_->GetCurrentAnimationTag() != 3)
+		{
+			pSkeletalMeshComponent_->ChangeAnimation(3);
+		}
+		if (InputManager::IsUp('S'))
+		{
+			pSkeletalMeshComponent_->ChangeAnimation(1);
+		}
+		if (InputManager::IsPress('A') && pSkeletalMeshComponent_->GetCurrentAnimationTag() != 3)
+		{
+			pSkeletalMeshComponent_->ChangeAnimation(3);
+		}
+		if (InputManager::IsUp('A'))
+		{
+			pSkeletalMeshComponent_->ChangeAnimation(1);
+		}
+		if (InputManager::IsPress('D') && pSkeletalMeshComponent_->GetCurrentAnimationTag() != 3)
+		{
+			pSkeletalMeshComponent_->ChangeAnimation(3);
+		}
+		if (InputManager::IsUp('D'))
+		{
+			pSkeletalMeshComponent_->ChangeAnimation(1);
+		}
+		if (InputManager::IsDown('F'))
+		{
+			pSkeletalMeshComponent_->ChangeAnimation(4);
+		}
 	}
 }
 
@@ -62,8 +77,8 @@ void WereWolf::BeginPlay()
 	pTransform_->SetRotation({ 0.0f, 0.0f, 0.0f, 0.0f });
 	pTransform_->SetPosition({ 0.0f, 0.0f, 0.0f, 1.0f });
 
-	pCameraComponent_->GetComponentTransform().SetPosition({-5.0f, 0.0f, 4.0f, 1.0f});
-	pCameraComponent_->GetComponentTransform().SetRotation({0.0f, 15.0f, 0.0f, 0.0f});
+	pCameraComponent_->GetComponentTransform().SetPosition({ -4.0f, 0.0f, 3.1f, 1.0f });
+	pCameraComponent_->GetComponentTransform().SetRotation({ 0.0f, 25.0f, 0.0f, 0.0f });
 }
 
 void WereWolf::Render()

@@ -111,11 +111,8 @@ extern MeshManager* GMeshManager;
 extern MaterialManager* GMaterialManager;
 extern TextureManager* GTextureManager;
 extern AnimationManager* GAnimationManager;
-//extern RasterizerManager* GRasterizerManager;
 
 extern World* GWorld;
-//extern Camera* GMainCamera;
-//extern Camera* GCurrentCamera;
 extern ActorPicker* GActorPicker;
 
 // 임시 전역 객체.

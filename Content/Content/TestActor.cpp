@@ -2,7 +2,6 @@
 #include "TestActor.h"
 
 TestActor::TestActor()
-	//: pStaticMesh_ (new StaticMeshComponent(this))
 {
 	pStaticMesh_ = CreateComponent<StaticMeshComponent>();
 }

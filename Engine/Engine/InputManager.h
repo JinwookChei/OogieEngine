@@ -47,7 +47,6 @@ public:
     ENGINE_API static bool IsUp(int key);
     ENGINE_API static bool IsFree(int key);
     ENGINE_API static unsigned long long UpTime(int key);
-    ENGINE_API static const Float2& GetPrevMousePosition();
     ENGINE_API static const Float2& GetCurrentMousePosition();
     ENGINE_API static const Float2& GetDeltaMouseMove();
 
@@ -57,7 +56,6 @@ private:
 
     HashTable* hashTable_;
 
-    Float2 prevMousePos_;
     Float2 curMousePos_;
     Float2 deltaMouseMove_;
 };

@@ -54,6 +54,10 @@ void TextureManager::TestLoad()
 	CreateTexture(wereWolf_Fur_Albedo_Path, false, 18);
 	const wchar_t* wereWolf_Fur_Normal_Path = L"../Resource/Fbx/WereWolf/Texture/Werewolf_Fur_Normal.png";
 	CreateTexture(wereWolf_Fur_Normal_Path, true, 19);
+	const wchar_t* grassGroundColorPath = L"../Resource/Texture/GrassGround/4K/GrassGround_Color_4K.jpg";
+	CreateTexture(grassGroundColorPath, false, 20);
+	const wchar_t* grassGroundNormalPath = L"../Resource/Texture/GrassGround/4K/GrassGround_Normal_4K.png";
+	CreateTexture(grassGroundNormalPath, true, 21);
 }
 
 ITexture* TextureManager::CreateTexture(const wchar_t* fileName, bool isNormalMap, unsigned long long textureTag)

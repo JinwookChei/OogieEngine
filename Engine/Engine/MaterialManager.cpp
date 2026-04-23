@@ -43,6 +43,10 @@ void MaterialManager::TestLoad()
 	if (false == TextureManager::Instance()->GetTexture(&pWerewolf_Fur_Albedo, 18)) DEBUG_BREAK();
 	ITexture* pWerewolf_Fur_Normal = nullptr;
 	if (false == TextureManager::Instance()->GetTexture(&pWerewolf_Fur_Normal, 19)) DEBUG_BREAK();
+	ITexture* grassGroundColor_Color = nullptr;
+	if (false == TextureManager::Instance()->GetTexture(&grassGroundColor_Color, 20)) DEBUG_BREAK();
+	ITexture* grassGroundColor_Normal = nullptr;
+	if (false == TextureManager::Instance()->GetTexture(&grassGroundColor_Normal, 21)) DEBUG_BREAK();
 
 
 	MaterialDesc lightPassMaterialDesc;
@@ -133,7 +137,7 @@ void MaterialManager::TestLoad()
 
 	MaterialDesc matDesc6;
 	matDesc6.shaderType = E_SHADER_PRESET::TEST_MESH;
-	matDesc6.samplerState = E_SAMPLER_PRESET::LINEAR_WARP;
+	matDesc6.samplerState = E_SAMPLER_PRESET::ANISOTROPIC_WARP;
 	matDesc6.blendState = E_BLEND_PRESET::OPAQUE_BLEND;
 	matDesc6.textureNum = 2;
 	matDesc6.shineness = 0.7f;
@@ -141,13 +145,23 @@ void MaterialManager::TestLoad()
 	IMaterial* pMat6 = CreateMaterial(matDesc6, 15);
 	pMat6->SetTextures(0, pBricks_Color);
 	pMat6->SetTextures(1, pBricks_Normal);
+
+	MaterialDesc matDesc7;
+	matDesc7.shaderType = E_SHADER_PRESET::STATIC_MESH;
+	matDesc7.samplerState = E_SAMPLER_PRESET::ANISOTROPIC_WARP;
+	matDesc7.blendState = E_BLEND_PRESET::OPAQUE_BLEND;
+	matDesc7.textureNum = 2;
+	matDesc7.shineness = 0.7f;
+	matDesc7.specularColor = { 0.7f, 0.7f, 0.7f };
+	IMaterial* pMat7 = CreateMaterial(matDesc7, 16);
+	pMat7->SetTextures(0, grassGroundColor_Color);
+	pMat7->SetTextures(1, grassGroundColor_Normal);
 }
 
 IMaterial* MaterialManager::CreateMaterial(const MaterialDesc& desc, unsigned long long materialTag)
 {
 	IMaterial* pNewMaterial = Renderer::GetFactory()->CreateMaterial(desc);
 	materialTable_.Insert(pNewMaterial, &materialTag, 8);
-
 	return pNewMaterial;
 }
 

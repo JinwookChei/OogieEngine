@@ -6,6 +6,7 @@
 #include "TestActor.h"
 #include "ParticleActor.h"
 #include "WereWolf.h"
+#include "Floor.h"
 
 StartLevel::StartLevel()
 {
@@ -52,9 +53,12 @@ void StartLevel::BeginPlay()
 	pCamera1->GetWorldTransform().SetRotation({ 0.0f, 20.0f, 0.0f, 0.0f });
 	pCamera1->GetWorldTransform().SetPosition({ -10.0f, 0.0f, 5.0f, 1.0f });*/
 
-	TestActor* pActor1 = SpawnActor<TestActor>(E_ACTOR_TYPE::NORMAL);
-	pActor1->GetWorldTransform().SetPosition({ 0.0f, 0.0f, 0.0f, 1.0f });
-	pActor1->GetWorldTransform().SetScale({ 10.0f, 10.0f, 1.0f, 0.0f });
+	//TestActor* pActor1 = SpawnActor<TestActor>(E_ACTOR_TYPE::NORMAL);
+	//pActor1->GetWorldTransform().SetPosition({ 0.0f, 0.0f, 0.0f, 1.0f });
+	//pActor1->GetWorldTransform().SetScale({ 10.0f, 10.0f, 1.0f, 0.0f });
+	Floor* pFloor = SpawnActor<Floor>(E_ACTOR_TYPE::NORMAL);
+	pFloor->GetWorldTransform().SetPosition({ 0.0f, 0.0f, 0.0f, 1.0f });
+	pFloor->GetWorldTransform().SetScale({ 20.0f, 20.0f, 5.0f, 0.0f });
 
 	Sphere* pSphere1 = SpawnActor<Sphere>(E_ACTOR_TYPE::NORMAL);
 	pSphere1->GetWorldTransform().SetPosition({ 10.0f, 0.0f, 3.0f, 1.0f });

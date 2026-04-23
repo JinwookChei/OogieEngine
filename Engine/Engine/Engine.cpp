@@ -121,9 +121,7 @@ bool Engine::Initialize
 	}
 
 	GWorld = new World;
-
 	GActorPicker = new ActorPicker;
-
 	return true;
 }
 
@@ -136,7 +134,6 @@ void Engine::Run()
 	AnimationManager::Instance()->TestLoad();
 	FBXManager::TestLoad();
 	TimeManager::StartTimer();
-
 
 	IMesh* pBlitMesh = nullptr;
 	MeshManager::Instance()->GetMesh(&pBlitMesh, 0);
@@ -151,8 +148,8 @@ void Engine::Run()
 	GBlitPSO->SetMeshToSlot(0, pBlitMesh);
 	GBlitPSO->SetMaterialToSlot(0, pBlitMaterial);
 
-	while (false == Application::Instance()->ApplicationQuit()) {
-
+	while (false == Application::Instance()->ApplicationQuit()) 
+	{
 		Application::Instance()->WinPumpMessage();
 
 		double deltaTime = TimeManager::CalcDeltaTime();
@@ -189,6 +186,8 @@ void Engine::Run()
 		}
 		Renderer::Instance()->RenderEnd();
 		// Blit RenderTarget  End
+
+		Application::Instance()->EndFrame();
 	}
 }
 
