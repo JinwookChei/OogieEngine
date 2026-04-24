@@ -11,12 +11,12 @@ bool GGameModeFlag = false;
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 IEditorBindCamera* GBoundCamera = nullptr;
+ImTextureID* GCurrentRenderResource = nullptr;
 IEditorBindPickedActor* GPickedActor = nullptr;
 EditorCore* GEditor = nullptr;
 SceneWindow* SceneWindow::GSceneWindow = nullptr;
 InspectorWindow* InspectorWindow::GInspectorWindow = nullptr;
 GBufferViewerWindow* GBufferViewerWindow::GGBufferViewerWindow = nullptr;
-
 
 namespace Editor
 {
@@ -185,8 +185,8 @@ bool __stdcall EditorCore::BindCamera(IEditorBindCamera* pCamera)
 		Assert("Camera is NULL");
 		return false;
 	}
-
 	GBoundCamera = pCamera;
+	GCurrentRenderResource = (ImTextureID*)GBoundCamera->GetFinalRenderTargetForEditor()->GetShaderResourceView(E_RENDER_TEXTURE_TYPE::Albedo);
 	return true;
 }
 

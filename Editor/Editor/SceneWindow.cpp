@@ -50,13 +50,10 @@ void SceneWindow::End()
 	ViewportBounds[rightBottom] = Float2{ viewportMaxRegion.x + viewportOffset.x, viewportMaxRegion.y + viewportOffset.y };
 	ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
 	Float2 ViewportSize = Float2{ viewportPanelSize.x, viewportPanelSize.y };
-
-	//void* pSRV = GBoundCamera->GetFinalRenderTargetForEditor()->GetShaderResourceView(E_RENDER_TEXTURE_TYPE::Albedo);
-	void* pSRV = GBoundCamera->GetGBufferRenderTargetForEditor()->GetShaderResourceView(E_RENDER_TEXTURE_TYPE::Normal);
 	
 	ImGui::Image
 	(
-		(ImTextureID)pSRV,	
+		GCurrentRenderResource,
 		ImVec2{ ViewportSize.X, ViewportSize.Y },
 		ImVec2{ 0, 0 }, ImVec2{ 1, 1 }
 	);

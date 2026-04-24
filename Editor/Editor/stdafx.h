@@ -94,7 +94,7 @@
 
 extern IEditorBindCamera* GBoundCamera;
 extern IEditorBindPickedActor* GPickedActor;
-
+extern ImTextureID* GCurrentRenderResource;
 
 constexpr float DEFAULT_SCREEN_WIDTH = 2560.0f;
 constexpr float DEFAULT_SCREEN_HEIGHT = 1440.0f;

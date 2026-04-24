@@ -56,9 +56,20 @@ void StartLevel::BeginPlay()
 	//TestActor* pActor1 = SpawnActor<TestActor>(E_ACTOR_TYPE::NORMAL);
 	//pActor1->GetWorldTransform().SetPosition({ 0.0f, 0.0f, 0.0f, 1.0f });
 	//pActor1->GetWorldTransform().SetScale({ 10.0f, 10.0f, 1.0f, 0.0f });
-	Floor* pFloor = SpawnActor<Floor>(E_ACTOR_TYPE::NORMAL);
-	pFloor->GetWorldTransform().SetPosition({ 0.0f, 0.0f, 0.0f, 1.0f });
-	pFloor->GetWorldTransform().SetScale({ 20.0f, 20.0f, 5.0f, 0.0f });
+
+	Floor* pFloor1 = SpawnActor<Floor>(E_ACTOR_TYPE::NORMAL);
+	pFloor1->GetWorldTransform().SetPosition({ 5.0f, -5.0f, -0.5f, 1.0f });
+	pFloor1->GetWorldTransform().SetScale({ 10.0f, 10.0f, 1.0f, 0.0f });
+	Floor* pFloor2 = SpawnActor<Floor>(E_ACTOR_TYPE::NORMAL);
+	pFloor2->GetWorldTransform().SetPosition({ 5.0f, 5.0f, -0.5f, 1.0f });
+	pFloor2->GetWorldTransform().SetScale({ 10.0f, 10.0f, 1.0f, 0.0f });
+	Floor* pFloor3 = SpawnActor<Floor>(E_ACTOR_TYPE::NORMAL);
+	pFloor3->GetWorldTransform().SetPosition({ -5.0f, 5.0f, -0.5f, 1.0f });
+	pFloor3->GetWorldTransform().SetScale({ 10.0f, 10.0f, 1.0f, 0.0f });
+	Floor* pFloor4 = SpawnActor<Floor>(E_ACTOR_TYPE::NORMAL);
+	pFloor4->GetWorldTransform().SetPosition({ -5.0f, -5.0f, -0.5f, 1.0f });
+	pFloor4->GetWorldTransform().SetScale({ 10.0f, 10.0f, 1.0f, 0.0f });
+
 
 	Sphere* pSphere1 = SpawnActor<Sphere>(E_ACTOR_TYPE::NORMAL);
 	pSphere1->GetWorldTransform().SetPosition({ 10.0f, 0.0f, 3.0f, 1.0f });

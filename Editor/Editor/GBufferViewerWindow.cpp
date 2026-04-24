@@ -24,6 +24,7 @@ void GBufferViewerWindow::Begin()
 
 void GBufferViewerWindow::End()
 {
+	void* pFinal = GBoundCamera->GetFinalRenderTargetForEditor()->GetShaderResourceView(E_RENDER_TEXTURE_TYPE::Albedo);
 	void* pAlbedo = GBoundCamera->GetGBufferRenderTargetForEditor()->GetShaderResourceView(E_RENDER_TEXTURE_TYPE::Albedo);
 	void* pNormal = GBoundCamera->GetGBufferRenderTargetForEditor()->GetShaderResourceView(E_RENDER_TEXTURE_TYPE::Normal);
 	void* pSpecular = GBoundCamera->GetGBufferRenderTargetForEditor()->GetShaderResourceView(E_RENDER_TEXTURE_TYPE::Specular);
@@ -33,10 +34,16 @@ void GBufferViewerWindow::End()
 		{
 			ImGui::BeginGroup();
 			ImGui::Text("%s", name);
-			ImGui::Image((ImTextureID)texID, ImVec2(300, 300));
+			//ImGui::Image((ImTextureID)texID, ImVec2(300, 300));
+			if (ImGui::ImageButton(name, (ImTextureID)texID, ImVec2(400, 400)))
+			{
+				GCurrentRenderResource = (ImTextureID*)texID;
+			}
 			ImGui::EndGroup();
 		};
 
+	DrawTexture("Final", pFinal);
+	ImGui::SameLine();
 	DrawTexture("Albedo", pAlbedo);
 	ImGui::SameLine();
 	DrawTexture("Normal", pNormal);
