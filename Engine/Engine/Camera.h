@@ -4,6 +4,7 @@
 enum class E_RENDER_PASS_TYPE
 {
 	GeometryPass = 0,
+	AmbientPass,
 	LightPass,
 	ParticlePass,
 	DebugPass,

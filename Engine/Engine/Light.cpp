@@ -3,6 +3,7 @@
 #include "Light.h"
 
 IPSO* Light::GLightPSO = nullptr;
+IPSO* Light::GAmbientPSO = nullptr;
 
 Light::Light()
 	: pStaticMesh_(nullptr)
@@ -31,6 +32,26 @@ Light::Light()
 		GLightPSO->AddRef();
 	}
 
+	if (nullptr == GAmbientPSO)
+	{
+		PipelineStateDesc psoDesc;
+		IMesh* pAmbientPSOMesh = nullptr;
+		IMaterial* pAmbientPSOMaterial = nullptr;
+		if (false == MeshManager::Instance()->GetMesh(&pAmbientPSOMesh, 0)) DEBUG_BREAK();
+		if (false == MaterialManager::Instance()->GetMaterial(&pAmbientPSOMaterial, 4)) DEBUG_BREAK();
+		psoDesc.meshSlotCount = 1;
+		psoDesc.materialSlotCount = 1;
+		psoDesc.depthState = E_DEPTH_PRESET::DEPTH_DISABLE;
+		psoDesc.rasterizerMode = E_RASTERIZER_PRESET::DISABLE;
+		GAmbientPSO = Renderer::GetFactory()->CreatePipelineStateObject(psoDesc);
+		GAmbientPSO->SetMeshToSlot(0, pAmbientPSOMesh);
+		GAmbientPSO->SetMaterialToSlot(0, pAmbientPSOMaterial);
+	}
+	else
+	{
+		GAmbientPSO->AddRef();
+	}
+
 	pStaticMesh_ = CreateComponent<StaticMeshComponent>();
 }
 
@@ -41,6 +62,11 @@ Light::~Light()
 	if (nullptr != GLightPSO)
 	{
 		GLightPSO->Release();
+	}
+
+	if (nullptr != GAmbientPSO)
+	{
+		GAmbientPSO->Release();
 	}
 }
 

@@ -2,6 +2,7 @@
 #include "Shader.h"
 
 Shader* Shader::GShaderLight = nullptr;
+Shader* Shader::GShaderAmbient = nullptr;
 Shader* Shader::GShaderComputeParticle = nullptr;
 Shader* Shader::GShaderParticle = nullptr;
 Shader* Shader::GShaderTestMesh = nullptr;
@@ -495,6 +496,17 @@ void Shader::InitGlobalShaders()
 		DEBUG_BREAK();
 	}
 
+	ShaderDesc ambientShaderDesc;
+	ambientShaderDesc.pathVS_ = L"AmbientVS.cso";
+	ambientShaderDesc.pathPS_ = L"AmbientPS.cso";
+	ambientShaderDesc.inputDesc_.push_back({ "POSITION", 0, 16, 0, false });
+	ambientShaderDesc.inputDesc_.push_back({ "TEXCOORD", 0, 16, 0, false });
+	Shader::GShaderAmbient = Shader::Create(ambientShaderDesc);
+	if (nullptr == GShaderAmbient)
+	{
+		DEBUG_BREAK();
+	}
+
 
 	ShaderDesc computeParticleShaderDesc;
 	computeParticleShaderDesc.pathCS_ = L"ParticleCS.cso";
@@ -612,16 +624,16 @@ void Shader::InitGlobalShaders()
 
 void Shader::ShutDown()
 {
-	if (nullptr != Shader::GShaderBlit)
-	{
-		Shader::GShaderBlit->Release();
-		Shader::GShaderBlit = nullptr;
-	}
-
 	if (nullptr != Shader::GShaderLight)
 	{
 		Shader::GShaderLight->Release();
 		Shader::GShaderLight = nullptr;
+	}
+
+	if (nullptr != Shader::GShaderAmbient)
+	{
+		Shader::GShaderAmbient->Release();
+		Shader::GShaderAmbient = nullptr;
 	}
 
 	if (nullptr != Shader::GShaderComputeParticle)
@@ -666,10 +678,15 @@ void Shader::ShutDown()
 		Shader::GShaderDebugLine = nullptr;
 	}
 
-
 	if (nullptr != Shader::GShaderTestMesh)
 	{
 		Shader::GShaderTestMesh->Release();
 		Shader::GShaderTestMesh = nullptr;
+	}
+
+	if (nullptr != Shader::GShaderBlit)
+	{
+		Shader::GShaderBlit->Release();
+		Shader::GShaderBlit = nullptr;
 	}
 }

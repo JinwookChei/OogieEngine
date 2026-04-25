@@ -49,6 +49,7 @@ private:
 	void OnRender();
 	void OnActorTick(double deltaTime);
 	void OnRenderActors();
+	void OnRenderAmbient(IRenderTarget* pGBufferTarget);
 	void OnRenderLights(IRenderTarget* pGBufferTarget);
 	void OnRenderParticles();
 	void BlitCameraToBackBuffer();

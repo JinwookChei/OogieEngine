@@ -131,6 +131,11 @@ void Material::Bind()
 		Shader::GShaderLight->Bind();
 		break;
 	}
+	case E_SHADER_PRESET::AMBIENT:
+	{
+		Shader::GShaderAmbient->Bind();
+		break;
+	}
 	case E_SHADER_PRESET::PARTICLE_COMPUTE:
 	{
 		Shader::GShaderComputeParticle->Bind();
@@ -262,6 +267,11 @@ void Material::UnBind()
 		Shader::GShaderLight->UnBind();
 		break;
 	}
+	case E_SHADER_PRESET::AMBIENT:
+	{
+		Shader::GShaderAmbient->UnBind();
+		break;
+	}
 	case E_SHADER_PRESET::PARTICLE_COMPUTE:
 	{
 		Shader::GShaderComputeParticle->UnBind();
@@ -270,6 +280,20 @@ void Material::UnBind()
 	case E_SHADER_PRESET::PARTICLE_RENDER:
 	{
 		Shader::GShaderParticle->UnBind();
+		break;
+	}
+	case E_SHADER_PRESET::TEST_MESH:
+	{
+		Shader::GShaderTestMesh->UnBind();
+		break;
+	}
+	case E_SHADER_PRESET::SIMPLE_MESH:
+	{
+		Shader::GShaderSimpleMesh->UnBind();
+	}
+	case E_SHADER_PRESET::STATIC_COLOR_MESH:
+	{
+		Shader::GShaderStaticColorMesh->UnBind();
 		break;
 	}
 	case E_SHADER_PRESET::STATIC_MESH:
@@ -285,6 +309,11 @@ void Material::UnBind()
 	case E_SHADER_PRESET::DEBUG_LINE:
 	{
 		Shader::GShaderDebugLine->UnBind();
+		break;
+	}
+	case E_SHADER_PRESET::BLIT:
+	{
+		Shader::GShaderBlit->UnBind();
 		break;
 	}
 	default:

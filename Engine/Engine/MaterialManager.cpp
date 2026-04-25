@@ -80,6 +80,15 @@ void MaterialManager::TestLoad()
 	blitPassMaterialDesc.textureNum = 1;
 	IMaterial* pMat = CreateMaterial(blitPassMaterialDesc, 3);
 
+	MaterialDesc ambientPassMaterialDesc;
+	ambientPassMaterialDesc.shaderType = E_SHADER_PRESET::AMBIENT;
+	ambientPassMaterialDesc.samplerState = E_SAMPLER_PRESET::LINEAR_CLAMP;
+	ambientPassMaterialDesc.blendState = E_BLEND_PRESET::OPAQUE_BLEND;
+	ambientPassMaterialDesc.textureNum = 1;
+	ambientPassMaterialDesc.shineness = 0.5f;
+	ambientPassMaterialDesc.specularColor = { 0.8f, 0.8f, 0.8f };
+	IMaterial* pAmbientMaterial = CreateMaterial(ambientPassMaterialDesc, 4);
+
 	MaterialDesc matDesc0;
 	matDesc0.shaderType = E_SHADER_PRESET::STATIC_MESH;
 	matDesc0.samplerState = E_SAMPLER_PRESET::LINEAR_CLAMP;

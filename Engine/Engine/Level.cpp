@@ -79,6 +79,13 @@ void Level::OnRender()
 		pCurCamera->RenderPassEnd();
 		// Geometry Pass End
 
+		// Ambient Pass
+		pCurCamera->RenderPassBegin(E_RENDER_PASS_TYPE::LightPass);
+		OnRenderAmbient(pCurCamera->GetGBufferTarget());
+		Renderer::Instance()->UnBindSRVs(true, true);
+		pCurCamera->RenderPassEnd();
+		// Ambient Pass End
+
 		// Light Pass
 		pCurCamera->RenderPassBegin(E_RENDER_PASS_TYPE::LightPass);
 		OnRenderLights(pCurCamera->GetGBufferTarget());
@@ -129,6 +136,17 @@ void Level::OnRenderActors()
 			pActorIter = pActorIter->next_;
 		}
 	}
+}
+
+void Level::OnRenderAmbient(IRenderTarget* pGBufferTarget)
+{
+	IMaterial* pLightMaterial = Light::GAmbientPSO->GetMaterial(0);
+	if (nullptr == pLightMaterial)
+	{
+		DEBUG_BREAK();
+	}
+	pLightMaterial->SetTextures(0, pGBufferTarget->GetRenderTexture(E_RENDER_TEXTURE_TYPE::Albedo));
+	Renderer::Instance()->Render(Light::GAmbientPSO);
 }
 
 void Level::OnRenderLights(IRenderTarget* pGBufferTarget)

@@ -70,7 +70,6 @@ float4 main(PS_ScreenRect input) : SV_TARGET
     float4 normal = renderTextureNormal.Sample(samplers, input.uv);
     float4 specular = renderTextureSpecular.Sample(samplers, input.uv);
     float depth = renderTextureDepth.Sample(samplers, input.uv).r;
-   
     
     // 물체를 비추는 픽셀인지 아닌지 검사.
     clip(normal.w - 0.0001f);
@@ -107,11 +106,7 @@ float4 main(PS_ScreenRect input) : SV_TARGET
         float specualrFactor = pow(rDotV, shineness);
         float3 specularColor = specualrFactor * LightSpecular.rgb * specular.rgb;
 
-        // Ambient
-        // float3 ambientColor = LightAmbient.rgb * albedo.rgb;
-        // Emissive
-        // float3 emissiveColor = 0.0f;
-        float3 finalColor = float3(diffuseColor + specularColor /*+ ambientColor + emissiveColor*/);
+        float3 finalColor = float3(diffuseColor + specularColor);
         return float4(finalColor * LightIntensity, 1.0f);
     }
     
@@ -127,8 +122,7 @@ float4 main(PS_ScreenRect input) : SV_TARGET
         toLight /= dist;
         
         // Diffuse
-        float diffuseFactor = dot(toLight, N);
-        // clip(diffuseFactor - 0.0001f);
+        float diffuseFactor = saturate(dot(toLight, N));
         float3 diffuseColor = diffuseFactor * LightDiffuse.rgb * albedo.rgb;
         
         // Specular
@@ -136,11 +130,6 @@ float4 main(PS_ScreenRect input) : SV_TARGET
         float shineness = specular.a;
         float specFactor = pow(max(dot(R, toEye), 0.0f), shineness);
         float3 specularColor = specFactor * LightSpecular.rgb * specular.rgb;
-        
-        // Ambient
-        // float3 ambientColor = LightAmbient.rgb * albedo.rgb;
-        // Emissive
-        // float3 emissiveColor = 0.0f;
         
         //// Att        
         float innerCone = cos(radians(InnerAngle));
@@ -152,7 +141,7 @@ float4 main(PS_ScreenRect input) : SV_TARGET
         float attenuation = 1.0f / dot(attCoeffs, float3(1.0f, dist, dist * dist));
         float att = spot * attenuation;
         
-        float3 finalColor = float3(diffuseColor + specularColor /*+ ambientColor*/ /*+ emissiveColor*/) * att;
+        float3 finalColor = float3(diffuseColor + specularColor) * att;
         return float4(finalColor * LightIntensity, 1.0f);
     }
     
@@ -169,7 +158,7 @@ float4 main(PS_ScreenRect input) : SV_TARGET
         lightVec /= dist;
         
         // Diffuses
-        float diffuseFactor = dot(lightVec, N);
+        float diffuseFactor = saturate(dot(lightVec, N));
         // clip(diffuseFactor - 0.0001f);
         float3 diffuseColor = diffuseFactor * LightDiffuse.rgb * albedo.rgb;
         
@@ -179,17 +168,12 @@ float4 main(PS_ScreenRect input) : SV_TARGET
         float specularFactor = pow(max(dot(R, toEye), 0.0f), shineness);
         float specularColor = specularFactor * LightSpecular.rgb * specular.rgb;
         
-        // Ambient
-         // float3 ambientColor = LightAmbient.rgb * albedo.rgb;
-        // Emissive
-         // float3 emissiveColor = 0.0f;
-        
         // Att
         float3 attCoeffs = float3(AttenuationConst, AttenuationLinear, AttenuationQuad);
         float att = 1.0f / dot(attCoeffs, float3(1.0f, dist, dist * dist));
         
-        float3 finalColor = float3(diffuseColor + specularColor /*+ ambientColor + emissiveColor*/) * att;
-        return float4(finalColor*LightIntensity, 1.0f);
+        float3 finalColor = float3(diffuseColor + specularColor) * att;
+        return float4(finalColor * LightIntensity, 1.0f);
     }
     
     return float4(0.0f, 0.0f, 0.0f, 1.0f);

@@ -141,9 +141,14 @@ void Camera::RenderPassBegin(E_RENDER_PASS_TYPE renderPassType)
 		pCurrentRenderTarget_ = pGBufferRenderTarget_;
 		break;
 	}
-	case E_RENDER_PASS_TYPE::LightPass:
+	case E_RENDER_PASS_TYPE::AmbientPass:
 	{
 		pFinalRenderTarget_->Clear();
+		pFinalRenderTarget_->Bind();
+		pCurrentRenderTarget_ = pFinalRenderTarget_;
+	}
+	case E_RENDER_PASS_TYPE::LightPass:
+	{
 		pFinalRenderTarget_->Bind();
 		pCurrentRenderTarget_ = pFinalRenderTarget_;
 		break;

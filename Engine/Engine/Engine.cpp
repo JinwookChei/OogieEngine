@@ -15,8 +15,6 @@ AnimationManager* GAnimationManager = nullptr;
 CameraManager* GCameraManager = nullptr;
 
 World* GWorld = nullptr;
-//Camera* GMainCamera = nullptr;
-//Camera* GCurrentCamera = nullptr;
 ActorPicker* GActorPicker = nullptr;
 
 // 임시 전역 객체.

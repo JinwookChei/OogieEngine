@@ -88,6 +88,9 @@
     <Filter Include="Resource Files\Shader\BlitShader">
       <UniqueIdentifier>{583f11b5-007a-4aac-b3f8-a9ae0afe01db}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Shader\AmbientShader">
+      <UniqueIdentifier>{624c26c3-03c6-4f65-96ca-23076c833d0d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -300,6 +303,12 @@
     </FxCompile>
     <FxCompile Include="StaticColorMeshPS.hlsl">
       <Filter>Resource Files\Shader\DeferredPassShader</Filter>
+    </FxCompile>
+    <FxCompile Include="AmbientVS.hlsl">
+      <Filter>Resource Files\Shader\AmbientShader</Filter>
+    </FxCompile>
+    <FxCompile Include="AmbientPS.hlsl">
+      <Filter>Resource Files\Shader\AmbientShader</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

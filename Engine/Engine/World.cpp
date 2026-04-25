@@ -25,11 +25,13 @@ Level* World::GetLevel() const
 
 void World::ChangeLevelInternal(Level* level)
 {
-	if (nullptr == level) {
+	if (nullptr == level) 
+	{
 		DEBUG_BREAK();
 		return;
 	}
-	if (nullptr != nextLevel_) {
+	if (nullptr != nextLevel_) 
+	{
 		delete nextLevel_;
 		nextLevel_ = nullptr;
 	}
@@ -63,17 +65,10 @@ void World::OnBlit()
 
 void World::CheckChangeLevel()
 {
-	if (nullptr != nextLevel_) {
-		//GMainCamera = nullptr;
-		//nextLevel_->BeginPlay();
-		//GMainCamera.
-		/*if (nullptr == GMainCamera)
+	if (nullptr != nextLevel_) 
+	{
+		if (nullptr != curLevel_) 
 		{
-			DEBUG_BREAK();
-			return;
-		}*/
-
-		if (nullptr != curLevel_) {
 			delete curLevel_;
 			curLevel_ = nullptr;
 		}

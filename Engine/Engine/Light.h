@@ -12,6 +12,7 @@ class Light
 {
 public:
 	static IPSO* GLightPSO;
+	static IPSO* GAmbientPSO;
 
 public:
 	Light();
