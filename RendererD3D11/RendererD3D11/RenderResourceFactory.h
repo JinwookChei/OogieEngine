@@ -24,4 +24,5 @@ public:
 
 private:
 	ULONG refCount_;
+
 };

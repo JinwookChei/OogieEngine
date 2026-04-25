@@ -138,6 +138,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ColorCube.cpp" />
+    <ClCompile Include="ColorSphere.cpp" />
     <ClCompile Include="ContentManager.cpp" />
     <ClCompile Include="Floor.cpp" />
     <ClCompile Include="main.cpp" />
@@ -174,6 +176,8 @@
     <ClInclude Include="..\..\Interface\Renderer\IRenderTarget.h" />
     <ClInclude Include="..\..\Interface\Renderer\IShader.h" />
     <ClInclude Include="..\..\Interface\Renderer\ITexture.h" />
+    <ClInclude Include="ColorCube.h" />
+    <ClInclude Include="ColorSphere.h" />
     <ClInclude Include="ContentManager.h" />
     <ClInclude Include="Floor.h" />
     <ClInclude Include="MoveCamera.h" />

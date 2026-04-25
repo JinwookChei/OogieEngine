@@ -90,6 +90,12 @@
     <ClCompile Include="Floor.cpp">
       <Filter>Source Files\Game\Actors\Static</Filter>
     </ClCompile>
+    <ClCompile Include="ColorCube.cpp">
+      <Filter>Source Files\Game\Actors\Static</Filter>
+    </ClCompile>
+    <ClCompile Include="ColorSphere.cpp">
+      <Filter>Source Files\Game\Actors\Static</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -183,6 +189,12 @@
       <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="Floor.h">
+      <Filter>Source Files\Game\Actors\Static</Filter>
+    </ClInclude>
+    <ClInclude Include="ColorCube.h">
+      <Filter>Source Files\Game\Actors\Static</Filter>
+    </ClInclude>
+    <ClInclude Include="ColorSphere.h">
       <Filter>Source Files\Game\Actors\Static</Filter>
     </ClInclude>
   </ItemGroup>

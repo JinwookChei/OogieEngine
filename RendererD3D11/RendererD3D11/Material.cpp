@@ -150,6 +150,11 @@ void Material::Bind()
 	{
 		Shader::GShaderSimpleMesh->Bind();
 	}
+	case E_SHADER_PRESET::STATIC_COLOR_MESH:
+	{
+		Shader::GShaderStaticColorMesh->Bind();
+		break;
+	}
 	case E_SHADER_PRESET::STATIC_MESH:
 	{
 		Shader::GShaderStaticMesh->Bind();

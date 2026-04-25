@@ -6,6 +6,7 @@ Shader* Shader::GShaderComputeParticle = nullptr;
 Shader* Shader::GShaderParticle = nullptr;
 Shader* Shader::GShaderTestMesh = nullptr;
 Shader* Shader::GShaderSimpleMesh = nullptr;
+Shader* Shader::GShaderStaticColorMesh = nullptr;
 Shader* Shader::GShaderStaticMesh = nullptr;
 Shader* Shader::GShaderSkinnedMesh = nullptr;
 Shader* Shader::GShaderDebugLine = nullptr;
@@ -528,6 +529,20 @@ void Shader::InitGlobalShaders()
 	}
 
 
+	ShaderDesc staticColorMeshDesc;
+	staticColorMeshDesc.pathVS_ = L"StaticColorMeshVS.cso";
+	staticColorMeshDesc.pathPS_ = L"StaticColorMeshPS.cso";
+	staticColorMeshDesc.inputDesc_.push_back({ "POSITION", 0, 6, 0, false });
+	staticColorMeshDesc.inputDesc_.push_back({ "COLOR", 0, 2, 0, false });
+	staticColorMeshDesc.inputDesc_.push_back({ "NORMAL", 0, 6, 0, false });
+	staticColorMeshDesc.inputDesc_.push_back({ "TEXCOORD", 0, 16, 0, false });
+	staticColorMeshDesc.inputDesc_.push_back({ "TANGENT", 0, 2, 0, false });
+	Shader::GShaderStaticColorMesh = Shader::Create(staticColorMeshDesc);
+	if (nullptr == GShaderStaticColorMesh)
+	{
+		DEBUG_BREAK();
+	}
+
 	ShaderDesc staticMeshDesc;
 	staticMeshDesc.pathVS_ = L"StaticMeshVS.cso";
 	staticMeshDesc.pathPS_ = L"StaticMeshPS.cso";
@@ -625,6 +640,12 @@ void Shader::ShutDown()
 	{
 		Shader::GShaderSimpleMesh->Release();
 		Shader::GShaderSimpleMesh = nullptr;
+	}
+
+	if (nullptr != Shader::GShaderStaticColorMesh)
+	{
+		Shader::GShaderStaticColorMesh->Release();
+		Shader::GShaderStaticColorMesh = nullptr;
 	}
 
 	if (nullptr != Shader::GShaderStaticMesh)
