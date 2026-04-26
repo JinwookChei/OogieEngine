@@ -14,8 +14,6 @@ cbuffer CBPerObject : register(b1)
     matrix WorldMatrix;
     matrix NormalMatrix;
     float4 Scale;
-    float3 MaterialSpecular;
-    float MaterialShineness;
 };
 
 // TODO : StructBuffer로 바꿔야할듯

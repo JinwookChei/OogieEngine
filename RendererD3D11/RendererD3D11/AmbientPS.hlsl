@@ -34,5 +34,5 @@ float3 DecodingNormal(float3 normal)
 float4 main(PS_ScreenRect input) : SV_TARGET
 {
     float4 albedo = renderTextureAlbedo.Sample(samplers, input.uv);
-    return albedo * float4(0.05f, 0.05f, 0.05f, 1.0f);
+    return albedo * float4(0.07f, 0.07f, 0.07f, 1.0f);
 }

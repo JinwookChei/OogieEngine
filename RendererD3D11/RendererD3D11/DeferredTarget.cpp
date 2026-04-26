@@ -77,7 +77,6 @@ bool DeferredTarget::Init
 	return true;
 }
 
-
 HRESULT __stdcall DeferredTarget::QueryInterface(REFIID riid, void** ppvObject)
 {
 	return E_NOTIMPL;

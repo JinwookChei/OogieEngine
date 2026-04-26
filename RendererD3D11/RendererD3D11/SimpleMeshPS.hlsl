@@ -7,9 +7,14 @@ cbuffer CBPerObject : register(b1)
     matrix WorldMatrix;
     matrix NormalMatrix;
     float4 Scale;
+};
+
+cbuffer CBPerMaterial : register(b2)
+{
     float3 MaterialSpecular;
     float MaterialShineness;
 };
+
 
 struct PS_INPUT
 {

@@ -254,6 +254,8 @@ void Material::Bind()
 			DEBUG_BREAK();
 		}
 	}
+
+	GRenderer->UpdateMaterialFrame(GetSpecularColor(), GetShineness());
 	GRenderer->DeviceContext()->PSSetShaderResources(0, texturesNum_, pSRVs);
 }
 

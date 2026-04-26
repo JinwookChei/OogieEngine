@@ -30,6 +30,7 @@ public:
 	void __stdcall UpdateComputeParticleFrame(const ComputeParticleData& computeParticleData) override;
 	void __stdcall UpdateRenderParticleFrame(const RenderParticleData& renderParticleData) override;
 	void __stdcall UpdateAnimationFrame(const AnimConstantBuffer& animFrameData) override;
+	void __stdcall UpdateMaterialFrame(const Float3& specularColor, float shineness);
 
 	void __stdcall RenderBegin() override;
 	void __stdcall Render(IPSO* pipelineStateObject) override;

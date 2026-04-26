@@ -7,6 +7,10 @@ cbuffer CBPerObject : register(b1)
     matrix WorldMatrix;
     matrix NormalMatrix;
     float4 Scale;
+};
+
+cbuffer CBPerMaterial : register(b2)
+{
     float3 MaterialSpecular;
     float MaterialShineness;
 };
@@ -53,6 +57,6 @@ PS_OUTPUT main(PS_INPUT input)
     output.rt0 = textColor;
     output.rt1 = float4(worldNormal, 1.0f);
     output.rt2 = float4(MaterialSpecular, MaterialShineness);
-    
+
     return output;
 }

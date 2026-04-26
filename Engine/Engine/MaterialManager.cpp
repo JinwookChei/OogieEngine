@@ -171,8 +171,8 @@ void MaterialManager::TestLoad()
 	matDesc8.samplerState = E_SAMPLER_PRESET::ANISOTROPIC_WARP;
 	matDesc8.blendState = E_BLEND_PRESET::OPAQUE_BLEND;
 	matDesc8.textureNum = 0;
-	matDesc8.shineness = 0.7f;
-	matDesc8.specularColor = { 0.7f, 0.7f, 0.7f };
+	matDesc8.shineness = 0.5f;
+	matDesc8.specularColor = { 1.0f, 1.0f, 1.0f };
 	IMaterial* pMat8 = CreateMaterial(matDesc8, 17);
 }
 

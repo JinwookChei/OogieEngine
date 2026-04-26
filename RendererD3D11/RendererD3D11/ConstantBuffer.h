@@ -4,15 +4,12 @@ struct CBPerFrame
 {
 	Float4x4 view;
 	Float4x4 projection;
-
 	Float4x4 inverseView;
 	Float4x4 inverseProjection;
-
 	Float2 screenOffset;
 	Float2 screenScale;
 	Float2 screenResolution;
 	Float2 pad0;
-
 	Float4 camPos;
 };
 
@@ -20,9 +17,7 @@ struct CBPerObject
 {
 	Float4x4 worldMatrix;
 	Float4x4 normalMatrix;
-	
 	Float4 scale;
-
 	Float3 materialSpecular;
 	float materialShineness;
 };
@@ -32,15 +27,12 @@ struct CBPerLight
 	Color lightDiffuse;
 	Color lightSpecular;
 	Color lightAmbient;
-
 	Float3 direction_D_S; // Spot, DirectionÀÌ¶û °øÀ¯.
 	float range_S_P;
 	Float3 position_S_P;
-	
 	float smooth_S;
 	float innerAngle_S;
 	float outerAngle_S;
-
 	float attenuationConst_S_P;
 	float attenuationLinear_S_P;
 	float attenuationQuad_S_P;
@@ -50,7 +42,6 @@ struct CBPerLight
 	// 2 -> PointLight
 	float lightType;
 	float lightIntensity;
-
 	float pad;
 };
 
@@ -80,11 +71,8 @@ struct CBPerAnimation
 };
 
 
-struct CBPerTest
+struct CBPerMaterial
 {
-	Float4x4 worldMatrix;
-	Float4x4 normalMatrix;
-	Float4 scale;
 	Float3 materialSpecular;
 	float materialShineness;
 };
@@ -135,5 +123,6 @@ public:
 	static ConstantBuffer* GConstantPerComputeParticle;
 	static ConstantBuffer* GConstantPerRenderParticle;
 	static ConstantBuffer* GConstantPerAnimation;
+	static ConstantBuffer* GConstantPerMaterial;
 };
 

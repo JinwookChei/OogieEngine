@@ -22,8 +22,6 @@ cbuffer CBPerFrame : register(b0)
     float4 CamPos;
 };
 
-
-
 struct PS_ScreenRect
 {
     float4 pos : SV_Position;

@@ -7,6 +7,7 @@ ConstantBuffer* ConstantBuffer::GConstantPerLight = nullptr;
 ConstantBuffer* ConstantBuffer::GConstantPerComputeParticle = nullptr;
 ConstantBuffer* ConstantBuffer::GConstantPerRenderParticle = nullptr;
 ConstantBuffer* ConstantBuffer::GConstantPerAnimation = nullptr;
+ConstantBuffer* ConstantBuffer::GConstantPerMaterial = nullptr;
 
 ConstantBuffer::ConstantBuffer()
 	: refCount_(1),
@@ -136,6 +137,7 @@ void ConstantBuffer::InitGlobalConstant()
 	ConstantBuffer::GConstantPerComputeParticle = Create(sizeof(CBPerComputeParticle));
 	ConstantBuffer::GConstantPerRenderParticle = Create(sizeof(CBPerParticle));
 	ConstantBuffer::GConstantPerAnimation = Create(sizeof(CBPerAnimation));
+	ConstantBuffer::GConstantPerMaterial = Create(sizeof(CBPerMaterial));
 }
 
 void ConstantBuffer::ShutDown()
@@ -171,6 +173,12 @@ void ConstantBuffer::ShutDown()
 	{
 		ConstantBuffer::GConstantPerLight->Release();
 		ConstantBuffer::GConstantPerLight = nullptr;
+	}
+
+	if (nullptr != ConstantBuffer::GConstantPerMaterial)
+	{
+		ConstantBuffer::GConstantPerMaterial->Release();
+		ConstantBuffer::GConstantPerMaterial = nullptr;
 	}
 }
 

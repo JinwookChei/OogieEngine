@@ -17,7 +17,7 @@ struct DeferredRenderingDesc
 {
 	unsigned int fmtAlbedo_ = 28;	//DXGI_FORMAT::DXGI_FORMAT_R8G8B8A8_UNORM;
 	unsigned int fmtNormal_ = 10;	//DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT;
-	unsigned int fmtMaterial_ = 28;
+	unsigned int fmtSpecular_ = 28; 
 	unsigned int fmtDepth_ = 45;
 };
 
@@ -49,7 +49,7 @@ struct RenderTargetDesc
 		case E_RENDER_TECHNIQUE_TYPE::Deferred:
 			deferredDesc_.fmtAlbedo_ = 28;	//DXGI_FORMAT::DXGI_FORMAT_R8G8B8A8_UNORM;
 			deferredDesc_.fmtNormal_ = 10;	//DXGI_FORMAT::DXGI_FORMAT_R16G16B16A16_FLOAT;
-			deferredDesc_.fmtMaterial_ = 28;
+			deferredDesc_.fmtSpecular_ = 28; //DXGI_FORMAT_R8G8B8A8_NORM
 			deferredDesc_.fmtDepth_ = 45;
 			break;
 		default:

@@ -187,8 +187,6 @@ void __stdcall Renderer::UpdateObjectFrame(const ObjectFrameData& objectFrameDat
 	MATH::MatrixInverse(invWorld, objectFrameData.worldMatrix);
 	cbPerObject.normalMatrix = invWorld;
 	cbPerObject.scale = objectFrameData.scale;
-	cbPerObject.materialShineness = 1.0f;
-	cbPerObject.materialSpecular = { 0.7f, 0.7f, 0.7f };
 
 	ConstantBuffer::GConstantPerObject->Update(&cbPerObject);
 	ConstantBuffer::GConstantPerObject->BindConstantBufferVS(1);
@@ -258,6 +256,15 @@ void __stdcall Renderer::UpdateAnimationFrame(const AnimConstantBuffer& animFram
 
 	ConstantBuffer::GConstantPerAnimation->Update(&cbPerAnimation);
 	ConstantBuffer::GConstantPerAnimation->BindConstantBufferVS(2);
+}
+
+void __stdcall Renderer::UpdateMaterialFrame(const Float3& specularColor, float shineness)
+{
+	CBPerMaterial cbMaterial;
+	cbMaterial.materialSpecular = specularColor;
+	cbMaterial.materialShineness = shineness;
+	ConstantBuffer::GConstantPerMaterial->Update(&cbMaterial);
+	ConstantBuffer::GConstantPerMaterial->BindConstantBufferPS(2);
 }
 
 

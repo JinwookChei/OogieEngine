@@ -366,9 +366,9 @@ IRenderTarget* __stdcall RenderResourceFactory::CreateDeferredRenderTarget(const
 {
 	DeferredTarget* pDeferredTarget = nullptr;
 	Texture* pRenderTextureAlbedo = nullptr;
-	Texture* pRenderTextureNormal_ = nullptr;
-	Texture* pRenderTextureMaterial_ = nullptr;
-	Texture* pDepthTexture_ = nullptr;
+	Texture* pRenderTextureNormal = nullptr;
+	Texture* pRenderTextureSpecular = nullptr;
+	Texture* pDepthTexture = nullptr;
 
 	DeferredRenderingDesc deferredDesc = desc.deferredDesc_;
 	// DXGI_FORMAT_D24_UNORM_S8_UINT, DXGI_FORMAT_D32_FLOAT 포맷은 Depth 전용 포맷 임. -> ShaderResource로 사용하려하면 에러 발생.
@@ -390,27 +390,27 @@ IRenderTarget* __stdcall RenderResourceFactory::CreateDeferredRenderTarget(const
 			Assert("pRenderTextureAlbedo = NULL");
 			break;
 		}
-		pRenderTextureNormal_ = static_cast<Texture*>(CreateTexture(desc.size_, (DXGI_FORMAT)deferredDesc.fmtNormal_, D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET | D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE));
-		if (nullptr == pRenderTextureNormal_)
+		pRenderTextureNormal = static_cast<Texture*>(CreateTexture(desc.size_, (DXGI_FORMAT)deferredDesc.fmtNormal_, D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET | D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE));
+		if (nullptr == pRenderTextureNormal)
 		{
-			Assert("pRenderTextureNormal_ = NULL");
+			Assert("pRenderTextureNormal = NULL");
 			break;
 		}
-		pRenderTextureMaterial_ = static_cast<Texture*>(CreateTexture(desc.size_, (DXGI_FORMAT)deferredDesc.fmtMaterial_, D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET | D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE));
-		if (nullptr == pRenderTextureMaterial_)
+		pRenderTextureSpecular = static_cast<Texture*>(CreateTexture(desc.size_, (DXGI_FORMAT)deferredDesc.fmtSpecular_, D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET | D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE));
+		if (nullptr == pRenderTextureSpecular)
 		{
-			Assert("pRenderTextureMaterial_ = NULL");
+			Assert("pRenderTextureSpecular = NULL");
 			break;
 		}
-		pDepthTexture_ = static_cast<Texture*>(CreateTexture(desc.size_, (DXGI_FORMAT)deferredDesc.fmtDepth_, D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL | D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE));
-		if (nullptr == pDepthTexture_)
+		pDepthTexture = static_cast<Texture*>(CreateTexture(desc.size_, (DXGI_FORMAT)deferredDesc.fmtDepth_, D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL | D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE));
+		if (nullptr == pDepthTexture)
 		{
 			Assert("pDepthTexture_ = NULL");
 			break;
 		}
 
 		pDeferredTarget = new DeferredTarget;
-		bool ret = pDeferredTarget->Init(desc, pRenderTextureAlbedo, pRenderTextureNormal_, pRenderTextureMaterial_, pDepthTexture_);
+		bool ret = pDeferredTarget->Init(desc, pRenderTextureAlbedo, pRenderTextureNormal, pRenderTextureSpecular, pDepthTexture);
 		if (false == ret)
 		{
 			Assert("DeferredTarget->Init() FAIL");
@@ -431,20 +431,20 @@ IRenderTarget* __stdcall RenderResourceFactory::CreateDeferredRenderTarget(const
 		pRenderTextureAlbedo->Release();
 		pRenderTextureAlbedo = nullptr;
 	}
-	if (nullptr != pRenderTextureNormal_)
+	if (nullptr != pRenderTextureNormal)
 	{
-		pRenderTextureNormal_->Release();
-		pRenderTextureNormal_ = nullptr;
+		pRenderTextureNormal->Release();
+		pRenderTextureNormal = nullptr;
 	}
-	if (nullptr != pRenderTextureMaterial_)
+	if (nullptr != pRenderTextureSpecular)
 	{
-		pRenderTextureMaterial_->Release();
-		pRenderTextureMaterial_ = nullptr;
+		pRenderTextureSpecular->Release();
+		pRenderTextureSpecular = nullptr;
 	}
-	if (nullptr != pDepthTexture_)
+	if (nullptr != pDepthTexture)
 	{
-		pDepthTexture_->Release();
-		pDepthTexture_ = nullptr;
+		pDepthTexture->Release();
+		pDepthTexture = nullptr;
 	}
 
 	return nullptr;

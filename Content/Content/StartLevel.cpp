@@ -22,13 +22,20 @@ void StartLevel::BeginPlay()
 {
 	Level::BeginPlay();
 
-	SpotLight* pSpotLight1 = SpawnLight<SpotLight>();
+	/*DirectionLight* pDirectionLight = SpawnLight<DirectionLight>();
+	pDirectionLight->GetWorldTransform().SetRotation({ 0.0f, 90.0f, 0.0f, 0.0f });*/
+
+	/*SpotLight* pSpotLight1 = SpawnLight<SpotLight>();
 	pSpotLight1->GetWorldTransform().SetPosition({ 0.0f, -5.0f, 5.0f, 1.0f });
 	pSpotLight1->GetWorldTransform().SetRotation({ 0.0f, 90.0f, 0.0f, 0.0f });
-
 	SpotLight* pSpotLight2 = SpawnLight<SpotLight>();
 	pSpotLight2->GetWorldTransform().SetPosition({ 0.0f, 5.0f, 5.0f, 1.0f });
-	pSpotLight2->GetWorldTransform().SetRotation({ 0.0f, 90.0f, 0.0f, 0.0f });
+	pSpotLight2->GetWorldTransform().SetRotation({ 0.0f, 90.0f, 0.0f, 0.0f });*/
+
+	PointLight* pPointLight = SpawnLight<PointLight>();
+	pPointLight->GetWorldTransform().SetPosition({ 0.0f, -5.0f, 5.0f, 1.0f });
+	PointLight* pPointLight2 = SpawnLight<PointLight>();
+	pPointLight2->GetWorldTransform().SetPosition({ 0.0f, 5.0f, 5.0f, 1.0f });
 
 	ColorCube* pCube = SpawnActor<ColorCube>(E_ACTOR_TYPE::NORMAL);
 	pCube->GetWorldTransform().SetPosition({ 0.0f, -5.0f, 0.0f, 1.0f });

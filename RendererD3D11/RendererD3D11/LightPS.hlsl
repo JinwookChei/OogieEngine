@@ -102,7 +102,7 @@ float4 main(PS_ScreenRect input) : SV_TARGET
 
         // Specular
         float rDotV = saturate(dot(R, V));
-        float shineness = specular.a;
+        float shineness = specular.w * 128.0f;
         float specualrFactor = pow(rDotV, shineness);
         float3 specularColor = specualrFactor * LightSpecular.rgb * specular.rgb;
 
@@ -127,7 +127,7 @@ float4 main(PS_ScreenRect input) : SV_TARGET
         
         // Specular
         float3 R = reflect(-toLight, N);
-        float shineness = specular.a;
+        float shineness = specular.w * 128;
         float specFactor = pow(max(dot(R, toEye), 0.0f), shineness);
         float3 specularColor = specFactor * LightSpecular.rgb * specular.rgb;
         
@@ -164,7 +164,8 @@ float4 main(PS_ScreenRect input) : SV_TARGET
         
         // Specular
         float3 R = reflect(-lightVec, N);
-        float shineness = pow(2, ((specular.w * 10) - 1));
+        //float shineness = pow(2, ((specular.w * 10) - 1));
+        float shineness = specular.w * 128;
         float specularFactor = pow(max(dot(R, toEye), 0.0f), shineness);
         float specularColor = specularFactor * LightSpecular.rgb * specular.rgb;
         
