@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "StaticMeshComponent.h"
-#include "Light.h"
 #include "SpotLight.h"
 
 SpotLight::SpotLight()

@@ -54,8 +54,6 @@ void MaterialManager::TestLoad()
 	lightPassMaterialDesc.samplerState = E_SAMPLER_PRESET::LINEAR_CLAMP;
 	lightPassMaterialDesc.blendState = E_BLEND_PRESET::ADDITIVE_BLEND;
 	lightPassMaterialDesc.textureNum = 4;
-	lightPassMaterialDesc.shineness = 0.5f;
-	lightPassMaterialDesc.specularColor = { 0.8f, 0.8f, 0.8f };
 	IMaterial* pLightMaterial = CreateMaterial(lightPassMaterialDesc, 0);
 
 	MaterialDesc particleComputeMaterialDesc;
@@ -85,8 +83,6 @@ void MaterialManager::TestLoad()
 	ambientPassMaterialDesc.samplerState = E_SAMPLER_PRESET::LINEAR_CLAMP;
 	ambientPassMaterialDesc.blendState = E_BLEND_PRESET::OPAQUE_BLEND;
 	ambientPassMaterialDesc.textureNum = 1;
-	ambientPassMaterialDesc.shineness = 0.5f;
-	ambientPassMaterialDesc.specularColor = { 0.8f, 0.8f, 0.8f };
 	IMaterial* pAmbientMaterial = CreateMaterial(ambientPassMaterialDesc, 4);
 
 	MaterialDesc matDesc0;
@@ -95,7 +91,7 @@ void MaterialManager::TestLoad()
 	matDesc0.blendState = E_BLEND_PRESET::OPAQUE_BLEND;
 	matDesc0.textureNum = 2;
 	matDesc0.shineness = 0.7f;
-	matDesc0.specularColor = { 0.7f, 0.7f, 0.7f };
+	matDesc0.specularColor = { 1.0f, 1.0f, 1.0f };
 	IMaterial* pMat0 = CreateMaterial(matDesc0, 9);
 	pMat0->SetTextures(0, pLightBulb_Diffuse);
 	pMat0->SetTextures(1, pLightBulb_Normal);
@@ -105,8 +101,8 @@ void MaterialManager::TestLoad()
 	matDesc1.samplerState = E_SAMPLER_PRESET::LINEAR_CLAMP;
 	matDesc1.blendState = E_BLEND_PRESET::OPAQUE_BLEND;
 	matDesc1.textureNum = 2;
-	matDesc1.shineness = 0.7f;
-	matDesc1.specularColor = { 0.7f, 0.7f, 0.7f };
+	matDesc1.shineness = 0.2f;
+	matDesc1.specularColor = { 0.5f, 0.5f, 0.5f };
 	IMaterial* pMat1 = CreateMaterial(matDesc1, 10);
 	pMat1->SetTextures(0, pBricks_Color);
 	pMat1->SetTextures(1, pBricks_Normal);
@@ -127,8 +123,8 @@ void MaterialManager::TestLoad()
 	matDesc4.samplerState = E_SAMPLER_PRESET::LINEAR_WARP;
 	matDesc4.blendState = E_BLEND_PRESET::OPAQUE_BLEND;
 	matDesc4.textureNum = 2;
-	matDesc4.shineness = 0.7f;
-	matDesc4.specularColor = { 0.7f, 0.7f, 0.7f };
+	matDesc4.shineness = 0.2f;
+	matDesc4.specularColor = { 0.5f, 0.5f, 0.5f };
 	IMaterial* pMat4 = CreateMaterial(matDesc4, 13);
 	pMat4->SetTextures(0, pWerewolf_Body_Albedo);
 	pMat4->SetTextures(1, pWerewolf_Body_Normal);
@@ -138,7 +134,7 @@ void MaterialManager::TestLoad()
 	matDesc5.samplerState = E_SAMPLER_PRESET::LINEAR_WARP;
 	matDesc5.blendState = E_BLEND_PRESET::OPAQUE_BLEND;
 	matDesc5.textureNum = 2;
-	matDesc5.shineness = 0.7f;
+	matDesc5.shineness = 0.5f;
 	matDesc5.specularColor = { 0.7f, 0.7f, 0.7f };
 	IMaterial* pMat5 = CreateMaterial(matDesc5, 14);
 	pMat5->SetTextures(0, pWerewolf_Fur_Albedo);
@@ -149,7 +145,7 @@ void MaterialManager::TestLoad()
 	matDesc6.samplerState = E_SAMPLER_PRESET::ANISOTROPIC_WARP;
 	matDesc6.blendState = E_BLEND_PRESET::OPAQUE_BLEND;
 	matDesc6.textureNum = 2;
-	matDesc6.shineness = 0.7f;
+	matDesc6.shineness = 0.5f;
 	matDesc6.specularColor = { 0.7f, 0.7f, 0.7f };
 	IMaterial* pMat6 = CreateMaterial(matDesc6, 15);
 	pMat6->SetTextures(0, pBricks_Color);
@@ -160,8 +156,8 @@ void MaterialManager::TestLoad()
 	matDesc7.samplerState = E_SAMPLER_PRESET::ANISOTROPIC_WARP;
 	matDesc7.blendState = E_BLEND_PRESET::OPAQUE_BLEND;
 	matDesc7.textureNum = 2;
-	matDesc7.shineness = 0.7f;
-	matDesc7.specularColor = { 0.7f, 0.7f, 0.7f };
+	matDesc7.shineness = 0.1f;
+	matDesc7.specularColor = { 0.5f, 0.5f, 0.5f };
 	IMaterial* pMat7 = CreateMaterial(matDesc7, 16);
 	pMat7->SetTextures(0, grassGroundColor_Color);
 	pMat7->SetTextures(1, grassGroundColor_Normal);

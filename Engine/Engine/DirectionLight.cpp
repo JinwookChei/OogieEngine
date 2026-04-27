@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "StaticMeshComponent.h"
 #include "DirectionLight.h"
 
 DirectionLight::DirectionLight()
@@ -18,6 +19,8 @@ void DirectionLight::Tick(double deltaTime)
 void DirectionLight::BeginPlay()
 {
 	Light::BeginPlay();
+
+	pStaticMesh_->GetComponentTransform().SetRotation({ 0.0f, -90.0f, 0.0f, 0.0f });
 }
 
 LightRenderData DirectionLight::GetData()

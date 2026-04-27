@@ -3,7 +3,7 @@
 #include "MovementComponent.h"
 
 MovementComponent::MovementComponent()
-	: velocity_(1.7f)
+	: velocity_(1.5f)
 {
 }
 
