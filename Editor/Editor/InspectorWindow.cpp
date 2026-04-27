@@ -2,8 +2,10 @@
 #include "TransformWidget.h"
 #include "LightDetailWidget.h"
 #include "EditorWidget.h"
+#include "MaterialDetailWidget.h"
 #include "EditorWindow.h"
 #include "InspectorWindow.h"
+
 
 InspectorWindow::InspectorWindow()
 {
@@ -11,6 +13,7 @@ InspectorWindow::InspectorWindow()
 	SetSize(ImVec2(300, 600));
 	pTransformWidget_ = CreateWidget<TransformWidget>();
 	pLightDetailWidget_ = CreateWidget<LightDetailWidget>();
+	pMaterialDetailWidget_ = CreateWidget<MaterialDetailWidget>();
 }
 
 InspectorWindow::~InspectorWindow()

@@ -59,4 +59,5 @@ public:
 
 	ENGINE_API float __stdcall GetLightIntensity() const override;
 	ENGINE_API void __stdcall SetLightIntensity(float intensity) override;
+	ENGINE_API IMaterial* __stdcall GetMaterialForEditor() const override;
 };

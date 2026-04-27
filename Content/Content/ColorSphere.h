@@ -16,4 +16,8 @@ protected:
 
 private:
 	StaticMeshComponent* pStaticMesh_;
+
+public:
+	IMaterial* __stdcall GetMaterialForEditor() const override;
+
 };

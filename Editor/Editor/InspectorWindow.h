@@ -1,6 +1,7 @@
 #pragma once
 class EditorWidget;
 class LightDetailWidget;
+class MaterialDetailWidget;
 class TransformWidget;
 class InspectorWindow
 	: public EditorWindow
@@ -32,4 +33,6 @@ private:
 	TransformWidget* pTransformWidget_;
 
 	LightDetailWidget* pLightDetailWidget_;
+
+	MaterialDetailWidget* pMaterialDetailWidget_;
 };

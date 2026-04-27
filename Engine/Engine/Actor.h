@@ -92,4 +92,5 @@ public:
 	ENGINE_API void __stdcall SetLightSmooth(float smooth) override;
 	ENGINE_API void __stdcall SetLightInnerAngle(float innerAngle) override;
 	ENGINE_API void __stdcall SetLightOuterAngle(float outerAngle) override;
+	ENGINE_API IMaterial* __stdcall GetMaterialForEditor() const override;
 };

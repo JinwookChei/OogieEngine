@@ -181,3 +181,8 @@ void __stdcall Actor::SetLightOuterAngle(float outerAngle)
 {
 	return;
 }
+
+IMaterial* __stdcall Actor::GetMaterialForEditor() const
+{
+	return nullptr;
+}

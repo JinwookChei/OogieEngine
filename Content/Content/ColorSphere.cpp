@@ -39,3 +39,8 @@ void ColorSphere::Render()
 void ColorSphere::CleanUp()
 {
 }
+
+IMaterial* __stdcall ColorSphere::GetMaterialForEditor() const
+{
+	return pStaticMesh_->GetPSO()->GetMaterial(0);
+}

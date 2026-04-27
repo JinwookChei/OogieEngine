@@ -155,3 +155,8 @@ void __stdcall Light::SetLightIntensity(float intensity)
 {
 	intensity_ = intensity;
 }
+
+IMaterial* __stdcall Light::GetMaterialForEditor() const
+{
+	return pStaticMesh_->GetPSO()->GetMaterial(0);
+}

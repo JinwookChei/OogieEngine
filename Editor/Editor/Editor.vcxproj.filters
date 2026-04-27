@@ -210,6 +210,9 @@
     <ClInclude Include="LightDetailWidget.h">
       <Filter>Source Files\FF\Widgets</Filter>
     </ClInclude>
+    <ClInclude Include="MaterialDetailWidget.h">
+      <Filter>Source Files\FF\Widgets</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -282,6 +285,9 @@
       <Filter>Source Files\FF\Windows</Filter>
     </ClCompile>
     <ClCompile Include="LightDetailWidget.cpp">
+      <Filter>Source Files\FF\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="MaterialDetailWidget.cpp">
       <Filter>Source Files\FF\Widgets</Filter>
     </ClCompile>
   </ItemGroup>

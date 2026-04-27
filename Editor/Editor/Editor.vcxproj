@@ -189,6 +189,7 @@
     <ClInclude Include="InspectorWindow.h" />
     <ClInclude Include="Label.h" />
     <ClInclude Include="LightDetailWidget.h" />
+    <ClInclude Include="MaterialDetailWidget.h" />
     <ClInclude Include="SceneWindow.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="TransformWidget.h" />
@@ -230,6 +231,7 @@
     <ClCompile Include="InspectorWindow.cpp" />
     <ClCompile Include="Label.cpp" />
     <ClCompile Include="LightDetailWidget.cpp" />
+    <ClCompile Include="MaterialDetailWidget.cpp" />
     <ClCompile Include="SceneWindow.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

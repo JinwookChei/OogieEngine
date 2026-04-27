@@ -55,4 +55,6 @@ struct IEditorBindPickedActor
 	virtual void __stdcall SetLightSmooth(float smooth) = 0;
 	virtual void __stdcall SetLightInnerAngle(float innerAngle) = 0;
 	virtual void __stdcall SetLightOuterAngle(float outerAngle) = 0;
+
+	virtual IMaterial* __stdcall GetMaterialForEditor() const = 0;
 };
