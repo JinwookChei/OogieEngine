@@ -24,7 +24,6 @@ struct VSOutput
 VSOutput main(VSInput input)
 {
     VSOutput output;
-            
     float4 viewPos = mul(float4(input.pos, 1.0f), View);
     output.pos = mul(viewPos, Projection);
     output.color = input.color;

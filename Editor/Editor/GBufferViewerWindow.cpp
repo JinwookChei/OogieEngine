@@ -28,13 +28,12 @@ void GBufferViewerWindow::End()
 	void* pAlbedo = GBoundCamera->GetGBufferRenderTargetForEditor()->GetShaderResourceView(E_RENDER_TEXTURE_TYPE::Albedo);
 	void* pNormal = GBoundCamera->GetGBufferRenderTargetForEditor()->GetShaderResourceView(E_RENDER_TEXTURE_TYPE::Normal);
 	void* pSpecular = GBoundCamera->GetGBufferRenderTargetForEditor()->GetShaderResourceView(E_RENDER_TEXTURE_TYPE::Specular);
-	void* pDepth = GBoundCamera->GetGBufferRenderTargetForEditor()->GetShaderResourceView(E_RENDER_TEXTURE_TYPE::Depth);
+	void* pPosition = GBoundCamera->GetGBufferRenderTargetForEditor()->GetShaderResourceView(E_RENDER_TEXTURE_TYPE::Position);
 
 	auto DrawTexture = [](const char* name, void* texID)
 		{
 			ImGui::BeginGroup();
 			ImGui::Text("%s", name);
-			//ImGui::Image((ImTextureID)texID, ImVec2(300, 300));
 			if (ImGui::ImageButton(name, (ImTextureID)texID, ImVec2(400, 400)))
 			{
 				GCurrentRenderResource = (ImTextureID*)texID;
@@ -50,7 +49,7 @@ void GBufferViewerWindow::End()
 	ImGui::SameLine();
 	DrawTexture("Specular", pSpecular);
 	ImGui::SameLine();
-	DrawTexture("Depth", pDepth);
+	DrawTexture("Position", pPosition);
 
 	ImGui::End();
 }

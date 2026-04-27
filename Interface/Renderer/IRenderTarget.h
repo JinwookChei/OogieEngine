@@ -63,6 +63,7 @@ enum class E_RENDER_TEXTURE_TYPE
 	Albedo = 0,
 	Normal,
 	Specular,
+	Position,
 	Depth,
 	MAX,
 };
@@ -83,10 +84,6 @@ struct IRenderTarget : public IUnknown
 	virtual Float2 __stdcall GetSize() const = 0;
 
 	virtual void __stdcall SetClearColor(const Color& color) = 0;
-
-	virtual void __stdcall BindRenderTexturePS(uint32_t slot) = 0;
-
-	virtual void __stdcall UnBindRenderTexturePS(uint32_t slot) = 0;
 
 	virtual void* __stdcall GetShaderResourceView(const E_RENDER_TEXTURE_TYPE& textureType) = 0;
 

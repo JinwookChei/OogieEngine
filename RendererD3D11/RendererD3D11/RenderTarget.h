@@ -23,13 +23,8 @@ public:
 	RenderTargetDesc __stdcall GetDesc() const override;
 	Float2 __stdcall GetSize() const override;
 	void __stdcall SetClearColor(const Color& color) override;
-	void __stdcall BindRenderTexturePS(uint32_t slot) override;
-	void __stdcall UnBindRenderTexturePS(uint32_t slot) override;
 	void* __stdcall GetShaderResourceView(const E_RENDER_TEXTURE_TYPE& texureType) override;
-
 	ITexture* __stdcall GetRenderTexture(const E_RENDER_TEXTURE_TYPE& textureType) override;
-
-	//ITexture* __stdcall GetDepthTexture() override;
 	bool SetTexture(Texture* pRenderTexture, Texture* pDepthTexture);
 
 private:
@@ -45,7 +40,5 @@ private:
 	Texture* pDepthTexture_;
 
 	ID3D11RenderTargetView* pRTV_;
-	ID3D11ShaderResourceView* pSRVs_[2];
 	ID3D11DepthStencilView* pDSV_;
-
 };

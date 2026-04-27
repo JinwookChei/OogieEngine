@@ -368,6 +368,7 @@ IRenderTarget* __stdcall RenderResourceFactory::CreateDeferredRenderTarget(const
 	Texture* pRenderTextureAlbedo = nullptr;
 	Texture* pRenderTextureNormal = nullptr;
 	Texture* pRenderTextureSpecular = nullptr;
+	Texture* pRenderTexturePosition = nullptr;
 	Texture* pDepthTexture = nullptr;
 
 	DeferredRenderingDesc deferredDesc = desc.deferredDesc_;
@@ -402,6 +403,12 @@ IRenderTarget* __stdcall RenderResourceFactory::CreateDeferredRenderTarget(const
 			Assert("pRenderTextureSpecular = NULL");
 			break;
 		}
+		pRenderTexturePosition = static_cast<Texture*>(CreateTexture(desc.size_, DXGI_FORMAT_R32G32B32A32_FLOAT, D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET | D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE));
+		if (nullptr == pRenderTextureSpecular)
+		{
+			Assert("pRenderTextureSpecular = NULL");
+			break;
+		}
 		pDepthTexture = static_cast<Texture*>(CreateTexture(desc.size_, (DXGI_FORMAT)deferredDesc.fmtDepth_, D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL | D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE));
 		if (nullptr == pDepthTexture)
 		{
@@ -410,7 +417,7 @@ IRenderTarget* __stdcall RenderResourceFactory::CreateDeferredRenderTarget(const
 		}
 
 		pDeferredTarget = new DeferredTarget;
-		bool ret = pDeferredTarget->Init(desc, pRenderTextureAlbedo, pRenderTextureNormal, pRenderTextureSpecular, pDepthTexture);
+		bool ret = pDeferredTarget->Init(desc, pRenderTextureAlbedo, pRenderTextureNormal, pRenderTextureSpecular, pRenderTexturePosition, pDepthTexture);
 		if (false == ret)
 		{
 			Assert("DeferredTarget->Init() FAIL");

@@ -26,6 +26,7 @@ struct PS_OUTPUT
     float4 rt0 : SV_TARGET0;
     float4 rt1 : SV_TARGET1;
     float4 rt2 : SV_TARGET2;
+    float4 rt3 : SV_TARGET3;
 };
 
 float3 EncodingNormal(float3 normal)
@@ -42,9 +43,9 @@ float3 DecodingNormal(float3 normal)
 PS_OUTPUT main(PS_INPUT input)
 {
     PS_OUTPUT output = (PS_OUTPUT) 0;
-    
     output.rt0 = input.color;
     output.rt1 = float4(input.normal, 1.0f);
     output.rt2 = float4(MaterialSpecular, MaterialShineness);
+    output.rt3 = float4(input.worldPos, 1.0f);
     return output;
 }

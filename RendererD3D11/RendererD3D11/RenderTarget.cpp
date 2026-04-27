@@ -12,7 +12,6 @@ RenderTarget::RenderTarget()
 	, pRenderTexture_(nullptr)
 	, pDepthTexture_(nullptr)
 	, pRTV_(nullptr)
-	, pSRVs_()
 	, pDSV_(nullptr)
 {
 }
@@ -38,17 +37,12 @@ bool RenderTarget::Init(const RenderTargetDesc& desc, Texture* pRenderTexture, T
 	{
 		pRTV_ = pRenderTexture->RenderTargetView();
 		pDSV_ = nullptr;
-		pSRVs_[0] = pRenderTexture->ShaderResourceView();
-		pSRVs_[1] = nullptr;
 	}
 	else
 	{
 		pRTV_ = pRenderTexture->RenderTargetView();
 		pDSV_ = pDepthTexture_->DepthStencilView();
-		pSRVs_[0] = pRenderTexture->ShaderResourceView();
-		pSRVs_[1] = pDepthTexture_->ShaderResourceView();
 	}
-
 	
 	return true;
 }
@@ -169,8 +163,6 @@ void RenderTarget::Clear()
 	GRenderer->DeviceContext()->ClearDepthStencilView(pDepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 }
 
-
-
 RenderTargetDesc __stdcall RenderTarget::GetDesc() const
 {
 	RenderTargetDesc desc{ E_RENDER_TECHNIQUE_TYPE::Forward };
@@ -191,35 +183,9 @@ void __stdcall RenderTarget::SetClearColor(const Color& color)
 	clearColor_ = color;
 }
 
-
-void __stdcall RenderTarget::BindRenderTexturePS(uint32_t slot)
-{
-	if(!desc_.useDepthStencil_)
-	{
-		pRenderTexture_->BindRenderTextureForPS(slot);
-	}
-	else
-	{
-		GRenderer->DeviceContext()->PSSetShaderResources(slot, 2, pSRVs_);
-	}
-}
-
-void __stdcall RenderTarget::UnBindRenderTexturePS(uint32_t slot)
-{
-	if (!desc_.useDepthStencil_)
-	{
-		pRenderTexture_->ClearRenderTextureForPS(slot);
-	}
-	else
-	{
-		ID3D11ShaderResourceView* pNullSrvs[2] = { nullptr, nullptr};
-		GRenderer->DeviceContext()->PSSetShaderResources(slot, 2, pNullSrvs);
-	}
-}
-
 void* __stdcall RenderTarget::GetShaderResourceView(const E_RENDER_TEXTURE_TYPE& texureType)
 {
-	return pSRVs_[0];
+	return pRenderTexture_->ShaderResourceView();
 }
 
 ITexture* __stdcall RenderTarget::GetRenderTexture(const E_RENDER_TEXTURE_TYPE& textureType)
@@ -241,7 +207,7 @@ ITexture* __stdcall RenderTarget::GetRenderTexture(const E_RENDER_TEXTURE_TYPE& 
 	default:
 		break;
 	}
-
+	DEBUG_BREAK();
 	return nullptr;
 }
 
@@ -255,7 +221,6 @@ bool RenderTarget::SetTexture(Texture* pRenderTexture, Texture* pDepthTexture)
 	}
 
 	pRenderTexture_ = pRenderTexture;
-
 	if(desc_.useDepthStencil_)
 	{
 		if (nullptr == pDepthTexture)
@@ -265,7 +230,6 @@ bool RenderTarget::SetTexture(Texture* pRenderTexture, Texture* pDepthTexture)
 		}
 		pDepthTexture_ = pDepthTexture;
 	}
-
 
 	Float2 textureSize = pRenderTexture_->Size();
 	viewport_.TopLeftX = 0.0f;
@@ -290,6 +254,5 @@ void RenderTarget::CleanUp()
 	{
 		pDepthTexture_->Release();
 		pDepthTexture_ = nullptr;
-	}
-	
+	}	
 }
