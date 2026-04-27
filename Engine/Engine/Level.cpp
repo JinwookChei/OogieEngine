@@ -100,12 +100,12 @@ void Level::OnRender()
 		// Particle Pass End
 
 		// Debug Pass
-		if (RunTimeMode::GetCurrentMode() == E_RUNTIME_MODE::EDITOR)
-		{
-			pCurCamera->RenderPassBegin(E_RENDER_PASS_TYPE::DebugPass);
-			Debugger::Draw();
-			pCurCamera->RenderPassEnd();
-		}
+		//if (RunTimeMode::GetCurrentMode() == E_RUNTIME_MODE::EDITOR)
+		//{
+		//	pCurCamera->RenderPassBegin(E_RENDER_PASS_TYPE::DebugPass);
+		//	Debugger::Draw();
+		//	pCurCamera->RenderPassEnd();
+		//}
 		// Debug Pass End
 	}
 }

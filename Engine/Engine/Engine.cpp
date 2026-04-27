@@ -6,16 +6,14 @@
 #include "Engine.h"
 #include "Actor.h"
 
-
+World* GWorld = nullptr;
+ActorPicker* GActorPicker = nullptr;
 SkeletonManager* GSkeletonManager = nullptr;
 MeshManager* GMeshManager = nullptr;
 MaterialManager* GMaterialManager = nullptr;
 TextureManager* GTextureManager = nullptr;
 AnimationManager* GAnimationManager = nullptr;
 CameraManager* GCameraManager = nullptr;
-
-World* GWorld = nullptr;
-ActorPicker* GActorPicker = nullptr;
 
 // 임시 전역 객체.
 IPSO* GBlitPSO = nullptr;
@@ -27,6 +25,7 @@ Engine::Engine()
 
 Engine::~Engine()
 {
+	pStartUp_->End();
 	CleanUp();
 }
 
@@ -104,6 +103,8 @@ bool Engine::Initialize
 		return false;
 	}
 
+	GWorld = new World;
+	GActorPicker = new ActorPicker;
 	GMeshManager = new MeshManager;
 	GSkeletonManager = new SkeletonManager;
 	GTextureManager = new TextureManager;
@@ -117,9 +118,6 @@ bool Engine::Initialize
 		DEBUG_BREAK();
 		return false;
 	}
-
-	GWorld = new World;
-	GActorPicker = new ActorPicker;
 	return true;
 }
 

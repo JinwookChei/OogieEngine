@@ -145,6 +145,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MoveCamera.cpp" />
     <ClCompile Include="ParticleActor.cpp" />
+    <ClCompile Include="PortfolioLevel.cpp" />
     <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="StartLevel.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -182,6 +183,7 @@
     <ClInclude Include="Floor.h" />
     <ClInclude Include="MoveCamera.h" />
     <ClInclude Include="ParticleActor.h" />
+    <ClInclude Include="PortfolioLevel.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="StartLevel.h" />
     <ClInclude Include="stdafx.h" />

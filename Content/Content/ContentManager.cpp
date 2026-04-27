@@ -1,18 +1,15 @@
 #include "stdafx.h"
 #include "ContentManager.h"
-
-//IEngineContainer* GEngineContainer = nullptr;
+#include "PortfolioLevel.h"
 
 ContentManager::ContentManager()
 	: refCount_(1)
 	, pEngine_(nullptr)
 {
-	//GEngineContainer = this;
 }
 
 ContentManager::~ContentManager()
 {
-	//GEngineContainer = nullptr;
 }
 
 HRESULT __stdcall ContentManager::QueryInterface(REFIID riid, void** ppvObject)
@@ -39,11 +36,14 @@ ULONG __stdcall ContentManager::Release()
 
 bool __stdcall ContentManager::Start()
 {
+	// ""여기서 리소스 로드""
+	GetEngine()->GetWorld()->ChangeLevel<PortfolioLevel>();
 	return true;
 }
 
 void __stdcall ContentManager::End()
 {
+	// ""여기서 리소스 해제""
 }
 
 bool ContentManager::Initialize

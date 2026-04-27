@@ -17,11 +17,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine
 	{
 		goto lb_return;
 	}
-
-	pContentManager->GetEngine()->GetWorld()->ChangeLevel<StartLevel>();
-	
 	pContentManager->EngineLoop();
-
 
 lb_return:
 	pContentManager->Release();
