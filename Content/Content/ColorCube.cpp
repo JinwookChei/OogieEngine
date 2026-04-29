@@ -39,3 +39,8 @@ void ColorCube::Render()
 void ColorCube::CleanUp()
 {
 }
+
+IMaterial* __stdcall ColorCube::GetMaterialForEditor() const
+{
+	return pStaticMesh_->GetPSO()->GetMaterial(0);
+}

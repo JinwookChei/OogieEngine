@@ -20,8 +20,8 @@ void Level::BeginPlay()
 {
 	pEditorCamera_ = SpawnCamera<EditorCamera>();
 	pEditorCamera_->SetScreenPlacement({ 0.0f, 0.0f }, { 1.0f, 1.0f });
-	pEditorCamera_->GetWorldTransform().SetPosition({ -10.0f, 0.0f, 5.0f, 1.0f });
-	pEditorCamera_->GetWorldTransform().SetRotation({ 0.0f, 20.0f, 0.0f, 0.0f });
+	pEditorCamera_->GetWorldTransform().SetPosition({ -15.0f, 0.0f, 8.0f, 1.0f });
+	pEditorCamera_->GetWorldTransform().SetRotation({ 0.0f, 50.0f, 0.0f, 0.0f });
 	CameraManager::SetEditorCamera(pEditorCamera_);
 }
 
@@ -32,6 +32,11 @@ void Level::Tick(double deltaTime)
 LinkedList* Level::GetActorList(const E_ACTOR_TYPE& actoryType)
 {
 	return &actorList_[(int)actoryType];
+}
+
+EditorCamera* Level::GetEditorCamera() const
+{
+	return pEditorCamera_;
 }
 
 void Level::SpawnActorInternal(Actor* pActor, E_ACTOR_TYPE actorType)
@@ -193,18 +198,6 @@ void Level::BlitCameraToBackBuffer()
 	ITexture* pFianlRenderTex = pPlayerCamera->pFinalRenderTarget_->GetRenderTexture(E_RENDER_TEXTURE_TYPE::Albedo);
 	GBlitPSO->GetMaterial(0)->SetTextures(0, pFianlRenderTex);
 	Renderer::Instance()->Render(GBlitPSO);
-
-	//LINK_NODE* pCameraIter = actorList_[(int)E_ACTOR_TYPE::CAMERA].GetHead();
-	//while (pCameraIter)
-	//{
-	//	Camera* pCurCamera = static_cast<Camera*>(pCameraIter->pItem_);
-
-	//	ITexture* pFianlRenderTex = pCurCamera->pFinalRenderTarget_->GetRenderTexture(E_RENDER_TEXTURE_TYPE::Albedo);
-	//	GBlitPSO->GetMaterial(0)->SetTextures(0, pFianlRenderTex);
-	//	Renderer::Instance()->Render(GBlitPSO);
-
-	//	pCameraIter = pCameraIter->next_;
-	//}
 }
 
 

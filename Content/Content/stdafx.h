@@ -106,6 +106,7 @@
 #include <Engine/Engine/Actor.h>
 #include <Engine/Engine/Player.h>
 #include <Engine/Engine/Camera.h>
+#include <Engine/Engine/EditorCamera.h>
 #include <Engine/Engine/Light.h>
 #include <Engine/Engine/DirectionLight.h>
 #include <Engine/Engine/SpotLight.h>

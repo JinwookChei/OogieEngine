@@ -99,6 +99,12 @@
     <ClCompile Include="PortfolioLevel.cpp">
       <Filter>Source Files\Game\Level</Filter>
     </ClCompile>
+    <ClCompile Include="BricksCube.cpp">
+      <Filter>Source Files\Game\Actors\Static</Filter>
+    </ClCompile>
+    <ClCompile Include="House.cpp">
+      <Filter>Source Files\Game\Actors\Static</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -202,6 +208,12 @@
     </ClInclude>
     <ClInclude Include="PortfolioLevel.h">
       <Filter>Source Files\Game\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="BricksCube.h">
+      <Filter>Source Files\Game\Actors\Static</Filter>
+    </ClInclude>
+    <ClInclude Include="House.h">
+      <Filter>Source Files\Game\Actors\Static</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

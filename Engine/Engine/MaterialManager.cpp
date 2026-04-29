@@ -23,6 +23,8 @@ void MaterialManager::TestLoad()
 	if (false == TextureManager::Instance()->GetTexture(&pWhiteTexture, 0)) DEBUG_BREAK();
 	ITexture* pDefaultNormalTexture = nullptr;
 	if (false == TextureManager::Instance()->GetTexture(&pDefaultNormalTexture, 1)) DEBUG_BREAK();
+	ITexture* pTransparentTexture = nullptr;
+	if (false == TextureManager::Instance()->GetTexture(&pTransparentTexture, 2)) DEBUG_BREAK();
 	ITexture* pBricks_Color = nullptr;
 	if (false == TextureManager::Instance()->GetTexture(&pBricks_Color, 10)) DEBUG_BREAK();
 	ITexture* pBricks_Normal = nullptr;
@@ -47,6 +49,40 @@ void MaterialManager::TestLoad()
 	if (false == TextureManager::Instance()->GetTexture(&grassGroundColor_Color, 20)) DEBUG_BREAK();
 	ITexture* grassGroundColor_Normal = nullptr;
 	if (false == TextureManager::Instance()->GetTexture(&grassGroundColor_Normal, 21)) DEBUG_BREAK();
+
+	// HouseTexture
+	ITexture* houseDecals_Albedo = nullptr;
+	if (false == TextureManager::Instance()->GetTexture(&houseDecals_Albedo, 100)) DEBUG_BREAK();
+	ITexture* houseDecals_Normal = nullptr;
+	if (false == TextureManager::Instance()->GetTexture(&houseDecals_Normal, 101)) DEBUG_BREAK();
+	ITexture* houseWoodTrims_Albedo = nullptr;
+	if (false == TextureManager::Instance()->GetTexture(&houseWoodTrims_Albedo, 102)) DEBUG_BREAK();
+	ITexture* houseWoodTrims_Normal = nullptr;
+	if (false == TextureManager::Instance()->GetTexture(&houseWoodTrims_Normal, 103)) DEBUG_BREAK();
+	ITexture* houseRoofTile_Albedo = nullptr;
+	if (false == TextureManager::Instance()->GetTexture(&houseRoofTile_Albedo, 104)) DEBUG_BREAK();
+	ITexture* houseRoofTile_Normal = nullptr;
+	if (false == TextureManager::Instance()->GetTexture(&houseRoofTile_Normal, 105)) DEBUG_BREAK();
+	ITexture* houseWoodEnd_Albedo = nullptr;
+	if (false == TextureManager::Instance()->GetTexture(&houseWoodEnd_Albedo, 106)) DEBUG_BREAK();
+	ITexture* houseWoodEnd_Normal = nullptr;
+	if (false == TextureManager::Instance()->GetTexture(&houseWoodEnd_Normal, 107)) DEBUG_BREAK();
+	ITexture* houseWallPlaster_Albedo = nullptr;
+	if (false == TextureManager::Instance()->GetTexture(&houseWallPlaster_Albedo, 108)) DEBUG_BREAK();
+	ITexture* houseWallPlaster_Normal = nullptr;
+	if (false == TextureManager::Instance()->GetTexture(&houseWallPlaster_Normal, 109)) DEBUG_BREAK();
+	ITexture* houseMetal_Albedo = nullptr;
+	if (false == TextureManager::Instance()->GetTexture(&houseMetal_Albedo, 110)) DEBUG_BREAK();
+	ITexture* houseMetal_Normal = nullptr;
+	if (false == TextureManager::Instance()->GetTexture(&houseMetal_Normal, 111)) DEBUG_BREAK();
+	ITexture* houseWallStone_Albedo = nullptr;
+	if (false == TextureManager::Instance()->GetTexture(&houseWallStone_Albedo, 112)) DEBUG_BREAK();
+	ITexture* houseWallStone_Normal = nullptr;
+	if (false == TextureManager::Instance()->GetTexture(&houseWallStone_Normal, 113)) DEBUG_BREAK();
+	ITexture* houseGlassWindow_Albedo = nullptr;
+	if (false == TextureManager::Instance()->GetTexture(&houseGlassWindow_Albedo, 114)) DEBUG_BREAK();
+	ITexture* houseGlassWindow_Normal = nullptr;
+	if (false == TextureManager::Instance()->GetTexture(&houseGlassWindow_Normal, 115)) DEBUG_BREAK();
 
 
 	MaterialDesc lightPassMaterialDesc;
@@ -101,8 +137,8 @@ void MaterialManager::TestLoad()
 	matDesc1.samplerState = E_SAMPLER_PRESET::LINEAR_CLAMP;
 	matDesc1.blendState = E_BLEND_PRESET::OPAQUE_BLEND;
 	matDesc1.textureNum = 2;
-	matDesc1.shineness = 0.2f;
-	matDesc1.specularColor = { 0.5f, 0.5f, 0.5f };
+	matDesc1.shineness = 0.3f;
+	matDesc1.specularColor = { 0.7f, 0.7f, 0.7f };
 	IMaterial* pMat1 = CreateMaterial(matDesc1, 10);
 	pMat1->SetTextures(0, pBricks_Color);
 	pMat1->SetTextures(1, pBricks_Normal);
@@ -157,7 +193,7 @@ void MaterialManager::TestLoad()
 	matDesc7.blendState = E_BLEND_PRESET::OPAQUE_BLEND;
 	matDesc7.textureNum = 2;
 	matDesc7.shineness = 0.1f;
-	matDesc7.specularColor = { 0.5f, 0.5f, 0.5f };
+	matDesc7.specularColor = { 0.2f, 0.2f, 0.2f };
 	IMaterial* pMat7 = CreateMaterial(matDesc7, 16);
 	pMat7->SetTextures(0, grassGroundColor_Color);
 	pMat7->SetTextures(1, grassGroundColor_Normal);
@@ -170,6 +206,107 @@ void MaterialManager::TestLoad()
 	matDesc8.shineness = 0.5f;
 	matDesc8.specularColor = { 1.0f, 1.0f, 1.0f };
 	IMaterial* pMat8 = CreateMaterial(matDesc8, 17);
+
+	// House
+	// い Decal
+	MaterialDesc houseDecalMatDesc;
+	houseDecalMatDesc.shaderType = E_SHADER_PRESET::STATIC_MESH;
+	houseDecalMatDesc.samplerState = E_SAMPLER_PRESET::LINEAR_CLAMP;
+	houseDecalMatDesc.blendState = E_BLEND_PRESET::OPAQUE_BLEND;
+	houseDecalMatDesc.textureNum = 2;
+	houseDecalMatDesc.shineness = 0.2f;
+	houseDecalMatDesc.specularColor = { 0.1f, 0.1f, 0.1f };
+	IMaterial* pHouseDecalMat = CreateMaterial(houseDecalMatDesc, 100);
+	pHouseDecalMat->SetTextures(0, houseDecals_Albedo);
+	pHouseDecalMat->SetTextures(1, houseDecals_Normal);
+	// い WoodTrim
+	MaterialDesc houseWoodTrimMatDesc;
+	houseWoodTrimMatDesc.shaderType = E_SHADER_PRESET::STATIC_MESH;
+	houseWoodTrimMatDesc.samplerState = E_SAMPLER_PRESET::LINEAR_WARP;
+	houseWoodTrimMatDesc.blendState = E_BLEND_PRESET::OPAQUE_BLEND;
+	houseWoodTrimMatDesc.textureNum = 2;
+	houseWoodTrimMatDesc.shineness = 0.2f;
+	houseWoodTrimMatDesc.specularColor = { 0.1f, 0.1f, 0.1f };
+	IMaterial* pHouseWoodTrimMat = CreateMaterial(houseWoodTrimMatDesc, 101);
+	pHouseWoodTrimMat->SetTextures(0, houseWoodTrims_Albedo);
+	pHouseWoodTrimMat->SetTextures(1, houseWoodTrims_Normal);
+	// い RoofTile
+	MaterialDesc houseRoofTileMatDesc;
+	houseRoofTileMatDesc.shaderType = E_SHADER_PRESET::STATIC_MESH;
+	houseRoofTileMatDesc.samplerState = E_SAMPLER_PRESET::LINEAR_WARP;
+	houseRoofTileMatDesc.blendState = E_BLEND_PRESET::OPAQUE_BLEND;
+	houseRoofTileMatDesc.textureNum = 2;
+	houseRoofTileMatDesc.shineness = 0.2f;
+	houseRoofTileMatDesc.specularColor = { 0.1f, 0.1f, 0.1f };
+	IMaterial* pHouseRoofTileMat = CreateMaterial(houseRoofTileMatDesc, 102);
+	pHouseRoofTileMat->SetTextures(0, houseRoofTile_Albedo);
+	pHouseRoofTileMat->SetTextures(1, houseRoofTile_Normal);
+	// い WoodEnd
+	MaterialDesc houseWoodEndMatDesc;
+	houseWoodEndMatDesc.shaderType = E_SHADER_PRESET::STATIC_MESH;
+	houseWoodEndMatDesc.samplerState = E_SAMPLER_PRESET::LINEAR_CLAMP;
+	houseWoodEndMatDesc.blendState = E_BLEND_PRESET::OPAQUE_BLEND;
+	houseWoodEndMatDesc.textureNum = 2;
+	houseWoodEndMatDesc.shineness = 0.2f;
+	houseWoodEndMatDesc.specularColor = { 0.1f, 0.1f, 0.1f };
+	IMaterial* pHouseWoodEndMat = CreateMaterial(houseWoodEndMatDesc, 103);
+	pHouseWoodEndMat->SetTextures(0, houseWoodEnd_Albedo);
+	pHouseWoodEndMat->SetTextures(1, houseWoodEnd_Normal);
+	// い WallPlaster
+	MaterialDesc houseWallPlasterMatDesc;
+	houseWallPlasterMatDesc.shaderType = E_SHADER_PRESET::STATIC_MESH;
+	houseWallPlasterMatDesc.samplerState = E_SAMPLER_PRESET::LINEAR_WARP;
+	houseWallPlasterMatDesc.blendState = E_BLEND_PRESET::OPAQUE_BLEND;
+	houseWallPlasterMatDesc.textureNum = 2;
+	houseWallPlasterMatDesc.shineness = 0.15f;
+	houseWallPlasterMatDesc.specularColor = { 0.6f, 0.6f, 0.6f };
+	IMaterial* pHouseWallPlasterMat = CreateMaterial(houseWallPlasterMatDesc, 104);
+	pHouseWallPlasterMat->SetTextures(0, houseWallPlaster_Albedo);
+	pHouseWallPlasterMat->SetTextures(1, houseWallPlaster_Normal);
+	// い Metal
+	MaterialDesc houseMetalMatDesc;
+	houseMetalMatDesc.shaderType = E_SHADER_PRESET::STATIC_MESH;
+	houseMetalMatDesc.samplerState = E_SAMPLER_PRESET::LINEAR_WARP;
+	houseMetalMatDesc.blendState = E_BLEND_PRESET::OPAQUE_BLEND;
+	houseMetalMatDesc.textureNum = 2;
+	houseMetalMatDesc.shineness = 1.0f;
+	houseMetalMatDesc.specularColor = { 1.0f, 1.0f, 1.0f };
+	IMaterial* pHouseMetalMat = CreateMaterial(houseMetalMatDesc, 105);
+	pHouseMetalMat->SetTextures(0, houseMetal_Albedo);
+	pHouseMetalMat->SetTextures(1, houseMetal_Normal);
+	// い WallStone
+	MaterialDesc houseWallStoneMatDesc;
+	houseWallStoneMatDesc.shaderType = E_SHADER_PRESET::STATIC_MESH;
+	houseWallStoneMatDesc.samplerState = E_SAMPLER_PRESET::LINEAR_WARP;
+	houseWallStoneMatDesc.blendState = E_BLEND_PRESET::OPAQUE_BLEND;
+	houseWallStoneMatDesc.textureNum = 2;
+	houseWallStoneMatDesc.shineness = 0.2f;
+	houseWallStoneMatDesc.specularColor = { 0.2f, 0.2f, 0.2f };
+	IMaterial* pHouseWallStoneMat = CreateMaterial(houseWallStoneMatDesc, 106);
+	pHouseWallStoneMat->SetTextures(0, houseWallStone_Albedo);
+	pHouseWallStoneMat->SetTextures(1, houseWallStone_Normal);
+	// い GlassWindow
+	MaterialDesc houseGlassWindowMatDesc;
+	houseGlassWindowMatDesc.shaderType = E_SHADER_PRESET::STATIC_MESH;
+	houseGlassWindowMatDesc.samplerState = E_SAMPLER_PRESET::LINEAR_WARP;
+	houseGlassWindowMatDesc.blendState = E_BLEND_PRESET::OPAQUE_BLEND;
+	houseGlassWindowMatDesc.textureNum = 2;
+	houseGlassWindowMatDesc.shineness = 0.6f;
+	houseGlassWindowMatDesc.specularColor = { 0.9f, 0.9f, 0.9f };
+	IMaterial* pHouseGlassWindowMat = CreateMaterial(houseGlassWindowMatDesc, 107);
+	pHouseGlassWindowMat->SetTextures(0, houseGlassWindow_Albedo);
+	pHouseGlassWindowMat->SetTextures(1, houseGlassWindow_Normal);
+	// い Transparent
+	MaterialDesc houseTransparentMatDesc;
+	houseTransparentMatDesc.shaderType = E_SHADER_PRESET::STATIC_MESH;
+	houseTransparentMatDesc.samplerState = E_SAMPLER_PRESET::LINEAR_CLAMP;
+	houseTransparentMatDesc.blendState = E_BLEND_PRESET::OPAQUE_BLEND;
+	houseTransparentMatDesc.textureNum = 2;
+	houseTransparentMatDesc.shineness = 0.3f;
+	houseTransparentMatDesc.specularColor = { 0.1f, 0.1f, 0.1f };
+	IMaterial* pHouseTransparentMat = CreateMaterial(houseTransparentMatDesc, 108);
+	pHouseTransparentMat->SetTextures(0, pTransparentTexture);
+	pHouseTransparentMat->SetTextures(1, pDefaultNormalTexture);
 }
 
 IMaterial* MaterialManager::CreateMaterial(const MaterialDesc& desc, unsigned long long materialTag)

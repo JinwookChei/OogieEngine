@@ -4,6 +4,7 @@
 
 EditorCamera::EditorCamera()
 {
+	cameraSpeed_ = 4.0f;
 }
 
 EditorCamera::~EditorCamera()

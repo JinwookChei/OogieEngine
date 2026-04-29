@@ -112,6 +112,23 @@ void FBXManager::TestLoad()
 	MeshManager::Instance()->CreateMesh(meshDesc_5, 14);
 	SkeletonManager::Instance()->CreateSkeleton(wereWolf.meshInfos[0].bones, 14);
 
+
+	StaticModel House;
+	FBXManager::LoadStaticModel(&House, "..\\Resource\\Fbx\\House\\SM_House_Two.FBX");
+	MeshDesc houseDesc;
+	houseDesc.primitiveType = E_MESH_PRIMITIVE_TYPE::TRIANGLE;
+	houseDesc.vertexType = E_VERTEX_TYPE::STATIC_MESH;
+	houseDesc.usage = E_MESH_USAGE::DEFAULT;
+	houseDesc.bindFlag = E_MESH_BIND_FLAG::VERTEX_BUFFER;
+	houseDesc.bufferSize = sizeof(StaticMeshVertex) * House.meshInfos[0].vertices.size();
+	houseDesc.vertexFormatSize = sizeof(StaticMeshVertex);
+	houseDesc.vertexCount = House.meshInfos[0].vertices.size();
+	houseDesc.pVertices = House.meshInfos[0].vertices.data();
+	for (int i = 0; i < House.meshInfos[0].indices.size(); ++i)
+	{
+		houseDesc.subMeshDesc.emplace_back(i, (uint32_t)House.meshInfos[0].indices[i].size(), House.meshInfos[0].indices[i].data());
+	}
+	MeshManager::Instance()->CreateMesh(houseDesc, 15);
 }
 
 bool FBXManager::LoadStaticModel(StaticModel* pOutModel, const std::string& file)

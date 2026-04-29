@@ -33,6 +33,13 @@ void TextureManager::TestLoad()
 	unsigned long long defaultNormalTexTag = 1;
 	textureTable_.Insert(pdefaultNormalTexture, &defaultNormalTexTag, 8);
 
+	TextureDesc transparentTexDesc;
+	transparentTexDesc.colorData_ = 0x00000000;
+	transparentTexDesc.size_ = { 1.0f, 1.0f };
+	ITexture* pTransparentTexture = Renderer::GetFactory()->CreateTexture(transparentTexDesc);
+	unsigned long long transparentTexTag = 2;
+	textureTable_.Insert(pTransparentTexture, &transparentTexTag, 8);
+
 	
 	const wchar_t* colorTexPath = L"../Resource/Texture/Bricks_4K/Bricks_Color.png";
 	CreateTexture(colorTexPath, false, 10);
@@ -58,6 +65,41 @@ void TextureManager::TestLoad()
 	CreateTexture(TerrainColorPath, false, 20);
 	const wchar_t* TerrainNormalPath = L"../Resource/Texture/Terrain/4K/Terrain_Normal_4k.png";
 	CreateTexture(TerrainNormalPath, true, 21);
+
+	// House Texture
+	const wchar_t* HouseDecalsAlbedoPath = L"../Resource/Fbx/House/00_Decals_Albedo.png";
+	CreateTexture(HouseDecalsAlbedoPath, false, 100);
+	const wchar_t* HouseDecalsNormalPath = L"../Resource/Fbx/House/00_Decals_Normal.png";
+	CreateTexture(HouseDecalsNormalPath, true, 101);
+	const wchar_t* HouseWoodTrimsAlbedoPath = L"../Resource/Fbx/House/01_Tileable_Wood_Trims_Albedo.png";
+	CreateTexture(HouseWoodTrimsAlbedoPath, false, 102);
+	const wchar_t* HouseWoodTrimsNormalPath = L"../Resource/Fbx/House/01_Tileable_Wood_Trims_Normal.png";
+	CreateTexture(HouseWoodTrimsNormalPath, true, 103);
+	const wchar_t* HouseRoofTileAlbedoPath = L"../Resource/Fbx/House/02_Roof_Tile_Albedo.png";
+	CreateTexture(HouseRoofTileAlbedoPath, false, 104);
+	const wchar_t* HouseRoofTileNormalPath = L"../Resource/Fbx/House/02_Roof_Tile_Normal.png";
+	CreateTexture(HouseRoofTileNormalPath, true, 105);
+	const wchar_t* HouseWoodEndAlbedoPath = L"../Resource/Fbx/House/03_Wood_End_Albedo.png";
+	CreateTexture(HouseWoodEndAlbedoPath, false, 106);
+	const wchar_t* HouseWoodEndNormalPath = L"../Resource/Fbx/House/03_Wood_End_Normal.png";
+	CreateTexture(HouseWoodEndNormalPath, true, 107);
+	const wchar_t* HouseWallPlasterAlbedoPath = L"../Resource/Fbx/House/04_Tileable_Wall_Plaster_Albedo.png";
+	CreateTexture(HouseWallPlasterAlbedoPath, false, 108);
+	const wchar_t* HouseWallPlasterNormalPath = L"../Resource/Fbx/House/04_Tileable_Wall_Plaster_Normal.png";
+	CreateTexture(HouseWallPlasterNormalPath, true, 109);
+	const wchar_t* HouseMetalAlbedoPath = L"../Resource/Fbx/House/05_Tileable_Metal_Albedo.png";
+	CreateTexture(HouseMetalAlbedoPath, false, 110);
+	const wchar_t* HouseMetalNormalPath = L"../Resource/Fbx/House/05_Tileable_Metal_Normal.png";
+	CreateTexture(HouseMetalNormalPath, true, 111);
+	const wchar_t* HouseWallStoneAlbedoPath = L"../Resource/Fbx/House/06_Tileable_Wall_Stone_Albedo.png";
+	CreateTexture(HouseWallStoneAlbedoPath, false, 112);
+	const wchar_t* HouseWallStoneNormalPath = L"../Resource/Fbx/House/06_Tileable_Wall_Stone_Normal.png";
+	CreateTexture(HouseWallStoneNormalPath, true, 113);
+	const wchar_t* HouseGlassWindowAlbedoPath = L"../Resource/Fbx/House/07_Tileable_Glass_Window_Albedo.png";
+	CreateTexture(HouseGlassWindowAlbedoPath, false, 114);
+	const wchar_t* HouseGlassWindowNormalPath = L"../Resource/Fbx/House/07_Tileable_Glass_Window_Normal.png";
+	CreateTexture(HouseGlassWindowNormalPath, true, 115);
+
 }
 
 ITexture* TextureManager::CreateTexture(const wchar_t* fileName, bool isNormalMap, unsigned long long textureTag)

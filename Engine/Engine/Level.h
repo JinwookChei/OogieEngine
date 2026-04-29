@@ -40,6 +40,8 @@ public:
 
 	LinkedList* GetActorList(const E_ACTOR_TYPE& actoryType);
 
+	ENGINE_API EditorCamera* GetEditorCamera() const;
+
 private:
 	ENGINE_API void SpawnActorInternal(Actor* pActor, E_ACTOR_TYPE actorType);
 	void RegisterActor(Actor* pActor);
