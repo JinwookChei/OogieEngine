@@ -3,7 +3,7 @@
 #include "GeometryGenerator.h"
 
 MeshManager::MeshManager()
-	: meshTable_(16,8)
+	: meshTable_(16,16)
 {
 }
 
@@ -32,57 +32,55 @@ void MeshManager::TestLoad()
 	screenQuadDesc.vertexCount = screenQuadVertices.size();
 	screenQuadDesc.pVertices = screenQuadVertices.data();
 	screenQuadDesc.subMeshDesc.emplace_back(0, (uint32_t)screenQuadIndices.size(), screenQuadIndices.data());
-	CreateMesh(screenQuadDesc, 0);
-
+	CreateMesh(screenQuadDesc, "MS_ScreenQuad", 13);
 
 	std::vector<StaticMeshVertex> cubeVertices;
 	std::vector<uint32_t> cubeIndices;
 	GeometryGenerator::CreateCube(&cubeVertices, &cubeIndices);
-	MeshDesc meshDesc_1;
-	meshDesc_1.primitiveType = E_MESH_PRIMITIVE_TYPE::TRIANGLE;
-	meshDesc_1.vertexType = E_VERTEX_TYPE::STATIC_MESH;
-	meshDesc_1.usage = E_MESH_USAGE::DEFAULT;
-	meshDesc_1.bindFlag = E_MESH_BIND_FLAG::VERTEX_BUFFER;
-	meshDesc_1.bufferSize = sizeof(StaticMeshVertex) * cubeVertices.size();
-	meshDesc_1.vertexFormatSize = sizeof(StaticMeshVertex);
-	meshDesc_1.vertexCount = cubeVertices.size();
-	meshDesc_1.pVertices = cubeVertices.data();
-	meshDesc_1.subMeshDesc.emplace_back(0, (uint32_t)cubeIndices.size(), cubeIndices.data());
-	CreateMesh(meshDesc_1, 10);
-
+	MeshDesc cubeDesc;
+	cubeDesc.primitiveType = E_MESH_PRIMITIVE_TYPE::TRIANGLE;
+	cubeDesc.vertexType = E_VERTEX_TYPE::STATIC_MESH;
+	cubeDesc.usage = E_MESH_USAGE::DEFAULT;
+	cubeDesc.bindFlag = E_MESH_BIND_FLAG::VERTEX_BUFFER;
+	cubeDesc.bufferSize = sizeof(StaticMeshVertex) * cubeVertices.size();
+	cubeDesc.vertexFormatSize = sizeof(StaticMeshVertex);
+	cubeDesc.vertexCount = cubeVertices.size();
+	cubeDesc.pVertices = cubeVertices.data();
+	cubeDesc.subMeshDesc.emplace_back(0, (uint32_t)cubeIndices.size(), cubeIndices.data());
+	CreateMesh(cubeDesc, "MS_Cube", 7);
 
 	std::vector<StaticMeshVertex> sphereVertices;
 	std::vector<uint32_t> sphereIndices;
 	GeometryGenerator::CreateSphere(&sphereVertices, &sphereIndices);
-	MeshDesc meshDesc_2;
-	meshDesc_2.primitiveType = E_MESH_PRIMITIVE_TYPE::TRIANGLE;
-	meshDesc_2.vertexType = E_VERTEX_TYPE::STATIC_MESH;
-	meshDesc_2.usage = E_MESH_USAGE::DEFAULT;
-	meshDesc_2.bindFlag = E_MESH_BIND_FLAG::VERTEX_BUFFER;
-	meshDesc_2.bufferSize = sizeof(StaticMeshVertex) * sphereVertices.size();
-	meshDesc_2.vertexFormatSize = sizeof(StaticMeshVertex);
-	meshDesc_2.vertexCount = sphereVertices.size();
-	meshDesc_2.pVertices = sphereVertices.data();
-	meshDesc_2.subMeshDesc.emplace_back(0, (uint32_t)sphereIndices.size(), sphereIndices.data());
-	CreateMesh(meshDesc_2, 11);
+	MeshDesc sphereDesc;
+	sphereDesc.primitiveType = E_MESH_PRIMITIVE_TYPE::TRIANGLE;
+	sphereDesc.vertexType = E_VERTEX_TYPE::STATIC_MESH;
+	sphereDesc.usage = E_MESH_USAGE::DEFAULT;
+	sphereDesc.bindFlag = E_MESH_BIND_FLAG::VERTEX_BUFFER;
+	sphereDesc.bufferSize = sizeof(StaticMeshVertex) * sphereVertices.size();
+	sphereDesc.vertexFormatSize = sizeof(StaticMeshVertex);
+	sphereDesc.vertexCount = sphereVertices.size();
+	sphereDesc.pVertices = sphereVertices.data();
+	sphereDesc.subMeshDesc.emplace_back(0, (uint32_t)sphereIndices.size(), sphereIndices.data());
+	CreateMesh(sphereDesc, "MS_Sphere", 9);
 }
 
-IMesh* MeshManager::CreateMesh(const MeshDesc& desc, unsigned long long meshTag)
+IMesh* MeshManager::CreateMesh(const MeshDesc& desc, const char* meshKey, unsigned int keySize)
 {
 	IMesh* pMesh = Renderer::GetFactory()->CreateMesh(desc);
-	meshTable_.Insert(pMesh, &meshTag, 8);
+	//meshTable_.Insert(pMesh, &meshTag, keySize);
+	meshTable_.Insert(pMesh, meshKey, keySize);
+
 	return pMesh;
 }
 
-bool MeshManager::GetMesh(IMesh** ppOutMesh, unsigned long long meshTag)
+bool MeshManager::GetMesh(IMesh** ppOutMesh, const char* meshKey, unsigned int keySize)
 {
 	unsigned int searchedCount = 0;
 	void* pTmpMesh = nullptr;
-
-	if (false == meshTable_.Search((void**)&pTmpMesh, &searchedCount, 8, &meshTag, 8))
+	if (false == meshTable_.Search((void**)&pTmpMesh, &searchedCount, 8, meshKey, keySize))
 	{
 		DEBUG_BREAK();
-		//Assert("Mesh Search is Fail!!");
 		return false;
 	}
 
@@ -91,7 +89,7 @@ bool MeshManager::GetMesh(IMesh** ppOutMesh, unsigned long long meshTag)
 		DEBUG_BREAK();
 		return false;
 	}
-	
+
 	*ppOutMesh = static_cast<IMesh*>(pTmpMesh);
 	return true;
 }

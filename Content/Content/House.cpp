@@ -14,10 +14,8 @@ House::~House()
 void House::BeginPlay()
 {
 	IMesh* pMesh;
-	MeshManager::Instance()->GetMesh(&pMesh, 15);
-
 	IMaterial* pDecalsMaterial;
-	IMaterial* pWoodTrimMaterial;
+	IMaterial* pWoodTrimsMaterial;
 	IMaterial* pRoofTileMaterial;
 	IMaterial* pWoodEndMaterial;
 	IMaterial* pWallPlasterMaterial;
@@ -25,19 +23,20 @@ void House::BeginPlay()
 	IMaterial* pWallStoneMaterial;
 	IMaterial* pGlassWindowMaterial;
 	IMaterial* pTransparentMaterial;
-	MaterialManager::Instance()->GetMaterial(&pDecalsMaterial, 100);
-	MaterialManager::Instance()->GetMaterial(&pWoodTrimMaterial, 101);
-	MaterialManager::Instance()->GetMaterial(&pRoofTileMaterial, 102);
-	MaterialManager::Instance()->GetMaterial(&pWoodEndMaterial, 103);
-	MaterialManager::Instance()->GetMaterial(&pWallPlasterMaterial, 104);
-	MaterialManager::Instance()->GetMaterial(&pMetalMaterial, 105);
-	MaterialManager::Instance()->GetMaterial(&pWallStoneMaterial, 106);
-	MaterialManager::Instance()->GetMaterial(&pGlassWindowMaterial, 107);
-	MaterialManager::Instance()->GetMaterial(&pTransparentMaterial, 108);
+	MeshManager::Instance()->GetMesh(&pMesh, "MS_House", 8);
+	MaterialManager::Instance()->GetMaterial(&pDecalsMaterial, "MT_House_Decals", 15);
+	MaterialManager::Instance()->GetMaterial(&pWoodTrimsMaterial, "MT_House_WoodTrims", 18);
+	MaterialManager::Instance()->GetMaterial(&pRoofTileMaterial, "MT_House_RoofTile", 17);
+	MaterialManager::Instance()->GetMaterial(&pWoodEndMaterial, "MT_House_WoodEnd", 16);
+	MaterialManager::Instance()->GetMaterial(&pWallPlasterMaterial, "MT_House_WallPlaster", 20);
+	MaterialManager::Instance()->GetMaterial(&pMetalMaterial, "MT_House_Metal", 14);
+	MaterialManager::Instance()->GetMaterial(&pWallStoneMaterial, "MT_House_WallStone", 18);
+	MaterialManager::Instance()->GetMaterial(&pGlassWindowMaterial, "MT_House_GlassWindow", 20);
+	MaterialManager::Instance()->GetMaterial(&pTransparentMaterial, "MT_House_Transparent", 20);
 	pStaticMesh_->InitPSO(1, 10, E_DEPTH_PRESET::DEPTH_ENABLE_WRITE, E_RASTERIZER_PRESET::SOLID);
 	pStaticMesh_->GetPSO()->SetMeshToSlot(0, pMesh);
 	pStaticMesh_->GetPSO()->SetMaterialToSlot(0, pDecalsMaterial);
-	pStaticMesh_->GetPSO()->SetMaterialToSlot(1, pWoodTrimMaterial);
+	pStaticMesh_->GetPSO()->SetMaterialToSlot(1, pWoodTrimsMaterial);
 	pStaticMesh_->GetPSO()->SetMaterialToSlot(2, pRoofTileMaterial);
 	pStaticMesh_->GetPSO()->SetMaterialToSlot(3, pWoodEndMaterial);
 	pStaticMesh_->GetPSO()->SetMaterialToSlot(4, pWallPlasterMaterial);

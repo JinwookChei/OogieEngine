@@ -12,9 +12,9 @@ public:
 
 	void TestLoad();
 
-	Animation* CreateAnimation(const std::string& fileName, bool bLoop, unsigned long long animationTag);
+	Animation* CreateAnimation(const std::string& fileName, bool bLoop, const char* animationKey, unsigned int keySize);
 
-	ENGINE_API bool GetAnimation(Animation** ppOutAnimation, unsigned long long animationTag);
+	ENGINE_API bool GetAnimation(Animation** ppOutAnimation, const char* animationKey, unsigned int keySize);
 
 private:
 	void CleanUp();

@@ -15,8 +15,8 @@ void Floor::BeginPlay()
 {
 	IMesh* pMesh;
 	IMaterial* pMaterial;
-	MeshManager::Instance()->GetMesh(&pMesh, 10);
-	MaterialManager::Instance()->GetMaterial(&pMaterial, 16);
+	MeshManager::Instance()->GetMesh(&pMesh, "MS_Cube", 7);
+	MaterialManager::Instance()->GetMaterial(&pMaterial, "MT_Terrain", 10);
 	pStaticMesh_->InitPSO(1, 1, E_DEPTH_PRESET::DEPTH_ENABLE_WRITE, E_RASTERIZER_PRESET::SOLID);
 	pStaticMesh_->GetPSO()->SetMeshToSlot(0, pMesh);
 	pStaticMesh_->GetPSO()->SetMaterialToSlot(0, pMaterial);

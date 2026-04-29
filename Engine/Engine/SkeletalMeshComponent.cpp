@@ -63,10 +63,41 @@ void SkeletalMeshComponent::AnimationTick(double deltaTime)
 	}
 }
 
-bool SkeletalMeshComponent::ChangeAnimation(unsigned long long animTag)
+//bool SkeletalMeshComponent::ChangeAnimation(unsigned long long animTag)
+//{
+//	animPlayState_.Init();
+//
+//	if (nullptr == pSkeleton_)
+//	{
+//		DEBUG_BREAK();
+//		return false;
+//	}
+//
+//	for (int bone = 0; bone < pSkeleton_->GetBoneCount(); ++bone)
+//	{
+//		MATH::MatrixMultiply(tmpAnimBoneLocalMats_[bone], pSkeleton_->GetBones(bone).globalBindPose, curAnimBoneMats_[bone]);
+//
+//	}
+//
+//	if (nullptr != pAnimation_)
+//	{
+//		pAnimation_->Release();
+//		animPlayState_.isBlending = true;
+//		animPlayState_.curAnimTag = animTag;
+//	}
+//
+//	if (false == AnimationManager::Instance()->GetAnimation(&pAnimation_, animTag))
+//	{
+//		DEBUG_BREAK();
+//		return false;
+//	}
+//	pAnimation_->AddRef();
+//	return true;
+//}
+
+bool SkeletalMeshComponent::ChangeAnimation(const char* animationKey, unsigned int keySize)
 {
 	animPlayState_.Init();
-
 	if (nullptr == pSkeleton_)
 	{
 		DEBUG_BREAK();
@@ -76,41 +107,42 @@ bool SkeletalMeshComponent::ChangeAnimation(unsigned long long animTag)
 	for (int bone = 0; bone < pSkeleton_->GetBoneCount(); ++bone)
 	{
 		MATH::MatrixMultiply(tmpAnimBoneLocalMats_[bone], pSkeleton_->GetBones(bone).globalBindPose, curAnimBoneMats_[bone]);
-
 	}
 
 	if (nullptr != pAnimation_)
 	{
 		pAnimation_->Release();
 		animPlayState_.isBlending = true;
-		animPlayState_.curAnimTag = animTag;
+		animPlayState_.curAnimKey = animationKey;
 	}
 
-	if (false == AnimationManager::Instance()->GetAnimation(&pAnimation_, animTag))
+	if (false == AnimationManager::Instance()->GetAnimation(&pAnimation_, animationKey, keySize))
 	{
 		DEBUG_BREAK();
 		return false;
 	}
 	pAnimation_->AddRef();
-
-	
 	return true;
 }
 
-unsigned long long SkeletalMeshComponent::GetCurrentAnimationTag()
+const char* SkeletalMeshComponent::GetCurrentAnimationKey()
 {
-	return animPlayState_.curAnimTag;
+	return animPlayState_.curAnimKey;
 }
 
-bool SkeletalMeshComponent::SetSkeleton(unsigned long long skeletonTag)
+//unsigned long long SkeletalMeshComponent::GetCurrentAnimationTag()
+//{
+//	return animPlayState_.curAnimTag;
+//}
+
+bool SkeletalMeshComponent::SetSkeleton(const char* skeletonKey, unsigned int keySize)
 {
 	if (nullptr != pSkeleton_)
 	{
 		pSkeleton_->Release();
 		pSkeleton_ = nullptr;
 	}
-
-	if (false == SkeletonManager::Instance()->GetSkeleton(&pSkeleton_, skeletonTag))
+	if (false == SkeletonManager::Instance()->GetSkeleton(&pSkeleton_, skeletonKey, keySize))
 	{
 		DEBUG_BREAK();
 		return false;
@@ -121,6 +153,26 @@ bool SkeletalMeshComponent::SetSkeleton(unsigned long long skeletonTag)
 
 	return true;
 }
+
+//bool SkeletalMeshComponent::SetSkeleton(unsigned long long skeletonTag)
+//{
+//	if (nullptr != pSkeleton_)
+//	{
+//		pSkeleton_->Release();
+//		pSkeleton_ = nullptr;
+//	}
+//
+//	if (false == SkeletonManager::Instance()->GetSkeleton(&pSkeleton_, skeletonTag))
+//	{
+//		DEBUG_BREAK();
+//		return false;
+//	}
+//	pSkeleton_->AddRef();
+//	curAnimBoneMats_.resize(pSkeleton_->GetBoneCount());
+//	tmpAnimBoneLocalMats_.resize(pSkeleton_->GetBoneCount());
+//
+//	return true;
+//}
 
 void SkeletalMeshComponent::CleanUp()
 {

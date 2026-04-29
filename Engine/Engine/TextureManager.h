@@ -13,9 +13,11 @@ public:
 
 	void TestLoad();
 
-	ITexture* CreateTexture(const wchar_t* fileName, bool isNormalMap, unsigned long long textureTag);
+	ITexture* CreateTextureFromFile(const wchar_t* fileName, bool isNormalMap, const char* textureKey, unsigned int keySize);	
 
-	bool GetTexture(ITexture** ppOutTexture, unsigned long long textureTag);
+	ITexture* CreateTexture(const TextureDesc& desc, const char* textureKey, unsigned int keySize);
+
+	bool GetTexture(ITexture** ppOutTexture, const char* textureKey, unsigned int keySize);
 
 private:
 	void CleanUp();

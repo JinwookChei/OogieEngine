@@ -3,7 +3,7 @@
 
 
 TextureManager::TextureManager()
-	: textureTable_(16, 8)
+	: textureTable_(32, 32)
 {
 }
 
@@ -22,100 +22,97 @@ void TextureManager::TestLoad()
 	TextureDesc whiteTexDesc;
 	whiteTexDesc.colorData_ = 0xFFFFFFFF;
 	whiteTexDesc.size_ = { 1.0f, 1.0f };
-	ITexture* pWhiteTexture = Renderer::GetFactory()->CreateTexture(whiteTexDesc);
-	unsigned long long whiteTexTag = 0;
-	textureTable_.Insert(pWhiteTexture, &whiteTexTag, 8);
+	CreateTexture(whiteTexDesc, "T_White", 7);
 
 	TextureDesc defaultNormalTexDesc;
 	defaultNormalTexDesc.colorData_ = 0x8080FFFF;
 	defaultNormalTexDesc.size_ = { 1.0f, 1.0f };
-	ITexture* pdefaultNormalTexture = Renderer::GetFactory()->CreateTexture(defaultNormalTexDesc);
-	unsigned long long defaultNormalTexTag = 1;
-	textureTable_.Insert(pdefaultNormalTexture, &defaultNormalTexTag, 8);
-
+	CreateTexture(defaultNormalTexDesc, "T_DefaultNormal", 15);
+	
 	TextureDesc transparentTexDesc;
 	transparentTexDesc.colorData_ = 0x00000000;
 	transparentTexDesc.size_ = { 1.0f, 1.0f };
-	ITexture* pTransparentTexture = Renderer::GetFactory()->CreateTexture(transparentTexDesc);
-	unsigned long long transparentTexTag = 2;
-	textureTable_.Insert(pTransparentTexture, &transparentTexTag, 8);
+	CreateTexture(transparentTexDesc, "T_Transparent", 13);
 
-	
-	const wchar_t* colorTexPath = L"../Resource/Texture/Bricks_4K/Bricks_Color.png";
-	CreateTexture(colorTexPath, false, 10);
-	const wchar_t* normalTexPath = L"../Resource/Texture/Bricks_4K/Bricks_NormalDX.png";
-	CreateTexture(normalTexPath, true, 11);
-	const wchar_t* maria_diffuse_Path = L"../Resource/Fbx/Mixamo/maria_diffuse.png";
-	CreateTexture(maria_diffuse_Path, false, 12);
-	const wchar_t* maria_normal_Path = L"../Resource/Fbx/Mixamo/maria_normal.png";
-	CreateTexture(maria_normal_Path, true, 13);
-	const wchar_t* lightBulb_diffuse_path = L"../Resource/Fbx/LightBulb/T_Communication_BaseColor.png";
-	CreateTexture(lightBulb_diffuse_path, false, 14);
-	const wchar_t* lightBulb_normal_path = L"../Resource/Fbx/LightBulb/T_Communication_Normal.png";
-	CreateTexture(lightBulb_normal_path, true, 15);
-	const wchar_t* wereWolf_Body_Albedo_Path = L"../Resource/Fbx/WereWolf/Texture/Werewolf_Body_Albedo.png";
-	CreateTexture(wereWolf_Body_Albedo_Path, false, 16);
-	const wchar_t* wereWolf_Body_Normal_Path = L"../Resource/Fbx/WereWolf/Texture/Werewolf_Body_Normal.png";
-	CreateTexture(wereWolf_Body_Normal_Path, true, 17);
-	const wchar_t* wereWolf_Fur_Albedo_Path = L"../Resource/Fbx/WereWolf/Texture/Werewolf_Fur_Albedo.png";
-	CreateTexture(wereWolf_Fur_Albedo_Path, false, 18);
-	const wchar_t* wereWolf_Fur_Normal_Path = L"../Resource/Fbx/WereWolf/Texture/Werewolf_Fur_Normal.png";
-	CreateTexture(wereWolf_Fur_Normal_Path, true, 19);
-	const wchar_t* TerrainColorPath = L"../Resource/Texture/Terrain/4K/Terrain_Color_4k.png";
-	CreateTexture(TerrainColorPath, false, 20);
-	const wchar_t* TerrainNormalPath = L"../Resource/Texture/Terrain/4K/Terrain_Normal_4k.png";
-	CreateTexture(TerrainNormalPath, true, 21);
+	const wchar_t* bricks_Albedo_Path = L"../Resource/Texture/Bricks_4K/Bricks_Color.png";
+	CreateTextureFromFile(bricks_Albedo_Path, false, "T_Bricks_Albedo", 15);
+	const wchar_t* bricks_Normal_Path = L"../Resource/Texture/Bricks_4K/Bricks_NormalDX.png";
+	CreateTextureFromFile(bricks_Normal_Path, true, "T_Bricks_Normal", 15);
+	const wchar_t* maria_Albedo_Path = L"../Resource/Fbx/Mixamo/maria_diffuse.png";
+	CreateTextureFromFile(maria_Albedo_Path, false, "T_Maria_Albedo", 14);
+	const wchar_t* maria_Normal_Path = L"../Resource/Fbx/Mixamo/maria_normal.png";
+	CreateTextureFromFile(maria_Normal_Path, true,"T_Maria_Normal", 14);
+	const wchar_t* lightBulb_Albedo_Path = L"../Resource/Fbx/LightBulb/T_Communication_BaseColor.png";
+	CreateTextureFromFile(lightBulb_Albedo_Path, false, "T_LightBulb_Albedo", 18);
+	const wchar_t* lightBulb_Normal_Path = L"../Resource/Fbx/LightBulb/T_Communication_Normal.png";
+	CreateTextureFromFile(lightBulb_Normal_Path, true,"T_LightBulb_Normal", 18);
+	const wchar_t* werewolf_Body_Albedo_Path = L"../Resource/Fbx/WereWolf/Texture/Werewolf_Body_Albedo.png";
+	CreateTextureFromFile(werewolf_Body_Albedo_Path, false,"T_Werewolf_Body_Albedo", 22);
+	const wchar_t* werewolf_Body_Normal_Path = L"../Resource/Fbx/WereWolf/Texture/Werewolf_Body_Normal.png";
+	CreateTextureFromFile(werewolf_Body_Normal_Path, true, "T_Werewolf_Body_Normal", 22);
+	const wchar_t* werewolf_Fur_Albedo_Path = L"../Resource/Fbx/WereWolf/Texture/Werewolf_Fur_Albedo.png";
+	CreateTextureFromFile(werewolf_Fur_Albedo_Path, false, "T_Werewolf_Fur_Albedo", 21);
+	const wchar_t* werewolf_Fur_Normal_Path = L"../Resource/Fbx/WereWolf/Texture/Werewolf_Fur_Normal.png";
+	CreateTextureFromFile(werewolf_Fur_Normal_Path, true, "T_Werewolf_Fur_Normal", 21);
+	const wchar_t* terrain_Albedo_Path = L"../Resource/Texture/Terrain/4K/Terrain_Color_4k.png";
+	CreateTextureFromFile(terrain_Albedo_Path, false, "T_Terrain_Albedo", 16);
+	const wchar_t* terrain_Normal_Path = L"../Resource/Texture/Terrain/4K/Terrain_Normal_4k.png";
+	CreateTextureFromFile(terrain_Normal_Path, true, "T_Terrain_Normal", 16);
 
 	// House Texture
-	const wchar_t* HouseDecalsAlbedoPath = L"../Resource/Fbx/House/00_Decals_Albedo.png";
-	CreateTexture(HouseDecalsAlbedoPath, false, 100);
-	const wchar_t* HouseDecalsNormalPath = L"../Resource/Fbx/House/00_Decals_Normal.png";
-	CreateTexture(HouseDecalsNormalPath, true, 101);
-	const wchar_t* HouseWoodTrimsAlbedoPath = L"../Resource/Fbx/House/01_Tileable_Wood_Trims_Albedo.png";
-	CreateTexture(HouseWoodTrimsAlbedoPath, false, 102);
-	const wchar_t* HouseWoodTrimsNormalPath = L"../Resource/Fbx/House/01_Tileable_Wood_Trims_Normal.png";
-	CreateTexture(HouseWoodTrimsNormalPath, true, 103);
-	const wchar_t* HouseRoofTileAlbedoPath = L"../Resource/Fbx/House/02_Roof_Tile_Albedo.png";
-	CreateTexture(HouseRoofTileAlbedoPath, false, 104);
-	const wchar_t* HouseRoofTileNormalPath = L"../Resource/Fbx/House/02_Roof_Tile_Normal.png";
-	CreateTexture(HouseRoofTileNormalPath, true, 105);
-	const wchar_t* HouseWoodEndAlbedoPath = L"../Resource/Fbx/House/03_Wood_End_Albedo.png";
-	CreateTexture(HouseWoodEndAlbedoPath, false, 106);
-	const wchar_t* HouseWoodEndNormalPath = L"../Resource/Fbx/House/03_Wood_End_Normal.png";
-	CreateTexture(HouseWoodEndNormalPath, true, 107);
-	const wchar_t* HouseWallPlasterAlbedoPath = L"../Resource/Fbx/House/04_Tileable_Wall_Plaster_Albedo.png";
-	CreateTexture(HouseWallPlasterAlbedoPath, false, 108);
-	const wchar_t* HouseWallPlasterNormalPath = L"../Resource/Fbx/House/04_Tileable_Wall_Plaster_Normal.png";
-	CreateTexture(HouseWallPlasterNormalPath, true, 109);
-	const wchar_t* HouseMetalAlbedoPath = L"../Resource/Fbx/House/05_Tileable_Metal_Albedo.png";
-	CreateTexture(HouseMetalAlbedoPath, false, 110);
-	const wchar_t* HouseMetalNormalPath = L"../Resource/Fbx/House/05_Tileable_Metal_Normal.png";
-	CreateTexture(HouseMetalNormalPath, true, 111);
-	const wchar_t* HouseWallStoneAlbedoPath = L"../Resource/Fbx/House/06_Tileable_Wall_Stone_Albedo.png";
-	CreateTexture(HouseWallStoneAlbedoPath, false, 112);
-	const wchar_t* HouseWallStoneNormalPath = L"../Resource/Fbx/House/06_Tileable_Wall_Stone_Normal.png";
-	CreateTexture(HouseWallStoneNormalPath, true, 113);
-	const wchar_t* HouseGlassWindowAlbedoPath = L"../Resource/Fbx/House/07_Tileable_Glass_Window_Albedo.png";
-	CreateTexture(HouseGlassWindowAlbedoPath, false, 114);
-	const wchar_t* HouseGlassWindowNormalPath = L"../Resource/Fbx/House/07_Tileable_Glass_Window_Normal.png";
-	CreateTexture(HouseGlassWindowNormalPath, true, 115);
-
+	const wchar_t* house_Decals_Albedo_Path = L"../Resource/Fbx/House/00_Decals_Albedo.png";
+	CreateTextureFromFile(house_Decals_Albedo_Path, false, "T_House_Decals_Albedo", 21);
+	const wchar_t* house_Decals_Normal_Path = L"../Resource/Fbx/House/00_Decals_Normal.png";
+	CreateTextureFromFile(house_Decals_Normal_Path, true, "T_House_Decals_Normal", 21);
+	const wchar_t* house_WoodTrims_Albedo_Path = L"../Resource/Fbx/House/01_Tileable_Wood_Trims_Albedo.png";
+	CreateTextureFromFile(house_WoodTrims_Albedo_Path, false, "T_House_WoodTrims_Albedo", 24);
+	const wchar_t* house_WoodTrims_Normal_Path = L"../Resource/Fbx/House/01_Tileable_Wood_Trims_Normal.png";
+	CreateTextureFromFile(house_WoodTrims_Normal_Path, true, "T_House_WoodTrims_Normal", 24);
+	const wchar_t* house_RoofTile_Albedo_Path = L"../Resource/Fbx/House/02_Roof_Tile_Albedo.png";
+	CreateTextureFromFile(house_RoofTile_Albedo_Path, false,"T_House_RoofTile_Albedo", 23);
+	const wchar_t* house_RoofTile_Normal_Path = L"../Resource/Fbx/House/02_Roof_Tile_Normal.png";
+	CreateTextureFromFile(house_RoofTile_Normal_Path, true, "T_House_RoofTile_Normal", 23);
+	const wchar_t* house_WoodEnd_Albedo_Path = L"../Resource/Fbx/House/03_Wood_End_Albedo.png";
+	CreateTextureFromFile(house_WoodEnd_Albedo_Path, false, "T_House_WoodEnd_Albedo", 22);
+	const wchar_t* house_WoodEnd_Normal_Path = L"../Resource/Fbx/House/03_Wood_End_Normal.png";
+	CreateTextureFromFile(house_WoodEnd_Normal_Path, true, "T_House_WoodEnd_Normal", 22);
+	const wchar_t* house_WallPlaster_Albedo_Path = L"../Resource/Fbx/House/04_Tileable_Wall_Plaster_Albedo.png";
+	CreateTextureFromFile(house_WallPlaster_Albedo_Path, false, "T_House_WallPlaster_Albedo", 26);
+	const wchar_t* house_WallPlaster_Normal_Path = L"../Resource/Fbx/House/04_Tileable_Wall_Plaster_Normal.png";
+	CreateTextureFromFile(house_WallPlaster_Normal_Path, true,"T_House_WallPlaster_Normal", 26);
+	const wchar_t* house_Metal_Albedo_Path = L"../Resource/Fbx/House/05_Tileable_Metal_Albedo.png";
+	CreateTextureFromFile(house_Metal_Albedo_Path, false, "T_House_Metal_Albedo", 20);
+	const wchar_t* house_Metal_Normal_Path = L"../Resource/Fbx/House/05_Tileable_Metal_Normal.png";
+	CreateTextureFromFile(house_Metal_Normal_Path, true, "T_House_Metal_Normal", 20);
+	const wchar_t* house_WallStone_Albedo_Path = L"../Resource/Fbx/House/06_Tileable_Wall_Stone_Albedo.png";
+	CreateTextureFromFile(house_WallStone_Albedo_Path, false, "T_House_WallStone_Albedo", 24);
+	const wchar_t* house_WallStone_Normal_Path = L"../Resource/Fbx/House/06_Tileable_Wall_Stone_Normal.png";
+	CreateTextureFromFile(house_WallStone_Normal_Path, true, "T_House_WallStone_Normal", 24);
+	const wchar_t* house_GlassWindow_Albedo_Path = L"../Resource/Fbx/House/07_Tileable_Glass_Window_Albedo.png";
+	CreateTextureFromFile(house_GlassWindow_Albedo_Path, false, "T_House_GlassWindow_Albedo", 26);
+	const wchar_t* house_GlassWindow_Normal_Path = L"../Resource/Fbx/House/07_Tileable_Glass_Window_Normal.png";
+	CreateTextureFromFile(house_GlassWindow_Normal_Path, true, "T_House_GlassWindow_Normal", 26);
 }
 
-ITexture* TextureManager::CreateTexture(const wchar_t* fileName, bool isNormalMap, unsigned long long textureTag)
+ITexture* TextureManager::CreateTextureFromFile(const wchar_t* fileName, bool isNormalMap, const char* textureKey, unsigned int keySize)
 {
 	ITexture* pNewTexture = Renderer::GetFactory()->CreateTextureFromFile(fileName, isNormalMap);
-	textureTable_.Insert(pNewTexture, &textureTag, 8);
-
+	textureTable_.Insert(pNewTexture, textureKey, keySize);
 	return pNewTexture;
 }
 
-bool TextureManager::GetTexture(ITexture** ppOutTexture, unsigned long long textureTag)
+ITexture* TextureManager::CreateTexture(const TextureDesc& desc, const char* textureKey, unsigned int keySize)
+{
+	ITexture* pWhiteTexture = Renderer::GetFactory()->CreateTexture(desc);
+	textureTable_.Insert(pWhiteTexture, textureKey, keySize);
+	return pWhiteTexture;
+}
+
+bool TextureManager::GetTexture(ITexture** ppOutTexture, const char* textureKey, unsigned int keySize)
 {
 	unsigned int searchedCount = 0;
 	void* pTmpTexture = nullptr;
-
-	if (false == textureTable_.Search((void**)&pTmpTexture, &searchedCount, 8, &textureTag, 8))
+	if (false == textureTable_.Search((void**)&pTmpTexture, &searchedCount, 8, textureKey, keySize))
 	{
 		Assert("Texture Search is Fail!!");
 		return false;

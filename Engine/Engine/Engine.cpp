@@ -132,9 +132,9 @@ void Engine::Run()
 	TimeManager::StartTimer();
 
 	IMesh* pBlitMesh = nullptr;
-	MeshManager::Instance()->GetMesh(&pBlitMesh, 0);
+	MeshManager::Instance()->GetMesh(&pBlitMesh, "MS_ScreenQuad", 13);
 	IMaterial* pBlitMaterial = nullptr;
-	MaterialManager::Instance()->GetMaterial(&pBlitMaterial, 3);
+	MaterialManager::Instance()->GetMaterial(&pBlitMaterial, "MT_BlitPass", 11);
 	PipelineStateDesc blitDesc;
 	blitDesc.depthState = E_DEPTH_PRESET::DEPTH_DISABLE;
 	blitDesc.rasterizerMode = E_RASTERIZER_PRESET::DISABLE;

@@ -17,8 +17,8 @@ Light::Light()
 		PipelineStateDesc psoDesc;
 		IMesh* pLightPSOMesh = nullptr;
 		IMaterial* pLightPSOMaterial = nullptr;
-		if (false == MeshManager::Instance()->GetMesh(&pLightPSOMesh, 0)) DEBUG_BREAK();
-		if (false == MaterialManager::Instance()->GetMaterial(&pLightPSOMaterial, 0)) DEBUG_BREAK();
+		if (false == MeshManager::Instance()->GetMesh(&pLightPSOMesh, "MS_ScreenQuad", 13)) DEBUG_BREAK();
+		if (false == MaterialManager::Instance()->GetMaterial(&pLightPSOMaterial, "MT_LightPass", 12)) DEBUG_BREAK();
 		psoDesc.meshSlotCount = 1;
 		psoDesc.materialSlotCount = 1;
 		psoDesc.depthState = E_DEPTH_PRESET::DEPTH_DISABLE;
@@ -37,8 +37,8 @@ Light::Light()
 		PipelineStateDesc psoDesc;
 		IMesh* pAmbientPSOMesh = nullptr;
 		IMaterial* pAmbientPSOMaterial = nullptr;
-		if (false == MeshManager::Instance()->GetMesh(&pAmbientPSOMesh, 0)) DEBUG_BREAK();
-		if (false == MaterialManager::Instance()->GetMaterial(&pAmbientPSOMaterial, 4)) DEBUG_BREAK();
+		if (false == MeshManager::Instance()->GetMesh(&pAmbientPSOMesh, "MS_ScreenQuad", 13)) DEBUG_BREAK();
+		if (false == MaterialManager::Instance()->GetMaterial(&pAmbientPSOMaterial, "MT_AmbientPass", 14)) DEBUG_BREAK();
 		psoDesc.meshSlotCount = 1;
 		psoDesc.materialSlotCount = 1;
 		psoDesc.depthState = E_DEPTH_PRESET::DEPTH_DISABLE;
@@ -79,8 +79,8 @@ void Light::BeginPlay()
 {
 	IMesh* pMesh;
 	IMaterial* pMaterial;
-	MeshManager::Instance()->GetMesh(&pMesh, 12);
-	MaterialManager::Instance()->GetMaterial(&pMaterial, 9);
+	MeshManager::Instance()->GetMesh(&pMesh, "MS_LightBulb", 12);
+	MaterialManager::Instance()->GetMaterial(&pMaterial, "MT_LightBulb", 12);
 	pStaticMesh_->InitPSO(1, 1, E_DEPTH_PRESET::DEPTH_ENABLE_WRITE, E_RASTERIZER_PRESET::SOLID);
 	pStaticMesh_->GetPSO()->SetMeshToSlot(0, pMesh);
 	pStaticMesh_->GetPSO()->SetMaterialToSlot(0, pMaterial);

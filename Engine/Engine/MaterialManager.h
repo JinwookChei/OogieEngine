@@ -13,9 +13,9 @@ public:
 
 	void TestLoad();
 
-	IMaterial* CreateMaterial(const MaterialDesc& desc, unsigned long long materialTag);
+	IMaterial* CreateMaterial(const MaterialDesc& desc, const char* materialKey, unsigned int keySize);
 
-	ENGINE_API bool GetMaterial(IMaterial** ppOutMaterial, unsigned long long materialTag);
+	ENGINE_API bool GetMaterial(IMaterial** ppOutMaterial, const char* materialKey, unsigned int keySize);
 
 private:
 	void CleanUp();

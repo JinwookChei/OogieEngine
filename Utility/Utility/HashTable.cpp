@@ -303,7 +303,6 @@ HashTableIterator HashTable::Delete(HashTableIterator& iter)
 unsigned int HashTable::CreateKey(const void* pKeyData, unsigned int keySize, unsigned int bucketCount)
 {
 	unsigned int keyData = 0;
-
 	//  3
 	// 0b00000011 0b00000001
 	//  7
@@ -316,21 +315,23 @@ unsigned int HashTable::CreateKey(const void* pKeyData, unsigned int keySize, un
 	// 0b00000001
 
 	const char* pEntry = (const char*)pKeyData;
-	if (keySize & 0x00000001) {
+	if (keySize & 0x00000001)
+	{
 		keyData += (unsigned int)(*(unsigned char*)pEntry);
 		++pEntry;
 		--keySize;
 	}
-	// 6
-	if (keySize & 0x00000002) {
+
+	if (keySize & 0x00000002) 
+	{
 		keyData += (unsigned int)(*(unsigned short*)pEntry);
 		pEntry += 2;
 		keySize -= 2;
 	}
 
 	keySize = keySize >> 2;
-
-	for (unsigned int n = 0; n < keySize; ++n) {
+	for (unsigned int n = 0; n < keySize; ++n) 
+	{
 		keyData += *(unsigned int*)pEntry;
 		pEntry += 4;
 	}

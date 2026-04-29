@@ -8,9 +8,7 @@ private:
 	static HMODULE GFbxImporterModule;
 	static IFBXImporter* GFbxImporter;
 	static bool LoadFBXImporter();
-	
 	static void TestLoad();
-
 public:
 	static bool LoadStaticModel(StaticModel* pOutModel, const std::string& file);
 	static bool LoadSkeletalModel(SkeletalModel* pOutModel, const std::string& file);

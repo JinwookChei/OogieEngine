@@ -3,7 +3,7 @@
 
 
 SkeletonManager::SkeletonManager()
-	: skeletonTable_(16, 8)
+	: skeletonTable_(32, 32)
 {
 }
 
@@ -23,20 +23,19 @@ void SkeletonManager::TestLoad()
 
 }
 
-Skeleton* SkeletonManager::CreateSkeleton(const std::vector<Bone>& bones, unsigned long long skeletonTag)
+Skeleton* SkeletonManager::CreateSkeleton(const std::vector<Bone>& bones, const char* skeletonKey, unsigned int keySize)
 {
 	Skeleton* pNewSkeleton = new Skeleton;
 	pNewSkeleton->bones_ = bones;
-	skeletonTable_.Insert(pNewSkeleton, &skeletonTag, 8);
+	skeletonTable_.Insert(pNewSkeleton, skeletonKey, keySize);
 	return pNewSkeleton;
 }
 
-bool SkeletonManager::GetSkeleton(Skeleton** ppOutSkeleton, unsigned long long skeletonTag)
+bool SkeletonManager::GetSkeleton(Skeleton** ppOutSkeleton, const char* skeletonKey, unsigned int keySize)
 {
 	unsigned int searchedCount = 0;
 	void* pTmpMesh = nullptr;
-
-	if (false == skeletonTable_.Search((void**)&pTmpMesh, &searchedCount, 8, &skeletonTag, 8))
+	if (false == skeletonTable_.Search((void**)&pTmpMesh, &searchedCount, 8, skeletonKey, keySize))
 	{
 		DEBUG_BREAK();
 		return false;

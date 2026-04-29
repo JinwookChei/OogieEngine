@@ -32,11 +32,10 @@ ParticleComponent::ParticleComponent()
 	particleDesc.pVertices = particleVertices.data();	
 	pParticle_ = Renderer::GetFactory()->CreateMesh(particleDesc);
 
-
-	IMaterial* pComputeMaterial = nullptr;
-	MaterialManager::Instance()->GetMaterial(&pComputeMaterial, 1);
-	IMaterial* pRenderMaterial = nullptr;
-	MaterialManager::Instance()->GetMaterial(&pRenderMaterial, 2);
+	IMaterial* pParticleComputeMaterial = nullptr;
+	MaterialManager::Instance()->GetMaterial(&pParticleComputeMaterial, "MT_Particle_Compute", 19);
+	IMaterial* pParticlePassMaterial = nullptr;
+	MaterialManager::Instance()->GetMaterial(&pParticlePassMaterial, "MT_ParticlePass", 15);
 
 	PipelineStateDesc psoDesc;
 	psoDesc.meshSlotCount = 1;
@@ -45,8 +44,8 @@ ParticleComponent::ParticleComponent()
 	psoDesc.rasterizerMode = E_RASTERIZER_PRESET::SOLID;
 	pPSO_ = Renderer::GetFactory()->CreatePipelineStateObject(psoDesc);
 	pPSO_->SetMeshToSlot(0, pParticle_);
-	pPSO_->SetMaterialToSlot(0, pComputeMaterial);
-	pPSO_->SetMaterialToSlot(1, pRenderMaterial);
+	pPSO_->SetMaterialToSlot(0, pParticleComputeMaterial);
+	pPSO_->SetMaterialToSlot(1, pParticlePassMaterial);
 }
 
 ParticleComponent::~ParticleComponent()

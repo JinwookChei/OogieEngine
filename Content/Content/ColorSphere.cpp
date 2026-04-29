@@ -15,8 +15,8 @@ void ColorSphere::BeginPlay()
 {
 	IMesh* pMesh;
 	IMaterial* pMaterial;
-	MeshManager::Instance()->GetMesh(&pMesh, 11);
-	MaterialManager::Instance()->GetMaterial(&pMaterial, 17);
+	MeshManager::Instance()->GetMesh(&pMesh, "MS_Sphere", 9);
+	MaterialManager::Instance()->GetMaterial(&pMaterial, "MT_StaticColor", 14);
 	pStaticMesh_->InitPSO(1, 1, E_DEPTH_PRESET::DEPTH_ENABLE_WRITE, E_RASTERIZER_PRESET::SOLID);
 	pStaticMesh_->GetPSO()->SetMeshToSlot(0, pMesh);
 	pStaticMesh_->GetPSO()->SetMaterialToSlot(0, pMaterial);

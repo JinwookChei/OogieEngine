@@ -3,7 +3,7 @@
 
 
 AnimationManager::AnimationManager()
-	: animationTable_(16, 8)
+	: animationTable_(32, 32)
 {
 }
 
@@ -19,40 +19,38 @@ AnimationManager* AnimationManager::Instance()
 
 void AnimationManager::TestLoad()
 {
-	Animation* Anim_Capoeira = CreateAnimation("../Resource/Fbx/Mixamo/Capoeira.FBX", true, 0);
-	Animation* Anim_Werewolf_idle1 = CreateAnimation("../Resource/Fbx/WereWolf/Animation/Anim_Werewolf_idle1.FBX", true, 1);
-	Animation* Anim_Werewolf_idle2 = CreateAnimation("../Resource/Fbx/WereWolf/Animation/Anim_Werewolf_idle2.FBX", true, 2);
-	Animation* Anim_Werewolf_walk = CreateAnimation("../Resource/Fbx/WereWolf/Animation/Anim_Werewolf_walk.FBX", true, 3);
-	Animation* Anim_Werewolf_attack1 = CreateAnimation("../Resource/Fbx/WereWolf/Animation/Anim_Werewolf_attack1.FBX", false, 4);
-	Animation* Anim_Werewolf_death1 = CreateAnimation("../Resource/Fbx/WereWolf/Animation/Anim_Werewolf_death1.FBX", false, 5);
-	Animation* Anim_Werewolf_gethit1 = CreateAnimation("../Resource/Fbx/WereWolf/Animation/Anim_Werewolf_gethit1.FBX", false, 6);
+	Animation* pAnim_Capoeira = CreateAnimation("../Resource/Fbx/Mixamo/Capoeira.FBX", true, "AM_Capoeira", 11);
+
+	Animation* pAnim_Werewolf_Idle1 = CreateAnimation("../Resource/Fbx/WereWolf/Animation/Anim_Werewolf_idle1.FBX", true, "AM_Werewolf_Idle1", 17);
+	Animation* pAnim_Werewolf_Idle2 = CreateAnimation("../Resource/Fbx/WereWolf/Animation/Anim_Werewolf_idle2.FBX", true, "AM_Werewolf_Idle2", 17);
+	Animation* pAnim_Werewolf_Walk = CreateAnimation("../Resource/Fbx/WereWolf/Animation/Anim_Werewolf_walk.FBX", true, "AM_Werewolf_Walk", 16);
+	Animation* pAnim_Werewolf_Attack1 = CreateAnimation("../Resource/Fbx/WereWolf/Animation/Anim_Werewolf_attack1.FBX", false, "AM_Werewolf_Attack", 18);
+	Animation* pAnim_Werewolf_Death1 = CreateAnimation("../Resource/Fbx/WereWolf/Animation/Anim_Werewolf_death1.FBX", false, "AM_Werewolf_Death", 17);
+	Animation* pAnim_Werewolf_Hit = CreateAnimation("../Resource/Fbx/WereWolf/Animation/Anim_Werewolf_gethit1.FBX", false, "AM_Werewolf_Hit", 15);
 }
 
-Animation* AnimationManager::CreateAnimation(const std::string& fileName, bool bLoop, unsigned long long animationTag)
+Animation* AnimationManager::CreateAnimation(const std::string& fileName, bool bLoop, const char* animationKey, unsigned int keySize)
 {
 	Animation* pNewAnimation = new Animation;
 	if (false == FBXManager::LoadAnimation(pNewAnimation, fileName))
 	{
 		DEBUG_BREAK();
 		delete pNewAnimation;
-		
 		return nullptr;
 	}
-	
+
 	pNewAnimation->animationClip_.bLoop = bLoop;
-	animationTable_.Insert(pNewAnimation, &animationTag, 8);
+	animationTable_.Insert(pNewAnimation, animationKey, keySize);
 	return pNewAnimation;
 }
 
-bool AnimationManager::GetAnimation(Animation** ppOutAnimation, unsigned long long animationTag)
+bool AnimationManager::GetAnimation(Animation** ppOutAnimation, const char* animationKey, unsigned int keySize)
 {
 	unsigned int searchedCount = 0;
 	Animation* pTmpAnimation = nullptr;
-
-	if (false == animationTable_.Search((void**)&pTmpAnimation, &searchedCount, 8, &animationTag, 8))
+	if (false == animationTable_.Search((void**)&pTmpAnimation, &searchedCount, 8, animationKey, keySize))
 	{
 		DEBUG_BREAK();
-		//Assert("Mesh Search is Fail!!");
 		return false;
 	}
 

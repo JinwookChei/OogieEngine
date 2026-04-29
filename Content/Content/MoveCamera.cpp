@@ -86,8 +86,8 @@ void MoveCamera::BeginPlay()
 {
 	IMesh* pMesh;
 	IMaterial* pMaterial;
-	MeshManager::Instance()->GetMesh(&pMesh, 11);
-	MaterialManager::Instance()->GetMaterial(&pMaterial, 10);
+	MeshManager::Instance()->GetMesh(&pMesh, "MS_Cube", 7);
+	MaterialManager::Instance()->GetMaterial(&pMaterial, "MT_LightBulb", 12);
 	pStaticMesh_->InitPSO(1, 1, E_DEPTH_PRESET::DEPTH_ENABLE_WRITE, E_RASTERIZER_PRESET::SOLID);
 	pStaticMesh_->GetPSO()->SetMeshToSlot(0, pMesh);
 	pStaticMesh_->GetPSO()->SetMaterialToSlot(0, pMaterial);

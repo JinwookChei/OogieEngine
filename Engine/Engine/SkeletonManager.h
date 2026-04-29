@@ -11,9 +11,9 @@ public:
 
 	void TestLoad();
 
-	Skeleton* CreateSkeleton(const std::vector<Bone>& bones, unsigned long long skeletonTag);
+	Skeleton* CreateSkeleton(const std::vector<Bone>& bones, const char* skeletonKey, unsigned int keySize);
 
-	ENGINE_API bool GetSkeleton(Skeleton** ppOutSkeleton, unsigned long long skeletonTag);
+	ENGINE_API bool GetSkeleton(Skeleton** ppOutSkeleton, const char* skeletonKey, unsigned int keySize);
 
 private:
 	void CleanUp();

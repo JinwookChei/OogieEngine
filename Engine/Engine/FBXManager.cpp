@@ -46,89 +46,75 @@ bool FBXManager::LoadFBXImporter()
 
 void FBXManager::TestLoad()
 {
-	//Model wukong;
-	//FBXManager::LoadModel(&wukong, "..\\Resource\\Fbx\\Wukong\\Wukong.FBX");
-	////FBXManager::LoadModel(&wukong, "..\\Resource\\Fbx\\Wukong\\Wukong_Fury.FBX");
-	//MeshDesc meshDesc_3;
-	//meshDesc_3.primitiveType = E_MESH_PRIMITIVE_TYPE::Triangle;
-	//meshDesc_3.resourceFlag = E_MESH_RESOURCE_FLAG::None;
-	//meshDesc_3.vertexFormatSize = sizeof(SkinnedMeshVertex);
-	//meshDesc_3.vertexCount = wukong.meshInfos[0].vertices.size();
-	//meshDesc_3.pVertices = wukong.meshInfos[0].vertices.data();
-	//meshDesc_3.meshSubsets.emplace_back(0, (uint16_t)sizeof(uint16_t), wukong.meshInfos[0].indices[0].size(), wukong.meshInfos[0].indices[0].data());
-	//MeshManager::Instance()->CreateMesh(meshDesc_3, 12);
-	//SkeletonManager::Instance()->CreateSkeleton(wukong.meshInfos[0].bones, 12);
-
 	StaticModel lightBulb;
 	FBXManager::LoadStaticModel(&lightBulb, "..\\Resource\\Fbx\\LightBulb\\SM_Lamp7.FBX");
-	MeshDesc meshDesc_3;
-	meshDesc_3.primitiveType = E_MESH_PRIMITIVE_TYPE::TRIANGLE;
-	meshDesc_3.vertexType = E_VERTEX_TYPE::STATIC_MESH;
-	meshDesc_3.usage = E_MESH_USAGE::DEFAULT;
-	meshDesc_3.bindFlag = E_MESH_BIND_FLAG::VERTEX_BUFFER;
-	meshDesc_3.bufferSize = sizeof(StaticMeshVertex) * lightBulb.meshInfos[0].vertices.size();
-	meshDesc_3.vertexFormatSize = sizeof(StaticMeshVertex);
-	meshDesc_3.vertexCount = lightBulb.meshInfos[0].vertices.size();
-	meshDesc_3.pVertices = lightBulb.meshInfos[0].vertices.data();
+	MeshDesc lightBulbMeshDesc;
+	lightBulbMeshDesc.primitiveType = E_MESH_PRIMITIVE_TYPE::TRIANGLE;
+	lightBulbMeshDesc.vertexType = E_VERTEX_TYPE::STATIC_MESH;
+	lightBulbMeshDesc.usage = E_MESH_USAGE::DEFAULT;
+	lightBulbMeshDesc.bindFlag = E_MESH_BIND_FLAG::VERTEX_BUFFER;
+	lightBulbMeshDesc.bufferSize = sizeof(StaticMeshVertex) * lightBulb.meshInfos[0].vertices.size();
+	lightBulbMeshDesc.vertexFormatSize = sizeof(StaticMeshVertex);
+	lightBulbMeshDesc.vertexCount = lightBulb.meshInfos[0].vertices.size();
+	lightBulbMeshDesc.pVertices = lightBulb.meshInfos[0].vertices.data();
 	for (int i = 0; i < lightBulb.meshInfos[0].indices.size(); ++i)
 	{
-		meshDesc_3.subMeshDesc.emplace_back(i, (uint32_t)lightBulb.meshInfos[0].indices[i].size(), lightBulb.meshInfos[0].indices[i].data());
+		lightBulbMeshDesc.subMeshDesc.emplace_back(i, (uint32_t)lightBulb.meshInfos[0].indices[i].size(), lightBulb.meshInfos[0].indices[i].data());
 	}
-	MeshManager::Instance()->CreateMesh(meshDesc_3, 12);
+	MeshManager::Instance()->CreateMesh(lightBulbMeshDesc, "MS_LightBulb", 12);
 
 	SkeletalModel capoeira;
 	FBXManager::LoadSkeletalModel(&capoeira, "..\\Resource\\Fbx\\Mixamo\\Capoeira.FBX");
-	MeshDesc meshDesc_4;
-	meshDesc_4.primitiveType = E_MESH_PRIMITIVE_TYPE::TRIANGLE;
-	meshDesc_4.vertexType = E_VERTEX_TYPE::SKINNED_MESH;
-	meshDesc_4.usage = E_MESH_USAGE::DEFAULT;
-	meshDesc_4.bindFlag = E_MESH_BIND_FLAG::VERTEX_BUFFER;
-	meshDesc_4.bufferSize = sizeof(SkinnedMeshVertex) * capoeira.meshInfos[0].vertices.size();
-	meshDesc_4.vertexFormatSize = sizeof(SkinnedMeshVertex);
-	meshDesc_4.vertexCount = capoeira.meshInfos[0].vertices.size();
-	meshDesc_4.pVertices = capoeira.meshInfos[0].vertices.data();
+	MeshDesc capoeiraMeshDesc;
+	capoeiraMeshDesc.primitiveType = E_MESH_PRIMITIVE_TYPE::TRIANGLE;
+	capoeiraMeshDesc.vertexType = E_VERTEX_TYPE::SKINNED_MESH;
+	capoeiraMeshDesc.usage = E_MESH_USAGE::DEFAULT;
+	capoeiraMeshDesc.bindFlag = E_MESH_BIND_FLAG::VERTEX_BUFFER;
+	capoeiraMeshDesc.bufferSize = sizeof(SkinnedMeshVertex) * capoeira.meshInfos[0].vertices.size();
+	capoeiraMeshDesc.vertexFormatSize = sizeof(SkinnedMeshVertex);
+	capoeiraMeshDesc.vertexCount = capoeira.meshInfos[0].vertices.size();
+	capoeiraMeshDesc.pVertices = capoeira.meshInfos[0].vertices.data();
 	for (int i = 0; i < capoeira.meshInfos[0].indices.size(); ++i)
 	{
-		meshDesc_4.subMeshDesc.emplace_back(i, (uint32_t)capoeira.meshInfos[0].indices[i].size(), capoeira.meshInfos[0].indices[i].data());
+		capoeiraMeshDesc.subMeshDesc.emplace_back(i, (uint32_t)capoeira.meshInfos[0].indices[i].size(), capoeira.meshInfos[0].indices[i].data());
 	}
-	MeshManager::Instance()->CreateMesh(meshDesc_4, 13);
-	SkeletonManager::Instance()->CreateSkeleton(capoeira.meshInfos[0].bones, 13);
+	MeshManager::Instance()->CreateMesh(capoeiraMeshDesc, "MS_Capoeira", 11);
+	SkeletonManager::Instance()->CreateSkeleton(capoeira.meshInfos[0].bones, "SK_Campeira", 11);
 
-	SkeletalModel wereWolf;
-	FBXManager::LoadSkeletalModel(&wereWolf, "..\\Resource\\Fbx\\WereWolf\\Model\\Werewolf_1.FBX");
-	MeshDesc meshDesc_5;
-	meshDesc_5.primitiveType = E_MESH_PRIMITIVE_TYPE::TRIANGLE;
-	meshDesc_5.vertexType = E_VERTEX_TYPE::SKINNED_MESH;
-	meshDesc_5.usage = E_MESH_USAGE::DEFAULT;
-	meshDesc_5.bindFlag = E_MESH_BIND_FLAG::VERTEX_BUFFER;
-	meshDesc_5.bufferSize = sizeof(SkinnedMeshVertex) * wereWolf.meshInfos[0].vertices.size();
-	meshDesc_5.vertexFormatSize = sizeof(SkinnedMeshVertex);
-	meshDesc_5.vertexCount = wereWolf.meshInfos[0].vertices.size();
-	meshDesc_5.pVertices = wereWolf.meshInfos[0].vertices.data();
-	for (int i = 0; i < wereWolf.meshInfos[0].indices.size(); ++i)
+	SkeletalModel werewolf;
+	FBXManager::LoadSkeletalModel(&werewolf, "..\\Resource\\Fbx\\WereWolf\\Model\\Werewolf_1.FBX");
+	MeshDesc werewolfMeshDesc;
+	werewolfMeshDesc.primitiveType = E_MESH_PRIMITIVE_TYPE::TRIANGLE;
+	werewolfMeshDesc.vertexType = E_VERTEX_TYPE::SKINNED_MESH;
+	werewolfMeshDesc.usage = E_MESH_USAGE::DEFAULT;
+	werewolfMeshDesc.bindFlag = E_MESH_BIND_FLAG::VERTEX_BUFFER;
+	werewolfMeshDesc.bufferSize = sizeof(SkinnedMeshVertex) * werewolf.meshInfos[0].vertices.size();
+	werewolfMeshDesc.vertexFormatSize = sizeof(SkinnedMeshVertex);
+	werewolfMeshDesc.vertexCount = werewolf.meshInfos[0].vertices.size();
+	werewolfMeshDesc.pVertices = werewolf.meshInfos[0].vertices.data();
+	for (int i = 0; i < werewolf.meshInfos[0].indices.size(); ++i)
 	{
-		meshDesc_5.subMeshDesc.emplace_back(i, (uint32_t)wereWolf.meshInfos[0].indices[i].size(), wereWolf.meshInfos[0].indices[i].data());
+		werewolfMeshDesc.subMeshDesc.emplace_back(i, (uint32_t)werewolf.meshInfos[0].indices[i].size(), werewolf.meshInfos[0].indices[i].data());
 	}
-	MeshManager::Instance()->CreateMesh(meshDesc_5, 14);
-	SkeletonManager::Instance()->CreateSkeleton(wereWolf.meshInfos[0].bones, 14);
+	MeshManager::Instance()->CreateMesh(werewolfMeshDesc, "MS_Werewolf", 11);
+	SkeletonManager::Instance()->CreateSkeleton(werewolf.meshInfos[0].bones, "SK_Werewolf", 11);
 
-
-	StaticModel House;
-	FBXManager::LoadStaticModel(&House, "..\\Resource\\Fbx\\House\\SM_House_Two.FBX");
-	MeshDesc houseDesc;
-	houseDesc.primitiveType = E_MESH_PRIMITIVE_TYPE::TRIANGLE;
-	houseDesc.vertexType = E_VERTEX_TYPE::STATIC_MESH;
-	houseDesc.usage = E_MESH_USAGE::DEFAULT;
-	houseDesc.bindFlag = E_MESH_BIND_FLAG::VERTEX_BUFFER;
-	houseDesc.bufferSize = sizeof(StaticMeshVertex) * House.meshInfos[0].vertices.size();
-	houseDesc.vertexFormatSize = sizeof(StaticMeshVertex);
-	houseDesc.vertexCount = House.meshInfos[0].vertices.size();
-	houseDesc.pVertices = House.meshInfos[0].vertices.data();
-	for (int i = 0; i < House.meshInfos[0].indices.size(); ++i)
+	StaticModel house;
+	FBXManager::LoadStaticModel(&house, "..\\Resource\\Fbx\\House\\SM_House_Two.FBX");
+	MeshDesc houseMeshDesc;
+	houseMeshDesc.primitiveType = E_MESH_PRIMITIVE_TYPE::TRIANGLE;
+	houseMeshDesc.vertexType = E_VERTEX_TYPE::STATIC_MESH;
+	houseMeshDesc.usage = E_MESH_USAGE::DEFAULT;
+	houseMeshDesc.bindFlag = E_MESH_BIND_FLAG::VERTEX_BUFFER;
+	houseMeshDesc.bufferSize = sizeof(StaticMeshVertex) * house.meshInfos[0].vertices.size();
+	houseMeshDesc.vertexFormatSize = sizeof(StaticMeshVertex);
+	houseMeshDesc.vertexCount = house.meshInfos[0].vertices.size();
+	houseMeshDesc.pVertices = house.meshInfos[0].vertices.data();
+	for (int i = 0; i < house.meshInfos[0].indices.size(); ++i)
 	{
-		houseDesc.subMeshDesc.emplace_back(i, (uint32_t)House.meshInfos[0].indices[i].size(), House.meshInfos[0].indices[i].data());
+		houseMeshDesc.subMeshDesc.emplace_back(i, (uint32_t)house.meshInfos[0].indices[i].size(), house.meshInfos[0].indices[i].data());
 	}
-	MeshManager::Instance()->CreateMesh(houseDesc, 15);
+	MeshManager::Instance()->CreateMesh(houseMeshDesc, "MS_House", 8);
 }
 
 bool FBXManager::LoadStaticModel(StaticModel* pOutModel, const std::string& file)

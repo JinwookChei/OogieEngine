@@ -16,11 +16,13 @@ public:
 
 	void AnimationTick(double deltaTime);
 
-	ENGINE_API bool ChangeAnimation(unsigned long long animTag);
+	//ENGINE_API bool ChangeAnimation(unsigned long long animTag);
+	ENGINE_API bool ChangeAnimation(const char* animationKey, unsigned int keySize);
 
-	ENGINE_API unsigned long long GetCurrentAnimationTag();
+	ENGINE_API const char* GetCurrentAnimationKey();
 
-	ENGINE_API bool SetSkeleton(unsigned long long skeletonTag);
+	//ENGINE_API bool SetSkeleton(unsigned long long skeletonTag);
+	ENGINE_API bool SetSkeleton(const char* skeletonKey, unsigned int keySize);
 
 
 private:
