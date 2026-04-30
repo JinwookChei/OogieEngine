@@ -50,7 +50,7 @@ void MaterialManager::TestLoad()
 	ITexture* pTerrain_Normal = nullptr;
 	if (false == TextureManager::Instance()->GetTexture(&pTerrain_Normal, "T_Terrain_Normal", 16)) DEBUG_BREAK();
 
-	// HouseTexture
+	// House Textures
 	ITexture* pHouse_Decals_Albedo = nullptr;
 	if (false == TextureManager::Instance()->GetTexture(&pHouse_Decals_Albedo, "T_House_Decals_Albedo", 21)) DEBUG_BREAK();
 	ITexture* pHouse_Decals_Normal = nullptr;
@@ -83,6 +83,24 @@ void MaterialManager::TestLoad()
 	if (false == TextureManager::Instance()->GetTexture(&pHouse_GlassWindow_Albedo, "T_House_GlassWindow_Albedo", 26)) DEBUG_BREAK();
 	ITexture* pHouse_GlassWindow_Normal = nullptr;
 	if (false == TextureManager::Instance()->GetTexture(&pHouse_GlassWindow_Normal, "T_House_GlassWindow_Albedo", 26)) DEBUG_BREAK();
+
+	// Tree Textures
+	ITexture* pTree_TrunkA_Albedo = nullptr;
+	if (false == TextureManager::Instance()->GetTexture(&pTree_TrunkA_Albedo, "T_Tree_TrunkA_Albedo", 20)) DEBUG_BREAK();
+	ITexture* pTree_TrunkA_Normal = nullptr;
+	if (false == TextureManager::Instance()->GetTexture(&pTree_TrunkA_Normal, "T_Tree_TrunkA_Normal", 20)) DEBUG_BREAK();
+	ITexture* pTree_TrunkB_Albedo = nullptr;
+	if (false == TextureManager::Instance()->GetTexture(&pTree_TrunkB_Albedo, "T_Tree_TrunkB_Albedo", 20)) DEBUG_BREAK();
+	ITexture* pTree_TrunkB_Normal = nullptr;
+	if (false == TextureManager::Instance()->GetTexture(&pTree_TrunkB_Normal, "T_Tree_TrunkB_Normal", 20)) DEBUG_BREAK();
+	ITexture* pTree_TwoSided_Albedo = nullptr;
+	if (false == TextureManager::Instance()->GetTexture(&pTree_TwoSided_Albedo, "T_Tree_TwoSided_Albedo", 22)) DEBUG_BREAK();
+	ITexture* pTree_TwoSided_Normal = nullptr;
+	if (false == TextureManager::Instance()->GetTexture(&pTree_TwoSided_Normal, "T_Tree_TwoSided_Normal", 22)) DEBUG_BREAK();
+	ITexture* pTree_Decoration_Albedo = nullptr;
+	if (false == TextureManager::Instance()->GetTexture(&pTree_Decoration_Albedo, "T_Tree_Decoration_Albedo", 24)) DEBUG_BREAK();
+	ITexture* pTree_Decoration_Normal = nullptr;
+	if (false == TextureManager::Instance()->GetTexture(&pTree_Decoration_Normal, "T_Tree_Decoration_Normal", 24)) DEBUG_BREAK();
 
 
 	MaterialDesc lightPassMaterialDesc;
@@ -307,6 +325,53 @@ void MaterialManager::TestLoad()
 	IMaterial* pHouseTransparentMat = CreateMaterial(houseTransparentMatDesc, "MT_House_Transparent", 20);
 	pHouseTransparentMat->SetTextures(0, pTransparentTexture);
 	pHouseTransparentMat->SetTextures(1, pDefaultNormalTexture);
+
+
+	// Tree
+	// い TrunkA
+	MaterialDesc treeTrunkAMatDesc;
+	treeTrunkAMatDesc.shaderType = E_SHADER_PRESET::STATIC_MESH;
+	treeTrunkAMatDesc.samplerState = E_SAMPLER_PRESET::LINEAR_WARP;
+	treeTrunkAMatDesc.blendState = E_BLEND_PRESET::OPAQUE_BLEND;
+	treeTrunkAMatDesc.textureNum = 2;
+	treeTrunkAMatDesc.shineness = 0.3f;
+	treeTrunkAMatDesc.specularColor = { 0.1f, 0.1f, 0.1f };
+	IMaterial* pTreeTrunkAMat = CreateMaterial(treeTrunkAMatDesc, "MT_Tree_TrunkA", 14);
+	pTreeTrunkAMat->SetTextures(0, pTree_TrunkA_Albedo);
+	pTreeTrunkAMat->SetTextures(1, pTree_TrunkA_Normal);
+	// い TrunkB
+	MaterialDesc treeTrunkBMatDesc;
+	treeTrunkBMatDesc.shaderType = E_SHADER_PRESET::STATIC_MESH;
+	treeTrunkBMatDesc.samplerState = E_SAMPLER_PRESET::LINEAR_WARP;
+	treeTrunkBMatDesc.blendState = E_BLEND_PRESET::OPAQUE_BLEND;
+	treeTrunkBMatDesc.textureNum = 2;
+	treeTrunkBMatDesc.shineness = 0.3f;
+	treeTrunkBMatDesc.specularColor = { 0.1f, 0.1f, 0.1f };
+	IMaterial* pTreeTrunkBMat = CreateMaterial(treeTrunkBMatDesc, "MT_Tree_TrunkB", 14);
+	pTreeTrunkBMat->SetTextures(0, pTree_TrunkB_Albedo);
+	pTreeTrunkBMat->SetTextures(1, pTree_TrunkB_Normal);
+	// い TwoSided
+	MaterialDesc treeTwoSidedMatDesc;
+	treeTwoSidedMatDesc.shaderType = E_SHADER_PRESET::STATIC_MESH;
+	treeTwoSidedMatDesc.samplerState = E_SAMPLER_PRESET::LINEAR_CLAMP;
+	treeTwoSidedMatDesc.blendState = E_BLEND_PRESET::OPAQUE_BLEND;
+	treeTwoSidedMatDesc.textureNum = 2;
+	treeTwoSidedMatDesc.shineness = 0.4f;
+	treeTwoSidedMatDesc.specularColor = { 1.0f, 1.0f, 1.0f };
+	IMaterial* pTreeTwoSidedMat = CreateMaterial(treeTwoSidedMatDesc, "MT_Tree_TwoSided", 16);
+	pTreeTwoSidedMat->SetTextures(0, pTree_TwoSided_Albedo);
+	pTreeTwoSidedMat->SetTextures(1, pTree_TwoSided_Normal);
+	// い Decoration
+	MaterialDesc treeDecorationMatDesc;
+	treeDecorationMatDesc.shaderType = E_SHADER_PRESET::STATIC_MESH;
+	treeDecorationMatDesc.samplerState = E_SAMPLER_PRESET::LINEAR_CLAMP;
+	treeDecorationMatDesc.blendState = E_BLEND_PRESET::OPAQUE_BLEND;
+	treeDecorationMatDesc.textureNum = 2;
+	treeDecorationMatDesc.shineness = 0.3f;
+	treeDecorationMatDesc.specularColor = { 0.1f, 0.1f, 0.1f };
+	IMaterial* pTreeDecorationMat = CreateMaterial(treeDecorationMatDesc, "MT_Tree_Decoration", 18);
+	pTreeDecorationMat->SetTextures(0, pTree_Decoration_Albedo);
+	pTreeDecorationMat->SetTextures(1, pTree_Decoration_Normal);
 }
 
 IMaterial* MaterialManager::CreateMaterial(const MaterialDesc& desc, const char* materialKey, unsigned int keySize)

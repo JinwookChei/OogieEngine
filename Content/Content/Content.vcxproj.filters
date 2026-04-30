@@ -105,6 +105,9 @@
     <ClCompile Include="House.cpp">
       <Filter>Source Files\Game\Actors\Static</Filter>
     </ClCompile>
+    <ClCompile Include="Tree.cpp">
+      <Filter>Source Files\Game\Actors\Static</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -213,6 +216,9 @@
       <Filter>Source Files\Game\Actors\Static</Filter>
     </ClInclude>
     <ClInclude Include="House.h">
+      <Filter>Source Files\Game\Actors\Static</Filter>
+    </ClInclude>
+    <ClInclude Include="Tree.h">
       <Filter>Source Files\Game\Actors\Static</Filter>
     </ClInclude>
   </ItemGroup>

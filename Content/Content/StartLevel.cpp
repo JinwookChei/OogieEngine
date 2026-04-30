@@ -10,6 +10,7 @@
 #include "ColorSphere.h"
 #include "ColorCube.h"
 #include "House.h"
+#include "Tree.h"
 
 StartLevel::StartLevel()
 {
@@ -31,6 +32,10 @@ void StartLevel::BeginPlay()
 	pWereWolf->GetWorldTransform().SetPosition({ -3.0f, 0.0f, 0.0f, 1.0f });
 	pWereWolf->GetWorldTransform().SetScale({ 1.0f, 1.0f, 1.0f, 0.0f });
 
+	Tree* pTree = SpawnActor<Tree>(E_ACTOR_TYPE::NORMAL);
+	pTree->GetWorldTransform().SetScale({ 0.8f, 0.8f, 0.8f, 0.0f });
+	pTree->GetWorldTransform().SetRotation({ 0.0f, 0.0f, 0.0f, 0.0f });
+	pTree->GetWorldTransform().SetPosition({ 0.1f, -8.0f, 0.0f, 1.0f });
 	House* pHouse = SpawnActor<House>(E_ACTOR_TYPE::NORMAL);
 	pHouse->GetWorldTransform().SetScale({ 1.0f, 1.0f, 1.0f, 0.0f });
 	pHouse->GetWorldTransform().SetRotation({ 0.0f, 0.0f, 89.99f, 0.0f });

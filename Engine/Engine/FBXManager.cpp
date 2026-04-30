@@ -115,6 +115,23 @@ void FBXManager::TestLoad()
 		houseMeshDesc.subMeshDesc.emplace_back(i, (uint32_t)house.meshInfos[0].indices[i].size(), house.meshInfos[0].indices[i].data());
 	}
 	MeshManager::Instance()->CreateMesh(houseMeshDesc, "MS_House", 8);
+
+	StaticModel tree;
+	FBXManager::LoadStaticModel(&tree, "..\\Resource\\Fbx\\Tree\\SM_BlackAlder.FBX");
+	MeshDesc treeMeshDesc;
+	treeMeshDesc.primitiveType = E_MESH_PRIMITIVE_TYPE::TRIANGLE;
+	treeMeshDesc.vertexType = E_VERTEX_TYPE::STATIC_MESH;
+	treeMeshDesc.usage = E_MESH_USAGE::DEFAULT;
+	treeMeshDesc.bindFlag = E_MESH_BIND_FLAG::VERTEX_BUFFER;
+	treeMeshDesc.bufferSize = sizeof(StaticMeshVertex) * tree.meshInfos[0].vertices.size();
+	treeMeshDesc.vertexFormatSize = sizeof(StaticMeshVertex);
+	treeMeshDesc.vertexCount = tree.meshInfos[0].vertices.size();
+	treeMeshDesc.pVertices = tree.meshInfos[0].vertices.data();
+	for (int i = 0; i < tree.meshInfos[0].indices.size(); ++i)
+	{
+		treeMeshDesc.subMeshDesc.emplace_back(i, (uint32_t)tree.meshInfos[0].indices[i].size(), tree.meshInfos[0].indices[i].data());
+	}
+	MeshManager::Instance()->CreateMesh(treeMeshDesc, "MS_Tree", 7);
 }
 
 bool FBXManager::LoadStaticModel(StaticModel* pOutModel, const std::string& file)

@@ -92,6 +92,24 @@ void TextureManager::TestLoad()
 	CreateTextureFromFile(house_GlassWindow_Albedo_Path, false, "T_House_GlassWindow_Albedo", 26);
 	const wchar_t* house_GlassWindow_Normal_Path = L"../Resource/Fbx/House/07_Tileable_Glass_Window_Normal.png";
 	CreateTextureFromFile(house_GlassWindow_Normal_Path, true, "T_House_GlassWindow_Normal", 26);
+
+	// Tree Texture
+	const wchar_t* tree_TrunkA_Albedo_Path = L"../Resource/Fbx/Tree/00_BlackAlder_Trunk_Albedo.png";
+	CreateTextureFromFile(tree_TrunkA_Albedo_Path, false, "T_Tree_TrunkA_Albedo", 20);
+	const wchar_t* tree_TrunkA_Normal_Path = L"../Resource/Fbx/Tree/00_BlackAlder_Trunk_Normal.png";
+	CreateTextureFromFile(tree_TrunkA_Normal_Path, true, "T_Tree_TrunkA_Normal", 20);
+	const wchar_t* tree_TrunkB_Albedo_Path = L"../Resource/Fbx/Tree/01_BlackAlder_Trunk_Albedo.png";
+	CreateTextureFromFile(tree_TrunkB_Albedo_Path, false, "T_Tree_TrunkB_Albedo", 20);
+	const wchar_t* tree_TrunkB_Normal_Path = L"../Resource/Fbx/Tree/01_BlackAlder_Trunk_Normal.png";
+	CreateTextureFromFile(tree_TrunkB_Normal_Path, true, "T_Tree_TrunkB_Normal", 20);
+	const wchar_t* tree_TwoSided_Albedo_Path = L"../Resource/Fbx/Tree/02_BlackAlder_TwoSided_Albedo_TT.png";
+	CreateTextureFromFile(tree_TwoSided_Albedo_Path, false, "T_Tree_TwoSided_Albedo", 22);
+	const wchar_t* tree_TwoSided_Normal_Path = L"../Resource/Fbx/Tree/02_BlackAlder_TwoSided_Normal.png";
+	CreateTextureFromFile(tree_TwoSided_Normal_Path, true, "T_Tree_TwoSided_Normal", 22);
+	const wchar_t* tree_Decoration_Albedo_Path = L"../Resource/Fbx/Tree/03_BlackAlder_Decoration_Albedo.png";
+	CreateTextureFromFile(tree_Decoration_Albedo_Path, false, "T_Tree_Decoration_Albedo", 24);
+	const wchar_t* tree_Decoration_Normal_Path = L"../Resource/Fbx/Tree/03_BlackAlder_Decoration_Normal.png";
+	CreateTextureFromFile(tree_Decoration_Normal_Path, true, "T_Tree_Decoration_Normal", 24);
 }
 
 ITexture* TextureManager::CreateTextureFromFile(const wchar_t* fileName, bool isNormalMap, const char* textureKey, unsigned int keySize)
