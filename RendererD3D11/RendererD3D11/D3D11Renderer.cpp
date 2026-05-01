@@ -182,7 +182,7 @@ void __stdcall Renderer::UpdateObjectFrame(const ObjectFrameData& objectFrameDat
 {
 	CBPerObject cbPerObject;
 	MATH::MatrixTranspose(cbPerObject.worldMatrix, objectFrameData.worldMatrix);
-	
+
 	Float4x4 invWorld;
 	MATH::MatrixInverse(invWorld, objectFrameData.worldMatrix);
 	cbPerObject.normalMatrix = invWorld;

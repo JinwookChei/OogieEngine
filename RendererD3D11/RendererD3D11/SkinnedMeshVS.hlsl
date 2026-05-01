@@ -69,6 +69,7 @@ PS_INPUT main(VS_INPUT input)
     // World (scale 없음 가정)
     N = normalize(mul(N, (float3x3) NormalMatrix));
     T = normalize(mul(T, (float3x3) NormalMatrix));
+    T = normalize(T - N * dot(N, T));
     float3 B = normalize(cross(N, T)) * input.tangent.w;
    
     output.normal = N;

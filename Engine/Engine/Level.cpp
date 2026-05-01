@@ -85,7 +85,7 @@ void Level::OnRender()
 		// Geometry Pass End
 
 		// Ambient Pass
-		pCurCamera->RenderPassBegin(E_RENDER_PASS_TYPE::LightPass);
+		pCurCamera->RenderPassBegin(E_RENDER_PASS_TYPE::AmbientPass);
 		OnRenderAmbient(pCurCamera->GetGBufferTarget());
 		Renderer::Instance()->UnBindSRVs(true, true);
 		pCurCamera->RenderPassEnd();
@@ -133,6 +133,11 @@ void Level::OnRenderActors()
 {
 	for (int i = 0; i < (int)E_ACTOR_TYPE::MAX; ++i)
 	{
+		if (i == (int)E_ACTOR_TYPE::LIGHT && RunTimeMode::GetCurrentMode() == E_RUNTIME_MODE::GAME)
+		{
+			continue;
+		}
+
 		LINK_NODE* pActorIter = actorList_[i].GetHead();
 		while (pActorIter)
 		{

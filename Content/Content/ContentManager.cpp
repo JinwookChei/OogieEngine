@@ -37,7 +37,7 @@ ULONG __stdcall ContentManager::Release()
 bool __stdcall ContentManager::Start()
 {
 	// ""여기서 리소스 로드""
-	GetEngine()->GetWorld()->ChangeLevel<StartLevel>();
+	GetEngine()->GetWorld()->ChangeLevel<PortfolioLevel>();
 	return true;
 }
 

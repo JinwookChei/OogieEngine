@@ -24,15 +24,21 @@ void TextureManager::TestLoad()
 	whiteTexDesc.size_ = { 1.0f, 1.0f };
 	CreateTexture(whiteTexDesc, "T_White", 7);
 
-	TextureDesc defaultNormalTexDesc;
-	defaultNormalTexDesc.colorData_ = 0x8080FFFF;
-	defaultNormalTexDesc.size_ = { 1.0f, 1.0f };
-	CreateTexture(defaultNormalTexDesc, "T_DefaultNormal", 15);
-	
+	TextureDesc RedTexDesc;
+	RedTexDesc.colorData_ = 0xFF0000FF;
+	RedTexDesc.size_ = { 1.0f, 1.0f };
+	CreateTexture(RedTexDesc, "T_Red", 5);
+
 	TextureDesc transparentTexDesc;
 	transparentTexDesc.colorData_ = 0x00000000;
 	transparentTexDesc.size_ = { 1.0f, 1.0f };
 	CreateTexture(transparentTexDesc, "T_Transparent", 13);
+
+	TextureDesc defaultNormalTexDesc;
+	defaultNormalTexDesc.colorData_ = 0x8080FFFF;
+	defaultNormalTexDesc.size_ = { 1.0f, 1.0f };
+	CreateTexture(defaultNormalTexDesc, "T_DefaultNormal", 15);
+
 
 	const wchar_t* bricks_Albedo_Path = L"../Resource/Texture/Bricks_4K/Bricks_Color.png";
 	CreateTextureFromFile(bricks_Albedo_Path, false, "T_Bricks_Albedo", 15);

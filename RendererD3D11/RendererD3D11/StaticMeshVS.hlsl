@@ -45,15 +45,16 @@ PS_INPUT main(VS_INPUT input)
 {
     PS_INPUT output = (PS_INPUT) 0;
     
-    float4 worldPosition = mul(float4(input.position, 1.0f), WorldMatrix); 
-    float4 viewPosition = mul(worldPosition, View); 
+    float4 worldPosition = mul(float4(input.position, 1.0f), WorldMatrix);
+    float4 viewPosition = mul(worldPosition, View);
     output.svPos = mul(viewPosition, Projection);
     output.color = input.color;
     
     float3 N = normalize(mul(input.normal, (float3x3) NormalMatrix));
     float3 T = normalize(mul(input.tangent.xyz, (float3x3) NormalMatrix));
+    T = normalize(T - N * dot(N, T));
     float3 B = normalize(cross(N, T)) * input.tangent.w;
-    
+   
     output.normal = N;
     output.worldPos = worldPosition.xyz;
     output.uv = input.uv;

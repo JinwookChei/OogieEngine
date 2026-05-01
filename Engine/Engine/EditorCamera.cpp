@@ -4,7 +4,7 @@
 
 EditorCamera::EditorCamera()
 {
-	cameraSpeed_ = 4.0f;
+	cameraSpeed_ = 8.0f;
 }
 
 EditorCamera::~EditorCamera()
@@ -67,6 +67,33 @@ void EditorCamera::Tick(double deltaTime)
 	if (InputManager::IsPress('E'))
 	{
 		pTransform_->AddRotaionZ(50 * deltaTime);
+	}
+
+	if (InputManager::IsPress('K'))
+	{
+		
+	// 1. 시간 기반 회전각 업데이트
+		yaw += rotationSpeed * deltaTime;
+
+		// 2. 라디안 변환
+		float radYaw = MATH::ConvertDegToRad(yaw);
+		float radPitch = MATH::ConvertDegToRad(pitch);
+
+		// 3. 왼손 좌표계 (X-Front, Y-Right, Z-Up) 맞춤형 위치 계산
+		// cos(Pitch)는 바닥 평면으로 투영된 길이를 의미합니다.
+		float horizontalDistance = radius * cosf(radPitch);
+
+		// X가 앞(Front), Y가 오른쪽(Right)이므로
+		// Yaw가 0일 때 (cos=1, sin=0) 정면인 X축에 위치하게 됩니다.
+		float posX = targetPos.X + horizontalDistance * cosf(radYaw);
+		float posY = targetPos.Y + horizontalDistance * sinf(radYaw);
+		float posZ = targetPos.Z + radius * sinf(radPitch);
+
+		// 4. 회전 값 설정 (필요 시)
+		// 이 좌표계에서 카메라가 원점을 바라보게 하려면 
+		// Yaw에 180도를 더해 반대 방향을 보게 조정합니다.
+		GetWorldTransform().SetPosition({ posX , posY, posZ, 1.0f});
+		GetWorldTransform().SetRotation({ 0.0f , pitch, yaw + 180.0f, 0.0f });
 	}
 }
 

@@ -524,6 +524,9 @@ bool FBXImporter::ExtractNormal(Float3* pOutNormal, fbxsdk::FbxMesh* pMesh, int 
 
 bool FBXImporter::ExtractTangent(Float4* pOutTangent, bool* pOutExistTangent, fbxsdk::FbxMesh* pMesh, int cpIndex, int polygonVertexIndex)
 {
+	*pOutExistTangent = false;
+	return true;
+
 	fbxsdk::FbxGeometryElementTangent* element = pMesh->GetElementTangent();
 	if (nullptr == element)
 	{

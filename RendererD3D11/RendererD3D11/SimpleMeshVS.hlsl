@@ -49,6 +49,7 @@ PS_INPUT main(VS_INPUT input)
     
     float3 N = normalize(mul(input.normal, (float3x3) NormalMatrix));
     float3 T = normalize(mul(input.tangent.xyz, (float3x3) NormalMatrix));
+    T = normalize(T - N * dot(N, T));
     float3 B = normalize(cross(N, T)) * input.tangent.w;
     
     output.normal = N;

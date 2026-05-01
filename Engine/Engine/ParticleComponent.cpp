@@ -2,17 +2,17 @@
 #include "ParticleComponent.h"
 
 ParticleComponent::ParticleComponent()
-	: particleNum_(1000)
+	: particleNum_(2000)
 	, accTime_(0.0)
 	, particleType_(0)
 	, startSize_(0.5f)
 	, endSize_(0.1f)
-	, startColor_({ 0.1f, 0.6f, 1.0f, 1.0f })
-	, endColor_({ 0.1f, 0.1f, 1.0f, 0.0f })
+	, startColor_({ 1.0f, 0.1f, 0.1f, 1.0f })
+	, endColor_({ 1.0f, 0.1f, 0.1f, 0.0f })
 	, pPSO_(nullptr)
 	, pParticle_(nullptr)
 {
-	std::vector<Particle> particleVertices(1000);
+	std::vector<Particle> particleVertices(2000);
 	for (Particle& particle : particleVertices)
 	{
 		particle.position = { 0.0f,0.0f, 0.0f };

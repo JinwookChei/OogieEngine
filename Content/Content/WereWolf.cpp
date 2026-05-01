@@ -71,6 +71,7 @@ void WereWolf::BeginPlay()
 	pSkeletalMeshComponent_->GetPSO()->SetMaterialToSlot(0, pBodyMaterial);
 	pSkeletalMeshComponent_->GetPSO()->SetMaterialToSlot(1, pFurMaterial);
 	pSkeletalMeshComponent_->SetSkeleton("SK_Werewolf", 11);
+	//pSkeletalMeshComponent_->ChangeAnimation("AM_Werewolf_Attack", 18);
 	pSkeletalMeshComponent_->ChangeAnimation("AM_Werewolf_Idle1", 17);
 
 	pTransform_->SetScale({ 1.0f, 1.0f, 1.0f, 0.0f });
