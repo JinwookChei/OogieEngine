@@ -43,9 +43,9 @@ float3 DecodingNormal(float3 normal)
 PS_OUTPUT main(PS_INPUT input)
 {
     PS_OUTPUT output = (PS_OUTPUT) 0;
-    float3 worldNormal = normalize(mul(input.normal, input.TBN));
+    
     output.rt0 = input.color;
-    output.rt1 = float4(worldNormal, 1.0f);
+    output.rt1 = float4(input.normal, 1.0f);
     output.rt2 = float4(MaterialSpecular, MaterialShineness);
     output.rt3 = float4(input.worldPos, 1.0f);
     return output;

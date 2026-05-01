@@ -152,7 +152,7 @@ float4 main(PS_ScreenRect input) : SV_TARGET
         float3 R = reflect(-lightVec, N);
         float shineness = specular.w * 64.0f;
         float specularFactor = pow(max(dot(R, toEye), 0.0f), shineness);
-        float specularColor = specularFactor * LightSpecular.rgb * specular.rgb;
+        float3 specularColor = specularFactor * LightDiffuse.rgb * specular.rgb;
         
         // Att
         float3 attCoeffs = float3(AttenuationConst, AttenuationLinear, AttenuationQuad);

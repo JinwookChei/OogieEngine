@@ -24,7 +24,7 @@ void AnimationManager::TestLoad()
 	Animation* pAnim_Werewolf_Idle1 = CreateAnimation("../Resource/Fbx/WereWolf/Animation/Anim_Werewolf_idle1.FBX", true, "AM_Werewolf_Idle1", 17);
 	Animation* pAnim_Werewolf_Idle2 = CreateAnimation("../Resource/Fbx/WereWolf/Animation/Anim_Werewolf_idle2.FBX", true, "AM_Werewolf_Idle2", 17);
 	Animation* pAnim_Werewolf_Walk = CreateAnimation("../Resource/Fbx/WereWolf/Animation/Anim_Werewolf_walk.FBX", true, "AM_Werewolf_Walk", 16);
-	Animation* pAnim_Werewolf_Attack1 = CreateAnimation("../Resource/Fbx/WereWolf/Animation/Anim_Werewolf_attack1.FBX", true, "AM_Werewolf_Attack", 18);
+	Animation* pAnim_Werewolf_Attack1 = CreateAnimation("../Resource/Fbx/WereWolf/Animation/Anim_Werewolf_attack1.FBX", false, "AM_Werewolf_Attack", 18);
 	Animation* pAnim_Werewolf_Death1 = CreateAnimation("../Resource/Fbx/WereWolf/Animation/Anim_Werewolf_death1.FBX", false, "AM_Werewolf_Death", 17);
 	Animation* pAnim_Werewolf_Hit = CreateAnimation("../Resource/Fbx/WereWolf/Animation/Anim_Werewolf_gethit1.FBX", false, "AM_Werewolf_Hit", 15);
 }

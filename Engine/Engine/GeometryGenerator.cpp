@@ -25,8 +25,9 @@ bool GeometryGenerator::CreateSphere(std::vector<StaticMeshVertex>* outVertices,
 
 			Float3 pos = Float3(x * radius, y * radius, z * radius);
 			Float3 normal = Float3(x, y, z);
-			//Float4 color = Float4(0.5f + 0.5f * x, 0.5f + 0.5f * y, 0.5f + 0.5f * z, 1.0f);
-			Float4 color = Float4(1.0f, 0.0f, 0.0f, 1.0f);
+			//Float4 color = Float4(0.5f + 0.5f * x, 0.5f + 0.5f * y, 0.5f + 0.5f * z, 1.0f); // Rainbow
+			//Float4 color = Float4(1.0f, 0.0f, 0.0f, 1.0f); // RED
+			Float4 color = Float4(1.0f, 1.0f, 1.0f, 1.0f); // WHITE
 
 			float u = (float)slice / SPHERE_SLICES;
 			float v = (float)stack / SPHERE_STACKS;
@@ -178,40 +179,40 @@ bool GeometryGenerator::CreateCube(std::vector<StaticMeshVertex>* outVertices, s
 
 
 	// FRONT (+X) - Normal: (1, 0, 0), Tangent: (0, 1, 0)
-	outVertices->push_back(StaticMeshVertex(Float3(+h, -h, -h), Float4(1, 0, 0, 1), Float3(1, 0, 0), Float2(0, 0), Float4(0, 1, 0, 1)));
-	outVertices->push_back(StaticMeshVertex(Float3(+h, +h, -h), Float4(1, 0, 0, 1), Float3(1, 0, 0), Float2(1, 0), Float4(0, 1, 0, 1)));
-	outVertices->push_back(StaticMeshVertex(Float3(+h, +h, +h), Float4(1, 0, 0, 1), Float3(1, 0, 0), Float2(1, 1), Float4(0, 1, 0, 1)));
-	outVertices->push_back(StaticMeshVertex(Float3(+h, -h, +h), Float4(1, 0, 0, 1), Float3(1, 0, 0), Float2(0, 1), Float4(0, 1, 0, 1)));
+	outVertices->push_back(StaticMeshVertex(Float3(+h, -h, -h), Float4(1, 1, 1, 1), Float3(1, 0, 0), Float2(0, 0), Float4(0, 1, 0, 1)));
+	outVertices->push_back(StaticMeshVertex(Float3(+h, +h, -h), Float4(1, 1, 1, 1), Float3(1, 0, 0), Float2(1, 0), Float4(0, 1, 0, 1)));
+	outVertices->push_back(StaticMeshVertex(Float3(+h, +h, +h), Float4(1, 1, 1, 1), Float3(1, 0, 0), Float2(1, 1), Float4(0, 1, 0, 1)));
+	outVertices->push_back(StaticMeshVertex(Float3(+h, -h, +h), Float4(1, 1, 1, 1), Float3(1, 0, 0), Float2(0, 1), Float4(0, 1, 0, 1)));
 
 	// BACK (-X) - Normal: (-1, 0, 0), Tangent: (0, -1, 0)
-	outVertices->push_back(StaticMeshVertex(Float3(-h, +h, -h), Float4(1, 0, 0, 1), Float3(-1, 0, 0), Float2(0, 0), Float4(0, -1, 0, 1)));
-	outVertices->push_back(StaticMeshVertex(Float3(-h, -h, -h), Float4(1, 0, 0, 1), Float3(-1, 0, 0), Float2(1, 0), Float4(0, -1, 0, 1)));
-	outVertices->push_back(StaticMeshVertex(Float3(-h, -h, +h), Float4(1, 0, 0, 1), Float3(-1, 0, 0), Float2(1, 1), Float4(0, -1, 0, 1)));
-	outVertices->push_back(StaticMeshVertex(Float3(-h, +h, +h), Float4(1, 0, 0, 1), Float3(-1, 0, 0), Float2(0, 1), Float4(0, -1, 0, 1)));
+	outVertices->push_back(StaticMeshVertex(Float3(-h, +h, -h), Float4(1, 1, 1, 1), Float3(-1, 0, 0), Float2(0, 0), Float4(0, -1, 0, 1)));
+	outVertices->push_back(StaticMeshVertex(Float3(-h, -h, -h), Float4(1, 1, 1, 1), Float3(-1, 0, 0), Float2(1, 0), Float4(0, -1, 0, 1)));
+	outVertices->push_back(StaticMeshVertex(Float3(-h, -h, +h), Float4(1, 1, 1, 1), Float3(-1, 0, 0), Float2(1, 1), Float4(0, -1, 0, 1)));
+	outVertices->push_back(StaticMeshVertex(Float3(-h, +h, +h), Float4(1, 1, 1, 1), Float3(-1, 0, 0), Float2(0, 1), Float4(0, -1, 0, 1)));
 
 	// RIGHT (+Y) - Normal: (0, 1, 0), Tangent: (-1, 0, 0)
-	outVertices->push_back(StaticMeshVertex(Float3(+h, +h, -h), Float4(1, 0, 0, 1), Float3(0, 1, 0), Float2(0, 0), Float4(-1, 0, 0, 1)));
-	outVertices->push_back(StaticMeshVertex(Float3(-h, +h, -h), Float4(1, 0, 0, 1), Float3(0, 1, 0), Float2(1, 0), Float4(-1, 0, 0, 1)));
-	outVertices->push_back(StaticMeshVertex(Float3(-h, +h, +h), Float4(1, 0, 0, 1), Float3(0, 1, 0), Float2(1, 1), Float4(-1, 0, 0, 1)));
-	outVertices->push_back(StaticMeshVertex(Float3(+h, +h, +h), Float4(1, 0, 0, 1), Float3(0, 1, 0), Float2(0, 1), Float4(-1, 0, 0, 1)));
+	outVertices->push_back(StaticMeshVertex(Float3(+h, +h, -h), Float4(1, 1, 1, 1), Float3(0, 1, 0), Float2(0, 0), Float4(-1, 0, 0, 1)));
+	outVertices->push_back(StaticMeshVertex(Float3(-h, +h, -h), Float4(1, 1, 1, 1), Float3(0, 1, 0), Float2(1, 0), Float4(-1, 0, 0, 1)));
+	outVertices->push_back(StaticMeshVertex(Float3(-h, +h, +h), Float4(1, 1, 1, 1), Float3(0, 1, 0), Float2(1, 1), Float4(-1, 0, 0, 1)));
+	outVertices->push_back(StaticMeshVertex(Float3(+h, +h, +h), Float4(1, 1, 1, 1), Float3(0, 1, 0), Float2(0, 1), Float4(-1, 0, 0, 1)));
 
 	// LEFT (-Y) - Normal: (0, -1, 0), Tangent: (1, 0, 0)
-	outVertices->push_back(StaticMeshVertex(Float3(-h, -h, -h), Float4(1, 0, 0, 1), Float3(0, -1, 0), Float2(0, 0), Float4(1, 0, 0, 1)));
-	outVertices->push_back(StaticMeshVertex(Float3(+h, -h, -h), Float4(1, 0, 0, 1), Float3(0, -1, 0), Float2(1, 0), Float4(1, 0, 0, 1)));
-	outVertices->push_back(StaticMeshVertex(Float3(+h, -h, +h), Float4(1, 0, 0, 1), Float3(0, -1, 0), Float2(1, 1), Float4(1, 0, 0, 1)));
-	outVertices->push_back(StaticMeshVertex(Float3(-h, -h, +h), Float4(1, 0, 0, 1), Float3(0, -1, 0), Float2(0, 1), Float4(1, 0, 0, 1)));
+	outVertices->push_back(StaticMeshVertex(Float3(-h, -h, -h), Float4(1, 1, 1, 1), Float3(0, -1, 0), Float2(0, 0), Float4(1, 0, 0, 1)));
+	outVertices->push_back(StaticMeshVertex(Float3(+h, -h, -h), Float4(1, 1, 1, 1), Float3(0, -1, 0), Float2(1, 0), Float4(1, 0, 0, 1)));
+	outVertices->push_back(StaticMeshVertex(Float3(+h, -h, +h), Float4(1, 1, 1, 1), Float3(0, -1, 0), Float2(1, 1), Float4(1, 0, 0, 1)));
+	outVertices->push_back(StaticMeshVertex(Float3(-h, -h, +h), Float4(1, 1, 1, 1), Float3(0, -1, 0), Float2(0, 1), Float4(1, 0, 0, 1)));
 
 	// UP (+Z) - Normal: (0, 0, 1), Tangent: (0, 1, 0)
-	outVertices->push_back(StaticMeshVertex(Float3(+h, -h, +h), Float4(1, 0, 0, 1), Float3(0, 0, 1), Float2(0, 0), Float4(0, 1, 0, 1)));
-	outVertices->push_back(StaticMeshVertex(Float3(+h, +h, +h), Float4(1, 0, 0, 1), Float3(0, 0, 1), Float2(1, 0), Float4(0, 1, 0, 1)));
-	outVertices->push_back(StaticMeshVertex(Float3(-h, +h, +h), Float4(1, 0, 0, 1), Float3(0, 0, 1), Float2(1, 1), Float4(0, 1, 0, 1)));
-	outVertices->push_back(StaticMeshVertex(Float3(-h, -h, +h), Float4(1, 0, 0, 1), Float3(0, 0, 1), Float2(0, 1), Float4(0, 1, 0, 1)));
+	outVertices->push_back(StaticMeshVertex(Float3(+h, -h, +h), Float4(1, 1, 1, 1), Float3(0, 0, 1), Float2(0, 0), Float4(0, 1, 0, 1)));
+	outVertices->push_back(StaticMeshVertex(Float3(+h, +h, +h), Float4(1, 1, 1, 1), Float3(0, 0, 1), Float2(1, 0), Float4(0, 1, 0, 1)));
+	outVertices->push_back(StaticMeshVertex(Float3(-h, +h, +h), Float4(1, 1, 1, 1), Float3(0, 0, 1), Float2(1, 1), Float4(0, 1, 0, 1)));
+	outVertices->push_back(StaticMeshVertex(Float3(-h, -h, +h), Float4(1, 1, 1, 1), Float3(0, 0, 1), Float2(0, 1), Float4(0, 1, 0, 1)));
 
 	// DOWN (-Z) - Normal: (0, 0, -1), Tangent: (0, -1, 0)
-	outVertices->push_back(StaticMeshVertex(Float3(-h, -h, -h), Float4(1, 0, 0, 1), Float3(0, 0, -1), Float2(0, 0), Float4(0, 1, 0, 1)));
-	outVertices->push_back(StaticMeshVertex(Float3(-h, +h, -h), Float4(1, 0, 0, 1), Float3(0, 0, -1), Float2(1, 0), Float4(0, 1, 0, 1)));
-	outVertices->push_back(StaticMeshVertex(Float3(+h, +h, -h), Float4(1, 0, 0, 1), Float3(0, 0, -1), Float2(1, 1), Float4(0, 1, 0, 1)));
-	outVertices->push_back(StaticMeshVertex(Float3(+h, -h, -h), Float4(1, 0, 0, 1), Float3(0, 0, -1), Float2(0, 1), Float4(0, 1, 0, 1)));
+	outVertices->push_back(StaticMeshVertex(Float3(-h, -h, -h), Float4(1, 1, 1, 1), Float3(0, 0, -1), Float2(0, 0), Float4(0, 1, 0, 1)));
+	outVertices->push_back(StaticMeshVertex(Float3(-h, +h, -h), Float4(1, 1, 1, 1), Float3(0, 0, -1), Float2(1, 0), Float4(0, 1, 0, 1)));
+	outVertices->push_back(StaticMeshVertex(Float3(+h, +h, -h), Float4(1, 1, 1, 1), Float3(0, 0, -1), Float2(1, 1), Float4(0, 1, 0, 1)));
+	outVertices->push_back(StaticMeshVertex(Float3(+h, -h, -h), Float4(1, 1, 1, 1), Float3(0, 0, -1), Float2(0, 1), Float4(0, 1, 0, 1)));
 
 
 	for (uint32_t face = 0; face < 6; ++face)

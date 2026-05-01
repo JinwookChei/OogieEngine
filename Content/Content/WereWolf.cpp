@@ -55,6 +55,11 @@ void WereWolf::Tick(double deltaTime)
 		{
 			pSkeletalMeshComponent_->ChangeAnimation("AM_Werewolf_Attack", 18);
 		}
+
+		if (InputManager::IsDown('V'))
+		{
+			pSkeletalMeshComponent_->ChangeAnimation("AM_Werewolf_Death", 17);
+		}
 	}
 }
 
