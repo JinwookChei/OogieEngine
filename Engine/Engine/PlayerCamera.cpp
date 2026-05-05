@@ -23,9 +23,9 @@ void PlayerCamera::BeginPlay()
 	Camera::BeginPlay();
 }
 
-void PlayerCamera::Render()
+void PlayerCamera::Render(bool isFirst)
 {
-	Camera::Render();
+	Camera::Render(isFirst);
 }
 
 bool PlayerCamera::BindComponent(CameraComponent* pComponent)

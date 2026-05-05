@@ -10,7 +10,7 @@ public:
 
 	void BeginPlay() override;
 
-	void Render() override;
+	void Render(bool isFirst) override;
 
 	void ParticleRender() override;
 

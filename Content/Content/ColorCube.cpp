@@ -31,9 +31,9 @@ void ColorCube::Tick(double deltaTime)
 	Actor::Tick(deltaTime);
 }
 
-void ColorCube::Render()
+void ColorCube::Render(bool isFirst)
 {
-	Actor::Render();
+	Actor::Render(isFirst);
 }
 
 void ColorCube::CleanUp()

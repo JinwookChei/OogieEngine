@@ -22,9 +22,9 @@ void SceneComponent::Tick(double deltaTime)
 	ActorComponent::Tick(deltaTime);
 }
 
-void SceneComponent::Render()
+void SceneComponent::Render(bool isFirst)
 {
-	ActorComponent::Render();
+	ActorComponent::Render(isFirst);
 }
 
 Transform& SceneComponent::GetComponentTransform() const

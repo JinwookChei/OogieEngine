@@ -19,9 +19,9 @@ void Player::BeginPlay()
 {
 }
 
-void Player::Render()
+void Player::Render(bool isFirst)
 {
-	Actor::Render();
+	Actor::Render(isFirst);
 }
 
 void Player::CleanUp()

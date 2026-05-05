@@ -20,7 +20,7 @@ void ActorComponent::Tick(double deltaTime)
 {
 }
 
-void ActorComponent::Render()
+void ActorComponent::Render(bool isFirst)
 {
 }
 

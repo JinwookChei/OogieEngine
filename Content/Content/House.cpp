@@ -56,9 +56,9 @@ void House::Tick(double deltaTime)
 	Actor::Tick(deltaTime);
 }
 
-void House::Render()
+void House::Render(bool isFirst)
 {
-	Actor::Render();
+	Actor::Render(isFirst);
 }
 
 void House::CleanUp()

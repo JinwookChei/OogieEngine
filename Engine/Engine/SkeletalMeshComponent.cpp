@@ -26,9 +26,18 @@ void SkeletalMeshComponent::Tick(double deltaTime)
 	AnimationTick(deltaTime);
 }
 
-void SkeletalMeshComponent::Render()
+void SkeletalMeshComponent::Render(bool isFirst)
 {
-	MeshComponent::Render();
+	MeshComponent::Render(isFirst);
+
+	if (isFirst)
+	{
+		pPSO_->SetDepthState(E_DEPTH_PRESET::DEPTH_ENABLE_WRITE);
+	}
+	else
+	{
+		pPSO_->SetDepthState(E_DEPTH_PRESET::DEPTH_ENABLE_READ_ONLY);
+	}
 
 	// 임시. StructBuffer로 바꿔야 함.
 	AnimConstantBuffer cb;
@@ -42,7 +51,7 @@ void SkeletalMeshComponent::Render()
 	MATH::MatrixMultiply(objectFrameData.worldMatrix, GetComponentTransform().GetMatrix(), GetOwner()->GetWorldTransform().GetMatrix());
 	objectFrameData.scale = GetWorldScale();
 	Renderer::Instance()->UpdateObjectFrame(objectFrameData);
-	Renderer::Instance()->Render(pPSO_);
+	Renderer::Instance()->Render(pPSO_, isFirst);
 }
 
 void SkeletalMeshComponent::AnimationTick(double deltaTime)

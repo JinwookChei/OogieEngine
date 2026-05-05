@@ -97,9 +97,9 @@ void MoveCamera::BeginPlay()
 	pTransform_->SetPosition({ -10.0f, 0.0f, 0.0f, 1.0f });
 }
 
-void MoveCamera::Render()
+void MoveCamera::Render(bool isFirst)
 {
-	Camera::Render();
+	Camera::Render(isFirst);
 }
 
 void MoveCamera::CleanUp()

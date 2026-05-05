@@ -26,14 +26,14 @@ public:
 
 	void __stdcall UpdateCameraFrame(const CameraFrameData& cameraFrameData) override;
 	void __stdcall UpdateObjectFrame(const ObjectFrameData& objectFrameData) override;
-	void __stdcall UpdateLightFrame(const LightRenderData& lightFrameData) override;
+	void __stdcall UpdateLightFrame(const LightRenderData& lightFrameData, bool isFirstLight) override;
 	void __stdcall UpdateComputeParticleFrame(const ComputeParticleData& computeParticleData) override;
 	void __stdcall UpdateRenderParticleFrame(const RenderParticleData& renderParticleData) override;
 	void __stdcall UpdateAnimationFrame(const AnimConstantBuffer& animFrameData) override;
 	void __stdcall UpdateMaterialFrame(const Float3& specularColor, float shineness);
 
 	void __stdcall RenderBegin() override;
-	void __stdcall Render(IPSO* pipelineStateObject) override;
+	void __stdcall Render(IPSO* pipelineStateObject, bool isFirst) override;
 	void __stdcall RenderParticle_Test(IPSO* pipelineStateObject) override;
 	void __stdcall Compute(IPSO* pipelineStateObject, UINT threadGroupCountX, UINT threadGroupCountY, UINT threadGroupCountZ) override;
 

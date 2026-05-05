@@ -54,9 +54,9 @@ void MovementComponent::Tick(double deltaTime)
 	}
 }
 
-void MovementComponent::Render()
+void MovementComponent::Render(bool isFirst)
 {
-	ActorComponent::Render();
+	ActorComponent::Render(isFirst);
 }
 
 void MovementComponent::CleanUp()

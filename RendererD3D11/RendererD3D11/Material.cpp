@@ -218,7 +218,7 @@ void Material::Bind()
 	}
 	}
 
-	switch (blendState_)
+	/*switch (blendState_)
 	{
 	case E_BLEND_PRESET::OPAQUE_BLEND:
 	{
@@ -243,7 +243,7 @@ void Material::Bind()
 	{
 		break;
 	}
-	}
+	}*/
 
 	ID3D11ShaderResourceView* pSRVs[16]; 
 	for (int i = 0; i < texturesNum_; ++i) 

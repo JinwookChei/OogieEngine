@@ -21,9 +21,9 @@ void MeshComponent::Tick(double deltaTime)
 	SceneComponent::Tick(deltaTime);
 }
 
-void MeshComponent::Render()
+void MeshComponent::Render(bool isFirst)
 {
-	SceneComponent::Render();
+	SceneComponent::Render(isFirst);
 }
 
 void MeshComponent::InitPSO

@@ -12,7 +12,8 @@ Camera::Camera()
 	, screenOffset_({ 0.0f, 0.0f })
 	, screenScale_({ 1.0f, 1.0f })
 	, pCurrentRenderTarget_(nullptr)
-	, pGBufferRenderTarget_(nullptr)
+	//, pGBufferRenderTarget_(nullptr)
+	, pForwardRenderTarget_(nullptr)
 	, pFinalRenderTarget_(nullptr)
 {
 	MATH::MatrixIdentity(view_);
@@ -39,9 +40,9 @@ void Camera::BeginPlay()
 	pTransform_->SetPosition({ -10.0f, 0.0f, 0.0f, 1.0f });
 }
 
-void Camera::Render()
+void Camera::Render(bool isFirst)
 {
-	Actor::Render();
+	Actor::Render(isFirst);
 }
 
 const Float4x4& Camera::View() const
@@ -57,18 +58,18 @@ const Float4x4& Camera::Projection() const
 void Camera::SetSize(const Float2& size)
 {
 	// 주의!! SetSize하는데 렌더 타겟이 없으면 크래쉬 발생유도.
-	if (nullptr == pGBufferRenderTarget_)
+	if (nullptr == pForwardRenderTarget_)
 	{
 		Assert("pGBufferTarget_ == NULL!");
 		return;
 	}
 
-	RenderTargetDesc desc = pGBufferRenderTarget_->GetDesc();
-	pGBufferRenderTarget_->Release();
-	pGBufferRenderTarget_ = nullptr;
+	RenderTargetDesc desc = pForwardRenderTarget_->GetDesc();
+	pForwardRenderTarget_->Release();
+	pForwardRenderTarget_ = nullptr;
 
 	desc.size_ = size;
-	pGBufferRenderTarget_ = Renderer::GetFactory()->CreateRenderTarget(desc);
+	pForwardRenderTarget_ = Renderer::GetFactory()->CreateRenderTarget(desc);
 }
 
 
@@ -96,7 +97,7 @@ float Camera::GetFar() const
 
 void Camera::SetClearColor(const Color& clearColor)
 {
-	pGBufferRenderTarget_->SetClearColor(clearColor);
+	pForwardRenderTarget_->SetClearColor(clearColor);
 }
 
 void Camera::SetScreenPlacement(const Float2& screenOffset, const Float2& screenScale)
@@ -107,12 +108,12 @@ void Camera::SetScreenPlacement(const Float2& screenOffset, const Float2& screen
 
 Float2 Camera::GetRenderSize() const
 {
-	return pGBufferRenderTarget_->GetSize();
+	return pForwardRenderTarget_->GetSize();
 }
 
 IRenderTarget* Camera::GetGBufferTarget() const
 {
-	return pGBufferRenderTarget_;
+	return pForwardRenderTarget_;
 }
 
 void Camera::UpdatePerFrameConstant()
@@ -124,7 +125,7 @@ void Camera::UpdatePerFrameConstant()
 	frameData.projection = projection_;
 	frameData.screenOffset = screenOffset_;
 	frameData.screenScale = screenScale_;
-	frameData.screenResolution = pGBufferRenderTarget_->GetSize();
+	frameData.screenResolution = pForwardRenderTarget_->GetSize();
 	frameData.camPos = pTransform_->GetPosition();
 
 	Renderer::Instance()->UpdateCameraFrame(frameData);
@@ -136,9 +137,9 @@ void Camera::RenderPassBegin(E_RENDER_PASS_TYPE renderPassType)
 	{
 	case E_RENDER_PASS_TYPE::GeometryPass:
 	{
-		pGBufferRenderTarget_->Clear();
-		pGBufferRenderTarget_->Bind();
-		pCurrentRenderTarget_ = pGBufferRenderTarget_;
+		pForwardRenderTarget_->Clear();
+		pForwardRenderTarget_->Bind();
+		pCurrentRenderTarget_ = pForwardRenderTarget_;
 		break;
 	}
 	case E_RENDER_PASS_TYPE::AmbientPass:
@@ -155,7 +156,7 @@ void Camera::RenderPassBegin(E_RENDER_PASS_TYPE renderPassType)
 	}
 	case E_RENDER_PASS_TYPE::ParticlePass:
 	{
-		ITexture* pDepthTexture = pGBufferRenderTarget_->GetRenderTexture(E_RENDER_TEXTURE_TYPE::Depth);
+		ITexture* pDepthTexture = pForwardRenderTarget_->GetRenderTexture(E_RENDER_TEXTURE_TYPE::Depth);
 		if (nullptr == pDepthTexture)
 		{
 			DEBUG_BREAK();
@@ -167,7 +168,7 @@ void Camera::RenderPassBegin(E_RENDER_PASS_TYPE renderPassType)
 	}
 	case E_RENDER_PASS_TYPE::DebugPass:
 	{
-		ITexture* pDepthTexture = pGBufferRenderTarget_->GetRenderTexture(E_RENDER_TEXTURE_TYPE::Depth);
+		ITexture* pDepthTexture = pForwardRenderTarget_->GetRenderTexture(E_RENDER_TEXTURE_TYPE::Depth);
 		if (nullptr == pDepthTexture)
 		{
 			DEBUG_BREAK();
@@ -195,11 +196,20 @@ void Camera::RenderPassEnd()
 
 bool Camera::InitGBufferRenderTarget()
 {
-	RenderTargetDesc gBufferDesc(E_RENDER_TECHNIQUE_TYPE::Deferred);
+	//RenderTargetDesc gBufferDesc(E_RENDER_TECHNIQUE_TYPE::Deferred);
+	//gBufferDesc.size_ = { DEFAULT_SCREEN_WIDTH , DEFAULT_SCREEN_HEIGHT };
+	//gBufferDesc.clearColor_ = { 0.0f, 0.0f, 0.0f, 0.0f };
+	//pGBufferRenderTarget_ = Renderer::GetFactory()->CreateRenderTarget(gBufferDesc);
+	//if (nullptr == pGBufferRenderTarget_)
+	//{
+	//	return false;
+	//}
+
+	RenderTargetDesc gBufferDesc(E_RENDER_TECHNIQUE_TYPE::Forward);
 	gBufferDesc.size_ = { DEFAULT_SCREEN_WIDTH , DEFAULT_SCREEN_HEIGHT };
 	gBufferDesc.clearColor_ = { 0.0f, 0.0f, 0.0f, 0.0f };
-	pGBufferRenderTarget_ = Renderer::GetFactory()->CreateRenderTarget(gBufferDesc);
-	if (nullptr == pGBufferRenderTarget_)
+	pForwardRenderTarget_ = Renderer::GetFactory()->CreateRenderTarget(gBufferDesc);
+	if (nullptr == pForwardRenderTarget_)
 	{
 		return false;
 	}
@@ -243,10 +253,10 @@ void Camera::CleanUp()
 		pFinalRenderTarget_ = nullptr;
 	}
 
-	if (nullptr != pGBufferRenderTarget_)
+	if (nullptr != pForwardRenderTarget_)
 	{
-		pGBufferRenderTarget_->Release();
-		pGBufferRenderTarget_ = nullptr;
+		pForwardRenderTarget_->Release();
+		pForwardRenderTarget_ = nullptr;
 	}
 }
 
@@ -262,7 +272,7 @@ const Float4x4& __stdcall Camera::GetProjectionMatrix() const
 
 IRenderTarget* __stdcall Camera::GetGBufferRenderTargetForEditor() const
 {
-	return pGBufferRenderTarget_;
+	return pForwardRenderTarget_;
 }
 
 ENGINE_API IRenderTarget* __stdcall Camera::GetFinalRenderTargetForEditor() const

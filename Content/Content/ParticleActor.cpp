@@ -20,9 +20,9 @@ void ParticleActor::BeginPlay()
 {
 }
 
-void ParticleActor::Render()
+void ParticleActor::Render(bool isFirst)
 {
-	Actor::Render();
+	Actor::Render(isFirst);
 }
 
 void ParticleActor::ParticleRender()

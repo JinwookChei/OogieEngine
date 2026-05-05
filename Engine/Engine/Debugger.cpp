@@ -65,7 +65,7 @@ void Debugger::Draw()
 		return;
 	}
 
-	Renderer::Instance()->Render(GDebugger->pDebugLinePSO_);
+	Renderer::Instance()->Render(GDebugger->pDebugLinePSO_, true);
 }
 
 void Debugger::DrawDebugLine(const Float3& start, const Float3& end, const Float4& color)

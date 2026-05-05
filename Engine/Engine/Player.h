@@ -9,7 +9,7 @@ public:
 
 	ENGINE_API void Tick(double deltaTime) override;
 	ENGINE_API void BeginPlay() override;
-	ENGINE_API void Render() override;
+	ENGINE_API void Render(bool isFirst) override;
 private:
 	ENGINE_API void CleanUp() override;
 };

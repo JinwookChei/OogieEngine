@@ -193,7 +193,7 @@ void __stdcall Renderer::UpdateObjectFrame(const ObjectFrameData& objectFrameDat
 	ConstantBuffer::GConstantPerObject->BindConstantBufferPS(1);
 }
 
-void __stdcall Renderer::UpdateLightFrame(const LightRenderData& lightFrameData)
+void __stdcall Renderer::UpdateLightFrame(const LightRenderData& lightFrameData, bool isFirstLight)
 {
 	CBPerLight cbPerLight;
 	cbPerLight.lightDiffuse = lightFrameData.lightDiffuse;
@@ -210,11 +210,11 @@ void __stdcall Renderer::UpdateLightFrame(const LightRenderData& lightFrameData)
 	cbPerLight.attenuationQuad_S_P = lightFrameData.attenuationQuad_S_P;
 	cbPerLight.lightType = lightFrameData.lightType;
 	cbPerLight.lightIntensity = lightFrameData.lightIntensity;
-	cbPerLight.pad = lightFrameData.pad;
+	cbPerLight.isFirstLight = isFirstLight;
 
 	ConstantBuffer::GConstantPerLight->Update(&cbPerLight);
-	ConstantBuffer::GConstantPerLight->BindConstantBufferVS(1);
-	ConstantBuffer::GConstantPerLight->BindConstantBufferPS(1);
+	//ConstantBuffer::GConstantPerLight->BindConstantBufferVS(3);
+	ConstantBuffer::GConstantPerLight->BindConstantBufferPS(3);
 }
 
 void __stdcall Renderer::UpdateComputeParticleFrame(const ComputeParticleData& computeParticleData)
@@ -274,7 +274,7 @@ void __stdcall Renderer::RenderBegin()
 	pBackBuffer_->Bind();
 }
 
-void __stdcall Renderer::Render(IPSO* pipelineStateObject)
+void __stdcall Renderer::Render(IPSO* pipelineStateObject, bool isFirst)
 {
 	PipelineStateObject* pPSO = static_cast<PipelineStateObject*>(pipelineStateObject);
 	switch (pPSO->GetDepthState())
@@ -299,6 +299,15 @@ void __stdcall Renderer::Render(IPSO* pipelineStateObject)
 		DEBUG_BREAK();
 		break;
 	}
+	}
+
+	if (isFirst)
+	{
+		BlendState::GOpaqueBlend->Bind();
+	}
+	else
+	{
+		BlendState::GAdditiveBlend->Bind();
 	}
 
 	switch (pPSO->GetRasterizerMode())

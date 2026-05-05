@@ -221,7 +221,7 @@ void MaterialManager::TestLoad()
 	MaterialDesc staticColorDesc;
 	staticColorDesc.shaderType = E_SHADER_PRESET::STATIC_COLOR_MESH;
 	staticColorDesc.samplerState = E_SAMPLER_PRESET::ANISOTROPIC_WARP;
-	staticColorDesc.blendState = E_BLEND_PRESET::OPAQUE_BLEND;
+	staticColorDesc.blendState = E_BLEND_PRESET::ADDITIVE_BLEND;
 	staticColorDesc.textureNum = 0;
 	staticColorDesc.shineness = 0.5f;
 	staticColorDesc.specularColor = { 1.0f, 1.0f, 1.0f };

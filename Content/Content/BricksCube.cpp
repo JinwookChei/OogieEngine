@@ -31,9 +31,9 @@ void BricksCube::Tick(double deltaTime)
 	Actor::Tick(deltaTime);
 }
 
-void BricksCube::Render()
+void BricksCube::Render(bool isFirst)
 {
-	Actor::Render();
+	Actor::Render(isFirst);
 }
 
 void BricksCube::CleanUp()

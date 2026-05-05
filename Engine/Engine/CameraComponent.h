@@ -10,7 +10,7 @@ public:
 
 	void BeginPlay() override;
 	void Tick(double deltaTime) override;
-	void Render() override;
+	void Render(bool isFirst) override;
 
 private:
 	void CleanUp() override;

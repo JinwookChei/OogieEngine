@@ -15,7 +15,7 @@ public:
 
 	ENGINE_API virtual void BeginPlay() = 0;
 
-	ENGINE_API virtual void Render();
+	ENGINE_API virtual void Render(bool isFirst);
 
 	ENGINE_API virtual void ParticleRender();
 

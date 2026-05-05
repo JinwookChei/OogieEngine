@@ -38,9 +38,9 @@ void TestPlayer::BeginPlay()
 	pTransform_->SetPosition({ 0.0f, 0.0f, 0.0f, 1.0f });
 }
 
-void TestPlayer::Render()
+void TestPlayer::Render(bool isFirst)
 {
-	Player::Render();
+	Player::Render(isFirst);
 }
 
 void TestPlayer::CleanUp()

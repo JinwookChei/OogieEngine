@@ -42,9 +42,9 @@ void Tree::Tick(double deltaTime)
 	Actor::Tick(deltaTime);
 }
 
-void Tree::Render()
+void Tree::Render(bool isFirst)
 {
-	Actor::Render();
+	Actor::Render(isFirst);
 }
 
 void Tree::CleanUp()

@@ -21,6 +21,8 @@ public:
 
 	IMaterial* __stdcall GetMaterial(uint16_t slot) const override;
 	uint32_t __stdcall GetMaterialSlotCount() const override;
+	void __stdcall SetDepthState(E_DEPTH_PRESET depth) override;
+
 	void __stdcall SetMaterialToSlot(uint16_t slot, IMaterial* pMaterial);
 
 	const E_DEPTH_PRESET& GetDepthState() const;

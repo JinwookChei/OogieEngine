@@ -23,7 +23,7 @@ struct CBPerObject
 };
 
 struct CBPerLight
-{
+{	
 	Color lightDiffuse;
 	Color lightSpecular;
 	Color lightAmbient;
@@ -42,7 +42,7 @@ struct CBPerLight
 	// 2 -> PointLight
 	float lightType;
 	float lightIntensity;
-	float pad;
+	float isFirstLight;
 };
 
 struct CBPerComputeParticle

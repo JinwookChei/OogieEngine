@@ -31,9 +31,9 @@ void Floor::Tick(double deltaTime)
 	Actor::Tick(deltaTime);
 }
 
-void Floor::Render()
+void Floor::Render(bool isFirst)
 {
-	Actor::Render();
+	Actor::Render(isFirst);
 }
 
 void Floor::CleanUp()

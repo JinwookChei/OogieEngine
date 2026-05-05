@@ -87,9 +87,9 @@ void WereWolf::BeginPlay()
 	pCameraComponent_->GetComponentTransform().SetRotation({ 0.0f, 25.0f, 0.0f, 0.0f });
 }
 
-void WereWolf::Render()
+void WereWolf::Render(bool isFirst)
 {
-	Player::Render();
+	Player::Render(isFirst);
 }
 
 void WereWolf::CleanUp()

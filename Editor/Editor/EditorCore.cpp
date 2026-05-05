@@ -186,7 +186,7 @@ bool __stdcall EditorCore::BindCamera(IEditorBindCamera* pCamera)
 		return false;
 	}
 	GBoundCamera = pCamera;
-	GCurrentRenderResource = (ImTextureID*)GBoundCamera->GetFinalRenderTargetForEditor()->GetShaderResourceView(E_RENDER_TEXTURE_TYPE::Albedo);
+	GCurrentRenderResource = (ImTextureID*)GBoundCamera->GetGBufferRenderTargetForEditor()->GetShaderResourceView(E_RENDER_TEXTURE_TYPE::Albedo);
 	return true;
 }
 

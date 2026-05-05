@@ -9,7 +9,7 @@ public:
 
 	void BeginPlay() override;
 	void Tick(double deltaTime) override;
-	void Render() override;
+	void Render(bool isFirst) override;
 
 	ENGINE_API Transform& GetComponentTransform() const;
 

@@ -21,7 +21,7 @@ public:
 
 	ENGINE_API void Tick(double deltaTime) override;
 	ENGINE_API void BeginPlay() override;
-	ENGINE_API void Render() override;
+	ENGINE_API void Render(bool isFirst) override;
 
 	ENGINE_API void SetClearColor(const Color& clearColor);
 	ENGINE_API void SetScreenPlacement(const Float2& screenOffset, const Float2& screenScale);
@@ -73,6 +73,7 @@ protected:
 private:
 	friend class Level;
 	IRenderTarget* pCurrentRenderTarget_;
-	IRenderTarget* pGBufferRenderTarget_;
+	//IRenderTarget* pGBufferRenderTarget_;
+	IRenderTarget* pForwardRenderTarget_;
 	IRenderTarget* pFinalRenderTarget_;
 };

@@ -23,9 +23,9 @@ public:
 
 	void BeginPlay() override;
 
-	void Render() override;
+	void Render(bool isFirst) override;
 
-	void RenderLight();
+	void RenderLight(bool isFirstLight);
 
 	virtual LightRenderData GetData() = 0;
 

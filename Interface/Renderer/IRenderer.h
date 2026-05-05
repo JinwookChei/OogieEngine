@@ -72,7 +72,7 @@ struct IRenderer : public IUnknown {
 
 	virtual void __stdcall UpdateObjectFrame(const ObjectFrameData& objectFrameData) = 0;
 
-	virtual void __stdcall UpdateLightFrame(const LightRenderData& lightFrameData) = 0;
+	virtual void __stdcall UpdateLightFrame(const LightRenderData& lightFrameData, bool isFirstLight) = 0;
 
 	virtual void __stdcall UpdateComputeParticleFrame(const ComputeParticleData& computeParticleData) = 0;
 
@@ -82,7 +82,7 @@ struct IRenderer : public IUnknown {
 	
 	virtual void __stdcall RenderBegin() = 0;
 
-	virtual void __stdcall Render(IPSO* pipelineStateObject) = 0;
+	virtual void __stdcall Render(IPSO* pipelineStateObject, bool isFirst) = 0;
 
 	virtual void __stdcall RenderParticle_Test(IPSO* pipelineStateObject) = 0;
 

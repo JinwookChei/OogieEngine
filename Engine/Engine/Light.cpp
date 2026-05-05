@@ -86,15 +86,15 @@ void Light::BeginPlay()
 	pStaticMesh_->GetPSO()->SetMaterialToSlot(0, pMaterial);
 }
 
-void Light::Render()
+void Light::Render(bool isFirst)
 {
-	Actor::Render();
+	Actor::Render(isFirst);
 }
 
-void Light::RenderLight()
+void Light::RenderLight(bool isFirstLight)
 {
-	Renderer::Instance()->UpdateLightFrame(GetData());
-	Renderer::Instance()->Render(Light::GLightPSO);
+	Renderer::Instance()->UpdateLightFrame(GetData(), isFirstLight);
+	//Renderer::Instance()->Render(Light::GLightPSO);
 }
 
 const Color& Light::DiffuseColor() const

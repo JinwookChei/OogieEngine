@@ -41,9 +41,9 @@ void CameraComponent::Tick(double deltaTime)
 	pBindedCamera_->GetWorldTransform().SetPosition(position);
 }
 
-void CameraComponent::Render()
+void CameraComponent::Render(bool isFirst)
 {
-	SceneComponent::Render();
+	SceneComponent::Render(isFirst);
 }
 
 void CameraComponent::CleanUp()

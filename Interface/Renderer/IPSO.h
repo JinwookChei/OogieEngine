@@ -35,4 +35,6 @@ struct IPSO : IUnknown
 	virtual IMaterial* __stdcall GetMaterial(uint16_t slot) const = 0;
 	virtual uint32_t __stdcall GetMaterialSlotCount() const = 0;
 	virtual void __stdcall SetMaterialToSlot(uint16_t slot, IMaterial* pMaterial) = 0;
+
+	virtual void __stdcall SetDepthState(E_DEPTH_PRESET depth) = 0;
 };

@@ -112,9 +112,9 @@ void EditorCamera::BeginPlay()
 	pTransform_->SetPosition({ 0.0f, 0.0f, 0.0f, 1.0f });
 }
 
-void EditorCamera::Render()
+void EditorCamera::Render(bool isFirst)
 {
-	Camera::Render();
+	Camera::Render(isFirst);
 }
 
 void EditorCamera::CleanUp()

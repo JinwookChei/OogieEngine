@@ -12,7 +12,7 @@ public:
 
 	void Tick(double deltaTime) override;
 
-	void Render() override;
+	void Render(bool isFirst) override;
 
 	ENGINE_API void InitPSO
 	(

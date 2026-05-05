@@ -34,14 +34,14 @@ void Actor::Tick(double deltaTime)
 	}
 }
 
-void Actor::Render()
+void Actor::Render(bool isFirst)
 {
 	for (auto& pair : ownedComponents_)
 	{
 		ActorComponent* component = pair.second;
 		if (component && component->IsEnable())
 		{
-			component->Render();
+			component->Render(isFirst);
 		}
 	}
 }

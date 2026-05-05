@@ -84,6 +84,11 @@ uint32_t __stdcall PipelineStateObject::GetMaterialSlotCount() const
 	return materialSlotCount_;
 }
 
+void __stdcall PipelineStateObject::SetDepthState(E_DEPTH_PRESET depth)
+{
+	depthState_ = depth;
+}
+
 void __stdcall PipelineStateObject::SetMaterialToSlot(uint16_t slot, IMaterial* pMaterial)
 {
 	if (slot >= materialSlotCount_)

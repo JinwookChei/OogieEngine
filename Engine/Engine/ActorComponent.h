@@ -12,7 +12,7 @@ public:
 
 	virtual void Tick(double deltaTime);
 
-	virtual void Render();
+	virtual void Render(bool isFirst);
 
 	ENGINE_API Actor* GetOwner() const;
 

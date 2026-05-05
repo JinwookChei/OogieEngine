@@ -31,9 +31,9 @@ void TestActor::Tick(double deltaTime)
 	Actor::Tick(deltaTime);
 }
 
-void TestActor::Render()
+void TestActor::Render(bool isFirst)
 {
-	Actor::Render();
+	Actor::Render(isFirst);
 }
 
 void TestActor::CleanUp()

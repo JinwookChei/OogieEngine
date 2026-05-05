@@ -31,9 +31,9 @@ void Sphere::Tick(double deltaTime)
 	Actor::Tick(deltaTime);
 }
 
-void Sphere::Render()
+void Sphere::Render(bool isFirst)
 {
-	Actor::Render();
+	Actor::Render(isFirst);
 }
 
 void Sphere::CleanUp()

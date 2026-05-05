@@ -71,7 +71,7 @@ void ParticleComponent::Tick(double deltaTime)
 	Renderer::Instance()->Compute(pPSO_, groupCountX, 1, 1);
 }
 
-void ParticleComponent::Render()
+void ParticleComponent::Render(bool isFirst)
 {
 }
 

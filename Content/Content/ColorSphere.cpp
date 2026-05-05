@@ -31,9 +31,9 @@ void ColorSphere::Tick(double deltaTime)
 	Actor::Tick(deltaTime);
 }
 
-void ColorSphere::Render()
+void ColorSphere::Render(bool isFirst)
 {
-	Actor::Render();
+	Actor::Render(isFirst);
 }
 
 void ColorSphere::CleanUp()

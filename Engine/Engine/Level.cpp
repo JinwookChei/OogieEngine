@@ -77,31 +77,32 @@ void Level::OnRender()
 		// Update FrameConstant
 		pCurCamera->UpdatePerFrameConstant();
 
-		// Geometry Pass
+		// Forward Pass
 		pCurCamera->RenderPassBegin(E_RENDER_PASS_TYPE::GeometryPass);
 		OnRenderActors();
 		Renderer::Instance()->UnBindSRVs(true, true);
 		pCurCamera->RenderPassEnd();
-		// Geometry Pass End
+		// Forward Pass End
+
 
 		// Ambient Pass
-		pCurCamera->RenderPassBegin(E_RENDER_PASS_TYPE::AmbientPass);
-		OnRenderAmbient(pCurCamera->GetGBufferTarget());
-		Renderer::Instance()->UnBindSRVs(true, true);
-		pCurCamera->RenderPassEnd();
+		//pCurCamera->RenderPassBegin(E_RENDER_PASS_TYPE::AmbientPass);
+		//OnRenderAmbient(pCurCamera->GetGBufferTarget());
+		//Renderer::Instance()->UnBindSRVs(true, true);
+		//pCurCamera->RenderPassEnd();
 		// Ambient Pass End
 
 		// Light Pass
-		pCurCamera->RenderPassBegin(E_RENDER_PASS_TYPE::LightPass);
-		OnRenderLights(pCurCamera->GetGBufferTarget());
-		Renderer::Instance()->UnBindSRVs(true, true);
-		pCurCamera->RenderPassEnd();
+		//pCurCamera->RenderPassBegin(E_RENDER_PASS_TYPE::LightPass);
+		//OnRenderLights(pCurCamera->GetGBufferTarget());
+		//Renderer::Instance()->UnBindSRVs(true, true);
+		//pCurCamera->RenderPassEnd();
 		// Light Pass End
 
 		// Particle Pass
 		pCurCamera->RenderPassBegin(E_RENDER_PASS_TYPE::ParticlePass);
 		OnRenderParticles();
-		pCurCamera->RenderPassEnd();
+		//pCurCamera->RenderPassEnd();
 		// Particle Pass End
 
 		// Debug Pass
@@ -131,20 +132,33 @@ void Level::OnActorTick(double deltaTime)
 
 void Level::OnRenderActors()
 {
-	for (int i = 0; i < (int)E_ACTOR_TYPE::MAX; ++i)
+	// 라이트 별로
+	LINK_NODE* pLightIter = actorList_[(int)E_ACTOR_TYPE::LIGHT].GetHead();
+	bool isFirst = true;
+	while (pLightIter)
 	{
-		if (i == (int)E_ACTOR_TYPE::LIGHT && RunTimeMode::GetCurrentMode() == E_RUNTIME_MODE::GAME)
+		Light* pCurLight = static_cast<Light*>(pLightIter->pItem_);
+		pCurLight->RenderLight(isFirst);
+		pLightIter = pLightIter->next_;
+
+		// 오브젝트들 렌더링
+		for (int i = 0; i < (int)E_ACTOR_TYPE::MAX; ++i)
 		{
-			continue;
+			if (i == (int)E_ACTOR_TYPE::LIGHT && RunTimeMode::GetCurrentMode() == E_RUNTIME_MODE::GAME)
+			{
+				continue;
+			}
+
+			LINK_NODE* pActorIter = actorList_[i].GetHead();
+			while (pActorIter)
+			{
+				Actor* pActor = static_cast<Actor*>(pActorIter->pItem_);
+				pActor->Render(isFirst);
+				pActorIter = pActorIter->next_;
+			}
 		}
 
-		LINK_NODE* pActorIter = actorList_[i].GetHead();
-		while (pActorIter)
-		{
-			Actor* pActor = static_cast<Actor*>(pActorIter->pItem_);
-			pActor->Render();
-			pActorIter = pActorIter->next_;
-		}
+		isFirst = false;
 	}
 }
 
@@ -156,7 +170,7 @@ void Level::OnRenderAmbient(IRenderTarget* pGBufferTarget)
 		DEBUG_BREAK();
 	}
 	pLightMaterial->SetTextures(0, pGBufferTarget->GetRenderTexture(E_RENDER_TEXTURE_TYPE::Albedo));
-	Renderer::Instance()->Render(Light::GAmbientPSO);
+	Renderer::Instance()->Render(Light::GAmbientPSO, true);
 }
 
 void Level::OnRenderLights(IRenderTarget* pGBufferTarget)
@@ -175,7 +189,7 @@ void Level::OnRenderLights(IRenderTarget* pGBufferTarget)
 	while (pLightIter)
 	{
 		Light* pCurLight = static_cast<Light*>(pLightIter->pItem_);
-		pCurLight->RenderLight();
+		//pCurLight->RenderLight();
 		pLightIter = pLightIter->next_;
 	}
 }
@@ -200,9 +214,10 @@ void Level::OnRenderParticles()
 void Level::BlitCameraToBackBuffer()
 {
 	Camera* pPlayerCamera = CameraManager::GetCurrentCamera();
-	ITexture* pFianlRenderTex = pPlayerCamera->pFinalRenderTarget_->GetRenderTexture(E_RENDER_TEXTURE_TYPE::Albedo);
+	//ITexture* pFianlRenderTex = pPlayerCamera->pFinalRenderTarget_->GetRenderTexture(E_RENDER_TEXTURE_TYPE::Albedo);
+	ITexture* pFianlRenderTex = pPlayerCamera->pForwardRenderTarget_->GetRenderTexture(E_RENDER_TEXTURE_TYPE::Albedo);
 	GBlitPSO->GetMaterial(0)->SetTextures(0, pFianlRenderTex);
-	Renderer::Instance()->Render(GBlitPSO);
+	Renderer::Instance()->Render(GBlitPSO, true);
 }
 
 

@@ -13,7 +13,7 @@ public:
 
 	void BeginPlay() override;
 
-	void Render() override;
+	void Render(bool isFirst) override;
 private:
 	void CleanUp() override;
 
