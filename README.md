@@ -48,7 +48,7 @@
   <br/>
   3D 객체의 입체감과 재질(Material)의 특성을 사실적으로 렌더링하기 위해 Phong Lighting Model을 구현했습니다.<br>
   픽셀 셰이더(Pixel Shader) 내에서 환경광(Ambient), 난반사(Diffuse), 정반사(Specular) 요소를 각각 연산한 후 합성(Sum)하여 실시간 조명 효과를 표현하였습니다.
-</div>
+</div><br>
 
 <div align="left">
 <b>Ambient (환경광):</b> 빛이 직접 닿지 않는 표면에 기본적인 물체의 색상을 채워줍니다.<br>
@@ -58,17 +58,27 @@
 <br>
 <br>
 
+---
 
-<img src="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" width="35" alt="YouTube Icon"/>
-<h3>3-Types of Lighting</h3>
-<a href="https://youtu.be/rrb3zLuQAUc?si=fQz-VYsuA7Tkkxkr" target="_blank">
-  <!-- 유튜브 썸네일 이미지를 자동으로 가져오는 링크입니다 -->
-  <img src="./Preview/D_P_S_Light.png" alt="Oogie Engine Demo" width="700" />
-</a>
-<p><i>이미지를 클릭하시면 유튜브 데모 영상으로 이동합니다.</i></p>
+<div align="center">
+  <!-- 아이콘과 제목을 한 줄에 배치 (아이콘은 링크 없음) -->
+  <h3>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" width="30" alt="YouTube Icon" align="absmiddle"/>
+    3-Types of Lighting
+  </h3>
 
-씬(Scene)의 다채로운 시각적 연출을 위해 Phong Lighting Model 기반의 3가지 광원(Light) 모델을 구현했습니다. 
+  <!-- 메인 이미지에만 유튜브 링크 적용 -->
+  <a href="https://youtu.be/rrb3zLuQAUc?si=fQz-VYsuA7Tkkxkr" target="_blank">
+    <img src="./Preview/D_P_S_Light.png" alt="Phong Light" width="700" />
+  </a>
+  
+  <p><i>이미지를 클릭하시면 유튜브 데모 영상으로 이동합니다.</i></p>
+
+  <br/>
+  씬(Scene)의 다채로운 시각적 연출을 위해 Phong Lighting Model 기반의 3가지 광원(Light) 모델을 구현했습니다. <br>
 각 광원은 픽셀쉐이더(PixelShader)에서 빛의 방향, 위치, 그리고 거리에 따른 감쇠(Attenuation)를 개별적으로 연산하여 물리적으로 자연스러운 조명 효과를 생성합니다.
+</div><br>
+
 <br/><br/>
 <div align="left">
 <b>Directional Light (방향광):</b> 태양광처럼 매우 먼 곳에서 비추어 씬 전체에 평행하게 들어오는 빛입니다. 위치 정보 없이 <b>방향(Direction)</b>만 존재하며, 거리에 따른 빛의 감쇠가 발생하지 않아 야외 환경의 기본적인 조명으로 사용됩니다.<br><br>
@@ -78,16 +88,27 @@
 <br>
 <br>
 
-<img src="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" width="35" alt="YouTube Icon"/>
-<h3>Normal Mapping</h3>
-<a href="https://youtu.be/3sw58l2sdk8?si=QaNWqq_ZmF8KxqHV" target="_blank">
-  <!-- 유튜브 썸네일 이미지를 자동으로 가져오는 링크입니다 -->
-  <img src="./Preview/NormalMapping_Before_After.png" alt="Oogie Engine Demo" width="700" />
-</a>
-<p><i>이미지를 클릭하시면 유튜브 데모 영상으로 이동합니다.</i></p>
+---
 
-  저폴리곤(Low-Poly) 모델에서도 표면의 미세한 굴곡과 질감을 고해상도로 표현하기 위해 <b>Normal Mapping (법선 매핑)</b> 기법을 구현하였습니다. <br/>
+<div align="center">
+  <!-- 아이콘과 제목을 한 줄에 배치 (아이콘은 링크 없음) -->
+  <h3>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" width="30" alt="YouTube Icon" align="absmiddle"/>
+    Normal Mapping
+  </h3>
+
+  <!-- 메인 이미지에만 유튜브 링크 적용 -->
+  <a href="https://youtu.be/3sw58l2sdk8?si=qLpjFOIBcoYNm3FT" target="_blank">
+    <img src="./Preview/NormalMapping_Before_After.png" alt="Phong Light" width="700" />
+  </a>
+  
+  <p><i>이미지를 클릭하시면 유튜브 데모 영상으로 이동합니다.</i></p>
+
+  <br/>
+ 저폴리곤(Low-Poly) 모델에서도 표면의 미세한 굴곡과 질감을 고해상도로 표현하기 위해 <b>Normal Mapping (법선 매핑)</b> 기법을 구현하였습니다. <br/>
   실제 정점(Vertex)을 늘리지 않고 텍스처 데이터만으로 입체적인 조명 효과를 도출하여, 렌더링 퍼포먼스 최적화와 시각적 디테일을 동시에 확보했습니다.
+</div><br>
+
 <br/><br/>
 <div align="left">
 <b>Directional Light (방향광):</b> 태양광처럼 매우 먼 곳에서 비추어 씬 전체에 평행하게 들어오는 빛입니다. 위치 정보 없이 <b>방향(Direction)</b>만 존재하며, 거리에 따른 빛의 감쇠가 발생하지 않아 야외 환경의 기본적인 조명으로 사용됩니다.<br><br>
@@ -97,12 +118,27 @@
 <br>
 <br>
 
-### FBX Model Rendering
-  <img src="./Preview/OogieEngine.png" alt="OogieEngine Main Screen" width="700"/>
+---
+
+<div align="center">
+  <!-- 아이콘과 제목을 한 줄에 배치 (아이콘은 링크 없음) -->
+  <h3>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" width="30" alt="YouTube Icon" align="absmiddle"/>
+    FBX Model Rendering
+  </h3>
+
+  <!-- 메인 이미지에만 유튜브 링크 적용 -->
+  <a href="https://youtu.be/9XO9NmMlOsQ?si=h2de-xmlyedLvgIY" target="_blank">
+    <img src="./Preview/FBX_Model.png" alt="Phong Light" width="700" />
+  </a>
+  
+  <p><i>이미지를 클릭하시면 유튜브 데모 영상으로 이동합니다.</i></p>
+
   <br/>
 Autodesk FBX SDK를 엔진에 통합하여, 복잡한 3D 모델 데이터를 파싱(Parsing)하고 엔진의 자체적인 데이터 구조에 맞게 최적화하는 리소스 파이프라인을 구축했습니다. <br/>
   모델의 특성과 애니메이션 여부에 따라 <b>StaticMesh</b>와 <b>SkeletalMesh</b>로 렌더링 로직을 분리하였습니다.
-<br/><br/>
+</div><br>
+
 <div align="left">
 <b>StaticMesh:</b> 애니메이션 뼈대(Bone)가 없는 지형, 건물, 프랍(Prop) 등의 고정된 모델을 렌더링합니다. FBX 파일로부터 정점(Position, Normal, Tangent, UV)과 인덱스 데이터를 추출하여 DX11의 버퍼(Vertex/Index Buffer)로 변환하며, 모델 내의 여러 서브 메시(Sub-Mesh)와 다중 머티리얼을 계층적으로 분리하여 드로우 콜(Draw Call)을 효율적으로 관리하였습니다.
 <br><br>
@@ -110,13 +146,25 @@ Autodesk FBX SDK를 엔진에 통합하여, 복잡한 3D 모델 데이터를 파
 </div>
 <br><br>
 
+---
 
-### Skinning Animation
-  <img src="./Preview/OogieEngine.png" alt="OogieEngine Main Screen" width="700"/>
+<div align="center">
+  <!-- 아이콘과 제목을 한 줄에 배치 (아이콘은 링크 없음) -->
+  <h3>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" width="30" alt="YouTube Icon" align="absmiddle"/>
+    Skinning Animation
+  </h3>
+
+  <!-- 메인 이미지에만 유튜브 링크 적용 -->
+  <a href="https://youtu.be/Izbu4-qaoKI?si=RHNv6LPLVpBQeRae" target="_blank">
+    <img src="./Preview/Animation.png" alt="Phong Light" width="700" />
+  </a>
+  
+  <p><i>이미지를 클릭하시면 유튜브 데모 영상으로 이동합니다.</i></p>
+
   <br/>
 Autodesk FBX SDK를 통해 추출한 애니메이션 키프레임(Keyframe) 데이터를 기반으로, SkeletalMesh에 Skinning Animation을 구현하였습니다.
-<br/><br/>
-<br><br>
+</div><br>
 
 ### Particle
   <img src="./Preview/OogieEngine.png" alt="OogieEngine Main Screen" width="700"/>
@@ -126,12 +174,27 @@ Autodesk FBX SDK를 통해 추출한 애니메이션 키프레임(Keyframe) 데�
 <br/><br/>
 <br><br>
 
-### Object Picking
-  <img src="./Preview/OogieEngine.png" alt="OogieEngine Main Screen" width="700"/>
+---
+
+<div align="center">
+  <!-- 아이콘과 제목을 한 줄에 배치 (아이콘은 링크 없음) -->
+  <h3>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" width="30" alt="YouTube Icon" align="absmiddle"/>
+    Object Picking
+  </h3>
+
+  <!-- 메인 이미지에만 유튜브 링크 적용 -->
+  <a href="https://youtu.be/EG2wk8ieWFA?si=vsrOyK_ElB4-2_RE" target="_blank">
+    <img src="./Preview/OBJPicking.png" alt="Phong Light" width="700" />
+  </a>
+  
+  <p><i>이미지를 클릭하시면 유튜브 데모 영상으로 이동합니다.</i></p>
+
   <br/>
 3D 월드 공간의 객체를 마우스로 정밀하게 선택하고 상호작용하기 위해 <b>Object Picking (객체 픽킹)</b> 기능을 구현했습니다. <br/>
   특히 수많은 폴리곤으로 이루어진 모델의 교차 연산 부하를 최소화하기 위해 <b>2단계 충돌 검사 알고리즘</b>으로 최적화를 하였습니다.
-<br/><br/>
+</div><br>
+
 <div align="left">
 <b>1차 검증 (Bounding Volume 충돌):</b> 모델을 구성하는 모든 폴리곤을 검사하는 낭비를 막기 위해, 객체를 감싸는 경계 볼륨(AABB, OBB 또는 Bounding Sphere)과 광선의 충돌을 먼저 판별합니다.
 <br><br>
@@ -139,15 +202,28 @@ Autodesk FBX SDK를 통해 추출한 애니메이션 키프레임(Keyframe) 데�
 </div>
 <br><br>
 
+---
 
 ## 🚀 렌더링 최적화
 <div align="center">
-  <img src="./Preview/OogieEngine.png" alt="OogieEngine Main Screen" width="700"/>
-  <br/><br/>
-  다중 광원(Light) 환경에서 발생하는 심각한 성능 저하를 해결하기 위해, 렌더링 파이프라인을 <b>Forward Rendering</b>에서 <b>Deferred Rendering(지연 렌더링)</b> 구조로 전면 개편했습니다. <br/>
+  <!-- 아이콘과 제목을 한 줄에 배치 (아이콘은 링크 없음) -->
+  <h3>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" width="30" alt="YouTube Icon" align="absmiddle"/>
+    Deferred Rendering
+  </h3>
+
+  <!-- 메인 이미지에만 유튜브 링크 적용 -->
+  <a href="https://youtu.be/_483N6uNDJI?si=0zmpsQAv26OL1RmD" target="_blank">
+    <img src="./Preview/DeferredRendering.png" alt="Phong Light" width="700" />
+  </a>
+  
+  <p><i>이미지를 클릭하시면 유튜브 데모 영상으로 이동합니다.</i></p>
+
+  <br/>
+ 다중 광원(Light) 환경에서 발생하는 심각한 성능 저하를 해결하기 위해, 렌더링 파이프라인을 <b>Forward Rendering</b>에서 <b>Deferred Rendering(지연 렌더링)</b> 구조로 전면 개편했습니다. <br/>
   그 결과 연산 복잡도를 획기적으로 낮추고 프레임 속도를 <b>약 6.4배(638%)</b> 향상시켰습니다.
-</div>
-<br/>
+</div><br>
+
 
 <div align="left">
 
@@ -162,16 +238,7 @@ Autodesk FBX SDK를 통해 추출한 애니메이션 키프레임(Keyframe) 데�
 
 #### 📈 최적화 결과
 * 연산 복잡도를 <code>O(라이트 개수 × 픽셀 수)</code>로 대폭 낮추어 광원 추가에 대한 연산 부담을 최소화했습니다.
-  <img src="./Preview/OogieEngine.png" alt="OogieEngine Main Screen" width="700"/>
+  <img src="./Preview/Opti.png" alt="OogieEngine Main Screen" width="700"/>
   <br/><br/>
 <br><br>
 
-
-
-
-
-<div align="center">
-  <a href="https://www.youtube.com/watch?v=유튜브영상ID" target="_blank">
-    <img src="https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white" alt="YouTube Demo Video"/>
-  </a>
-</div>
