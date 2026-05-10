@@ -77,11 +77,11 @@
   <br/>
   씬(Scene)의 다채로운 시각적 연출을 위해 Phong Lighting Model 기반의 3가지 광원(Light) 모델을 구현했습니다. <br>
 각 광원은 픽셀쉐이더(PixelShader)에서 빛의 방향, 위치, 그리고 거리에 따른 감쇠(Attenuation)를 개별적으로 연산하여 물리적으로 자연스러운 조명 효과를 생성합니다.
-</div><br>
+</div>
 
 <br/><br/>
 <div align="left">
-<b>Directional Light (방향광):</b> 태양광처럼 매우 먼 곳에서 비추어 씬 전체에 평행하게 들어오는 빛입니다. 위치 정보 없이 <b>방향(Direction)</b>만 존재하며, 거리에 따른 빛의 감쇠가 발생하지 않아 야외 환경의 기본적인 조명으로 사용됩니다.<br><br>
+<b>Directional Light (방향광):</b> 태양광처럼 매우 먼 곳에서 비추어 씬 전체에 평행하게 들어오는 빛입니다. 위치 정보 없이 <b>방향(Direction)</b>만 존재하며, 거리에 따른 빛의 감쇠가 발생하지 않아 야외 환경의 기본적인 조명으로 사용됩니다.<br>
 <b>Point Light (점광):</b> 전구나 횃불처럼 <b>특정 위치(Position)</b>에서 사방(360도)으로 뻗어나가는 빛입니다. 광원으로부터 거리가 멀어질수록 빛의 강도가 약해지는 <b>거리 감쇠(Distance Attenuation)</b> 공식을 적용하여 사실적인 공간감을 부여합니다.<br>
 <b>Spot Light (원뿔광):</b> 손전등이나 무대 조명처럼 특정 위치에서 한 방향의 원뿔(Cone) 형태로 발산되는 빛입니다. 거리 감쇠뿐만 아니라, 빛의 중심(Inner Cone)에서 외곽(Outer Cone)으로 갈수록 어두워지는 <b>각도 감쇠(Angular Attenuation)</b> 연산을 통해 부드러운 조명 경계를 표현합니다.<br>
 </div>
@@ -107,16 +107,7 @@
   <br/>
  저폴리곤(Low-Poly) 모델에서도 표면의 미세한 굴곡과 질감을 고해상도로 표현하기 위해 <b>Normal Mapping (법선 매핑)</b> 기법을 구현하였습니다. <br/>
   실제 정점(Vertex)을 늘리지 않고 텍스처 데이터만으로 입체적인 조명 효과를 도출하여, 렌더링 퍼포먼스 최적화와 시각적 디테일을 동시에 확보했습니다.
-</div><br>
-
-<br/><br/>
-<div align="left">
-<b>Directional Light (방향광):</b> 태양광처럼 매우 먼 곳에서 비추어 씬 전체에 평행하게 들어오는 빛입니다. 위치 정보 없이 <b>방향(Direction)</b>만 존재하며, 거리에 따른 빛의 감쇠가 발생하지 않아 야외 환경의 기본적인 조명으로 사용됩니다.<br><br>
-<b>Point Light (점광):</b> 전구나 횃불처럼 <b>특정 위치(Position)</b>에서 사방(360도)으로 뻗어나가는 빛입니다. 광원으로부터 거리가 멀어질수록 빛의 강도가 약해지는 <b>거리 감쇠(Distance Attenuation)</b> 공식을 적용하여 사실적인 공간감을 부여합니다.<br>
-<b>Spot Light (원뿔광):</b> 손전등이나 무대 조명처럼 특정 위치에서 한 방향의 원뿔(Cone) 형태로 발산되는 빛입니다. 거리 감쇠뿐만 아니라, 빛의 중심(Inner Cone)에서 외곽(Outer Cone)으로 갈수록 어두워지는 <b>각도 감쇠(Angular Attenuation)</b> 연산을 통해 부드러운 조명 경계를 표현합니다.<br>
 </div>
-<br>
-<br>
 
 ---
 
@@ -140,8 +131,7 @@ Autodesk FBX SDK를 엔진에 통합하여, 복잡한 3D 모델 데이터를 파
 </div><br>
 
 <div align="left">
-<b>StaticMesh:</b> 애니메이션 뼈대(Bone)가 없는 지형, 건물, 프랍(Prop) 등의 고정된 모델을 렌더링합니다. FBX 파일로부터 정점(Position, Normal, Tangent, UV)과 인덱스 데이터를 추출하여 DX11의 버퍼(Vertex/Index Buffer)로 변환하며, 모델 내의 여러 서브 메시(Sub-Mesh)와 다중 머티리얼을 계층적으로 분리하여 드로우 콜(Draw Call)을 효율적으로 관리하였습니다.
-<br><br>
+<b>StaticMesh:</b> 애니메이션 뼈대(Bone)가 없는 지형, 건물, 프랍(Prop) 등의 고정된 모델을 렌더링합니다. FBX 파일로부터 정점(Position, Normal, Tangent, UV)과 인덱스 데이터를 추출하여 DX11의 버퍼(Vertex/Index Buffer)로 변환하며, 모델 내의 여러 서브 메시(Sub-Mesh)와 다중 머티리얼을 계층적으로 분리하여 드로우 콜(Draw Call)을 효율적으로 관리하였습니다.<br>
 <b>SkeletalMesh:</b> 캐릭터나 몬스터처럼 뼈대 계층 구조(Bone Hierarchy)와 애니메이션 데이터를 갖는 복잡한 모델을 렌더링합니다. 각 정점에 영향을 미치는 뼈대의 가중치(Blend Weights/Indices)를 파싱하고, 매 프레임 업데이트되는 뼈대의 변환 행렬(Matrix Palette)을 GPU에 전달하여 CPU에서의 병목이 일어나지 않도록 구현하였습니다.
 </div>
 <br><br>
@@ -166,13 +156,19 @@ Autodesk FBX SDK를 엔진에 통합하여, 복잡한 3D 모델 데이터를 파
 Autodesk FBX SDK를 통해 추출한 애니메이션 키프레임(Keyframe) 데이터를 기반으로, SkeletalMesh에 Skinning Animation을 구현하였습니다.
 </div><br>
 
-### Particle
-  <img src="./Preview/OogieEngine.png" alt="OogieEngine Main Screen" width="700"/>
+---
+
+
+<div align="center">
+  <!-- 아이콘과 제목을 한 줄에 배치 (아이콘은 링크 없음) -->
+  <h3>
+    Particle
+  </h3>
+<img src="./Preview/OogieEngine.png" alt="OogieEngine Main Screen" width="700"/>
   <br/>
 연기, 불꽃, 폭발 등의 화려한 시각 효과(VFX)를 실시간으로 처리하기 위해, 연산 부하를 CPU에서 GPU로 분산시킨 <b>GPU-Driven 파티클 시스템</b>을 구축했습니다. <br/>
-  Compute Shader에서 입자의 위치를 계산한 후 렌더링 파이프라인을 연계하여 수만 개의 파티클을 시뮬레이션합니다.
-<br/><br/>
-<br><br>
+Compute Shader에서 입자의 위치를 계산한 후 렌더링 파이프라인을 연계하여 수만 개의 파티클을 시뮬레이션합니다.
+</div><br>
 
 ---
 
@@ -197,7 +193,7 @@ Autodesk FBX SDK를 통해 추출한 애니메이션 키프레임(Keyframe) 데�
 
 <div align="left">
 <b>1차 검증 (Bounding Volume 충돌):</b> 모델을 구성하는 모든 폴리곤을 검사하는 낭비를 막기 위해, 객체를 감싸는 경계 볼륨(AABB, OBB 또는 Bounding Sphere)과 광선의 충돌을 먼저 판별합니다.
-<br><br>
+<br>
 <b>2차 검증 (선과 삼각형 충돌):</b> 1차 검증을 통과한 객체에 한해, 메시(Mesh)를 구성하는 실제 삼각형 정점들과 광선의 교차 여부를 판별합니다. 이를 통해 마우스가 클릭한 정확한 교차 지점과 거리를 계산하여 가려진 객체들을 판별하고 가장 가까운 객체를 선택합니다.
 </div>
 <br><br>
