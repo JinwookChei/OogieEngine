@@ -232,8 +232,12 @@ Compute Shader에서 입자의 위치를 계산한 후 렌더링 파이프라인
 * 이후 화면에 렌더링되는 픽셀(Pixel)들에 대해서만 저장된 G-Buffer 데이터를 바탕으로 단 한 번의 최종 조명 연산(Lighting Pass)을 수행하도록 구조를 최적화했습니다.
 </div>
 
-#### 📈 최적화 결과
-* 연산 복잡도를 <code>O(라이트 개수 × 픽셀 수)</code>로 대폭 낮추어 광원 추가에 대한 연산 부담을 최소화했습니다.
+<h3>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" width="30" alt="YouTube Icon" align="absmiddle"/>
+  📈 최적화 결과
+</h3>
+
+연산 복잡도를 <code>O(라이트 개수 × 픽셀 수)</code>로 대폭 낮추어 광원 추가에 대한 연산 부담을 최소화했습니다.
 <div align="center">
   <!-- 이미지를 클릭하면 해당 성능 비교 영상(유튜브)으로 이동 -->
   <a href="https://youtu.be/teSDr41GZgU?si=J5CuP0I8mFCtthbV" target="_blank">
