@@ -2,17 +2,22 @@
 <h2>🧊 Oogie Engine - DirectX 11 3D Graphics Engine</h2>
 
 <div align="center">
-<img src="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" width="35" alt="YouTube Icon"/>
-<h3>OogieEngine Demo</h3>
+  <!-- 아이콘과 제목을 한 줄에 배치 (아이콘은 링크 없음) -->
+  <h3>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" width="30" alt="YouTube Icon" align="absmiddle"/>
+    OogieEngine Demo
+  </h3>
+
+  <!-- 메인 이미지에만 유튜브 링크 적용 -->
   <a href="https://youtu.be/Kpxutf8pM94?si=M2vii5QvUqSEraxN" target="_blank">
-    <!-- 유튜브 썸네일 이미지를 자동으로 가져오는 링크입니다 -->
     <img src="./Preview/OogieEngine.png" alt="Oogie Engine Demo" width="700" />
   </a>
+  
   <p><i>이미지를 클릭하시면 유튜브 데모 영상으로 이동합니다.</i></p>
 
+  <br/>
   본 프로젝트는 C/C++, DirectX 11 API를 활용하여 밑바닥부터 구축한 자체 렌더링 엔진입니다.<br>
-  DirectX11의 그래픽스 파이프라인의 이해와 
-  실시간 렌더링 최적화 구현을 목표로 제작하였습니다.
+  DirectX 11 그래픽스 파이프라인의 이해와 실시간 렌더링 최적화 구현을 목표로 제작하였습니다.
 </div>
 
 <!-- 기술스택 -->
