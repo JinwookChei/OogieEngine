@@ -2,11 +2,12 @@
 <h2>🧊 Oogie Engine - DirectX 11 3D Graphics Engine</h2>
 
 <div align="center">
+<img src="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" width="35" alt="YouTube Icon"/>
+<h3>OogieEngine Demo</h3>
   <a href="https://youtu.be/Kpxutf8pM94?si=M2vii5QvUqSEraxN" target="_blank">
     <!-- 유튜브 썸네일 이미지를 자동으로 가져오는 링크입니다 -->
     <img src="./Preview/OogieEngine.png" alt="Oogie Engine Demo" width="700" />
   </a>
-  <img src="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" width="35" alt="YouTube Icon"/>
   <p><i>이미지를 클릭하시면 유튜브 데모 영상으로 이동합니다.</i></p>
 
   본 프로젝트는 C/C++, DirectX 11 API를 활용하여 밑바닥부터 구축한 자체 렌더링 엔진입니다.<br>
@@ -24,12 +25,13 @@
 <br>
 
 ## 🚀 구현 기능
+
+<img src="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" width="35" alt="YouTube Icon"/>
 <h3>Phong Lighting Model</h3>
 <a href="https://youtu.be/rJZyKoF25bI?si=FcFMhCy3lkkyujJN" target="_blank">
   <!-- 유튜브 썸네일 이미지를 자동으로 가져오는 링크입니다 -->
   <img src="./Preview/Phong_Image.png" alt="Oogie Engine Demo" width="700" />
 </a>
-<img src="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" width="35" alt="YouTube Icon"/>
 <p><i>이미지를 클릭하시면 유튜브 데모 영상으로 이동합니다.</i></p>
 
 
@@ -43,13 +45,12 @@
 <br>
 
 
-
+<img src="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" width="35" alt="YouTube Icon"/>
 <h3>3-Types of Lighting</h3>
 <a href="https://youtu.be/rrb3zLuQAUc?si=fQz-VYsuA7Tkkxkr" target="_blank">
   <!-- 유튜브 썸네일 이미지를 자동으로 가져오는 링크입니다 -->
   <img src="./Preview/D_P_S_Light.png" alt="Oogie Engine Demo" width="700" />
 </a>
-<img src="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" width="35" alt="YouTube Icon"/>
 <p><i>이미지를 클릭하시면 유튜브 데모 영상으로 이동합니다.</i></p>
 
 씬(Scene)의 다채로운 시각적 연출을 위해 Phong Lighting Model 기반의 3가지 광원(Light) 모델을 구현했습니다. 
@@ -63,12 +64,12 @@
 <br>
 <br>
 
-
+<img src="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" width="35" alt="YouTube Icon"/>
+<h3>Normal Mapping</h3>
 <a href="https://youtu.be/3sw58l2sdk8?si=QaNWqq_ZmF8KxqHV" target="_blank">
   <!-- 유튜브 썸네일 이미지를 자동으로 가져오는 링크입니다 -->
   <img src="./Preview/NormalMapping_Before_After.png" alt="Oogie Engine Demo" width="700" />
 </a>
-<img src="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" width="35" alt="YouTube Icon"/>
 <p><i>이미지를 클릭하시면 유튜브 데모 영상으로 이동합니다.</i></p>
 
   저폴리곤(Low-Poly) 모델에서도 표면의 미세한 굴곡과 질감을 고해상도로 표현하기 위해 <b>Normal Mapping (법선 매핑)</b> 기법을 구현하였습니다. <br/>
