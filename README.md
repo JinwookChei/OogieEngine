@@ -2,36 +2,34 @@
 <h2>🧊 Oogie Engine - DirectX 11 3D Graphics Engine</h2>
 
 <div align="center">
+  <a href="https://youtu.be/Kpxutf8pM94?si=M2vii5QvUqSEraxN" target="_blank">
+    <!-- 유튜브 썸네일 이미지를 자동으로 가져오는 링크입니다 -->
+    <img src="./Preview/OogieEngine.png" alt="Oogie Engine Demo" width="700" />
+  </a>
+  <p><i>이미지를 클릭하시면 유튜브 데모 영상으로 이동합니다.</i></p>
 
-  <!-- 엔진 구동 화면 스크린샷이나 로고 이미지를 넣어주세요 -->
-  <img src="./Preview/OogieEngine.png" alt="OogieEngine Main Screen" width="700"/>
-  <br/>
   본 프로젝트는 C/C++, DirectX 11 API를 활용하여 밑바닥부터 구축한 자체 렌더링 엔진입니다.<br>
   DirectX11의 그래픽스 파이프라인의 이해와 
   실시간 렌더링 최적화 구현을 목표로 제작하였습니다.
 </div>
 
-<div align="center">
-  <h3>🎥 Oogie Engine Demo Video</h3>
-  <a href="https://www.youtube.com/watch?v=유튜브영상ID" target="_blank">
-    <!-- 유튜브 썸네일 이미지를 자동으로 가져오는 링크입니다 -->
-    <img src="https://img.youtube.com/vi/유튜브영상ID/maxresdefault.jpg" alt="Oogie Engine Demo" width="700" />
-  </a>
-  <p><i>이미지를 클릭하시면 유튜브 데모 영상으로 이동합니다.</i></p>
-</div>
-
+<!-- 기술스택 -->
 <div align="center">
   <img src="https://img.shields.io/badge/C-A8B9CC?style=flat-square&logo=c&logoColor=white" alt="C"/><img src="https://img.shields.io/badge/C++-00599C?style=flat-square&logo=c%2B%2B&logoColor=white" alt="C++"/><img src="https://img.shields.io/badge/Win32_API-0078D4?style=flat-square&logo=windows&logoColor=white" alt="Win32 API"/><img src="https://img.shields.io/badge/DirectX_11-107C10?style=flat-square&logo=windows&logoColor=white" alt="DirectX 11"/><img src="https://img.shields.io/badge/HLSL-FFA500?style=flat-square&logo=opengl&logoColor=white" alt="HLSL"/><img src="https://img.shields.io/badge/FBX_SDK-0696D7?style=flat-square&logo=autodesk&logoColor=white" alt="FBX SDK"/><img src="https://img.shields.io/badge/Dear_ImGui-222222?style=flat-square&logoColor=white" alt="Dear ImGui"/>
 </div>
+
 
 <br>
 <br>
 
 ## 🚀 구현 기능
+  <h3>🎥 Phong Lighting Model</h3>
+  <a href="https://youtu.be/rJZyKoF25bI?si=FcFMhCy3lkkyujJN" target="_blank">
+    <!-- 유튜브 썸네일 이미지를 자동으로 가져오는 링크입니다 -->
+    <img src="./Preview/Phong_Image.png" alt="Oogie Engine Demo" width="700" />
+  </a>
+  <p><i>이미지를 클릭하시면 유튜브 데모 영상으로 이동합니다.</i></p>
 
-### Phong Lighting Model
-  <img src="./Preview/OogieEngine.png" alt="OogieEngine Main Screen" width="700"/>
-  <br/>
 3D 객체의 입체감과 재질(Material)의 특성을 사실적으로 렌더링하기 위해 Phong Lighting Model을 구현했습니다. 픽셀 셰이더(Pixel Shader) 내에서 환경광(Ambient), 난반사(Diffuse), 정반사(Specular) 요소를 각각 연산한 후 합성(Sum)하여 실시간 조명 효과를 표현하였습니다.<br/><br/>
 <div align="left">
 <b>Ambient (환경광):</b> 빛이 직접 닿지 않는 표면에 기본적인 물체의 색상을 채워줍니다.<br>
