@@ -31,16 +31,25 @@
 
 ## 🚀 구현 기능
 
-<img src="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" width="35" alt="YouTube Icon"/>
-<h3>Phong Lighting Model</h3>
-<a href="https://youtu.be/rJZyKoF25bI?si=FcFMhCy3lkkyujJN" target="_blank">
-  <!-- 유튜브 썸네일 이미지를 자동으로 가져오는 링크입니다 -->
-  <img src="./Preview/Phong_Image.png" alt="Oogie Engine Demo" width="700" />
-</a>
-<p><i>이미지를 클릭하시면 유튜브 데모 영상으로 이동합니다.</i></p>
+<div align="center">
+  <!-- 아이콘과 제목을 한 줄에 배치 (아이콘은 링크 없음) -->
+  <h3>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" width="30" alt="YouTube Icon" align="absmiddle"/>
+    Phong Lighting Model
+  </h3>
 
+  <!-- 메인 이미지에만 유튜브 링크 적용 -->
+  <a href="https://youtu.be/rJZyKoF25bI?si=FcFMhCy3lkkyujJN" target="_blank">
+    <img src="./Preview/Phong_Image.png" alt="Phong Light" width="700" />
+  </a>
+  
+  <p><i>이미지를 클릭하시면 유튜브 데모 영상으로 이동합니다.</i></p>
 
-3D 객체의 입체감과 재질(Material)의 특성을 사실적으로 렌더링하기 위해 Phong Lighting Model을 구현했습니다. 픽셀 셰이더(Pixel Shader) 내에서 환경광(Ambient), 난반사(Diffuse), 정반사(Specular) 요소를 각각 연산한 후 합성(Sum)하여 실시간 조명 효과를 표현하였습니다.<br/><br/>
+  <br/>
+  3D 객체의 입체감과 재질(Material)의 특성을 사실적으로 렌더링하기 위해 Phong Lighting Model을 구현했습니다.<br>
+  픽셀 셰이더(Pixel Shader) 내에서 환경광(Ambient), 난반사(Diffuse), 정반사(Specular) 요소를 각각 연산한 후 합성(Sum)하여 실시간 조명 효과를 표현하였습니다.
+</div>
+
 <div align="left">
 <b>Ambient (환경광):</b> 빛이 직접 닿지 않는 표면에 기본적인 물체의 색상을 채워줍니다.<br>
 <b>Diffuse (난반사):</b> 빛의 방향과 물체의 표면 법선벡터에 따른 명암을 계산하여 모델에 입체감을 불어줍니다.<br>
