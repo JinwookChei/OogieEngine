@@ -216,8 +216,8 @@ Compute Shader에서 입자의 위치를 계산한 후 렌더링 파이프라인
   <p><i>이미지를 클릭하시면 유튜브 데모 영상으로 이동합니다.</i></p>
 
   <br/>
- 다중 광원(Light) 환경에서 발생하는 심각한 성능 저하를 해결하기 위해, 렌더링 파이프라인을 <b>Forward Rendering</b>에서 <b>Deferred Rendering(지연 렌더링)</b> 구조로 전면 개편했습니다. <br/>
-  그 결과 연산 복잡도를 획기적으로 낮추고 프레임 속도를 <b>약 6.4배(638%)</b> 향상시켰습니다.
+ 다중 광원(Light) 환경에서 발생하는 성능 저하를 해결하기 위해, 렌더링 파이프라인을 <b>Forward Rendering</b>에서 <b>Deferred Rendering(지연 렌더링)</b>를 도입 하였습니다. <br/>
+  그 결과 연산 복잡도를 낮추고 프레임 속도를 <b>약 6.4배(638%)</b> 향상시켰습니다.
 </div><br>
 
 
@@ -234,7 +234,12 @@ Compute Shader에서 입자의 위치를 계산한 후 렌더링 파이프라인
 
 #### 📈 최적화 결과
 * 연산 복잡도를 <code>O(라이트 개수 × 픽셀 수)</code>로 대폭 낮추어 광원 추가에 대한 연산 부담을 최소화했습니다.
-  <img src="./Preview/Opti.png" alt="OogieEngine Main Screen" width="700"/>
-  <br/><br/>
+<div align="center">
+  <!-- 이미지를 클릭하면 해당 성능 비교 영상(유튜브)으로 이동 -->
+  <a href="https://youtu.be/teSDr41GZgU?si=J5CuP0I8mFCtthbV" target="_blank">
+    <img src="./Preview/Opti.png" alt="Rendering Optimization Comparison" width="700"/>
+  </a>
+  <p><i>이미지를 클릭하시면 프레임 성능 비교 영상으로 이동합니다.</i></p>
+</div>
 <br><br>
 
