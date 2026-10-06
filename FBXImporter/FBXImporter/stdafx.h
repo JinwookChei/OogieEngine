@@ -32,6 +32,8 @@
 #pragma comment(lib, "libxml2-md")
 #pragma comment(lib, "zlib-md")
 
+#pragma comment(lib, "Bcrypt.lib")
+
 #define FBX_IMPORTER_API __declspec(dllexport)
 #define UTILITY_API __declspec(dllimport)
 
