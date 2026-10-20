@@ -8,7 +8,7 @@
 #ifdef _DEBUG
 #define DEBUG_BREAK __debugbreak
 #else
-#define DEBUG_BREAK
+#define DEBUG_BREAK __noop
 #endif // DEBUG
 
 #define UTILITY_API __declspec(dllexport)
