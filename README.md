@@ -34,6 +34,97 @@
 <br>
 <br>
 
+## 🔧 빌드 및 실행
+
+### 요구 사항
+
+| 항목 | 버전 / 비고 |
+|---|---|
+| OS | Windows 10 / 11 (x64) |
+| IDE | **Visual Studio 2022** + `C++를 사용한 데스크톱 개발` 워크로드 (MSVC v143, Windows 10/11 SDK 포함) |
+| GPU | DirectX 11 지원 그래픽 카드 |
+| [Autodesk FBX SDK](https://aps.autodesk.com/developer/overview/fbx-sdk) | **2020.3.11** — Windows / **VS2022** 버전 (직접 설치 필요) |
+| DirectXTex | NuGet 패키지 `directxtex_desktop_win10` — 첫 빌드 시 **자동 설치** (인터넷 연결 필요) |
+
+> FBX SDK는 라이선스와 용량(lib 파일 100MB 이상) 문제로 저장소에 포함하지 않았습니다. 빌드 전에 각자 설치해야 합니다.
+
+### 1. 저장소 클론
+
+```bash
+git clone https://github.com/JinwookChei/OogieEngine.git
+```
+
+### 2. FBX SDK 설치
+
+1. [Autodesk FBX SDK 다운로드 페이지](https://aps.autodesk.com/developer/overview/fbx-sdk)에서 **FBX SDK 2020.3.11 — Windows (VS2022)** 설치 파일을 받습니다.
+2. 기본 경로에 설치합니다.
+
+   ```
+   C:\Program Files\Autodesk\FBX\FBX SDK\2020.3.11
+   ```
+
+<details>
+<summary>다른 경로나 다른 2020.3.x 버전으로 설치했다면 (펼치기)</summary>
+
+`FBX_SDK_DIR` 환경 변수에 설치 폴더를 지정한 뒤 **Visual Studio를 다시 실행**합니다.
+
+```powershell
+setx FBX_SDK_DIR "D:\Autodesk\FBX\FBX SDK\2020.3.11"
+```
+
+</details>
+
+### 3. 빌드 및 실행
+
+1. 저장소 루트의 **`OogieEngine.sln`** 을 Visual Studio 2022로 엽니다.
+2. 상단 도구 모음에서 구성을 **`Debug`** (또는 `Release`), 플랫폼을 **`x64`** 로 선택합니다.
+3. **F5** 를 눌러 빌드하고 실행합니다.
+   * NuGet 패키지(DirectXTex)가 자동으로 복원되고, 7개 프로젝트가 의존 순서대로 빌드됩니다.
+   * 시작 프로젝트는 **`Content`** 입니다. 다른 프로젝트가 굵게 표시되어 있다면 `Content` 를 우클릭해 **시작 프로젝트로 설정** 을 선택합니다.
+
+빌드 결과물(`.exe`, `.dll`, 컴파일된 셰이더 `.cso`)은 모두 `bin\` 폴더에 생성됩니다.
+
+<details>
+<summary>명령줄로 빌드하기 (펼치기)</summary>
+
+`Developer PowerShell for VS 2022` 에서 저장소 루트로 이동한 뒤 실행합니다.
+
+```powershell
+msbuild OogieEngine.sln -t:restore -p:RestorePackagesConfig=true
+msbuild OogieEngine.sln -m -p:Configuration=Debug -p:Platform=x64
+cd bin
+.\Content_x64_Debug.exe
+```
+
+</details>
+
+> ⚠️ 실행 파일을 직접 실행할 때는 **반드시 `bin\` 폴더를 작업 폴더로** 실행해야 합니다.
+> 셰이더(`*.cso`)와 리소스(`..\Resource\`)를 작업 폴더 기준 상대 경로로 불러오기 때문입니다. Visual Studio에서 F5로 실행하면 자동으로 설정됩니다.
+
+### 프로젝트 구성
+
+| 프로젝트 | 출력 | 역할 |
+|---|---|---|
+| `Content` | `Content_x64_*.exe` | **실행 파일 (시작 프로젝트)** |
+| `Engine` | `Engine_x64_*.dll` | 엔진 코어 (월드 · 레벨 · 액터/컴포넌트 · 리소스 매니저) |
+| `RendererD3D11` | `RendererD3D11_x64_*.dll` | DirectX 11 렌더러 · HLSL 셰이더 (실행 중 로드) |
+| `FBXImporter` | `FBXImporter_x64_*.dll` | FBX SDK 기반 모델/애니메이션 임포터 (실행 중 로드) |
+| `Application` | `Application_x64_*.dll` | Win32 창 생성 · 메시지 처리 (실행 중 로드) |
+| `Editor` | `Editor_x64_*.dll` | Dear ImGui 기반 에디터 UI |
+| `Utility` | `Utility_x64_*.dll` | 수학 · 자료구조 (HashTable, LinkedList) |
+
+```
+Utility ─┬─ Editor ─┬─ Engine ─────┐
+         │          └─ Application ─┤
+         ├─ RendererD3D11 ──────────┼─▶ Content (.exe)
+         └─ FBXImporter ────────────┘
+```
+
+> 각 프로젝트 폴더에 있는 개별 `.sln` 으로도 빌드할 수 있지만, 의존 프로젝트를 먼저 빌드해야 합니다. 보통은 루트의 `OogieEngine.sln` 을 사용하세요.
+
+<br>
+<br>
+
 ## 🚀 구현 기능
 
 <div align="left">

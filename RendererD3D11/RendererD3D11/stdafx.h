@@ -8,7 +8,7 @@
 #ifdef _DEBUG
 #define DEBUG_BREAK __debugbreak
 #else
-#define DEBUG_BREAK
+#define DEBUG_BREAK __noop
 #endif // DEBUG
 
 
@@ -49,8 +49,8 @@
 #include <d3dcompiler.h>
 #include <dxgi.h>
 #include <DirectXMath.h>
-#include <ThirdParty/DirectXTex/DirectXTex.h>
-#include <ThirdParty/DirectXTex/DirectXTex.inl>
+#include <DirectXTex.h>
+#include <DirectXTex.inl>
 
 // Utility
 #include <Utility/Utility/Math.h>
